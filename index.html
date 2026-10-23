@@ -1397,8 +1397,7 @@ a.lm-ir:hover { border-bottom-style: solid; }
   #lg-ov input{width:100%;box-sizing:border-box;padding:10px 12px;border:1px solid var(--line,#E7E2DA);border-radius:8px;font-size:14px;background:var(--field,#FAF8F4);color:var(--ink,#313131)}
   #lg-ov button.pri{width:100%;margin-top:16px;padding:11px;border:0;border-radius:8px;background:var(--accent,#A8582A);color:#fff;font-weight:600;font-size:14px;cursor:pointer}
   #lg-ov .lk{display:flex;justify-content:space-between;margin-top:12px;font-size:12.5px} #lg-ov .lk a{color:var(--accent,#A8582A);cursor:pointer;text-decoration:none}
-  #lg-ov .msg{font-size:12.5px;margin-top:12px;min-height:1em} #lg-ov .msg.err{color:var(--bad,#B42318)} #lg-ov .msg.ok{color:var(--good,#15803d)}
-  .lg-sair{background:none;border:0;color:inherit;opacity:.75;font-size:11px;cursor:pointer;padding:0;margin-left:8px;text-decoration:underline}`;
+  #lg-ov .msg{font-size:12.5px;margin-top:12px;min-height:1em} #lg-ov .msg.err{color:var(--bad,#B42318)} #lg-ov .msg.ok{color:var(--good,#15803d)}`;
   function telaLogin() {
     return new Promise(resolve => {
       const st = document.createElement('style'); st.textContent = css; document.head.appendChild(st);
@@ -1432,7 +1431,7 @@ a.lm-ir:hover { border-bottom-style: solid; }
     uid = sessao.user.id;
     sb.auth.onAuthStateChange((ev, s) => { if (ev === 'SIGNED_OUT') location.reload(); else if (s) sessao = s; });
     // botão Sair no rodapé do menu
-    const pe = document.querySelector('.side-foot .r'); if (pe) { const b = document.createElement('button'); b.className = 'lg-sair'; b.type = 'button'; b.textContent = 'sair'; b.title = sessao.user.email; b.onclick = async () => { try { localStorage.removeItem('painel-quem'); } catch (e) {} await sb.auth.signOut(); }; pe.appendChild(b); }
+    const SITE_V = 2; const srcEl = document.querySelector('.side-foot .src'); if (srcEl && !/site/.test(srcEl.textContent)) srcEl.textContent += ' · site ' + SITE_V; const pe = document.querySelector('.side-foot .r'); if (pe) { if (!document.getElementById('lg-sair-css')) { const cs = document.createElement('style'); cs.id = 'lg-sair-css'; cs.textContent = '.side-foot .lg-sair{all:unset;margin-left:auto;font:inherit;font-size:10.5px;color:inherit;opacity:.6;cursor:pointer;border-bottom:1px solid currentColor;line-height:1.2}.side-foot .lg-sair:hover,.side-foot .lg-sair:focus-visible{opacity:1}'; document.head.appendChild(cs); } const b = document.createElement('button'); b.className = 'lg-sair'; b.type = 'button'; b.textContent = 'sair'; b.title = sessao.user.email; b.onclick = async () => { try { localStorage.removeItem('painel-quem'); } catch (e) {} await sb.auth.signOut(); }; pe.appendChild(b); }
     // cada conta tem o próprio cache local: se outra pessoa entrou neste navegador, limpa e recarrega uma vez
     try { const ant = localStorage.getItem('painel-site-uid'); if (ant !== uid) { Object.keys(localStorage).filter(k => /^painel-/.test(k)).forEach(k => localStorage.removeItem(k)); localStorage.setItem('painel-site-uid', uid); if (ant) { location.reload(); await new Promise(() => {}); } } } catch (e) {}
   })();
