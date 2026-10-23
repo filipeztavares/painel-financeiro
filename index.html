@@ -1332,7 +1332,7 @@ a.lm-ir:hover { border-bottom-style: solid; }
   </section>
 </div></div>
 
-<style>.nav-group:has([data-tab="familia"]){display:none!important}</style>
+<style>html:not(.site-fam) .nav-group:has([data-tab="familia"]),html:not(.site-fam) .lm-mod:has([data-lmtab="familia"]),html:not(.site-fam) tr:has([data-lmtab="familia"]){display:none!important}</style>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
 <script>
 /* Painel fora do Claude: login com e-mail e senha (Supabase) e um banco com a mesma cara do db do artefato.
@@ -1357,19 +1357,24 @@ a.lm-ir:hover { border-bottom-style: solid; }
   }
   function avisar(tab, path) { ouvintes.forEach(o => { if (o.tab !== tab) return; if (!path || o.casa(path)) o.ler(); }); }
   const snapDoc = (row) => ({ exists: !!row, id: row ? row.path.split('/').pop() : null, data: () => row ? clone(row.data) : undefined });
+  // perfis/<id>/... = dados de quem compartilhou com você (só leitura); o resto é seu
+  const alheio = path => { const m = /^perfis\/([^/]+)\/(.+)$/.exec(path); return m ? { owner: m[1], path: m[2] } : null; };
+  let compartilhamComigo = [];
   async function lerDoc(path) {
-    const t = tabela(path); let q = sb.from(t).select('path,data').eq('path', path);
-    if (t === 'docs') q = q.eq('owner', uid);
+    const t = tabela(path), a = t === 'docs' && alheio(path); let q = sb.from(t).select('path,data').eq('path', a ? a.path : path);
+    if (t === 'docs') q = q.eq('owner', a ? a.owner : uid);
     const { data, error } = await q.maybeSingle(); if (error) throw error; return data;
   }
   async function lerCol(c) {
-    const t = tabela(c + '/x'); let q = sb.from(t).select('path,data').like('path', c.replace(/[%_]/g, '\\$&') + '/%');
-    if (t === 'docs') q = q.eq('owner', uid);
+    if (c === 'perfis') return compartilhamComigo.map(id => ({ path: 'perfis/' + id, data: {} }));
+    const t = tabela(c + '/x'), a = t === 'docs' && alheio(c + '/x'), cc = a ? a.path.replace(/\/x$/, '') : c;
+    let q = sb.from(t).select('path,data').like('path', cc.replace(/[%_]/g, '\\$&') + '/%');
+    if (t === 'docs') q = q.eq('owner', a ? a.owner : uid);
     const { data, error } = await q; if (error) throw error;
-    return (data || []).filter(r => segs(r.path) === segs(c) + 1);
+    return (data || []).filter(r => segs(r.path) === segs(cc) + 1);
   }
   async function gravar(path, d) {
-    if (tabela(path) !== 'docs') throw { code: 'permission_denied', message: 'dados de mercado são só leitura' };
+    if (tabela(path) !== 'docs' || alheio(path)) throw { code: 'permission_denied', message: 'só leitura' };
     const { error } = await sb.from('docs').upsert({ owner: uid, path, data: d }, { onConflict: 'owner,path' }); if (error) throw error;
     avisar('docs', path);
   }
@@ -1388,7 +1393,7 @@ a.lm-ir:hover { border-bottom-style: solid; }
   };
   // ---------- quem está vendo: cada pessoa é dona do próprio painel ----------
   let sessao = null;
-  const user = { isOwner: async () => true, canEdit: async () => true, id: async () => uid, me: async () => ({ id: uid, name: (sessao && sessao.user && (sessao.user.user_metadata && sessao.user.user_metadata.nome || sessao.user.email || '').split('@')[0]) || '' }), profiles: async () => ({}) };
+  const user = { isOwner: async () => true, canEdit: async () => true, id: async () => uid, me: async () => ({ id: uid, name: (sessao && sessao.user && (sessao.user.user_metadata && sessao.user.user_metadata.nome || sessao.user.email || '').split('@')[0]) || '' }), profiles: async ids => { const out = {}; if (!ids || !ids.length) return out; const { data } = await sb.from('perfis').select('id,nome').in('id', ids); (data || []).forEach(r => { out[r.id] = { id: r.id, name: r.nome || '' }; }); return out; } };
   // ---------- tela de login ----------
   const css = `#lg-ov{position:fixed;inset:0;z-index:9999;background:var(--bg,#FAF8F4);display:flex;align-items:center;justify-content:center;padding:16px;font-family:inherit}
   #lg-ov .bx{width:100%;max-width:380px;background:var(--panel,#fff);border:1px solid var(--line,#E7E2DA);border-radius:14px;box-shadow:0 10px 30px rgba(15,31,61,.08);padding:26px 24px}
@@ -1424,14 +1429,113 @@ a.lm-ir:hover { border-bottom-style: solid; }
   async function novaSenhaSePreciso() {
     return new Promise(resolve => { const { data } = sb.auth.onAuthStateChange(async (ev) => { if (ev !== 'PASSWORD_RECOVERY') return; const s = prompt('Digite a nova senha (mínimo 8 caracteres):'); if (s && s.length >= 8) { const { error } = await sb.auth.updateUser({ password: s }); alert(error ? 'Não deu para trocar a senha: ' + error.message : 'Senha trocada.'); } }); resolve(data); });
   }
+  // ---------- rodapé: compartilhar, administração e sair ----------
+  const SITE_V = 3;
+  const escH = v => String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  const dataBR = v => v ? new Date(v).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' }) : '–';
+  const css2 = `.side-foot .r{flex-wrap:wrap}.side-foot .lg-acoes{margin-left:auto;display:inline-flex;gap:10px}
+  .side-foot .lg-link{all:unset;font:inherit;font-size:10.5px;color:inherit;opacity:.6;cursor:pointer;border-bottom:1px solid currentColor;line-height:1.2}.side-foot .lg-link:hover,.side-foot .lg-link:focus-visible{opacity:1}
+  #sv-ov{position:fixed;inset:0;z-index:9000;background:rgba(15,31,61,.45);display:flex;align-items:flex-start;justify-content:center;padding:6vh 16px 16px;overflow:auto}
+  #sv-ov .bx{width:100%;max-width:820px;background:var(--panel,#fff);color:var(--ink,#313131);border:1px solid var(--line,#E7E2DA);border-radius:14px;box-shadow:0 10px 30px rgba(15,31,61,.18);padding:22px 22px 18px;box-sizing:border-box}
+  #sv-ov .bx.peq{max-width:520px} #sv-ov h2{font-family:Poppins,system-ui,sans-serif;font-size:18px;margin:0 0 4px} #sv-ov .sub{font-size:12.5px;color:var(--muted,#666);margin:0 0 14px;line-height:1.5}
+  #sv-ov .top{display:flex;justify-content:space-between;align-items:flex-start;gap:12px} #sv-ov .x{all:unset;cursor:pointer;font-size:20px;line-height:1;padding:2px 6px;color:var(--muted,#666)}
+  #sv-ov h3{font-size:11px;font-weight:600;letter-spacing:.5px;text-transform:uppercase;color:var(--faint,#94a3b8);margin:16px 0 6px}
+  #sv-ov .lin{display:flex;gap:8px;flex-wrap:wrap} #sv-ov input{flex:1;min-width:180px;box-sizing:border-box;padding:9px 11px;border:1px solid var(--line,#E7E2DA);border-radius:8px;font-size:14px;background:var(--field,#FAF8F4);color:inherit}
+  #sv-ov .bt{border:1px solid var(--line,#E7E2DA);background:var(--panel,#fff);color:inherit;border-radius:8px;padding:7px 12px;font-size:12.5px;font-weight:600;cursor:pointer} #sv-ov .bt.pri{background:var(--accent,#A8582A);border-color:var(--accent,#A8582A);color:#fff} #sv-ov .bt.mau{color:var(--bad,#B42318)} #sv-ov .bt:disabled{opacity:.5;cursor:default}
+  #sv-ov ul{list-style:none;margin:0;padding:0} #sv-ov li{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--line,#E7E2DA);font-size:13px} #sv-ov li .em{color:var(--muted,#666);font-size:12px}
+  #sv-ov .vazio{font-size:12.5px;color:var(--muted,#666);padding:6px 0} #sv-ov .msg{font-size:12.5px;margin-top:8px;min-height:1em} #sv-ov .msg.err{color:var(--bad,#B42318)} #sv-ov .msg.ok{color:var(--good,#15803d)}
+  #sv-ov .tw{overflow-x:auto;margin:0 -4px} #sv-ov table{border-collapse:collapse;width:100%;font-size:12.5px;min-width:640px} #sv-ov th{text-align:left;font-size:10.5px;font-weight:600;letter-spacing:.4px;text-transform:uppercase;color:var(--faint,#94a3b8);padding:6px 6px;border-bottom:1px solid var(--line,#E7E2DA);white-space:nowrap} #sv-ov td{text-align:left;padding:8px 6px;border-bottom:1px solid var(--line,#E7E2DA);vertical-align:top}
+  #sv-ov .chip{display:inline-block;font-size:10.5px;font-weight:600;padding:1px 7px;border-radius:99px;background:var(--field,#F1EDE6);white-space:nowrap} #sv-ov .chip.ok{color:var(--good,#15803d)} #sv-ov .chip.mau{color:var(--bad,#B42318)} #sv-ov td .acs{display:flex;gap:6px;flex-wrap:wrap}`;
+  function modal(html, peq, fixo) {
+    fecharModal(); const ov = document.createElement('div'); ov.id = 'sv-ov';
+    ov.innerHTML = `<div class="bx${peq ? ' peq' : ''}" role="dialog" aria-modal="true">${html}</div>`;
+    if (!fixo) { ov.addEventListener('click', e => { if (e.target === ov || e.target.closest('.x')) fecharModal(); }); document.addEventListener('keydown', escFecha); } document.body.appendChild(ov); return ov;
+  }
+  function escFecha(e) { if (e.key === 'Escape') fecharModal(); }
+  function fecharModal() { const o = document.getElementById('sv-ov'); if (o) o.remove(); document.removeEventListener('keydown', escFecha); }
+  const topo = (t, sub) => `<div class="top"><div><h2>${t}</h2><p class="sub">${sub}</p></div><button class="x" type="button" aria-label="Fechar">×</button></div>`;
+
+  async function lerCompart() {
+    const { data, error } = await sb.from('compart').select('dono,leitor'); if (error) throw error;
+    const rows = data || [], ids = [...new Set(rows.flatMap(r => [r.dono, r.leitor]).filter(id => id !== uid))];
+    const pf = {}; if (ids.length) { const r = await sb.from('perfis').select('id,nome,email').in('id', ids); (r.data || []).forEach(p => { pf[p.id] = p; }); }
+    compartilhamComigo = rows.filter(r => r.leitor === uid).map(r => r.dono);
+    return { daMinha: rows.filter(r => r.dono === uid).map(r => pf[r.leitor] || { id: r.leitor }), comigo: rows.filter(r => r.leitor === uid).map(r => pf[r.dono] || { id: r.dono }) };
+  }
+  async function abrirCompartilhar() {
+    const ov = modal(topo('Compartilhar meu painel', 'Quem você incluir aqui passa a ver os seus números na Visão consolidada dela, só para leitura. A pessoa precisa ter conta no site. Você pode parar de compartilhar quando quiser.') +
+      `<form class="lin" id="sv-cf"><input type="email" name="email" required placeholder="e-mail da pessoa" autocomplete="off"><button class="bt pri" type="submit">Compartilhar</button></form><div class="msg" id="sv-cm" role="status"></div>
+      <h3>Veem os seus dados</h3><ul id="sv-c1"><li class="vazio">carregando…</li></ul><h3>Compartilham com você</h3><ul id="sv-c2"><li class="vazio">carregando…</li></ul>`, true);
+    const pinta = async () => {
+      try { const c = await lerCompart(); const it = (p, papel) => `<li><span>${escH(p.nome || 'Pessoa')} <span class="em">${escH(p.email || '')}</span></span><button class="bt mau" type="button" data-parar="${escH(p.id)}" data-papel="${papel}">${papel === 'dono' ? 'Parar de compartilhar' : 'Remover'}</button></li>`;
+        ov.querySelector('#sv-c1').innerHTML = c.daMinha.length ? c.daMinha.map(p => it(p, 'dono')).join('') : '<li class="vazio">Ninguém ainda.</li>';
+        ov.querySelector('#sv-c2').innerHTML = c.comigo.length ? c.comigo.map(p => it(p, 'leitor')).join('') : '<li class="vazio">Ninguém ainda.</li>';
+        mostrarFamilia();
+      } catch (e) { ov.querySelector('#sv-cm').className = 'msg err'; ov.querySelector('#sv-cm').textContent = 'Não consegui ler os compartilhamentos agora.'; }
+    };
+    ov.querySelector('#sv-cf').addEventListener('submit', async e => { e.preventDefault(); const m = ov.querySelector('#sv-cm'), f = e.target; m.className = 'msg'; m.textContent = 'aguarde…';
+      const { data, error } = await sb.rpc('compartilhar_com', { email_leitor: f.email.value });
+      if (error) { m.className = 'msg err'; m.textContent = 'Não deu certo: ' + error.message; return; }
+      if (data === 'sem_conta') { m.className = 'msg err'; m.textContent = 'Esse e-mail ainda não tem conta no site. Peça para a pessoa criar a conta e tente de novo.'; return; }
+      if (data === 'voce_mesmo') { m.className = 'msg err'; m.textContent = 'Esse é o seu próprio e-mail.'; return; }
+      m.className = 'msg ok'; m.textContent = 'Pronto. A pessoa já vê os seus números na Visão consolidada.'; f.reset(); pinta(); });
+    ov.addEventListener('click', async e => { const b = e.target.closest('[data-parar]'); if (!b) return; b.disabled = true;
+      const id = b.dataset.parar, q = b.dataset.papel === 'dono' ? sb.from('compart').delete().eq('dono', uid).eq('leitor', id) : sb.from('compart').delete().eq('dono', id).eq('leitor', uid);
+      const { error } = await q; if (error) { b.disabled = false; return; } pinta(); });
+    pinta();
+  }
+  async function abrirAdmin() {
+    const ov = modal(topo('Administração', 'Todas as contas do site. Você vê nome, e-mail e datas de todo mundo; os números financeiros de alguém só aparecem na sua Visão consolidada se a pessoa compartilhar com você.') +
+      `<div class="tw"><table><thead><tr><th>Pessoa</th><th>Criada</th><th>Último acesso</th><th>Dados</th><th>Compartilha</th><th>Situação</th><th></th></tr></thead><tbody id="sv-at"><tr><td colspan="7" class="vazio">carregando…</td></tr></tbody></table></div><div class="msg" id="sv-am" role="status"></div>`);
+    const m = ov.querySelector('#sv-am');
+    const pinta = async () => {
+      const { data, error } = await sb.rpc('admin_usuarios'); if (error) { m.className = 'msg err'; m.textContent = 'Não consegui listar as contas: ' + error.message; return; }
+      ov.querySelector('#sv-at').innerHTML = (data || []).map(u => { const eu = u.id === uid;
+        return `<tr><td><b>${escH(u.nome || '–')}</b>${u.admin ? ' <span class="chip">admin</span>' : ''}<br><span class="em" style="color:var(--muted,#666)">${escH(u.email)}</span></td><td>${dataBR(u.criado_em)}${u.confirmado ? '' : '<br><span class="chip mau">e-mail não confirmado</span>'}</td><td>${dataBR(u.ultimo_acesso)}</td><td>${u.documentos ? u.documentos + ' doc.<br><span style="color:var(--muted,#666)">' + dataBR(u.atualizado_em) + '</span>' : 'vazio'}</td><td>${eu ? '–' : u.compartilha_comigo ? '<span class="chip ok">com você</span>' : 'não'}</td><td>${u.ativo ? '<span class="chip ok">ativa</span>' : '<span class="chip mau">desativada</span>'}</td>
+          <td>${eu ? '' : `<div class="acs"><button class="bt" type="button" data-ativo="${u.ativo ? 0 : 1}" data-id="${escH(u.id)}">${u.ativo ? 'Desativar' : 'Reativar'}</button><button class="bt mau" type="button" data-excluir="${escH(u.id)}" data-email="${escH(u.email)}">Excluir</button></div>`}</td></tr>`; }).join('') || '<tr><td colspan="7" class="vazio">Nenhuma conta.</td></tr>';
+    };
+    ov.addEventListener('click', async e => {
+      const a = e.target.closest('[data-ativo]'), x = e.target.closest('[data-excluir]'); if (!a && !x) return;
+      if (a) { a.disabled = true; const { error } = await sb.rpc('admin_definir_ativo', { alvo: a.dataset.id, valor: a.dataset.ativo === '1' }); m.className = error ? 'msg err' : 'msg ok'; m.textContent = error ? 'Não deu certo: ' + error.message : a.dataset.ativo === '1' ? 'Conta reativada.' : 'Conta desativada: a pessoa não consegue mais abrir nem gravar os dados.'; pinta(); return; }
+      const ok = prompt('Excluir a conta apaga a pessoa e todos os dados dela, sem volta. Para confirmar, digite o e-mail: ' + x.dataset.email);
+      if (!ok || ok.trim().toLowerCase() !== x.dataset.email.toLowerCase()) { m.className = 'msg'; m.textContent = 'Exclusão cancelada.'; return; }
+      x.disabled = true; const { error } = await sb.rpc('admin_excluir', { alvo: x.dataset.excluir }); m.className = error ? 'msg err' : 'msg ok'; m.textContent = error ? 'Não deu certo: ' + error.message : 'Conta excluída.'; pinta();
+    });
+    pinta();
+  }
+  // a Visão consolidada aparece para o admin e para quem recebeu algum compartilhamento
+  let souAdmin = false;
+  function mostrarFamilia() { document.documentElement.classList.toggle('site-fam', souAdmin || compartilhamComigo.length > 0); }
+  function textosDoSite() {
+    const h = document.querySelector('#p-familia .hint'); if (h) h.textContent = 'Para incluir alguém, a pessoa cria a conta no site, abre "compartilhar" no rodapé do menu e coloca o seu e-mail. Ela continua sem ver os seus dados. Depois clique em Atualizar.';
+    const d = document.querySelector('#p-familia .desc'); if (d) d.textContent = 'Soma de quem compartilhou o painel com você, com a parte de cada pessoa em ganhos, gastos e patrimônio.';
+  }
+  function contaDesativada() {
+    const ov = modal(topo('Conta desativada', 'Esta conta foi desativada pelo administrador do site. Fale com ele para reativar.') + '<button class="bt pri" type="button" id="sv-sair">Sair</button>', true, true);
+    ov.querySelector('.x').remove(); ov.querySelector('#sv-sair').onclick = () => sb.auth.signOut();
+  }
   const pronto = (async () => {
     await novaSenhaSePreciso();
     let { data } = await sb.auth.getSession(); sessao = data.session;
     if (!sessao) sessao = await telaLogin();
     uid = sessao.user.id;
     sb.auth.onAuthStateChange((ev, s) => { if (ev === 'SIGNED_OUT') location.reload(); else if (s) sessao = s; });
-    // botão Sair no rodapé do menu
-    const SITE_V = 2; const srcEl = document.querySelector('.side-foot .src'); if (srcEl && !/site/.test(srcEl.textContent)) srcEl.textContent += ' · site ' + SITE_V; const pe = document.querySelector('.side-foot .r'); if (pe) { if (!document.getElementById('lg-sair-css')) { const cs = document.createElement('style'); cs.id = 'lg-sair-css'; cs.textContent = '.side-foot .lg-sair{all:unset;margin-left:auto;font:inherit;font-size:10.5px;color:inherit;opacity:.6;cursor:pointer;border-bottom:1px solid currentColor;line-height:1.2}.side-foot .lg-sair:hover,.side-foot .lg-sair:focus-visible{opacity:1}'; document.head.appendChild(cs); } const b = document.createElement('button'); b.className = 'lg-sair'; b.type = 'button'; b.textContent = 'sair'; b.title = sessao.user.email; b.onclick = async () => { try { localStorage.removeItem('painel-quem'); } catch (e) {} await sb.auth.signOut(); }; pe.appendChild(b); }
+    const cs = document.createElement('style'); cs.textContent = css2; document.head.appendChild(cs);
+    const srcEl = document.querySelector('.side-foot .src'); if (srcEl && !/site/.test(srcEl.textContent)) srcEl.textContent += ' · site ' + SITE_V;
+    textosDoSite();
+    // conta, admin e compartilhamentos (se as tabelas ainda não existirem, o painel segue funcionando sem isso)
+    try { sb.rpc('registrar_acesso').then(() => {}, () => {}); } catch (e) {}
+    try { const { data: eu } = await sb.from('perfis').select('ativo').eq('id', uid).maybeSingle(); if (eu && eu.ativo === false) { contaDesativada(); await new Promise(() => {}); } } catch (e) {}
+    try { const r = await sb.rpc('sou_admin'); souAdmin = r && r.data === true; } catch (e) {}
+    try { await lerCompart(); } catch (e) {}
+    mostrarFamilia();
+    const pe = document.querySelector('.side-foot .r');
+    if (pe) { const w = document.createElement('span'); w.className = 'lg-acoes';
+      w.innerHTML = '<button class="lg-link" type="button" data-sv="compart">compartilhar</button>' + (souAdmin ? '<button class="lg-link" type="button" data-sv="admin">admin</button>' : '') + `<button class="lg-link lg-sair" type="button" title="${escH(sessao.user.email)}">sair</button>`;
+      w.addEventListener('click', async e => { const b = e.target.closest('button'); if (!b) return;
+        if (b.classList.contains('lg-sair')) { try { localStorage.removeItem('painel-quem'); } catch (er) {} await sb.auth.signOut(); }
+        else if (b.dataset.sv === 'compart') abrirCompartilhar(); else if (b.dataset.sv === 'admin') abrirAdmin(); });
+      pe.appendChild(w); }
     // cada conta tem o próprio cache local: se outra pessoa entrou neste navegador, limpa e recarrega uma vez
     try { const ant = localStorage.getItem('painel-site-uid'); if (ant !== uid) { Object.keys(localStorage).filter(k => /^painel-/.test(k)).forEach(k => localStorage.removeItem(k)); localStorage.setItem('painel-site-uid', uid); if (ant) { location.reload(); await new Promise(() => {}); } } } catch (e) {}
   })();
