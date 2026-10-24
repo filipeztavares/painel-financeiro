@@ -670,7 +670,7 @@ a.lm-ir:hover { border-bottom-style: solid; }
     </div>
     <div class="nav-mobile-sub" id="navMobileSub"></div>
   </div>
-  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 130</div></div>
+  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 131</div></div>
 </nav>
 
 <div class="main"><div class="wrap">
@@ -841,7 +841,7 @@ a.lm-ir:hover { border-bottom-style: solid; }
         <div class="cresumo" id="comprasResumo"></div>
       </section>
       <section data-nav="Carteira por classe" class="panel">
-        <div class="row"><h2>Carteira por classe</h2><span class="sub" style="margin:0;font-size:12px">premissas de retorno em Configurações</span></div>
+        <div class="row"><h2>Carteira por classe</h2><span class="sub" style="margin:0 0 0 auto;font-size:12px">premissas de retorno em Configurações</span></div>
         <div class="tscroll"><table id="tbl-alvo"></table></div>
       </section>
       <section data-nav="Patrimônio" class="panel chart">
@@ -888,6 +888,14 @@ a.lm-ir:hover { border-bottom-style: solid; }
   <section role="tabpanel" id="p-carteira" hidden>
     <div class="block-title"><span class="num">03</span><div><h1>Carteira</h1><p class="desc">Cada aplicação que você tem hoje, com valor estimado, IR e cobertura do FGC.</p></div></div>
       <div class="kpis" id="kpi-a"></div>
+      <section data-nav="Carteira-alvo" class="panel">
+        <div class="row"><h2>Carteira-alvo</h2><span class="sub" style="margin:0 0 0 auto;font-size:12px">premissas de retorno em <a href="#" class="lm-ir" data-lmtab="config" data-lmsec="Classes de ativo">Configurações</a></span></div>
+        <p class="sub">A divisão que você quer ter entre as classes. Vale para "Por classe", Oportunidades, Saúde da carteira, o rebalanceamento e todos os cenários que não tiverem divisão própria.</p>
+        <div class="seg" id="presetCart" role="group" aria-label="Ponto de partida"></div>
+        <p class="hint" id="presetCartHint"></p>
+        <div class="tscroll"><table id="tbl-alvoc"></table></div>
+        <div class="sumline" id="alvoCartSum" style="margin-top:12px"></div>
+      </section>
       <section data-nav="Saúde da carteira" class="panel">
         <h2>Saúde da carteira</h2>
         <p class="sub">Uma nota de 0 a 1.000 em cinco eixos, cada um valendo até 200 pontos, calculada com as aplicações cadastradas abaixo. Clique no (i) de cada eixo para ver a conta.</p>
@@ -956,14 +964,6 @@ a.lm-ir:hover { border-bottom-style: solid; }
         <p class="sub" id="cls-sub"></p>
         <div class="dn-row" id="dn-cls"></div>
         <div class="tscroll"><table id="tbl-acls"></table></div>
-      </section>
-      <section data-nav="Carteira-alvo" class="panel">
-        <div class="row"><h2>Carteira-alvo</h2><span class="sub" style="margin:0;font-size:12px">premissas de retorno em <a href="#" class="lm-ir" data-lmtab="config" data-lmsec="Classes de ativo">Configurações</a></span></div>
-        <p class="sub">A divisão que você quer ter entre as classes. Vale para "Por classe", Oportunidades, Saúde da carteira, o rebalanceamento e todos os cenários que não tiverem divisão própria.</p>
-        <div class="seg" id="presetCart" role="group" aria-label="Ponto de partida"></div>
-        <p class="hint" id="presetCartHint"></p>
-        <div class="tscroll"><table id="tbl-alvoc"></table></div>
-        <div class="sumline" id="alvoCartSum" style="margin-top:12px"></div>
       </section>
       <section data-nav="Por instituição" class="panel">
         <h2>Por instituição</h2>
@@ -1495,7 +1495,7 @@ a.lm-ir:hover { border-bottom-style: solid; }
     return new Promise(resolve => { const { data } = sb.auth.onAuthStateChange(async (ev) => { if (ev !== 'PASSWORD_RECOVERY') return; const s = prompt('Digite a nova senha (mínimo 8 caracteres):'); if (s && s.length >= 8) { const { error } = await sb.auth.updateUser({ password: s }); alert(error ? 'Não deu para trocar a senha: ' + error.message : 'Senha trocada.'); } }); resolve(data); });
   }
   // ---------- rodapé: compartilhar, administração e sair ----------
-  const SITE_V = 9;
+  const SITE_V = 10;
   const escH = v => String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const dataBR = v => v ? new Date(v).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' }) : '–';
   const css2 = `.side-foot .r{flex-wrap:wrap}.side-foot .lg-acoes{margin-left:auto;display:inline-flex;gap:10px}
@@ -2745,7 +2745,7 @@ function renderCarteira() {
   // por classe
   const dest = { nome: 'Carteira-alvo', alvo: state.alvoCart };
   const h = hojeAtual(), totA = CLASSES.reduce((s, c) => s + (+dest.alvo[c.id] || 0), 0) || 1;
-  $('cls-sub').textContent = 'Comparado à sua carteira-alvo, definida logo abaixo.';
+  $('cls-sub').textContent = 'Comparado à sua carteira-alvo, definida no topo deste módulo.';
   const rows = CLASSES;
   const porTipo = {}; ev.forEach(({ a, v }) => { const t = porTipo[v.classe] = porTipo[v.classe] || {}; t[tipoNome(a)] = (t[tipoNome(a)] || 0) + v.atual; });
   const det = id => { const t = Object.entries(porTipo[id] || {}).sort((x, y) => y[1] - x[1]); return t.length ? `<div class="subdet">${t.map(([n, x]) => `${esc(n)}: ${fm(x)}`).join(' · ')}</div>` : ''; };
