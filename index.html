@@ -724,7 +724,7 @@ a.lm-ir:hover { border-bottom-style: solid; }
     </div>
     <div class="nav-mobile-sub" id="navMobileSub"></div>
   </div>
-  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 145</div></div>
+  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 146</div></div>
 </nav>
 
 <div class="main"><div class="wrap">
@@ -1037,14 +1037,14 @@ a.lm-ir:hover { border-bottom-style: solid; }
         <div id="oport-list" class="oport-list"></div>
         <h3 class="orc-h" style="margin-top:22px">Ações para estudar</h3>
         <p class="sub" id="acoes-sub"></p>
-        <form id="acao-form" class="acao-form"><label>Analisar outra ação<span class="acao-box"><input type="text" id="acao-tk" placeholder="código ou nome, ex.: nubank" autocomplete="off" spellcheck="false" maxlength="30" role="combobox" aria-autocomplete="list" aria-controls="acao-sug" aria-expanded="false"><div id="acao-sug" class="acao-sug" role="listbox" hidden></div></span></label><button class="btn" type="submit" id="acao-go">+ Ação</button><button class="btn ghost" type="button" id="acao-now" hidden>Pesquisar agora</button><span class="hint" id="acao-msg" role="status"></span></form>
+        <form id="acao-form" class="acao-form"><label>Analisar outra ação, FII ou fundo<span class="acao-box"><input type="text" id="acao-tk" placeholder="código ou nome, ex.: nubank" autocomplete="off" spellcheck="false" maxlength="30" role="combobox" aria-autocomplete="list" aria-controls="acao-sug" aria-expanded="false"><div id="acao-sug" class="acao-sug" role="listbox" hidden></div></span></label><button class="btn" type="submit" id="acao-go">+ Ação</button><button class="btn ghost" type="button" id="acao-now" hidden>Pesquisar agora</button><span class="hint" id="acao-msg" role="status"></span></form>
         <div id="acoes6m" class="acoes6m"></div>
         <div id="acoes-tools" class="ac-tools"></div>
         <div id="acoes-list" class="oport-list acoes"></div>
       </section>
       <section data-nav="Comparar ações" class="panel">
         <h2>Comparar ações no gráfico</h2>
-        <p class="sub">Escolha até 8 ações da B3, ações internacionais ou ETFs e veja quanto cada uma subiu ou caiu desde o mesmo ponto de partida. Bom para entender empresas do mesmo setor.</p>
+        <p class="sub">Escolha até 8 ações da B3, ações internacionais, ETFs, FIIs ou fundos e veja quanto cada uma subiu ou caiu desde o mesmo ponto de partida. Bom para entender empresas do mesmo setor.</p>
         <div id="cmpa-box"></div>
       </section>
       <section data-nav="Score das ações" class="panel">
@@ -1555,7 +1555,7 @@ a.lm-ir:hover { border-bottom-style: solid; }
     return new Promise(resolve => { const { data } = sb.auth.onAuthStateChange(async (ev) => { if (ev !== 'PASSWORD_RECOVERY') return; const s = prompt('Digite a nova senha (mínimo 8 caracteres):'); if (s && s.length >= 8) { const { error } = await sb.auth.updateUser({ password: s }); alert(error ? 'Não deu para trocar a senha: ' + error.message : 'Senha trocada.'); } }); resolve(data); });
   }
   // ---------- rodapé: compartilhar, administração e sair ----------
-  const SITE_V = 24;
+  const SITE_V = 25;
   const escH = v => String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const dataBR = v => v ? new Date(v).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' }) : '–';
   const css2 = `.side-foot .r{flex-wrap:wrap}.side-foot .lg-acoes{margin-left:auto;display:inline-flex;gap:10px}
@@ -2360,7 +2360,7 @@ function minhasAcoes() {
     const ds = as.map(a => { const q = r && r.desde && r.desde[a.data]; return q && p1 ? { w: +a.aplic || 1, v: p1 / q[1] - 1 } : null; });
     if (ds.length && ds.every(Boolean)) { const W = ds.reduce((t, x) => t + x.w, 0); desde = ds.reduce((t, x) => t + x.v * x.w, 0) / W; peloPreco = true; }
     else if (ap > 0) desde = as.reduce((t, a) => t + avaliar(a).atual + (+a.receb || 0), 0) / ap - 1;
-    return { tk, datas: [...new Set(as.map(a => a.data))], p1, d1: r && r.d1, dia, mes, desde, peloPreco, ap, atual: as.reduce((t, a) => t + avaliar(a).atual, 0), n: as.length, moeda: r && r.mk && r.mk !== 'etf' ? 'USD' : 'BRL' };
+    return { tk, datas: [...new Set(as.map(a => a.data))], p1, d1: r && r.d1, dia, mes, desde, peloPreco, ap, atual: as.reduce((t, a) => t + avaliar(a).atual, 0), n: as.length, moeda: r && (r.mk === 'us' || r.mk === 'etfus') ? 'USD' : 'BRL' };
   });
 }
 function minhasHtml(lim) {
@@ -3443,8 +3443,8 @@ const A6_ANOS = { '1a': 1, '2a': 2, '3a': 3, '4a': 4, '5a': 5 };
 let a6Per = { curto: '6m', longo: '5a' };
 // abas da tabela: ações da B3 (mercado/acoes6m), ações internacionais e ETFs (mercado/global, atualizado por tarefa semanal)
 let a6Aba = 'b3', globalA6 = { data: '', itens: [], lista: [] };
-try { const s = localStorage.getItem('a6aba'); if (['b3', 'intl', 'etf'].includes(s)) a6Aba = s; } catch (e) {}
-const A6_MK = { us: 'EUA', etf: 'B3', etfus: 'EUA' };
+try { const s = localStorage.getItem('a6aba'); if (['b3', 'intl', 'etf', 'fii'].includes(s)) a6Aba = s; } catch (e) {}
+const A6_MK = { us: 'EUA', etf: 'B3', etfus: 'EUA', fii: 'B3', fundo: 'Fundo' };
 const fmx = (x, v) => x && x.moeda === 'USD' ? 'US$ ' + (+v || 0).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) : fm2(v);
 try { const s = JSON.parse(localStorage.getItem('a6per') || 'null'); if (s && s.curto && s.longo) a6Per = s; } catch (e) {}
 function sanitizeA6(d, global) {
@@ -3456,10 +3456,10 @@ function sanitizeA6(d, global) {
     if (x.h && typeof x.h === 'object') for (const k of Object.keys(x.h)) { const p = par(x.h[k]); if (p && /^\d[ma]$/.test(k)) h[k] = p; }
     if (!h['6m'] && isFinite(+x.p0) && +x.p0 > 0) h['6m'] = [String(x.d0 || '').slice(0, 10), +x.p0];   // formato antigo (só 6 meses)
     const o = { tk: String(x.tk || '').toUpperCase(), p1: +x.p1, d1: String(x.d1 || '').slice(0, 10), h, ini: par(x.ini), max: par(x.max), min: par(x.min) };
-    if (global) { o.mk = A6_MK[x.mk] ? x.mk : 'us'; o.moeda = o.mk === 'etf' ? 'BRL' : 'USD'; o.nome = String(x.nome || '').slice(0, 60); }
+    if (global) { o.mk = A6_MK[x.mk] ? x.mk : 'us'; o.moeda = o.mk === 'us' || o.mk === 'etfus' ? 'USD' : 'BRL'; o.nome = String(x.nome || '').slice(0, 60); if (o.mk === 'fundo') o.cnpj = String(x.cnpj || '').replace(/\D/g, '').slice(0, 14); }
     return o;
   });
-  const okTk = x => global && x.mk !== 'etf' ? /^[A-Z]{1,5}$/.test(x.tk) : /^[A-Z][A-Z0-9]{3}\d{1,2}B?$/.test(x.tk);
+  const okTk = x => global && x.mk === 'fundo' ? /^F[A-Z0-9]{2,14}$/.test(x.tk) && !!x.nome : global && (x.mk === 'us' || x.mk === 'etfus') ? /^[A-Z]{1,5}$/.test(x.tk) : /^[A-Z][A-Z0-9]{3}\d{1,2}B?$/.test(x.tk);
   const comPreco = x => okTk(x) && isFinite(x.p1) && x.p1 > 0 && Object.keys(x.h).length;
   if (global) return { data: String(d.data || '').slice(0, 10), itens: itens.filter(comPreco), lista: itens.filter(okTk) };
   const ok = itens.filter(comPreco);
@@ -3475,7 +3475,7 @@ function a6Cel(x, k) {
   return `<td class="${v < 0 ? 'neg' : 'pos'}" title="${fmx(x, p[1])} em ${br(p[0])} → ${fmx(x, x.p1)} em ${br(x.d1)}">${v > 0 ? '+' : ''}${pct(v)}${aa}</td>`;
 }
 function a6Ini(x, k) { const p = x.h[k]; return p ? `<td title="cotação ajustada de ${p[0].split('-').reverse().join('/')}">${fmx(x, p[1])}</td>` : '<td class="subdet">–</td>'; }
-const NOMES_GLOBAL = { AAPL: 'Apple', MSFT: 'Microsoft', NVDA: 'Nvidia', GOOGL: 'Alphabet (Google)', AMZN: 'Amazon', META: 'Meta (Facebook, Instagram)', TSLA: 'Tesla', AVGO: 'Broadcom', TSM: 'TSMC (chips, Taiwan)', ASML: 'ASML (máquinas de chips, Holanda)', JPM: 'JPMorgan', V: 'Visa', LLY: 'Eli Lilly', JNJ: 'Johnson & Johnson', KO: 'Coca-Cola', WMT: 'Walmart', NFLX: 'Netflix',
+const NOMES_GLOBAL = { HGLG11: 'CSHG Logística (galpões)', KNRI11: 'Kinea Renda Imobiliária (galpões e escritórios)', XPML11: 'XP Malls (shoppings)', VISC11: 'Vinci Shopping Centers', BTLG11: 'BTG Logística (galpões)', HGRU11: 'CSHG Renda Urbana (lojas)', MXRF11: 'Maxi Renda (papel)', KNCR11: 'Kinea Rendimentos (CRIs em CDI)', KNIP11: 'Kinea Índices de Preços (CRIs em IPCA)', CPTS11: 'Capitânia Securities (papel)', AAPL: 'Apple', MSFT: 'Microsoft', NVDA: 'Nvidia', GOOGL: 'Alphabet (Google)', AMZN: 'Amazon', META: 'Meta (Facebook, Instagram)', TSLA: 'Tesla', AVGO: 'Broadcom', TSM: 'TSMC (chips, Taiwan)', ASML: 'ASML (máquinas de chips, Holanda)', JPM: 'JPMorgan', V: 'Visa', LLY: 'Eli Lilly', JNJ: 'Johnson & Johnson', KO: 'Coca-Cola', WMT: 'Walmart', NFLX: 'Netflix',
   BOVA11: 'Ibovespa', SMAL11: 'Small caps da B3', DIVO11: 'Ações de dividendos da B3', IVVB11: 'S&P 500 em reais', NASD11: 'Nasdaq 100 em reais', WRLD11: 'Ações do mundo todo em reais', HASH11: 'Cesta de criptomoedas', GOLD11: 'Ouro em reais', B5P211: 'Tesouro IPCA+ até 5 anos',
   VOO: 'S&P 500 (500 maiores dos EUA)', QQQ: 'Nasdaq 100 (tecnologia)', VT: 'Ações do mundo todo', VXUS: 'Ações fora dos EUA', SCHD: 'Ações de dividendos dos EUA', VNQ: 'Imóveis dos EUA (REITs)', GLD: 'Ouro', TLT: 'Títulos do Tesouro americano de 20+ anos', BND: 'Renda fixa dos EUA' };
 let catNomes = null;
@@ -3534,6 +3534,7 @@ const QUEDA_ATIVO = {
   mundo: 'Segue ações do mundo todo: cai quando as bolsas globais caem juntas, em geral por juros altos nos EUA, guerra ou medo de recessão.',
   cripto: 'Segue criptomoedas, que podem cair 30% a 70% em poucos meses: aperto de juros, quebra de corretoras, regras novas e saída de investidores pesam.',
   ouro: 'Segue o ouro: costuma cair quando os juros reais americanos sobem e o dólar se fortalece, ou quando um pico de procura por proteção se desfaz.',
+  fii: 'Fundo imobiliário: costuma cair quando os juros futuros e a Selic sobem, porque o rendimento mensal perde atratividade perto da renda fixa, ou com vacância, inadimplência de inquilinos ou de CRIs e emissões de cotas abaixo do valor patrimonial.',
   imoveis: 'Fundos imobiliários americanos: caem quando os juros longos sobem, porque o aluguel passa a valer menos perto da renda fixa e o crédito encarece.',
   titulos: 'Títulos do Tesouro americano: o preço cai quando os juros sobem; quanto mais longo o título, maior a queda.',
 };
@@ -3553,7 +3554,7 @@ function quedasDe(x, pts) {
     const TRI = { 2: '4º trimestre do ano anterior', 3: '4º trimestre do ano anterior', 4: '1º trimestre', 5: '1º trimestre', 7: '2º trimestre', 8: '2º trimestre', 10: '3º trimestre', 11: '3º trimestre' }, tris = [];
     if (dia(z.ate) - dia(z.de) <= 125) for (let t = dia(z.de); t <= dia(z.ate); t += 15) { const n = TRI[new Date(t * 864e5).getUTCMonth() + 1]; if (n && !tris.includes(n)) tris.push(n); }
     const tri = tris.join(' e do ');
-    const g = x.mk ? null : grupoPol(x.tk), ga = QUEDA_ATIVO[QUEDA_TK[x.tk]] || (x.mk === 'us' ? QUEDA_ATIVO.bolsaEua : null), ger = [], acao = !x.mk || x.mk === 'us';
+    const g = x.mk ? null : grupoPol(x.tk), ga = QUEDA_ATIVO[QUEDA_TK[x.tk]] || (x.mk === 'us' ? QUEDA_ATIVO.bolsaEua : x.mk === 'fii' ? QUEDA_ATIVO.fii : null), ger = [], acao = !x.mk || x.mk === 'us';
     if (!esp.length) { if (tri && acao) ger.push(`O período inclui a divulgação dos resultados do ${tri}: vale conferir se o balanço veio abaixo do esperado.`); if (g && QUEDA_GRUPO[g]) ger.push(QUEDA_GRUPO[g]); if (ga) ger.push(ga); if (fora && x.moeda !== 'USD') ger.push('Em reais, a queda também reflete o dólar: quando o real se valoriza, o ETF cai mesmo com o ativo lá fora parado.'); }
     return Object.assign(z, { txt: `${br(z.de)} a ${br(z.ate)}`, esp, mer, ger, merRot: fora ? 'exterior' : 'mercado' });
   });
@@ -3606,7 +3607,7 @@ function a6Graf(x, kl, kc) {
 function renderA6() {
   renderCmpA();
   const box = $('acoes6m'); if (!box) return;
-  const gl = a6Aba !== 'b3', daAba = x => a6Aba === 'intl' ? x.mk === 'us' : x.mk !== 'us';
+  const gl = a6Aba !== 'b3', daAba = x => a6Aba === 'intl' ? x.mk === 'us' : a6Aba === 'fii' ? x.mk === 'fii' || x.mk === 'fundo' : x.mk === 'etf' || x.mk === 'etfus';
   const d = gl ? { data: globalA6.data, itens: globalA6.itens.filter(daAba) } : acoes6m, filtro = String($('acao-tk').value || '').toUpperCase().replace(/[^A-Z0-9]/g, '');
   const nomeB3 = tk => { const g = gl && globalA6.lista.find(x => x.tk === tk); return g ? g.nome || NOMES_GLOBAL[tk] || '' : nomeB3Base(tk); };
   const tem = tk => ativos().some(a => semAc(a.nome).replace(/\s/g, '').startsWith(tk.slice(0, 4)));
@@ -3629,8 +3630,8 @@ function renderA6() {
   const th = (k, t, o) => `<th draggable="true" data-a6col="${k}"${o ? ` class="a6s" data-a6ord="${o}" title="clique para ordenar, arraste para mover"${a6Ord === o ? ` data-dir="${a6Dir}"` : ''}` : ' title="arraste para mover"'}>${t}</th>`;
   const cols = a6Colunas().filter(k => (temLongo || (k !== 'il' && k !== 'pl')) && !(gl && k === 'acao'));
   const C = {
-    tk: { h: () => th('tk', a6Aba === 'etf' ? 'ETF' : 'Ação', 'tk'), c: x => `<td class="name"><button type="button" class="a6tk" data-a6graf="${esc(x.tk)}" aria-expanded="${a6Abre === x.tk}" title="ver o gráfico contra o CDI">${esc(x.tk)}</button>${x.d1 && d.data && x.d1 < d.data.slice(0, 8) + '01' ? `<div class="subdet">até ${x.d1.split('-').reverse().join('/').slice(0, 5)}</div>` : ''}</td>` },
-    emp: { h: () => th('emp', a6Aba === 'etf' ? 'O que acompanha' : 'Empresa'), c: x => `<td class="name">${esc(nomeB3(x.tk))}${gl && a6Aba === 'etf' ? ` <span class="chip">${x.mk === 'etf' ? 'B3 · R$' : 'EUA · US$'}</span>` : ''}${tem(x.tk) ? ' <span class="chip">na carteira</span>' : ''}</td>` },
+    tk: { h: () => th('tk', a6Aba === 'etf' ? 'ETF' : a6Aba === 'fii' ? 'Fundo' : 'Ação', 'tk'), c: x => `<td class="name"><button type="button" class="a6tk" data-a6graf="${esc(x.tk)}" aria-expanded="${a6Abre === x.tk}" title="ver o gráfico contra o CDI">${esc(x.mk === 'fundo' ? x.nome || x.tk : x.tk)}</button>${x.d1 && d.data && x.d1 < d.data.slice(0, 8) + '01' ? `<div class="subdet">até ${x.d1.split('-').reverse().join('/').slice(0, 5)}</div>` : ''}</td>` },
+    emp: { h: () => th('emp', a6Aba === 'etf' ? 'O que acompanha' : a6Aba === 'fii' ? 'Nome' : 'Empresa'), c: x => `<td class="name">${esc(nomeB3(x.tk))}${gl && a6Aba === 'etf' ? ` <span class="chip">${x.mk === 'etf' ? 'B3 · R$' : 'EUA · US$'}</span>` : ''}${gl && a6Aba === 'fii' ? ` <span class="chip">${x.mk === 'fii' ? 'FII · B3' : 'fundo · cota'}</span>` : ''}${tem(x.tk) ? ' <span class="chip">na carteira</span>' : ''}</td>` },
     hoje: { h: () => th('hoje', 'Hoje', 'hoje'), c: x => `<td title="cotação de ${x.d1.split('-').reverse().join('/')}"><b>${fmx(x, x.p1)}</b></td>` },
     ic: { h: () => th('ic', `Início ${sel('a6-curto', A6_CURTO, kc)}`), c: x => a6Ini(x, kc) },
     pc: { h: () => th('pc', '% ' + nc, 'curto'), c: x => a6Cel(x, kc) },
@@ -3641,10 +3642,10 @@ function renderA6() {
     min: { h: () => th('min', 'Mínima 5 anos', 'min'), c: x => a6Extremo(x, 'min') },
     acao: { h: () => th('acao', ''), c: x => `<td>${ja(x.tk) ? '<span class="subdet">na lista</span>' : `<button class="btn ghost tiny" type="button" data-a6add="${esc(x.tk)}">Analisar</button>`}</td>` },
   };
-  const linhaPend = tk => { let aviso = false; return '<tr>' + cols.map(k => k === 'tk' ? `<td class="name"><b>${esc(tk)}</b></td>` : k === 'emp' ? `<td class="name">${esc(nomeB3(tk))}</td>` : k === 'acao' ? '<td><span class="subdet">na lista</span></td>'
+  const linhaPend = tk => { let aviso = false; const fd = gl && globalA6.lista.find(x => x.tk === tk && x.mk === 'fundo'); return '<tr>' + cols.map(k => k === 'tk' ? `<td class="name"><b>${esc(fd ? fd.nome : tk)}</b></td>` : k === 'emp' ? `<td class="name">${esc(nomeB3(tk))}</td>` : k === 'acao' ? '<td><span class="subdet">na lista</span></td>'
     : aviso ? '<td></td>' : (aviso = true, `<td class="subdet a6pend">${gl ? 'cotações entram na próxima atualização semanal (segunda às 9h40)' : 'cotações entram com a pesquisa da ação (botão "Pesquisar agora" ou às 12h17)'}</td>`)).join('') + '</tr>'; };
   const custom = Array.isArray(state.a6Cols) && state.a6Cols.join() !== A6_COLS.join();
-  const ABA = { b3: ['Ações da B3', 'preços em R$ ajustados por proventos (os antigos ficam abaixo da cotação da época)'], intl: ['Ações internacionais', 'preços em US$ na bolsa americana, ajustados por dividendos; a variação não inclui o câmbio'], etf: ['ETFs', 'ETFs da B3 em R$ e dos EUA em US$, preços ajustados por proventos; a variação em US$ não inclui o câmbio'] };
+  const ABA = { b3: ['Ações da B3', 'preços em R$ ajustados por proventos (os antigos ficam abaixo da cotação da época)'], intl: ['Ações internacionais', 'preços em US$ na bolsa americana, ajustados por dividendos; a variação não inclui o câmbio'], etf: ['ETFs', 'ETFs da B3 em R$ e dos EUA em US$, preços ajustados por proventos; a variação em US$ não inclui o câmbio'], fii: ['FIIs e fundos', 'FIIs na B3 em R$, preços ajustados por rendimentos; fundos de investimento pela rentabilidade da cota, sem máxima e mínima · para incluir um fundo, escreva o nome ou o CNPJ no campo acima com esta aba aberta'] };
   const abas = `<div class="seg a6abas" role="group" aria-label="Mercado">${Object.entries(ABA).map(([k, [t]]) => `<button type="button" data-a6aba="${k}" aria-pressed="${k === a6Aba}">${t}</button>`).join('')}</div>`;
   box.innerHTML = `${abas}<div class="row" style="margin-bottom:6px"><b style="font-size:13px">${ABA[a6Aba][0]}: curto e longo prazo</b><span class="hint">${ABA[a6Aba][1]}${dt ? ' · cotações de ' + dt : ''} · clique no código para ver o gráfico contra o CDI · arraste os títulos para mudar a ordem das colunas${custom ? ' <button class="btn ghost tiny" type="button" data-a6reset="1">Ordem original</button>' : ''}</span></div>
     <div class="tscroll"><table id="tbl-a6"><thead><tr>${cols.map(k => C[k].h()).join('')}</tr></thead><tbody>${l.map(x => `<tr${a6Abre === x.tk ? ' class="a6sel"' : ''}>` + cols.map(k => C[k].c(x)).join('') + '</tr>').join('')}${pend.map(linhaPend).join('')}${l.length || pend.length ? '' : gl ? `<tr><td class="name" colspan="${cols.length}">${filtro ? `"${esc(filtro)}" não está nesta lista. Me peça no chat para incluir.` : 'As cotações chegam na próxima atualização.'}</td></tr>` : `<tr><td class="name" colspan="${cols.length}">"${esc(filtro)}" não está entre as ${d.itens.length} ações desta tabela. Escolha o código nas sugestões do campo e clique em "+ Ação" para analisar.</td></tr>`}</tbody></table></div>
@@ -3825,10 +3826,11 @@ try { const s = JSON.parse(localStorage.getItem('painel-cmpa')); if (s && Array.
 const CMPA_COR = ['var(--s1)', 'var(--s2)', 'var(--s7)', 'var(--s6)', 'var(--s8)', 'var(--s3)', 'var(--s9)', 'var(--s4)'];
 const CMPA_PER = [['6m', '6 meses'], ['1a', '1 ano'], ['2a', '2 anos'], ['3a', '3 anos'], ['5a', '5 anos']];
 const CMPA_GRUPOS = [['Bancos', ['ITUB4', 'BBDC4', 'BBAS3', 'SANB11', 'BPAC11', 'ROXO34']], ['Petróleo e minério', ['PETR4', 'PRIO3', 'BRAV3', 'VALE3', 'CSNA3', 'GGBR4']], ['Energia elétrica', ['AXIA3', 'EQTL3', 'CMIG4', 'TAEE11', 'EGIE3', 'CPLE3']], ['Varejo', ['LREN3', 'MGLU3', 'ASAI3', 'RADL3']],
-  ['Big techs', ['AAPL', 'MSFT', 'GOOGL', 'AMZN', 'META']], ['Chips', ['NVDA', 'AVGO', 'TSM', 'ASML']], ['Bolsas', ['BOVA11', 'SMAL11', 'IVVB11', 'NASD11', 'WRLD11']], ['Proteção', ['GOLD11', 'HASH11', 'B5P211', 'IVVB11']]];
+  ['Big techs', ['AAPL', 'MSFT', 'GOOGL', 'AMZN', 'META']], ['Chips', ['NVDA', 'AVGO', 'TSM', 'ASML']], ['Bolsas', ['BOVA11', 'SMAL11', 'IVVB11', 'NASD11', 'WRLD11']], ['Proteção', ['GOLD11', 'HASH11', 'B5P211', 'IVVB11']], ['FIIs de tijolo', ['HGLG11', 'KNRI11', 'XPML11', 'VISC11', 'BTLG11', 'HGRU11']], ['FIIs de papel', ['MXRF11', 'KNCR11', 'KNIP11', 'CPTS11']]];
 const cmpaGuardar = () => { try { localStorage.setItem('painel-cmpa', JSON.stringify(cmpa)); } catch (e) {} };
 const cmpaPool = () => { const m = new Map(); (acoes6m.itens || []).forEach(x => m.set(x.tk, x)); (globalA6.itens || []).forEach(x => { if (!m.has(x.tk)) m.set(x.tk, x); }); return m; };
 const cmpaNome = x => { const g = globalA6.lista.find(y => y.tk === x.tk); return x.mk ? (g && g.nome) || NOMES_GLOBAL[x.tk] || '' : nomeB3(x.tk); };
+const cmpaRot = x => x.mk === 'fundo' ? cmpaNome(x) || x.tk : x.tk;
 function cmpaAdd(v) {
   const pool = cmpaPool(), q = semAc(String(v || '')).toUpperCase().replace(/[^A-Z0-9]/g, ''); if (!q) return false;
   let x = pool.get(q) || [...pool.values()].find(y => y.tk.startsWith(q)) || [...pool.values()].find(y => semAc(cmpaNome(y)).toUpperCase().replace(/[^A-Z0-9]/g, '').includes(q));
@@ -3842,10 +3844,10 @@ function renderCmpA() {
   const pool = cmpaPool(), br = s => s.split('-').reverse().join('/'), sel = cmpa.tks.map(t => pool.get(t)).filter(Boolean);
   const dl = [...pool.values()].map(x => `<option value="${esc(x.tk)}">${esc(cmpaNome(x))}</option>`).join('');
   const grupos = CMPA_GRUPOS.map(([n, l]) => [n, l.filter(t => pool.has(t))]).filter(g => g[1].length > 1);
-  const topo = `<form id="cmpa-form" class="cmpa-form"><input type="text" id="cmpa-in" list="cmpa-dl" placeholder="código ou nome, ex.: ITUB4, Apple, BOVA11" autocomplete="off" spellcheck="false" maxlength="30" aria-label="Ação ou ETF para incluir"><datalist id="cmpa-dl">${dl}</datalist><button class="btn tiny" type="submit">Incluir</button>${cmpa.tks.length ? '<button class="btn ghost tiny" type="button" data-cmpa-limpa>Limpar</button>' : ''}</form>
+  const topo = `<form id="cmpa-form" class="cmpa-form"><input type="text" id="cmpa-in" list="cmpa-dl" placeholder="código ou nome, ex.: ITUB4, Apple, HGLG11" autocomplete="off" spellcheck="false" maxlength="30" aria-label="Ação ou ETF para incluir"><datalist id="cmpa-dl">${dl}</datalist><button class="btn tiny" type="submit">Incluir</button>${cmpa.tks.length ? '<button class="btn ghost tiny" type="button" data-cmpa-limpa>Limpar</button>' : ''}</form>
     <div class="cmpa-grupos"><span class="subdet">Grupos prontos:</span>${grupos.map(([n, l]) => `<button type="button" class="btn ghost tiny" data-cmpa-grupo="${esc(l.join(','))}" title="${esc(l.join(', '))}">${esc(n)}</button>`).join('')}</div>
     <p class="hint" id="cmpa-msg"></p>`;
-  const chips = sel.length ? `<div class="cmpa-chips">${sel.map((x, i) => `<span class="cmpa-chip"><i style="background:${CMPA_COR[i]}"></i><b>${esc(x.tk)}</b> <span class="subdet">${esc(cmpaNome(x))}</span><button type="button" data-cmpa-tira="${esc(x.tk)}" aria-label="Tirar ${esc(x.tk)}">×</button></span>`).join('')}</div>` : '';
+  const chips = sel.length ? `<div class="cmpa-chips">${sel.map((x, i) => `<span class="cmpa-chip"><i style="background:${CMPA_COR[i]}"></i><b>${esc(cmpaRot(x))}</b> ${x.mk === 'fundo' ? '' : `<span class="subdet">${esc(cmpaNome(x))}</span>`}<button type="button" data-cmpa-tira="${esc(x.tk)}" aria-label="Tirar ${esc(x.tk)}">×</button></span>`).join('')}</div>` : '';
   if (!sel.length) { box.innerHTML = topo + '<p class="hm-vazio">Escolha duas ou mais ações ou ETFs (ou um grupo pronto) para ver o comportamento delas lado a lado.</p>'; return; }
   const opts = CMPA_PER.filter(([k]) => sel.some(x => x.h[k])), per = opts.some(o => o[0] === cmpa.per) ? cmpa.per : (opts[opts.length - 1] || ['1a'])[0];
   const sem = sel.filter(x => !x.h[per]);
@@ -3866,12 +3868,12 @@ function renderCmpA() {
     const nT = W < 500 ? 3 : 5; for (let i = 0; i <= nT; i++) { const p = p0 + span * i / nT; g += `<text x="${X(p).toFixed(1)}" y="${H - 6}" text-anchor="${i === 0 ? 'start' : i === nT ? 'end' : 'middle'}">${i === nT ? 'hoje' : mLabel(Math.floor(p))}</text>`; }
     const path = l => l.map(([p, v], i) => `${i ? 'L' : 'M'}${X(p).toFixed(1)} ${Y(v).toFixed(1)}`).join(' ');
     const sinal = r => `<span class="${r >= 0 ? 'pos' : 'neg'}">${r >= 0 ? '+' : ''}${pct(r)}</span>`;
-    const hits = ser.map(s => s.l.map(([p, v], j) => { const [d, pr0] = s.pts[j]; const tip = `<b>${esc(s.x.tk)}</b> · ${br(d)} · ${fmx(s.x, pr0)}<br>Desde o início: ${sinal(v)}${cmpa.cdi ? `<br>CDI no mesmo período: +${pct(cdiFat(p0, p) - 1)}` : ''}`;
+    const hits = ser.map(s => s.l.map(([p, v], j) => { const [d, pr0] = s.pts[j]; const tip = `<b>${esc(cmpaRot(s.x))}</b> · ${br(d)} · ${fmx(s.x, pr0)}<br>Desde o início: ${sinal(v)}${cmpa.cdi ? `<br>CDI no mesmo período: +${pct(cdiFat(p0, p) - 1)}` : ''}`;
       return `<circle class="a6pt" cx="${X(p).toFixed(1)}" cy="${Y(v).toFixed(1)}" r="2.6" fill="${s.cor}"/><circle class="a6hit" tabindex="0" cx="${X(p).toFixed(1)}" cy="${Y(v).toFixed(1)}" r="9" fill="transparent" data-tip="${esc(tip)}"/>`; }).join('')).join('');
     svg = `<div class="a6plot"><svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Comparação de ${esc(ser.map(s => s.x.tk).join(', '))}">${g}${cmpa.cdi ? `<path d="${path(cdi)}" fill="none" stroke="var(--plan)" stroke-width="2" stroke-dasharray="5 4"/>` : ''}${ser.map(s => `<path d="${path(s.l)}" fill="none" stroke="${s.cor}" stroke-width="2.2" stroke-linejoin="round"/>`).join('')}${hits}</svg><div class="a6tip" hidden></div></div>`;
     const anos = span / 12, aa = r => anos >= 1 ? pct(Math.pow(1 + r, 1 / anos) - 1) : '–', rC = cdi[cdi.length - 1][1];
     const linhas = ser.map(s => ({ s, r: s.l[s.l.length - 1][1] })).sort((a, b) => b.r - a.r);
-    tab = `<div class="tscroll"><table class="cmpa-tbl"><thead><tr><th>Ativo</th><th>No período</th><th>Ao ano</th><th>Contra o CDI</th><th title="maior queda do pico ao fundo entre os pontos guardados">Maior queda</th><th>Hoje</th></tr></thead><tbody>${linhas.map(({ s, r }) => `<tr><td class="name"><i class="cmpa-dot" style="background:${s.cor}"></i><b>${esc(s.x.tk)}</b> <span class="subdet">${esc(cmpaNome(s.x))}${s.x.mk === 'us' || s.x.mk === 'etfus' ? ' · US$' : ''}</span></td><td>${sinal(r)}</td><td>${aa(r)}</td><td>${(d => `<span class="${d >= 0 ? 'pos' : 'neg'}">${d >= 0 ? '+' : '−'}${num(Math.abs(d) * 100, 1)} p.p.</span>`)(r - rC)}</td><td class="neg">${s.dd < -0.001 ? pct(s.dd) : '–'}</td><td>${fmx(s.x, s.x.p1)}</td></tr>`).join('')}${cmpa.cdi ? `<tr class="cmpa-cdi"><td class="name"><i class="cmpa-dot" style="background:var(--plan)"></i><b>CDI</b></td><td>+${pct(rC)}</td><td>${aa(rC)}</td><td>–</td><td>–</td><td></td></tr>` : ''}</tbody></table></div>`;
+    tab = `<div class="tscroll"><table class="cmpa-tbl"><thead><tr><th>Ativo</th><th>No período</th><th>Ao ano</th><th>Contra o CDI</th><th title="maior queda do pico ao fundo entre os pontos guardados">Maior queda</th><th>Hoje</th></tr></thead><tbody>${linhas.map(({ s, r }) => `<tr><td class="name"><i class="cmpa-dot" style="background:${s.cor}"></i><b>${esc(cmpaRot(s.x))}</b> <span class="subdet">${s.x.mk === 'fundo' ? 'fundo' : esc(cmpaNome(s.x))}${s.x.mk === 'us' || s.x.mk === 'etfus' ? ' · US$' : ''}</span></td><td>${sinal(r)}</td><td>${aa(r)}</td><td>${(d => `<span class="${d >= 0 ? 'pos' : 'neg'}">${d >= 0 ? '+' : '−'}${num(Math.abs(d) * 100, 1)} p.p.</span>`)(r - rC)}</td><td class="neg">${s.dd < -0.001 ? pct(s.dd) : '–'}</td><td>${fmx(s.x, s.x.p1)}</td></tr>`).join('')}${cmpa.cdi ? `<tr class="cmpa-cdi"><td class="name"><i class="cmpa-dot" style="background:var(--plan)"></i><b>CDI</b></td><td>+${pct(rC)}</td><td>${aa(rC)}</td><td>–</td><td>–</td><td></td></tr>` : ''}</tbody></table></div>`;
   }
   const notas = [sem.length ? `${sem.map(x => x.tk).join(', ')} não ${sem.length > 1 ? 'têm' : 'tem'} histórico de ${(CMPA_PER.find(o => o[0] === per) || [, per])[1]} e ficou fora do gráfico.` : '',
     sel.some(x => x.mk === 'us' || x.mk === 'etfus') && sel.some(x => !(x.mk === 'us' || x.mk === 'etfus')) ? 'Ativos dos EUA estão em US$ e não incluem a variação do câmbio; os da B3 estão em R$.' : '',
@@ -3958,8 +3960,28 @@ $('acao-tk').addEventListener('keydown', e => {
   else if (e.key === 'Escape') { sugItens = []; $('acao-sug').hidden = true; }
 });
 $('acao-sug').addEventListener('mousedown', e => { const b = e.target.closest('[data-sugtk]'); if (b) { e.preventDefault(); escolherSug(b.dataset.sugtk); } });
+const naCatB3 = tk => CATALOGO_B3.acoes.some(a => a[0] === tk) || CATALOGO_B3.bdrs.some(a => a[0] === tk);
+async function pedirGlobal(raw, mk) {
+  const msg = t => { $('acao-msg').textContent = t; }, txt = TXT(raw, 80), cnpj = txt.replace(/\D/g, '');
+  const tk = mk === 'fii' ? txt.toUpperCase().replace(/[^A-Z0-9]/g, '') : 'F' + (cnpj.length === 14 ? cnpj : semAc(txt).toUpperCase().replace(/^FUNDO\s+/, '').replace(/[^A-Z0-9]/g, '').slice(0, 12));
+  if (mk === 'fundo' && tk.length < 4) { msg('Escreva o nome do fundo (como aparece no app do banco) ou o CNPJ.'); return; }
+  if (globalA6.lista.some(x => x.tk === tk)) { msg(`${mk === 'fii' ? tk : txt} já está na lista.`); return; }
+  if (!db) { msg('Não consigo salvar pedidos nesta visualização.'); return; }
+  $('acao-go').disabled = true;
+  try {
+    const ref = db.doc('mercado/global'), g = await ref.get(), d = g.exists ? JSON.parse(JSON.stringify(g.data())) : { data: '', itens: [] };
+    if (!Array.isArray(d.itens)) d.itens = [];
+    d.itens.push(mk === 'fii' ? { tk, mk } : { tk, mk, nome: txt, ...(cnpj.length === 14 ? { cnpj } : {}), pedidoEm: hojeISO() });
+    await ref.set(d); $('acao-tk').value = '';
+    if (a6Aba !== 'fii') { a6Aba = 'fii'; try { localStorage.setItem('a6aba', a6Aba); } catch (err) {} }
+    msg(`${mk === 'fii' ? 'FII ' + tk : 'Fundo "' + txt + '"'} incluído. As cotações entram na próxima atualização semanal (segunda às 9h40) e aí ele aparece na tabela e no Comparar ações.`);
+  } catch (e) { msg('Não consegui salvar o pedido agora. Tente de novo.'); } finally { $('acao-go').disabled = false; }
+}
 $('acao-form').addEventListener('submit', e => { e.preventDefault();
   const v = $('acao-tk').value, k = semAc(v).replace(/[^A-Z0-9]/g, '');
+  // FII (código terminado em 11 que não é ação nem unit) e fundo de investimento (nome ou CNPJ, na aba FIIs e fundos)
+  if (/^[A-Z]{4}11$/.test(k) && !naCatB3(k)) { pedirGlobal(k, 'fii'); return; }
+  if (v.replace(/\D/g, '').length === 14 || (a6Aba === 'fii' && !/^[A-Z]{4}\d{1,2}B?$/.test(k) && !buscarB3(v).length)) { pedirGlobal(v, 'fundo'); return; }
   // digitou um nome: usa a única sugestão (ou pede para escolher)
   if (!/^[A-Z][A-Z0-9]{3}\d{1,2}B?$/.test(k)) { const r = buscarB3(v); if (r.length === 1) { pedirAcao(r[0].tk); return; } if (r.length) { $('acao-msg').textContent = 'Escolha um dos códigos da lista.'; $('acao-tk').focus(); return; } }
   pedirAcao(v); });
