@@ -724,7 +724,7 @@ a.lm-ir:hover { border-bottom-style: solid; }
     </div>
     <div class="nav-mobile-sub" id="navMobileSub"></div>
   </div>
-  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 146</div></div>
+  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 147</div></div>
 </nav>
 
 <div class="main"><div class="wrap">
@@ -1555,7 +1555,7 @@ a.lm-ir:hover { border-bottom-style: solid; }
     return new Promise(resolve => { const { data } = sb.auth.onAuthStateChange(async (ev) => { if (ev !== 'PASSWORD_RECOVERY') return; const s = prompt('Digite a nova senha (mínimo 8 caracteres):'); if (s && s.length >= 8) { const { error } = await sb.auth.updateUser({ password: s }); alert(error ? 'Não deu para trocar a senha: ' + error.message : 'Senha trocada.'); } }); resolve(data); });
   }
   // ---------- rodapé: compartilhar, administração e sair ----------
-  const SITE_V = 25;
+  const SITE_V = 26;
   const escH = v => String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const dataBR = v => v ? new Date(v).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' }) : '–';
   const css2 = `.side-foot .r{flex-wrap:wrap}.side-foot .lg-acoes{margin-left:auto;display:inline-flex;gap:10px}
@@ -3843,9 +3843,10 @@ function renderCmpA() {
   const box = $('cmpa-box'); if (!box) return;
   const pool = cmpaPool(), br = s => s.split('-').reverse().join('/'), sel = cmpa.tks.map(t => pool.get(t)).filter(Boolean);
   const dl = [...pool.values()].map(x => `<option value="${esc(x.tk)}">${esc(cmpaNome(x))}</option>`).join('');
-  const grupos = CMPA_GRUPOS.map(([n, l]) => [n, l.filter(t => pool.has(t))]).filter(g => g[1].length > 1);
+  const doTipo = mk => [...pool.values()].filter(x => x.mk === mk).sort((a, b) => a.tk < b.tk ? -1 : 1).map(x => x.tk).slice(0, 8);
+  const grupos = [['FIIs', doTipo('fii')], ['Fundos', doTipo('fundo')], ...CMPA_GRUPOS.map(([n, l]) => [n, l.filter(t => pool.has(t))])].filter(g => g[1].length > 1 || g[0] === 'Fundos');
   const topo = `<form id="cmpa-form" class="cmpa-form"><input type="text" id="cmpa-in" list="cmpa-dl" placeholder="código ou nome, ex.: ITUB4, Apple, HGLG11" autocomplete="off" spellcheck="false" maxlength="30" aria-label="Ação ou ETF para incluir"><datalist id="cmpa-dl">${dl}</datalist><button class="btn tiny" type="submit">Incluir</button>${cmpa.tks.length ? '<button class="btn ghost tiny" type="button" data-cmpa-limpa>Limpar</button>' : ''}</form>
-    <div class="cmpa-grupos"><span class="subdet">Grupos prontos:</span>${grupos.map(([n, l]) => `<button type="button" class="btn ghost tiny" data-cmpa-grupo="${esc(l.join(','))}" title="${esc(l.join(', '))}">${esc(n)}</button>`).join('')}</div>
+    <div class="cmpa-grupos"><span class="subdet">Grupos prontos:</span>${grupos.map(([n, l]) => `<button type="button" class="btn ghost tiny" data-cmpa-grupo="${esc(l.join(',') || '-')}" title="${esc(l.length ? l.map(t => cmpaRot(pool.get(t))).join(', ') : 'nenhum fundo com cotação ainda')}">${esc(n)}</button>`).join('')}</div>
     <p class="hint" id="cmpa-msg"></p>`;
   const chips = sel.length ? `<div class="cmpa-chips">${sel.map((x, i) => `<span class="cmpa-chip"><i style="background:${CMPA_COR[i]}"></i><b>${esc(cmpaRot(x))}</b> ${x.mk === 'fundo' ? '' : `<span class="subdet">${esc(cmpaNome(x))}</span>`}<button type="button" data-cmpa-tira="${esc(x.tk)}" aria-label="Tirar ${esc(x.tk)}">×</button></span>`).join('')}</div>` : '';
   if (!sel.length) { box.innerHTML = topo + '<p class="hm-vazio">Escolha duas ou mais ações ou ETFs (ou um grupo pronto) para ver o comportamento delas lado a lado.</p>'; return; }
@@ -3883,6 +3884,7 @@ function renderCmpA() {
 $('cmpa-box').addEventListener('submit', e => { if (e.target.id !== 'cmpa-form') return; e.preventDefault(); const inp = $('cmpa-in'), v = inp.value; if (cmpaAdd(v)) { renderCmpA(); const n = $('cmpa-in'); if (n) n.focus(); } else inp.value = v; });
 $('cmpa-box').addEventListener('click', e => { const t = e.target.closest && e.target.closest('[data-cmpa-tira],[data-cmpa-grupo],[data-cmpa-per],[data-cmpa-limpa]'); if (!t) return; const d = t.dataset;
   if (d.cmpaTira) cmpa.tks = cmpa.tks.filter(x => x !== d.cmpaTira);
+  else if (d.cmpaGrupo === '-') { $('cmpa-msg').textContent = 'Ainda não há fundo de investimento com cotação. Peça um em Oportunidades: abra a aba "FIIs e fundos" da tabela e escreva o nome ou o CNPJ no campo "Analisar outra ação, FII ou fundo". Ele entra aqui depois da atualização de segunda.'; return; }
   else if (d.cmpaGrupo) cmpa.tks = d.cmpaGrupo.split(',').slice(0, 8);
   else if (d.cmpaPer) cmpa.per = d.cmpaPer;
   else if ('cmpaLimpa' in d) cmpa.tks = [];
