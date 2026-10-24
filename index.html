@@ -268,6 +268,8 @@ input:hover, select:hover { border-color: var(--s1); }
 .acoes6m select { width: auto; font-size: 11px; padding: 3px 6px; margin-left: 4px; }
 .acoes6m th[draggable] { cursor: grab; }
 .score-cfg { position: relative; }
+.so-mult { grid-column: 1 / -1; display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 8px 10px; align-items: end; border-top: 1px solid var(--line); padding-top: 10px; margin-top: 4px; }
+.so-mult > b, .so-mult > .hint { grid-column: 1 / -1; font-size: 12.5px; }
 .so-emps { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-bottom: 14px; }
 .so-emps .seg button[aria-pressed="true"] { background: var(--accent); color: #fff; border-color: var(--accent); }
 #p-stock td input[type="number"] { width: 92px; }
@@ -751,7 +753,7 @@ a.lm-ir:hover { border-bottom-style: solid; }
     </div>
     <div class="nav-mobile-sub" id="navMobileSub"></div>
   </div>
-  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 157</div></div>
+  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 158</div></div>
 </nav>
 <div class="sino-pop" id="sino-pop" role="dialog" aria-label="Central de avisos" hidden></div>
 
@@ -1520,9 +1522,12 @@ a.lm-ir:hover { border-bottom-style: solid; }
       </fieldset>
       <fieldset>
         <legend id="so-l-val">Valor da empresa no evento</legend>
-        <label>Pessimista<input type="number" step="1000000" min="0" data-so="v:pess"></label>
-        <label>Base<input type="number" step="1000000" min="0" data-so="v:base"></label>
-        <label>Otimista<input type="number" step="1000000" min="0" data-so="v:otim"></label>
+        <label>Pessimista<input type="number" step="any" min="0" data-so="v:pess"></label>
+        <label>Base<input type="number" step="any" min="0" data-so="v:base"></label>
+        <label>Otimista<input type="number" step="any" min="0" data-so="v:otim"></label>
+        <div class="so-mult full" id="so-mult"><b>Calcular pelo múltiplo</b><p class="hint">Quantas vezes o valor da empresa cresce até o evento, sobre o preço de hoje, menos a diluição das rodadas até lá.</p>
+          <label>Múltiplo pessimista<input type="number" step="any" min="0" data-so="e:mPess"></label><label>Base<input type="number" step="any" min="0" data-so="e:mBase"></label><label>Otimista<input type="number" step="any" min="0" data-so="e:mOtim"></label>
+          <label>Diluição até o evento (%)<input type="number" step="1" min="0" max="95" data-so="e:mDil"></label><button type="button" class="btn ghost tiny" data-somult="1">Preencher os preços</button><p class="hint" id="so-mult-txt"></p></div>
         <p class="hint" id="so-ev-hint">Valor total da venda (ou valuation no IPO), na moeda da empresa. Ainda sem ideia? Use a última rodada como base, metade como pessimista e o triplo como otimista.</p>
       </fieldset>
         </div>
@@ -1705,7 +1710,7 @@ a.lm-ir:hover { border-bottom-style: solid; }
     return new Promise(resolve => { const { data } = sb.auth.onAuthStateChange(async (ev) => { if (ev !== 'PASSWORD_RECOVERY') return; const s = prompt('Digite a nova senha (mínimo 8 caracteres):'); if (s && s.length >= 8) { const { error } = await sb.auth.updateUser({ password: s }); alert(error ? 'Não deu para trocar a senha: ' + error.message : 'Senha trocada.'); } }); resolve(data); });
   }
   // ---------- rodapé: compartilhar, administração e sair ----------
-  const SITE_V = 36;
+  const SITE_V = 37;
   const escH = v => String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const dataBR = v => v ? new Date(v).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' }) : '–';
   const css2 = `.side-foot .r{flex-wrap:wrap}.side-foot .lg-acoes{margin-left:auto;display:inline-flex;gap:10px}
@@ -5947,12 +5952,12 @@ function soId(p) { return p + Date.now().toString(36) + Math.random().toString(3
 const soMes = s => /^\d{4}-\d{2}$/.test(s || '') ? mIndex(s) : null;
 const soN = v => (v === '' || v == null || !isFinite(+v)) ? null : +v;
 function soNovaEmpresa(n) {
-  return { id: soId('e'), nome: 'Empresa ' + n, sede: 'br', cambio: null, modo: 'acao', moeda: 'BRL', saida: '', exercicio: 'saida', avisoDias: 10, prazoDias: 5, cashless: 'sim', fimPlano: '', leaver: 'good', janela: 90, fica: 'sim', fd: null, preco: null, fatorComum: 100, estagio: 'seed', prefs: [], rodadas: [], ev: { tipo: 'venda', mes: mKey(HOJE_IDX + 60), prob: '', definido: false, plano: false, pess: null, base: null, otim: null }, grants: [] };
+  return { id: soId('e'), nome: 'Empresa ' + n, sede: 'br', cambio: null, modo: 'acao', moeda: 'BRL', mPess: 2, mBase: 5, mOtim: 15, mDil: 30, saida: '', exercicio: 'saida', avisoDias: 10, prazoDias: 5, cashless: 'sim', fimPlano: '', leaver: 'good', janela: 90, fica: 'sim', fd: null, preco: null, fatorComum: 100, estagio: 'seed', prefs: [], rodadas: [], ev: { tipo: 'venda', mes: mKey(HOJE_IDX + 60), prob: '', definido: false, plano: false, pess: null, base: null, otim: null }, grants: [] };
 }
 function soNormalizar(s) {
   if (!s.so || typeof s.so !== 'object') s.so = { sel: '', simSaida: '', empresas: [] };
   if (!Array.isArray(s.so.empresas)) s.so.empresas = [];
-  s.so.empresas.forEach(e => { ['prefs', 'rodadas', 'grants'].forEach(kk => { if (!Array.isArray(e[kk])) e[kk] = []; }); if (!e.ev || typeof e.ev !== 'object') e.ev = soNovaEmpresa(1).ev; if (e.exercicio !== 'evento') e.exercicio = 'saida'; if (e.avisoDias == null) e.avisoDias = 10; if (e.prazoDias == null) e.prazoDias = 5; if (e.cashless !== 'nao') e.cashless = 'sim'; if (e.moeda !== 'USD' && e.moeda !== 'BRL') e.moeda = e.sede === 'ext' ? 'USD' : 'BRL'; if (e.modo !== 'acao' && e.modo !== 'empresa') e.modo = +e.fd > 0 ? 'empresa' : 'acao'; if (typeof e.fimPlano !== 'string') e.fimPlano = ''; });
+  s.so.empresas.forEach(e => { ['prefs', 'rodadas', 'grants'].forEach(kk => { if (!Array.isArray(e[kk])) e[kk] = []; }); if (!e.ev || typeof e.ev !== 'object') e.ev = soNovaEmpresa(1).ev; if (e.exercicio !== 'evento') e.exercicio = 'saida'; if (e.avisoDias == null) e.avisoDias = 10; if (e.prazoDias == null) e.prazoDias = 5; if (e.cashless !== 'nao') e.cashless = 'sim'; if (e.mPess == null) Object.assign(e, { mPess: 2, mBase: 5, mOtim: 15, mDil: 30 }); if (e.moeda !== 'USD' && e.moeda !== 'BRL') e.moeda = e.sede === 'ext' ? 'USD' : 'BRL'; if (e.modo !== 'acao' && e.modo !== 'empresa') e.modo = +e.fd > 0 ? 'empresa' : 'acao'; if (typeof e.fimPlano !== 'string') e.fimPlano = ''; });
 }
 const soEmp = () => { const S = state.so; return S.empresas.find(e => e.id === S.sel) || S.empresas[0] || null; };
 function soCambio(e) {
@@ -5976,7 +5981,8 @@ function soVest(g, e, i, evI) {
 }
 // quantas ações/unidades contam no mês i, depois das regras de saída, janela e expiração
 function soConta(g, e, i, evI) {
-  const q = (+g.qtd || 0) * soVest(g, e, i, evI), ex = Math.min(q, Math.max(0, +g.exerc || 0));
+  // concessões ligadas a meta (ex.: breakeven) contam pela chance de a meta ser batida
+  const meta = soN(g.meta), q = (+g.qtd || 0) * soVest(g, e, i, evI) * (meta == null ? 1 : Math.min(100, Math.max(0, meta)) / 100), ex = Math.min(q, Math.max(0, +g.exerc || 0));
   const sai = soMes(e.saida), g0 = soMes(g.data);
   if (g.tipo === 'opcao') {
     // planos com exercício só no Exit: sair (good leaver) não obriga a exercer; as liberadas esperam o evento
@@ -6068,7 +6074,7 @@ function buildStock() {
   document.querySelector('[data-sodelemp]').hidden = S.empresas.length < 2 && !e.grants.length;
   document.querySelectorAll('#p-stock [data-so]').forEach(soFill);
   const opt = (v, cur, txt) => `<option value="${v}"${String(cur) === v ? ' selected' : ''}>${txt}</option>`, inp = (b, v, step, extra = '') => `<input type="number" step="${step}" min="0" data-so="${b}" value="${v ?? ''}" ${extra}>`;
-  $('tbl-so-g').innerHTML = `<thead><tr><th>Concedida em</th><th>Modelo</th><th>Quantidade</th><th>Strike (${e.moeda === 'USD' ? 'US$' : 'R$'})</th><th>Vesting (anos)</th><th>Cliff (meses)</th><th>Libera</th><th>Na venda</th><th>Já exercidas</th><th>Expira (anos)</th><th></th></tr></thead><tbody>${e.grants.map(g => `<tr>
+  $('tbl-so-g').innerHTML = `<thead><tr><th>Concedida em</th><th>Modelo</th><th>Quantidade</th><th>Strike (${e.moeda === 'USD' ? 'US$' : 'R$'})</th><th>Vesting (anos)</th><th>Cliff (meses)</th><th>Libera</th><th>Na venda</th><th>Já exercidas</th><th>Meta (% de chance)</th><th>Expira (anos)</th><th></th></tr></thead><tbody>${e.grants.map(g => `<tr>
     <td><input type="month" data-so="g:${g.id}:data" value="${esc(g.data)}" aria-label="Concedida em"></td>
     <td class="name"><select data-so="g:${g.id}:tipo" aria-label="Modelo">${Object.entries(SO_TIPOS).map(([v, t]) => opt(v, g.tipo, t)).join('')}</select></td>
     <td>${inp(`g:${g.id}:qtd`, g.qtd, 100, 'aria-label="Quantidade"')}</td>
@@ -6078,8 +6084,9 @@ function buildStock() {
     <td class="name"><select data-so="g:${g.id}:freq" aria-label="Frequência">${opt('mensal', g.freq, 'Todo mês')}${opt('trimestral', g.freq, 'A cada trimestre')}${opt('anual', g.freq, 'Uma vez por ano')}</select></td>
     <td class="name"><select data-so="g:${g.id}:acel" aria-label="Aceleração">${opt('nenhuma', g.acel, 'Segue o vesting')}${opt('total', g.acel, 'Libera tudo')}${opt('metade', g.acel, 'Libera metade do resto')}${opt('duplo', g.acel, 'Tudo se demitido ou rebaixado (não no IPO)')}</select></td>
     <td>${inp(`g:${g.id}:exerc`, g.exerc, 100, `aria-label="Já exercidas"${g.tipo !== 'opcao' ? ' disabled' : ''}`)}</td>
+    <td>${inp(`g:${g.id}:meta`, g.meta, 5, 'aria-label="Chance de bater a meta, em %" placeholder="sem meta"')}</td>
     <td>${inp(`g:${g.id}:expira`, g.expira, 1, 'aria-label="Expira em anos"')}</td>
-    <td><button class="btn danger tiny" type="button" data-sorm="g:${g.id}">remover</button></td></tr>`).join('') || '<tr><td class="name" colspan="11"><span class="subdet">Nenhuma concessão. Use "+ Concessão" para cada vez que recebeu opções.</span></td></tr>'}</tbody>`;
+    <td><button class="btn danger tiny" type="button" data-sorm="g:${g.id}">remover</button></td></tr>`).join('') || '<tr><td class="name" colspan="12"><span class="subdet">Nenhuma concessão. Use "+ Concessão" para cada vez que recebeu opções.</span></td></tr>'}</tbody>`;
   $('tbl-so-p').innerHTML = `<thead><tr><th>Rodada</th><th>Investido</th><th>% da empresa hoje</th><th>Múltiplo</th><th>Participante</th><th></th></tr></thead><tbody>${e.prefs.map(p => `<tr>
     <td class="name"><input type="text" class="name" data-so="p:${p.id}:nome" value="${esc(p.nome)}" aria-label="Rodada"></td>
     <td>${inp(`p:${p.id}:inv`, p.inv, 100000, 'aria-label="Valor investido"')}</td>
@@ -6125,7 +6132,8 @@ function renderStock() {
   $('so-ex-hint').textContent = soEv ? `Exit = venda de mais de 50%, IPO, fusão ou reestruturação com distribuição. A empresa avisa com pelo menos ${num(+e.avisoDias || 0, 0)} dias e você envia o aviso de exercício (Exercise Notice) até ${num(+e.prazoDias || 0, 0)} dias antes. Sair não obriga a exercer. Deixe "Saí em" vazio se ainda trabalha lá.` : 'Deixe "Saí em" vazio se ainda trabalha lá. A janela costuma ser de 90 dias; alguns planos dão anos.';
   $('so-l-cx').hidden = !usd; $('so-l-cx').querySelector('input').placeholder = usd ? num(cx) + (soN(e.cambio) ? '' : ' (dólar de hoje)') : '';
     const simples = e.modo === 'acao', vf = V => simples ? soPx(e, V) : soMoeda(e, V);
-  ['so-l-fd', 'so-l-fc', 'so-l-est', 'so-sec-inv', 'so-sec-rod'].forEach(id => { $(id).hidden = simples; });
+  ['so-l-fd', 'so-l-fc', 'so-l-est', 'so-sec-inv', 'so-sec-rod'].forEach(id => { $(id).hidden = simples; }); $('so-mult').hidden = !simples;
+  { const p0 = +e.preco || 0, f = 1 - Math.min(95, Math.max(0, +e.mDil || 0)) / 100; $('so-mult-txt').textContent = p0 > 0 ? `Com ${soPx(e, p0)} hoje: base ${num(+e.mBase || 0)}× × ${pct(f, 0)} (depois da diluição) = ${soPx(e, p0 * (+e.mBase || 0) * f)} por ação.` : 'Precisa do preço por ação hoje (ou da última rodada), no quadro "A empresa hoje".'; }
   $('so-l-val').textContent = simples ? `Preço por ação no evento (${usd ? 'US$' : 'R$'})` : `Valor da empresa no evento (${usd ? 'US$' : 'R$'})`;
   $('so-l-preco').firstChild.textContent = simples ? `Preço por ação hoje, se souber (${usd ? 'US$' : 'R$'})` : `Preço por ação na última rodada (${usd ? 'US$' : 'R$'})`;
   $('so-hoje-hint').textContent = simples ? 'Sem o cap table, o painel trabalha só com o preço por ação: você diz quanto cada ação valeria no evento, já descontadas as preferências e a diluição até lá. Quando souber o total de ações e o valuation, troque para o modo completo.' : 'Totalmente diluídas: todas as ações, opções e o pool, como no cap table. Investidores pagam pela preferencial; a comum (a sua) costuma valer de 20% a 40% dela antes de um evento. Use 100% para ver pelo preço da rodada.';
@@ -6207,7 +6215,7 @@ function renderStock() {
 document.addEventListener('input', e => { const el = e.target; if (!el.dataset || !el.dataset.so || el.tagName === 'SELECT' || el.type === 'checkbox' || el.type === 'month') return; soOnInput(el); });
 document.addEventListener('change', e => { const el = e.target; if (!el.dataset || !el.dataset.so) return; if (el.tagName === 'SELECT' || el.type === 'checkbox' || el.type === 'month') soOnInput(el); });
 document.addEventListener('click', ev => {
-  const t = ev.target.closest('[data-soemp],[data-soaddemp],[data-sodelemp],[data-soadd],[data-sorm],[data-socarta]'); if (!t || !$('p-stock').contains(t)) return;
+  const t = ev.target.closest('[data-soemp],[data-soaddemp],[data-sodelemp],[data-soadd],[data-sorm],[data-socarta],[data-somult]'); if (!t || !$('p-stock').contains(t)) return;
   ev.preventDefault(); const S = state.so, d = t.dataset, e = soEmp();
   if (d.soemp) { S.sel = d.soemp; save(); buildStock(); renderStock(); if (t.tagName === 'A') $('p-stock').scrollIntoView({ behavior: 'smooth' }); return; }
   if (d.soaddemp) { const x = soNovaEmpresa(S.empresas.length + 1); S.empresas.push(x); S.sel = x.id; save(); buildStock(); renderStock(); const nm = document.querySelector('#p-stock [data-so="e:nome"]'); if (nm) { nm.focus(); nm.select(); } return; }
@@ -6216,6 +6224,8 @@ document.addEventListener('click', ev => {
   else if (d.soadd === 'p') e.prefs.push({ id: soId('p'), nome: SO_EST_N[e.estagio] || 'Rodada', inv: null, pct: null, mult: 1, part: false });
   else if (d.soadd === 'r') { const ult = e.rodadas[e.rodadas.length - 1]; e.rodadas.push({ id: soId('r'), nome: 'Rodada', mes: mKey((ult && soMes(ult.mes) || HOJE_IDX) + 24), dil: 15, pool: 3, post: null }); }
   else if (d.sorm) { const [sc, id] = d.sorm.split(':'), kk = { g: 'grants', p: 'prefs', r: 'rodadas' }[sc]; e[kk] = e[kk].filter(x => x.id !== id); }
+  else if (d.somult) { const p0 = +e.preco || 0, f = 1 - Math.min(95, Math.max(0, +e.mDil || 0)) / 100; if (!(p0 > 0)) { $('so-mult-txt').textContent = 'Preencha o preço por ação hoje (ou da última rodada) para usar o múltiplo.'; return; }
+    [['pess', 'mPess'], ['base', 'mBase'], ['otim', 'mOtim']].forEach(([a, m]) => { if (+e[m] > 0) e.ev[a] = Math.round(p0 * e[m] * f * 100) / 100; }); }
   else if (d.socarta) {
     if (e.rodadas.length && !confirmar('Trocar as rodadas futuras pelas medianas da Carta?')) return;
     const ini = SO_EST.indexOf(e.estagio); let post = (+e.preco || 0) * (+e.fd || 0), m = HOJE_IDX + 18; e.rodadas = [];
