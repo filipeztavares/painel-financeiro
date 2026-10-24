@@ -724,7 +724,7 @@ a.lm-ir:hover { border-bottom-style: solid; }
     </div>
     <div class="nav-mobile-sub" id="navMobileSub"></div>
   </div>
-  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 147</div></div>
+  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 148</div></div>
 </nav>
 
 <div class="main"><div class="wrap">
@@ -1555,7 +1555,7 @@ a.lm-ir:hover { border-bottom-style: solid; }
     return new Promise(resolve => { const { data } = sb.auth.onAuthStateChange(async (ev) => { if (ev !== 'PASSWORD_RECOVERY') return; const s = prompt('Digite a nova senha (mínimo 8 caracteres):'); if (s && s.length >= 8) { const { error } = await sb.auth.updateUser({ password: s }); alert(error ? 'Não deu para trocar a senha: ' + error.message : 'Senha trocada.'); } }); resolve(data); });
   }
   // ---------- rodapé: compartilhar, administração e sair ----------
-  const SITE_V = 26;
+  const SITE_V = 27;
   const escH = v => String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const dataBR = v => v ? new Date(v).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' }) : '–';
   const css2 = `.side-foot .r{flex-wrap:wrap}.side-foot .lg-acoes{margin-left:auto;display:inline-flex;gap:10px}
@@ -3822,7 +3822,7 @@ $('score-box').addEventListener('toggle', e => { const c = e.target.classList; i
 $('acao-tk').addEventListener('input', renderA6);
 // ---------- Comparar ações: várias ações e ETFs no mesmo gráfico, em % desde o início do período ----------
 let cmpa = { tks: [], per: '1a', cdi: true };
-try { const s = JSON.parse(localStorage.getItem('painel-cmpa')); if (s && Array.isArray(s.tks)) cmpa = { tks: s.tks.filter(t => /^[A-Z][A-Z0-9]{0,6}$/.test(t)).slice(0, 8), per: s.per || '1a', cdi: s.cdi !== false }; } catch (e) {}
+try { const s = JSON.parse(localStorage.getItem('painel-cmpa')); if (s && Array.isArray(s.tks)) cmpa = { tks: s.tks.filter(t => /^[A-Z][A-Z0-9]{0,14}$/.test(t)).slice(0, 8), per: s.per || '1a', cdi: s.cdi !== false, minhas: !!s.minhas }; } catch (e) {}
 const CMPA_COR = ['var(--s1)', 'var(--s2)', 'var(--s7)', 'var(--s6)', 'var(--s8)', 'var(--s3)', 'var(--s9)', 'var(--s4)'];
 const CMPA_PER = [['6m', '6 meses'], ['1a', '1 ano'], ['2a', '2 anos'], ['3a', '3 anos'], ['5a', '5 anos']];
 const CMPA_GRUPOS = [['Bancos', ['ITUB4', 'BBDC4', 'BBAS3', 'SANB11', 'BPAC11', 'ROXO34']], ['Petróleo e minério', ['PETR4', 'PRIO3', 'BRAV3', 'VALE3', 'CSNA3', 'GGBR4']], ['Energia elétrica', ['AXIA3', 'EQTL3', 'CMIG4', 'TAEE11', 'EGIE3', 'CPLE3']], ['Varejo', ['LREN3', 'MGLU3', 'ASAI3', 'RADL3']],
@@ -3838,6 +3838,19 @@ function cmpaAdd(v) {
   if (cmpa.tks.includes(x.tk)) return true;
   if (cmpa.tks.length >= 8) { $('cmpa-msg').textContent = 'Até 8 por vez. Tire uma para incluir outra.'; return false; }
   cmpa.tks.push(x.tk); cmpaGuardar(); return true;
+}
+function cmpaMinhas(pool, per) {
+  // BDR sem cotação própria usa a ação americana (ex.: MSFT34 → MSFT, em US$, sem câmbio)
+  const ref = tk => pool.get(tk) || (/3[2-5]$/.test(tk) ? pool.get(tk.slice(0, -2)) || pool.get(tk.slice(0, 4)) : null);
+  const todas = (() => { try { return minhasAcoes(); } catch (e) { return []; } })().filter(m => m.atual > 0);
+  const ms = todas.filter(m => ref(m.tk) && ref(m.tk).h[per]);
+  if (!ms.length) return null;
+  const ser = ms.map(m => { const x = ref(m.tk), ini = x.h[per];
+    const l = [ini, ...Object.values(x.h), x.max, x.min, x.ini, [x.d1, x.p1]].filter(v => Array.isArray(v) && v[1] > 0 && v[0] >= ini[0] && v[0] <= x.d1).sort((a, b) => a[0] < b[0] ? -1 : 1).map(([d, v]) => [posData(d), v / ini[1] - 1]);
+    return { w: m.atual, l }; });
+  const em = (l, p) => { if (p <= l[0][0]) return l[0][1]; for (let i = 1; i < l.length; i++) if (p <= l[i][0]) { const [a, b] = [l[i - 1], l[i]]; return a[1] + (b[1] - a[1]) * ((p - a[0]) / ((b[0] - a[0]) || 1)); } return l[l.length - 1][1]; };
+  const W = ser.reduce((t, x) => t + x.w, 0), xs = [...new Set(ser.flatMap(x => x.l.map(v => +v[0].toFixed(3))))].sort((a, b) => a - b);
+  return { l: xs.map(p => [p, ser.reduce((t, x) => t + x.w * em(x.l, p), 0) / W]), n: ms.length, tks: ms.map(m => m.tk), proxy: ms.filter(m => !pool.get(m.tk)).map(m => `${m.tk} usa ${ref(m.tk).tk} em US$`), fora: todas.filter(m => !ms.includes(m)).map(m => m.tk) };
 }
 function renderCmpA() {
   const box = $('cmpa-box'); if (!box) return;
@@ -3860,7 +3873,8 @@ function renderCmpA() {
   if (ser.length) {
     const p0 = Math.min(...ser.map(s => s.l[0][0])), pF = Math.max(...ser.map(s => s.l[s.l.length - 1][0])), span = Math.max(pF - p0, 0.1);
     const cdi = []; for (let p = p0; p < pF; p += Math.max(span / 60, 0.25)) cdi.push([p, cdiFat(p0, p) - 1]); cdi.push([pF, cdiFat(p0, pF) - 1]);
-    const ys = ser.flatMap(s => s.l.map(v => v[1])).concat(cmpa.cdi ? cdi.map(v => v[1]) : [], [0]), lo = Math.min(...ys), hi = Math.max(...ys);
+    const mn = cmpa.minhas ? cmpaMinhas(pool, per) : null;
+    const ys = ser.flatMap(s => s.l.map(v => v[1])).concat(cmpa.cdi ? cdi.map(v => v[1]) : [], mn ? mn.l.map(v => v[1]) : [], [0]), lo = Math.min(...ys), hi = Math.max(...ys);
     const W = window.innerWidth < 600 ? 380 : 720, H = window.innerWidth < 600 ? 250 : 260, pl = 48, pr = 14, pt = 12, pb = 24, rg = hi - lo || 0.1;
     const st0 = rg / 4, mag = Math.pow(10, Math.floor(Math.log10(st0))), step = [1, 2, 2.5, 5, 10].map(m => m * mag).find(z => rg / z <= 5) || st0;
     const y0 = lo < -1e-9 ? Math.floor(lo / step + 1e-9) * step : 0, y1 = Math.ceil(hi / step - 1e-9) * step;
@@ -3871,15 +3885,16 @@ function renderCmpA() {
     const sinal = r => `<span class="${r >= 0 ? 'pos' : 'neg'}">${r >= 0 ? '+' : ''}${pct(r)}</span>`;
     const hits = ser.map(s => s.l.map(([p, v], j) => { const [d, pr0] = s.pts[j]; const tip = `<b>${esc(cmpaRot(s.x))}</b> · ${br(d)} · ${fmx(s.x, pr0)}<br>Desde o início: ${sinal(v)}${cmpa.cdi ? `<br>CDI no mesmo período: +${pct(cdiFat(p0, p) - 1)}` : ''}`;
       return `<circle class="a6pt" cx="${X(p).toFixed(1)}" cy="${Y(v).toFixed(1)}" r="2.6" fill="${s.cor}"/><circle class="a6hit" tabindex="0" cx="${X(p).toFixed(1)}" cy="${Y(v).toFixed(1)}" r="9" fill="transparent" data-tip="${esc(tip)}"/>`; }).join('')).join('');
-    svg = `<div class="a6plot"><svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Comparação de ${esc(ser.map(s => s.x.tk).join(', '))}">${g}${cmpa.cdi ? `<path d="${path(cdi)}" fill="none" stroke="var(--plan)" stroke-width="2" stroke-dasharray="5 4"/>` : ''}${ser.map(s => `<path d="${path(s.l)}" fill="none" stroke="${s.cor}" stroke-width="2.2" stroke-linejoin="round"/>`).join('')}${hits}</svg><div class="a6tip" hidden></div></div>`;
+    svg = `<div class="a6plot"><svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Comparação de ${esc(ser.map(s => s.x.tk).join(', '))}">${g}${cmpa.cdi ? `<path d="${path(cdi)}" fill="none" stroke="var(--plan)" stroke-width="2" stroke-dasharray="5 4"/>` : ''}${mn ? `<path d="${path(mn.l)}" fill="none" stroke="var(--ink)" stroke-width="2.2" stroke-dasharray="8 4" stroke-linejoin="round"/>` : ''}${ser.map(s => `<path d="${path(s.l)}" fill="none" stroke="${s.cor}" stroke-width="2.2" stroke-linejoin="round"/>`).join('')}${hits}${mn ? mn.l.map(([p, v]) => `<circle class="a6hit" tabindex="0" cx="${X(p).toFixed(1)}" cy="${Y(v).toFixed(1)}" r="8" fill="transparent" data-tip="${esc(`<b>Minhas ações</b> · ${mLabel(Math.floor(p))}<br>Desde o início: ${sinal(v)}`)}"/>`).join('') : ''}</svg><div class="a6tip" hidden></div></div>`;
     const anos = span / 12, aa = r => anos >= 1 ? pct(Math.pow(1 + r, 1 / anos) - 1) : '–', rC = cdi[cdi.length - 1][1];
     const linhas = ser.map(s => ({ s, r: s.l[s.l.length - 1][1] })).sort((a, b) => b.r - a.r);
-    tab = `<div class="tscroll"><table class="cmpa-tbl"><thead><tr><th>Ativo</th><th>No período</th><th>Ao ano</th><th>Contra o CDI</th><th title="maior queda do pico ao fundo entre os pontos guardados">Maior queda</th><th>Hoje</th></tr></thead><tbody>${linhas.map(({ s, r }) => `<tr><td class="name"><i class="cmpa-dot" style="background:${s.cor}"></i><b>${esc(cmpaRot(s.x))}</b> <span class="subdet">${s.x.mk === 'fundo' ? 'fundo' : esc(cmpaNome(s.x))}${s.x.mk === 'us' || s.x.mk === 'etfus' ? ' · US$' : ''}</span></td><td>${sinal(r)}</td><td>${aa(r)}</td><td>${(d => `<span class="${d >= 0 ? 'pos' : 'neg'}">${d >= 0 ? '+' : '−'}${num(Math.abs(d) * 100, 1)} p.p.</span>`)(r - rC)}</td><td class="neg">${s.dd < -0.001 ? pct(s.dd) : '–'}</td><td>${fmx(s.x, s.x.p1)}</td></tr>`).join('')}${cmpa.cdi ? `<tr class="cmpa-cdi"><td class="name"><i class="cmpa-dot" style="background:var(--plan)"></i><b>CDI</b></td><td>+${pct(rC)}</td><td>${aa(rC)}</td><td>–</td><td>–</td><td></td></tr>` : ''}</tbody></table></div>`;
+    tab = `<div class="tscroll"><table class="cmpa-tbl"><thead><tr><th>Ativo</th><th>No período</th><th>Ao ano</th><th>Contra o CDI</th><th title="maior queda do pico ao fundo entre os pontos guardados">Maior queda</th><th>Hoje</th></tr></thead><tbody>${linhas.map(({ s, r }) => `<tr><td class="name"><i class="cmpa-dot" style="background:${s.cor}"></i><b>${esc(cmpaRot(s.x))}</b> <span class="subdet">${s.x.mk === 'fundo' ? 'fundo' : esc(cmpaNome(s.x))}${s.x.mk === 'us' || s.x.mk === 'etfus' ? ' · US$' : ''}</span></td><td>${sinal(r)}</td><td>${aa(r)}</td><td>${(d => `<span class="${d >= 0 ? 'pos' : 'neg'}">${d >= 0 ? '+' : '−'}${num(Math.abs(d) * 100, 1)} p.p.</span>`)(r - rC)}</td><td class="neg">${s.dd < -0.001 ? pct(s.dd) : '–'}</td><td>${fmx(s.x, s.x.p1)}</td></tr>`).join('')}${mn ? (r => `<tr class="cmpa-cdi"><td class="name"><i class="cmpa-dot" style="background:var(--ink)"></i><b>Minhas ações</b> <span class="subdet">${mn.n} ${mn.n > 1 ? 'ativos' : 'ativo'}, peso do valor de hoje</span></td><td>${sinal(r)}</td><td>${aa(r)}</td><td>${(d => `<span class="${d >= 0 ? 'pos' : 'neg'}">${d >= 0 ? '+' : '−'}${num(Math.abs(d) * 100, 1)} p.p.</span>`)(r - rC)}</td><td>–</td><td></td></tr>`)(mn.l[mn.l.length - 1][1]) : ''}${cmpa.cdi ? `<tr class="cmpa-cdi"><td class="name"><i class="cmpa-dot" style="background:var(--plan)"></i><b>CDI</b></td><td>+${pct(rC)}</td><td>${aa(rC)}</td><td>–</td><td>–</td><td></td></tr>` : ''}</tbody></table></div>`;
   }
-  const notas = [sem.length ? `${sem.map(x => x.tk).join(', ')} não ${sem.length > 1 ? 'têm' : 'tem'} histórico de ${(CMPA_PER.find(o => o[0] === per) || [, per])[1]} e ficou fora do gráfico.` : '',
+  const mInfo = cmpaMinhas(pool, per), temMinhas = !!mInfo;
+  const notas = [cmpa.minhas && temMinhas ? `A linha preta tracejada junta as suas ações e FIIs da Carteira (${mInfo.tks.join(', ')}), cada um com o peso do valor que tem hoje, sem considerar quando você comprou.${mInfo.proxy.length ? ' ' + mInfo.proxy.join('; ') + ' (sem câmbio).' : ''}${mInfo.fora.length ? ` ${mInfo.fora.join(', ')} ficou fora por não ter histórico nesse período.` : ''}` : '', sem.length ? `${sem.map(x => x.tk).join(', ')} não ${sem.length > 1 ? 'têm' : 'tem'} histórico de ${(CMPA_PER.find(o => o[0] === per) || [, per])[1]} e ficou fora do gráfico.` : '',
     sel.some(x => x.mk === 'us' || x.mk === 'etfus') && sel.some(x => !(x.mk === 'us' || x.mk === 'etfus')) ? 'Ativos dos EUA estão em US$ e não incluem a variação do câmbio; os da B3 estão em R$.' : '',
     'Preços ajustados por proventos. A linha liga os pontos que as tabelas guardam (início de cada período, máxima, mínima e hoje), então oscilações entre eles não aparecem.'].filter(Boolean);
-  box.innerHTML = topo + chips + `<div class="a6gx cmpa-g"><div class="a6gx-top"><b>Variação desde o início do período</b><div class="seg" role="group" aria-label="Período">${opts.map(([k, t]) => `<button type="button" data-cmpa-per="${k}" aria-pressed="${k === per}">${t}</button>`).join('')}</div><label><input type="checkbox" data-cmpa-cdi${cmpa.cdi ? ' checked' : ''}> Mostrar CDI</label></div>${svg}</div>${tab}<p class="hint">${notas.map(esc).join(' ')}</p>`;
+  box.innerHTML = topo + chips + `<div class="a6gx cmpa-g"><div class="a6gx-top"><b>Variação desde o início do período</b><div class="seg" role="group" aria-label="Período">${opts.map(([k, t]) => `<button type="button" data-cmpa-per="${k}" aria-pressed="${k === per}">${t}</button>`).join('')}</div><label><input type="checkbox" data-cmpa-cdi${cmpa.cdi ? ' checked' : ''}> CDI</label>${temMinhas ? `<label title="suas ações da Carteira, cada uma com o peso do valor de hoje"><input type="checkbox" data-cmpa-minhas${cmpa.minhas ? ' checked' : ''}> Minhas ações</label>` : ''}</div>${svg}</div>${tab}<p class="hint">${notas.map(esc).join(' ')}</p>`;
 }
 $('cmpa-box').addEventListener('submit', e => { if (e.target.id !== 'cmpa-form') return; e.preventDefault(); const inp = $('cmpa-in'), v = inp.value; if (cmpaAdd(v)) { renderCmpA(); const n = $('cmpa-in'); if (n) n.focus(); } else inp.value = v; });
 $('cmpa-box').addEventListener('click', e => { const t = e.target.closest && e.target.closest('[data-cmpa-tira],[data-cmpa-grupo],[data-cmpa-per],[data-cmpa-limpa]'); if (!t) return; const d = t.dataset;
@@ -3889,7 +3904,7 @@ $('cmpa-box').addEventListener('click', e => { const t = e.target.closest && e.t
   else if (d.cmpaPer) cmpa.per = d.cmpaPer;
   else if ('cmpaLimpa' in d) cmpa.tks = [];
   cmpaGuardar(); renderCmpA(); });
-$('cmpa-box').addEventListener('change', e => { if (!e.target.matches('[data-cmpa-cdi]')) return; cmpa.cdi = e.target.checked; cmpaGuardar(); renderCmpA(); });
+$('cmpa-box').addEventListener('change', e => { if (e.target.matches('[data-cmpa-cdi]')) cmpa.cdi = e.target.checked; else if (e.target.matches('[data-cmpa-minhas]')) cmpa.minhas = e.target.checked; else return; cmpaGuardar(); renderCmpA(); });
 $('acoes6m').addEventListener('change', e => {
   if (e.target.id === 'a6-curto') a6Per.curto = e.target.value;
   else if (e.target.id === 'a6-longo') a6Per.longo = e.target.value;
