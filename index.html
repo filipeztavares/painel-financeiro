@@ -318,6 +318,7 @@ td.fam-bar { min-width: 150px; }
 .cmpa-form { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-bottom: 8px; }
 .cmpa-form input { flex: 1 1 240px; max-width: 360px; }
 .cmpa-grupos { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; margin-bottom: 4px; }
+.cmpa-grupos .btn[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: #fff; }
 .cmpa-chips { display: flex; flex-wrap: wrap; gap: 6px; margin: 6px 0 12px; }
 .cmpa-chip { display: inline-flex; align-items: center; gap: 6px; border: 1px solid var(--line); border-radius: 99px; padding: 3px 4px 3px 10px; font-size: 12px; background: var(--bg); max-width: 100%; }
 .cmpa-chip i, .cmpa-dot { width: 9px; height: 9px; border-radius: 50%; display: inline-block; flex: none; }
@@ -724,7 +725,7 @@ a.lm-ir:hover { border-bottom-style: solid; }
     </div>
     <div class="nav-mobile-sub" id="navMobileSub"></div>
   </div>
-  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 148</div></div>
+  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 149</div></div>
 </nav>
 
 <div class="main"><div class="wrap">
@@ -1555,7 +1556,7 @@ a.lm-ir:hover { border-bottom-style: solid; }
     return new Promise(resolve => { const { data } = sb.auth.onAuthStateChange(async (ev) => { if (ev !== 'PASSWORD_RECOVERY') return; const s = prompt('Digite a nova senha (mínimo 8 caracteres):'); if (s && s.length >= 8) { const { error } = await sb.auth.updateUser({ password: s }); alert(error ? 'Não deu para trocar a senha: ' + error.message : 'Senha trocada.'); } }); resolve(data); });
   }
   // ---------- rodapé: compartilhar, administração e sair ----------
-  const SITE_V = 27;
+  const SITE_V = 28;
   const escH = v => String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const dataBR = v => v ? new Date(v).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' }) : '–';
   const css2 = `.side-foot .r{flex-wrap:wrap}.side-foot .lg-acoes{margin-left:auto;display:inline-flex;gap:10px}
@@ -3859,7 +3860,7 @@ function renderCmpA() {
   const doTipo = mk => [...pool.values()].filter(x => x.mk === mk).sort((a, b) => a.tk < b.tk ? -1 : 1).map(x => x.tk).slice(0, 8);
   const grupos = [['FIIs', doTipo('fii')], ['Fundos', doTipo('fundo')], ...CMPA_GRUPOS.map(([n, l]) => [n, l.filter(t => pool.has(t))])].filter(g => g[1].length > 1 || g[0] === 'Fundos');
   const topo = `<form id="cmpa-form" class="cmpa-form"><input type="text" id="cmpa-in" list="cmpa-dl" placeholder="código ou nome, ex.: ITUB4, Apple, HGLG11" autocomplete="off" spellcheck="false" maxlength="30" aria-label="Ação ou ETF para incluir"><datalist id="cmpa-dl">${dl}</datalist><button class="btn tiny" type="submit">Incluir</button>${cmpa.tks.length ? '<button class="btn ghost tiny" type="button" data-cmpa-limpa>Limpar</button>' : ''}</form>
-    <div class="cmpa-grupos"><span class="subdet">Grupos prontos:</span>${grupos.map(([n, l]) => `<button type="button" class="btn ghost tiny" data-cmpa-grupo="${esc(l.join(',') || '-')}" title="${esc(l.length ? l.map(t => cmpaRot(pool.get(t))).join(', ') : 'nenhum fundo com cotação ainda')}">${esc(n)}</button>`).join('')}</div>
+    <div class="cmpa-grupos"><span class="subdet">Grupos prontos:</span>${grupos.map(([n, l]) => `<button type="button" class="btn ghost tiny" aria-pressed="${l.length > 0 && l.slice(0, 8).join() === cmpa.tks.join()}" data-cmpa-grupo="${esc(l.join(',') || '-')}" title="${esc(l.length ? l.map(t => cmpaRot(pool.get(t))).join(', ') : 'nenhum fundo com cotação ainda')}">${esc(n)}</button>`).join('')}</div>
     <p class="hint" id="cmpa-msg"></p>`;
   const chips = sel.length ? `<div class="cmpa-chips">${sel.map((x, i) => `<span class="cmpa-chip"><i style="background:${CMPA_COR[i]}"></i><b>${esc(cmpaRot(x))}</b> ${x.mk === 'fundo' ? '' : `<span class="subdet">${esc(cmpaNome(x))}</span>`}<button type="button" data-cmpa-tira="${esc(x.tk)}" aria-label="Tirar ${esc(x.tk)}">×</button></span>`).join('')}</div>` : '';
   if (!sel.length) { box.innerHTML = topo + '<p class="hm-vazio">Escolha duas ou mais ações ou ETFs (ou um grupo pronto) para ver o comportamento delas lado a lado.</p>'; return; }
