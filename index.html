@@ -268,6 +268,8 @@ input:hover, select:hover { border-color: var(--s1); }
 .acoes6m select { width: auto; font-size: 11px; padding: 3px 6px; margin-left: 4px; }
 .acoes6m th[draggable] { cursor: grab; }
 .score-cfg { position: relative; }
+.so-addrow { margin: 8px 0 4px; }
+#so-l-sim { white-space: nowrap; display: inline-flex; align-items: center; gap: 8px; }
 .so-mult { grid-column: 1 / -1; display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 8px 10px; align-items: end; border-top: 1px solid var(--line); padding-top: 10px; margin-top: 4px; }
 .so-mult > b, .so-mult > .hint { grid-column: 1 / -1; font-size: 12.5px; }
 .so-emps { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-bottom: 14px; }
@@ -753,7 +755,7 @@ a.lm-ir:hover { border-bottom-style: solid; }
     </div>
     <div class="nav-mobile-sub" id="navMobileSub"></div>
   </div>
-  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 158</div></div>
+  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 159</div></div>
 </nav>
 <div class="sino-pop" id="sino-pop" role="dialog" aria-label="Central de avisos" hidden></div>
 
@@ -1484,9 +1486,10 @@ a.lm-ir:hover { border-bottom-style: solid; }
         </div>
       </section>
       <section data-nav="Concessões" class="panel">
-        <div class="row"><h2>Concessões</h2><button type="button" class="btn ghost tiny" data-soadd="g">+ Concessão</button></div>
+        <h2>Concessões</h2>
         <p class="sub">Cada vez que você recebeu opções, com o strike e as regras daquela concessão. Phantom shares e RSU não têm custo; phantom option (SAR) paga só a valorização acima do strike.</p>
         <div class="tscroll"><table id="tbl-so-g"></table></div>
+        <div class="so-addrow"><button type="button" class="btn ghost tiny" data-soadd="g">+ Concessão</button></div>
         <p class="hint">Cliff: meses sem liberar nada; no fim dele libera de uma vez o proporcional. Depois libera a cada mês, trimestre ou ano até completar o vesting. Aceleração: o que acontece com a parte não liberada se a empresa for vendida enquanto você está lá. "Já exercidas": opções que você já comprou pagando o strike.</p>
       </section>
       <section data-nav="Vesting" class="panel">
@@ -1496,15 +1499,17 @@ a.lm-ir:hover { border-bottom-style: solid; }
         <div class="tscroll" style="margin-top:12px"><table id="tbl-so-v"></table></div>
       </section>
       <section data-nav="Investidores" class="panel" id="so-sec-inv">
-        <div class="row"><h2>Investidores e preferências</h2><button type="button" class="btn ghost tiny" data-soadd="p">+ Rodada passada</button></div>
+        <h2>Investidores e preferências</h2>
         <p class="sub">Rodadas que já aconteceram. Numa venda, cada investidor escolhe entre receber de volta o que investiu (vezes o múltiplo) ou converter em ações comuns, o que for maior. Só depois disso o resto é dividido pelas ações comuns, incluindo as suas.</p>
         <div class="tscroll"><table id="tbl-so-p"></table></div>
+        <div class="so-addrow"><button type="button" class="btn ghost tiny" data-soadd="p">+ Rodada passada</button></div>
         <p class="hint">Padrão de mercado: 1x não participante. Participante recebe o valor de volta e ainda divide o resto (raro, pior para você). Num IPO todas as preferenciais viram comuns, então as preferências não contam.</p>
       </section>
       <section data-nav="Rodadas futuras" class="panel" id="so-sec-rod">
-        <div class="row"><h2>Rodadas futuras e diluição</h2><div style="display:flex;gap:8px;flex-wrap:wrap"><button type="button" class="btn ghost tiny" data-socarta="1">Preencher com as medianas da Carta</button><button type="button" class="btn ghost tiny" data-soadd="r">+ Rodada</button></div></div>
+        <div class="row"><h2>Rodadas futuras e diluição</h2><button type="button" class="btn ghost tiny" data-socarta="1">Preencher com as medianas da Carta</button></div>
         <p class="sub">Cada rodada nova emite ações para o investidor e, em geral, reforça o pool de opções. Seu número de ações não muda, mas sua fatia diminui. Só contam as rodadas antes do evento.</p>
         <div class="tscroll"><table id="tbl-so-r"></table></div>
+        <div class="so-addrow"><button type="button" class="btn ghost tiny" data-soadd="r">+ Rodada</button></div>
         <div class="tscroll" style="margin-top:12px"><table id="tbl-so-d"></table></div>
         <p class="hint">Medianas da Carta (rodadas do 1º semestre de 2026, software): diluição de 18% no seed, 18% na Série A, 12% na B, menos de 10% na C e 8% na D. O reforço do pool e a valorização entre rodadas são suposições do painel para começar: edite com o que você souber. Desdobramento (split) não dilui: multiplica as ações e divide o preço.</p>
       </section>
@@ -1547,7 +1552,7 @@ a.lm-ir:hover { border-bottom-style: solid; }
         <div class="tscroll"><table id="tbl-so-sens"></table></div>
       </section>
       <section data-nav="Se eu sair" class="panel">
-        <div class="row"><h2 id="so-sair-h">Se eu sair</h2><label class="inline" id="so-l-sim">Sair em <input type="month" data-so="s:simSaida"></label></div>
+        <div class="row"><h2><span id="so-sair-h">Se eu sair</span></h2><label class="inline" id="so-l-sim">Sair em <input type="month" data-so="s:simSaida"></label></div>
         <p class="sub" id="so-sair-sub"></p>
         <div class="tscroll"><table id="tbl-so-sair"></table></div>
       </section>
@@ -1710,7 +1715,7 @@ a.lm-ir:hover { border-bottom-style: solid; }
     return new Promise(resolve => { const { data } = sb.auth.onAuthStateChange(async (ev) => { if (ev !== 'PASSWORD_RECOVERY') return; const s = prompt('Digite a nova senha (mínimo 8 caracteres):'); if (s && s.length >= 8) { const { error } = await sb.auth.updateUser({ password: s }); alert(error ? 'Não deu para trocar a senha: ' + error.message : 'Senha trocada.'); } }); resolve(data); });
   }
   // ---------- rodapé: compartilhar, administração e sair ----------
-  const SITE_V = 37;
+  const SITE_V = 38;
   const escH = v => String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const dataBR = v => v ? new Date(v).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' }) : '–';
   const css2 = `.side-foot .r{flex-wrap:wrap}.side-foot .lg-acoes{margin-left:auto;display:inline-flex;gap:10px}
