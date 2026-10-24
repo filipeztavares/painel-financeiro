@@ -755,7 +755,7 @@ a.lm-ir:hover { border-bottom-style: solid; }
     </div>
     <div class="nav-mobile-sub" id="navMobileSub"></div>
   </div>
-  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 161</div></div>
+  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 162</div></div>
 </nav>
 <div class="sino-pop" id="sino-pop" role="dialog" aria-label="Central de avisos" hidden></div>
 
@@ -1315,7 +1315,7 @@ a.lm-ir:hover { border-bottom-style: solid; }
       <fieldset>
         <legend>Compras no plano</legend>
         <div id="pl-inc" style="grid-column:1/-1;display:flex;flex-direction:column;gap:6px"></div>
-        <p class="hint" style="grid-column:1/-1">Bens do cadastro em Cenários e compras: parcelas, entrada e custos de ter entram no plano.</p>
+        <p class="hint" style="grid-column:1/-1">Bens marcados como "Projeção real" em 03. Compras e bens: parcelas, entrada e custos de ter entram no plano. Os demais ficam só para simular nos cenários.</p>
       </fieldset>
         </div>
       </section>
@@ -1715,7 +1715,7 @@ a.lm-ir:hover { border-bottom-style: solid; }
     return new Promise(resolve => { const { data } = sb.auth.onAuthStateChange(async (ev) => { if (ev !== 'PASSWORD_RECOVERY') return; const s = prompt('Digite a nova senha (mínimo 8 caracteres):'); if (s && s.length >= 8) { const { error } = await sb.auth.updateUser({ password: s }); alert(error ? 'Não deu para trocar a senha: ' + error.message : 'Senha trocada.'); } }); resolve(data); });
   }
   // ---------- rodapé: compartilhar, administração e sair ----------
-  const SITE_V = 40;
+  const SITE_V = 41;
   const escH = v => String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const dataBR = v => v ? new Date(v).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' }) : '–';
   const css2 = `.side-foot .r{flex-wrap:wrap}.side-foot .lg-acoes{margin-left:auto;display:inline-flex;gap:10px}
@@ -2722,7 +2722,8 @@ function compraHtml(b, cen) {
         <input type="text" class="name" data-bind="compra:${b.id}:nome" aria-label="Nome da compra">
       </div>
       <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
-        <span class="hint" style="grid-column:auto">${em.length ? 'Entra em: ' + em.map(esc).join(', ') : 'Fora de todos os cenários'}${(state.plan && (state.plan.inc || []).includes(b.id)) ? ' · no plano' : ''}</span>
+        <span class="hint" style="grid-column:auto">${em.length ? 'Cenários: ' + em.map(esc).join(', ') : 'Fora de todos os cenários'}</span>
+        <label class="inline plsel">Uso <select data-plsel="${b.id}" aria-label="Uso de ${esc(b.nome)}"><option value="sim">Só simulação</option><option value="real" ${(state.plan && (state.plan.inc || []).includes(b.id)) ? 'selected' : ''}>Projeção real</option></select></label>
         <button class="btn danger tiny" type="button" data-delcompra="${b.id}">Remover</button>
       </div>
     </div>
@@ -2749,10 +2750,10 @@ function buildCompras() {
   $('comprasEd').querySelectorAll('[data-bind]').forEach(fillBound);
   const nomeTipo = { imovel: 'imóvel', carro: 'carro', outro: 'outro bem' };
   $('comprasResumo').innerHTML = (todas.length ? `<div><b>${todas.length} ${todas.length === 1 ? 'bem cadastrado' : 'bens cadastrados'}.</b> O cenário aberto agora tem ${list.length}.</div>
-    <div class="tscroll"><table class="incm"><thead><tr><th>Bem</th><th>Tipo</th><th>Mês</th>${state.cenarios.map(c => `<th${c.id === cen.id ? ' class="cur"' : ''}>${esc(c.nome)}</th>`).join('')}</tr></thead><tbody>
-    ${todas.map(b => `<tr><td class="name">${esc(b.nome)}</td><td class="name">${nomeTipo[b.tipo] || 'bem'}</td><td>${mLabel(mIndex(b.mes))}</td>${state.cenarios.map(c => `<td${c.id === cen.id ? ' class="cur"' : ''}><input type="checkbox" data-inc="${c.id}:${b.id}" ${incluida(c, b) ? 'checked' : ''} aria-label="${esc(b.nome)} em ${esc(c.nome)}"></td>`).join('')}</tr>`).join('')}
+    <div class="tscroll"><table class="incm"><thead><tr><th>Bem</th><th>Tipo</th><th>Mês</th><th>Uso</th>${state.cenarios.map(c => `<th${c.id === cen.id ? ' class="cur"' : ''}>${esc(c.nome)}</th>`).join('')}</tr></thead><tbody>
+    ${todas.map(b => `<tr><td class="name">${esc(b.nome)}</td><td class="name">${nomeTipo[b.tipo] || 'bem'}</td><td>${mLabel(mIndex(b.mes))}</td><td class="name">${(state.plan.inc || []).includes(b.id) ? 'Projeção real' : 'Simulação'}</td>${state.cenarios.map(c => `<td${c.id === cen.id ? ' class="cur"' : ''}><input type="checkbox" data-inc="${c.id}:${b.id}" ${incluida(c, b) ? 'checked' : ''} aria-label="${esc(b.nome)} em ${esc(c.nome)}"></td>`).join('')}</tr>`).join('')}
     </tbody></table></div>` : '<p class="hint">Nenhum bem cadastrado ainda. Cadastre em 03. Compras e bens.</p>');
-  $('compraMsg').innerHTML = (compraNova ? `<div class="ok">${esc(compraNova.nome)} cadastrado e incluído no cenário "${esc(cen.nome)}". O card está no fim da lista, destacado.</div>` : '');
+  $('compraMsg').innerHTML = (compraNova ? `<div class="ok">${esc(compraNova.nome)} cadastrado como só simulação, no cenário "${esc(cen.nome)}". Para entrar na projeção real, troque "Uso" no card para "Projeção real". O card está no fim da lista, destacado.</div>` : '');
   if ($('pg-cen')) $('pg-cen').textContent = '"' + cen.nome + '"';
   const pg = $('pg-compra'), s0 = mIndex(lastCp().mes), fut = todas.filter(b => mIndex(b.mes) > s0);
   if (!fut.find(b => b.id === state.pgCompra)) state.pgCompra = fut[0] ? fut[0].id : '';
@@ -5270,7 +5271,7 @@ document.addEventListener('click', e => {
     save(); renderOrcamento(); return; }
   if (b.id === 'pl-cp') { const c = lastCp(); state.plan.inicio = c.mes; state.plan.valor = c.valor; save(); buildOrcamento(); renderOrcamento(); }
 });
-document.addEventListener('change', e => { const id = e.target.dataset && e.target.dataset.plinc; if (!id) return; const P = state.plan; P.inc = (P.inc || []).filter(x => x !== id); if (e.target.checked) P.inc.push(id); save(); renderOrcamento(); });
+document.addEventListener('change', e => { const ds = e.target.dataset || {}, id = ds.plinc || ds.plsel; if (!id) return; const P = state.plan, on = ds.plsel ? e.target.value === 'real' : e.target.checked; P.inc = (P.inc || []).filter(x => x !== id); if (on) P.inc.push(id); save(); if (ds.plsel) { buildCompras(); renderTab(); if ($('compraMsg')) $('compraMsg').innerHTML = `<div class="ok">${on ? 'Entra na projeção real: 07. Plano futuro, linha Plano da Visão global e fechamento.' : 'Só simulação: aparece nos cenários de 08, fora da projeção real.'}</div>`; } else renderOrcamento(); });
 
 let fMes = mKey(HOJE_IDX);
 function guardarFoco() { const a = document.activeElement; return a && a.dataset && a.dataset.bind ? a.dataset.bind : null; }
