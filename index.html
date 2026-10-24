@@ -694,7 +694,7 @@ a.lm-ir:hover { border-bottom-style: solid; }
     </div>
     <div class="nav-mobile-sub" id="navMobileSub"></div>
   </div>
-  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 136</div></div>
+  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 137</div></div>
 </nav>
 
 <div class="main"><div class="wrap">
@@ -1520,7 +1520,7 @@ a.lm-ir:hover { border-bottom-style: solid; }
     return new Promise(resolve => { const { data } = sb.auth.onAuthStateChange(async (ev) => { if (ev !== 'PASSWORD_RECOVERY') return; const s = prompt('Digite a nova senha (mínimo 8 caracteres):'); if (s && s.length >= 8) { const { error } = await sb.auth.updateUser({ password: s }); alert(error ? 'Não deu para trocar a senha: ' + error.message : 'Senha trocada.'); } }); resolve(data); });
   }
   // ---------- rodapé: compartilhar, administração e sair ----------
-  const SITE_V = 15;
+  const SITE_V = 16;
   const escH = v => String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const dataBR = v => v ? new Date(v).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' }) : '–';
   const css2 = `.side-foot .r{flex-wrap:wrap}.side-foot .lg-acoes{margin-left:auto;display:inline-flex;gap:10px}
@@ -4958,7 +4958,7 @@ function renderFechamento() {
   const inpR = (key, ph) => `<input type="number" step="50" data-bind="freal:${mk}:${key}" value="${F.R[key] ?? ''}" placeholder="${ph == null ? '' : Math.round(ph)}" aria-label="Real">`;
   const linha = (nome, key, bom, sinal = 1, rot) => `<tr class="mm-s"><td class="name">${rot || esc(nome)}</td><td>${inpP(key)}</td><td>${inpR(key, F.real[key])}${F.assumido[key] === true ? '<span class="subdet">= projetado</span>' : F.assumido[key] === 'auto' ? '<span class="subdet">pelos checkpoints</span>' : F.assumido[key] === 'est' ? `<span class="subdet">estimado: ${pct(F.tr.taxaEst, 2)} no mês</span>` : F.assumido[key] === 'extrato' ? '<span class="subdet">do extrato</span>' : ''}</td>${dif(F.P[key] == null ? null : F.P[key] * sinal, F.real[key] == null ? null : F.real[key] * sinal, bom)}</tr>`;
   const secT = (key, nome) => `<button type="button" class="mm-t" data-fesec="${esc(key)}" aria-expanded="${!feFech.has(key)}">${feFech.has(key) ? '▸' : '▾'} ${nome}</button>`, aberto = k => !feFech.has(k);
-  const tot = (nome, p, r, bom, cls = 'mm-g', key) => `<tr class="${cls}"><td class="name">${key ? secT(key, nome) : nome}</td><td>${p == null ? '—' : fm(p)}</td><td>${r == null ? '<span class="z">falta preencher</span>' : fm(r)}</td>${dif(p, r, bom)}</tr>`;
+  const tot = (nome, p, r, bom, cls = 'mm-g', key, falta = 'falta preencher') => `<tr class="${cls}"><td class="name">${key ? secT(key, nome) : nome}</td><td>${p == null ? '—' : fm(p)}</td><td>${r == null ? `<span class="z">${falta}</span>` : fm(r)}</td>${dif(p, r, bom)}</tr>`;
   const gr = GRUPOS.map(g => g.id), itsMes = (gastos[mk] || []).slice().sort((a, b) => String(a.data).localeCompare(String(b.data)));
   $('fe-cats').innerHTML = cats().map(c => `<option value="${esc(c.nome)}"></option>`).join('');
   const detalhe = (key, its) => !feAbertos.has(key) ? '' : its.map(it => `<tr class="fe-it"><td class="name">${String(it.data || '').slice(8, 10)}/${String(it.data || '').slice(5, 7)} · ${esc(String(it.desc || '').replace(/\s+-\s+(•••|\d{2}\.\d{3}\.\d{3}\/).*$/, ''))}${it.parcela ? ` <span class="subdet">${esc(it.parcela)}</span>` : ''}</td><td></td><td class="${it.valor < 0 ? 'pos' : ''}">${fm(+it.valor || 0)}</td><td colspan="2" class="name"><span class="fe-acoes">${it.linha ? '' : `<input type="text" class="name fatcat" data-fecat="${esc(it.id)}" value="${esc(it.cat || '')}" autocomplete="off" spellcheck="false" aria-label="Categoria de ${esc(it.desc)}">`}<button class="btn ghost tiny" type="button" data-fedel="${esc(it.id)}">apagar</button></span></td></tr>`).join('');
@@ -4990,7 +4990,7 @@ function renderFechamento() {
     ${F.P.evr || F.R.evr != null ? linha('Eventos do plano: receitas (bônus…)', 'evr', 1) : ''}
     ${tot('Sobra do mês', F.tp.sobra, F.tr.sobra, 1, 'mm-g saldo')}
     ${linha('Rendimento dos investimentos', 'rend', 1)}
-    ${tot('Investimentos no fim do mês', F.tp.fim, F.tr.fim, 1, 'mm-g saldo')}
+    ${tot('Investimentos no fim do mês', F.tp.fim, F.tr.fim, 1, 'mm-g saldo', null, `aguardando checkpoint de ${mLabel(F.i)}`)}
     ${F.tr.naoExp == null ? '' : `<tr class="mm-s fe-nexp"><td class="name">Diferença não explicada <span class="subdet">checkpoint − (início + sobra + rendimento)</span></td><td><span class="z">—</span></td><td class="${Math.abs(F.tr.naoExp) < 0.5 ? '' : F.tr.naoExp > 0 ? 'pos' : 'neg'}">${(F.tr.naoExp > 0 ? '+' : F.tr.naoExp < 0 ? '−' : '') + fm(Math.abs(F.tr.naoExp))}</td><td colspan="2" class="name"><span class="subdet">${F.cpPrev ? pct(F.tr.naoExp / F.cpPrev, 2) + ' do saldo inicial' : ''}</span></td></tr>`}
   </tbody>`;
   $('fe-hint').textContent = `${F.temLanc ? `Custos reais vêm dos ${totaisMes(mk).n} lançamentos de Gastos deste mês; digite um valor para substituir.` : 'Ainda não há lançamentos de Gastos neste mês: os custos reais aparecem quando houver, ou digite direto.'} ${F.cpPrev == null ? 'Sem checkpoint do mês anterior, o rendimento projetado não é calculado.' : ''} ${F.cpNow == null ? `O real do fim do mês vem do checkpoint de ${mLabel(F.i)}.` : ''} ${F.assumido.rend === 'est' ? 'O rendimento real é estimado pelas taxas de cada aplicação da Carteira (CDI e IPCA do ano, antes do IR); digite o valor do extrato da corretora, se tiver. A diferença não explicada mostra o que sobra: entradas e saídas fora dos lançamentos, variação de ações e fundos ou erro do checkpoint.' : ''}`.trim();
