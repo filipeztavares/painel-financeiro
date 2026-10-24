@@ -751,7 +751,7 @@ a.lm-ir:hover { border-bottom-style: solid; }
     </div>
     <div class="nav-mobile-sub" id="navMobileSub"></div>
   </div>
-  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 155</div></div>
+  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 156</div></div>
 </nav>
 <div class="sino-pop" id="sino-pop" role="dialog" aria-label="Central de avisos" hidden></div>
 
@@ -1471,10 +1471,11 @@ a.lm-ir:hover { border-bottom-style: solid; }
       </fieldset>
       <fieldset>
         <legend>A empresa hoje</legend>
-        <label>Ações totalmente diluídas<input type="number" step="1000" min="0" data-so="e:fd"></label>
+        <label class="full">O que você sabe da empresa<select data-so="e:modo"><option value="acao">Só o preço por ação (estimativa simples)</option><option value="empresa">Valor da empresa e total de ações (cap table)</option></select></label>
+        <label id="so-l-fd">Ações totalmente diluídas<input type="number" step="1000" min="0" data-so="e:fd"></label>
         <label id="so-l-preco">Preço por ação na última rodada<input type="number" step="0.01" min="0" data-so="e:preco"></label>
-        <label>Ação comum vale (% da preferencial)<input type="number" step="5" min="0" max="100" data-so="e:fatorComum"></label>
-        <label>Última rodada feita<select data-so="e:estagio"><option value="pre">Pré-seed ou anjo</option><option value="seed">Seed</option><option value="A">Série A</option><option value="B">Série B</option><option value="C">Série C</option><option value="D">Série D ou depois</option></select></label>
+        <label id="so-l-fc">Ação comum vale (% da preferencial)<input type="number" step="5" min="0" max="100" data-so="e:fatorComum"></label>
+        <label id="so-l-est">Última rodada feita<select data-so="e:estagio"><option value="pre">Pré-seed ou anjo</option><option value="seed">Seed</option><option value="A">Série A</option><option value="B">Série B</option><option value="C">Série C</option><option value="D">Série D ou depois</option></select></label>
         <p class="hint" id="so-hoje-hint">Totalmente diluídas: todas as ações, opções e o pool, como no cap table. Investidores pagam pela preferencial; a comum (a sua) costuma valer de 20% a 40% dela antes de um evento. Use 100% para ver pelo preço da rodada.</p>
       </fieldset>
         </div>
@@ -1491,13 +1492,13 @@ a.lm-ir:hover { border-bottom-style: solid; }
         <div class="chart"><div class="legend" id="lg-so-v"></div><div id="ch-so-v"></div><div class="readout" id="ro-so-v"></div></div>
         <div class="tscroll" style="margin-top:12px"><table id="tbl-so-v"></table></div>
       </section>
-      <section data-nav="Investidores" class="panel">
+      <section data-nav="Investidores" class="panel" id="so-sec-inv">
         <div class="row"><h2>Investidores e preferências</h2><button type="button" class="btn ghost tiny" data-soadd="p">+ Rodada passada</button></div>
         <p class="sub">Rodadas que já aconteceram. Numa venda, cada investidor escolhe entre receber de volta o que investiu (vezes o múltiplo) ou converter em ações comuns, o que for maior. Só depois disso o resto é dividido pelas ações comuns, incluindo as suas.</p>
         <div class="tscroll"><table id="tbl-so-p"></table></div>
         <p class="hint">Padrão de mercado: 1x não participante. Participante recebe o valor de volta e ainda divide o resto (raro, pior para você). Num IPO todas as preferenciais viram comuns, então as preferências não contam.</p>
       </section>
-      <section data-nav="Rodadas futuras" class="panel">
+      <section data-nav="Rodadas futuras" class="panel" id="so-sec-rod">
         <div class="row"><h2>Rodadas futuras e diluição</h2><div style="display:flex;gap:8px;flex-wrap:wrap"><button type="button" class="btn ghost tiny" data-socarta="1">Preencher com as medianas da Carta</button><button type="button" class="btn ghost tiny" data-soadd="r">+ Rodada</button></div></div>
         <p class="sub">Cada rodada nova emite ações para o investidor e, em geral, reforça o pool de opções. Seu número de ações não muda, mas sua fatia diminui. Só contam as rodadas antes do evento.</p>
         <div class="tscroll"><table id="tbl-so-r"></table></div>
@@ -1521,7 +1522,7 @@ a.lm-ir:hover { border-bottom-style: solid; }
         <label>Pessimista<input type="number" step="1000000" min="0" data-so="v:pess"></label>
         <label>Base<input type="number" step="1000000" min="0" data-so="v:base"></label>
         <label>Otimista<input type="number" step="1000000" min="0" data-so="v:otim"></label>
-        <p class="hint">Valor total da venda (ou valuation no IPO), na moeda da empresa. Ainda sem ideia? Use a última rodada como base, metade como pessimista e o triplo como otimista.</p>
+        <p class="hint" id="so-ev-hint">Valor total da venda (ou valuation no IPO), na moeda da empresa. Ainda sem ideia? Use a última rodada como base, metade como pessimista e o triplo como otimista.</p>
       </fieldset>
         </div>
       </section>
@@ -1703,7 +1704,7 @@ a.lm-ir:hover { border-bottom-style: solid; }
     return new Promise(resolve => { const { data } = sb.auth.onAuthStateChange(async (ev) => { if (ev !== 'PASSWORD_RECOVERY') return; const s = prompt('Digite a nova senha (mínimo 8 caracteres):'); if (s && s.length >= 8) { const { error } = await sb.auth.updateUser({ password: s }); alert(error ? 'Não deu para trocar a senha: ' + error.message : 'Senha trocada.'); } }); resolve(data); });
   }
   // ---------- rodapé: compartilhar, administração e sair ----------
-  const SITE_V = 34;
+  const SITE_V = 35;
   const escH = v => String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const dataBR = v => v ? new Date(v).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' }) : '–';
   const css2 = `.side-foot .r{flex-wrap:wrap}.side-foot .lg-acoes{margin-left:auto;display:inline-flex;gap:10px}
@@ -5945,12 +5946,12 @@ function soId(p) { return p + Date.now().toString(36) + Math.random().toString(3
 const soMes = s => /^\d{4}-\d{2}$/.test(s || '') ? mIndex(s) : null;
 const soN = v => (v === '' || v == null || !isFinite(+v)) ? null : +v;
 function soNovaEmpresa(n) {
-  return { id: soId('e'), nome: 'Empresa ' + n, sede: 'br', cambio: null, saida: '', exercicio: 'saida', avisoDias: 10, prazoDias: 5, cashless: 'sim', fimPlano: '', leaver: 'good', janela: 90, fica: 'sim', fd: null, preco: null, fatorComum: 100, estagio: 'seed', prefs: [], rodadas: [], ev: { tipo: 'venda', mes: mKey(HOJE_IDX + 60), prob: '', definido: false, plano: false, pess: null, base: null, otim: null }, grants: [] };
+  return { id: soId('e'), nome: 'Empresa ' + n, sede: 'br', cambio: null, modo: 'acao', saida: '', exercicio: 'saida', avisoDias: 10, prazoDias: 5, cashless: 'sim', fimPlano: '', leaver: 'good', janela: 90, fica: 'sim', fd: null, preco: null, fatorComum: 100, estagio: 'seed', prefs: [], rodadas: [], ev: { tipo: 'venda', mes: mKey(HOJE_IDX + 60), prob: '', definido: false, plano: false, pess: null, base: null, otim: null }, grants: [] };
 }
 function soNormalizar(s) {
   if (!s.so || typeof s.so !== 'object') s.so = { sel: '', simSaida: '', empresas: [] };
   if (!Array.isArray(s.so.empresas)) s.so.empresas = [];
-  s.so.empresas.forEach(e => { ['prefs', 'rodadas', 'grants'].forEach(kk => { if (!Array.isArray(e[kk])) e[kk] = []; }); if (!e.ev || typeof e.ev !== 'object') e.ev = soNovaEmpresa(1).ev; if (e.exercicio !== 'evento') e.exercicio = 'saida'; if (e.avisoDias == null) e.avisoDias = 10; if (e.prazoDias == null) e.prazoDias = 5; if (e.cashless !== 'nao') e.cashless = 'sim'; if (typeof e.fimPlano !== 'string') e.fimPlano = ''; });
+  s.so.empresas.forEach(e => { ['prefs', 'rodadas', 'grants'].forEach(kk => { if (!Array.isArray(e[kk])) e[kk] = []; }); if (!e.ev || typeof e.ev !== 'object') e.ev = soNovaEmpresa(1).ev; if (e.exercicio !== 'evento') e.exercicio = 'saida'; if (e.avisoDias == null) e.avisoDias = 10; if (e.prazoDias == null) e.prazoDias = 5; if (e.cashless !== 'nao') e.cashless = 'sim'; if (e.modo !== 'acao' && e.modo !== 'empresa') e.modo = +e.fd > 0 ? 'empresa' : 'acao'; if (typeof e.fimPlano !== 'string') e.fimPlano = ''; });
 }
 const soEmp = () => { const S = state.so; return S.empresas.find(e => e.id === S.sel) || S.empresas[0] || null; };
 function soCambio(e) {
@@ -6032,6 +6033,8 @@ function soValor(e, i, pps, evI, ipo) {
 }
 // preço por ação comum no evento, para um valor de empresa V
 function soPpsEvento(e, V, evI) {
+  // modo simples: o valor do cenário já é o preço por ação no evento (sem cascata nem diluição)
+  if (e.modo === 'acao') return { pps: V > 0 ? V : 0, R: { N: null, prefs: [], passos: [] }, cas: null };
   const R = soRodadas(e, evI); if (!(R.N > 0) || !(V > 0)) return { pps: 0, R, cas: null };
   if (e.ev.tipo === 'ipo') return { pps: V / R.N, R, cas: null };
   const cas = soCascata(V, R.prefs); return { pps: cas.porF / R.N, R, cas };
@@ -6040,7 +6043,7 @@ function soEvento(e, V, evI) {
   const ev = soPpsEvento(e, V, evI); const v = soValor(e, evI, ev.pps, evI, e.ev.tipo === 'ipo');
   return Object.assign(v, { pps: ev.pps, N: ev.R.N, cas: ev.cas, R: ev.R });
 }
-const soPpsHoje = e => (+e.preco || 0) * (soN(e.fatorComum) ?? 100) / 100;
+const soPpsHoje = e => (+e.preco || 0) * (e.modo === 'acao' ? 1 : (soN(e.fatorComum) ?? 100) / 100);
 function soHoje(e) { return soValor(e, HOJE_IDX, soPpsHoje(e), null, false); }
 // para o Plano futuro: o líquido do cenário base, se o evento estiver definido
 function soPlanEvs() {
@@ -6119,14 +6122,19 @@ function renderStock() {
   const soEv = e.exercicio === 'evento'; $('so-l-jan').hidden = soEv; $('so-l-av').hidden = $('so-l-pz').hidden = !soEv;
   $('so-ex-hint').textContent = soEv ? `Exit = venda de mais de 50%, IPO, fusão ou reestruturação com distribuição. A empresa avisa com pelo menos ${num(+e.avisoDias || 0, 0)} dias e você envia o aviso de exercício (Exercise Notice) até ${num(+e.prazoDias || 0, 0)} dias antes. Sair não obriga a exercer. Deixe "Saí em" vazio se ainda trabalha lá.` : 'Deixe "Saí em" vazio se ainda trabalha lá. A janela costuma ser de 90 dias; alguns planos dão anos.';
   $('so-l-cx').hidden = !ext; $('so-l-cx').querySelector('input').placeholder = ext ? num(cx) + (soN(e.cambio) ? '' : ' (dólar de hoje)') : '';
-  $('so-l-preco').firstChild.textContent = `Preço por ação na última rodada (${ext ? 'US$' : 'R$'})`;
-  $('so-l-val').textContent = `Valor da empresa no evento (${ext ? 'US$' : 'R$'})`;
+    const simples = e.modo === 'acao', vf = V => simples ? soPx(e, V) : soMoeda(e, V);
+  ['so-l-fd', 'so-l-fc', 'so-l-est', 'so-sec-inv', 'so-sec-rod'].forEach(id => { $(id).hidden = simples; });
+  $('so-l-val').textContent = simples ? `Preço por ação no evento (${ext ? 'US$' : 'R$'})` : `Valor da empresa no evento (${ext ? 'US$' : 'R$'})`;
+  $('so-l-preco').firstChild.textContent = simples ? `Preço por ação hoje, se souber (${ext ? 'US$' : 'R$'})` : `Preço por ação na última rodada (${ext ? 'US$' : 'R$'})`;
+  $('so-hoje-hint').textContent = simples ? 'Sem o cap table, o painel trabalha só com o preço por ação: você diz quanto cada ação valeria no evento, já descontadas as preferências e a diluição até lá. Quando souber o total de ações e o valuation, troque para o modo completo.' : 'Totalmente diluídas: todas as ações, opções e o pool, como no cap table. Investidores pagam pela preferencial; a comum (a sua) costuma valer de 20% a 40% dela antes de um evento. Use 100% para ver pelo preço da rodada.';
+  { const stk = e.grants.filter(g => g.tipo === 'opcao' || g.tipo === 'sar').map(g => +g.strike || 0).filter(Boolean), sm = stk.length ? Math.max(...stk) : 0;
+    $('so-ev-hint').textContent = simples ? `Quanto cada ação valeria no evento, na moeda da empresa.${sm ? ` Sem ideia? Partindo do seu maior strike (${soPx(e, sm)}): pessimista ${soPx(e, sm)} (empata), base ${soPx(e, sm * 2)} (2×) e otimista ${soPx(e, sm * 5)} (5×).` : ''} Abaixo do strike, a opção vale zero.` : 'Valor total da venda (ou valuation no IPO), na moeda da empresa. Ainda sem ideia? Use a última rodada como base, metade como pessimista e o triplo como otimista.'; }
   $('so-plano').disabled = !e.ev.definido; $('so-plano-hint').textContent = e.ev.definido ? (e.ev.plano ? 'O líquido do cenário base entra como receita no 07. Plano futuro, no mês do evento.' : 'Marque para o líquido do cenário base entrar como receita no 07. Plano futuro.') : 'Só entra no 07. Plano futuro quando o evento estiver definido. Até lá, fica só aqui.';
-  const G = e.grants, tot = G.reduce((s, g) => s + (+g.qtd || 0), 0), H = soHoje(e), temBase = +e.fd > 0 && +e.preco > 0;
-  const base = evI != null && +e.ev.base > 0 && +e.fd > 0 ? soEvento(e, +e.ev.base, evI) : null;
+  const G = e.grants, tot = G.reduce((s, g) => s + (+g.qtd || 0), 0), H = soHoje(e), temBase = simples || (+e.fd > 0 && +e.preco > 0);
+  const base = evI != null && +e.ev.base > 0 && (simples || +e.fd > 0) ? soEvento(e, +e.ev.base, evI) : null;
   kpis($('kpi-so'), [
     ['Liberadas hoje', tot ? num(H.q, 0) : '–', tot ? `de ${num(tot, 0)} concedidas (${pct(H.q / tot, 0)})` : 'cadastre as concessões'],
-    ['Valor hoje no papel', temBase && tot ? fm(H.liq) : '–', temBase ? `líquido, a ${soPx(e, soPpsHoje(e))} por ação` : 'falta ações e preço de hoje'],
+    ['Valor hoje no papel', temBase && tot && soPpsHoje(e) > 0 ? fm(H.liq) : '–', soPpsHoje(e) > 0 ? `líquido, a ${soPx(e, soPpsHoje(e))} por ação` : simples ? 'informe o preço de hoje, se souber' : 'falta ações e preço de hoje'],
     ['No evento (base)', base ? fm(base.liq) : '–', base ? `líquido em ${mLabel(evI)}` + (soN(e.ev.prob) != null ? ` · esperado ${fm(base.liq * e.ev.prob / 100)}` : '') : 'falta o valor do evento'],
     soEv ? ['Strike no Exit', base && base.pagar ? fm(base.pagar) : '–', base && base.pagar ? (e.cashless === 'nao' ? 'pago em dinheiro antes de receber' : 'sai do valor recebido no evento') : 'só se exerce no evento'] : ['Para exercer hoje', H.pagar ? fm(H.pagar) : '–', H.pagar ? 'strike das opções liberadas não exercidas' : 'nada a pagar']]);
   // vesting
@@ -6143,21 +6151,21 @@ function renderStock() {
     return `<tr><td class="name">${esc(SO_TIPOS[g.tipo] || '')} · ${g.data ? mLabel(soMes(g.data)) : '–'}</td><td>${num(q, 0)}</td><td>${g.tipo === 'phantom' || g.tipo === 'rsu' ? '–' : soPx(e, +g.strike || 0)}</td><td>${g.data ? mLabel(clV(g)) : '–'}</td><td>${g.data ? mLabel(fimV(g)) : '–'}</td><td>${num(c.q, 0)}</td><td>${q ? pct(c.q / q, 0) : '–'}</td><td>${sit}</td></tr>`; }).join('')}</tbody>` : '';
   // diluição
   const fim = evI ?? HOJE_IDX + 120, R = soRodadas(e, Math.max(fim, ...e.rodadas.map(r => soMes(r.mes) ?? 0))), pcEu = N => N > 0 && tot ? pct(tot / N, 3) : '–';
-  $('tbl-so-d').innerHTML = +e.fd > 0 ? `<thead><tr><th>Momento</th><th>Total de ações</th><th>Sua fatia (todas as concedidas)</th><th>Preço por ação</th><th>Valuation</th></tr></thead><tbody>
+  $('tbl-so-d').innerHTML = simples ? '' : +e.fd > 0 ? `<thead><tr><th>Momento</th><th>Total de ações</th><th>Sua fatia (todas as concedidas)</th><th>Preço por ação</th><th>Valuation</th></tr></thead><tbody>
     <tr><td class="name">Hoje</td><td>${num(+e.fd, 0)}</td><td>${pcEu(+e.fd)}</td><td>${+e.preco ? soPx(e, +e.preco) : '–'}</td><td>${+e.preco ? soMoeda(e, e.preco * e.fd) : '–'}</td></tr>
     ${R.passos.map(p => { const depois = evI != null && soMes(p.r.mes) > evI; return `<tr${depois ? ' style="opacity:.5"' : ''}><td class="name">${esc(p.r.nome || 'Rodada')} · ${mLabel(soMes(p.r.mes))}${depois ? ' <span class="subdet">depois do evento, não conta</span>' : ''}</td><td>${num(p.N, 0)}</td><td>${pcEu(p.N)}</td><td>${p.pps ? soPx(e, p.pps) : '–'}</td><td>${p.post ? soMoeda(e, p.post) : '–'}</td></tr>`; }).join('')}
     ${base ? `<tr class="totrow"><td class="name">Evento (base) · ${mLabel(evI)}</td><td>${num(base.N, 0)}</td><td>${pcEu(base.N)}</td><td>${soPx(e, base.pps)}</td><td>${soMoeda(e, +e.ev.base)}</td></tr>` : ''}</tbody>` : '<tbody><tr><td class="name"><span class="subdet">Preencha as ações totalmente diluídas de hoje para ver a diluição.</span></td></tr></tbody>';
   // resultado
   const avisos = [];
   if (!temBase) avisos.push('Preencha as ações totalmente diluídas e o preço por ação de hoje em "Empresa e plano".');
-  const cen = [['Hoje, pelo preço da rodada', null, null]];
+  const cen = simples && !(+e.preco > 0) ? [] : [[simples ? 'Hoje, pelo preço que você informou' : 'Hoje, pelo preço da rodada', null, null]];
   if (evI != null) [['Pessimista', 'pess'], ['Base', 'base'], ['Otimista', 'otim']].forEach(([nm, kk]) => { if (+e.ev[kk] > 0) cen.push([nm, kk, +e.ev[kk]]); });
   const rows = cen.map(([nm, kk, V]) => { const r = kk ? soEvento(e, V, evI) : Object.assign(H, { pps: soPpsHoje(e) }); return { nm, kk, V, r }; });
   const prob = soN(e.ev.prob);
   $('so-val-sub').textContent = `${ext ? `Valores em R$ ao câmbio de ${num(cx)}. ` : ''}Bruto é quanto você recebe pelas ações; strike é o que paga para exercer o que ainda não exerceu (na venda, costuma sair do próprio valor); imposto é estimado.`;
-  $('tbl-so-res').innerHTML = tot && temBase ? `<thead><tr><th>Cenário</th><th>Valor da empresa</th><th>Preço da sua ação</th><th>Contam</th><th>Bruto</th><th>Strike a pagar</th><th>Imposto</th><th>Líquido no bolso</th></tr></thead><tbody>${rows.map(({ nm, kk, V, r }) => `<tr${kk === 'base' ? ' class="sel"' : ''}><td class="name">${nm}${kk ? ` <span class="subdet">${mLabel(evI)}</span>` : ''}</td><td>${V ? soMoeda(e, V) : soMoeda(e, (+e.preco || 0) * (+e.fd || 0))}</td><td>${soPx(e, r.pps)}</td><td>${num(r.q, 0)}</td><td>${fm(r.rec)}</td><td>${r.pagar ? '−' + fm(r.pagar) : '–'}</td><td>${r.imp ? '−' + fm(r.imp) : '–'}</td><td><b>${fm(r.liq)}</b></td></tr>`).join('')}${prob != null && base ? `<tr><td class="name">Valor esperado <span class="subdet">${num(prob, 0)}% de chance × base</span></td><td colspan="6"></td><td><b>${fm(base.liq * prob / 100)}</b></td></tr>` : ''}</tbody>` : '';
+  $('tbl-so-res').innerHTML = tot && temBase ? `<thead><tr><th>Cenário</th>${simples ? '' : '<th>Valor da empresa</th>'}<th>Preço da sua ação</th><th>Contam</th><th>Bruto</th><th>Strike a pagar</th><th>Imposto</th><th>Líquido no bolso</th></tr></thead><tbody>${rows.map(({ nm, kk, V, r }) => `<tr${kk === 'base' ? ' class="sel"' : ''}><td class="name">${nm}${kk ? ` <span class="subdet">${mLabel(evI)}</span>` : ''}</td>${simples ? '' : `<td>${V ? soMoeda(e, V) : soMoeda(e, (+e.preco || 0) * (+e.fd || 0))}</td>`}<td>${soPx(e, r.pps)}</td><td>${num(r.q, 0)}</td><td>${fm(r.rec)}</td><td>${r.pagar ? '−' + fm(r.pagar) : '–'}</td><td>${r.imp ? '−' + fm(r.imp) : '–'}</td><td><b>${fm(r.liq)}</b></td></tr>`).join('')}${prob != null && base ? `<tr><td class="name">Valor esperado <span class="subdet">${num(prob, 0)}% de chance × base</span></td><td colspan="6"></td><td><b>${fm(base.liq * prob / 100)}</b></td></tr>` : ''}</tbody>` : '';
   if (base && e.ev.tipo !== 'ipo' && base.cas && base.cas.pago > 0) avisos.push(`No cenário base, ${soMoeda(e, base.cas.pago)} vão primeiro para os investidores que preferiram receber o valor de volta${base.cas.conv.some(Boolean) ? ' (os demais converteram em ações)' : ''}.`);
-  if (base) { const q0 = soQuebra(e, evI); if (q0) avisos.push(`Suas ${G.every(g => g.tipo === 'opcao') ? 'opções começam' : 'unidades começam'} a valer algo com uma venda acima de <b>${soMoeda(e, q0)}</b>${e.ev.tipo === 'ipo' ? ' de valuation' : ''}.`); }
+  if (base) { const q0 = soQuebra(e, evI); if (q0) avisos.push(`Suas ${G.every(g => g.tipo === 'opcao') ? 'opções começam' : 'unidades começam'} a valer algo com ${simples ? `a ação acima de <b>${soPx(e, q0)}</b>` : `uma venda acima de <b>${soMoeda(e, q0)}</b>${e.ev.tipo === 'ipo' ? ' de valuation' : ''}`}.`); }
   if (base && sai == null && G.some(g => soConta(g, e, evI, evI).q < (+g.qtd || 0) - 0.5)) avisos.push('Nem tudo estará liberado no mês do evento. O que não liberou fica de fora, a não ser que a concessão tenha aceleração.');
   if (sai != null) { const lost = G.reduce((s, g) => s + soConta(g, e, HOJE_IDX, null).perdeu, 0); if (lost > 0) avisos.push(`Você perdeu ${num(lost, 0)} ${G.some(g => g.tipo === 'opcao') ? 'opções liberadas que não foram exercidas na janela' : 'unidades na saída'}. Se você exerceu, preencha "Já exercidas".`); }
   if (evI != null && evI <= HOJE_IDX) avisos.push('A data do evento já passou. Atualize o mês do evento.');
@@ -6177,7 +6185,7 @@ function renderStock() {
   if (base && tot) {
     const mult = [0.25, 0.5, 1, 1.5, 2, 4], des = [-12, 0, 12, 24].filter(d => evI + d > HOJE_IDX);
     $('so-sens-sub').textContent = 'Líquido no bolso para cada valor de venda (linhas) e mês do evento (colunas). Um evento mais tarde libera mais vesting, mas pode ter mais rodadas diluindo antes.';
-    $('tbl-so-sens').innerHTML = `<thead><tr><th>Valor da empresa</th>${des.map(d => `<th>${mLabel(evI + d)}</th>`).join('')}</tr></thead><tbody>${mult.map(m => { const V = +e.ev.base * m; return `<tr${m === 1 ? ' class="sel"' : ''}><td class="name">${soMoeda(e, V)} <span class="subdet">${m === 1 ? 'base' : num(m) + '×'}</span></td>${des.map(d => { const r = soEvento(e, V, evI + d); return `<td>${r.liq > 0 ? fm(r.liq) : '–'}</td>`; }).join('')}</tr>`; }).join('')}</tbody>`;
+    $('tbl-so-sens').innerHTML = `<thead><tr><th>${simples ? 'Preço por ação' : 'Valor da empresa'}</th>${des.map(d => `<th>${mLabel(evI + d)}</th>`).join('')}</tr></thead><tbody>${mult.map(m => { const V = +e.ev.base * m; return `<tr${m === 1 ? ' class="sel"' : ''}><td class="name">${vf(V)} <span class="subdet">${m === 1 ? 'base' : num(m) + '×'}</span></td>${des.map(d => { const r = soEvento(e, V, evI + d); return `<td>${r.liq > 0 ? fm(r.liq) : '–'}</td>`; }).join('')}</tr>`; }).join('')}</tbody>`;
   } else { $('so-sens-sub').textContent = 'Preencha o evento (mês e valor base) e as concessões para ver a tabela.'; $('tbl-so-sens').innerHTML = ''; }
   // se eu sair
   const jaSaiu = sai != null, sS = jaSaiu ? sai : (soMes(state.so.simSaida) ?? HOJE_IDX + 12);
@@ -6191,7 +6199,7 @@ function renderStock() {
   // todas as empresas
   const E = state.so.empresas; $('so-todas').hidden = E.length < 2;
   if (E.length > 1) { let tH = 0, tE = 0;
-    $('tbl-so-tot').innerHTML = `<thead><tr><th>Empresa</th><th>Concedidas</th><th>Liberadas hoje</th><th>Valor hoje (líquido)</th><th>Evento base (líquido)</th><th>No plano</th></tr></thead><tbody>${E.map(x => { const h = soHoje(x), xi = soMes(x.ev.mes), b = xi != null && +x.ev.base > 0 && +x.fd > 0 ? soEvento(x, +x.ev.base, xi) : null, tq = x.grants.reduce((s, g) => s + (+g.qtd || 0), 0); tH += h.liq; tE += b ? b.liq : 0;
+    $('tbl-so-tot').innerHTML = `<thead><tr><th>Empresa</th><th>Concedidas</th><th>Liberadas hoje</th><th>Valor hoje (líquido)</th><th>Evento base (líquido)</th><th>No plano</th></tr></thead><tbody>${E.map(x => { const h = soHoje(x), xi = soMes(x.ev.mes), b = xi != null && +x.ev.base > 0 && (x.modo === 'acao' || +x.fd > 0) ? soEvento(x, +x.ev.base, xi) : null, tq = x.grants.reduce((s, g) => s + (+g.qtd || 0), 0); tH += h.liq; tE += b ? b.liq : 0;
       return `<tr><td class="name"><a href="#" data-soemp="${x.id}">${esc(x.nome)}</a>${x.saida ? ' <span class="subdet">saí em ' + mLabel(soMes(x.saida)) + '</span>' : ''}</td><td>${num(tq, 0)}</td><td>${num(h.q, 0)}</td><td>${fm(h.liq)}</td><td>${b ? fm(b.liq) + ' <span class="subdet">' + mLabel(xi) + '</span>' : '–'}</td><td>${x.ev.definido && x.ev.plano ? '<span class="chip best">sim</span>' : '–'}</td></tr>`; }).join('')}<tr class="totrow"><td class="name">Total</td><td></td><td></td><td>${fm(tH)}</td><td>${fm(tE)}</td><td></td></tr></tbody>`; }
 }
 document.addEventListener('input', e => { const el = e.target; if (!el.dataset || !el.dataset.so || el.tagName === 'SELECT' || el.type === 'checkbox' || el.type === 'month') return; soOnInput(el); });
