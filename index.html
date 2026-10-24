@@ -314,6 +314,10 @@ td.fam-bar { min-width: 150px; }
 .a6gx-top label { flex-direction: row; display: inline-flex; align-items: center; gap: 5px; font-size: 12px; cursor: pointer; text-transform: none; letter-spacing: 0; font-weight: 400; color: var(--ink); }
 .a6gx-top label input { width: auto; margin: 0; }
 .a6gx svg { width: 100%; height: auto; display: block; max-width: 760px; }
+.a6plot { position: relative; max-width: 760px; }
+.a6hit { cursor: pointer; outline: none; }
+.a6tip { position: absolute; z-index: 5; pointer-events: none; background: var(--panel); border: 1px solid var(--line); box-shadow: var(--shadow); border-radius: 8px; padding: 7px 10px; font-size: 11.5px; line-height: 1.45; color: var(--ink); white-space: nowrap; transform: translate(-50%, calc(-100% - 12px)); }
+.a6tip .pos { color: var(--good); } .a6tip .neg { color: var(--bad); }
 .a6gx text { fill: var(--faint); font-family: var(--f-ui); font-size: 10.5px; }
 .a6gx .gl line { stroke: var(--line); }
 .a6q { margin-top: 10px; border-top: 1px solid var(--line); padding-top: 8px; font-size: 12px; display: flex; flex-direction: column; gap: 8px; }
@@ -704,7 +708,7 @@ a.lm-ir:hover { border-bottom-style: solid; }
     </div>
     <div class="nav-mobile-sub" id="navMobileSub"></div>
   </div>
-  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 139</div></div>
+  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 140</div></div>
 </nav>
 
 <div class="main"><div class="wrap">
@@ -1530,7 +1534,7 @@ a.lm-ir:hover { border-bottom-style: solid; }
     return new Promise(resolve => { const { data } = sb.auth.onAuthStateChange(async (ev) => { if (ev !== 'PASSWORD_RECOVERY') return; const s = prompt('Digite a nova senha (mínimo 8 caracteres):'); if (s && s.length >= 8) { const { error } = await sb.auth.updateUser({ password: s }); alert(error ? 'Não deu para trocar a senha: ' + error.message : 'Senha trocada.'); } }); resolve(data); });
   }
   // ---------- rodapé: compartilhar, administração e sair ----------
-  const SITE_V = 18;
+  const SITE_V = 19;
   const escH = v => String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const dataBR = v => v ? new Date(v).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' }) : '–';
   const css2 = `.side-foot .r{flex-wrap:wrap}.side-foot .lg-acoes{margin-left:auto;display:inline-flex;gap:10px}
@@ -3475,12 +3479,12 @@ function a6Extremo(x, k) {
 }
 // minigráfico de colunas na linha: início do longo prazo, início do curto prazo e hoje
 // explicações das quedas fortes: mercado/quedas {data, mercado:[{de,ate,texto,fonte}], itens:{TK:[{de,ate,texto,fonte}]}}, pesquisadas pela tarefa diária
-let quedasDb = { data: '', mercado: [], itens: {} };
+let quedasDb = { data: '', mercado: [], global: [], itens: {} };
 function sanitizeQuedas(d) {
   const ok = q => q && /^\d{4}-\d{2}-\d{2}$/.test(q.de) && /^\d{4}-\d{2}-\d{2}$/.test(q.ate) && typeof q.texto === 'string';
   const lim = q => ({ de: q.de, ate: q.ate, texto: q.texto.slice(0, 600), fonte: /^https:\/\//.test(q.fonte || '') ? String(q.fonte).slice(0, 300) : '' });
-  const it = {}; Object.entries(d && typeof d.itens === 'object' ? d.itens : {}).forEach(([tk, l]) => { if (/^[A-Z0-9]{4,7}$/.test(tk) && Array.isArray(l)) it[tk] = l.filter(ok).map(lim).slice(0, 20); });
-  return { data: String(d && d.data || '').slice(0, 10), mercado: (Array.isArray(d && d.mercado) ? d.mercado : []).filter(ok).map(lim).slice(0, 40), itens: it };
+  const it = {}; Object.entries(d && typeof d.itens === 'object' ? d.itens : {}).forEach(([tk, l]) => { if (/^[A-Z][A-Z0-9]{0,6}$/.test(tk) && Array.isArray(l)) it[tk] = l.filter(ok).map(lim).slice(0, 20); });
+  return { data: String(d && d.data || '').slice(0, 10), mercado: (Array.isArray(d && d.mercado) ? d.mercado : []).filter(ok).map(lim).slice(0, 40), global: (Array.isArray(d && d.global) ? d.global : []).filter(ok).map(lim).slice(0, 40), itens: it };
 }
 // o que costuma derrubar cada grupo de ação (quando não há explicação pesquisada)
 const QUEDA_GRUPO = {
@@ -3490,20 +3494,43 @@ const QUEDA_GRUPO = {
   regulada: 'Depende de regras e tarifas definidas pelo governo e de juros longos: revisões tarifárias, mudanças regulatórias e alta dos juros pesam.',
   defensiva: 'Costuma oscilar menos; quedas fortes geralmente vêm de um resultado abaixo do esperado ou de uma queda do mercado todo.',
 };
+// ETFs da B3 que seguem ativos de fora (as quedas vêm do exterior e do dólar)
+const ETF_EXT = new Set(['IVVB11', 'NASD11', 'WRLD11', 'HASH11', 'GOLD11']);
+const deFora = x => x.mk === 'us' || x.mk === 'etfus' || ETF_EXT.has(x.tk);
+// o que costuma derrubar cada ação internacional ou ETF (quando não há explicação pesquisada)
+const QUEDA_ATIVO = {
+  tech: 'Ação de tecnologia de crescimento: costuma cair quando os juros americanos sobem (o lucro futuro passa a valer menos), quando o resultado ou a projeção do trimestre decepciona ou quando o mercado duvida do retorno dos investimentos em inteligência artificial.',
+  chips: 'Fabricante de chips: o setor é cíclico e costuma cair com sinais de demanda menor por data centers e IA, restrições de exportação para a China e juros americanos em alta.',
+  consumo: 'Varejo e consumo nos EUA: costuma cair quando o resultado ou a projeção vêm abaixo do esperado, com tarifas de importação ou com sinais de consumidor americano mais fraco.',
+  midia: 'Streaming: costuma cair quando o número de assinantes ou a projeção de receita decepcionam, ou com a concorrência e o custo de conteúdo pesando na margem.',
+  auto: 'Montadora de carros elétricos com ação muito volátil: entregas abaixo do esperado, guerra de preços, margens menores e notícias sobre o fundador pesam bastante.',
+  banco: 'Banco e meios de pagamento: costumam cair com medo de recessão, inadimplência maior, regras novas ou corte de juros que reduz a margem.',
+  saude: 'Saúde e consumo básico costumam oscilar menos; quedas fortes vêm de processos judiciais, resultado de estudo clínico, patente vencendo ou projeção cortada.',
+  bolsaEua: 'Segue a bolsa americana: cai quando o mercado todo cai, em geral por juros mais altos nos EUA, medo de recessão ou resultados fracos das grandes empresas de tecnologia.',
+  bolsaBr: 'Segue a bolsa brasileira: cai com juros futuros em alta, risco fiscal e eleitoral e saída de investidores estrangeiros.',
+  smallBr: 'Empresas brasileiras menores: dependem mais de crédito e consumo interno, então sofrem mais que o Ibovespa quando os juros sobem.',
+  mundo: 'Segue ações do mundo todo: cai quando as bolsas globais caem juntas, em geral por juros altos nos EUA, guerra ou medo de recessão.',
+  cripto: 'Segue criptomoedas, que podem cair 30% a 70% em poucos meses: aperto de juros, quebra de corretoras, regras novas e saída de investidores pesam.',
+  ouro: 'Segue o ouro: costuma cair quando os juros reais americanos sobem e o dólar se fortalece, ou quando um pico de procura por proteção se desfaz.',
+  imoveis: 'Fundos imobiliários americanos: caem quando os juros longos sobem, porque o aluguel passa a valer menos perto da renda fixa e o crédito encarece.',
+  titulos: 'Títulos do Tesouro americano: o preço cai quando os juros sobem; quanto mais longo o título, maior a queda.',
+};
+const QUEDA_TK = { AAPL: 'tech', MSFT: 'tech', GOOGL: 'tech', AMZN: 'tech', META: 'tech', NVDA: 'chips', AVGO: 'chips', TSM: 'chips', ASML: 'chips', NFLX: 'midia', TSLA: 'auto', JPM: 'banco', V: 'banco', LLY: 'saude', JNJ: 'saude', KO: 'saude', WMT: 'consumo',
+  VOO: 'bolsaEua', IVVB11: 'bolsaEua', QQQ: 'tech', NASD11: 'tech', SCHD: 'bolsaEua', VT: 'mundo', VXUS: 'mundo', WRLD11: 'mundo', BOVA11: 'bolsaBr', DIVO11: 'bolsaBr', SMAL11: 'smallBr', HASH11: 'cripto', GOLD11: 'ouro', GLD: 'ouro', VNQ: 'imoveis', TLT: 'titulos', BND: 'titulos', B5P211: 'titulos' };
 function quedasDe(x, pts) {
   const br = s => s.split('-').reverse().join('/'), q = [], dia = s => Date.parse(s + 'T00:00:00Z') / 864e5;
   // a explicação vale se cobre pelo menos uma semana do trecho (ou metade dela, se for curta)
   const sobrep = (a, b, c, d) => { const ov = Math.min(dia(b), dia(d)) - Math.max(dia(a), dia(c)); return ov >= Math.min(7, (dia(b) - dia(a)) / 2); };
   for (let i = 1; i < pts.length; i++) { const v = pts[i][1] / pts[i - 1][1] - 1; if (v <= -0.1) q.push({ de: pts[i - 1][0], ate: pts[i][0], v, i }); }
   return q.map(z => {
-    const esp = (quedasDb.itens[x.tk] || []).filter(e => sobrep(e.de, e.ate, z.de, z.ate)), mer = quedasDb.mercado.filter(e => sobrep(e.de, e.ate, z.de, z.ate));
+    const fora = deFora(x), esp = (quedasDb.itens[x.tk] || []).filter(e => sobrep(e.de, e.ate, z.de, z.ate)), mer = (fora ? quedasDb.global : quedasDb.mercado).filter(e => sobrep(e.de, e.ate, z.de, z.ate));
     // temporadas de balanço: fev-mar (4º tri), abr-mai (1º), jul-ago (2º), out-nov (3º); só para trechos de até 4 meses
     const TRI = { 2: '4º trimestre do ano anterior', 3: '4º trimestre do ano anterior', 4: '1º trimestre', 5: '1º trimestre', 7: '2º trimestre', 8: '2º trimestre', 10: '3º trimestre', 11: '3º trimestre' }, tris = [];
     if (dia(z.ate) - dia(z.de) <= 125) for (let t = dia(z.de); t <= dia(z.ate); t += 15) { const n = TRI[new Date(t * 864e5).getUTCMonth() + 1]; if (n && !tris.includes(n)) tris.push(n); }
     const tri = tris.join(' e do ');
-    const g = grupoPol(x.tk), ger = [];
-    if (!esp.length) { if (tri) ger.push(`O período inclui a divulgação dos resultados do ${tri}: vale conferir se o balanço veio abaixo do esperado.`); if (g && QUEDA_GRUPO[g]) ger.push(QUEDA_GRUPO[g]); }
-    return Object.assign(z, { txt: `${br(z.de)} a ${br(z.ate)}`, esp, mer, ger });
+    const g = x.mk ? null : grupoPol(x.tk), ga = QUEDA_ATIVO[QUEDA_TK[x.tk]] || (x.mk === 'us' ? QUEDA_ATIVO.bolsaEua : null), ger = [], acao = !x.mk || x.mk === 'us';
+    if (!esp.length) { if (tri && acao) ger.push(`O período inclui a divulgação dos resultados do ${tri}: vale conferir se o balanço veio abaixo do esperado.`); if (g && QUEDA_GRUPO[g]) ger.push(QUEDA_GRUPO[g]); if (ga) ger.push(ga); if (fora && x.moeda !== 'USD') ger.push('Em reais, a queda também reflete o dólar: quando o real se valoriza, o ETF cai mesmo com o ativo lá fora parado.'); }
+    return Object.assign(z, { txt: `${br(z.de)} a ${br(z.ate)}`, esp, mer, ger, merRot: fora ? 'exterior' : 'mercado' });
   });
 }
 // gráfico da ação contra o CDI (abre ao clicar no código); a linha liga os preços que a tabela guarda
@@ -3527,13 +3554,22 @@ function a6Detalhe(x) {
   const nT = W < 500 ? 3 : 5; for (let i = 0; i <= nT; i++) { const p = p0 + span * i / nT, mi = Math.floor(p); g += `<text x="${X(p).toFixed(1)}" y="${H - 6}" text-anchor="${i === 0 ? 'start' : i === nT ? 'end' : 'middle'}">${i === nT ? 'hoje' : mLabel(mi)}</text>`; }
   const path = l => l.map(([p, v], i) => `${i ? 'L' : 'M'}${X(p).toFixed(1)} ${Y(v).toFixed(1)}`).join(' ');
   const corA = 'var(--s2)', corC = 'var(--plan)', qd = quedasDe(x, pts);
-  const svg = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${esc(x.tk)} contra o CDI">${g}${a6Cdi ? `<path d="${path(cdi)}" fill="none" stroke="${corC}" stroke-width="2" stroke-dasharray="5 4"/>` : ''}<path d="${path(acao)}" fill="none" stroke="${corA}" stroke-width="2.4" stroke-linejoin="round"/>${qd.map((z, n) => { const a0 = acao[z.i - 1], a1 = acao[z.i]; return `<path d="M${X(a0[0]).toFixed(1)} ${Y(a0[1]).toFixed(1)} L${X(a1[0]).toFixed(1)} ${Y(a1[1]).toFixed(1)}" stroke="var(--bad)" stroke-width="3" fill="none"/><circle cx="${X(a1[0]).toFixed(1)}" cy="${(Y(a1[1]) + 14).toFixed(1)}" r="8" fill="var(--bad)"/><text x="${X(a1[0]).toFixed(1)}" y="${(Y(a1[1]) + 17.5).toFixed(1)}" text-anchor="middle" style="fill:#fff;font-weight:700;font-size:10px">${n + 1}</text>`; }).join('')}${acao.map(([p, v], i) => `<circle cx="${X(p).toFixed(1)}" cy="${Y(v).toFixed(1)}" r="3" fill="${corA}"><title>${br(pts[i][0])}: ${fmx(x, pts[i][1])} (${v >= 0 ? '+' : ''}${pct(v)})</title></circle>`).join('')}</svg>`;
+  const svg = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${esc(x.tk)} contra o CDI">${g}${a6Cdi ? `<path d="${path(cdi)}" fill="none" stroke="${corC}" stroke-width="2" stroke-dasharray="5 4"/>` : ''}<path d="${path(acao)}" fill="none" stroke="${corA}" stroke-width="2.4" stroke-linejoin="round"/>${qd.map((z, n) => { const a0 = acao[z.i - 1], a1 = acao[z.i]; return `<path d="M${X(a0[0]).toFixed(1)} ${Y(a0[1]).toFixed(1)} L${X(a1[0]).toFixed(1)} ${Y(a1[1]).toFixed(1)}" stroke="var(--bad)" stroke-width="3" fill="none"/><circle cx="${X(a1[0]).toFixed(1)}" cy="${(Y(a1[1]) + 14).toFixed(1)}" r="8" fill="var(--bad)"/><text x="${X(a1[0]).toFixed(1)}" y="${(Y(a1[1]) + 17.5).toFixed(1)}" text-anchor="middle" style="fill:#fff;font-weight:700;font-size:10px">${n + 1}</text>`; }).join('')}${acao.map(([p, v], i) => `<circle cx="${X(p).toFixed(1)}" cy="${Y(v).toFixed(1)}" r="3.5" fill="${corA}" class="a6pt"/>`).join('')}${acao.map(([p, v], i) => { const c = cdiFat(p0, p) - 1, ant = i ? pts[i][1] / pts[i - 1][1] - 1 : null; return `<circle cx="${X(p).toFixed(1)}" cy="${Y(v).toFixed(1)}" r="11" fill="transparent" class="a6hit" tabindex="0" data-tip="${esc(`<b>${br(pts[i][0])}</b> · ${fmx(x, pts[i][1])}<br>${x.tk}: <b class="${v >= 0 ? 'pos' : 'neg'}">${v >= 0 ? '+' : ''}${pct(v)}</b> desde o início${ant != null ? `<br>Desde o ponto anterior: <b class="${ant >= 0 ? 'pos' : 'neg'}">${ant >= 0 ? '+' : ''}${pct(ant)}</b>` : ''}${a6Cdi ? `<br>CDI: +${pct(c)}` : ''}`)}"/>`; }).join('')}</svg>`;
   const rA = acao[acao.length - 1][1], rC = cdi[cdi.length - 1][1], anos = span / 12, aa = r => anos >= 1 ? ` <span class="subdet">(${pct(Math.pow(1 + r, 1 / anos) - 1)} a.a.)</span>` : '';
   const us = x.mk === 'us' || x.mk === 'etfus';
   const res = `<span><b style="color:${corA}">●</b> ${esc(x.tk)}: <b>${rA >= 0 ? '+' : ''}${pct(rA)}</b>${aa(rA)}</span>${a6Cdi ? `<span><b style="color:${corC}">●</b> CDI: <b>+${pct(rC)}</b>${aa(rC)}</span><span>${anos >= 1 ? (dif => `${dif >= 0 ? 'Acima' : 'Abaixo'} do CDI: <b class="${dif >= 0 ? 'pos' : 'neg'}">${dif >= 0 ? '+' : '−'}${num(Math.abs(dif) * 100, 1)} p.p. ao ano</b>`)((Math.pow(1 + rA, 1 / anos) - 1) - (Math.pow(1 + rC, 1 / anos) - 1)) : `${rA >= rC ? 'Acima' : 'Abaixo'} do CDI: <b class="${rA >= rC ? 'pos' : 'neg'}">${rA - rC >= 0 ? '+' : '−'}${num(Math.abs(rA - rC) * 100, 1)} p.p. no período</b>`}</span>` : ''}`;
-  return `<div class="a6det"><div class="a6gx"><div class="a6gx-top"><b>${esc(x.tk)} contra o CDI desde ${br(d0)}</b><div class="seg" role="group" aria-label="Período do gráfico">${opts.map(([k, t]) => `<button type="button" data-a6gper="${k}" aria-pressed="${k === per}">${t}</button>`).join('')}</div><label><input type="checkbox" data-a6cdi${a6Cdi ? ' checked' : ''}> Mostrar CDI</label><button type="button" class="btn ghost tiny" data-a6graf="${esc(x.tk)}" style="margin-left:auto">Fechar</button></div>${svg}
-    <div class="a6gx-res">${res}</div>${qd.length ? `<div class="a6q"><b>Quedas fortes no período</b>${qd.map((z, n) => `<div class="a6q-i"><span class="a6q-n">${n + 1}</span><div><b class="neg">${pct(z.v)}</b> <span class="subdet">de ${z.txt}</span>${z.esp.map(e => `<p>${esc(e.texto)}${e.fonte ? ` <a href="${esc(e.fonte)}" target="_blank" rel="noopener">fonte</a>` : ''}</p>`).join('')}${z.mer.map(e => `<p><span class="chip">mercado</span> ${esc(e.texto)}${e.fonte ? ` <a href="${esc(e.fonte)}" target="_blank" rel="noopener">fonte</a>` : ''}</p>`).join('')}${z.ger.length ? `<p class="subdet">${z.esp.length || z.mer.length ? '' : 'Ainda sem explicação pesquisada para esta queda. '}${z.ger.map(esc).join(' ')}</p>` : ''}</div></div>`).join('')}<p class="subdet">Explicações pesquisadas em notícias pela tarefa diária${quedasDb.data ? ` (última em ${quedasDb.data.split('-').reverse().join('/')})` : ''}; quedas novas entram nas próximas rodadas.</p></div>` : ''}<p class="hint" style="margin-top:4px">Preço ajustado por proventos (como se os dividendos fossem reinvestidos), antes do IR dos dois lados. A linha liga os pontos que a tabela guarda (início de cada período, máxima e mínima de 5 anos e hoje), então é uma aproximação do caminho.${us ? ' A ação está em US$ e o CDI em R$: a comparação não inclui o câmbio.' : ''} CDI mensal do Banco Central.</p></div></div>`;
+  return `<div class="a6det"><div class="a6gx"><div class="a6gx-top"><b>${esc(x.tk)} contra o CDI desde ${br(d0)}</b><div class="seg" role="group" aria-label="Período do gráfico">${opts.map(([k, t]) => `<button type="button" data-a6gper="${k}" aria-pressed="${k === per}">${t}</button>`).join('')}</div><label><input type="checkbox" data-a6cdi${a6Cdi ? ' checked' : ''}> Mostrar CDI</label><button type="button" class="btn ghost tiny" data-a6graf="${esc(x.tk)}" style="margin-left:auto">Fechar</button></div><div class="a6plot">${svg}<div class="a6tip" hidden></div></div>
+    <div class="a6gx-res">${res}</div>${qd.length ? `<div class="a6q"><b>Quedas fortes no período</b>${qd.map((z, n) => `<div class="a6q-i"><span class="a6q-n">${n + 1}</span><div><b class="neg">${pct(z.v)}</b> <span class="subdet">de ${z.txt}</span>${z.esp.map(e => `<p>${esc(e.texto)}${e.fonte ? ` <a href="${esc(e.fonte)}" target="_blank" rel="noopener">fonte</a>` : ''}</p>`).join('')}${z.mer.map(e => `<p><span class="chip">${z.merRot}</span> ${esc(e.texto)}${e.fonte ? ` <a href="${esc(e.fonte)}" target="_blank" rel="noopener">fonte</a>` : ''}</p>`).join('')}${z.ger.length ? `<p class="subdet">${z.esp.length || z.mer.length ? '' : 'Ainda sem explicação pesquisada para esta queda. '}${z.ger.map(esc).join(' ')}</p>` : ''}</div></div>`).join('')}<p class="subdet">Explicações pesquisadas em notícias pela tarefa diária${quedasDb.data ? ` (última em ${quedasDb.data.split('-').reverse().join('/')})` : ''}; quedas novas entram nas próximas rodadas.</p></div>` : ''}<p class="hint" style="margin-top:4px">Preço ajustado por proventos (como se os dividendos fossem reinvestidos), antes do IR dos dois lados. A linha liga os pontos que a tabela guarda (início de cada período, máxima e mínima de 5 anos e hoje), então é uma aproximação do caminho.${us ? ' A ação está em US$ e o CDI em R$: a comparação não inclui o câmbio.' : ''} CDI mensal do Banco Central.</p></div></div>`;
 }
+// mostra o percentual do ponto ao passar o mouse (ou tocar) no gráfico do ativo
+function a6Dica(hit) { const box = hit.closest('.a6plot'), tip = box && box.querySelector('.a6tip'); if (!tip) return; const r = hit.getBoundingClientRect(), b = box.getBoundingClientRect();
+  tip.innerHTML = hit.dataset.tip; tip.hidden = false; const x = r.left + r.width / 2 - b.left, w = tip.offsetWidth; tip.style.left = Math.min(Math.max(x, w / 2 + 4), b.width - w / 2 - 4) + 'px'; tip.style.top = (r.top + r.height / 2 - b.top) + 'px'; }
+const a6Some = el => { const t = el && el.closest && el.closest('.a6plot'); if (t) t.querySelector('.a6tip').hidden = true; };
+document.addEventListener('mouseover', e => { const h = e.target.closest && e.target.closest('.a6hit'); if (h) a6Dica(h); });
+document.addEventListener('mouseout', e => { if (e.target.closest && e.target.closest('.a6hit')) a6Some(e.target); });
+document.addEventListener('focusin', e => { if (e.target.classList && e.target.classList.contains('a6hit')) a6Dica(e.target); });
+document.addEventListener('focusout', e => { if (e.target.classList && e.target.classList.contains('a6hit')) a6Some(e.target); });
+document.addEventListener('click', e => { const h = e.target.closest && e.target.closest('.a6hit'); if (h) a6Dica(h); });
 function a6Graf(x, kl, kc) {
   const br = s => s.split('-').reverse().join('/');
   const b = [[x.h[kl], 'lp'], [x.h[kc], 'cp'], [[x.d1, x.p1], 'hj']].filter(([v]) => v && v[1] > 0);
