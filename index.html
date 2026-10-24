@@ -14,6 +14,7 @@
   --bad: #B42318; --bad-soft: #FDECEA; --good: #15803d; --good-soft: #e8f7ee; --red: #dc2626; --red-soft: #fdecec; --warn: #b45309; --warn-soft: #fffbeb;
   --s1: #1F4E8C; --s2: #C8783F; --s3: #D4A72C; --s4: #6B7FA8; --s5: #0F1F3D; --s6: #e11d48; --s7: #65a30d; --s8: #0284c7; --s9: #c2410c; --s10: #64748b;
   --plan: #9AA3B2;
+  --band: #0F1F3D; --band-line: transparent; --band-dot: #C9773F; --band-link: #F0AE80;
   --side: #0F1F3D; --side-ink: #ffffff; --tint: 15,31,61; --side-hl: 255,255,255;
   --shadow: 0 2px 8px rgba(var(--tint),.08), 0 1px 2px rgba(var(--tint),.06);
   --side-w: 236px;
@@ -27,7 +28,7 @@
     --accent: #E09A63; --accent-strong: #F2C9A5; --accent-soft: #2E2420; --dotc: #E3B848;
     --bad: #fb923c; --bad-soft: #3a2418; --good: #6ee79a; --good-soft: #17301f; --red: #f87171; --red-soft: #3b1c1c; --warn: #fbbf24; --warn-soft: #352b14;
     --s1: #7FA6E0; --s2: #E09A63; --s3: #E3B848; --s4: #A6B4D6; --s5: #F2C9A5; --s6: #fb7185; --s7: #a3e05a; --s8: #5fc2f5; --s9: #fb923c; --s10: #a3b4c4;
-    --plan: #6E7A91; --side: #0A1426;
+    --plan: #6E7A91; --side: #0A1426; --band: #1B2C4E; --band-line: #C9773F;
     --shadow: 0 1px 2px rgba(0,0,0,.4);
     color-scheme: dark;
   }
@@ -37,7 +38,7 @@
   --accent: #E09A63; --accent-strong: #F2C9A5; --accent-soft: #2E2420; --dotc: #E3B848;
   --bad: #fb923c; --bad-soft: #3a2418; --good: #6ee79a; --good-soft: #17301f; --red: #f87171; --red-soft: #3b1c1c; --warn: #fbbf24; --warn-soft: #352b14;
   --s1: #7FA6E0; --s2: #E09A63; --s3: #E3B848; --s4: #A6B4D6; --s5: #F2C9A5; --s6: #fb7185; --s7: #a3e05a; --s8: #5fc2f5; --s9: #fb923c; --s10: #a3b4c4;
-  --plan: #6E7A91; --side: #0A1426;
+  --plan: #6E7A91; --side: #0A1426; --band: #1B2C4E; --band-line: #C9773F;
   --shadow: 0 1px 2px rgba(0,0,0,.4);
   color-scheme: dark;
 }
@@ -354,6 +355,18 @@ td.fam-bar { min-width: 150px; }
 .kv .big { font-family: var(--f-head); font-size: 14px; font-weight: 600; }
 .panel { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; box-shadow: var(--shadow); padding: 16px 18px; min-width: 0; }
 .panel > .sub { font-size: 11.5px; margin: 0 0 12px 16px; }
+/* faixa do cabeçalho da seção (v133) */
+.panel > h2:first-child, .panel > .row:first-child:has(h2) { margin: -16px -18px 12px; padding: 11px 18px; background: var(--band); border-bottom: 2px solid var(--band-line); border-radius: 9px 9px 0 0; }
+.panel > h2:first-child { color: #fff; }
+.panel > .row:first-child:has(h2) h2 { color: #fff; margin: 0; }
+.panel > h2:first-child::before, .panel > .row:first-child:has(h2) h2::before { background: var(--band-dot); width: 8px; height: 8px; }
+.panel > :first-child .ibtn { background: transparent; border-color: rgba(255,255,255,.55); color: #fff; }
+.panel > :first-child .ibtn:hover, .panel > :first-child .ibtn:focus-visible { border-color: var(--band-dot); color: var(--band-dot); }
+.panel > .row:first-child:has(h2) .btn.ghost:not(.cols-menu *) { background: transparent; color: #fff; border-color: rgba(255,255,255,.4); }
+.panel > .row:first-child:has(h2) .btn.ghost:not(.cols-menu *):hover { border-color: #fff; }
+.panel > .row:first-child:has(h2) :is(.hint, .sub, label.inline, label.check, .src):not(.cols-menu *) { color: rgba(255,255,255,.75); }
+.panel > .row:first-child:has(h2) a:not(.cols-menu *) { color: var(--band-link); }
+.panel > .row:first-child:has(h2) .seg button:not([aria-pressed="true"]) { background: transparent; color: rgba(255,255,255,.85); border-color: rgba(255,255,255,.35); }
 .legend { display: flex; flex-wrap: wrap; gap: 6px 14px; font-size: 11.5px; margin-bottom: 6px; }
 .legend span::before { content: ""; display: inline-block; width: 12px; height: 3px; border-radius: 2px; background: var(--c); margin-right: 6px; vertical-align: middle; }
 .legend span.dash::before { background: repeating-linear-gradient(90deg, var(--c) 0 4px, transparent 4px 7px); }
@@ -675,7 +688,7 @@ a.lm-ir:hover { border-bottom-style: solid; }
     </div>
     <div class="nav-mobile-sub" id="navMobileSub"></div>
   </div>
-  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 132</div></div>
+  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 133</div></div>
 </nav>
 
 <div class="main"><div class="wrap">
@@ -1500,7 +1513,7 @@ a.lm-ir:hover { border-bottom-style: solid; }
     return new Promise(resolve => { const { data } = sb.auth.onAuthStateChange(async (ev) => { if (ev !== 'PASSWORD_RECOVERY') return; const s = prompt('Digite a nova senha (mínimo 8 caracteres):'); if (s && s.length >= 8) { const { error } = await sb.auth.updateUser({ password: s }); alert(error ? 'Não deu para trocar a senha: ' + error.message : 'Senha trocada.'); } }); resolve(data); });
   }
   // ---------- rodapé: compartilhar, administração e sair ----------
-  const SITE_V = 11;
+  const SITE_V = 12;
   const escH = v => String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const dataBR = v => v ? new Date(v).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' }) : '–';
   const css2 = `.side-foot .r{flex-wrap:wrap}.side-foot .lg-acoes{margin-left:auto;display:inline-flex;gap:10px}
