@@ -411,6 +411,9 @@ td.fam-bar { min-width: 150px; }
 .panel > h2:first-child, .panel > .row:first-child:has(h2) { position: relative; padding-right: 54px !important; }
 .sec-tog { position: absolute; right: 16px; top: 50%; margin-top: -12px; flex-shrink: 0; width: 24px; height: 24px; border-radius: 50%; border: 1px solid rgba(255,255,255,.4); background: transparent; color: #fff; font-size: 11px; line-height: 1; cursor: pointer; display: inline-grid; place-items: center; padding: 0; transition: transform .15s; }
 .sec-tog:hover, .sec-tog:focus-visible { border-color: #fff; }
+.panel > h2:first-child:has(> .sec-tog), .panel > .row:first-child:has(> .sec-tog) { cursor: pointer; user-select: none; }
+.panel > .row:first-child:has(> .sec-tog) :is(input, select, label, a, button:not(.sec-tog)) { cursor: auto; }
+.panel > .row:first-child:has(> .sec-tog) :is(button, a, select) { cursor: pointer; }
 .panel.recolhida .sec-tog { transform: rotate(-90deg); }
 @media (max-width: 760px) { .sec-tog { top: 12px; margin-top: 0; } }
 .panel.recolhida { padding-bottom: 0; }
@@ -755,7 +758,7 @@ a.lm-ir:hover { border-bottom-style: solid; }
     </div>
     <div class="nav-mobile-sub" id="navMobileSub"></div>
   </div>
-  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 163</div></div>
+  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 164</div></div>
 </nav>
 <div class="sino-pop" id="sino-pop" role="dialog" aria-label="Central de avisos" hidden></div>
 
@@ -1716,7 +1719,7 @@ a.lm-ir:hover { border-bottom-style: solid; }
     return new Promise(resolve => { const { data } = sb.auth.onAuthStateChange(async (ev) => { if (ev !== 'PASSWORD_RECOVERY') return; const s = prompt('Digite a nova senha (mínimo 8 caracteres):'); if (s && s.length >= 8) { const { error } = await sb.auth.updateUser({ password: s }); alert(error ? 'Não deu para trocar a senha: ' + error.message : 'Senha trocada.'); } }); resolve(data); });
   }
   // ---------- rodapé: compartilhar, administração e sair ----------
-  const SITE_V = 42;
+  const SITE_V = 43;
   const escH = v => String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const dataBR = v => v ? new Date(v).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' }) : '–';
   const css2 = `.side-foot .r{flex-wrap:wrap}.side-foot .lg-acoes{margin-left:auto;display:inline-flex;gap:10px}
@@ -5703,7 +5706,9 @@ function prepSecoes() {
 function abrirSecao(el) { if (!el) return; const ps = el.matches('.panel') ? [el] : [...el.querySelectorAll('.panel.recolhida')]; let mudou = false;
   ps.forEach(pn => { const k = chaveSec(pn); if (secRecolhidas.includes(k)) { secRecolhidas = secRecolhidas.filter(x => x !== k); mudou = true; } });
   if (mudou) { try { localStorage.setItem('painel-secoes-recolhidas', JSON.stringify(secRecolhidas)); } catch (e) {} prepSecoes(); } }
-document.addEventListener('click', e => { const b = e.target.closest && e.target.closest('.sec-tog'); if (!b) return; const pn = b.closest('.panel'), k = chaveSec(pn);
+// clicar em qualquer parte vazia da faixa azul também abre/recolhe
+function faixaSec(t) { if (!t.closest || t.closest('button:not(.sec-tog), a, input, select, textarea, label, summary, .cols-menu, .seg, [role="menu"]')) return null; const pn = t.closest('.panel'); if (!pn) return null; const hd = pn.firstElementChild; return hd && hd.contains(t) && hd.querySelector(':scope > .sec-tog') ? hd.querySelector(':scope > .sec-tog') : null; }
+document.addEventListener('click', e => { const b = (e.target.closest && e.target.closest('.sec-tog')) || faixaSec(e.target); if (!b) return; if (window.getSelection && String(window.getSelection()).length) return; const pn = b.closest('.panel'), k = chaveSec(pn);
   secRecolhidas = secRecolhidas.includes(k) ? secRecolhidas.filter(x => x !== k) : [...secRecolhidas, k];
   try { localStorage.setItem('painel-secoes-recolhidas', JSON.stringify(secRecolhidas)); } catch (err) {} prepSecoes(); });
 let prepT = 0; new MutationObserver(() => { clearTimeout(prepT); prepT = setTimeout(prepSecoes, 60); }).observe(document.body, { childList: true, subtree: true });
