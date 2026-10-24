@@ -708,7 +708,7 @@ a.lm-ir:hover { border-bottom-style: solid; }
     </div>
     <div class="nav-mobile-sub" id="navMobileSub"></div>
   </div>
-  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 141</div></div>
+  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 142</div></div>
 </nav>
 
 <div class="main"><div class="wrap">
@@ -1534,7 +1534,7 @@ a.lm-ir:hover { border-bottom-style: solid; }
     return new Promise(resolve => { const { data } = sb.auth.onAuthStateChange(async (ev) => { if (ev !== 'PASSWORD_RECOVERY') return; const s = prompt('Digite a nova senha (mínimo 8 caracteres):'); if (s && s.length >= 8) { const { error } = await sb.auth.updateUser({ password: s }); alert(error ? 'Não deu para trocar a senha: ' + error.message : 'Senha trocada.'); } }); resolve(data); });
   }
   // ---------- rodapé: compartilhar, administração e sair ----------
-  const SITE_V = 20;
+  const SITE_V = 21;
   const escH = v => String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const dataBR = v => v ? new Date(v).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' }) : '–';
   const css2 = `.side-foot .r{flex-wrap:wrap}.side-foot .lg-acoes{margin-left:auto;display:inline-flex;gap:10px}
@@ -3480,9 +3480,10 @@ function a6Extremo(x, k) {
 // minigráfico de colunas na linha: início do longo prazo, início do curto prazo e hoje
 // explicações das quedas fortes: mercado/quedas {data, mercado:[{de,ate,texto,fonte}], itens:{TK:[{de,ate,texto,fonte}]}}, pesquisadas pela tarefa diária
 let quedasDb = { data: '', mercado: [], global: [], itens: {} };
+const CLS_QUEDA = ['acoes', 'cripto', 'ouro', 'imoveis', 'titulos'];
 function sanitizeQuedas(d) {
   const ok = q => q && /^\d{4}-\d{2}-\d{2}$/.test(q.de) && /^\d{4}-\d{2}-\d{2}$/.test(q.ate) && typeof q.texto === 'string';
-  const lim = q => ({ de: q.de, ate: q.ate, texto: q.texto.slice(0, 600), fonte: /^https:\/\//.test(q.fonte || '') ? String(q.fonte).slice(0, 300) : '' });
+  const lim = q => ({ de: q.de, ate: q.ate, texto: q.texto.slice(0, 600), fonte: /^https:\/\//.test(q.fonte || '') ? String(q.fonte).slice(0, 300) : '', cls: CLS_QUEDA.includes(q.cls) ? q.cls : '' });
   const it = {}; Object.entries(d && typeof d.itens === 'object' ? d.itens : {}).forEach(([tk, l]) => { if (/^[A-Z][A-Z0-9]{0,6}$/.test(tk) && Array.isArray(l)) it[tk] = l.filter(ok).map(lim).slice(0, 20); });
   return { data: String(d && d.data || '').slice(0, 10), mercado: (Array.isArray(d && d.mercado) ? d.mercado : []).filter(ok).map(lim).slice(0, 40), global: (Array.isArray(d && d.global) ? d.global : []).filter(ok).map(lim).slice(0, 40), itens: it };
 }
@@ -3517,13 +3518,16 @@ const QUEDA_ATIVO = {
 };
 const QUEDA_TK = { AAPL: 'tech', MSFT: 'tech', GOOGL: 'tech', AMZN: 'tech', META: 'tech', NVDA: 'chips', AVGO: 'chips', TSM: 'chips', ASML: 'chips', NFLX: 'midia', TSLA: 'auto', JPM: 'banco', V: 'banco', LLY: 'saude', JNJ: 'saude', KO: 'saude', WMT: 'consumo',
   VOO: 'bolsaEua', IVVB11: 'bolsaEua', QQQ: 'tech', NASD11: 'tech', SCHD: 'bolsaEua', VT: 'mundo', VXUS: 'mundo', WRLD11: 'mundo', BOVA11: 'bolsaBr', DIVO11: 'bolsaBr', SMAL11: 'smallBr', HASH11: 'cripto', GOLD11: 'ouro', GLD: 'ouro', VNQ: 'imoveis', TLT: 'titulos', BND: 'titulos', B5P211: 'titulos' };
+// episódios do exterior valem só para a classe do ativo: ouro não explica queda de ação americana
+const clsEpisodio = e => e.cls || (/bitcoin|cripto/i.test(e.texto) ? 'cripto' : /\bouro\b|gold/i.test(e.texto) ? 'ouro' : /treasur|título|titulo/i.test(e.texto) ? 'titulos' : /imobili|REIT/i.test(e.texto) ? 'imoveis' : 'acoes');
+const clsAtivo = x => { const g = QUEDA_TK[x.tk]; return CLS_QUEDA.includes(g) ? g : 'acoes'; };
 function quedasDe(x, pts) {
   const br = s => s.split('-').reverse().join('/'), q = [], dia = s => Date.parse(s + 'T00:00:00Z') / 864e5;
   // a explicação vale se cobre pelo menos uma semana do trecho (ou metade dela, se for curta)
   const sobrep = (a, b, c, d) => { const ov = Math.min(dia(b), dia(d)) - Math.max(dia(a), dia(c)); return ov >= Math.min(7, (dia(b) - dia(a)) / 2); };
   for (let i = 1; i < pts.length; i++) { const v = pts[i][1] / pts[i - 1][1] - 1; if (v <= -0.1) q.push({ de: pts[i - 1][0], ate: pts[i][0], v, i }); }
   return q.map(z => {
-    const fora = deFora(x), esp = (quedasDb.itens[x.tk] || []).filter(e => sobrep(e.de, e.ate, z.de, z.ate)), mer = (fora ? quedasDb.global : quedasDb.mercado).filter(e => sobrep(e.de, e.ate, z.de, z.ate));
+    const fora = deFora(x), esp = (quedasDb.itens[x.tk] || []).filter(e => sobrep(e.de, e.ate, z.de, z.ate)), mer = (fora ? quedasDb.global.filter(e => clsEpisodio(e) === clsAtivo(x)) : quedasDb.mercado).filter(e => sobrep(e.de, e.ate, z.de, z.ate));
     // temporadas de balanço: fev-mar (4º tri), abr-mai (1º), jul-ago (2º), out-nov (3º); só para trechos de até 4 meses
     const TRI = { 2: '4º trimestre do ano anterior', 3: '4º trimestre do ano anterior', 4: '1º trimestre', 5: '1º trimestre', 7: '2º trimestre', 8: '2º trimestre', 10: '3º trimestre', 11: '3º trimestre' }, tris = [];
     if (dia(z.ate) - dia(z.de) <= 125) for (let t = dia(z.de); t <= dia(z.ate); t += 15) { const n = TRI[new Date(t * 864e5).getUTCMonth() + 1]; if (n && !tris.includes(n)) tris.push(n); }
