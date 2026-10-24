@@ -725,7 +725,7 @@ a.lm-ir:hover { border-bottom-style: solid; }
     </div>
     <div class="nav-mobile-sub" id="navMobileSub"></div>
   </div>
-  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 150</div></div>
+  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 151</div></div>
 </nav>
 
 <div class="main"><div class="wrap">
@@ -1559,7 +1559,7 @@ a.lm-ir:hover { border-bottom-style: solid; }
     return new Promise(resolve => { const { data } = sb.auth.onAuthStateChange(async (ev) => { if (ev !== 'PASSWORD_RECOVERY') return; const s = prompt('Digite a nova senha (mínimo 8 caracteres):'); if (s && s.length >= 8) { const { error } = await sb.auth.updateUser({ password: s }); alert(error ? 'Não deu para trocar a senha: ' + error.message : 'Senha trocada.'); } }); resolve(data); });
   }
   // ---------- rodapé: compartilhar, administração e sair ----------
-  const SITE_V = 29;
+  const SITE_V = 30;
   const escH = v => String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const dataBR = v => v ? new Date(v).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' }) : '–';
   const css2 = `.side-foot .r{flex-wrap:wrap}.side-foot .lg-acoes{margin-left:auto;display:inline-flex;gap:10px}
@@ -3635,7 +3635,7 @@ function renderA6() {
   const cols = a6Colunas().filter(k => (temLongo || (k !== 'il' && k !== 'pl')) && !(gl && k === 'acao'));
   const C = {
     tk: { h: () => th('tk', a6Aba === 'etf' ? 'ETF' : a6Aba === 'fii' ? 'Fundo' : 'Ação', 'tk'), c: x => `<td class="name"><button type="button" class="a6tk" data-a6graf="${esc(x.tk)}" aria-expanded="${a6Abre === x.tk}" title="ver o gráfico contra o CDI">${esc(x.mk === 'fundo' ? x.nome || x.tk : x.tk)}</button>${x.d1 && d.data && x.d1 < d.data.slice(0, 8) + '01' ? `<div class="subdet">até ${x.d1.split('-').reverse().join('/').slice(0, 5)}</div>` : ''}</td>` },
-    emp: { h: () => th('emp', a6Aba === 'etf' ? 'O que acompanha' : a6Aba === 'fii' ? 'Nome' : 'Empresa'), c: x => `<td class="name">${esc(nomeB3(x.tk))}${gl && a6Aba === 'etf' ? ` <span class="chip">${x.mk === 'etf' ? 'B3 · R$' : 'EUA · US$'}</span>` : ''}${gl && a6Aba === 'fii' ? ` <span class="chip">${x.mk === 'fii' ? 'FII · B3' : 'fundo · cota'}</span>` : ''}${tem(x.tk) ? ' <span class="chip">na carteira</span>' : ''}</td>` },
+    emp: { h: () => th('emp', a6Aba === 'etf' ? 'O que acompanha' : a6Aba === 'fii' ? 'Nome' : 'Empresa'), c: x => `<td class="name">${x.mk === 'fundo' ? (x.cnpj && x.cnpj.length === 14 ? 'CNPJ ' + x.cnpj.replace(/^(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})$/, '$1.$2.$3/$4-$5') : '') : esc(nomeB3(x.tk))}${gl && a6Aba === 'etf' ? ` <span class="chip">${x.mk === 'etf' ? 'B3 · R$' : 'EUA · US$'}</span>` : ''}${gl && a6Aba === 'fii' ? ` <span class="chip">${x.mk === 'fii' ? 'FII · B3' : 'fundo · cota'}</span>` : ''}${tem(x.tk) ? ' <span class="chip">na carteira</span>' : ''}</td>` },
     hoje: { h: () => th('hoje', 'Hoje', 'hoje'), c: x => `<td title="cotação de ${x.d1.split('-').reverse().join('/')}"><b>${fmx(x, x.p1)}</b></td>` },
     ic: { h: () => th('ic', `Início ${sel('a6-curto', A6_CURTO, kc)}`), c: x => a6Ini(x, kc) },
     pc: { h: () => th('pc', '% ' + nc, 'curto'), c: x => a6Cel(x, kc) },
