@@ -755,7 +755,7 @@ a.lm-ir:hover { border-bottom-style: solid; }
     </div>
     <div class="nav-mobile-sub" id="navMobileSub"></div>
   </div>
-  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 162</div></div>
+  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 163</div></div>
 </nav>
 <div class="sino-pop" id="sino-pop" role="dialog" aria-label="Central de avisos" hidden></div>
 
@@ -957,6 +957,7 @@ a.lm-ir:hover { border-bottom-style: solid; }
             <button class="btn tiny" type="button" data-add="imovel">+ Imóvel</button>
             <button class="btn tiny" type="button" data-add="carro">+ Carro</button>
             <button class="btn tiny" type="button" data-add="outro">+ Outro bem</button>
+            <button class="btn tiny" type="button" data-add="negocio">+ Novo negócio</button>
           </div>
         </div>
         <p class="sub" style="font-size:12.5px;margin:0 0 10px">Cadastre aqui imóveis, carros e outros bens, já comprados ou planejados: preço, entrada, financiamento e custos de ter. Quais entram em cada cenário você escolhe em 08. Cenários futuros; no plano, em 07. Plano futuro. Compras já feitas seguem pagando as parcelas que faltam.</p>
@@ -1715,7 +1716,7 @@ a.lm-ir:hover { border-bottom-style: solid; }
     return new Promise(resolve => { const { data } = sb.auth.onAuthStateChange(async (ev) => { if (ev !== 'PASSWORD_RECOVERY') return; const s = prompt('Digite a nova senha (mínimo 8 caracteres):'); if (s && s.length >= 8) { const { error } = await sb.auth.updateUser({ password: s }); alert(error ? 'Não deu para trocar a senha: ' + error.message : 'Senha trocada.'); } }); resolve(data); });
   }
   // ---------- rodapé: compartilhar, administração e sair ----------
-  const SITE_V = 41;
+  const SITE_V = 42;
   const escH = v => String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const dataBR = v => v ? new Date(v).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' }) : '–';
   const css2 = `.side-foot .r{flex-wrap:wrap}.side-foot .lg-acoes{margin-left:auto;display:inline-flex;gap:10px}
@@ -1981,6 +1982,7 @@ function novaCompra(tipo) {
   const m = mKey(Math.max(HOJE_IDX + 3, 0));
   if (tipo === 'imovel') return Object.assign(base, { nome: 'Apartamento', valor: 1200000, entrada: 300000, mes: m, mudanca: 12, custos: 4, valoriz: 5, modo: 'sac', taxa: 11, prazo: 180, posse: 1200, economia: 3557, cPrazo: 180, cAdm: 17, cFR: 1, cCorr: 5, cContempl: 60 });
   if (tipo === 'carro') return Object.assign(base, { nome: 'Carro', valor: 150000, entrada: 45000, mes: m, mudanca: 0, custos: 0, valoriz: -10, modo: 'price', taxa: 22, prazo: 48, posse: 900, economia: 350 });
+  if (tipo === 'negocio') return Object.assign(base, { nome: 'Novo negócio', valor: 300000, entrada: 300000, mes: m, mudanca: 3, custos: 0, valoriz: -10, modo: 'avista', taxa: 0, prazo: 36, posse: 15000, economia: 0, giro: 50000, fat: 60000, fatIni: 40, rampa: 12, cvar: 35, royal: 8, imp: 8, anosNeg: 5 });
   return Object.assign(base, { nome: 'Outro bem', valor: 30000, entrada: 30000, mes: m, mudanca: 0, custos: 0, valoriz: 0, modo: 'avista', taxa: 0, prazo: 12, posse: 0, economia: 0 });
 }
 
@@ -2181,7 +2183,32 @@ function vendaBem(b, sch) {
 }
 
 /* ---------- motor: compras e projeção ---------- */
-function schedule(b, mode) {
+// negócio: capital de giro sai junto com o investimento; lucro mensal sobe do 1º mês até maturar
+function schedule(b, mode) { const s = schedule0(b, mode); if (b.tipo === 'negocio') s.lump += Math.max(0, +b.giro || 0); return s; }
+function negLucro(b, j) {
+  if (j < 1) return 0; const rampa = Math.max(0, +b.rampa || 0), ini = Math.min(100, Math.max(0, b.fatIni == null || b.fatIni === '' ? 100 : +b.fatIni)) / 100;
+  const f = rampa > 0 ? Math.min(1, ini + (1 - ini) * (j - 1) / rampa) : 1, fat = (+b.fat || 0) * f;
+  return fat * (1 - ((+b.cvar || 0) + (+b.royal || 0) + (+b.imp || 0)) / 100) - (+b.posse || 0);
+}
+// o que um bem gera por mês k meses depois da compra (em reais da data da compra × fIpca)
+function bemMes(b, kk, fIpca) {
+  if (kk <= (+b.mudanca || 0)) return { posse: 0, econ: 0, renda: 0 };
+  if (b.tipo === 'negocio') return { posse: 0, econ: 0, renda: negLucro(b, kk - (+b.mudanca || 0)) * fIpca };
+  return { posse: (+b.posse || 0) * fIpca, econ: (+b.economia || 0) * fIpca, renda: (+b.renda || 0) * fIpca };
+}
+function negAnalise(b, cen) {
+  const sch = schedule(b, b.modo), T = Math.max(12, Math.round((+b.anosNeg || 5) * 12)), mud = +b.mudanca || 0;
+  const fl = [-sch.lump]; let acum = -sch.lump, pay = null;
+  for (let t = 1; t <= T; t++) { const v = (t > mud ? negLucro(b, t - mud) : 0) - (sch.parc[t - 1] || 0); acum += v; if (pay == null && acum >= 0) pay = t; fl.push(v); }
+  const valFim = (+b.valor || 0) * Math.pow(1 + (+b.valoriz || 0) / 100, T / 12), divFim = sch.saldo[T - 1] || 0, term = Math.max(0, valFim - divFim);
+  fl[T] += term;
+  const npv = r => fl.reduce((s, v, t) => s + v / Math.pow(1 + r, t), 0);
+  let tir = null; if (npv(-0.99) * npv(1) < 0) { let lo = -0.99, hi = 1; for (let j = 0; j < 80; j++) { const mid = (lo + hi) / 2; if (npv(lo) * npv(mid) <= 0) hi = mid; else lo = mid; } tir = Math.pow(1 + (lo + hi) / 2, 12) - 1; }
+  const m0 = mIndex(b.mes), r1 = rates(m0 + 1, cen.aj), alt = (1 + cenNetA(cen, r1)) / (1 + r1.ipca) - 1;
+  const mad = negLucro(b, 1e6), fat = +b.fat || 0;
+  return { pay, tir, alt, mad, marg: fat ? mad / fat : 0, inv: sch.lump + sch.PV, T, term, acum };
+}
+function schedule0(b, mode) {
   const V = +b.valor || 0, E = Math.min(Math.max(+b.entrada || 0, 0), V), PV = V - E, custos = (+b.custos || 0) / 100;
   const n = Math.max(1, Math.round(+b.prazo || 1));
   if (mode === 'avista') return { lump: V * (1 + custos), parc: [], saldo: [], PV: 0 };
@@ -2225,7 +2252,7 @@ function projetar(cen, opts) {
       if (x.vd && i === x.vi) { lump -= x.vd.liq; pb[j].venda = x.vd.liq; }
       if (i >= x.vi) return;
       if (kk >= 1 && kk <= x.sch.parc.length) { parcela += x.sch.parc[kk - 1]; pb[j].parc = x.sch.parc[kk - 1]; }
-      if (kk > (+x.b.mudanca || 0)) { extraG += ((+x.b.posse || 0) - (+x.b.economia || 0)) * fIpca; rendaB += (+x.b.renda || 0) * fIpca; pb[j].posse = (+x.b.posse || 0) * fIpca; pb[j].econ = (+x.b.economia || 0) * fIpca; pb[j].renda = (+x.b.renda || 0) * fIpca; }
+      if (kk > (+x.b.mudanca || 0)) { const g = bemMes(x.b, kk, fIpca); extraG += g.posse - g.econ; rendaB += g.renda; pb[j].posse = g.posse; pb[j].econ = g.econ; pb[j].renda = g.renda; }
     });
     const { bens, div } = bensAt(t);
     const renda = salario + rendaB + (+cen.extra || 0) * fIpca + (pm.evRec || 0);
@@ -2269,8 +2296,8 @@ function simulate(c, b, mode) {
     const renda = c.salario * (c.ajSal ? Math.pow(1 + ipca, yr) : 1);
     const contas = c.contas * Math.pow(1 + im, t - 1);
     const inUse = t > useFrom;
-    const moradia = (inUse ? (+b.posse || 0) : (+b.economia || 0)) * Math.pow(1 + ipca, yr);
-    const rendaB = inUse ? (+b.renda || 0) * Math.pow(1 + ipca, yr) : 0;
+    const neg = b.tipo === 'negocio', moradia = neg ? 0 : (inUse ? (+b.posse || 0) : (+b.economia || 0)) * Math.pow(1 + ipca, yr);
+    const rendaB = inUse ? (neg ? negLucro(b, t - useFrom) : (+b.renda || 0)) * Math.pow(1 + ipca, yr) : 0;
     let parcela = 0;
     if (mode === 'price' && t <= n) { const j = saldo * i; juros += j; parcela = pmt; saldo = Math.max(0, saldo - (pmt - j)); }
     if (mode === 'sac' && t <= n) { const j = saldo * i; juros += j; parcela = PV / n + j; saldo = Math.max(0, saldo - PV / n); }
@@ -2685,11 +2712,12 @@ document.addEventListener('click', e => {
 });
 
 /* ========== CENÁRIOS E COMPRAS ========== */
-const TIPO_COMPRA = { imovel: 'Imóvel', carro: 'Carro', outro: 'Outro bem' };
+const TIPO_COMPRA = { imovel: 'Imóvel', carro: 'Carro', outro: 'Outro bem', negocio: 'Negócio' };
 const COMPRA_COPY = {
   imovel: { posse: 'Condomínio + IPTU (R$/mês)', eco: 'Aluguel que deixa de pagar', mud: 'Meses até mudar' },
   carro: { posse: 'Seguro, IPVA, manutenção', eco: 'Transporte que deixa de pagar', mud: 'Meses até usar' },
-  outro: { posse: 'Custo mensal de ter', eco: 'Gasto que deixa de ter', mud: 'Meses até usar' }
+  outro: { posse: 'Custo mensal de ter', eco: 'Gasto que deixa de ter', mud: 'Meses até usar' },
+  negocio: { posse: 'Custos fixos (R$/mês)', eco: '', mud: 'Meses até abrir' }
 };
 function buildCenarios() {
   const cen = cenAtual();
@@ -2713,7 +2741,7 @@ function buildCenarios() {
 function compraHtml(b, cen) {
   const cp = COMPRA_COPY[b.tipo] || COMPRA_COPY.outro;
   const f = (key, label, step, extra) => `<label>${label}<input type="number" step="${step}" data-bind="compra:${b.id}:${key}" ${extra || ''}></label>`;
-  const cor = b.tipo === 'imovel' ? 'var(--s5)' : b.tipo === 'carro' ? 'var(--s2)' : 'var(--s4)';
+  const cor = b.tipo === 'imovel' ? 'var(--s5)' : b.tipo === 'carro' ? 'var(--s2)' : b.tipo === 'negocio' ? 'var(--s3)' : 'var(--s4)', neg = b.tipo === 'negocio';
   const em = state.cenarios.filter(c => incluida(c, b)).map(c => c.nome);
   return `<div class="compra" style="--c:${cor}" data-compra="${b.id}">
     <div class="top">
@@ -2728,19 +2756,20 @@ function compraHtml(b, cen) {
       </div>
     </div>
     <div class="ed">
-      <label>Mês da compra<input type="month" data-bind="compra:${b.id}:mes"></label>
-      ${f('valor', 'Preço (R$)', 1000)}${f('entrada', 'Entrada (R$)', 1000)}
+      <label>${neg ? 'Mês do investimento' : 'Mês da compra'}<input type="month" data-bind="compra:${b.id}:mes"></label>
+      ${f('valor', neg ? 'Investimento inicial (R$)' : 'Preço (R$)', 1000, neg ? 'title="Taxa de franquia, obras, equipamentos e estoque inicial"' : '')}${f('entrada', neg ? 'Capital próprio (R$)' : 'Entrada (R$)', 1000)}
       <label>Pagamento<select data-bind="compra:${b.id}:modo"><option value="avista">À vista</option><option value="sac">Financiado SAC</option><option value="price">Financiado Price</option><option value="fixa">Parcela fixa</option></select></label>
       ${b.modo === 'fixa' ? f('parcela', 'Parcela (R$/mês)', 100) + f('taxa', 'Juros do contrato (% a.a.)', 0.1, 'placeholder="opcional"') : f('taxa', 'Juros / CET (% a.a.)', 0.1)}
       ${b.modo === 'avista' ? '' : f('prazo', 'Nº de parcelas', 1)}
-      ${f('custos', b.tipo === 'imovel' ? 'ITBI + cartório (%)' : 'Custos de compra (%)', 0.5)}${f('valoriz', 'Valorização (% a.a.)', 0.5)}
-      ${f('posse', cp.posse, 50)}${f('economia', cp.eco, 50)}${f('mudanca', cp.mud, 1)}
+      ${neg ? f('giro', 'Capital de giro (R$)', 1000) + f('valoriz', 'Valor do negócio (% a.a.)', 0.5, 'title="Quanto o investimento vale com o tempo; negativo = desgaste dos equipamentos"') : f('custos', b.tipo === 'imovel' ? 'ITBI + cartório (%)' : 'Custos de compra (%)', 0.5) + f('valoriz', 'Valorização (% a.a.)', 0.5)}
+      ${f('posse', cp.posse, 50, neg ? 'title="Aluguel do ponto, folha, contador e outros custos que não variam com as vendas"' : '')}${neg ? '' : f('economia', cp.eco, 50)}${f('mudanca', cp.mud, 1)}
+      ${neg ? f('fat', 'Faturamento mensal maduro (R$)', 1000) + f('fatIni', 'Faturamento no 1º mês (% do maduro)', 5) + f('rampa', 'Meses até maturar', 1) + f('cvar', 'Custos variáveis (% do faturamento)', 1, 'title="Mercadoria, insumos, comissões, taxas de cartão"') + f('royal', 'Royalties + fundo de marketing (%)', 0.5) + f('imp', 'Impostos (% do faturamento)', 0.5, 'title="Simples Nacional costuma ficar entre 6% e 12%"') + f('anosNeg', 'Horizonte da análise (anos)', 1) : ''}
       ${b.tipo === 'imovel' ? f('renda', 'Aluguel recebido (R$/mês)', 100) : ''}
     </div>
     <div class="res" id="cres-${b.id}"></div>
-    <details><summary>Dados de consórcio (para a comparação de pagamento)</summary><div class="ed">
+    ${neg ? '' : `<details><summary>Dados de consórcio (para a comparação de pagamento)</summary><div class="ed">
       ${f('cPrazo', 'Prazo (meses)', 12)}${f('cAdm', 'Taxa de adm. total (%)', 0.5)}${f('cFR', 'Fundo de reserva (%)', 0.5)}${f('cCorr', 'Correção da carta (% a.a.)', 0.1)}${f('cContempl', 'Mês da contemplação', 1)}${f('cLance', 'Lance (% da carta)', 5)}
-    </div></details>
+    </div></details>`}
   </div>`;
 }
 let compraNova = null;
@@ -2748,7 +2777,7 @@ function buildCompras() {
   const cen = cenAtual(), list = comprasDe(cen), todas = state.compras;
   $('comprasEd').innerHTML = todas.length ? todas.map(b => compraHtml(b, cen)).join('') : '<p class="hint">Nenhum bem cadastrado. Use os botões acima para cadastrar imóveis, carros e outros bens.</p>';
   $('comprasEd').querySelectorAll('[data-bind]').forEach(fillBound);
-  const nomeTipo = { imovel: 'imóvel', carro: 'carro', outro: 'outro bem' };
+  const nomeTipo = { imovel: 'imóvel', carro: 'carro', outro: 'outro bem', negocio: 'negócio' };
   $('comprasResumo').innerHTML = (todas.length ? `<div><b>${todas.length} ${todas.length === 1 ? 'bem cadastrado' : 'bens cadastrados'}.</b> O cenário aberto agora tem ${list.length}.</div>
     <div class="tscroll"><table class="incm"><thead><tr><th>Bem</th><th>Tipo</th><th>Mês</th><th>Uso</th>${state.cenarios.map(c => `<th${c.id === cen.id ? ' class="cur"' : ''}>${esc(c.nome)}</th>`).join('')}</tr></thead><tbody>
     ${todas.map(b => `<tr><td class="name">${esc(b.nome)}</td><td class="name">${nomeTipo[b.tipo] || 'bem'}</td><td>${mLabel(mIndex(b.mes))}</td><td class="name">${(state.plan.inc || []).includes(b.id) ? 'Projeção real' : 'Simulação'}</td>${state.cenarios.map(c => `<td${c.id === cen.id ? ' class="cur"' : ''}><input type="checkbox" data-inc="${c.id}:${b.id}" ${incluida(c, b) ? 'checked' : ''} aria-label="${esc(b.nome)} em ${esc(c.nome)}"></td>`).join('')}</tr>`).join('')}
@@ -2777,6 +2806,11 @@ function renderCenarios() {
   ]);
   // resumo de cada compra
   state.compras.forEach(b => { const el = $('cres-' + b.id); if (!el) return; const sch = schedule(b, b.modo); const m0 = mIndex(b.mes);
+    if (b.tipo === 'negocio') { const a = negAnalise(b, cen), mud = +b.mudanca || 0;
+      el.innerHTML = `Sai do seu bolso em ${mLabel(m0)}: <b>${fm(sch.lump)}</b>${sch.PV ? ` (+ ${fm(sch.PV)} financiados)` : ''}. Abre em ${mLabel(m0 + mud)}. Lucro maduro <b class="${a.mad < 0 ? 'neg' : ''}">${fm(a.mad)}/mês</b> (${num(a.marg * 100, 0)}% do faturamento), sem pró-labore. `
+        + (a.pay ? `Payback em <b>${a.pay} meses</b> (${mLabel(m0 + a.pay)}). ` : `<span class="neg">Não se paga em ${num(a.T / 12, 0)} anos.</span> `)
+        + (a.tir != null ? `Retorno em ${num(a.T / 12, 0)} anos, contando a revenda por ${fm(a.term)}: <b class="${a.tir < a.alt ? 'neg' : ''}">${pct(a.tir, 1)} a.a.</b> acima da inflação, contra ${pct(a.alt, 1)} a.a. deixando o dinheiro na carteira do cenário${a.tir < a.alt ? ' (rende menos que investir)' : ''}.` : '');
+      return; }
     const pagas = Math.max(0, Math.min(sch.parc.length, s0 - m0)); const rest = sch.parc.length - pagas;
     const jur = b.modo === 'sac' || b.modo === 'price' ? sch.parc.reduce((s, v) => s + v, 0) - sch.PV : 0;
     if (b.modo === 'fixa') {
@@ -5176,7 +5210,7 @@ function calcPlano() {
       if (i === vi) { const vd = vendaBem(x.b, x.sch); if (vd) { c.venda = vd.liq; venda += vd.liq; } }
       if (i < vi) {
         if (kk >= 1 && kk <= x.sch.parc.length) c.parc = x.sch.parc[kk - 1];
-        if (kk > (+x.b.mudanca || 0)) { c.posse = ((+x.b.posse || 0) - (+x.b.economia || 0)) * fIpca; c.renda = (+x.b.renda || 0) * fIpca; } }
+        if (kk > (+x.b.mudanca || 0)) { const g = bemMes(x.b, kk, fIpca); c.posse = g.posse - g.econ; c.renda = g.renda; } }
       parc += c.parc; lump += c.lump; posse += c.posse; rendaB += c.renda;
       if (c.parc || c.lump || c.posse || c.renda || c.venda) porCompra.push(c); });
     const sobra = bruto - ded + rendaB + evRec - custos - evGas - parc - lump - posse;
@@ -5342,7 +5376,7 @@ function renderFechamento() {
         if (c.lump) partes.push(['entrada e custos de compra', fm(c.lump)]);
         if (c.parc) partes.push([`parcela ${c.n} de ${c.nParc}`, fm(c.parc)]);
         if (c.posse) partes.push(['custo de ter', fm(c.posse)]);
-        if (c.renda) partes.push(['aluguel recebido', '−' + fm(c.renda)]);
+        if (c.renda) partes.push(c.b.tipo === 'negocio' ? (c.renda > 0 ? ['lucro do negócio', '−' + fm(c.renda)] : ['prejuízo do negócio', fm(-c.renda)]) : ['aluguel recebido', '−' + fm(c.renda)]);
         const tot = c.lump + c.parc + c.posse - c.renda;
         return `<tr class="fe-it"><td class="name"><span class="chip ${c.b.tipo === 'imovel' ? 'info' : c.b.tipo === 'carro' ? 'amber' : ''}">${TIPO_COMPRA[c.b.tipo] || 'Outro bem'}</span> ${esc(c.b.nome)} <span class="subdet">${partes.map(x => partes.length > 1 ? x.join(' ') : x[0]).join(' · ')}</span></td><td>${fm(tot)}</td><td></td><td colspan="2" class="name"><a href="#cenarios" data-irtab="cenarios" class="subdet">editar em Cenários e compras</a></td></tr>`; }).join('');
       const pagos = itsMes.filter(x => x.linha && x.linha.startsWith('parc~'));
