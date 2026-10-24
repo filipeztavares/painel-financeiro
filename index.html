@@ -113,6 +113,16 @@ h1, h2, h3 { font-family: var(--f-head); }
 
 button:focus-visible, input:focus-visible, select:focus-visible, summary:focus-visible, a:focus-visible { outline: 2px solid var(--dotc); outline-offset: 2px; }
 fieldset { border: 1px solid var(--line); border-radius: 10px; background: var(--panel); box-shadow: var(--shadow); margin: 0; padding: 14px 16px 16px; display: grid; grid-template-columns: 1fr 1fr; gap: 10px 12px; min-width: 0; }
+.cad-div { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; margin: 30px 0 14px; padding: 16px 18px; border-radius: 12px; background: var(--accent-soft); border: 1px solid var(--line); border-left: 4px solid var(--accent); }
+.cad-ico { width: 40px; height: 40px; border-radius: 10px; background: var(--accent); color: #fff; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.cad-txt { flex: 1 1 280px; min-width: 0; }
+.cad-txt h2 { margin: 0 0 3px; font-size: 16px; }
+.cad-txt p { margin: 0; font-size: 12.5px; color: var(--muted); line-height: 1.5; }
+.cad-passos { display: flex; gap: 6px; flex-wrap: wrap; list-style: none; margin: 0; padding: 0; }
+.cad-passos li { display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px 4px 4px; border-radius: 99px; background: var(--panel); border: 1px solid var(--line); font-size: 11.5px; font-weight: 600; color: var(--ink); white-space: nowrap; }
+.cad-passos b, .cad-n { width: 18px; height: 18px; border-radius: 50%; background: var(--accent); color: #fff; font-size: 10.5px; font-weight: 700; display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.cad-n { margin-right: 7px; vertical-align: -3px; }
+.cad-params fieldset { border-top: 3px solid var(--accent); }
 legend { float: left; width: 100%; grid-column: 1 / -1; padding: 0; margin: 0 0 2px; font-family: var(--f-head); font-size: 12px; font-weight: 600; color: var(--accent-strong); letter-spacing: .2px; }
 label { display: flex; flex-direction: column; gap: 4px; font-family: var(--f-head); font-size: 9.5px; font-weight: 600; letter-spacing: .6px; text-transform: uppercase; color: var(--faint); min-width: 0; }
 label.full { grid-column: 1 / -1; }
@@ -646,7 +656,7 @@ a.lm-ir:hover { border-bottom-style: solid; }
     </div>
     <div class="nav-mobile-sub" id="navMobileSub"></div>
   </div>
-  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 126</div></div>
+  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 127</div></div>
 </nav>
 
 <div class="main"><div class="wrap">
@@ -880,9 +890,14 @@ a.lm-ir:hover { border-bottom-style: solid; }
         <div class="tscroll"><table id="tbl-rt"></table></div>
       </section>
       <section data-nav="Cadastrar aplicação">
-        <div class="params">
+        <div class="cad-div">
+          <span class="cad-ico" aria-hidden="true"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 16V4M7 9l5-5 5 5"/><path d="M4 15v3a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-3"/></svg></span>
+          <div class="cad-txt"><h2>Cadastrar e atualizar aplicações</h2><p>É daqui que saem todos os números da carteira. Cadastre cada aplicação ou suba os PDFs da corretora, e depois salve o total como checkpoint.</p></div>
+          <ol class="cad-passos"><li><b>1</b>Cadastre</li><li><b>2</b>Importe o extrato</li><li><b>3</b>Salve o checkpoint</li></ol>
+        </div>
+        <div class="params cad-params">
       <fieldset>
-        <legend id="af-legend">Nova aplicação</legend>
+        <legend><span class="cad-n">1</span><span id="af-legend">Nova aplicação</span></legend>
         <form id="aform" class="cpform" style="grid-template-columns:1fr 1fr">
           <label class="full">Nome<input type="text" class="name" id="af-nome" required placeholder="ex.: CDB Banco X 2028"></label>
           <label>Instituição<input type="text" class="name" id="af-inst" placeholder="ex.: Banco X"></label>
@@ -902,12 +917,12 @@ a.lm-ir:hover { border-bottom-style: solid; }
         <p class="hint" id="af-msg">Para renda fixa, o valor atual é estimado pela taxa e pela curva de Configurações. Se tiver o extrato, informe o valor atual e ele passa a valer. Para ações, FIIs e outros, informe o valor atual.</p>
       </fieldset>
       <fieldset>
-        <legend>Importar extrato da corretora (PDF)</legend>
+        <legend><span class="cad-n">2</span>Importar extrato da corretora (PDF)</legend>
         <label class="full">PDFs do extrato mensal (pode escolher vários)<input type="file" id="cor-file" multiple accept=".pdf,application/pdf"></label>
         <p class="hint" id="cor-msg" role="status">Soma juros, cupons, amortizações e resgates de cada CRA, CRI ou CDB, e proventos de ações e FIIs, e preenche o "Já recebido". Pode mandar todos os meses de uma vez; meses repetidos são ignorados. O valor atual continua sendo o que você informa.</p>
       </fieldset>
       <fieldset>
-        <legend>Usar na projeção</legend>
+        <legend><span class="cad-n">3</span>Usar na projeção</legend>
         <p class="hint" id="cart-cp-hint"></p>
         <div class="btns"><button class="btn ghost" type="button" id="cart-cp">Salvar total como checkpoint</button></div>
         <p class="hint">A carteira cadastrada preenche sozinha a coluna "Hoje (R$)" dos cenários, usada no rebalanceamento.</p>
@@ -1456,7 +1471,7 @@ a.lm-ir:hover { border-bottom-style: solid; }
     return new Promise(resolve => { const { data } = sb.auth.onAuthStateChange(async (ev) => { if (ev !== 'PASSWORD_RECOVERY') return; const s = prompt('Digite a nova senha (mínimo 8 caracteres):'); if (s && s.length >= 8) { const { error } = await sb.auth.updateUser({ password: s }); alert(error ? 'Não deu para trocar a senha: ' + error.message : 'Senha trocada.'); } }); resolve(data); });
   }
   // ---------- rodapé: compartilhar, administração e sair ----------
-  const SITE_V = 5;
+  const SITE_V = 6;
   const escH = v => String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const dataBR = v => v ? new Date(v).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' }) : '–';
   const css2 = `.side-foot .r{flex-wrap:wrap}.side-foot .lg-acoes{margin-left:auto;display:inline-flex;gap:10px}
