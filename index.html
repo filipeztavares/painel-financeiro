@@ -751,7 +751,7 @@ a.lm-ir:hover { border-bottom-style: solid; }
     </div>
     <div class="nav-mobile-sub" id="navMobileSub"></div>
   </div>
-  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 153</div></div>
+  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 154</div></div>
 </nav>
 <div class="sino-pop" id="sino-pop" role="dialog" aria-label="Central de avisos" hidden></div>
 
@@ -1460,9 +1460,12 @@ a.lm-ir:hover { border-bottom-style: solid; }
         <label id="so-l-cx">Câmbio (R$ por US$)<input type="number" step="0.01" min="0" data-so="e:cambio"></label>
         <label>Saí da empresa em<input type="month" data-so="e:saida"></label>
         <label>Tipo de saída<select data-so="e:leaver"><option value="good">Good leaver (leva o que liberou)</option><option value="bad">Bad leaver (perde o que não exerceu)</option></select></label>
-        <label>Janela para exercer depois de sair (dias)<input type="number" step="30" min="0" data-so="e:janela"></label>
+        <label class="full">Quando posso exercer as opções<select data-so="e:exercicio"><option value="saida">A qualquer momento; ao sair, tenho uma janela</option><option value="evento">Só no evento de liquidez (Exit)</option></select></label>
+        <label id="so-l-jan">Janela para exercer depois de sair (dias)<input type="number" step="30" min="0" data-so="e:janela"></label>
+        <label id="so-l-av">A empresa avisa com (dias antes do Exit)<input type="number" step="1" min="0" data-so="e:avisoDias"></label>
+        <label id="so-l-pz">Prazo para o aviso de exercício (dias antes do Exit)<input type="number" step="1" min="0" data-so="e:prazoDias"></label>
         <label>Phantom e RSU depois de sair<select data-so="e:fica"><option value="sim">Mantenho o que já liberou</option><option value="nao">Perco tudo</option></select></label>
-        <p class="hint">Deixe "Saí em" vazio se ainda trabalha lá. A janela costuma ser de 90 dias; alguns planos dão anos.</p>
+        <p class="hint" id="so-ex-hint">Deixe "Saí em" vazio se ainda trabalha lá.</p>
       </fieldset>
       <fieldset>
         <legend>A empresa hoje</legend>
@@ -1504,7 +1507,7 @@ a.lm-ir:hover { border-bottom-style: solid; }
         <div class="params">
       <fieldset>
         <legend>O evento</legend>
-        <label>Tipo<select data-so="v:tipo"><option value="venda">Venda da empresa</option><option value="ipo">IPO (abertura na bolsa)</option></select></label>
+        <label>Tipo<select data-so="v:tipo"><option value="venda">Venda do controle (mais de 50% das ações ou dos ativos)</option><option value="ipo">IPO (abertura na bolsa)</option><option value="fusao">Fusão ou incorporação</option><option value="reestr">Cisão ou reestruturação com distribuição aos sócios</option></select></label>
         <label>Quando<input type="month" data-so="v:mes"></label>
         <label id="so-l-prob">Chance de acontecer (%, opcional)<input type="number" step="5" min="0" max="100" data-so="v:prob" placeholder="vazio = não usar"></label>
         <label class="check"><input type="checkbox" data-so="v:definido"> O evento está definido (assinado ou anunciado)</label>
@@ -1547,6 +1550,7 @@ a.lm-ir:hover { border-bottom-style: solid; }
         <h2>Como funciona</h2>
         <div class="pj-regras">
           <p><b>Valor no evento:</b> preço por ação = o que sobra para as ações comuns depois das preferências ÷ total de ações no dia do evento. Opção: (preço − strike) × opções liberadas; abaixo do strike vale zero. Phantom share e RSU: preço × quantidade. Phantom option: só a valorização.</p>
+          <p><b>Quando exercer:</b> há dois tipos de plano. No mais comum, você pode exercer depois de liberar e, ao sair, tem uma janela (em geral 90 dias) para pagar o strike, ou perde as opções. Em outros, só se exerce no Exit (venda do controle, IPO, fusão ou reestruturação): sair como good leaver não obriga a pagar nada, as opções liberadas ficam guardadas, e no evento a empresa avisa com antecedência para você enviar o aviso de exercício. Escolha o tipo de cada empresa em "Empresa e plano".</p>
           <p><b>Diluição:</b> a cada rodada sua fatia vira fatia × (1 − diluição) × (1 − reforço do pool). O investidor novo entra com preferência 1x não participante de diluição × valuation pós-money. As rodadas antes do evento entram; as depois, não.</p>
           <p><b>Projeção mês a mês:</b> não é um crescimento contínuo inventado. O preço da ação só muda quando acontece algo que define preço: uma rodada (o valuation que você colocou) ou o evento. Entre esses pontos o preço fica parado e o que cresce é a quantidade liberada pelo vesting. No mês do evento entram o valor do cenário base, a cascata de preferências e a aceleração.</p>
           <p><b>Imposto (estimativa):</b> stock option de empresa brasileira tem natureza mercantil (STJ, Tema 1226, set/2024): IR só na venda, como ganho de capital sobre preço − strike, a 15% até R$ 5 mi de ganho, 17,5% até 10 mi, 20% até 30 mi e 22,5% acima. Depois de IPO, 15% como ação em bolsa. Phantom e RSU são tratados como remuneração: 27,5%.</p>
@@ -1697,7 +1701,7 @@ a.lm-ir:hover { border-bottom-style: solid; }
     return new Promise(resolve => { const { data } = sb.auth.onAuthStateChange(async (ev) => { if (ev !== 'PASSWORD_RECOVERY') return; const s = prompt('Digite a nova senha (mínimo 8 caracteres):'); if (s && s.length >= 8) { const { error } = await sb.auth.updateUser({ password: s }); alert(error ? 'Não deu para trocar a senha: ' + error.message : 'Senha trocada.'); } }); resolve(data); });
   }
   // ---------- rodapé: compartilhar, administração e sair ----------
-  const SITE_V = 32;
+  const SITE_V = 33;
   const escH = v => String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const dataBR = v => v ? new Date(v).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' }) : '–';
   const css2 = `.side-foot .r{flex-wrap:wrap}.side-foot .lg-acoes{margin-left:auto;display:inline-flex;gap:10px}
@@ -5939,12 +5943,12 @@ function soId(p) { return p + Date.now().toString(36) + Math.random().toString(3
 const soMes = s => /^\d{4}-\d{2}$/.test(s || '') ? mIndex(s) : null;
 const soN = v => (v === '' || v == null || !isFinite(+v)) ? null : +v;
 function soNovaEmpresa(n) {
-  return { id: soId('e'), nome: 'Empresa ' + n, sede: 'br', cambio: null, saida: '', leaver: 'good', janela: 90, fica: 'sim', fd: null, preco: null, fatorComum: 100, estagio: 'seed', prefs: [], rodadas: [], ev: { tipo: 'venda', mes: mKey(HOJE_IDX + 60), prob: '', definido: false, plano: false, pess: null, base: null, otim: null }, grants: [] };
+  return { id: soId('e'), nome: 'Empresa ' + n, sede: 'br', cambio: null, saida: '', exercicio: 'saida', avisoDias: 10, prazoDias: 5, leaver: 'good', janela: 90, fica: 'sim', fd: null, preco: null, fatorComum: 100, estagio: 'seed', prefs: [], rodadas: [], ev: { tipo: 'venda', mes: mKey(HOJE_IDX + 60), prob: '', definido: false, plano: false, pess: null, base: null, otim: null }, grants: [] };
 }
 function soNormalizar(s) {
   if (!s.so || typeof s.so !== 'object') s.so = { sel: '', simSaida: '', empresas: [] };
   if (!Array.isArray(s.so.empresas)) s.so.empresas = [];
-  s.so.empresas.forEach(e => { ['prefs', 'rodadas', 'grants'].forEach(kk => { if (!Array.isArray(e[kk])) e[kk] = []; }); if (!e.ev || typeof e.ev !== 'object') e.ev = soNovaEmpresa(1).ev; });
+  s.so.empresas.forEach(e => { ['prefs', 'rodadas', 'grants'].forEach(kk => { if (!Array.isArray(e[kk])) e[kk] = []; }); if (!e.ev || typeof e.ev !== 'object') e.ev = soNovaEmpresa(1).ev; if (e.exercicio !== 'evento') e.exercicio = 'saida'; if (e.avisoDias == null) e.avisoDias = 10; if (e.prazoDias == null) e.prazoDias = 5; });
 }
 const soEmp = () => { const S = state.so; return S.empresas.find(e => e.id === S.sel) || S.empresas[0] || null; };
 function soCambio(e) {
@@ -5969,7 +5973,8 @@ function soConta(g, e, i, evI) {
   const q = (+g.qtd || 0) * soVest(g, e, i, evI), ex = Math.min(q, Math.max(0, +g.exerc || 0));
   const sai = soMes(e.saida), g0 = soMes(g.data);
   if (g.tipo === 'opcao') {
-    const fimJanela = sai != null ? sai + Math.ceil((+e.janela || 0) / 30) : null;
+    // planos com exercício só no Exit: sair (good leaver) não obriga a exercer; as liberadas esperam o evento
+    const fimJanela = sai != null && e.exercicio !== 'evento' ? sai + Math.ceil((+e.janela || 0) / 30) : null;
     if (sai != null && e.leaver === 'bad' && i >= sai) return { q: ex, ex, perdeu: q - ex };
     if (fimJanela != null && i > fimJanela) return { q: ex, ex, perdeu: q - ex };
     if (g0 != null && i >= g0 + Math.round((+g.expira || 10) * 12)) return { q: ex, ex, perdeu: q - ex };
@@ -6106,6 +6111,8 @@ function soOnInput(el) {
 function renderStock() {
   const e = soEmp(); if (!e) return;
   const ext = e.sede === 'ext', cx = soCambio(e), evI = soMes(e.ev.mes), sai = soMes(e.saida);
+  const soEv = e.exercicio === 'evento'; $('so-l-jan').hidden = soEv; $('so-l-av').hidden = $('so-l-pz').hidden = !soEv;
+  $('so-ex-hint').textContent = soEv ? `Exit = venda de mais de 50%, IPO, fusão ou reestruturação com distribuição. A empresa avisa com pelo menos ${num(+e.avisoDias || 0, 0)} dias e você envia o aviso de exercício (Exercise Notice) até ${num(+e.prazoDias || 0, 0)} dias antes. Sair não obriga a exercer. Deixe "Saí em" vazio se ainda trabalha lá.` : 'Deixe "Saí em" vazio se ainda trabalha lá. A janela costuma ser de 90 dias; alguns planos dão anos.';
   $('so-l-cx').hidden = !ext; $('so-l-cx').querySelector('input').placeholder = ext ? num(cx) + (soN(e.cambio) ? '' : ' (dólar de hoje)') : '';
   $('so-l-preco').firstChild.textContent = `Preço por ação na última rodada (${ext ? 'US$' : 'R$'})`;
   $('so-l-val').textContent = `Valor da empresa no evento (${ext ? 'US$' : 'R$'})`;
@@ -6116,7 +6123,7 @@ function renderStock() {
     ['Liberadas hoje', tot ? num(H.q, 0) : '–', tot ? `de ${num(tot, 0)} concedidas (${pct(H.q / tot, 0)})` : 'cadastre as concessões'],
     ['Valor hoje no papel', temBase && tot ? fm(H.liq) : '–', temBase ? `líquido, a ${soPx(e, soPpsHoje(e))} por ação` : 'falta ações e preço de hoje'],
     ['No evento (base)', base ? fm(base.liq) : '–', base ? `líquido em ${mLabel(evI)}` + (soN(e.ev.prob) != null ? ` · esperado ${fm(base.liq * e.ev.prob / 100)}` : '') : 'falta o valor do evento'],
-    ['Para exercer hoje', H.pagar ? fm(H.pagar) : '–', H.pagar ? 'strike das opções liberadas não exercidas' : 'nada a pagar']]);
+    soEv ? ['Strike no Exit', base && base.pagar ? fm(base.pagar) : '–', base && base.pagar ? 'sai do valor recebido no evento' : 'só se exerce no evento'] : ['Para exercer hoje', H.pagar ? fm(H.pagar) : '–', H.pagar ? 'strike das opções liberadas não exercidas' : 'nada a pagar']]);
   // vesting
   const g0s = G.map(g => soMes(g.data)).filter(x => x != null), i0 = g0s.length ? Math.min(...g0s) : HOJE_IDX;
   const iF = Math.max(HOJE_IDX + 1, ...G.map(g => (soMes(g.data) ?? HOJE_IDX) + Math.round((+g.anos || 0) * 12)), evI != null ? Math.min(evI, HOJE_IDX + 180) : 0);
@@ -6127,7 +6134,7 @@ function renderStock() {
   if (G.length) { legend($('lg-so-v'), serV); chart($('ch-so-v'), $('ro-so-v'), n, serV, v => num(v, 0), t => mLabel(i0 + t), Math.max(0, Math.min(n - 1, HOJE_IDX - i0)), v => num(v, 0)); } else { $('ch-so-v').innerHTML = $('ro-so-v').innerHTML = $('lg-so-v').innerHTML = ''; }
   const fimV = g => (soMes(g.data) ?? 0) + Math.round((+g.anos || 0) * 12), clV = g => (soMes(g.data) ?? 0) + (+g.cliff || 0);
   $('tbl-so-v').innerHTML = G.length ? `<thead><tr><th>Concessão</th><th>Quantidade</th><th>Strike</th><th>Fim do cliff</th><th>Fim do vesting</th><th>Liberadas hoje</th><th>%</th><th>Situação</th></tr></thead><tbody>${G.map(g => { const c = soConta(g, e, HOJE_IDX, null), q = +g.qtd || 0;
-    const sit = c.perdeu > 0 && g.tipo === 'opcao' ? `<span class="chip warn">perdeu ${num(c.perdeu, 0)}</span>` : c.perdeu > 0 ? `<span class="chip warn">perdeu</span>` : sai != null ? '<span class="chip">congelado na saída</span>' : HOJE_IDX < clV(g) ? '<span class="chip amber">no cliff</span>' : HOJE_IDX >= fimV(g) ? '<span class="chip best">100% liberado</span>' : '<span class="chip info">liberando</span>';
+    const sit = c.perdeu > 0 && g.tipo === 'opcao' ? `<span class="chip warn">perdeu ${num(c.perdeu, 0)}</span>` : c.perdeu > 0 ? `<span class="chip warn">perdeu</span>` : sai != null ? (soEv && g.tipo === 'opcao' ? '<span class="chip info">guardadas até o Exit</span>' : '<span class="chip">congelado na saída</span>') : HOJE_IDX < clV(g) ? '<span class="chip amber">no cliff</span>' : HOJE_IDX >= fimV(g) ? '<span class="chip best">100% liberado</span>' : '<span class="chip info">liberando</span>';
     return `<tr><td class="name">${esc(SO_TIPOS[g.tipo] || '')} · ${g.data ? mLabel(soMes(g.data)) : '–'}</td><td>${num(q, 0)}</td><td>${g.tipo === 'phantom' || g.tipo === 'rsu' ? '–' : soPx(e, +g.strike || 0)}</td><td>${g.data ? mLabel(clV(g)) : '–'}</td><td>${g.data ? mLabel(fimV(g)) : '–'}</td><td>${num(c.q, 0)}</td><td>${q ? pct(c.q / q, 0) : '–'}</td><td>${sit}</td></tr>`; }).join('')}</tbody>` : '';
   // diluição
   const fim = evI ?? HOJE_IDX + 120, R = soRodadas(e, Math.max(fim, ...e.rodadas.map(r => soMes(r.mes) ?? 0))), pcEu = N => N > 0 && tot ? pct(tot / N, 3) : '–';
@@ -6172,8 +6179,8 @@ function renderStock() {
   const eSim = Object.assign({}, e, { saida: mKey(sS) }), fimJ = sS + Math.ceil((+e.janela || 0) / 30);
   const linS = G.map(g => { const q = +g.qtd || 0, f = soVest(g, eSim, sS, null), lib = q * f, ex = Math.min(lib, +g.exerc || 0), custo = g.tipo === 'opcao' ? (lib - ex) * (+g.strike || 0) * cx : 0; return { g, q, lib, ex, custo }; });
   const custoT = linS.reduce((s, l) => s + l.custo, 0), libT = linS.reduce((s, l) => s + l.lib, 0);
-  $('so-sair-sub').innerHTML = G.length ? (jaSaiu ? `Você saiu em ${mLabel(sai)}. ` : `Saindo em ${mLabel(sS)}, `) + `${jaSaiu ? 'Ficaram liberadas' : 'ficam liberadas'} ${num(libT, 0)} de ${num(tot, 0)}; o resto ${jaSaiu ? 'foi perdido' : 'é perdido'}.` + (custoT > 0 ? ` Para manter as opções era preciso pagar <b>${fm(custoT)}</b> de strike até ${mLabel(fimJ)} (janela de ${num(+e.janela || 0, 0)} dias). Numa empresa fechada não dá para vender depois de exercer: é dinheiro parado até um evento, com risco de não voltar. No Brasil, exercer não gera imposto; o IR vem na venda.` : '') : 'Cadastre as concessões.';
-  $('tbl-so-sair').innerHTML = G.length ? `<thead><tr><th>Concessão</th><th>Concedidas</th><th>Liberadas na saída</th><th>Perdidas</th><th>Já exercidas</th><th>Custo para exercer o resto</th></tr></thead><tbody>${linS.map(l => `<tr><td class="name">${esc(SO_TIPOS[l.g.tipo])} · ${l.g.data ? mLabel(soMes(l.g.data)) : '–'}</td><td>${num(l.q, 0)}</td><td>${num(l.lib, 0)}</td><td>${num(l.q - l.lib, 0)}</td><td>${l.g.tipo === 'opcao' ? num(l.ex, 0) : '–'}</td><td>${l.custo ? fm(l.custo) : '–'}</td></tr>`).join('')}<tr class="totrow"><td class="name">Total</td><td>${num(tot, 0)}</td><td>${num(libT, 0)}</td><td>${num(tot - libT, 0)}</td><td></td><td>${custoT ? fm(custoT) : '–'}</td></tr></tbody>` : '';
+  $('so-sair-sub').innerHTML = G.length ? (jaSaiu ? `Você saiu em ${mLabel(sai)}. ` : `Saindo em ${mLabel(sS)}, `) + `${jaSaiu ? 'Ficaram liberadas' : 'ficam liberadas'} ${num(libT, 0)} de ${num(tot, 0)}; o resto ${jaSaiu ? 'foi perdido' : 'é perdido'}.` + (soEv && custoT > 0 ? ` Você não precisa pagar nada ao sair: as opções liberadas ficam guardadas e só são exercidas no Exit. A empresa avisa com pelo menos ${num(+e.avisoDias || 0, 0)} dias de antecedência e você tem até ${num(+e.prazoDias || 0, 0)} dias antes do evento para enviar o aviso de exercício. O strike (${fm(custoT)}) costuma sair do próprio valor da venda.` : '') + (!soEv && custoT > 0 ? ` Para manter as opções era preciso pagar <b>${fm(custoT)}</b> de strike até ${mLabel(fimJ)} (janela de ${num(+e.janela || 0, 0)} dias). Numa empresa fechada não dá para vender depois de exercer: é dinheiro parado até um evento, com risco de não voltar. No Brasil, exercer não gera imposto; o IR vem na venda.` : '') : 'Cadastre as concessões.';
+  $('tbl-so-sair').innerHTML = G.length ? `<thead><tr><th>Concessão</th><th>Concedidas</th><th>Liberadas na saída</th><th>Perdidas</th><th>Já exercidas</th><th>${soEv ? 'Strike a pagar no Exit' : 'Custo para exercer o resto'}</th></tr></thead><tbody>${linS.map(l => `<tr><td class="name">${esc(SO_TIPOS[l.g.tipo])} · ${l.g.data ? mLabel(soMes(l.g.data)) : '–'}</td><td>${num(l.q, 0)}</td><td>${num(l.lib, 0)}</td><td>${num(l.q - l.lib, 0)}</td><td>${l.g.tipo === 'opcao' ? num(l.ex, 0) : '–'}</td><td>${l.custo ? fm(l.custo) : '–'}</td></tr>`).join('')}<tr class="totrow"><td class="name">Total</td><td>${num(tot, 0)}</td><td>${num(libT, 0)}</td><td>${num(tot - libT, 0)}</td><td></td><td>${custoT ? fm(custoT) : '–'}</td></tr></tbody>` : '';
   // todas as empresas
   const E = state.so.empresas; $('so-todas').hidden = E.length < 2;
   if (E.length > 1) { let tH = 0, tE = 0;
