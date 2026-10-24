@@ -1430,7 +1430,7 @@ a.lm-ir:hover { border-bottom-style: solid; }
     return new Promise(resolve => { const { data } = sb.auth.onAuthStateChange(async (ev) => { if (ev !== 'PASSWORD_RECOVERY') return; const s = prompt('Digite a nova senha (mínimo 8 caracteres):'); if (s && s.length >= 8) { const { error } = await sb.auth.updateUser({ password: s }); alert(error ? 'Não deu para trocar a senha: ' + error.message : 'Senha trocada.'); } }); resolve(data); });
   }
   // ---------- rodapé: compartilhar, administração e sair ----------
-  const SITE_V = 3;
+  const SITE_V = 4;
   const escH = v => String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const dataBR = v => v ? new Date(v).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' }) : '–';
   const css2 = `.side-foot .r{flex-wrap:wrap}.side-foot .lg-acoes{margin-left:auto;display:inline-flex;gap:10px}
@@ -1441,7 +1441,7 @@ a.lm-ir:hover { border-bottom-style: solid; }
   #sv-ov .top{display:flex;justify-content:space-between;align-items:flex-start;gap:12px} #sv-ov .x{all:unset;cursor:pointer;font-size:20px;line-height:1;padding:2px 6px;color:var(--muted,#666)}
   #sv-ov h3{font-size:11px;font-weight:600;letter-spacing:.5px;text-transform:uppercase;color:var(--faint,#94a3b8);margin:16px 0 6px}
   #sv-ov .lin{display:flex;gap:8px;flex-wrap:wrap} #sv-ov input{flex:1;min-width:180px;box-sizing:border-box;padding:9px 11px;border:1px solid var(--line,#E7E2DA);border-radius:8px;font-size:14px;background:var(--field,#FAF8F4);color:inherit}
-  #sv-ov .bt{border:1px solid var(--line,#E7E2DA);background:var(--panel,#fff);color:inherit;border-radius:8px;padding:7px 12px;font-size:12.5px;font-weight:600;cursor:pointer} #sv-ov .bt.pri{background:var(--accent,#A8582A);border-color:var(--accent,#A8582A);color:#fff} #sv-ov .bt.mau{color:var(--bad,#B42318)} #sv-ov .bt:disabled{opacity:.5;cursor:default}
+  #sv-ov .bt{border:1px solid var(--line,#E7E2DA);background:var(--panel,#fff);color:inherit;border-radius:8px;padding:7px 12px;font-size:12.5px;font-weight:600;cursor:pointer} #sv-ov .bt.pri{background:var(--accent,#A8582A);border-color:var(--accent,#A8582A);color:#fff} #sv-ov .bt.mau{color:var(--bad,#B42318)} #sv-ov .bt:disabled{opacity:.5;cursor:default} #sv-ov label.bt{text-transform:none;letter-spacing:0;font-size:12.5px;font-weight:600;margin:0;color:inherit;width:auto;font-family:inherit}
   #sv-ov ul{list-style:none;margin:0;padding:0} #sv-ov li{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--line,#E7E2DA);font-size:13px} #sv-ov li .em{color:var(--muted,#666);font-size:12px}
   #sv-ov .vazio{font-size:12.5px;color:var(--muted,#666);padding:6px 0} #sv-ov .msg{font-size:12.5px;margin-top:8px;min-height:1em} #sv-ov .msg.err{color:var(--bad,#B42318)} #sv-ov .msg.ok{color:var(--good,#15803d)}
   #sv-ov .tw{overflow-x:auto;margin:0 -4px} #sv-ov table{border-collapse:collapse;width:100%;font-size:12.5px;min-width:640px} #sv-ov th{text-align:left;font-size:10.5px;font-weight:600;letter-spacing:.4px;text-transform:uppercase;color:var(--faint,#94a3b8);padding:6px 6px;border-bottom:1px solid var(--line,#E7E2DA);white-space:nowrap} #sv-ov td{text-align:left;padding:8px 6px;border-bottom:1px solid var(--line,#E7E2DA);vertical-align:top}
@@ -1463,9 +1463,11 @@ a.lm-ir:hover { border-bottom-style: solid; }
     return { daMinha: rows.filter(r => r.dono === uid).map(r => pf[r.leitor] || { id: r.leitor }), comigo: rows.filter(r => r.leitor === uid).map(r => pf[r.dono] || { id: r.dono }) };
   }
   async function abrirCompartilhar() {
-    const ov = modal(topo('Compartilhar meu painel', 'Quem você incluir aqui passa a ver os seus números na Visão consolidada dela, só para leitura. A pessoa precisa ter conta no site. Você pode parar de compartilhar quando quiser.') +
-      `<form class="lin" id="sv-cf"><input type="email" name="email" required placeholder="e-mail da pessoa" autocomplete="off"><button class="bt pri" type="submit">Compartilhar</button></form><div class="msg" id="sv-cm" role="status"></div>
-      <h3>Veem os seus dados</h3><ul id="sv-c1"><li class="vazio">carregando…</li></ul><h3>Compartilham com você</h3><ul id="sv-c2"><li class="vazio">carregando…</li></ul>`, true);
+    const ov = modal(topo('Minha conta', escH(sessao.user.email)) +
+      `<h3 style="margin-top:4px">Compartilhar meu painel</h3><p class="sub">Quem você incluir aqui passa a ver os seus números na Visão consolidada dela, só para leitura. A pessoa precisa ter conta no site. Você pode parar de compartilhar quando quiser.</p><form class="lin" id="sv-cf"><input type="email" name="email" required placeholder="e-mail da pessoa" autocomplete="off"><button class="bt pri" type="submit">Compartilhar</button></form><div class="msg" id="sv-cm" role="status"></div>
+      <h3>Veem os seus dados</h3><ul id="sv-c1"><li class="vazio">carregando…</li></ul><h3>Compartilham com você</h3><ul id="sv-c2"><li class="vazio">carregando…</li></ul>
+      <h3>Meus dados</h3><p class="sub">Baixe uma cópia de tudo o que está nesta conta, ou traga os dados de outro painel (um arquivo .json exportado). Importar substitui o que houver nesta conta com o mesmo nome.</p>
+      <div class="lin"><button class="bt" type="button" id="sv-baixar">Baixar meus dados</button><label class="bt" style="display:inline-flex;align-items:center">Importar arquivo…<input type="file" id="sv-imp" accept=".json,application/json" hidden></label></div><div class="msg" id="sv-dm" role="status"></div>`, true);
     const pinta = async () => {
       try { const c = await lerCompart(); const it = (p, papel) => `<li><span>${escH(p.nome || 'Pessoa')} <span class="em">${escH(p.email || '')}</span></span><button class="bt mau" type="button" data-parar="${escH(p.id)}" data-papel="${papel}">${papel === 'dono' ? 'Parar de compartilhar' : 'Remover'}</button></li>`;
         ov.querySelector('#sv-c1').innerHTML = c.daMinha.length ? c.daMinha.map(p => it(p, 'dono')).join('') : '<li class="vazio">Ninguém ainda.</li>';
@@ -1482,6 +1484,29 @@ a.lm-ir:hover { border-bottom-style: solid; }
     ov.addEventListener('click', async e => { const b = e.target.closest('[data-parar]'); if (!b) return; b.disabled = true;
       const id = b.dataset.parar, q = b.dataset.papel === 'dono' ? sb.from('compart').delete().eq('dono', uid).eq('leitor', id) : sb.from('compart').delete().eq('dono', id).eq('leitor', uid);
       const { error } = await q; if (error) { b.disabled = false; return; } pinta(); });
+    const dm = ov.querySelector('#sv-dm');
+    ov.querySelector('#sv-baixar').addEventListener('click', async () => {
+      dm.className = 'msg'; dm.textContent = 'juntando…';
+      const { data, error } = await sb.from('docs').select('path,data').eq('owner', uid); if (error) { dm.className = 'msg err'; dm.textContent = 'Não consegui ler os dados.'; return; }
+      const docs = {}; (data || []).forEach(r => { docs[r.path] = r.data; });
+      const blob = new Blob([JSON.stringify({ formato: 'painel-financeiro', versao: 1, exportadoEm: new Date().toISOString(), origem: 'site', docs })], { type: 'application/json' });
+      const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'painel-financeiro-' + new Date().toISOString().slice(0, 10) + '.json'; document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(a.href), 4000);
+      dm.className = 'msg ok'; dm.textContent = Object.keys(docs).length + ' documentos baixados.';
+    });
+    ov.querySelector('#sv-imp').addEventListener('change', async e => {
+      const f = e.target.files && e.target.files[0]; e.target.value = ''; if (!f) return;
+      let j; try { j = JSON.parse(await f.text()); } catch (er) { dm.className = 'msg err'; dm.textContent = 'Esse arquivo não é um .json válido.'; return; }
+      const docs = j && j.formato === 'painel-financeiro' && j.docs && typeof j.docs === 'object' ? j.docs : null;
+      const paths = docs ? Object.keys(docs).filter(p => /^(painel|checkpoints|gastos|privado)\/[A-Za-z0-9_\-.:]{1,60}$/.test(p) && docs[p] && typeof docs[p] === 'object') : [];
+      if (!paths.length) { dm.className = 'msg err'; dm.textContent = 'Não encontrei dados do painel nesse arquivo.'; return; }
+      const nG = paths.filter(p => p.startsWith('gastos/')).length, temPainel = paths.includes('painel/v2');
+      if (!confirm(`Importar ${paths.length} documentos (${temPainel ? 'painel, ' : ''}${nG} meses de gastos)? O que houver nesta conta com o mesmo nome será substituído.`)) { dm.className = 'msg'; dm.textContent = 'Importação cancelada.'; return; }
+      dm.className = 'msg'; let feitos = 0;
+      try { for (const p of paths) { dm.textContent = `importando ${++feitos} de ${paths.length}…`; await gravar(p, clone(docs[p])); } }
+      catch (er) { dm.className = 'msg err'; dm.textContent = `Parou no ${feitos}º documento: ${er && er.message || er}. Tente de novo.`; return; }
+      try { Object.keys(localStorage).filter(k => /^painel-/.test(k) && k !== 'painel-site-uid').forEach(k => localStorage.removeItem(k)); } catch (er) {}
+      dm.className = 'msg ok'; dm.textContent = 'Importado. Recarregando o painel…'; setTimeout(() => location.reload(), 900);
+    });
     pinta();
   }
   async function abrirAdmin() {
@@ -1507,7 +1532,7 @@ a.lm-ir:hover { border-bottom-style: solid; }
   let souAdmin = false;
   function mostrarFamilia() { document.documentElement.classList.toggle('site-fam', souAdmin || compartilhamComigo.length > 0); }
   function textosDoSite() {
-    const h = document.querySelector('#p-familia .hint'); if (h) h.textContent = 'Para incluir alguém, a pessoa cria a conta no site, abre "compartilhar" no rodapé do menu e coloca o seu e-mail. Ela continua sem ver os seus dados. Depois clique em Atualizar.';
+    const h = document.querySelector('#p-familia .hint'); if (h) h.textContent = 'Para incluir alguém, a pessoa cria a conta no site, abre "conta" no rodapé do menu e coloca o seu e-mail em Compartilhar. Ela continua sem ver os seus dados. Depois clique em Atualizar.';
     const d = document.querySelector('#p-familia .desc'); if (d) d.textContent = 'Soma de quem compartilhou o painel com você, com a parte de cada pessoa em ganhos, gastos e patrimônio.';
   }
   function contaDesativada() {
@@ -1531,7 +1556,7 @@ a.lm-ir:hover { border-bottom-style: solid; }
     mostrarFamilia();
     const pe = document.querySelector('.side-foot .r');
     if (pe) { const w = document.createElement('span'); w.className = 'lg-acoes';
-      w.innerHTML = '<button class="lg-link" type="button" data-sv="compart">compartilhar</button>' + (souAdmin ? '<button class="lg-link" type="button" data-sv="admin">admin</button>' : '') + `<button class="lg-link lg-sair" type="button" title="${escH(sessao.user.email)}">sair</button>`;
+      w.innerHTML = '<button class="lg-link" type="button" data-sv="compart">conta</button>' + (souAdmin ? '<button class="lg-link" type="button" data-sv="admin">admin</button>' : '') + `<button class="lg-link lg-sair" type="button" title="${escH(sessao.user.email)}">sair</button>`;
       w.addEventListener('click', async e => { const b = e.target.closest('button'); if (!b) return;
         if (b.classList.contains('lg-sair')) { try { localStorage.removeItem('painel-quem'); } catch (er) {} await sb.auth.signOut(); }
         else if (b.dataset.sv === 'compart') abrirCompartilhar(); else if (b.dataset.sv === 'admin') abrirAdmin(); });
