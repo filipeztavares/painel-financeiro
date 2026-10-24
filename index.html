@@ -52,6 +52,24 @@ h1, h2, h3 { font-family: var(--f-head); }
 .side-logo { display: flex; align-items: center; gap: 10px; padding: 18px 18px 14px; border-bottom: 1px solid rgba(255,255,255,.12); }
 .side-logo .box { width: 32px; height: 32px; background: #fff; color: var(--side); border-radius: 7px; display: flex; align-items: center; justify-content: center; font-family: var(--f-head); font-weight: 700; font-size: 15px; flex-shrink: 0; }
 .side-logo b { font-family: var(--f-head); font-weight: 600; font-size: 14.5px; display: block; line-height: 1.25; }
+.side-nome { flex: 1; min-width: 0; }
+.sino { position: relative; background: transparent; border: 1px solid rgba(255,255,255,.22); color: #fff; width: 34px; height: 34px; border-radius: 8px; display: inline-flex; align-items: center; justify-content: center; cursor: pointer; flex-shrink: 0; padding: 0; }
+.sino:hover, .sino[aria-expanded="true"] { background: rgba(255,255,255,.12); }
+.side-logo .sino .sino-n { position: absolute; top: -5px; right: -5px; min-width: 17px; height: 17px; padding: 0 4px; border-radius: 9px; background: var(--accent); color: #fff; font: 700 10px/17px var(--f-ui); letter-spacing: 0; text-transform: none; opacity: 1; text-align: center; }
+.sino-pop { position: fixed; z-index: 60; width: min(380px, calc(100vw - 16px)); max-height: min(560px, calc(100vh - 80px)); overflow: auto; background: var(--panel); color: var(--ink); border: 1px solid var(--line); border-radius: 12px; box-shadow: 0 12px 32px rgba(15,31,61,.22); }
+.sino-h { display: flex; align-items: center; gap: 8px; padding: 12px 14px; border-bottom: 1px solid var(--line); position: sticky; top: 0; background: var(--panel); }
+.sino-h b { flex: 1; font-family: var(--f-head); font-size: 15px; }
+.sino-x { background: none; border: 0; font-size: 20px; line-height: 1; color: var(--muted); cursor: pointer; padding: 2px 4px; }
+.sino-i { padding: 10px 14px; border-bottom: 1px solid var(--line); }
+.sino-i.lido { opacity: .6; }
+.sino-i .t { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; font-size: 12.5px; }
+.sino-i .q { margin-left: auto; font-size: 11px; color: var(--muted); }
+.sino-i p { margin: 5px 0 0; font-size: 12.5px; line-height: 1.45; }
+.sino-vazio { margin: 0; padding: 14px; font-size: 13px; color: var(--muted); }
+.sino-f { padding: 10px 14px 12px; font-size: 12px; }
+.sino-f b { display: block; margin-bottom: 4px; font-size: 11px; text-transform: uppercase; letter-spacing: .5px; color: var(--muted); }
+.sino-f div { display: flex; justify-content: space-between; gap: 10px; padding: 2px 0; }
+.sino-f .neg { color: var(--bad); font-weight: 600; }
 .side-logo span { font-size: 9.5px; opacity: .62; letter-spacing: .5px; text-transform: uppercase; }
 .nav { flex: 1; overflow-y: auto; padding: 12px 10px; scrollbar-width: thin; scrollbar-color: rgba(255,255,255,.25) transparent; }
 .nav-group { margin-bottom: 4px; }
@@ -701,7 +719,7 @@ a.lm-ir:hover { border-bottom-style: solid; }
 
 
 <nav class="sidebar" aria-label="Módulos">
-  <div class="side-logo"><div class="box" title="Painel financeiro"><svg viewBox="0 0 32 32" width="26" height="26" aria-hidden="true"><rect x="6" y="18" width="4.5" height="8" rx="1" fill="#0F1F3D"/><rect x="13.75" y="13" width="4.5" height="13" rx="1" fill="#A8582A"/><rect x="21.5" y="9" width="4.5" height="17" rx="1" fill="#D4A72C"/><path d="M5 15 L12 10 L17 12 L26 4.5" fill="none" stroke="#0F1F3D" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><circle cx="26" cy="4.5" r="2" fill="#A8582A"/><line x1="4.5" y1="27.5" x2="27.5" y2="27.5" stroke="#0F1F3D" stroke-width="1.2" stroke-linecap="round" opacity=".35"/></svg></div><div><b>Painel financeiro</b><span id="side-quem">controle e projeção</span></div></div>
+  <div class="side-logo"><div class="box" title="Painel financeiro"><svg viewBox="0 0 32 32" width="26" height="26" aria-hidden="true"><rect x="6" y="18" width="4.5" height="8" rx="1" fill="#0F1F3D"/><rect x="13.75" y="13" width="4.5" height="13" rx="1" fill="#A8582A"/><rect x="21.5" y="9" width="4.5" height="17" rx="1" fill="#D4A72C"/><path d="M5 15 L12 10 L17 12 L26 4.5" fill="none" stroke="#0F1F3D" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><circle cx="26" cy="4.5" r="2" fill="#A8582A"/><line x1="4.5" y1="27.5" x2="27.5" y2="27.5" stroke="#0F1F3D" stroke-width="1.2" stroke-linecap="round" opacity=".35"/></svg></div><div class="side-nome"><b>Painel financeiro</b><span id="side-quem">controle e projeção</span></div><button type="button" class="sino" id="sino" data-sodono hidden aria-label="Avisos" aria-expanded="false" aria-haspopup="dialog"><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M6 16V11a6 6 0 0 1 12 0v5l1.5 2h-15z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="M10 20.5a2 2 0 0 0 4 0" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg><span class="sino-n" id="sino-n" hidden></span></button></div>
   <div class="nav">
     <div class="nav-tools"><button type="button" id="nav-recolher">Recolher todos</button><button type="button" id="nav-abrir">Abrir todos</button></div>
     <div class="nav-heads">
@@ -733,8 +751,9 @@ a.lm-ir:hover { border-bottom-style: solid; }
     </div>
     <div class="nav-mobile-sub" id="navMobileSub"></div>
   </div>
-  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 152</div></div>
+  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 153</div></div>
 </nav>
+<div class="sino-pop" id="sino-pop" role="dialog" aria-label="Central de avisos" hidden></div>
 
 <div class="main"><div class="wrap">
   <!-- ============ LEIA-ME ============ -->
@@ -1678,7 +1697,7 @@ a.lm-ir:hover { border-bottom-style: solid; }
     return new Promise(resolve => { const { data } = sb.auth.onAuthStateChange(async (ev) => { if (ev !== 'PASSWORD_RECOVERY') return; const s = prompt('Digite a nova senha (mínimo 8 caracteres):'); if (s && s.length >= 8) { const { error } = await sb.auth.updateUser({ password: s }); alert(error ? 'Não deu para trocar a senha: ' + error.message : 'Senha trocada.'); } }); resolve(data); });
   }
   // ---------- rodapé: compartilhar, administração e sair ----------
-  const SITE_V = 31;
+  const SITE_V = 32;
   const escH = v => String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const dataBR = v => v ? new Date(v).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' }) : '–';
   const css2 = `.side-foot .r{flex-wrap:wrap}.side-foot .lg-acoes{margin-left:auto;display:inline-flex;gap:10px}
@@ -6181,6 +6200,62 @@ document.addEventListener('click', ev => {
   planCache = null; save(); buildStock(); renderStock();
 });
 
+/* ---------- avisos: central de notificações do dono (fontes de dados com problema) ---------- */
+let avisosDb = [], sinoT = null;
+function sanitizeAvisos(d) {
+  const it = d && Array.isArray(d.itens) ? d.itens : [];
+  return it.slice(-80).map(x => ({ id: String((x && x.id) || '').slice(0, 80), quando: String(x.quando || '').slice(0, 25), fonte: String(x.fonte || '').slice(0, 60), msg: String(x.msg || '').slice(0, 500), nivel: ['erro', 'aviso', 'ok'].includes(x.nivel) ? x.nivel : 'aviso', resolvido: !!x.resolvido })).filter(x => x.id && x.msg);
+}
+const avBr = s => s ? s.slice(0, 10).split('-').reverse().join('/') : '';
+const avDias = iso => /^\d{4}-\d{2}-\d{2}/.test(iso || '') ? Math.floor((new Date(hojeISO() + 'T12:00') - new Date(iso.slice(0, 10) + 'T12:00')) / 864e5) : null;
+const avMax = l => (l || []).reduce((m, x) => x.d1 > m ? x.d1 : m, '');
+// fontes que o painel lê: data da informação mais recente e o limite de dias antes de avisar
+function avFontes() {
+  const f = [];
+  if (mundoDb) f.push({ id: 'mundo', nome: 'Câmbio e bolsas do mundo', d: avMax(mundoDb.itens), lim: 4, freq: 'diária' });
+  if (acoes6m && acoes6m.itens) f.push({ id: 'b3', nome: 'Ações da B3', d: avMax(acoes6m.itens), lim: 10, freq: 'semanal' });
+  if (globalA6 && globalA6.itens && globalA6.itens.length) f.push({ id: 'global', nome: 'Internacionais, ETFs, FIIs e fundos', d: avMax(globalA6.itens), lim: 10, freq: 'semanal' });
+  if (minhasDb && minhasDb.itens) f.push({ id: 'minhas', nome: 'Minhas ações', d: avMax(minhasDb.itens), lim: 4, freq: 'diária' });
+  if (focus && focus.data) f.push({ id: 'focus', nome: 'Boletim Focus', d: focus.data, lim: 9, freq: 'semanal' });
+  return f;
+}
+function avisosAuto() {
+  const out = []; if (!db) return out;
+  avFontes().forEach(f => { const n = avDias(f.d); if (n != null && n > f.lim) out.push({ id: `auto:${f.id}:${f.d}`, fonte: f.nome, nivel: 'aviso', auto: true, msg: `Sem dados novos desde ${avBr(f.d)} (${n} dias). A rotina ${f.freq} pode estar falhando.` }); });
+  const sem = ((globalA6 && globalA6.lista) || []).filter(x => !(x.p1 > 0 && Object.keys(x.h || {}).length)).map(x => x.tk);
+  if (sem.length) out.push({ id: 'auto:sem:' + sem.join(','), fonte: 'Internacionais, ETFs, FIIs e fundos', nivel: 'aviso', auto: true, msg: `Ainda sem preço: ${sem.join(', ')}. A fonte não respondeu na última atualização.` });
+  return out;
+}
+function avLidos() { try { return JSON.parse(localStorage.getItem('painel-avisos-lidos')) || []; } catch (e) { return []; } }
+function avTodos() {
+  const rot = avisosDb.filter(x => !x.resolvido && (avDias(x.quando) ?? 0) <= 30).sort((a, b) => a.quando < b.quando ? 1 : -1);
+  return avisosAuto().concat(rot);
+}
+function renderSino() {
+  const bt = $('sino'); if (!bt || !souDono) return;
+  const lid = avLidos(), todos = avTodos(), novos = todos.filter(x => x.nivel !== 'ok' && !lid.includes(x.id)).length;
+  $('sino-n').hidden = !novos; $('sino-n').textContent = novos > 9 ? '9+' : novos;
+  bt.setAttribute('aria-label', novos ? `Avisos: ${novos} novo${novos > 1 ? 's' : ''}` : 'Avisos');
+  const pop = $('sino-pop'); if (pop.hidden) return;
+  const NV = { erro: ['warn', 'Erro'], aviso: ['amber', 'Atenção'], ok: ['best', 'Resolvido'] };
+  const hora = q => /T\d{2}:\d{2}/.test(q) ? new Date(q).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' }) : avBr(q);
+  pop.innerHTML = `<div class="sino-h"><b>Avisos</b>${todos.length ? '<button type="button" class="btn ghost tiny" id="sino-lidos">Marcar como lidos</button>' : ''}<button type="button" class="sino-x" id="sino-x" aria-label="Fechar">×</button></div>
+    <div class="sino-l">${todos.map(x => `<div class="sino-i${lid.includes(x.id) ? ' lido' : ''}"><div class="t"><span class="chip ${NV[x.nivel][0]}">${NV[x.nivel][1]}</span><b>${esc(x.fonte || 'Rotina')}</b><span class="q">${x.auto ? 'verificação do painel' : esc(hora(x.quando))}</span></div><p>${esc(x.msg)}</p></div>`).join('') || '<p class="sino-vazio">Tudo certo: nenhuma fonte de dados com problema.</p>'}</div>
+    <div class="sino-f"><b>Fontes</b>${avFontes().map(f => { const n = avDias(f.d); return `<div><span>${esc(f.nome)}</span><span class="${n != null && n > f.lim ? 'neg' : ''}">${f.d ? avBr(f.d) : '—'}</span></div>`; }).join('')}</div>`;
+}
+const sinoLater = () => { clearTimeout(sinoT); sinoT = setTimeout(renderSino, 300); };
+function sinoAbre(abrir) {
+  const pop = $('sino-pop'), bt = $('sino'); pop.hidden = !abrir; bt.setAttribute('aria-expanded', String(abrir));
+  if (abrir) { const r = bt.getBoundingClientRect(); pop.style.top = Math.round(r.bottom + 8) + 'px'; pop.style.left = Math.round(Math.max(8, Math.min(r.left, innerWidth - pop.offsetWidth - 8))) + 'px'; renderSino(); const r2 = bt.getBoundingClientRect(); pop.style.left = Math.round(Math.max(8, Math.min(r2.left, innerWidth - pop.offsetWidth - 8))) + 'px'; }
+}
+document.addEventListener('click', e => {
+  if (e.target.closest('#sino')) { sinoAbre($('sino-pop').hidden); return; }
+  if (e.target.closest('#sino-x')) { sinoAbre(false); return; }
+  if (e.target.closest('#sino-lidos')) { try { localStorage.setItem('painel-avisos-lidos', JSON.stringify(avTodos().map(x => x.id).concat(avLidos()).slice(0, 300))); } catch (er) {} renderSino(); return; }
+  const pop = $('sino-pop'); if (pop && !pop.hidden && !e.target.closest('#sino-pop')) sinoAbre(false);
+});
+document.addEventListener('keydown', e => { if (e.key === 'Escape' && $('sino-pop') && !$('sino-pop').hidden) sinoAbre(false); });
+
 /* ---------- 00 Leia-me: resumo de cada módulo e atalhos ---------- */
 const LM_MODS = [
   ['global', 'A foto geral. No topo, câmbio e bolsas do mundo; depois os números principais, o plano contra os seus checkpoints reais e a projeção de cada cenário, mês a mês e ano a ano.', 'toda semana, para ver se está no caminho.'],
@@ -6394,7 +6469,8 @@ async function entrarPerfil() {
     try { const b = await db.doc('privado/base').get(); if (b.exists) { const x = clone(b.data()); aplicarBase(x); try { localStorage.setItem('painel-priv', JSON.stringify(x)); } catch (e) {} } } catch (e) {}
   }
   const quem = souDono ? 'dono' : meuId;
-  if (souDono) try { db.doc('privado/acoes').onSnapshot(d => { minhasDb = sanitizeMinhas(d && d.exists ? d.data() : null); if (tab === 'global') renderMundo(); if (tab === 'inicio') renderHome(); }, () => {}); } catch (e) {}
+  if (souDono) try { db.doc('privado/avisos').onSnapshot(d => { avisosDb = sanitizeAvisos(d && d.exists ? d.data() : null); sinoLater(); }, () => {}); } catch (e) {}
+  if (souDono) try { db.doc('privado/acoes').onSnapshot(d => { minhasDb = sanitizeMinhas(d && d.exists ? d.data() : null); sinoLater(); if (tab === 'global') renderMundo(); if (tab === 'inicio') renderHome(); }, () => {}); } catch (e) {}
   if (quem !== quemLocal) {
     // outra pessoa neste navegador: descarta o que estava na tela e usa o cache dela (ou nada)
     quemLocal = quem; try { localStorage.setItem('painel-quem', quem); } catch (e) {}
@@ -6647,9 +6723,9 @@ showTab(tab); setSave('salvo só neste navegador');
   await entrarPerfil();
   try { const a6 = await db.doc('mercado/acoes6m').get(); if (a6.exists) { const s = sanitizeA6(a6.data()); if (s) acoes6m = s; } } catch (e) {}
   // acompanha as gravações da pesquisa (ação nova entra na tabela sem recarregar)
-  try { db.doc('mercado/mundo').onSnapshot(g => { const s = g && g.exists ? sanitizeMundo(g.data()) : null; mundoDb = s; if (tab === 'global') renderMundo(); if (tab === 'inicio') renderHome(); }, () => {}); } catch (e) {}
-  try { db.doc('mercado/global').onSnapshot(g => { const s = g && g.exists ? sanitizeA6(g.data(), true) : null; if (s) { globalA6 = s; if (tab === 'carteira' && a6Aba !== 'b3') renderA6(); } }, () => {}); } catch (e) {}
-  try { db.doc('mercado/acoes6m').onSnapshot(a6 => { const s = a6 && a6.exists ? sanitizeA6(a6.data()) : null; if (s) { acoes6m = s; if (tab === 'carteira') renderA6(); } }, () => {}); } catch (e) {}
+  try { db.doc('mercado/mundo').onSnapshot(g => { const s = g && g.exists ? sanitizeMundo(g.data()) : null; mundoDb = s; sinoLater(); if (tab === 'global') renderMundo(); if (tab === 'inicio') renderHome(); }, () => {}); } catch (e) {}
+  try { db.doc('mercado/global').onSnapshot(g => { const s = g && g.exists ? sanitizeA6(g.data(), true) : null; if (s) { globalA6 = s; sinoLater(); if (tab === 'carteira' && a6Aba !== 'b3') renderA6(); } }, () => {}); } catch (e) {}
+  try { db.doc('mercado/acoes6m').onSnapshot(a6 => { const s = a6 && a6.exists ? sanitizeA6(a6.data()) : null; if (s) { acoes6m = s; sinoLater(); if (tab === 'carteira') renderA6(); } }, () => {}); } catch (e) {}
   try {
     try { db.doc('mercado/casas').onSnapshot(d => { const x = d && d.exists ? d.data() : null, it = {};
       if (x && x.itens && typeof x.itens === 'object') Object.entries(x.itens).forEach(([tk, v]) => { if (/^[A-Z][A-Z0-9]{3}\d{1,2}B?$/.test(tk) && v && isFinite(+v.ret)) it[tk] = { ret: +v.ret, retTxt: TXT(v.retTxt, 300), casas: TXT(v.casas, 120), data: TXT(v.data, 10), politica: TXT(v.politica, 20) }; });
@@ -6657,7 +6733,7 @@ showTab(tab); setSave('salvo só neste navegador');
     try { db.doc('mercado/quedas').onSnapshot(d => { quedasDb = sanitizeQuedas(d && d.exists ? d.data() : null); if (tab === 'carteira' && a6Abre) renderA6(); }, () => {}); } catch (e) {}
     try { db.doc('mercado/politica').onSnapshot(d => { const x = d && d.exists ? d.data() : null; polCtx = x && typeof x.texto === 'string' ? { texto: x.texto.slice(0, 600), data: String(x.data || '').slice(0, 10) } : null; if (tab === 'carteira') renderScore(true); }, () => {}); } catch (e) {}
     const f = await db.doc('mercado/focus').get();
-    if (f.exists) { const s = sanitizeFocus(f.data()); if (s) focus = s; }
+    if (f.exists) { const s = sanitizeFocus(f.data()); if (s) { focus = s; sinoLater(); } }
   } catch (e) {}
   try {
     const snap = await pdoc('painel/v2').get();
