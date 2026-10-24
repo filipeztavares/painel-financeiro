@@ -670,7 +670,7 @@ a.lm-ir:hover { border-bottom-style: solid; }
     </div>
     <div class="nav-mobile-sub" id="navMobileSub"></div>
   </div>
-  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 129</div></div>
+  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 130</div></div>
 </nav>
 
 <div class="main"><div class="wrap">
@@ -963,7 +963,7 @@ a.lm-ir:hover { border-bottom-style: solid; }
         <div class="seg" id="presetCart" role="group" aria-label="Ponto de partida"></div>
         <p class="hint" id="presetCartHint"></p>
         <div class="tscroll"><table id="tbl-alvoc"></table></div>
-        <div class="sumline" id="alvoCartSum"></div>
+        <div class="sumline" id="alvoCartSum" style="margin-top:12px"></div>
       </section>
       <section data-nav="Por instituição" class="panel">
         <h2>Por instituição</h2>
@@ -1495,7 +1495,7 @@ a.lm-ir:hover { border-bottom-style: solid; }
     return new Promise(resolve => { const { data } = sb.auth.onAuthStateChange(async (ev) => { if (ev !== 'PASSWORD_RECOVERY') return; const s = prompt('Digite a nova senha (mínimo 8 caracteres):'); if (s && s.length >= 8) { const { error } = await sb.auth.updateUser({ password: s }); alert(error ? 'Não deu para trocar a senha: ' + error.message : 'Senha trocada.'); } }); resolve(data); });
   }
   // ---------- rodapé: compartilhar, administração e sair ----------
-  const SITE_V = 8;
+  const SITE_V = 9;
   const escH = v => String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const dataBR = v => v ? new Date(v).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' }) : '–';
   const css2 = `.side-foot .r{flex-wrap:wrap}.side-foot .lg-acoes{margin-left:auto;display:inline-flex;gap:10px}
@@ -2670,7 +2670,7 @@ function renderAlvoCart() {
     const el = $('ac-d-' + c.id); el.textContent = tot && Math.abs(d) >= 0.005 ? (d > 0 ? '+' : '−') + (Math.abs(d) * 100).toFixed(1).replace('.', ',') + ' p.p.' : '—'; el.style.fontWeight = Math.abs(d) > 0.05 ? '600' : ''; el.title = d > 0 ? 'acima do alvo' : 'abaixo do alvo'; });
   const m = mix(AL, rates(HOJE_IDX + 1)), pr = PRESETS.find(x => x.id === state.alvoPreset);
   $('presetCartHint').textContent = pr ? pr.hint : 'Divisão personalizada.';
-  $('alvoCartSum').innerHTML = `Soma do alvo: <b class="${Math.abs(m.tot - 100) > 0.01 ? 'neg' : ''}">${num(m.tot)}%</b>${Math.abs(m.tot - 100) > 0.01 ? ' (o cálculo usa a proporção)' : ''} · líquido esperado ${pct(m.net, 2)} · real ${pct(m.real, 2)}` + perfilHtml(m.risco);
+  $('alvoCartSum').innerHTML = `Soma do alvo: <b class="${Math.abs(m.tot - 100) > 0.01 ? 'neg' : ''}">${num(m.tot)}%</b>${Math.abs(m.tot - 100) > 0.01 ? ' (o cálculo usa a proporção)' : ''} · líquido esperado ${pct(m.net, 2)} · real ${pct(m.real, 2)}` + `<div style="margin-top:10px">${perfilHtml(m.risco)}</div>`;
 }
 function buildCarteira() {
   buildAlvoCart();
