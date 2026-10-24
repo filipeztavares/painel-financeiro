@@ -689,7 +689,7 @@ a.lm-ir:hover { border-bottom-style: solid; }
         </div></div>
         <div class="nav-sec" data-sec="invest"><button type="button" class="nav-sec-h" data-sectog="invest" aria-expanded="true"><span>Investimentos</span><span class="caret" aria-hidden="true">▾</span></button><div class="nav-sec-b">
           <div class="nav-group"><button type="button" class="nav-head" data-tab="carteira"><span class="ico">03</span>Carteira<span class="caret" data-navtog="carteira" role="button" tabindex="0" aria-label="Abrir ou recolher submódulos">▾</span></button><div class="nav-sub" data-sub="carteira"></div></div>
-          <div class="nav-group"><button type="button" class="nav-head" data-tab="comparador"><span class="ico">04</span>Comparador RF<span class="caret" data-navtog="comparador" role="button" tabindex="0" aria-label="Abrir ou recolher submódulos">▾</span></button><div class="nav-sub" data-sub="comparador"></div></div>
+          <div class="nav-group"><button type="button" class="nav-head" data-tab="comparador"><span class="ico">04</span>Comparador<span class="caret" data-navtog="comparador" role="button" tabindex="0" aria-label="Abrir ou recolher submódulos">▾</span></button><div class="nav-sub" data-sub="comparador"></div></div>
           <div class="nav-group"><button type="button" class="nav-head" data-tab="simulador"><span class="ico">05</span>Simulações<span class="caret" data-navtog="simulador" role="button" tabindex="0" aria-label="Abrir ou recolher submódulos">▾</span></button><div class="nav-sub" data-sub="simulador"></div></div>
         </div></div>
         <div class="nav-sec" data-sec="futuro"><button type="button" class="nav-sec-h" data-sectog="futuro" aria-expanded="true"><span>Futuro</span><span class="caret" aria-hidden="true">▾</span></button><div class="nav-sec-b">
@@ -708,7 +708,7 @@ a.lm-ir:hover { border-bottom-style: solid; }
     </div>
     <div class="nav-mobile-sub" id="navMobileSub"></div>
   </div>
-  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 140</div></div>
+  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 141</div></div>
 </nav>
 
 <div class="main"><div class="wrap">
@@ -1033,7 +1033,7 @@ a.lm-ir:hover { border-bottom-style: solid; }
   </section>
   <!-- ============ COMPARADOR RF ============ -->
   <section role="tabpanel" id="p-comparador" hidden>
-    <div class="block-title"><span class="num">04</span><div><h1>Comparador RF</h1><p class="desc">Produtos de renda fixa lado a lado, líquidos de IR, taxas e come-cotas.</p></div></div>
+    <div class="block-title"><span class="num">04</span><div><h1>Comparador</h1><p class="desc">Renda fixa, ações e bolsa lado a lado, líquidos de IR, taxas e come-cotas.</p></div></div>
       <div class="kpis" id="kpi-r"></div>
       <section data-nav="Aplicação e regras">
         <div class="params">
@@ -1534,7 +1534,7 @@ a.lm-ir:hover { border-bottom-style: solid; }
     return new Promise(resolve => { const { data } = sb.auth.onAuthStateChange(async (ev) => { if (ev !== 'PASSWORD_RECOVERY') return; const s = prompt('Digite a nova senha (mínimo 8 caracteres):'); if (s && s.length >= 8) { const { error } = await sb.auth.updateUser({ password: s }); alert(error ? 'Não deu para trocar a senha: ' + error.message : 'Senha trocada.'); } }); resolve(data); });
   }
   // ---------- rodapé: compartilhar, administração e sair ----------
-  const SITE_V = 19;
+  const SITE_V = 20;
   const escH = v => String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const dataBR = v => v ? new Date(v).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' }) : '–';
   const css2 = `.side-foot .r{flex-wrap:wrap}.side-foot .lg-acoes{margin-left:auto;display:inline-flex;gap:10px}
@@ -3202,7 +3202,7 @@ function motivoAbaixo(x, f) {
   else if (a.idx === 'pos' && +a.taxa && +a.taxa < 100) out.push(`A taxa contratada é ${num(a.taxa)}% do CDI, abaixo de 100%, então tende a ficar abaixo do CDI mesmo.`);
   else if ((a.idx === 'pos' || a.idx === 'selic') && span < 3) out.push(`A taxa é de ${num(a.taxa || 100)}% do CDI e a aplicação é recente (${Math.max(1, Math.round(span * 4.35))} semanas). Com tão pouco tempo, diferenças pequenas pesam muito: dias úteis, o CDI do mês corrente ainda estimado e a data em que o valor foi atualizado. Tende a se ajustar com o tempo.`);
   else if (a.idx === 'pos' || a.idx === 'selic') out.push(`A taxa é de ${num(a.taxa || 100)}% do CDI, então o resultado deveria ficar perto ou acima dele. O mais comum é o valor atual cadastrado já estar líquido de IR, como o C6 mostra no app (o painel desconta de novo), ou desatualizado. Confira se o valor é o bruto, antes do imposto.`);
-  if (f && f.r != null) { const r = f.eqCdb || f.r; out.push(r >= 1 ? `Daqui pra frente a taxa contratada deve render ${pct(r, 0)} do CDI esperado pelo Focus, então a tendência é melhorar até o vencimento.` : `Daqui pra frente a taxa contratada deve render ${pct(r, 0)} do CDI esperado pelo Focus, ainda abaixo dele. Vale comparar com outras opções no 04. Comparador RF.`); }
+  if (f && f.r != null) { const r = f.eqCdb || f.r; out.push(r >= 1 ? `Daqui pra frente a taxa contratada deve render ${pct(r, 0)} do CDI esperado pelo Focus, então a tendência é melhorar até o vencimento.` : `Daqui pra frente a taxa contratada deve render ${pct(r, 0)} do CDI esperado pelo Focus, ainda abaixo dele. Vale comparar com outras opções no 04. Comparador.`); }
   return out.join(' ');
 }
 function renderRentCada(R) {
@@ -5300,7 +5300,7 @@ const INFO_SEC = {
   'carteira:Vencimentos': 'Quando cada aplicação vence e quanto deve valer no vencimento pela taxa contratada, bruto e líquido de IR. As barras somam o que volta em cada ano.',
   'carteira:Oportunidades': 'Alertas automáticos da carteira: FGC, vencimentos próximos, degrau de IR, renda fixa rendendo pouco, marcação a mercado, concentração, rebalanceamento, reserva de emergência e momento dos juros.',
   'carteira:Score das ações': 'Nota de 0 a 100 para cada ação estudada, pela meta de retorno. Junta potencial (preço-alvo das casas), momento, tendência longa, recuperação, risco e cenário político. Os pesos são editáveis.',
-  'comparador:Aplicação e regras': 'O valor, o prazo e as regras (IR, come-cotas, custódia) usados para comparar os produtos de renda fixa abaixo.',
+  'comparador:Aplicação e regras': 'O valor, o prazo e as regras (IR, come-cotas, custódia) usados para comparar os produtos abaixo.',
   'comparador:Produtos': 'Os produtos comparados, com indexador e taxa. Adicione, edite ou remova linhas.',
   'comparador:Resultado no prazo': 'Quanto cada produto entrega no prazo escolhido, bruto e líquido de IR, com a curva de juros do Focus. A melhor opção fica em destaque.',
   'comparador:Valor por mês': 'O valor líquido de cada produto se você resgatasse em cada mês, para ver qual vence em prazos diferentes.',
@@ -5647,7 +5647,7 @@ const LM_MODS = [
   ['gastos', 'O dia a dia do dinheiro: lançar gastos ou importar fatura e extrato, ver por categoria, sincronizar com a planilha e fechar o mês comparando o real com o projetado.', 'todo mês, depois que a fatura fecha.'],
   ['patrimonio', 'Tudo o que você tem menos o que deve: investimentos, bens (carro deprecia, imóvel valoriza), dívidas, quanto custa ter cada bem e o que acontece se vender.', 'para ver o patrimônio total e antes de vender ou trocar um bem.'],
   ['carteira', 'Tudo o que você tem aplicado hoje: valor estimado, IR e FGC, saúde da carteira, rentabilidade contra o CDI, vencimentos, oportunidades e a tabela de ações (B3, internacionais e ETFs) com o score.', 'ao aplicar ou resgatar, e uma vez por mês.'],
-  ['comparador', 'Coloca CDB, LCI, LCA, Tesouro e fundos lado a lado, já líquidos de IR, taxas e come-cotas, no prazo que você escolher.', 'antes de escolher uma aplicação de renda fixa.'],
+  ['comparador', 'Coloca CDB, LCI, LCA, Tesouro, fundos, ações e bolsa lado a lado, já líquidos de IR, taxas e come-cotas, no prazo que você escolher.', 'antes de escolher uma aplicação.'],
   ['simulador', 'Simula aportes e metas: quanto aportar por mês para chegar a um valor, ou onde você chega com o que aporta hoje, no perfil de risco escolhido.', 'para planejar uma meta (reserva, aposentadoria, entrada de imóvel).'],
   ['orcamento', 'O plano de referência: renda, custos por categoria, reajustes, rendimento, IPCA, mudanças programadas e eventos. Daqui saem a linha Plano da Visão global e o projetado do fechamento.', 'quando a renda ou os custos mudam.'],
   ['compras', 'O cadastro de bens: imóveis, carros e outros, já comprados ou planejados, com preço, entrada, financiamento, custos de ter e valorização. Compara à vista, SAC, Price e consórcio.', 'quando comprar, planejar ou financiar um bem.'],
