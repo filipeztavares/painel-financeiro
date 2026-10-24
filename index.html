@@ -176,7 +176,8 @@ input:hover, select:hover { border-color: var(--s1); }
 .hm-card .mundo-g { grid-template-columns: repeat(auto-fill, minmax(124px, 1fr)); }
 .mundo-c .pos { color: var(--good); } .mundo-c .neg { color: var(--bad); }
 @media (max-width: 640px) { .mundo-g { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; padding-bottom: 4px; } .mundo-c { flex: 0 0 108px; scroll-snap-align: start; } }
-.rt-filtros { margin: 2px 0 12px; }
+.rt-filtros { margin: 2px 0 12px; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 10px; }
+.rt-cmp { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
 .rt-cada { margin-top: 20px; align-items: center; }
 .rt-cada h3 { margin: 0; }
 #tbl-rt .chip.ok { background: var(--good-soft); color: var(--good); } #tbl-rt .chip.ruim { background: var(--red-soft); color: var(--red); } #tbl-rt .chip.neu { background: var(--line); color: var(--muted); }
@@ -184,7 +185,7 @@ input:hover, select:hover { border-color: var(--s1); }
 @media (max-width: 1200px) { .kpis { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 @media (max-width: 460px) { .kpis { gap: 8px; } .kpi { padding: 10px 10px 10px 13px; } .kpi .v { font-size: 17px; } .kpi .d { font-size: 10.5px; } }
 .kpis:empty { display: none; }
-#kpi-rt { grid-template-columns: repeat(3, minmax(0, 1fr)); margin: 6px 0 24px; }
+#kpi-rt { grid-template-columns: repeat(auto-fit, minmax(min(200px, 100%), 1fr)); margin: 6px 0 24px; }
 @media (max-width: 760px) { #kpi-rt { grid-template-columns: 1fr; } }
 #lg-rt { margin-bottom: 8px; }
 .kpi { --kc: var(--dotc); background: var(--panel); border: 1px solid var(--line); border-radius: 10px; box-shadow: var(--shadow); padding: 13px 16px 13px 18px; display: flex; flex-direction: column; gap: 4px; min-width: 0; position: relative; overflow: hidden; }
@@ -694,7 +695,7 @@ a.lm-ir:hover { border-bottom-style: solid; }
     </div>
     <div class="nav-mobile-sub" id="navMobileSub"></div>
   </div>
-  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 137</div></div>
+  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 138</div></div>
 </nav>
 
 <div class="main"><div class="wrap">
@@ -926,8 +927,8 @@ a.lm-ir:hover { border-bottom-style: solid; }
         <div class="sd-wrap" id="sd-wrap"></div>
       </section>
       <section data-nav="Rentabilidade x CDI" class="panel chart">
-        <div class="row"><h2>Rentabilidade da carteira contra o CDI</h2><div class="seg" id="rt-per" role="group" aria-label="Período"><button type="button" data-rtper="6">6 meses</button><button type="button" data-rtper="12">12 meses</button><button type="button" data-rtper="tudo">Desde o início</button></div></div>
-        <div class="rt-filtros"><div class="seg" id="rt-grupo" role="group" aria-label="Tipo de investimento"></div></div>
+        <div class="row"><h2>Rentabilidade da carteira contra o CDI e a bolsa</h2><div class="seg" id="rt-per" role="group" aria-label="Período"><button type="button" data-rtper="6">6 meses</button><button type="button" data-rtper="12">12 meses</button><button type="button" data-rtper="tudo">Desde o início</button></div></div>
+        <div class="rt-filtros"><div class="seg" id="rt-grupo" role="group" aria-label="Tipo de investimento"></div><div class="rt-cmp"><span class="hint">Comparar com</span><div class="seg" id="rt-cmp" role="group" aria-label="Comparar com"><button type="button" data-rtcmp="cdi">CDI</button><button type="button" data-rtcmp="ibov">Ibovespa</button><button type="button" data-rtcmp="ambos">Os dois</button></div></div></div>
         <div class="kpis" id="kpi-rt"></div>
         <div class="legend" id="lg-rt"></div>
         <div id="ch-rt"></div>
@@ -1520,7 +1521,7 @@ a.lm-ir:hover { border-bottom-style: solid; }
     return new Promise(resolve => { const { data } = sb.auth.onAuthStateChange(async (ev) => { if (ev !== 'PASSWORD_RECOVERY') return; const s = prompt('Digite a nova senha (mínimo 8 caracteres):'); if (s && s.length >= 8) { const { error } = await sb.auth.updateUser({ password: s }); alert(error ? 'Não deu para trocar a senha: ' + error.message : 'Senha trocada.'); } }); resolve(data); });
   }
   // ---------- rodapé: compartilhar, administração e sair ----------
-  const SITE_V = 16;
+  const SITE_V = 17;
   const escH = v => String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const dataBR = v => v ? new Date(v).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' }) : '–';
   const css2 = `.side-foot .r{flex-wrap:wrap}.side-foot .lg-acoes{margin-left:auto;display:inline-flex;gap:10px}
@@ -3080,7 +3081,20 @@ const cdiMes = i => { const h = CDI_HIST[mKey(i)]; return h != null ? h / 100 : 
 const posData = iso => { const [y, m, d] = String(iso).slice(0, 10).split('-').map(Number), dim = new Date(y, m, 0).getDate(); return mIndex(`${y}-${String(m).padStart(2, '0')}`) + (Math.min(d, dim) - 1) / dim; };
 // fator do CDI entre duas posições (em meses)
 function cdiFat(p1, p2) { let f = 1; if (p2 <= p1) return f; for (let i = Math.floor(p1); i < p2; i++) { const a = Math.max(p1, i), b = Math.min(p2, i + 1); if (b > a) f *= Math.pow(1 + cdiMes(i), b - a); } return f; }
-let rtPer = '12', rtGrupo = 'tudo', rtStatus = 'todas';
+// Ibovespa: pontos no fechamento de cada mês (aproximado pelo primeiro pregão do mês seguinte até 2025; dezembros e 2026 são os fechamentos oficiais)
+const IBOV_HIST = { '2020-09': 95479, '2020-10': 95980, '2020-11': 111400, '2020-12': 119017, '2021-01': 117518, '2021-02': 110335, '2021-03': 115253, '2021-04': 119209, '2021-05': 128267, '2021-06': 125666, '2021-07': 122516, '2021-08': 119396, '2021-09': 112900, '2021-10': 105551, '2021-11': 100775, '2021-12': 104822, '2022-01': 113228, '2022-02': 115174, '2022-03': 121570, '2022-04': 106639, '2022-05': 111360, '2022-06': 98954, '2022-07': 102225, '2022-08': 110405, '2022-09': 116134, '2022-10': 116929, '2022-11': 110926, '2022-12': 109735, '2023-01': 112074, '2023-02': 104385, '2023-03': 101506, '2023-04': 101927, '2023-05': 110565, '2023-06': 119673, '2023-07': 121248, '2023-08': 117893, '2023-09': 115057, '2023-10': 115053, '2023-11': 128185, '2023-12': 134185, '2024-01': 128481, '2024-02': 129180, '2024-03': 126990, '2024-04': 127122, '2024-05': 122032, '2024-06': 124718, '2024-07': 127395, '2024-08': 134906, '2024-09': 132495, '2024-10': 128121, '2024-11': 125236, '2024-12': 120283, '2025-01': 125970, '2025-02': 123047, '2025-03': 131147, '2025-04': 135134, '2025-05': 136787, '2025-06': 139549, '2025-07': 132437, '2025-08': 141283, '2025-09': 146242, '2025-10': 149547, '2025-11': 159073, '2025-12': 161125, '2026-01': 181364, '2026-02': 188787, '2026-03': 187462, '2026-04': 187318, '2026-05': 173787, '2026-06': 172024, '2026-07': 177999, '2026-08': 177419, '2026-09': 186340 };
+const IBOV_ULT = ['2026-10-22', 204120];
+// pontos do Ibovespa numa posição contínua (em meses); null antes do início da série
+function ibovAt(p) {
+  const pu = posData(IBOV_ULT[0]), val = k => { const v = IBOV_HIST[mKey(k - 1)]; return v == null ? null : v; };
+  const ks = Object.keys(IBOV_HIST).sort(), kL = mIndex(ks[ks.length - 1]) + 1;
+  if (p >= pu) return IBOV_ULT[1];
+  if (p >= kL) { const a = val(kL); return a + (IBOV_ULT[1] - a) * (p - kL) / Math.max(pu - kL, 1e-9); }
+  const k0 = Math.floor(p), a = val(k0), b = val(k0 + 1); if (a == null) return null; return b == null ? a : a + (b - a) * (p - k0);
+}
+const ibovFat = (p1, p2) => { const a = ibovAt(p1), b = ibovAt(p2); return a && b ? b / a : null; };
+let rtPer = '12', rtGrupo = 'tudo', rtStatus = 'todas', rtCmp = 'ambos';
+try { const v = localStorage.getItem('painel-rtcmp'); if (['cdi', 'ibov', 'ambos'].includes(v)) rtCmp = v; } catch (e) {}
 try { const g = JSON.parse(localStorage.getItem('painel-rtfil') || 'null'); if (g) { rtGrupo = g.g || 'tudo'; rtStatus = g.s || 'todas'; } } catch (e) {}
 const RT_GRUPOS = [['tudo', 'Tudo'], ['cdi', 'Pós-fixado (CDI)'], ['pre', 'Prefixado'], ['ipca', 'IPCA+'], ['acoes', 'Ações e ETFs'], ['fundos', 'Fundos'], ['outros', 'Outros']];
 function grupoRent(a) {
@@ -3124,7 +3138,7 @@ function rentCarteira(g) {
   // retorno de cada mês pelo método de Dietz (aplicações novas entram como fluxo no meio do mês)
   const meses = pts.map((p, j) => { const pA = j ? pts[j - 1] : m0; let S = 0, E = 0, F = 0;
     its.forEach(x => { if (x.p0 < p) { E += V(x, p); if (x.p0 <= pA) S += V(x, pA); else F += x.ap; } });
-    return { p, ganho: E - S - F, r: S + F / 2 > 0 ? (E - S - F) / (S + F / 2) : 0, cdi: cdiFat(pA, p) - 1, E }; });
+    const fI = ibovFat(pA, p); return { p, ganho: E - S - F, r: S + F / 2 > 0 ? (E - S - F) / (S + F / 2) : 0, cdi: cdiFat(pA, p) - 1, ibov: fI == null ? null : fI - 1, E }; });
   const gT = its.reduce((s, x) => s + x.eq - x.ap, 0), bT = its.reduce((s, x) => s + x.ap * x.G - x.ap, 0);
   const gL = its.reduce((s, x) => s + x.eqL - x.ap, 0), bLT = its.reduce((s, x) => s + x.bL, 0);
   return { its, meses, fora, pctCdi: bT > 0 ? gT / bT : null, pctLiq: bLT > 0 ? gL / bLT : null };
@@ -3135,23 +3149,29 @@ function renderRent() {
   document.querySelectorAll('#rt-status button').forEach(b => b.setAttribute('aria-pressed', b.dataset.rtst === rtStatus));
   const R = rentCarteira(rtGrupo);
   document.querySelectorAll('#rt-per button').forEach(b => b.setAttribute('aria-pressed', b.dataset.rtper === rtPer));
+  document.querySelectorAll('#rt-cmp button').forEach(b => b.setAttribute('aria-pressed', b.dataset.rtcmp === rtCmp));
   renderRentCada(R);
   if (!R || R.meses.length < 1) { $('kpi-rt').innerHTML = ''; $('lg-rt').innerHTML = ''; $('ch-rt').innerHTML = '<p class="hint">Cadastre aplicações com data e valor atual para ver a rentabilidade.</p>'; $('ro-rt').innerHTML = ''; $('rt-hint').textContent = ''; return; }
   const ms = rtPer === 'tudo' ? R.meses : R.meses.slice(-(+rtPer));
-  let ic = 1, iC = 1; const sc = [0], sC = [0], lab = [ms[0].p - 1]; let ganho = 0;
-  ms.forEach(m => { ic *= 1 + m.r; iC *= 1 + m.cdi; sc.push(ic - 1); sC.push(iC - 1); lab.push(m.p); ganho += m.ganho; });
+  let ic = 1, iC = 1, iI = 1, semIb = 0; const sc = [0], sC = [0], sI = [0], lab = [ms[0].p - 1]; let ganho = 0;
+  ms.forEach(m => { ic *= 1 + m.r; iC *= 1 + m.cdi; if (m.ibov == null) semIb++; else iI *= 1 + m.ibov; sc.push(ic - 1); sC.push(iC - 1); sI.push(iI - 1); lab.push(m.p); ganho += m.ganho; });
   const lbl = t => { const p = lab[t], i = Math.floor(p - 1e-9); return p % 1 ? 'hoje' : mLabel(i); };
   const rC = ic - 1, rB = iC - 1, rel = rB > 0 ? rC / rB : null;
+  const rI = iI - 1, dI = rC - rI, verCdi = rtCmp !== 'ibov', verIb = rtCmp !== 'cdi';
+  const ppI = v => (v >= 0 ? '+' : '−') + (Math.abs(v) * 100).toFixed(1).replace('.', ',') + ' p.p.';
   kpis($('kpi-rt'), [
     [`Rentabilidade${rtGrupo !== 'tudo' ? ' · ' + (RT_GRUPOS.find(x => x[0] === rtGrupo) || [, ''])[1] : ''} (${rtPer === 'tudo' ? 'desde o início' : rtPer + ' meses'})`, fm(ganho), `${pct(rC, 2)} no período`],
-    ['Contra o CDI · bruto', rel == null ? '—' : pct(rel, 1) + ' do CDI', `CDI no período: ${pct(rB, 2)}, antes do IR`, rel != null && rel < 1],
-    ['Desde cada aplicação · líquido', R.pctLiq == null ? '—' : pct(R.pctLiq, 1) + ' do CDI', `líquido de IR dos dois lados${R.pctCdi != null ? ` · bruto: ${pct(R.pctCdi, 1)}` : ''}`, R.pctLiq != null && R.pctLiq < 1]
-  ]);
-  const series = [{ name: 'Carteira', c: 'var(--s4)', v: sc, w: 2.6 }, { name: 'CDI', c: 'var(--plan)', v: sC, dash: true }];
+    verCdi && ['Contra o CDI · bruto', rel == null ? '—' : pct(rel, 1) + ' do CDI', `CDI no período: ${pct(rB, 2)}, antes do IR`, rel != null && rel < 1],
+    verIb && ['Contra o Ibovespa', ppI(dI), `Ibovespa no período: ${pct(rI, 2)}${semIb ? ` (sem dados em ${semIb} ${semIb > 1 ? 'meses' : 'mês'})` : ''}`, dI < 0],
+    verCdi && ['Desde cada aplicação · líquido', R.pctLiq == null ? '—' : pct(R.pctLiq, 1) + ' do CDI', `líquido de IR dos dois lados${R.pctCdi != null ? ` · bruto: ${pct(R.pctCdi, 1)}` : ''}`, R.pctLiq != null && R.pctLiq < 1]
+  ].filter(Boolean));
+  const series = [{ name: 'Carteira', c: 'var(--s4)', v: sc, w: 2.6 }];
+  if (verCdi) series.push({ name: 'CDI', c: 'var(--plan)', v: sC, dash: true });
+  if (verIb) series.push({ name: 'Ibovespa', c: 'var(--s2)', v: sI, dash: true });
   legend($('lg-rt'), series);
   chart($('ch-rt'), $('ro-rt'), sc.length, series.map(x => Object.assign({}, x)), v => pct(v, 1), lbl, sc.length - 1, v => pct(v, 2));
   const bons = R.its.filter(x => x.pctLiq != null && x.G > 1.01).sort((a, b) => b.pctLiq - a.pctLiq);
-  $('rt-hint').innerHTML = `Estimativa a partir da data, do valor aplicado e do valor atual de cada aplicação cadastrada (cupons, dividendos, JCP e rendimentos já recebidos contam), com o CDI mensal do Banco Central. Aplicações já resgatadas não entram${R.fora.length ? `, nem as sem valor atual informado (${R.fora.map(esc).join(', ')})` : ''}.${bons.length > 1 ? ` O gráfico compara antes do IR; a tabela abaixo, o líquido. Melhor (líquido): <b>${esc(bons[0].a.nome)}</b> (${pct(bons[0].pctLiq, 0)} do CDI). Pior: <b>${esc(bons[bons.length - 1].a.nome)}</b> (${pct(bons[bons.length - 1].pctLiq, 0)} do CDI).` : ''}`;
+  $('rt-hint').innerHTML = `Estimativa a partir da data, do valor aplicado e do valor atual de cada aplicação cadastrada (cupons, dividendos, JCP e rendimentos já recebidos contam), com o CDI mensal do Banco Central e o Ibovespa no fechamento de cada mês (até 22/10/2026). Aplicações já resgatadas não entram${R.fora.length ? `, nem as sem valor atual informado (${R.fora.map(esc).join(', ')})` : ''}.${bons.length > 1 ? ` O gráfico compara antes do IR; a tabela abaixo, o líquido. Melhor (líquido): <b>${esc(bons[0].a.nome)}</b> (${pct(bons[0].pctLiq, 0)} do CDI). Pior: <b>${esc(bons[bons.length - 1].a.nome)}</b> (${pct(bons[bons.length - 1].pctLiq, 0)} do CDI).` : ''}`;
 }
 // por que uma aplicação ficou abaixo do CDI: explicação montada com os números dela (vai no (i) da tabela)
 function motivoAbaixo(x, f) {
@@ -3191,6 +3211,7 @@ function renderRentCada(R) {
       <td>${f ? (f.eqCdb ? `${pc(f.eqCdb)} <span class="subdet">do CDI</span><div class="subdet">isento: taxa de ${pct(f.r, 0)} do CDI</div>` : `${pc(f.r)} <span class="subdet">do CDI</span>`) : '<span class="subdet">sem taxa contratada</span>'}</td><td>${x.a.venc ? brD(x.a.venc) : '<span class="subdet">–</span>'}</td></tr>`; }).join('') || `<tr><td class="name" colspan="8">Nenhuma aplicação ${rtStatus === 'acima' ? 'acima' : 'abaixo'} do CDI neste filtro.</td></tr>`}</tbody>` : '<tbody><tr><td class="name">Nenhuma aplicação com data e valor neste filtro.</td></tr></tbody>';
 }
 document.addEventListener('click', e => { const g = e.target.closest && e.target.closest('[data-rtgr],[data-rtst]'); if (!g) return; if (g.dataset.rtgr) rtGrupo = g.dataset.rtgr; if (g.dataset.rtst) rtStatus = g.dataset.rtst; try { localStorage.setItem('painel-rtfil', JSON.stringify({ g: rtGrupo, s: rtStatus })); } catch (err) {} renderRent(); });
+document.addEventListener('click', e => { const b = e.target.closest && e.target.closest('[data-rtcmp]'); if (!b) return; rtCmp = b.dataset.rtcmp; try { localStorage.setItem('painel-rtcmp', rtCmp); } catch (err) {} renderRent(); });
 document.addEventListener('click', e => { const b = e.target.closest && e.target.closest('[data-rtper]'); if (!b) return; rtPer = b.dataset.rtper; try { localStorage.setItem('painel-rtper', rtPer); } catch (err) {} renderRent(); });
 try { const v = localStorage.getItem('painel-rtper'); if (['6', '12', 'tudo'].includes(v)) rtPer = v; } catch (e) {}
 /* ---------- roscas: distribuição em anel com legenda (valor e %) ---------- */
@@ -5225,7 +5246,7 @@ const INFO_SEC = {
   'compras:Formas de pagamento': 'Para a compra escolhida, compara pagar à vista, financiar (SAC ou Price) ou consórcio, considerando o que o dinheiro renderia se ficasse investido.',
   'cenarios:Rebalanceamento': 'Como dividir o próximo aporte entre as classes para aproximar a carteira de hoje do alvo do cenário, sem vender nada.',
   'carteira:Saúde da carteira': 'Nota de 0 a 1.000 em cinco eixos (diversificação, liquidez, retorno, eficiência e proteção), cada um até 200 pontos, calculada com as aplicações cadastradas. O (i) de cada eixo mostra a conta.',
-  'carteira:Rentabilidade x CDI': 'Quanto a carteira rendeu contra o CDI. Usa a data, o valor aplicado e o valor atual de cada aplicação (cupons, dividendos, JCP e rendimentos já recebidos contam) e o CDI mensal do Banco Central. "Desde cada aplicação" compara cada uma com o CDI do próprio período.',
+  'carteira:Rentabilidade x CDI': 'Quanto a carteira rendeu contra o CDI e contra o Ibovespa (escolha em "Comparar com"). O Ibovespa já inclui dividendos reinvestidos; a comparação com ele vem em pontos percentuais de diferença no período. Usa a data, o valor aplicado e o valor atual de cada aplicação (cupons, dividendos, JCP e rendimentos já recebidos contam) e o CDI mensal do Banco Central. "Desde cada aplicação" compara cada uma com o CDI do próprio período.',
   'carteira:Cadastrar aplicação': 'Cadastre cada aplicação com tipo, indexador, taxa, datas e valor atual. Com o valor atual informado, o painel usa ele; sem ele, estima pela taxa contratada. Também dá para importar o extrato da corretora em PDF.',
   'carteira:Aplicações': 'Todas as aplicações: valor aplicado, valor atual, quanto sobraria se resgatasse hoje (já com IR), rendimento e tempo. Os botões permitem editar, comparar no Comparador ou remover.',
   'carteira:Carteira-alvo': 'A divisão entre classes que você quer ter. Comece por um perfil e ajuste os números. Ela vale para Por classe, Oportunidades, Saúde da carteira, rebalanceamento e para os cenários sem divisão própria.',
