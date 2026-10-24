@@ -149,6 +149,9 @@ input[type="number"], input[type="month"], input[type="text"], input[type="date"
 }
 input:hover, select:hover { border-color: var(--s1); }
 .hint { grid-column: 1 / -1; font-size: 11.5px; color: var(--muted); margin: 0; font-family: var(--f-ui); text-transform: none; letter-spacing: 0; font-weight: 400; }
+.seg + .hint, .seg + p.sub, .seg + p:not([class]) { margin-top: 10px; }
+.hint + .tscroll, .hint + .sumline { margin-top: 10px; }
+.tscroll ~ .hint, .orc-grid ~ .hint { margin-top: 10px; }
 .src { font-size: 9.5px; color: var(--accent); font-weight: 600; text-transform: none; letter-spacing: 0; }
 .mundo { margin: 0 0 14px; }
 .mundo-h { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; margin: 0 0 8px; }
@@ -285,6 +288,7 @@ td.fam-bar { min-width: 150px; }
 .pol-info td:nth-child(n+2), .pol-info th:nth-child(n+2) { text-align: center; width: 42px; overflow-wrap: normal; }
 .score-top { grid-template-columns: repeat(auto-fit, minmax(min(240px, 100%), 1fr)); }
 .score-card p { margin: 6px 0 0; font-size: 13px; }
+.score-card > p:first-of-type { margin-top: 10px; }
 .score-n { display: inline-grid; place-items: center; min-width: 38px; height: 28px; border-radius: 8px; background: var(--accent); color: #fff; font-weight: 700; font-size: 14px; }
 .score-all { margin-top: 12px; }
 .score-ctx { margin: 0 0 10px; font-size: 13px; padding: 8px 12px; border-left: 3px solid var(--accent); background: var(--field); border-radius: 6px; }
@@ -516,6 +520,7 @@ tr.novo-row td { animation: novoRow 2.4s ease; }
   .nav-group { margin: 0; flex-shrink: 0; }
   .nav-sec, .nav-sec-b, .nav-pe { display: contents; }
   .nav-sec-h { display: none; }
+  .nav-pe .nav-group { flex: 0 0 auto; }
   .nav-pe .nav-head { font-size: 11.5px; font-weight: 600; color: rgba(255,255,255,.92); padding: 9px 10px; }
   .nav-head { white-space: nowrap; width: auto; }
   .nav-group .nav-sub { display: none; }
@@ -593,7 +598,7 @@ a.lm-ir:hover { border-bottom-style: solid; }
 .lm-subs { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 2px; }
 .lm-subs a { font-size: 11px; padding: 2px 9px; border-radius: 99px; border: 1px solid var(--line); color: var(--muted); text-decoration: none; cursor: pointer; }
 .lm-subs a:hover { border-color: var(--accent); color: var(--accent); }
-.lm-dicas { margin: 0; padding-left: 18px; display: flex; flex-direction: column; gap: 6px; font-size: 12.5px; line-height: 1.5; }
+.lm-dicas { margin: 10px 0 0; padding-left: 18px; display: flex; flex-direction: column; gap: 6px; font-size: 12.5px; line-height: 1.5; }
 .lm-dicas b { color: var(--ink); }
 /* início: cards de resumo em duas colunas */
 .hm-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 16px; align-items: start; }
@@ -670,7 +675,7 @@ a.lm-ir:hover { border-bottom-style: solid; }
     </div>
     <div class="nav-mobile-sub" id="navMobileSub"></div>
   </div>
-  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 131</div></div>
+  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 132</div></div>
 </nav>
 
 <div class="main"><div class="wrap">
@@ -724,7 +729,7 @@ a.lm-ir:hover { border-bottom-style: solid; }
           <li><b>O botão (i)</b> ao lado de cada título explica o que a seção mostra e de onde vêm os números.</li>
           <li><b>No menu</b>, a setinha abre os submódulos de cada módulo; clique num deles para pular direto. "Recolher todos" deixa o menu curto.</li>
           <li><b>Nas tabelas</b>, clique no cabeçalho para ordenar. Várias deixam esconder colunas, e a de ações deixa arrastar a ordem.</li>
-          <li><b>Os números se conversam</b>: mudar o plano (07) mexe na Visão global e no fechamento; mudar uma compra (02) mexe nos cenários; um checkpoint novo (01) reinicia as projeções a partir dele.</li>
+          <li><b>Os números se conversam</b>: mudar o plano (06) mexe na Visão global e no fechamento; mudar uma compra (07) mexe nos cenários; um checkpoint novo reinicia as projeções a partir dele.</li>
           <li><b>Para outra pessoa usar</b>, use o botão Compartilhar do painel. Ela recebe um painel vazio, só dela, e você vê a soma em 10. Visão consolidada.</li>
           <li><b>Tema claro ou escuro</b> segue o do seu aparelho.</li>
         </ul>
@@ -1495,7 +1500,7 @@ a.lm-ir:hover { border-bottom-style: solid; }
     return new Promise(resolve => { const { data } = sb.auth.onAuthStateChange(async (ev) => { if (ev !== 'PASSWORD_RECOVERY') return; const s = prompt('Digite a nova senha (mínimo 8 caracteres):'); if (s && s.length >= 8) { const { error } = await sb.auth.updateUser({ password: s }); alert(error ? 'Não deu para trocar a senha: ' + error.message : 'Senha trocada.'); } }); resolve(data); });
   }
   // ---------- rodapé: compartilhar, administração e sair ----------
-  const SITE_V = 10;
+  const SITE_V = 11;
   const escH = v => String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const dataBR = v => v ? new Date(v).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' }) : '–';
   const css2 = `.side-foot .r{flex-wrap:wrap}.side-foot .lg-acoes{margin-left:auto;display:inline-flex;gap:10px}
@@ -3203,7 +3208,7 @@ function saudeCarteira() {
   const gaps = CLASSES.map(c => ({ c, d: (h[c.id] || 0) / tot - (+dest.alvo[c.id] || 0) / totA }));
   const dev = gaps.reduce((s, x) => s + Math.abs(x.d), 0) / 2, gMax = gaps.slice().sort((x, y) => Math.abs(y.d) - Math.abs(x.d))[0];
   out.push({ k: 'div', nome: 'Diversificação', pts: clamp(200 * (1 - dev / 0.5)),
-    txt: dev < 0.05 ? `A carteira está perto do alvo do cenário "${dest.nome}".` : `${pct(dev, 0)} da carteira está fora do alvo do cenário "${dest.nome}". A maior diferença é ${gMax.c.nome}: ${gMax.d > 0 ? 'sobram' : 'faltam'} ${fm(Math.abs(gMax.d) * tot)}.` });
+    txt: dev < 0.05 ? `A carteira está perto da carteira-alvo.` : `${pct(dev, 0)} da carteira está fora da carteira-alvo. A maior diferença é ${gMax.c.nome}: ${gMax.d > 0 ? 'sobram' : 'faltam'} ${fm(Math.abs(gMax.d) * tot)}.` });
   // liquidez: diária x reserva de 6 meses de custos
   const pm = (calcPlano().meses || {})[HOJE_IDX], custo = pm ? pm.custos : 0, alvoRes = custo > 0 ? 6 * custo : 0.1 * tot;
   const liqD = ev.filter(({ a }) => /di[aá]ria/i.test(a.liq || '') || a.tipo === 'tsel' || a.tipo === 'poup').reduce((s, x) => s + x.v.atual, 0), rr = liqD / alvoRes;
