@@ -751,7 +751,7 @@ a.lm-ir:hover { border-bottom-style: solid; }
     </div>
     <div class="nav-mobile-sub" id="navMobileSub"></div>
   </div>
-  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 156</div></div>
+  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 157</div></div>
 </nav>
 <div class="sino-pop" id="sino-pop" role="dialog" aria-label="Central de avisos" hidden></div>
 
@@ -1456,7 +1456,8 @@ a.lm-ir:hover { border-bottom-style: solid; }
       <fieldset>
         <legend>Empresa</legend>
         <label class="full">Nome<input type="text" class="name" data-so="e:nome" autocomplete="off"></label>
-        <label>Sede<select data-so="e:sede"><option value="br">Brasil (R$)</option><option value="ext">Exterior (US$)</option></select></label>
+        <label>Sede<select data-so="e:sede"><option value="br">Brasil</option><option value="ext">Exterior</option></select></label>
+        <label>Moeda do strike e dos preços<select data-so="e:moeda"><option value="BRL">Real (R$)</option><option value="USD">Dólar (US$)</option></select></label>
         <label id="so-l-cx">Câmbio (R$ por US$)<input type="number" step="0.01" min="0" data-so="e:cambio"></label>
         <label>Saí da empresa em<input type="month" data-so="e:saida"></label>
         <label>Tipo de saída<select data-so="e:leaver"><option value="good">Good leaver (leva o que liberou)</option><option value="bad">Bad leaver (perde o que não exerceu)</option></select></label>
@@ -1704,7 +1705,7 @@ a.lm-ir:hover { border-bottom-style: solid; }
     return new Promise(resolve => { const { data } = sb.auth.onAuthStateChange(async (ev) => { if (ev !== 'PASSWORD_RECOVERY') return; const s = prompt('Digite a nova senha (mínimo 8 caracteres):'); if (s && s.length >= 8) { const { error } = await sb.auth.updateUser({ password: s }); alert(error ? 'Não deu para trocar a senha: ' + error.message : 'Senha trocada.'); } }); resolve(data); });
   }
   // ---------- rodapé: compartilhar, administração e sair ----------
-  const SITE_V = 35;
+  const SITE_V = 36;
   const escH = v => String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const dataBR = v => v ? new Date(v).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' }) : '–';
   const css2 = `.side-foot .r{flex-wrap:wrap}.side-foot .lg-acoes{margin-left:auto;display:inline-flex;gap:10px}
@@ -5946,22 +5947,22 @@ function soId(p) { return p + Date.now().toString(36) + Math.random().toString(3
 const soMes = s => /^\d{4}-\d{2}$/.test(s || '') ? mIndex(s) : null;
 const soN = v => (v === '' || v == null || !isFinite(+v)) ? null : +v;
 function soNovaEmpresa(n) {
-  return { id: soId('e'), nome: 'Empresa ' + n, sede: 'br', cambio: null, modo: 'acao', saida: '', exercicio: 'saida', avisoDias: 10, prazoDias: 5, cashless: 'sim', fimPlano: '', leaver: 'good', janela: 90, fica: 'sim', fd: null, preco: null, fatorComum: 100, estagio: 'seed', prefs: [], rodadas: [], ev: { tipo: 'venda', mes: mKey(HOJE_IDX + 60), prob: '', definido: false, plano: false, pess: null, base: null, otim: null }, grants: [] };
+  return { id: soId('e'), nome: 'Empresa ' + n, sede: 'br', cambio: null, modo: 'acao', moeda: 'BRL', saida: '', exercicio: 'saida', avisoDias: 10, prazoDias: 5, cashless: 'sim', fimPlano: '', leaver: 'good', janela: 90, fica: 'sim', fd: null, preco: null, fatorComum: 100, estagio: 'seed', prefs: [], rodadas: [], ev: { tipo: 'venda', mes: mKey(HOJE_IDX + 60), prob: '', definido: false, plano: false, pess: null, base: null, otim: null }, grants: [] };
 }
 function soNormalizar(s) {
   if (!s.so || typeof s.so !== 'object') s.so = { sel: '', simSaida: '', empresas: [] };
   if (!Array.isArray(s.so.empresas)) s.so.empresas = [];
-  s.so.empresas.forEach(e => { ['prefs', 'rodadas', 'grants'].forEach(kk => { if (!Array.isArray(e[kk])) e[kk] = []; }); if (!e.ev || typeof e.ev !== 'object') e.ev = soNovaEmpresa(1).ev; if (e.exercicio !== 'evento') e.exercicio = 'saida'; if (e.avisoDias == null) e.avisoDias = 10; if (e.prazoDias == null) e.prazoDias = 5; if (e.cashless !== 'nao') e.cashless = 'sim'; if (e.modo !== 'acao' && e.modo !== 'empresa') e.modo = +e.fd > 0 ? 'empresa' : 'acao'; if (typeof e.fimPlano !== 'string') e.fimPlano = ''; });
+  s.so.empresas.forEach(e => { ['prefs', 'rodadas', 'grants'].forEach(kk => { if (!Array.isArray(e[kk])) e[kk] = []; }); if (!e.ev || typeof e.ev !== 'object') e.ev = soNovaEmpresa(1).ev; if (e.exercicio !== 'evento') e.exercicio = 'saida'; if (e.avisoDias == null) e.avisoDias = 10; if (e.prazoDias == null) e.prazoDias = 5; if (e.cashless !== 'nao') e.cashless = 'sim'; if (e.moeda !== 'USD' && e.moeda !== 'BRL') e.moeda = e.sede === 'ext' ? 'USD' : 'BRL'; if (e.modo !== 'acao' && e.modo !== 'empresa') e.modo = +e.fd > 0 ? 'empresa' : 'acao'; if (typeof e.fimPlano !== 'string') e.fimPlano = ''; });
 }
 const soEmp = () => { const S = state.so; return S.empresas.find(e => e.id === S.sel) || S.empresas[0] || null; };
 function soCambio(e) {
-  if (e.sede !== 'ext') return 1;
+  if (e.moeda !== 'USD') return 1;
   if (soN(e.cambio) > 0) return +e.cambio;
   const u = mundoDb && (mundoDb.itens || []).find(x => /usd/i.test(x.id) && x.grupo === 'cambio');
   return u && u.p1 > 0 ? u.p1 : 5.4;
 }
-const soPx = (e, v) => { const d = Math.abs(v) < 1 ? 4 : 2; return (e.sede === 'ext' ? 'US$ ' : 'R$ ') + (+v || 0).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: d }); };
-const soMoeda = (e, v) => e.sede === 'ext' ? 'US$ ' + k(v) : 'R$ ' + k(v);
+const soPx = (e, v) => { const d = Math.abs(v) < 1 ? 4 : 2; return (e.moeda === 'USD' ? 'US$ ' : 'R$ ') + (+v || 0).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: d }); };
+const soMoeda = (e, v) => e.moeda === 'USD' ? 'US$ ' + k(v) : 'R$ ' + k(v);
 // fração liberada de uma concessão no mês i (congela na saída; aceleração no evento se ainda estiver lá)
 function soVest(g, e, i, evI) {
   const g0 = soMes(g.data); if (g0 == null || i < g0) return 0;
@@ -6067,7 +6068,7 @@ function buildStock() {
   document.querySelector('[data-sodelemp]').hidden = S.empresas.length < 2 && !e.grants.length;
   document.querySelectorAll('#p-stock [data-so]').forEach(soFill);
   const opt = (v, cur, txt) => `<option value="${v}"${String(cur) === v ? ' selected' : ''}>${txt}</option>`, inp = (b, v, step, extra = '') => `<input type="number" step="${step}" min="0" data-so="${b}" value="${v ?? ''}" ${extra}>`;
-  $('tbl-so-g').innerHTML = `<thead><tr><th>Concedida em</th><th>Modelo</th><th>Quantidade</th><th>Strike</th><th>Vesting (anos)</th><th>Cliff (meses)</th><th>Libera</th><th>Na venda</th><th>Já exercidas</th><th>Expira (anos)</th><th></th></tr></thead><tbody>${e.grants.map(g => `<tr>
+  $('tbl-so-g').innerHTML = `<thead><tr><th>Concedida em</th><th>Modelo</th><th>Quantidade</th><th>Strike (${e.moeda === 'USD' ? 'US$' : 'R$'})</th><th>Vesting (anos)</th><th>Cliff (meses)</th><th>Libera</th><th>Na venda</th><th>Já exercidas</th><th>Expira (anos)</th><th></th></tr></thead><tbody>${e.grants.map(g => `<tr>
     <td><input type="month" data-so="g:${g.id}:data" value="${esc(g.data)}" aria-label="Concedida em"></td>
     <td class="name"><select data-so="g:${g.id}:tipo" aria-label="Modelo">${Object.entries(SO_TIPOS).map(([v, t]) => opt(v, g.tipo, t)).join('')}</select></td>
     <td>${inp(`g:${g.id}:qtd`, g.qtd, 100, 'aria-label="Quantidade"')}</td>
@@ -6111,6 +6112,7 @@ function soOnInput(el) {
   let v; if (el.type === 'checkbox') v = el.checked; else if (el.tagName === 'SELECT' || el.type === 'text' || el.type === 'month') v = el.value; else v = el.value === '' ? null : (isFinite(parseFloat(el.value)) ? parseFloat(el.value) : a.o[a.key]);
   a.o[a.key] = v; save();
   const sc = el.dataset.so;
+  if (sc === 'e:moeda' || (sc === 'e:sede' && el.value === 'ext' && soEmp().moeda === 'BRL' && !soEmp().grants.some(g => +g.strike > 0))) { if (sc === 'e:sede') soEmp().moeda = 'USD'; buildStock(); }
   if (sc === 'e:nome') { const bt = document.querySelector(`[data-soemp="${soEmp().id}"]`); if (bt) bt.firstChild.textContent = v || 'Empresa'; }
   if (/^g:[^:]+:tipo$/.test(sc) || sc === 'e:saida') buildStock();
   renderStock();
@@ -6118,14 +6120,14 @@ function soOnInput(el) {
 }
 function renderStock() {
   const e = soEmp(); if (!e) return;
-  const ext = e.sede === 'ext', cx = soCambio(e), evI = soMes(e.ev.mes), sai = soMes(e.saida);
+  const ext = e.sede === 'ext', usd = e.moeda === 'USD', cx = soCambio(e), evI = soMes(e.ev.mes), sai = soMes(e.saida);
   const soEv = e.exercicio === 'evento'; $('so-l-jan').hidden = soEv; $('so-l-av').hidden = $('so-l-pz').hidden = !soEv;
   $('so-ex-hint').textContent = soEv ? `Exit = venda de mais de 50%, IPO, fusão ou reestruturação com distribuição. A empresa avisa com pelo menos ${num(+e.avisoDias || 0, 0)} dias e você envia o aviso de exercício (Exercise Notice) até ${num(+e.prazoDias || 0, 0)} dias antes. Sair não obriga a exercer. Deixe "Saí em" vazio se ainda trabalha lá.` : 'Deixe "Saí em" vazio se ainda trabalha lá. A janela costuma ser de 90 dias; alguns planos dão anos.';
-  $('so-l-cx').hidden = !ext; $('so-l-cx').querySelector('input').placeholder = ext ? num(cx) + (soN(e.cambio) ? '' : ' (dólar de hoje)') : '';
+  $('so-l-cx').hidden = !usd; $('so-l-cx').querySelector('input').placeholder = usd ? num(cx) + (soN(e.cambio) ? '' : ' (dólar de hoje)') : '';
     const simples = e.modo === 'acao', vf = V => simples ? soPx(e, V) : soMoeda(e, V);
   ['so-l-fd', 'so-l-fc', 'so-l-est', 'so-sec-inv', 'so-sec-rod'].forEach(id => { $(id).hidden = simples; });
-  $('so-l-val').textContent = simples ? `Preço por ação no evento (${ext ? 'US$' : 'R$'})` : `Valor da empresa no evento (${ext ? 'US$' : 'R$'})`;
-  $('so-l-preco').firstChild.textContent = simples ? `Preço por ação hoje, se souber (${ext ? 'US$' : 'R$'})` : `Preço por ação na última rodada (${ext ? 'US$' : 'R$'})`;
+  $('so-l-val').textContent = simples ? `Preço por ação no evento (${usd ? 'US$' : 'R$'})` : `Valor da empresa no evento (${usd ? 'US$' : 'R$'})`;
+  $('so-l-preco').firstChild.textContent = simples ? `Preço por ação hoje, se souber (${usd ? 'US$' : 'R$'})` : `Preço por ação na última rodada (${usd ? 'US$' : 'R$'})`;
   $('so-hoje-hint').textContent = simples ? 'Sem o cap table, o painel trabalha só com o preço por ação: você diz quanto cada ação valeria no evento, já descontadas as preferências e a diluição até lá. Quando souber o total de ações e o valuation, troque para o modo completo.' : 'Totalmente diluídas: todas as ações, opções e o pool, como no cap table. Investidores pagam pela preferencial; a comum (a sua) costuma valer de 20% a 40% dela antes de um evento. Use 100% para ver pelo preço da rodada.';
   { const stk = e.grants.filter(g => g.tipo === 'opcao' || g.tipo === 'sar').map(g => +g.strike || 0).filter(Boolean), sm = stk.length ? Math.max(...stk) : 0;
     $('so-ev-hint').textContent = simples ? `Quanto cada ação valeria no evento, na moeda da empresa.${sm ? ` Sem ideia? Partindo do seu maior strike (${soPx(e, sm)}): pessimista ${soPx(e, sm)} (empata), base ${soPx(e, sm * 2)} (2×) e otimista ${soPx(e, sm * 5)} (5×).` : ''} Abaixo do strike, a opção vale zero.` : 'Valor total da venda (ou valuation no IPO), na moeda da empresa. Ainda sem ideia? Use a última rodada como base, metade como pessimista e o triplo como otimista.'; }
@@ -6162,7 +6164,7 @@ function renderStock() {
   if (evI != null) [['Pessimista', 'pess'], ['Base', 'base'], ['Otimista', 'otim']].forEach(([nm, kk]) => { if (+e.ev[kk] > 0) cen.push([nm, kk, +e.ev[kk]]); });
   const rows = cen.map(([nm, kk, V]) => { const r = kk ? soEvento(e, V, evI) : Object.assign(H, { pps: soPpsHoje(e) }); return { nm, kk, V, r }; });
   const prob = soN(e.ev.prob);
-  $('so-val-sub').textContent = `${ext ? `Valores em R$ ao câmbio de ${num(cx)}. ` : ''}Bruto é quanto você recebe pelas ações; strike é o que paga para exercer o que ainda não exerceu (na venda, costuma sair do próprio valor); imposto é estimado.`;
+  $('so-val-sub').textContent = `${usd ? `Valores em R$ ao câmbio de ${num(cx)}. ` : ''}Bruto é quanto você recebe pelas ações; strike é o que paga para exercer o que ainda não exerceu (na venda, costuma sair do próprio valor); imposto é estimado.`;
   $('tbl-so-res').innerHTML = tot && temBase ? `<thead><tr><th>Cenário</th>${simples ? '' : '<th>Valor da empresa</th>'}<th>Preço da sua ação</th><th>Contam</th><th>Bruto</th><th>Strike a pagar</th><th>Imposto</th><th>Líquido no bolso</th></tr></thead><tbody>${rows.map(({ nm, kk, V, r }) => `<tr${kk === 'base' ? ' class="sel"' : ''}><td class="name">${nm}${kk ? ` <span class="subdet">${mLabel(evI)}</span>` : ''}</td>${simples ? '' : `<td>${V ? soMoeda(e, V) : soMoeda(e, (+e.preco || 0) * (+e.fd || 0))}</td>`}<td>${soPx(e, r.pps)}</td><td>${num(r.q, 0)}</td><td>${fm(r.rec)}</td><td>${r.pagar ? '−' + fm(r.pagar) : '–'}</td><td>${r.imp ? '−' + fm(r.imp) : '–'}</td><td><b>${fm(r.liq)}</b></td></tr>`).join('')}${prob != null && base ? `<tr><td class="name">Valor esperado <span class="subdet">${num(prob, 0)}% de chance × base</span></td><td colspan="6"></td><td><b>${fm(base.liq * prob / 100)}</b></td></tr>` : ''}</tbody>` : '';
   if (base && e.ev.tipo !== 'ipo' && base.cas && base.cas.pago > 0) avisos.push(`No cenário base, ${soMoeda(e, base.cas.pago)} vão primeiro para os investidores que preferiram receber o valor de volta${base.cas.conv.some(Boolean) ? ' (os demais converteram em ações)' : ''}.`);
   if (base) { const q0 = soQuebra(e, evI); if (q0) avisos.push(`Suas ${G.every(g => g.tipo === 'opcao') ? 'opções começam' : 'unidades começam'} a valer algo com ${simples ? `a ação acima de <b>${soPx(e, q0)}</b>` : `uma venda acima de <b>${soMoeda(e, q0)}</b>${e.ev.tipo === 'ipo' ? ' de valuation' : ''}`}.`); }
