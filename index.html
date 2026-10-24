@@ -113,6 +113,20 @@ h1, h2, h3 { font-family: var(--f-head); }
 
 button:focus-visible, input:focus-visible, select:focus-visible, summary:focus-visible, a:focus-visible { outline: 2px solid var(--dotc); outline-offset: 2px; }
 fieldset { border: 1px solid var(--line); border-radius: 10px; background: var(--panel); box-shadow: var(--shadow); margin: 0; padding: 14px 16px 16px; display: grid; grid-template-columns: 1fr 1fr; gap: 10px 12px; min-width: 0; }
+.hm-passos { margin-bottom: 18px; border-left: 4px solid var(--accent); }
+.hp-barra { height: 6px; border-radius: 99px; background: var(--line); margin: 12px 0 6px; overflow: hidden; }
+.hp-barra i { display: block; height: 100%; background: var(--accent); border-radius: 99px; }
+.hp-lista { list-style: none; margin: 0; padding: 0; }
+.hp-lista li { display: flex; align-items: center; gap: 12px; padding: 11px 0; border-bottom: 1px solid var(--line); }
+.hp-lista li:last-child { border-bottom: 0; }
+.hp-n { width: 26px; height: 26px; border-radius: 50%; border: 1.5px solid var(--line); color: var(--muted); font-weight: 700; font-size: 12px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.hp-lista li.agora .hp-n { background: var(--accent); border-color: var(--accent); color: #fff; }
+.hp-lista li.ok .hp-n { background: var(--good-soft, rgba(21,128,61,.12)); border-color: transparent; color: var(--good); }
+.hp-t { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+.hp-t b { font-size: 13.5px; } .hp-t span { font-size: 12px; color: var(--muted); line-height: 1.45; }
+.hp-lista li.ok .hp-t b { color: var(--muted); font-weight: 600; }
+.hp-acs { display: flex; gap: 6px; flex-wrap: wrap; justify-content: flex-end; }
+@media (max-width: 600px) { .hp-lista li { flex-wrap: wrap; } .hp-acs { width: 100%; padding-left: 38px; justify-content: flex-start; } }
 .cad-div { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; margin: 30px 0 14px; padding: 16px 18px; border-radius: 12px; background: var(--accent-soft); border: 1px solid var(--line); border-left: 4px solid var(--accent); }
 .cad-ico { width: 40px; height: 40px; border-radius: 10px; background: var(--accent); color: #fff; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
 .cad-txt { flex: 1 1 280px; min-width: 0; }
@@ -656,7 +670,7 @@ a.lm-ir:hover { border-bottom-style: solid; }
     </div>
     <div class="nav-mobile-sub" id="navMobileSub"></div>
   </div>
-  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 128</div></div>
+  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 129</div></div>
 </nav>
 
 <div class="main"><div class="wrap">
@@ -665,6 +679,7 @@ a.lm-ir:hover { border-bottom-style: solid; }
   <!-- ============ INÍCIO ============ -->
   <section role="tabpanel" id="p-inicio" hidden>
     <div class="block-title"><span class="num">⌂</span><div><h1>Início</h1><p class="desc" id="hm-desc">O resumo de cada módulo. Clique em Abrir para ir ao detalhe.</p></div></div>
+    <div id="hm-passos"></div>
     <div class="hm-grid" id="hm-grid"><div class="hm-col"></div><div class="hm-col"></div></div>
   </section>
   <section role="tabpanel" id="p-leia" hidden>
@@ -1480,7 +1495,7 @@ a.lm-ir:hover { border-bottom-style: solid; }
     return new Promise(resolve => { const { data } = sb.auth.onAuthStateChange(async (ev) => { if (ev !== 'PASSWORD_RECOVERY') return; const s = prompt('Digite a nova senha (mínimo 8 caracteres):'); if (s && s.length >= 8) { const { error } = await sb.auth.updateUser({ password: s }); alert(error ? 'Não deu para trocar a senha: ' + error.message : 'Senha trocada.'); } }); resolve(data); });
   }
   // ---------- rodapé: compartilhar, administração e sair ----------
-  const SITE_V = 7;
+  const SITE_V = 8;
   const escH = v => String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const dataBR = v => v ? new Date(v).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' }) : '–';
   const css2 = `.side-foot .r{flex-wrap:wrap}.side-foot .lg-acoes{margin-left:auto;display:inline-flex;gap:10px}
@@ -1829,7 +1844,7 @@ function normalizar(s) {
   // carteira-alvo (v128): vem do cenário em destaque; cenários com alvo diferente ficam com divisão própria
   if (!s.alvoCart || typeof s.alvoCart !== 'object') {
     const d = s.cenarios.find(c => c.id === s.destaque) || s.cenarios[0];
-    s.alvoCart = Object.assign({}, d && d.alvo || PRESETS[1].a); s.alvoPreset = d && d.preset || 'cons';
+    s.alvoCart = Object.assign({}, d && d.alvo || PRESETS[1].a); s.alvoPreset = d && d.preset || 'cons'; s.alvoOk = Array.isArray(s.ativos) && s.ativos.length > 0;
     const igual = (a, b) => CLASSES.every(c => (+a[c.id] || 0) === (+b[c.id] || 0));
     s.cenarios.forEach(c => { c.proprio = !igual(c.alvo || {}, s.alvoCart); });
   }
@@ -5080,7 +5095,7 @@ function onBound(el) {
   else { if (el.value === '' && (scope === 'hoje' || (scope === 'cen' && key === 'manual') || scope === 'fproj' || scope === 'freal' || scope === 'venda' || (scope === 'compra' && key === 'valAtual'))) v = ''; else { v = parseFloat(el.value); if (!isFinite(v)) return; } }
   if ((scope === 'hoje' && (v === '' || v <= 0)) || ((scope === 'fproj' || scope === 'freal') && v === '')) delete o[key]; else o[key] = v;
   if (scope === 'alvo') cenAtual().preset = 'custom';
-  if (scope === 'alvoc') { state.alvoPreset = 'custom'; document.querySelectorAll('#presetCart button').forEach(b => b.setAttribute('aria-pressed', 'false')); }
+  if (scope === 'alvoc') { state.alvoOk = true; state.alvoPreset = 'custom'; document.querySelectorAll('#presetCart button').forEach(b => b.setAttribute('aria-pressed', 'false')); }
   save();
   // mudanças de estrutura reconstroem os editores
   if (scope === 'compra' && key === 'modo') { buildCompras(); }
@@ -5110,7 +5125,7 @@ document.addEventListener('click', e => {
   const d = t.dataset;
   if (d.tab) return showTab(d.tab);
   if (d.cen) { state.cenAtivo = d.cen; save(); buildCenarios(); renderCenarios(); return; }
-  if (d.presetc) { const p = PRESETS.find(x => x.id === d.presetc); state.alvoPreset = p.id; state.alvoCart = Object.assign({}, p.a); save(); buildAlvoCart(); renderTab(); return; }
+  if (d.presetc) { const p = PRESETS.find(x => x.id === d.presetc); state.alvoOk = true; state.alvoPreset = p.id; state.alvoCart = Object.assign({}, p.a); save(); buildAlvoCart(); renderTab(); return; }
   if (d.preset) { const cen = cenAtual(), p = PRESETS.find(x => x.id === d.preset); cen.preset = p.id; cen.alvo = Object.assign({}, p.a); save(); buildCenarios(); renderCenarios(); return; }
   if (d.add) { const b = novaCompra(d.add); if (d.add === 'imovel') b.economia = state.cfg.aluguel;
     const n = state.compras.filter(x => x.nome === b.nome || x.nome.startsWith(b.nome + ' ')).length; if (n) b.nome += ' ' + (n + 1);
@@ -5475,10 +5490,40 @@ function hmCards() {
   return out;
 }
 let hmLayoutT = null;
+/* ---------- Início: primeiros passos para quem começa do zero ---------- */
+function passosConta() {
+  const pul = (state.passos && state.passos.pulados) || [];
+  const rec = (state.orc && state.orc.receitas || []).some(r => +r.valor > 0);
+  return [
+    { id: 'renda', t: 'Renda e custos do mês', d: 'Salário ou faturamento, impostos e quanto gasta por categoria. É a base do plano.', ok: rec, tab: 'orcamento', sec: 'Receitas e custos' },
+    { id: 'cart', t: 'O que você já tem aplicado', d: 'Cadastre cada aplicação ou suba os PDFs da corretora.', ok: ativos().length > 0, tab: 'carteira', sec: 'Cadastrar aplicação' },
+    { id: 'alvo', t: 'A carteira que você quer ter', d: 'Escolha um perfil e ajuste a divisão entre as classes.', ok: !!state.alvoOk, tab: 'carteira', sec: 'Carteira-alvo' },
+    { id: 'bens', t: 'Bens e dívidas', d: 'Carro, imóvel e financiamentos, já comprados ou planejados.', ok: state.compras.length > 0 || pul.includes('bens'), tab: 'compras', sec: 'Compras e financiamentos', pular: 'Não tenho' },
+    { id: 'cp', t: 'Primeiro checkpoint', d: 'Salve o total da carteira de hoje. As projeções partem dele.', ok: cps.length > 0, tab: 'carteira', sec: 'Cadastrar aplicação' },
+    { id: 'gastos', t: 'Gastos do mês', d: 'Importe a fatura do cartão e o extrato, ou lance à mão.', ok: Object.keys(gastos || {}).length > 0 || pul.includes('gastos'), tab: 'gastos', sec: 'Lançar e importar', pular: 'Depois' }
+  ];
+}
+function renderPassos() {
+  const box = $('hm-passos'); if (!box) return;
+  const ps = passosConta(), feitos = ps.filter(x => x.ok).length;
+  if (feitos === ps.length || (state.passos && state.passos.oculto)) { box.innerHTML = ''; return; }
+  const prox = ps.find(x => !x.ok);
+  box.innerHTML = `<section class="panel hm-passos"><div class="row"><div><h2>Primeiros passos</h2><p class="sub" style="margin:2px 0 0">${feitos} de ${ps.length} feitos. Siga na ordem: cada passo usa o anterior.</p></div><button type="button" class="btn ghost tiny" data-passo-ocultar>Esconder</button></div>
+    <div class="hp-barra"><i style="width:${feitos / ps.length * 100}%"></i></div>
+    <ol class="hp-lista">${ps.map((x, i) => `<li class="${x.ok ? 'ok' : x === prox ? 'agora' : ''}"><span class="hp-n">${x.ok ? '✓' : i + 1}</span><div class="hp-t"><b>${x.t}</b><span>${x.d}</span></div>
+      ${x.ok ? '<span class="chip ok">feito</span>' : `<div class="hp-acs">${x.pular ? `<button type="button" class="btn ghost tiny" data-passo-pular="${x.id}">${x.pular}</button>` : ''}<button type="button" class="btn tiny${x === prox ? '' : ' ghost'}" data-lmtab="${x.tab}" data-lmsec="${esc(x.sec)}">Fazer agora</button></div>`}</li>`).join('')}</ol></section>`;
+}
+document.addEventListener('click', e => {
+  const o = e.target.closest('[data-passo-ocultar]'), pu = e.target.closest('[data-passo-pular]'); if (!o && !pu) return;
+  state.passos = state.passos || { pulados: [] }; state.passos.pulados = state.passos.pulados || [];
+  if (o) state.passos.oculto = true; else if (!state.passos.pulados.includes(pu.dataset.passoPular)) state.passos.pulados.push(pu.dataset.passoPular);
+  save(); renderPassos();
+});
 function renderHome() {
+  renderPassos();
   const g = $('hm-grid'); if (!g) return; const cols = [...g.children], cs = hmCards();
   cols.forEach(c => { c.innerHTML = ''; });
-  if (!cs.length) { cols[0].innerHTML = '<p class="hm-vazio">Ainda não há dados. Comece pelo Leia-me.</p>'; return; }
+  if (!cs.length) { cols[0].innerHTML = $('hm-passos').innerHTML ? '' : '<p class="hm-vazio">Ainda não há dados. Comece pelo Leia-me.</p>'; return; }
   const uma = getComputedStyle(g).gridTemplateColumns.split(' ').length < 2;
   // da esquerda para a direita, de cima para baixo: cada card vai para a coluna mais baixa
   cs.forEach(c => { const alvo = uma ? cols[0] : (cols[0].offsetHeight <= cols[1].offsetHeight ? cols[0] : cols[1]); alvo.insertAdjacentHTML('beforeend', c.html); });
