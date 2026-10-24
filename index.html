@@ -250,6 +250,13 @@ input:hover, select:hover { border-color: var(--s1); }
 .acoes6m select { width: auto; font-size: 11px; padding: 3px 6px; margin-left: 4px; }
 .acoes6m th[draggable] { cursor: grab; }
 .score-cfg { position: relative; }
+.so-emps { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-bottom: 14px; }
+.so-emps .seg button[aria-pressed="true"] { background: var(--accent); color: #fff; border-color: var(--accent); }
+#p-stock td input[type="number"] { width: 92px; }
+#p-stock td input.so-big { width: 130px; }
+#p-stock td input[type="month"] { width: 132px; padding: 4px 6px; }
+#p-stock td select { padding: 4px 22px 4px 6px; }
+#tbl-so-res tr.sel td, #tbl-so-sens tr.sel td { background: var(--accent-soft); font-weight: 600; }
 .pj-avisos p { margin: 8px 0 0; font-size: 12.5px; padding: 8px 10px; border-radius: 8px; background: var(--field); }
 .pj-avisos p.warn { background: rgba(214,137,16,.12); }
 #tbl-pj tr.tot td, #tbl-pj-clt tr.tot td, #tbl-pj-cltc tr.tot td { font-weight: 700; }
@@ -716,7 +723,8 @@ a.lm-ir:hover { border-bottom-style: solid; }
         </div></div>
         <div class="nav-sec" data-sec="trab"><button type="button" class="nav-sec-h" data-sectog="trab" aria-expanded="true"><span>Trabalho e família</span><span class="caret" aria-hidden="true">▾</span></button><div class="nav-sec-b">
           <div class="nav-group"><button type="button" class="nav-head" data-tab="pjpf"><span class="ico">09</span>PJ e PF<span class="caret" data-navtog="pjpf" role="button" tabindex="0" aria-label="Abrir ou recolher submódulos">▾</span></button><div class="nav-sub" data-sub="pjpf"></div></div>
-          <div class="nav-group" data-sodono hidden><button type="button" class="nav-head" data-tab="familia"><span class="ico">10</span>Visão consolidada<span class="caret" data-navtog="familia" role="button" tabindex="0" aria-label="Abrir ou recolher submódulos">▾</span></button><div class="nav-sub" data-sub="familia"></div></div>
+          <div class="nav-group"><button type="button" class="nav-head" data-tab="stock"><span class="ico">10</span>Stock options<span class="caret" data-navtog="stock" role="button" tabindex="0" aria-label="Abrir ou recolher submódulos">▾</span></button><div class="nav-sub" data-sub="stock"></div></div>
+          <div class="nav-group" data-sodono hidden><button type="button" class="nav-head" data-tab="familia"><span class="ico">11</span>Visão consolidada<span class="caret" data-navtog="familia" role="button" tabindex="0" aria-label="Abrir ou recolher submódulos">▾</span></button><div class="nav-sub" data-sub="familia"></div></div>
         </div></div>
         <div class="nav-pe">
         <div class="nav-group mini"><button type="button" class="nav-head" data-tab="leia"><span class="ico">?</span>Leia-me<span class="caret" data-navtog="leia" role="button" tabindex="0" aria-label="Abrir ou recolher submódulos">▾</span></button><div class="nav-sub" data-sub="leia"></div></div>
@@ -725,7 +733,7 @@ a.lm-ir:hover { border-bottom-style: solid; }
     </div>
     <div class="nav-mobile-sub" id="navMobileSub"></div>
   </div>
-  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 151</div></div>
+  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 152</div></div>
 </nav>
 
 <div class="main"><div class="wrap">
@@ -766,7 +774,7 @@ a.lm-ir:hover { border-bottom-style: solid; }
       <section data-nav="Onde olhar o quê" class="panel">
         <h2>Onde olhar o quê</h2>
         <p class="sub">Clique no destino para ir direto.</p>
-        <div class="tscroll"><table class="lm-tbl"><thead><tr><th>Quero saber…</th><th>Onde olhar</th></tr></thead><tbody><tr><td>Como estão o dólar, o euro e as bolsas hoje?</td><td><a class="lm-ir" data-lmtab="global" data-lmsec="">Visão global, no topo</a></td></tr><tr><td>Estou acima ou abaixo do plano?</td><td><a class="lm-ir" data-lmtab="global" data-lmsec="Checkpoints">Visão global › Checkpoints</a></td></tr><tr><td>Quanto vou ter daqui a 5, 10 ou 20 anos?</td><td><a class="lm-ir" data-lmtab="global" data-lmsec="Projeção">Visão global › Projeção</a></td></tr><tr><td>Quanto gastei no mês e com o quê?</td><td><a class="lm-ir" data-lmtab="gastos" data-lmsec="Por categoria">01. Gastos › Por categoria</a></td></tr><tr><td>Gastei mais do que o planejado?</td><td><a class="lm-ir" data-lmtab="gastos" data-lmsec="Real vs. projetado">01. Gastos › Real vs. projetado</a></td></tr><tr><td>Quanto vale meu patrimônio e quanto o carro já depreciou?</td><td><a class="lm-ir" data-lmtab="patrimonio" data-lmsec="Bens">02. Patrimônio › Bens</a></td></tr><tr><td>Se eu vender o carro, quanto sobra para investir?</td><td><a class="lm-ir" data-lmtab="patrimonio" data-lmsec="Bens">02. Patrimônio › Bens › Simular venda</a></td></tr><tr><td>Meus investimentos rendem mais que o CDI? Qual está abaixo?</td><td><a class="lm-ir" data-lmtab="carteira" data-lmsec="Rentabilidade x CDI">04. Carteira › Rentabilidade x CDI</a></td></tr><tr><td>Qual divisão de carteira eu quero ter?</td><td><a class="lm-ir" data-lmtab="carteira" data-lmsec="Carteira-alvo">04. Carteira › Carteira-alvo</a></td></tr><tr><td>A carteira está bem diversificada e dentro do FGC?</td><td><a class="lm-ir" data-lmtab="carteira" data-lmsec="Saúde da carteira">04. Carteira › Saúde da carteira</a></td></tr><tr><td>O que vence nos próximos meses?</td><td><a class="lm-ir" data-lmtab="carteira" data-lmsec="Vencimentos">04. Carteira › Vencimentos</a></td></tr><tr><td>Tem alguma coisa que eu deveria mexer?</td><td><a class="lm-ir" data-lmtab="carteira" data-lmsec="Oportunidades">04. Carteira › Oportunidades</a></td></tr><tr><td>Qual ação vale estudar?</td><td><a class="lm-ir" data-lmtab="carteira" data-lmsec="Score das ações">04. Carteira › Score das ações</a></td></tr><tr><td>Como foi uma ação, FII ou ETF nos últimos anos?</td><td><a class="lm-ir" data-lmtab="carteira" data-lmsec="Análise de ações">04. Carteira › Análise de ações</a> e <a class="lm-ir" data-lmtab="carteira" data-lmsec="Comparar ações">Comparar ações</a></td></tr><tr><td>Qual CDB, LCI, LCA ou Tesouro rende mais no meu prazo?</td><td><a class="lm-ir" data-lmtab="comparador" data-lmsec="Resultado no prazo">05. Comparador › Resultado no prazo</a></td></tr><tr><td>Quanto preciso aportar por mês para chegar a uma meta?</td><td><a class="lm-ir" data-lmtab="simulador" data-lmsec="Parâmetros">06. Simulações › Parâmetros</a></td></tr><tr><td>Consigo comprar um carro ou um imóvel? Vale financiar?</td><td><a class="lm-ir" data-lmtab="compras" data-lmsec="Compras e financiamentos">03. Compras e bens › Compras e financiamentos</a></td></tr><tr><td>Quanto sobra por mês em cada cenário?</td><td><a class="lm-ir" data-lmtab="cenarios" data-lmsec="Sobra mensal">08. Cenários › Sobra mensal</a></td></tr><tr><td>Quanto sobra do faturamento da PJ, ou quanto preciso faturar?</td><td><a class="lm-ir" data-lmtab="pjpf" data-lmsec="Do faturamento ao bolso">09. PJ e PF › Do faturamento ao bolso</a></td></tr><tr data-sodono hidden><td>Quanto a família tem e gasta somada?</td><td><a class="lm-ir" data-lmtab="familia" data-lmsec="Ganhos e gastos">10. Consolidada › Ganhos e gastos</a> <span class="chip info">só você</span></td></tr></tbody></table></div>
+        <div class="tscroll"><table class="lm-tbl"><thead><tr><th>Quero saber…</th><th>Onde olhar</th></tr></thead><tbody><tr><td>Como estão o dólar, o euro e as bolsas hoje?</td><td><a class="lm-ir" data-lmtab="global" data-lmsec="">Visão global, no topo</a></td></tr><tr><td>Estou acima ou abaixo do plano?</td><td><a class="lm-ir" data-lmtab="global" data-lmsec="Checkpoints">Visão global › Checkpoints</a></td></tr><tr><td>Quanto vou ter daqui a 5, 10 ou 20 anos?</td><td><a class="lm-ir" data-lmtab="global" data-lmsec="Projeção">Visão global › Projeção</a></td></tr><tr><td>Quanto gastei no mês e com o quê?</td><td><a class="lm-ir" data-lmtab="gastos" data-lmsec="Por categoria">01. Gastos › Por categoria</a></td></tr><tr><td>Gastei mais do que o planejado?</td><td><a class="lm-ir" data-lmtab="gastos" data-lmsec="Real vs. projetado">01. Gastos › Real vs. projetado</a></td></tr><tr><td>Quanto vale meu patrimônio e quanto o carro já depreciou?</td><td><a class="lm-ir" data-lmtab="patrimonio" data-lmsec="Bens">02. Patrimônio › Bens</a></td></tr><tr><td>Se eu vender o carro, quanto sobra para investir?</td><td><a class="lm-ir" data-lmtab="patrimonio" data-lmsec="Bens">02. Patrimônio › Bens › Simular venda</a></td></tr><tr><td>Meus investimentos rendem mais que o CDI? Qual está abaixo?</td><td><a class="lm-ir" data-lmtab="carteira" data-lmsec="Rentabilidade x CDI">04. Carteira › Rentabilidade x CDI</a></td></tr><tr><td>Qual divisão de carteira eu quero ter?</td><td><a class="lm-ir" data-lmtab="carteira" data-lmsec="Carteira-alvo">04. Carteira › Carteira-alvo</a></td></tr><tr><td>A carteira está bem diversificada e dentro do FGC?</td><td><a class="lm-ir" data-lmtab="carteira" data-lmsec="Saúde da carteira">04. Carteira › Saúde da carteira</a></td></tr><tr><td>O que vence nos próximos meses?</td><td><a class="lm-ir" data-lmtab="carteira" data-lmsec="Vencimentos">04. Carteira › Vencimentos</a></td></tr><tr><td>Tem alguma coisa que eu deveria mexer?</td><td><a class="lm-ir" data-lmtab="carteira" data-lmsec="Oportunidades">04. Carteira › Oportunidades</a></td></tr><tr><td>Qual ação vale estudar?</td><td><a class="lm-ir" data-lmtab="carteira" data-lmsec="Score das ações">04. Carteira › Score das ações</a></td></tr><tr><td>Como foi uma ação, FII ou ETF nos últimos anos?</td><td><a class="lm-ir" data-lmtab="carteira" data-lmsec="Análise de ações">04. Carteira › Análise de ações</a> e <a class="lm-ir" data-lmtab="carteira" data-lmsec="Comparar ações">Comparar ações</a></td></tr><tr><td>Qual CDB, LCI, LCA ou Tesouro rende mais no meu prazo?</td><td><a class="lm-ir" data-lmtab="comparador" data-lmsec="Resultado no prazo">05. Comparador › Resultado no prazo</a></td></tr><tr><td>Quanto preciso aportar por mês para chegar a uma meta?</td><td><a class="lm-ir" data-lmtab="simulador" data-lmsec="Parâmetros">06. Simulações › Parâmetros</a></td></tr><tr><td>Consigo comprar um carro ou um imóvel? Vale financiar?</td><td><a class="lm-ir" data-lmtab="compras" data-lmsec="Compras e financiamentos">03. Compras e bens › Compras e financiamentos</a></td></tr><tr><td>Quanto sobra por mês em cada cenário?</td><td><a class="lm-ir" data-lmtab="cenarios" data-lmsec="Sobra mensal">08. Cenários › Sobra mensal</a></td></tr><tr><td>Quanto sobra do faturamento da PJ, ou quanto preciso faturar?</td><td><a class="lm-ir" data-lmtab="pjpf" data-lmsec="Do faturamento ao bolso">09. PJ e PF › Do faturamento ao bolso</a></td></tr><tr><td>Quanto valem minhas stock options e o que perco se sair?</td><td><a class="lm-ir" data-lmtab="stock" data-lmsec="Quanto vale">10. Stock options › Quanto vale</a> e <a class="lm-ir" data-lmtab="stock" data-lmsec="Se eu sair">Se eu sair</a></td></tr><tr data-sodono hidden><td>Quanto a família tem e gasta somada?</td><td><a class="lm-ir" data-lmtab="familia" data-lmsec="Ganhos e gastos">11. Consolidada › Ganhos e gastos</a> <span class="chip info">só você</span></td></tr></tbody></table></div>
       </section>
       <section data-nav="Os módulos" class="panel">
         <h2>Resumo de cada módulo</h2>
@@ -780,7 +788,7 @@ a.lm-ir:hover { border-bottom-style: solid; }
           <li><b>No menu</b>, a setinha abre os submódulos de cada módulo; clique num deles para pular direto. "Recolher todos" deixa o menu curto.</li>
           <li><b>Nas tabelas</b>, clique no cabeçalho para ordenar. Várias deixam esconder colunas, e a de ações deixa arrastar a ordem.</li>
           <li><b>Os números se conversam</b>: mudar o plano (07) mexe na Visão global e no fechamento; mudar uma compra (03) mexe nos cenários; um checkpoint novo reinicia as projeções a partir dele.</li>
-          <li><b>Para outra pessoa usar</b>, use o botão Compartilhar do painel. Ela recebe um painel vazio, só dela, e você vê a soma em 10. Visão consolidada.</li>
+          <li><b>Para outra pessoa usar</b>, use o botão Compartilhar do painel. Ela recebe um painel vazio, só dela, e você vê a soma em 11. Visão consolidada.</li>
           <li><b>Tema claro ou escuro</b> segue o do seu aparelho.</li>
         </ul>
       </section>
@@ -1418,9 +1426,120 @@ a.lm-ir:hover { border-bottom-style: solid; }
         </div>
       </section>
   </section>
+  <!-- ============ STOCK OPTIONS ============ -->
+  <section role="tabpanel" id="p-stock" hidden>
+    <div class="block-title"><span class="num">10</span><div><h1>Stock options</h1><p class="desc">Quanto valem suas opções, phantom shares ou RSUs: o que já foi liberado no vesting, quanto vale hoje e num evento de liquidez, depois das preferências dos investidores, da diluição das próximas rodadas e do imposto.</p></div></div>
+      <div class="so-emps" role="group" aria-label="Empresas"><div class="seg" id="so-emps"></div><button type="button" class="btn ghost tiny" data-soaddemp="1">+ Empresa</button></div>
+      <div class="kpis" id="kpi-so"></div>
+      <section data-nav="Empresa" class="panel">
+        <div class="row"><h2>Empresa e plano</h2><button type="button" class="btn danger tiny" data-sodelemp="1">Remover empresa</button></div>
+        <div class="params">
+      <fieldset>
+        <legend>Empresa</legend>
+        <label class="full">Nome<input type="text" class="name" data-so="e:nome" autocomplete="off"></label>
+        <label>Sede<select data-so="e:sede"><option value="br">Brasil (R$)</option><option value="ext">Exterior (US$)</option></select></label>
+        <label id="so-l-cx">Câmbio (R$ por US$)<input type="number" step="0.01" min="0" data-so="e:cambio"></label>
+        <label>Saí da empresa em<input type="month" data-so="e:saida"></label>
+        <label>Tipo de saída<select data-so="e:leaver"><option value="good">Good leaver (leva o que liberou)</option><option value="bad">Bad leaver (perde o que não exerceu)</option></select></label>
+        <label>Janela para exercer depois de sair (dias)<input type="number" step="30" min="0" data-so="e:janela"></label>
+        <label>Phantom e RSU depois de sair<select data-so="e:fica"><option value="sim">Mantenho o que já liberou</option><option value="nao">Perco tudo</option></select></label>
+        <p class="hint">Deixe "Saí em" vazio se ainda trabalha lá. A janela costuma ser de 90 dias; alguns planos dão anos.</p>
+      </fieldset>
+      <fieldset>
+        <legend>A empresa hoje</legend>
+        <label>Ações totalmente diluídas<input type="number" step="1000" min="0" data-so="e:fd"></label>
+        <label id="so-l-preco">Preço por ação na última rodada<input type="number" step="0.01" min="0" data-so="e:preco"></label>
+        <label>Ação comum vale (% da preferencial)<input type="number" step="5" min="0" max="100" data-so="e:fatorComum"></label>
+        <label>Última rodada feita<select data-so="e:estagio"><option value="pre">Pré-seed ou anjo</option><option value="seed">Seed</option><option value="A">Série A</option><option value="B">Série B</option><option value="C">Série C</option><option value="D">Série D ou depois</option></select></label>
+        <p class="hint" id="so-hoje-hint">Totalmente diluídas: todas as ações, opções e o pool, como no cap table. Investidores pagam pela preferencial; a comum (a sua) costuma valer de 20% a 40% dela antes de um evento. Use 100% para ver pelo preço da rodada.</p>
+      </fieldset>
+        </div>
+      </section>
+      <section data-nav="Concessões" class="panel">
+        <div class="row"><h2>Concessões</h2><button type="button" class="btn ghost tiny" data-soadd="g">+ Concessão</button></div>
+        <p class="sub">Cada vez que você recebeu opções, com o strike e as regras daquela concessão. Phantom shares e RSU não têm custo; phantom option (SAR) paga só a valorização acima do strike.</p>
+        <div class="tscroll"><table id="tbl-so-g"></table></div>
+        <p class="hint">Cliff: meses sem liberar nada; no fim dele libera de uma vez o proporcional. Depois libera a cada mês, trimestre ou ano até completar o vesting. Aceleração: o que acontece com a parte não liberada se a empresa for vendida enquanto você está lá. "Já exercidas": opções que você já comprou pagando o strike.</p>
+      </section>
+      <section data-nav="Vesting" class="panel">
+        <h2>Vesting</h2>
+        <p class="sub" id="so-vest-sub"></p>
+        <div class="chart"><div class="legend" id="lg-so-v"></div><div id="ch-so-v"></div><div class="readout" id="ro-so-v"></div></div>
+        <div class="tscroll" style="margin-top:12px"><table id="tbl-so-v"></table></div>
+      </section>
+      <section data-nav="Investidores" class="panel">
+        <div class="row"><h2>Investidores e preferências</h2><button type="button" class="btn ghost tiny" data-soadd="p">+ Rodada passada</button></div>
+        <p class="sub">Rodadas que já aconteceram. Numa venda, cada investidor escolhe entre receber de volta o que investiu (vezes o múltiplo) ou converter em ações comuns, o que for maior. Só depois disso o resto é dividido pelas ações comuns, incluindo as suas.</p>
+        <div class="tscroll"><table id="tbl-so-p"></table></div>
+        <p class="hint">Padrão de mercado: 1x não participante. Participante recebe o valor de volta e ainda divide o resto (raro, pior para você). Num IPO todas as preferenciais viram comuns, então as preferências não contam.</p>
+      </section>
+      <section data-nav="Rodadas futuras" class="panel">
+        <div class="row"><h2>Rodadas futuras e diluição</h2><div style="display:flex;gap:8px;flex-wrap:wrap"><button type="button" class="btn ghost tiny" data-socarta="1">Preencher com as medianas da Carta</button><button type="button" class="btn ghost tiny" data-soadd="r">+ Rodada</button></div></div>
+        <p class="sub">Cada rodada nova emite ações para o investidor e, em geral, reforça o pool de opções. Seu número de ações não muda, mas sua fatia diminui. Só contam as rodadas antes do evento.</p>
+        <div class="tscroll"><table id="tbl-so-r"></table></div>
+        <div class="tscroll" style="margin-top:12px"><table id="tbl-so-d"></table></div>
+        <p class="hint">Medianas da Carta (rodadas do 1º semestre de 2026, software): diluição de 18% no seed, 18% na Série A, 12% na B, menos de 10% na C e 8% na D. O reforço do pool e a valorização entre rodadas são suposições do painel para começar: edite com o que você souber. Desdobramento (split) não dilui: multiplica as ações e divide o preço.</p>
+      </section>
+      <section data-nav="Evento de liquidez" class="panel">
+        <h2>Evento de liquidez</h2>
+        <div class="params">
+      <fieldset>
+        <legend>O evento</legend>
+        <label>Tipo<select data-so="v:tipo"><option value="venda">Venda da empresa</option><option value="ipo">IPO (abertura na bolsa)</option></select></label>
+        <label>Quando<input type="month" data-so="v:mes"></label>
+        <label id="so-l-prob">Chance de acontecer (%, opcional)<input type="number" step="5" min="0" max="100" data-so="v:prob" placeholder="vazio = não usar"></label>
+        <label class="check"><input type="checkbox" data-so="v:definido"> O evento está definido (assinado ou anunciado)</label>
+        <label class="check"><input type="checkbox" data-so="v:plano" id="so-plano"> Levar o líquido do cenário base ao Plano futuro</label>
+        <p class="hint" id="so-plano-hint">Só entra no 07. Plano futuro quando o evento estiver definido, como receita no mês do evento.</p>
+      </fieldset>
+      <fieldset>
+        <legend id="so-l-val">Valor da empresa no evento</legend>
+        <label>Pessimista<input type="number" step="1000000" min="0" data-so="v:pess"></label>
+        <label>Base<input type="number" step="1000000" min="0" data-so="v:base"></label>
+        <label>Otimista<input type="number" step="1000000" min="0" data-so="v:otim"></label>
+        <p class="hint">Valor total da venda (ou valuation no IPO), na moeda da empresa. Ainda sem ideia? Use a última rodada como base, metade como pessimista e o triplo como otimista.</p>
+      </fieldset>
+        </div>
+      </section>
+      <section data-nav="Quanto vale" class="panel">
+        <h2>Quanto vale</h2>
+        <p class="sub" id="so-val-sub"></p>
+        <div class="tscroll"><table id="tbl-so-res"></table></div>
+        <div id="so-avisos" class="pj-avisos"></div>
+        <h3 class="orc-h" style="margin-top:18px">Mês a mês até o evento</h3>
+        <p class="sub">Valor líquido das opções liberadas em cada mês, pelo preço da última rodada. O preço só muda quando há rodada (ou no evento); entre uma e outra, o valor cresce porque mais opções vão sendo liberadas.</p>
+        <div class="chart"><div class="legend" id="lg-so-m"></div><div id="ch-so-m"></div><div class="readout" id="ro-so-m"></div></div>
+      </section>
+      <section data-nav="Sensibilidade" class="panel">
+        <h2>Sensibilidade</h2>
+        <p class="sub" id="so-sens-sub"></p>
+        <div class="tscroll"><table id="tbl-so-sens"></table></div>
+      </section>
+      <section data-nav="Se eu sair" class="panel">
+        <div class="row"><h2 id="so-sair-h">Se eu sair</h2><label class="inline" id="so-l-sim">Sair em <input type="month" data-so="s:simSaida"></label></div>
+        <p class="sub" id="so-sair-sub"></p>
+        <div class="tscroll"><table id="tbl-so-sair"></table></div>
+      </section>
+      <section data-nav="Todas as empresas" class="panel" id="so-todas">
+        <h2>Todas as empresas</h2>
+        <div class="tscroll"><table id="tbl-so-tot"></table></div>
+      </section>
+      <section data-nav="Como funciona" class="panel">
+        <h2>Como funciona</h2>
+        <div class="pj-regras">
+          <p><b>Valor no evento:</b> preço por ação = o que sobra para as ações comuns depois das preferências ÷ total de ações no dia do evento. Opção: (preço − strike) × opções liberadas; abaixo do strike vale zero. Phantom share e RSU: preço × quantidade. Phantom option: só a valorização.</p>
+          <p><b>Diluição:</b> a cada rodada sua fatia vira fatia × (1 − diluição) × (1 − reforço do pool). O investidor novo entra com preferência 1x não participante de diluição × valuation pós-money. As rodadas antes do evento entram; as depois, não.</p>
+          <p><b>Projeção mês a mês:</b> não é um crescimento contínuo inventado. O preço da ação só muda quando acontece algo que define preço: uma rodada (o valuation que você colocou) ou o evento. Entre esses pontos o preço fica parado e o que cresce é a quantidade liberada pelo vesting. No mês do evento entram o valor do cenário base, a cascata de preferências e a aceleração.</p>
+          <p><b>Imposto (estimativa):</b> stock option de empresa brasileira tem natureza mercantil (STJ, Tema 1226, set/2024): IR só na venda, como ganho de capital sobre preço − strike, a 15% até R$ 5 mi de ganho, 17,5% até 10 mi, 20% até 30 mi e 22,5% acima. Depois de IPO, 15% como ação em bolsa. Phantom e RSU são tratados como remuneração: 27,5%.</p>
+          <p><b>Empresa no exterior:</b> valores em US$, convertidos pelo câmbio. O ganho entra como aplicação no exterior (Lei 14.754/2023): 15% sobre o ganho em reais, declarado no ajuste anual, sem as faixas do ganho de capital nem a isenção de R$ 20 mil. Regras americanas como 409A, ISO e NSO valem para o imposto lá fora, não para quem mora no Brasil; se houver retenção nos EUA, ela pode ser compensada. A variação do câmbio também entra no ganho.</p>
+          <p><b>O que fica de fora:</b> recompras pela empresa, preferências com cap ou senioridade entre rodadas, pool não usado sendo cancelado na venda (que aumentaria um pouco o seu preço), earn-outs e retenções. Confirme o seu contrato e o imposto com um tributarista.</p>
+          <p class="subdet">Fontes: STJ Tema 1226 (REsp 2.069.644 e 2.074.564); Lei 13.259/2016 (faixas do ganho de capital); Lei 14.754/2023; Carta, diluição por rodada (jul/2026); guias de liquidation preference e vesting (Machado Meyer, Underdog, Equitylist). Pesquisa completa em analises/stock-options-pontos.md.</p>
+        </div>
+      </section>
+  </section>
   <!-- ============ VISÃO CONSOLIDADA (só o dono) ============ -->
   <section role="tabpanel" id="p-familia" hidden>
-    <div class="block-title"><span class="num">10</span><div><h1>Visão consolidada</h1><p class="desc">Soma dos perfis de quem usa o painel, com a parte de cada pessoa em ganhos, gastos e patrimônio. Só você vê este módulo.</p></div></div>
+    <div class="block-title"><span class="num">11</span><div><h1>Visão consolidada</h1><p class="desc">Soma dos perfis de quem usa o painel, com a parte de cada pessoa em ganhos, gastos e patrimônio. Só você vê este módulo.</p></div></div>
       <div class="kpis" id="kpi-f"></div>
       <section data-nav="Perfis" class="panel">
         <div class="row"><h2>Perfis</h2><div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap"><label class="inline">Mês <select id="fam-mes"></select></label><button class="btn ghost tiny" type="button" id="fam-atualizar">Atualizar</button></div></div>
@@ -1559,7 +1678,7 @@ a.lm-ir:hover { border-bottom-style: solid; }
     return new Promise(resolve => { const { data } = sb.auth.onAuthStateChange(async (ev) => { if (ev !== 'PASSWORD_RECOVERY') return; const s = prompt('Digite a nova senha (mínimo 8 caracteres):'); if (s && s.length >= 8) { const { error } = await sb.auth.updateUser({ password: s }); alert(error ? 'Não deu para trocar a senha: ' + error.message : 'Senha trocada.'); } }); resolve(data); });
   }
   // ---------- rodapé: compartilhar, administração e sair ----------
-  const SITE_V = 30;
+  const SITE_V = 31;
   const escH = v => String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const dataBR = v => v ? new Date(v).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' }) : '–';
   const css2 = `.side-foot .r{flex-wrap:wrap}.side-foot .lg-acoes{margin-left:auto;display:inline-flex;gap:10px}
@@ -1847,7 +1966,8 @@ const DEFAULTS = {
   orc: null,
   fech: {},
   plan: null,
-  pj: { dir: 'pjpf', meta: 'bolso', alvo: null, fat: null, meses: '12', reg: 'fatorR', iss: 5, pl: 'otimo', plValor: 5000, contab: null, outros: 0, dep: 0, clt: null, benef: 0, saude: 0, vt: 0, fgts: true }
+  pj: { dir: 'pjpf', meta: 'bolso', alvo: null, fat: null, meses: '12', reg: 'fatorR', iss: 5, pl: 'otimo', plValor: 5000, contab: null, outros: 0, dep: 0, clt: null, benef: 0, saude: 0, vt: 0, fgts: true },
+  so: { sel: '', simSaida: '', empresas: [] }
 };
 
 /* ---------- formatos ---------- */
@@ -1924,6 +2044,7 @@ function normalizar(s) {
   if (!Array.isArray(s.plan.mud)) s.plan.mud = [];
   if (!Array.isArray(s.plan.ev)) s.plan.ev = [];
   if (!Array.isArray(s.plan.inc)) s.plan.inc = [];
+  soNormalizar(s);
   if (!Array.isArray(s.comp.rows)) s.comp.rows = clone(ROWS_PADRAO);
   if (!s.cenarios.find(c => c.id === s.cenAtivo)) s.cenAtivo = s.cenarios[0].id;
   if (!s.cenarios.find(c => c.id === s.destaque)) s.destaque = s.cenarios[0].id;
@@ -1932,7 +2053,7 @@ function normalizar(s) {
 try { if (quemLocal === 'dono') { const b = JSON.parse(localStorage.getItem('painel-priv')); if (b) aplicarBase(b); } } catch (e) {}
 try { const l = JSON.parse(localStorage.getItem(LSK('painel-fin-v2'))); if (l) state = normalizar(l); } catch (e) {}
 try { const t = localStorage.getItem('painel-fin-tab2'); if (t) tab = t; } catch (e) {}
-const TABS = ['inicio', 'leia', 'global', 'gastos', 'carteira', 'orcamento', 'compras', 'cenarios', 'patrimonio', 'comparador', 'simulador', 'pjpf', 'config', 'familia'];
+const TABS = ['inicio', 'leia', 'global', 'gastos', 'carteira', 'orcamento', 'compras', 'cenarios', 'patrimonio', 'comparador', 'simulador', 'pjpf', 'stock', 'config', 'familia'];
 if (TABS.includes(location.hash.slice(1))) tab = location.hash.slice(1);
 if (!TABS.includes(tab)) tab = 'inicio';
 
@@ -5006,7 +5127,7 @@ function calcPlano() {
     L.filter(l => l.tipo === 'cat').forEach(l => { v[l.key] = ov[l.key] ?? cur[l.key]; custos += v[l.key]; porGrupo[l.grupo] = (porGrupo[l.grupo] || 0) + v[l.key]; });
     // eventos: férias, bônus... (os anuais repetem corrigidos pelo IPCA)
     let evRec = 0, evGas = 0; const evs = {};
-    (P.ev || []).forEach(e => { const m0 = mIndex(e.mes); if (!e.mes || i < m0 || (i !== m0 && !(e.anual && (i - m0) % 12 === 0))) return;
+    planEvs(P).forEach(e => { const m0 = mIndex(e.mes); if (!e.mes || i < m0 || (i !== m0 && !(e.anual && (i - m0) % 12 === 0))) return;
       const anos = Math.round((i - m0) / 12), val = ov['ev~' + e.id] ?? (+e.valor || 0) * Math.pow(1 + ip, anos);
       evs[e.id] = val; if (e.tipo === 'receita') evRec += val; else evGas += val; });
     // compras do plano
@@ -5050,7 +5171,7 @@ function renderPlano() {
   // mudanças programadas
   const L = pl.L, opL = sel => L.map(l => `<option value="${esc(l.key)}" ${l.key === sel ? 'selected' : ''}>${esc(l.nome)}${l.pct ? ' (%)' : ''}</option>`).join('');
   $('tbl-mud').innerHTML = `<thead><tr><th>Linha</th><th>A partir de</th><th>Novo valor</th><th></th></tr></thead><tbody>${(P.mud || []).map(m => `<tr><td class="name"><select data-bind="plmud:${m.id}:key" aria-label="Linha">${opL(m.key)}</select></td><td><input type="month" data-bind="plmud:${m.id}:mes" value="${esc(m.mes)}" aria-label="A partir de"></td><td><input type="number" step="100" data-bind="plmud:${m.id}:valor" value="${+m.valor || 0}" aria-label="Novo valor"></td><td><button class="btn danger tiny" type="button" data-delpl="mud:${m.id}">remover</button></td></tr>`).join('') || '<tr><td class="name" colspan="4"><span class="subdet">Nenhuma mudança. Ex.: salário bruto R$ 22.000 a partir de mar/27.</span></td></tr>'}</tbody>`;
-  $('tbl-ev').innerHTML = `<thead><tr><th>Evento</th><th>Tipo</th><th>Valor</th><th>Mês</th><th>Todo ano</th><th></th></tr></thead><tbody>${(P.ev || []).map(e => `<tr><td class="name"><input type="text" class="name" data-bind="plev:${e.id}:nome" value="${esc(e.nome)}" aria-label="Nome do evento"></td><td class="name"><select data-bind="plev:${e.id}:tipo" aria-label="Tipo"><option value="gasto" ${e.tipo !== 'receita' ? 'selected' : ''}>Gasto</option><option value="receita" ${e.tipo === 'receita' ? 'selected' : ''}>Receita</option></select></td><td><input type="number" step="500" data-bind="plev:${e.id}:valor" value="${+e.valor || 0}" aria-label="Valor"></td><td><input type="month" data-bind="plev:${e.id}:mes" value="${esc(e.mes)}" aria-label="Mês"></td><td><input type="checkbox" data-bind="plev:${e.id}:anual" ${e.anual ? 'checked' : ''} aria-label="Repete todo ano"></td><td><button class="btn danger tiny" type="button" data-delpl="ev:${e.id}">remover</button></td></tr>`).join('') || '<tr><td class="name" colspan="6"><span class="subdet">Nenhum evento. Ex.: férias de R$ 15.000 em dezembro, todo ano; bônus em março.</span></td></tr>'}</tbody>`;
+  $('tbl-ev').innerHTML = `<thead><tr><th>Evento</th><th>Tipo</th><th>Valor</th><th>Mês</th><th>Todo ano</th><th></th></tr></thead><tbody>${(P.ev || []).map(e => `<tr><td class="name"><input type="text" class="name" data-bind="plev:${e.id}:nome" value="${esc(e.nome)}" aria-label="Nome do evento"></td><td class="name"><select data-bind="plev:${e.id}:tipo" aria-label="Tipo"><option value="gasto" ${e.tipo !== 'receita' ? 'selected' : ''}>Gasto</option><option value="receita" ${e.tipo === 'receita' ? 'selected' : ''}>Receita</option></select></td><td><input type="number" step="500" data-bind="plev:${e.id}:valor" value="${+e.valor || 0}" aria-label="Valor"></td><td><input type="month" data-bind="plev:${e.id}:mes" value="${esc(e.mes)}" aria-label="Mês"></td><td><input type="checkbox" data-bind="plev:${e.id}:anual" ${e.anual ? 'checked' : ''} aria-label="Repete todo ano"></td><td><button class="btn danger tiny" type="button" data-delpl="ev:${e.id}">remover</button></td></tr>`).join('') || '<tr><td class="name" colspan="6"><span class="subdet">Nenhum evento. Ex.: férias de R$ 15.000 em dezembro, todo ano; bônus em março.</span></td></tr>'}${soPlanEvs().map(e => `<tr><td class="name">${esc(e.nome)}</td><td class="name">Receita</td><td>${fm(e.valor)}</td><td>${mLabel(mIndex(e.mes))}</td><td></td><td><a class="lm-ir" data-lmtab="stock" data-lmsec="Evento de liquidez">vem do 10</a></td></tr>`).join('')}</tbody>`;
   // KPIs
   const fimI = i0 + Math.round((+P.anos || 10) * 12), ms = [];
   for (let i = Math.max(i0 + 1, HOJE_IDX); i < Math.max(i0 + 1, HOJE_IDX) + 12; i++) if (pl.meses[i]) ms.push(pl.meses[i]);
@@ -5089,7 +5210,7 @@ function renderPlanoMM(pl) {
   g('custos', 'Custos', i => -M(i).custos, GRUPOS.flatMap(gr => L.filter(l => l.tipo === 'cat' && l.grupo === gr.id).map(l => Lh(`${l.nome}`, i => -M(i).v[l.key]))));
   g('compras', 'Compras e eventos', i => M(i).rendaB + M(i).evRec - M(i).evGas - M(i).parc - M(i).lump - M(i).posse, [
     Lh('Parcelas', i => -M(i).parc), Lh('Entradas e compras à vista', i => -M(i).lump), Lh('Custos de ter − o que deixa de pagar', i => -M(i).posse), Lh('Renda dos bens', i => M(i).rendaB),
-    ...(state.plan.ev || []).map(e => Lh(e.nome || 'Evento', i => (M(i).evs[e.id] || 0) * (e.tipo === 'receita' ? 1 : -1)))]);
+    ...planEvs(state.plan).map(e => Lh(e.nome || 'Evento', i => (M(i).evs[e.id] || 0) * (e.tipo === 'receita' ? 1 : -1)))]);
   g('sobra', 'Sobra do mês', i => M(i).sobra, [], 'res');
   g('rend', 'Rendimento', i => M(i).rend, [], 'res');
   g('inv', 'Investido no fim do mês', i => pl.inv[i], [Lh('Reinvestido no mês', i => M(i).reinv, true), Lh('Fica parado no mês', i => M(i).paradoMes), Lh('Parado acumulado', i => pl.parado[i]), Lh('Checkpoint real', i => cpMap[i] ?? 0)], 'saldo');
@@ -5409,7 +5530,7 @@ $('cpform').addEventListener('submit', async e => {
 });
 
 /* ---------- abas ---------- */
-const BUILD = { inicio: () => {}, leia: buildLeia, global: () => {}, cenarios: buildCenarios, compras: buildCenarios, carteira: buildCarteira, comparador: buildComparador, simulador: buildSimulador, gastos: buildGastos, orcamento: buildOrcamento, config: buildConfig, pjpf: buildPj, familia: () => carregarPerfis(), patrimonio: () => {} };
+const BUILD = { inicio: () => {}, leia: buildLeia, global: () => {}, cenarios: buildCenarios, compras: buildCenarios, carteira: buildCarteira, comparador: buildComparador, simulador: buildSimulador, gastos: buildGastos, orcamento: buildOrcamento, config: buildConfig, pjpf: buildPj, stock: buildStock, familia: () => carregarPerfis(), patrimonio: () => {} };
 // (i) de cada seção: o que mostra e de onde vêm os números (chave: aba:data-nav)
 const INFO_SEC = {
   'global:Projeção': 'Quanto você terá ao longo do tempo. Tracejado: o plano do 07. Plano futuro. Linhas cheias: cada cenário do 06, partindo do último checkpoint, com renda, gastos, parcelas e rendimento reinvestido todo mês. Pontos vermelhos: checkpoints reais. Os botões mudam o período.',
@@ -5461,6 +5582,17 @@ const INFO_SEC = {
   'patrimonio:Composição': 'Tudo o que você tem hoje menos o que deve. Investimentos vêm da carteira do 04; bens, do cadastro do 03 com o valor estimado de hoje; dívidas são o saldo dos financiamentos. FGTS e previdência entram ou não, pela caixinha.',
   'patrimonio:Evolução': 'O patrimônio daqui pra frente: investimentos pelo 07. Plano futuro, mais o valor dos bens (com valorização ou depreciação), menos o saldo das dívidas. Vendas marcadas com "Incluir no plano" já entram aqui.',
   'patrimonio:Bens': 'Cada bem com quanto custou, quanto vale hoje, quanto valorizou ou depreciou e a dívida. Escolha % ao ano fixo ou IPCA, corrija pelo valor de mercado (FIPE, avaliação) quando quiser, e simule a venda: quanto entra, a dívida quitada e o que sobra para investir.',
+  'stock:Empresa': 'Dados da empresa: sede e moeda, se você já saiu (o vesting para ali), a janela para exercer, ações totalmente diluídas e o preço da última rodada.',
+  'stock:Concessões': 'Cada concessão com data, modelo, quantidade, strike, vesting, cliff, frequência, aceleração e quantas você já exerceu.',
+  'stock:Vesting': 'Quanto já foi liberado mês a mês e quanto falta, por concessão.',
+  'stock:Investidores': 'Rodadas passadas com o valor investido e a preferência de liquidação: quem recebe antes numa venda.',
+  'stock:Rodadas futuras': 'Rodadas previstas até o evento, com a diluição de cada uma. Pode começar pelas medianas da Carta.',
+  'stock:Evento de liquidez': 'Venda ou IPO, quando e por quanto, em três cenários. Se estiver definido, pode entrar no Plano futuro.',
+  'stock:Quanto vale': 'Bruto, strike, imposto e líquido hoje e em cada cenário do evento, mais o valor mês a mês até lá.',
+  'stock:Sensibilidade': 'O líquido para vários valores de venda e datas do evento.',
+  'stock:Se eu sair': 'O que fica liberado e quanto custa exercer se você sair numa data.',
+  'stock:Todas as empresas': 'Soma de todas as empresas em que você tem opções.',
+  'stock:Como funciona': 'As contas, as regras de imposto e o que muda para empresa no exterior.',
   'pjpf:Parâmetros': 'O sentido da conta (do faturamento ao bolso, ou do que você quer receber ao faturamento necessário), faturamento ou meta, regime tributário, pró-labore, contabilidade, dependentes e o salário CLT para comparar.',
   'pjpf:Do faturamento ao bolso': 'Do faturamento da empresa ao dinheiro na sua conta: DAS, contabilidade, INSS e IR do pró-labore e o lucro distribuído sem imposto.',
   'pjpf:Regimes e pró-labore': 'O mesmo faturamento em cada regime (Anexo III com fator R, Anexo V, Lucro Presumido) e com cada pró-labore, para achar a combinação que deixa mais no bolso.',
@@ -5479,7 +5611,7 @@ function infoSecoes() {
       if (h && !h.id) h.append(btn); else if (h) h.after(btn); else if (lg) lg.append(btn); }); });
 }
 infoSecoes();
-const RENDER = { inicio: renderHome, leia: () => {}, global: renderGlobal, cenarios: renderCenarios, compras: renderCenarios, carteira: renderCarteira, comparador: renderComparador, simulador: renderSimulador, gastos: () => { renderGastos(); renderFechamento(); renderHistorico(); }, orcamento: renderOrcamento, config: renderConfig, pjpf: renderPj, familia: renderFamilia, patrimonio: renderPatr };
+const RENDER = { inicio: renderHome, leia: () => {}, global: renderGlobal, cenarios: renderCenarios, compras: renderCenarios, carteira: renderCarteira, comparador: renderComparador, simulador: renderSimulador, gastos: () => { renderGastos(); renderFechamento(); renderHistorico(); }, orcamento: renderOrcamento, config: renderConfig, pjpf: renderPj, stock: renderStock, familia: renderFamilia, patrimonio: renderPatr };
 function renderTab() { planCache = null; try { RENDER[tab](); } catch (err) { console.error(err); setSave('erro ao recalcular: ' + (err && err.message || err)); } }
 let navAbertos = null;
 try { navAbertos = JSON.parse(localStorage.getItem('painel-nav-abertos')); } catch (e) {}
@@ -5779,6 +5911,276 @@ function renderHome() {
 }
 window.addEventListener('resize', () => { if (tab !== 'inicio') return; clearTimeout(hmLayoutT); hmLayoutT = setTimeout(renderHome, 200); });
 
+/* ---------- 10 Stock options ---------- */
+const SO_TIPOS = { opcao: 'Stock option', sar: 'Phantom option (SAR)', phantom: 'Phantom share', rsu: 'RSU / ação restrita' };
+const SO_EST = ['pre', 'seed', 'A', 'B', 'C', 'D'], SO_EST_N = { pre: 'Pré-seed', seed: 'Seed', A: 'Série A', B: 'Série B', C: 'Série C', D: 'Série D' };
+// medianas da Carta (diluição da rodada, 1º sem. 2026); reforço do pool e valorização entre rodadas são suposições editáveis
+const SO_CARTA = { seed: { dil: 18, pool: 5, up: 3 }, A: { dil: 18, pool: 5, up: 3 }, B: { dil: 12, pool: 3, up: 2.5 }, C: { dil: 10, pool: 2, up: 2 }, D: { dil: 8, pool: 2, up: 1.8 } };
+function soId(p) { return p + Date.now().toString(36) + Math.random().toString(36).slice(2, 5); }
+const soMes = s => /^\d{4}-\d{2}$/.test(s || '') ? mIndex(s) : null;
+const soN = v => (v === '' || v == null || !isFinite(+v)) ? null : +v;
+function soNovaEmpresa(n) {
+  return { id: soId('e'), nome: 'Empresa ' + n, sede: 'br', cambio: null, saida: '', leaver: 'good', janela: 90, fica: 'sim', fd: null, preco: null, fatorComum: 100, estagio: 'seed', prefs: [], rodadas: [], ev: { tipo: 'venda', mes: mKey(HOJE_IDX + 60), prob: '', definido: false, plano: false, pess: null, base: null, otim: null }, grants: [] };
+}
+function soNormalizar(s) {
+  if (!s.so || typeof s.so !== 'object') s.so = { sel: '', simSaida: '', empresas: [] };
+  if (!Array.isArray(s.so.empresas)) s.so.empresas = [];
+  s.so.empresas.forEach(e => { ['prefs', 'rodadas', 'grants'].forEach(kk => { if (!Array.isArray(e[kk])) e[kk] = []; }); if (!e.ev || typeof e.ev !== 'object') e.ev = soNovaEmpresa(1).ev; });
+}
+const soEmp = () => { const S = state.so; return S.empresas.find(e => e.id === S.sel) || S.empresas[0] || null; };
+function soCambio(e) {
+  if (e.sede !== 'ext') return 1;
+  if (soN(e.cambio) > 0) return +e.cambio;
+  const u = mundoDb && (mundoDb.itens || []).find(x => /usd/i.test(x.id) && x.grupo === 'cambio');
+  return u && u.p1 > 0 ? u.p1 : 5.4;
+}
+const soPx = (e, v) => { const d = Math.abs(v) < 1 ? 4 : 2; return (e.sede === 'ext' ? 'US$ ' : 'R$ ') + (+v || 0).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: d }); };
+const soMoeda = (e, v) => e.sede === 'ext' ? 'US$ ' + k(v) : 'R$ ' + k(v);
+// fração liberada de uma concessão no mês i (congela na saída; aceleração no evento se ainda estiver lá)
+function soVest(g, e, i, evI) {
+  const g0 = soMes(g.data); if (g0 == null || i < g0) return 0;
+  const sai = soMes(e.saida), fim = sai != null ? Math.min(i, sai) : i;
+  const tot = Math.round((+g.anos || 0) * 12), cl = Math.max(0, +g.cliff || 0), st = { mensal: 1, trimestral: 3, anual: 12 }[g.freq] || 1;
+  let f = tot <= 0 ? 1 : (fim - g0 < cl ? 0 : Math.min(1, Math.floor((fim - g0) / st) * st / tot));
+  if (evI != null && i >= evI && (sai == null || sai >= evI) && f < 1) { if (g.acel === 'total') f = 1; else if (g.acel === 'metade') f += (1 - f) / 2; }
+  return f;
+}
+// quantas ações/unidades contam no mês i, depois das regras de saída, janela e expiração
+function soConta(g, e, i, evI) {
+  const q = (+g.qtd || 0) * soVest(g, e, i, evI), ex = Math.min(q, Math.max(0, +g.exerc || 0));
+  const sai = soMes(e.saida), g0 = soMes(g.data);
+  if (g.tipo === 'opcao') {
+    const fimJanela = sai != null ? sai + Math.ceil((+e.janela || 0) / 30) : null;
+    if (sai != null && e.leaver === 'bad' && i >= sai) return { q: ex, ex, perdeu: q - ex };
+    if (fimJanela != null && i > fimJanela) return { q: ex, ex, perdeu: q - ex };
+    if (g0 != null && i >= g0 + Math.round((+g.expira || 10) * 12)) return { q: ex, ex, perdeu: q - ex };
+    return { q, ex, perdeu: 0 };
+  }
+  if (sai != null && i >= sai && (e.fica === 'nao' || e.leaver === 'bad')) return { q: 0, ex: 0, perdeu: q };
+  return { q, ex: 0, perdeu: 0 };
+}
+// rodadas futuras até o mês i: fator de diluição e preferências novas
+function soRodadas(e, i) {
+  const hoje = HOJE_IDX, rs = e.rodadas.filter(r => { const m = soMes(r.mes); return m != null && m > hoje && m <= i; }).sort((a, b) => soMes(a.mes) - soMes(b.mes));
+  let N = +e.fd || 0; const prefs = e.prefs.filter(p => soN(p.pct) > 0 || soN(p.inv) > 0).map(p => ({ nome: p.nome, lp: (+p.inv || 0) * (soN(p.mult) ?? 1), f: (+p.pct || 0) / 100, part: !!p.part }));
+  const passos = [];
+  rs.forEach(r => {
+    const dil = Math.min(0.9, Math.max(0, (+r.dil || 0) / 100)), pool = Math.min(0.9, Math.max(0, (+r.pool || 0) / 100)), fx = (1 - dil) * (1 - pool);
+    prefs.forEach(p => { p.f *= fx; });
+    N = fx > 0 ? N / fx : N;
+    const post = soN(r.post); if (post > 0 && dil > 0) prefs.push({ nome: r.nome, lp: dil * post, f: dil, part: false });
+    passos.push({ r, N, post, pps: post > 0 && N > 0 ? post / N : null });
+  });
+  return { N, prefs, passos };
+}
+// cascata de preferências: devolve o valor por 100% das ações comuns e quem converteu
+function soCascata(V, prefs) {
+  const fc = Math.max(0, 1 - prefs.reduce((s, p) => s + p.f, 0)), conv = prefs.map(() => false);
+  for (let it = 0; it <= prefs.length; it++) {
+    const lp = prefs.reduce((s, p, j) => s + (conv[j] ? 0 : p.lp), 0), R = Math.max(0, V - lp);
+    const fp = fc + prefs.reduce((s, p, j) => s + (conv[j] || p.part ? p.f : 0), 0), porF = fp > 0 ? R / fp : 0;
+    let mudou = false;
+    prefs.forEach((p, j) => { if (!conv[j] && !p.part && p.f * porF > p.lp) { conv[j] = true; mudou = true; } });
+    if (!mudou) return { porF, pago: Math.min(V, lp), conv };
+  }
+  return { porF: 0, pago: V, conv };
+}
+function soGcap(g) { const F = [[5e6, .15], [1e7, .175], [3e7, .2], [Infinity, .225]]; let ant = 0, t = 0; for (const [lim, a] of F) { if (g > ant) t += (Math.min(g, lim) - ant) * a; ant = lim; } return t; }
+// valor de tudo que conta no mês i ao preço pps (moeda da empresa); totais em R$
+function soValor(e, i, pps, evI, ipo) {
+  const cx = soCambio(e); let rec = 0, pagar = 0, gOp = 0, gRem = 0, q = 0, perdeu = 0;
+  const linhas = e.grants.map(g => {
+    const c = soConta(g, e, i, evI), st = +g.strike || 0; let r = 0, p = 0, ga = 0;
+    if (g.tipo === 'opcao') { if (pps > st) { r = c.q * pps; p = (c.q - c.ex) * st; ga = c.q * (pps - st); } else { r = c.ex * pps; ga = c.ex * (pps - st); } gOp += ga; }
+    else if (g.tipo === 'sar') { r = c.q * Math.max(0, pps - st); ga = r; gRem += ga; }
+    else { r = c.q * pps; ga = r; gRem += ga; }
+    rec += r; pagar += p; q += c.q; perdeu += c.perdeu;
+    return { g, c, rec: r * cx, pagar: p * cx, ganho: ga * cx };
+  });
+  const impOp = gOp > 0 ? (e.sede === 'ext' || ipo ? gOp * cx * 0.15 : soGcap(gOp * cx)) : 0, impRem = Math.max(0, gRem) * cx * 0.275;
+  const imp = impOp + impRem;
+  return { linhas, q, perdeu, rec: rec * cx, pagar: pagar * cx, ganho: (gOp + gRem) * cx, imp, liq: rec * cx - pagar * cx - imp };
+}
+// preço por ação comum no evento, para um valor de empresa V
+function soPpsEvento(e, V, evI) {
+  const R = soRodadas(e, evI); if (!(R.N > 0) || !(V > 0)) return { pps: 0, R, cas: null };
+  if (e.ev.tipo === 'ipo') return { pps: V / R.N, R, cas: null };
+  const cas = soCascata(V, R.prefs); return { pps: cas.porF / R.N, R, cas };
+}
+function soEvento(e, V, evI) {
+  const ev = soPpsEvento(e, V, evI); const v = soValor(e, evI, ev.pps, evI, e.ev.tipo === 'ipo');
+  return Object.assign(v, { pps: ev.pps, N: ev.R.N, cas: ev.cas, R: ev.R });
+}
+const soPpsHoje = e => (+e.preco || 0) * (soN(e.fatorComum) ?? 100) / 100;
+function soHoje(e) { return soValor(e, HOJE_IDX, soPpsHoje(e), null, false); }
+// para o Plano futuro: o líquido do cenário base, se o evento estiver definido
+function soPlanEvs() {
+  const out = []; ((state.so || {}).empresas || []).forEach(e => {
+    const evI = soMes(e.ev.mes); if (!e.ev.definido || !e.ev.plano || evI == null || !(+e.ev.base > 0)) return;
+    const r = soEvento(e, +e.ev.base, evI); if (r.liq > 0) out.push({ id: 'so-' + e.id, nome: 'Stock options: ' + e.nome, tipo: 'receita', valor: Math.round(r.liq), mes: e.ev.mes, anual: false, so: true });
+  });
+  return out;
+}
+const planEvs = P => (P.ev || []).concat(soPlanEvs());
+function soQuebra(e, evI) {
+  // menor valor de venda a partir do qual você recebe algo
+  const f = V => soEvento(e, V, evI).liq > 0; let hi = Math.max(1, +e.ev.base || (+e.preco || 1) * (+e.fd || 1));
+  for (let n = 0; n < 40 && !f(hi); n++) hi *= 2; if (!f(hi)) return null;
+  let lo = 0; for (let n = 0; n < 60; n++) { const m = (lo + hi) / 2; if (f(m)) hi = m; else lo = m; } return hi;
+}
+function buildStock() {
+  const S = state.so; if (!S.empresas.length) S.empresas.push(soNovaEmpresa(1));
+  const e = soEmp(); S.sel = e.id;
+  $('so-emps').innerHTML = S.empresas.map(x => `<button type="button" data-soemp="${x.id}" aria-pressed="${x.id === e.id}">${esc(x.nome || 'Empresa')}${x.saida ? ' <span class="subdet">saí</span>' : ''}</button>`).join('');
+  document.querySelector('[data-sodelemp]').hidden = S.empresas.length < 2 && !e.grants.length;
+  document.querySelectorAll('#p-stock [data-so]').forEach(soFill);
+  const opt = (v, cur, txt) => `<option value="${v}"${String(cur) === v ? ' selected' : ''}>${txt}</option>`, inp = (b, v, step, extra = '') => `<input type="number" step="${step}" min="0" data-so="${b}" value="${v ?? ''}" ${extra}>`;
+  $('tbl-so-g').innerHTML = `<thead><tr><th>Concedida em</th><th>Modelo</th><th>Quantidade</th><th>Strike</th><th>Vesting (anos)</th><th>Cliff (meses)</th><th>Libera</th><th>Na venda</th><th>Já exercidas</th><th>Expira (anos)</th><th></th></tr></thead><tbody>${e.grants.map(g => `<tr>
+    <td><input type="month" data-so="g:${g.id}:data" value="${esc(g.data)}" aria-label="Concedida em"></td>
+    <td class="name"><select data-so="g:${g.id}:tipo" aria-label="Modelo">${Object.entries(SO_TIPOS).map(([v, t]) => opt(v, g.tipo, t)).join('')}</select></td>
+    <td>${inp(`g:${g.id}:qtd`, g.qtd, 100, 'aria-label="Quantidade"')}</td>
+    <td>${inp(`g:${g.id}:strike`, g.strike, 0.01, `aria-label="Strike"${g.tipo === 'phantom' || g.tipo === 'rsu' ? ' disabled' : ''}`)}</td>
+    <td>${inp(`g:${g.id}:anos`, g.anos, 0.5, 'aria-label="Vesting em anos"')}</td>
+    <td>${inp(`g:${g.id}:cliff`, g.cliff, 1, 'aria-label="Cliff em meses"')}</td>
+    <td class="name"><select data-so="g:${g.id}:freq" aria-label="Frequência">${opt('mensal', g.freq, 'Todo mês')}${opt('trimestral', g.freq, 'A cada trimestre')}${opt('anual', g.freq, 'Uma vez por ano')}</select></td>
+    <td class="name"><select data-so="g:${g.id}:acel" aria-label="Aceleração">${opt('nenhuma', g.acel, 'Segue o vesting')}${opt('total', g.acel, 'Libera tudo')}${opt('metade', g.acel, 'Libera metade do resto')}</select></td>
+    <td>${inp(`g:${g.id}:exerc`, g.exerc, 100, `aria-label="Já exercidas"${g.tipo !== 'opcao' ? ' disabled' : ''}`)}</td>
+    <td>${inp(`g:${g.id}:expira`, g.expira, 1, 'aria-label="Expira em anos"')}</td>
+    <td><button class="btn danger tiny" type="button" data-sorm="g:${g.id}">remover</button></td></tr>`).join('') || '<tr><td class="name" colspan="11"><span class="subdet">Nenhuma concessão. Use "+ Concessão" para cada vez que recebeu opções.</span></td></tr>'}</tbody>`;
+  $('tbl-so-p').innerHTML = `<thead><tr><th>Rodada</th><th>Investido</th><th>% da empresa hoje</th><th>Múltiplo</th><th>Participante</th><th></th></tr></thead><tbody>${e.prefs.map(p => `<tr>
+    <td class="name"><input type="text" class="name" data-so="p:${p.id}:nome" value="${esc(p.nome)}" aria-label="Rodada"></td>
+    <td>${inp(`p:${p.id}:inv`, p.inv, 100000, 'aria-label="Valor investido"')}</td>
+    <td>${inp(`p:${p.id}:pct`, p.pct, 0.5, 'aria-label="% da empresa hoje"')}</td>
+    <td>${inp(`p:${p.id}:mult`, p.mult, 0.5, 'aria-label="Múltiplo"')}</td>
+    <td><input type="checkbox" data-so="p:${p.id}:part" ${p.part ? 'checked' : ''} aria-label="Participante"></td>
+    <td><button class="btn danger tiny" type="button" data-sorm="p:${p.id}">remover</button></td></tr>`).join('') || '<tr><td class="name" colspan="6"><span class="subdet">Sem rodadas cadastradas: a venda é dividida só pelas ações, sem ninguém receber antes. Se a empresa já captou, cadastre cada rodada.</span></td></tr>'}</tbody>`;
+  $('tbl-so-r').innerHTML = `<thead><tr><th>Rodada</th><th>Mês</th><th>Diluição (%)</th><th>Reforço do pool (%)</th><th>Valuation pós-money</th><th></th></tr></thead><tbody>${e.rodadas.map(r => `<tr>
+    <td class="name"><input type="text" class="name" data-so="r:${r.id}:nome" value="${esc(r.nome)}" aria-label="Rodada"></td>
+    <td><input type="month" data-so="r:${r.id}:mes" value="${esc(r.mes)}" aria-label="Mês"></td>
+    <td>${inp(`r:${r.id}:dil`, r.dil, 1, 'aria-label="Diluição"')}</td>
+    <td>${inp(`r:${r.id}:pool`, r.pool, 1, 'aria-label="Reforço do pool"')}</td>
+    <td>${inp(`r:${r.id}:post`, r.post, 1000000, 'aria-label="Valuation pós-money" class="so-big"')}</td>
+    <td><button class="btn danger tiny" type="button" data-sorm="r:${r.id}">remover</button></td></tr>`).join('') || '<tr><td class="name" colspan="6"><span class="subdet">Nenhuma rodada prevista. "Preencher com as medianas da Carta" cria as próximas a partir da última rodada feita.</span></td></tr>'}</tbody>`;
+}
+function soFill(el) {
+  const v = soAlvo(el.dataset.so, false); if (!v) return; const val = v.o[v.key];
+  if (el.type === 'checkbox') el.checked = !!val; else el.value = val ?? '';
+}
+function soAlvo(b, criar) {
+  const [sc, id, key] = b.split(':'), e = soEmp(); if (!e && sc !== 's') return null;
+  if (sc === 'e') return { o: e, key: id };
+  if (sc === 'v') return { o: e.ev, key: id };
+  if (sc === 's') return { o: state.so, key: id };
+  const arr = { g: e && e.grants, p: e && e.prefs, r: e && e.rodadas }[sc], o = arr && arr.find(x => x.id === id);
+  return o ? { o, key } : null;
+}
+function soOnInput(el) {
+  const a = soAlvo(el.dataset.so, true); if (!a) return;
+  let v; if (el.type === 'checkbox') v = el.checked; else if (el.tagName === 'SELECT' || el.type === 'text' || el.type === 'month') v = el.value; else v = el.value === '' ? null : (isFinite(parseFloat(el.value)) ? parseFloat(el.value) : a.o[a.key]);
+  a.o[a.key] = v; save();
+  const sc = el.dataset.so;
+  if (sc === 'e:nome') { const bt = document.querySelector(`[data-soemp="${soEmp().id}"]`); if (bt) bt.firstChild.textContent = v || 'Empresa'; }
+  if (/^g:[^:]+:tipo$/.test(sc) || sc === 'e:saida') buildStock();
+  renderStock();
+  if (sc === 'v:plano' || sc === 'v:definido' || (soEmp().ev.plano && /^(v|g|p|r|e):/.test(sc))) planCache = null;
+}
+function renderStock() {
+  const e = soEmp(); if (!e) return;
+  const ext = e.sede === 'ext', cx = soCambio(e), evI = soMes(e.ev.mes), sai = soMes(e.saida);
+  $('so-l-cx').hidden = !ext; $('so-l-cx').querySelector('input').placeholder = ext ? num(cx) + (soN(e.cambio) ? '' : ' (dólar de hoje)') : '';
+  $('so-l-preco').firstChild.textContent = `Preço por ação na última rodada (${ext ? 'US$' : 'R$'})`;
+  $('so-l-val').textContent = `Valor da empresa no evento (${ext ? 'US$' : 'R$'})`;
+  $('so-plano').disabled = !e.ev.definido; $('so-plano-hint').textContent = e.ev.definido ? (e.ev.plano ? 'O líquido do cenário base entra como receita no 07. Plano futuro, no mês do evento.' : 'Marque para o líquido do cenário base entrar como receita no 07. Plano futuro.') : 'Só entra no 07. Plano futuro quando o evento estiver definido. Até lá, fica só aqui.';
+  const G = e.grants, tot = G.reduce((s, g) => s + (+g.qtd || 0), 0), H = soHoje(e), temBase = +e.fd > 0 && +e.preco > 0;
+  const base = evI != null && +e.ev.base > 0 && +e.fd > 0 ? soEvento(e, +e.ev.base, evI) : null;
+  kpis($('kpi-so'), [
+    ['Liberadas hoje', tot ? num(H.q, 0) : '–', tot ? `de ${num(tot, 0)} concedidas (${pct(H.q / tot, 0)})` : 'cadastre as concessões'],
+    ['Valor hoje no papel', temBase && tot ? fm(H.liq) : '–', temBase ? `líquido, a ${soPx(e, soPpsHoje(e))} por ação` : 'falta ações e preço de hoje'],
+    ['No evento (base)', base ? fm(base.liq) : '–', base ? `líquido em ${mLabel(evI)}` + (soN(e.ev.prob) != null ? ` · esperado ${fm(base.liq * e.ev.prob / 100)}` : '') : 'falta o valor do evento'],
+    ['Para exercer hoje', H.pagar ? fm(H.pagar) : '–', H.pagar ? 'strike das opções liberadas não exercidas' : 'nada a pagar']]);
+  // vesting
+  const g0s = G.map(g => soMes(g.data)).filter(x => x != null), i0 = g0s.length ? Math.min(...g0s) : HOJE_IDX;
+  const iF = Math.max(HOJE_IDX + 1, ...G.map(g => (soMes(g.data) ?? HOJE_IDX) + Math.round((+g.anos || 0) * 12)), evI != null ? Math.min(evI, HOJE_IDX + 180) : 0);
+  const n = Math.min(240, iF - i0 + 1), lib = [], conc = [];
+  for (let t = 0; t < n; t++) { const i = i0 + t; lib.push(G.reduce((s, g) => s + soConta(g, e, i, evI).q, 0)); conc.push(G.reduce((s, g) => s + ((soMes(g.data) ?? 1e9) <= i ? +g.qtd || 0 : 0), 0)); }
+  const serV = [{ name: 'Concedidas', c: 'var(--muted)', v: conc, dash: true }, { name: 'Liberadas (contam)', c: 'var(--s4)', v: lib }];
+  $('so-vest-sub').textContent = G.length ? `Quantas ${G.every(g => g.tipo === 'opcao') ? 'opções' : 'unidades'} já contam em cada mês${sai != null ? `. Você saiu em ${mLabel(sai)}: o vesting parou ali` : ''}${evI != null ? `; o evento está em ${mLabel(evI)}` : ''}.` : 'Cadastre as concessões para ver o vesting.';
+  if (G.length) { legend($('lg-so-v'), serV); chart($('ch-so-v'), $('ro-so-v'), n, serV, v => num(v, 0), t => mLabel(i0 + t), Math.max(0, Math.min(n - 1, HOJE_IDX - i0)), v => num(v, 0)); } else { $('ch-so-v').innerHTML = $('ro-so-v').innerHTML = $('lg-so-v').innerHTML = ''; }
+  const fimV = g => (soMes(g.data) ?? 0) + Math.round((+g.anos || 0) * 12), clV = g => (soMes(g.data) ?? 0) + (+g.cliff || 0);
+  $('tbl-so-v').innerHTML = G.length ? `<thead><tr><th>Concessão</th><th>Quantidade</th><th>Strike</th><th>Fim do cliff</th><th>Fim do vesting</th><th>Liberadas hoje</th><th>%</th><th>Situação</th></tr></thead><tbody>${G.map(g => { const c = soConta(g, e, HOJE_IDX, null), q = +g.qtd || 0;
+    const sit = c.perdeu > 0 && g.tipo === 'opcao' ? `<span class="chip warn">perdeu ${num(c.perdeu, 0)}</span>` : c.perdeu > 0 ? `<span class="chip warn">perdeu</span>` : sai != null ? '<span class="chip">congelado na saída</span>' : HOJE_IDX < clV(g) ? '<span class="chip amber">no cliff</span>' : HOJE_IDX >= fimV(g) ? '<span class="chip best">100% liberado</span>' : '<span class="chip info">liberando</span>';
+    return `<tr><td class="name">${esc(SO_TIPOS[g.tipo] || '')} · ${g.data ? mLabel(soMes(g.data)) : '–'}</td><td>${num(q, 0)}</td><td>${g.tipo === 'phantom' || g.tipo === 'rsu' ? '–' : soPx(e, +g.strike || 0)}</td><td>${g.data ? mLabel(clV(g)) : '–'}</td><td>${g.data ? mLabel(fimV(g)) : '–'}</td><td>${num(c.q, 0)}</td><td>${q ? pct(c.q / q, 0) : '–'}</td><td>${sit}</td></tr>`; }).join('')}</tbody>` : '';
+  // diluição
+  const fim = evI ?? HOJE_IDX + 120, R = soRodadas(e, Math.max(fim, ...e.rodadas.map(r => soMes(r.mes) ?? 0))), pcEu = N => N > 0 && tot ? pct(tot / N, 3) : '–';
+  $('tbl-so-d').innerHTML = +e.fd > 0 ? `<thead><tr><th>Momento</th><th>Total de ações</th><th>Sua fatia (todas as concedidas)</th><th>Preço por ação</th><th>Valuation</th></tr></thead><tbody>
+    <tr><td class="name">Hoje</td><td>${num(+e.fd, 0)}</td><td>${pcEu(+e.fd)}</td><td>${+e.preco ? soPx(e, +e.preco) : '–'}</td><td>${+e.preco ? soMoeda(e, e.preco * e.fd) : '–'}</td></tr>
+    ${R.passos.map(p => { const depois = evI != null && soMes(p.r.mes) > evI; return `<tr${depois ? ' style="opacity:.5"' : ''}><td class="name">${esc(p.r.nome || 'Rodada')} · ${mLabel(soMes(p.r.mes))}${depois ? ' <span class="subdet">depois do evento, não conta</span>' : ''}</td><td>${num(p.N, 0)}</td><td>${pcEu(p.N)}</td><td>${p.pps ? soPx(e, p.pps) : '–'}</td><td>${p.post ? soMoeda(e, p.post) : '–'}</td></tr>`; }).join('')}
+    ${base ? `<tr class="totrow"><td class="name">Evento (base) · ${mLabel(evI)}</td><td>${num(base.N, 0)}</td><td>${pcEu(base.N)}</td><td>${soPx(e, base.pps)}</td><td>${soMoeda(e, +e.ev.base)}</td></tr>` : ''}</tbody>` : '<tbody><tr><td class="name"><span class="subdet">Preencha as ações totalmente diluídas de hoje para ver a diluição.</span></td></tr></tbody>';
+  // resultado
+  const avisos = [];
+  if (!temBase) avisos.push('Preencha as ações totalmente diluídas e o preço por ação de hoje em "Empresa e plano".');
+  const cen = [['Hoje, pelo preço da rodada', null, null]];
+  if (evI != null) [['Pessimista', 'pess'], ['Base', 'base'], ['Otimista', 'otim']].forEach(([nm, kk]) => { if (+e.ev[kk] > 0) cen.push([nm, kk, +e.ev[kk]]); });
+  const rows = cen.map(([nm, kk, V]) => { const r = kk ? soEvento(e, V, evI) : Object.assign(H, { pps: soPpsHoje(e) }); return { nm, kk, V, r }; });
+  const prob = soN(e.ev.prob);
+  $('so-val-sub').textContent = `${ext ? `Valores em R$ ao câmbio de ${num(cx)}. ` : ''}Bruto é quanto você recebe pelas ações; strike é o que paga para exercer o que ainda não exerceu (na venda, costuma sair do próprio valor); imposto é estimado.`;
+  $('tbl-so-res').innerHTML = tot && temBase ? `<thead><tr><th>Cenário</th><th>Valor da empresa</th><th>Preço da sua ação</th><th>Contam</th><th>Bruto</th><th>Strike a pagar</th><th>Imposto</th><th>Líquido no bolso</th></tr></thead><tbody>${rows.map(({ nm, kk, V, r }) => `<tr${kk === 'base' ? ' class="sel"' : ''}><td class="name">${nm}${kk ? ` <span class="subdet">${mLabel(evI)}</span>` : ''}</td><td>${V ? soMoeda(e, V) : soMoeda(e, (+e.preco || 0) * (+e.fd || 0))}</td><td>${soPx(e, r.pps)}</td><td>${num(r.q, 0)}</td><td>${fm(r.rec)}</td><td>${r.pagar ? '−' + fm(r.pagar) : '–'}</td><td>${r.imp ? '−' + fm(r.imp) : '–'}</td><td><b>${fm(r.liq)}</b></td></tr>`).join('')}${prob != null && base ? `<tr><td class="name">Valor esperado <span class="subdet">${num(prob, 0)}% de chance × base</span></td><td colspan="6"></td><td><b>${fm(base.liq * prob / 100)}</b></td></tr>` : ''}</tbody>` : '';
+  if (base && e.ev.tipo !== 'ipo' && base.cas && base.cas.pago > 0) avisos.push(`No cenário base, ${soMoeda(e, base.cas.pago)} vão primeiro para os investidores que preferiram receber o valor de volta${base.cas.conv.some(Boolean) ? ' (os demais converteram em ações)' : ''}.`);
+  if (base) { const q0 = soQuebra(e, evI); if (q0) avisos.push(`Suas ${G.every(g => g.tipo === 'opcao') ? 'opções começam' : 'unidades começam'} a valer algo com uma venda acima de <b>${soMoeda(e, q0)}</b>${e.ev.tipo === 'ipo' ? ' de valuation' : ''}.`); }
+  if (base && sai == null && G.some(g => soConta(g, e, evI, evI).q < (+g.qtd || 0) - 0.5)) avisos.push('Nem tudo estará liberado no mês do evento. O que não liberou fica de fora, a não ser que a concessão tenha aceleração.');
+  if (sai != null) { const lost = G.reduce((s, g) => s + soConta(g, e, HOJE_IDX, null).perdeu, 0); if (lost > 0) avisos.push(`Você perdeu ${num(lost, 0)} ${G.some(g => g.tipo === 'opcao') ? 'opções liberadas que não foram exercidas na janela' : 'unidades na saída'}. Se você exerceu, preencha "Já exercidas".`); }
+  if (evI != null && evI <= HOJE_IDX) avisos.push('A data do evento já passou. Atualize o mês do evento.');
+  $('so-avisos').innerHTML = avisos.map(a => `<p${/perdeu|passou/.test(a) ? ' class="warn"' : ''}>${a}</p>`).join('');
+  // mês a mês
+  if (tot && temBase) {
+    const fimM = evI != null && evI > HOJE_IDX ? Math.min(evI, HOJE_IDX + 180) : HOJE_IDX + 60, nm = fimM - HOJE_IDX + 1, vB = [], vL = [];
+    const passos = soRodadas(e, fimM).passos, fat = (soN(e.fatorComum) ?? 100) / 100;
+    for (let t = 0; t < nm; t++) { const i = HOJE_IDX + t; let pps = soPpsHoje(e); passos.forEach(p => { if (soMes(p.r.mes) <= i && p.pps) pps = p.pps * fat; });
+      const r = base && i === evI ? base : soValor(e, i, pps, null, false); vB.push(Math.round(r.rec - r.pagar)); vL.push(Math.round(r.liq)); }
+    const serM = [{ name: 'Bruto menos strike', c: 'var(--muted)', v: vB, dash: true }, { name: 'Líquido', c: 'var(--s4)', v: vL }];
+    legend($('lg-so-m'), serM); chart($('ch-so-m'), $('ro-so-m'), nm, serM, k, t => mLabel(HOJE_IDX + t), nm - 1);
+  } else { $('ch-so-m').innerHTML = $('ro-so-m').innerHTML = $('lg-so-m').innerHTML = ''; }
+  // sensibilidade
+  if (base && tot) {
+    const mult = [0.25, 0.5, 1, 1.5, 2, 4], des = [-12, 0, 12, 24].filter(d => evI + d > HOJE_IDX);
+    $('so-sens-sub').textContent = 'Líquido no bolso para cada valor de venda (linhas) e mês do evento (colunas). Um evento mais tarde libera mais vesting, mas pode ter mais rodadas diluindo antes.';
+    $('tbl-so-sens').innerHTML = `<thead><tr><th>Valor da empresa</th>${des.map(d => `<th>${mLabel(evI + d)}</th>`).join('')}</tr></thead><tbody>${mult.map(m => { const V = +e.ev.base * m; return `<tr${m === 1 ? ' class="sel"' : ''}><td class="name">${soMoeda(e, V)} <span class="subdet">${m === 1 ? 'base' : num(m) + '×'}</span></td>${des.map(d => { const r = soEvento(e, V, evI + d); return `<td>${r.liq > 0 ? fm(r.liq) : '–'}</td>`; }).join('')}</tr>`; }).join('')}</tbody>`;
+  } else { $('so-sens-sub').textContent = 'Preencha o evento (mês e valor base) e as concessões para ver a tabela.'; $('tbl-so-sens').innerHTML = ''; }
+  // se eu sair
+  const jaSaiu = sai != null, sS = jaSaiu ? sai : (soMes(state.so.simSaida) ?? HOJE_IDX + 12);
+  $('so-l-sim').hidden = jaSaiu; $('so-sair-h').textContent = jaSaiu ? 'Sua saída' : 'Se eu sair';
+  if (!jaSaiu && !state.so.simSaida) $('so-l-sim').querySelector('input').value = mKey(sS);
+  const eSim = Object.assign({}, e, { saida: mKey(sS) }), fimJ = sS + Math.ceil((+e.janela || 0) / 30);
+  const linS = G.map(g => { const q = +g.qtd || 0, f = soVest(g, eSim, sS, null), lib = q * f, ex = Math.min(lib, +g.exerc || 0), custo = g.tipo === 'opcao' ? (lib - ex) * (+g.strike || 0) * cx : 0; return { g, q, lib, ex, custo }; });
+  const custoT = linS.reduce((s, l) => s + l.custo, 0), libT = linS.reduce((s, l) => s + l.lib, 0);
+  $('so-sair-sub').innerHTML = G.length ? (jaSaiu ? `Você saiu em ${mLabel(sai)}. ` : `Saindo em ${mLabel(sS)}, `) + `${jaSaiu ? 'Ficaram liberadas' : 'ficam liberadas'} ${num(libT, 0)} de ${num(tot, 0)}; o resto ${jaSaiu ? 'foi perdido' : 'é perdido'}.` + (custoT > 0 ? ` Para manter as opções era preciso pagar <b>${fm(custoT)}</b> de strike até ${mLabel(fimJ)} (janela de ${num(+e.janela || 0, 0)} dias). Numa empresa fechada não dá para vender depois de exercer: é dinheiro parado até um evento, com risco de não voltar. No Brasil, exercer não gera imposto; o IR vem na venda.` : '') : 'Cadastre as concessões.';
+  $('tbl-so-sair').innerHTML = G.length ? `<thead><tr><th>Concessão</th><th>Concedidas</th><th>Liberadas na saída</th><th>Perdidas</th><th>Já exercidas</th><th>Custo para exercer o resto</th></tr></thead><tbody>${linS.map(l => `<tr><td class="name">${esc(SO_TIPOS[l.g.tipo])} · ${l.g.data ? mLabel(soMes(l.g.data)) : '–'}</td><td>${num(l.q, 0)}</td><td>${num(l.lib, 0)}</td><td>${num(l.q - l.lib, 0)}</td><td>${l.g.tipo === 'opcao' ? num(l.ex, 0) : '–'}</td><td>${l.custo ? fm(l.custo) : '–'}</td></tr>`).join('')}<tr class="totrow"><td class="name">Total</td><td>${num(tot, 0)}</td><td>${num(libT, 0)}</td><td>${num(tot - libT, 0)}</td><td></td><td>${custoT ? fm(custoT) : '–'}</td></tr></tbody>` : '';
+  // todas as empresas
+  const E = state.so.empresas; $('so-todas').hidden = E.length < 2;
+  if (E.length > 1) { let tH = 0, tE = 0;
+    $('tbl-so-tot').innerHTML = `<thead><tr><th>Empresa</th><th>Concedidas</th><th>Liberadas hoje</th><th>Valor hoje (líquido)</th><th>Evento base (líquido)</th><th>No plano</th></tr></thead><tbody>${E.map(x => { const h = soHoje(x), xi = soMes(x.ev.mes), b = xi != null && +x.ev.base > 0 && +x.fd > 0 ? soEvento(x, +x.ev.base, xi) : null, tq = x.grants.reduce((s, g) => s + (+g.qtd || 0), 0); tH += h.liq; tE += b ? b.liq : 0;
+      return `<tr><td class="name"><a href="#" data-soemp="${x.id}">${esc(x.nome)}</a>${x.saida ? ' <span class="subdet">saí em ' + mLabel(soMes(x.saida)) + '</span>' : ''}</td><td>${num(tq, 0)}</td><td>${num(h.q, 0)}</td><td>${fm(h.liq)}</td><td>${b ? fm(b.liq) + ' <span class="subdet">' + mLabel(xi) + '</span>' : '–'}</td><td>${x.ev.definido && x.ev.plano ? '<span class="chip best">sim</span>' : '–'}</td></tr>`; }).join('')}<tr class="totrow"><td class="name">Total</td><td></td><td></td><td>${fm(tH)}</td><td>${fm(tE)}</td><td></td></tr></tbody>`; }
+}
+document.addEventListener('input', e => { const el = e.target; if (!el.dataset || !el.dataset.so || el.tagName === 'SELECT' || el.type === 'checkbox' || el.type === 'month') return; soOnInput(el); });
+document.addEventListener('change', e => { const el = e.target; if (!el.dataset || !el.dataset.so) return; if (el.tagName === 'SELECT' || el.type === 'checkbox' || el.type === 'month') soOnInput(el); });
+document.addEventListener('click', ev => {
+  const t = ev.target.closest('[data-soemp],[data-soaddemp],[data-sodelemp],[data-soadd],[data-sorm],[data-socarta]'); if (!t || !$('p-stock').contains(t)) return;
+  ev.preventDefault(); const S = state.so, d = t.dataset, e = soEmp();
+  if (d.soemp) { S.sel = d.soemp; save(); buildStock(); renderStock(); if (t.tagName === 'A') $('p-stock').scrollIntoView({ behavior: 'smooth' }); return; }
+  if (d.soaddemp) { const x = soNovaEmpresa(S.empresas.length + 1); S.empresas.push(x); S.sel = x.id; save(); buildStock(); renderStock(); const nm = document.querySelector('#p-stock [data-so="e:nome"]'); if (nm) { nm.focus(); nm.select(); } return; }
+  if (d.sodelemp) { if (!confirmar(`Remover a empresa "${e.nome}" e as concessões dela?`)) return; S.empresas = S.empresas.filter(x => x.id !== e.id); S.sel = ''; planCache = null; save(); buildStock(); renderStock(); return; }
+  if (d.soadd === 'g') { const ult = e.grants[e.grants.length - 1]; e.grants.push({ id: soId('g'), data: mKey(HOJE_IDX), tipo: ult ? ult.tipo : 'opcao', qtd: null, strike: null, anos: ult ? ult.anos : 4, cliff: ult ? ult.cliff : 12, freq: ult ? ult.freq : 'mensal', acel: ult ? ult.acel : 'nenhuma', exerc: 0, expira: ult ? ult.expira : 10 }); }
+  else if (d.soadd === 'p') e.prefs.push({ id: soId('p'), nome: SO_EST_N[e.estagio] || 'Rodada', inv: null, pct: null, mult: 1, part: false });
+  else if (d.soadd === 'r') { const ult = e.rodadas[e.rodadas.length - 1]; e.rodadas.push({ id: soId('r'), nome: 'Rodada', mes: mKey((ult && soMes(ult.mes) || HOJE_IDX) + 24), dil: 15, pool: 3, post: null }); }
+  else if (d.sorm) { const [sc, id] = d.sorm.split(':'), kk = { g: 'grants', p: 'prefs', r: 'rodadas' }[sc]; e[kk] = e[kk].filter(x => x.id !== id); }
+  else if (d.socarta) {
+    if (e.rodadas.length && !confirmar('Trocar as rodadas futuras pelas medianas da Carta?')) return;
+    const ini = SO_EST.indexOf(e.estagio); let post = (+e.preco || 0) * (+e.fd || 0), m = HOJE_IDX + 18; e.rodadas = [];
+    SO_EST.slice(Math.max(1, ini + 1)).forEach(st => { const c = SO_CARTA[st]; post = post > 0 ? Math.round(post * c.up / 1e5) * 1e5 : null; e.rodadas.push({ id: soId('r'), nome: SO_EST_N[st], mes: mKey(m), dil: c.dil, pool: c.pool, post }); m += 24; });
+  }
+  planCache = null; save(); buildStock(); renderStock();
+});
+
 /* ---------- 00 Leia-me: resumo de cada módulo e atalhos ---------- */
 const LM_MODS = [
   ['global', 'A foto geral. No topo, câmbio e bolsas do mundo; depois os números principais, o plano contra os seus checkpoints reais e a projeção de cada cenário, mês a mês e ano a ano.', 'toda semana, para ver se está no caminho.'],
@@ -5791,6 +6193,7 @@ const LM_MODS = [
   ['orcamento', 'O plano de referência: renda, custos por categoria, reajustes, rendimento, IPCA, mudanças programadas e eventos. Daqui saem a linha Plano da Visão global e o projetado do fechamento.', 'quando a renda ou os custos mudam.'],
   ['cenarios', 'Onde você testa futuros diferentes. Cada cenário tem a sua carteira, ajustes de CDI e IPCA, renda extra e escolhe quais bens do 03 entram. Mostra patrimônio, sobra mensal e rebalanceamento.', 'antes de uma compra grande ou para comparar caminhos.'],
   ['pjpf', 'Converte faturamento PJ em dinheiro no bolso, ou o contrário: DAS, contabilidade, pró-labore, melhor regime e comparação com CLT, nas regras de 2026.', 'ao negociar um contrato PJ ou comparar com uma proposta CLT.'],
+  ['stock', 'Simula stock options, phantom shares e RSUs de uma ou mais empresas: vesting com cliff, quanto vale hoje e num evento de liquidez, preferências dos investidores, diluição das próximas rodadas, imposto e o que você perde se sair.', 'quando receber uma concessão, negociar uma proposta ou pensar em sair.'],
   ['familia', 'Soma os perfis das pessoas com quem você compartilhou o painel, com a parte de cada uma em ganhos, gastos e patrimônio. Só você vê.', 'para olhar a família como um todo.'],
   ['config', 'As premissas: renda e projeção, a curva de juros (Focus, atualizada toda segunda) e o retorno esperado de cada classe de ativo.', 'raramente; só para ajustar uma premissa.']
 ];
