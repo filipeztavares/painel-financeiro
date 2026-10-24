@@ -68,6 +68,7 @@ h1, h2, h3 { font-family: var(--f-head); }
 .nav-sec { margin: 10px 0 4px; }
 .nav-sec-h { display: flex; align-items: center; width: 100%; padding: 6px 10px 4px; border: 0; background: none; cursor: pointer; font-family: var(--f-ui); font-size: 9.5px; font-weight: 600; letter-spacing: .9px; text-transform: uppercase; color: rgba(255,255,255,.5); border-radius: 6px; }
 .nav-sec-h:hover { color: rgba(255,255,255,.85); }
+.nav-sec-h { border-bottom: 1.5px solid rgba(255,255,255,.55); border-radius: 0; margin-bottom: 6px; padding-bottom: 6px; }
 .nav-sec-h .caret { margin-left: auto; font-size: 9px; transition: transform .15s; }
 .nav-sec.fechada .nav-sec-h .caret { transform: rotate(-90deg); }
 .nav-sec.fechada .nav-sec-b { display: none; }
@@ -693,7 +694,7 @@ a.lm-ir:hover { border-bottom-style: solid; }
     </div>
     <div class="nav-mobile-sub" id="navMobileSub"></div>
   </div>
-  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 135</div></div>
+  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 136</div></div>
 </nav>
 
 <div class="main"><div class="wrap">
@@ -1519,7 +1520,7 @@ a.lm-ir:hover { border-bottom-style: solid; }
     return new Promise(resolve => { const { data } = sb.auth.onAuthStateChange(async (ev) => { if (ev !== 'PASSWORD_RECOVERY') return; const s = prompt('Digite a nova senha (mínimo 8 caracteres):'); if (s && s.length >= 8) { const { error } = await sb.auth.updateUser({ password: s }); alert(error ? 'Não deu para trocar a senha: ' + error.message : 'Senha trocada.'); } }); resolve(data); });
   }
   // ---------- rodapé: compartilhar, administração e sair ----------
-  const SITE_V = 14;
+  const SITE_V = 15;
   const escH = v => String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const dataBR = v => v ? new Date(v).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' }) : '–';
   const css2 = `.side-foot .r{flex-wrap:wrap}.side-foot .lg-acoes{margin-left:auto;display:inline-flex;gap:10px}
