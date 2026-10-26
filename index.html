@@ -70,6 +70,8 @@ h1, h2, h3 { font-family: var(--f-head); }
 .sino-f b { display: block; margin-bottom: 4px; font-size: 11px; text-transform: uppercase; letter-spacing: .5px; color: var(--muted); }
 .sino-f div { display: flex; justify-content: space-between; gap: 10px; padding: 2px 0; }
 .sino-f .neg { color: var(--bad); font-weight: 600; }
+.sino-f small { display: block; font-size: 11px; color: var(--muted); }
+.sino-f .sino-nota { margin: 6px 0 0; font-size: 11px; color: var(--muted); }
 .side-logo span { font-size: 9.5px; opacity: .62; letter-spacing: .5px; text-transform: uppercase; }
 .nav { flex: 1; overflow-y: auto; padding: 12px 10px; scrollbar-width: thin; scrollbar-color: rgba(255,255,255,.25) transparent; }
 .nav-group { margin-bottom: 4px; }
@@ -758,7 +760,7 @@ a.lm-ir:hover { border-bottom-style: solid; }
     </div>
     <div class="nav-mobile-sub" id="navMobileSub"></div>
   </div>
-  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 165</div></div>
+  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 166</div></div>
 </nav>
 <div class="sino-pop" id="sino-pop" role="dialog" aria-label="Central de avisos" hidden></div>
 
@@ -1719,7 +1721,7 @@ a.lm-ir:hover { border-bottom-style: solid; }
     return new Promise(resolve => { const { data } = sb.auth.onAuthStateChange(async (ev) => { if (ev !== 'PASSWORD_RECOVERY') return; const s = prompt('Digite a nova senha (mínimo 8 caracteres):'); if (s && s.length >= 8) { const { error } = await sb.auth.updateUser({ password: s }); alert(error ? 'Não deu para trocar a senha: ' + error.message : 'Senha trocada.'); } }); resolve(data); });
   }
   // ---------- rodapé: compartilhar, administração e sair ----------
-  const SITE_V = 44;
+  const SITE_V = 45;
   const escH = v => String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const dataBR = v => v ? new Date(v).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' }) : '–';
   const css2 = `.side-foot .r{flex-wrap:wrap}.side-foot .lg-acoes{margin-left:auto;display:inline-flex;gap:10px}
@@ -6294,11 +6296,11 @@ const avMax = l => (l || []).reduce((m, x) => x.d1 > m ? x.d1 : m, '');
 // fontes que o painel lê: data da informação mais recente e o limite de dias antes de avisar
 function avFontes() {
   const f = [];
-  if (mundoDb) f.push({ id: 'mundo', nome: 'Câmbio e bolsas do mundo', d: avMax(mundoDb.itens), lim: 4, freq: 'diária' });
-  if (acoes6m && acoes6m.itens) f.push({ id: 'b3', nome: 'Ações da B3', d: avMax(acoes6m.itens), lim: 10, freq: 'semanal' });
-  if (globalA6 && globalA6.itens && globalA6.itens.length) f.push({ id: 'global', nome: 'Internacionais, ETFs, FIIs e fundos', d: avMax(globalA6.itens), lim: 10, freq: 'semanal' });
-  if (minhasDb && minhasDb.itens) f.push({ id: 'minhas', nome: 'Minhas ações', d: avMax(minhasDb.itens), lim: 4, freq: 'diária' });
-  if (focus && focus.data) f.push({ id: 'focus', nome: 'Boletim Focus', d: focus.data, lim: 9, freq: 'semanal' });
+  if (mundoDb) f.push({ id: 'mundo', nome: 'Câmbio e bolsas do mundo', d: avMax(mundoDb.itens), lim: 4, freq: 'diária', qdo: 'dias úteis às 18:37' });
+  if (acoes6m && acoes6m.itens) f.push({ id: 'b3', nome: 'Ações da B3', d: avMax(acoes6m.itens), lim: 10, freq: 'semanal', qdo: 'segundas às 9:23' });
+  if (globalA6 && globalA6.itens && globalA6.itens.length) f.push({ id: 'global', nome: 'Internacionais, ETFs, FIIs e fundos', d: avMax(globalA6.itens), lim: 10, freq: 'semanal', qdo: 'segundas às 9:41' });
+  if (minhasDb && minhasDb.itens) f.push({ id: 'minhas', nome: 'Minhas ações', d: avMax(minhasDb.itens), lim: 4, freq: 'diária', qdo: 'dias úteis às 18:43' });
+  if (focus && focus.data) f.push({ id: 'focus', nome: 'Boletim Focus', d: focus.data, lim: 9, freq: 'semanal', qdo: 'segundas às 8:49 (o boletim sai de manhã)' });
   return f;
 }
 function avisosAuto() {
@@ -6323,7 +6325,7 @@ function renderSino() {
   const hora = q => /T\d{2}:\d{2}/.test(q) ? new Date(q).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' }) : avBr(q);
   pop.innerHTML = `<div class="sino-h"><b>Avisos</b>${todos.length ? '<button type="button" class="btn ghost tiny" id="sino-lidos">Marcar como lidos</button>' : ''}<button type="button" class="sino-x" id="sino-x" aria-label="Fechar">×</button></div>
     <div class="sino-l">${todos.map(x => `<div class="sino-i${lid.includes(x.id) ? ' lido' : ''}"><div class="t"><span class="chip ${NV[x.nivel][0]}">${NV[x.nivel][1]}</span><b>${esc(x.fonte || 'Rotina')}</b><span class="q">${x.auto ? 'verificação do painel' : esc(hora(x.quando))}</span></div><p>${esc(x.msg)}</p></div>`).join('') || '<p class="sino-vazio">Tudo certo: nenhuma fonte de dados com problema.</p>'}</div>
-    <div class="sino-f"><b>Fontes</b>${avFontes().map(f => { const n = avDias(f.d); return `<div><span>${esc(f.nome)}</span><span class="${n != null && n > f.lim ? 'neg' : ''}">${f.d ? avBr(f.d) : '—'}</span></div>`; }).join('')}</div>`;
+    <div class="sino-f"><b>Fontes · dado mais recente</b>${avFontes().map(f => { const n = avDias(f.d); return `<div><span>${esc(f.nome)}<small>Atualiza ${esc(f.qdo || f.freq)}</small></span><span class="${n != null && n > f.lim ? 'neg' : ''}">${f.d ? avBr(f.d) : '—'}</span></div>`; }).join('')}<p class="sino-nota">Horário de Brasília. ${window.__SITE ? 'No site, os dados chegam na cópia seguinte, às 14:07 ou 19:07 dos dias úteis.' : ''}</p></div>`;
 }
 const sinoLater = () => { clearTimeout(sinoT); sinoT = setTimeout(renderSino, 300); };
 function sinoAbre(abrir) {
