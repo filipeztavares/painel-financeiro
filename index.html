@@ -760,7 +760,7 @@ a.lm-ir:hover { border-bottom-style: solid; }
     </div>
     <div class="nav-mobile-sub" id="navMobileSub"></div>
   </div>
-  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 166</div></div>
+  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 167</div></div>
 </nav>
 <div class="sino-pop" id="sino-pop" role="dialog" aria-label="Central de avisos" hidden></div>
 
@@ -1721,7 +1721,7 @@ a.lm-ir:hover { border-bottom-style: solid; }
     return new Promise(resolve => { const { data } = sb.auth.onAuthStateChange(async (ev) => { if (ev !== 'PASSWORD_RECOVERY') return; const s = prompt('Digite a nova senha (mínimo 8 caracteres):'); if (s && s.length >= 8) { const { error } = await sb.auth.updateUser({ password: s }); alert(error ? 'Não deu para trocar a senha: ' + error.message : 'Senha trocada.'); } }); resolve(data); });
   }
   // ---------- rodapé: compartilhar, administração e sair ----------
-  const SITE_V = 45;
+  const SITE_V = 46;
   const escH = v => String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const dataBR = v => v ? new Date(v).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' }) : '–';
   const css2 = `.side-foot .r{flex-wrap:wrap}.side-foot .lg-acoes{margin-left:auto;display:inline-flex;gap:10px}
@@ -6300,7 +6300,7 @@ function avFontes() {
   if (acoes6m && acoes6m.itens) f.push({ id: 'b3', nome: 'Ações da B3', d: avMax(acoes6m.itens), lim: 10, freq: 'semanal', qdo: 'segundas às 9:23' });
   if (globalA6 && globalA6.itens && globalA6.itens.length) f.push({ id: 'global', nome: 'Internacionais, ETFs, FIIs e fundos', d: avMax(globalA6.itens), lim: 10, freq: 'semanal', qdo: 'segundas às 9:41' });
   if (minhasDb && minhasDb.itens) f.push({ id: 'minhas', nome: 'Minhas ações', d: avMax(minhasDb.itens), lim: 4, freq: 'diária', qdo: 'dias úteis às 18:43' });
-  if (focus && focus.data) f.push({ id: 'focus', nome: 'Boletim Focus', d: focus.data, lim: 9, freq: 'semanal', qdo: 'segundas às 8:49 (o boletim sai de manhã)' });
+  if (focus && focus.data) f.push({ id: 'focus', nome: 'Boletim Focus', d: focus.data, lim: 9, freq: 'semanal', qdo: 'segundas às 17:03' });
   return f;
 }
 function avisosAuto() {
