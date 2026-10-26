@@ -71,6 +71,15 @@ h1, h2, h3 { font-family: var(--f-head); }
 .sino-f div { display: flex; justify-content: space-between; gap: 10px; padding: 2px 0; }
 .sino-f .neg { color: var(--bad); font-weight: 600; }
 .sino-f small { display: block; font-size: 11px; color: var(--muted); }
+.sino-f em { display: block; font-style: normal; font-size: 11px; color: var(--muted); }
+.sino-f em.neg { color: var(--bad); }
+.rod-on { color: var(--accent) !important; font-weight: 600; }
+.rod-on i, .sino-rod i { display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: var(--accent); margin-right: 5px; vertical-align: 1px; animation: rodPulse 1.2s ease-in-out infinite; }
+.sino-rod { display: flex; gap: 8px; align-items: baseline; padding: 10px 14px; border-bottom: 1px solid var(--line); font-size: 12.5px; line-height: 1.5; background: color-mix(in srgb, var(--accent) 8%, transparent); }
+.sino-rod b { display: block; }
+.sino.rodando::after { content: ''; position: absolute; bottom: -3px; right: -3px; width: 9px; height: 9px; border-radius: 50%; background: var(--accent); border: 2px solid var(--band, #0F1F3D); animation: rodPulse 1.2s ease-in-out infinite; }
+@keyframes rodPulse { 50% { opacity: .35; } }
+@media (prefers-reduced-motion: reduce) { .rod-on i, .sino-rod i, .sino.rodando::after { animation: none; } }
 .sino-f .sino-nota { margin: 6px 0 0; font-size: 11px; color: var(--muted); }
 .side-logo span { font-size: 9.5px; opacity: .62; letter-spacing: .5px; text-transform: uppercase; }
 .nav { flex: 1; overflow-y: auto; padding: 12px 10px; scrollbar-width: thin; scrollbar-color: rgba(255,255,255,.25) transparent; }
@@ -760,7 +769,7 @@ a.lm-ir:hover { border-bottom-style: solid; }
     </div>
     <div class="nav-mobile-sub" id="navMobileSub"></div>
   </div>
-  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 167</div></div>
+  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 168</div></div>
 </nav>
 <div class="sino-pop" id="sino-pop" role="dialog" aria-label="Central de avisos" hidden></div>
 
@@ -1721,7 +1730,7 @@ a.lm-ir:hover { border-bottom-style: solid; }
     return new Promise(resolve => { const { data } = sb.auth.onAuthStateChange(async (ev) => { if (ev !== 'PASSWORD_RECOVERY') return; const s = prompt('Digite a nova senha (mínimo 8 caracteres):'); if (s && s.length >= 8) { const { error } = await sb.auth.updateUser({ password: s }); alert(error ? 'Não deu para trocar a senha: ' + error.message : 'Senha trocada.'); } }); resolve(data); });
   }
   // ---------- rodapé: compartilhar, administração e sair ----------
-  const SITE_V = 46;
+  const SITE_V = 47;
   const escH = v => String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const dataBR = v => v ? new Date(v).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' }) : '–';
   const css2 = `.side-foot .r{flex-wrap:wrap}.side-foot .lg-acoes{margin-left:auto;display:inline-flex;gap:10px}
@@ -6285,7 +6294,19 @@ document.addEventListener('click', ev => {
 });
 
 /* ---------- avisos: central de notificações do dono (fontes de dados com problema) ---------- */
-let avisosDb = [], sinoT = null;
+let avisosDb = [], sinoT = null, rodandoDb = {};
+// privado/rodando: cada rotina grava {inicio, fim, status rodando|ok|erro} ao começar e ao terminar
+const ROTINAS = { mundo: 'Câmbio e bolsas do mundo', minhas: 'Minhas ações', b3: 'Ações da B3', global: 'Internacionais, ETFs, FIIs e fundos', focus: 'Boletim Focus', casas: 'Projeção das casas', pesquisa: 'Pesquisa de ações', quedas: 'Explicação das quedas', copia: 'Cópia para o site' };
+function sanitizeRodando(d) {
+  const it = d && d.itens && typeof d.itens === 'object' ? d.itens : {}, out = {}, iso = v => /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}/.test(String(v || '')) ? String(v).slice(0, 30) : '';
+  Object.keys(ROTINAS).forEach(k => { const x = it[k]; if (!x || typeof x !== 'object') return; out[k] = { inicio: iso(x.inicio), fim: iso(x.fim), status: ['rodando', 'ok', 'erro'].includes(x.status) ? x.status : '' }; });
+  return out;
+}
+const rodHora = q => { const t = Date.parse(q); if (!isFinite(t)) return ''; const d = new Date(t), hj = new Date(); const h = d.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' }); return d.toDateString() === hj.toDateString() ? 'hoje ' + h : d.toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit' }) + ' ' + h; };
+// rodando de verdade só até 3 horas depois do início; depois disso a rodada provavelmente caiu
+function rodEstado(k) { const x = rodandoDb[k]; if (!x) return null; const ini = Date.parse(x.inicio); const vivo = x.status === 'rodando' && isFinite(ini) && Date.now() - ini < 3 * 3600e3; return Object.assign({ vivo, caiu: x.status === 'rodando' && !vivo }, x); }
+const rodAgora = () => Object.keys(ROTINAS).filter(k => { const e = rodEstado(k); return e && e.vivo; });
+function rodTxt(k) { const e = rodEstado(k); if (!e) return ''; if (e.vivo) return `<em class="rod-on"><i></i>Atualizando agora, desde ${esc(rodHora(e.inicio))}</em>`; if (e.caiu) return `<em class="neg">Começou ${esc(rodHora(e.inicio))} e não terminou</em>`; return e.fim ? `<em>Última rodada ${esc(rodHora(e.fim))}${e.status === 'erro' ? ' · com erro' : ''}</em>` : ''; }
 function sanitizeAvisos(d) {
   const it = d && Array.isArray(d.itens) ? d.itens : [];
   return it.slice(-80).map(x => ({ id: String((x && x.id) || '').slice(0, 80), quando: String(x.quando || '').slice(0, 25), fonte: String(x.fonte || '').slice(0, 60), msg: String(x.msg || '').slice(0, 500), nivel: ['erro', 'aviso', 'ok'].includes(x.nivel) ? x.nivel : 'aviso', resolvido: !!x.resolvido })).filter(x => x.id && x.msg);
@@ -6300,6 +6321,7 @@ function avFontes() {
   if (acoes6m && acoes6m.itens) f.push({ id: 'b3', nome: 'Ações da B3', d: avMax(acoes6m.itens), lim: 10, freq: 'semanal', qdo: 'segundas às 9:23' });
   if (globalA6 && globalA6.itens && globalA6.itens.length) f.push({ id: 'global', nome: 'Internacionais, ETFs, FIIs e fundos', d: avMax(globalA6.itens), lim: 10, freq: 'semanal', qdo: 'segundas às 9:41' });
   if (minhasDb && minhasDb.itens) f.push({ id: 'minhas', nome: 'Minhas ações', d: avMax(minhasDb.itens), lim: 4, freq: 'diária', qdo: 'dias úteis às 18:43' });
+  if (casasDb && casasDb.data) f.push({ id: 'casas', nome: 'Projeção das casas', d: casasDb.data, lim: 4, freq: 'diária', qdo: 'dias úteis às 10:47' });
   if (focus && focus.data) f.push({ id: 'focus', nome: 'Boletim Focus', d: focus.data, lim: 9, freq: 'semanal', qdo: 'segundas às 17:03' });
   return f;
 }
@@ -6317,17 +6339,20 @@ function avTodos() {
 }
 function renderSino() {
   const bt = $('sino'); if (!bt || !souDono) return;
-  const lid = avLidos(), todos = avTodos(), novos = todos.filter(x => x.nivel !== 'ok' && !lid.includes(x.id)).length;
+  const lid = avLidos(), todos = avTodos(), novos = todos.filter(x => x.nivel !== 'ok' && !lid.includes(x.id)).length, ag = rodAgora();
+  bt.classList.toggle('rodando', ag.length > 0); bt.title = ag.length ? 'Atualizando agora: ' + ag.map(k => ROTINAS[k]).join(', ') : '';
   $('sino-n').hidden = !novos; $('sino-n').textContent = novos > 9 ? '9+' : novos;
-  bt.setAttribute('aria-label', novos ? `Avisos: ${novos} novo${novos > 1 ? 's' : ''}` : 'Avisos');
+  bt.setAttribute('aria-label', (novos ? `Avisos: ${novos} novo${novos > 1 ? 's' : ''}` : 'Avisos') + (ag.length ? ' · atualização em andamento' : ''));
   const pop = $('sino-pop'); if (pop.hidden) return;
   const NV = { erro: ['warn', 'Erro'], aviso: ['amber', 'Atenção'], ok: ['best', 'Resolvido'] };
   const hora = q => /T\d{2}:\d{2}/.test(q) ? new Date(q).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' }) : avBr(q);
   pop.innerHTML = `<div class="sino-h"><b>Avisos</b>${todos.length ? '<button type="button" class="btn ghost tiny" id="sino-lidos">Marcar como lidos</button>' : ''}<button type="button" class="sino-x" id="sino-x" aria-label="Fechar">×</button></div>
+    ${ag.length ? `<div class="sino-rod"><i></i><span><b>Atualizando agora</b>${ag.map(k => `${esc(ROTINAS[k])}, desde ${esc(rodHora(rodandoDb[k].inicio))}`).join('<br>')}</span></div>` : ''}
     <div class="sino-l">${todos.map(x => `<div class="sino-i${lid.includes(x.id) ? ' lido' : ''}"><div class="t"><span class="chip ${NV[x.nivel][0]}">${NV[x.nivel][1]}</span><b>${esc(x.fonte || 'Rotina')}</b><span class="q">${x.auto ? 'verificação do painel' : esc(hora(x.quando))}</span></div><p>${esc(x.msg)}</p></div>`).join('') || '<p class="sino-vazio">Tudo certo: nenhuma fonte de dados com problema.</p>'}</div>
-    <div class="sino-f"><b>Fontes · dado mais recente</b>${avFontes().map(f => { const n = avDias(f.d); return `<div><span>${esc(f.nome)}<small>Atualiza ${esc(f.qdo || f.freq)}</small></span><span class="${n != null && n > f.lim ? 'neg' : ''}">${f.d ? avBr(f.d) : '—'}</span></div>`; }).join('')}<p class="sino-nota">Horário de Brasília. ${window.__SITE ? 'No site, os dados chegam na cópia seguinte, às 14:07 ou 19:07 dos dias úteis.' : ''}</p></div>`;
+    <div class="sino-f"><b>Fontes · dado mais recente</b>${avFontes().map(f => { const n = avDias(f.d); return `<div><span>${esc(f.nome)}<small>Atualiza ${esc(f.qdo || f.freq)}</small>${rodTxt(f.id)}</span><span class="${n != null && n > f.lim ? 'neg' : ''}">${f.d ? avBr(f.d) : '—'}</span></div>`; }).join('')}<p class="sino-nota">Horário de Brasília. ${window.__SITE ? 'No site, os dados chegam na cópia seguinte, às 14:07 ou 19:07 dos dias úteis.' : ''}</p></div>`;
 }
 const sinoLater = () => { clearTimeout(sinoT); sinoT = setTimeout(renderSino, 300); };
+setInterval(() => { if (rodAgora().length || !$('sino-pop').hidden) sinoLater(); }, 60000);
 function sinoAbre(abrir) {
   const pop = $('sino-pop'), bt = $('sino'); pop.hidden = !abrir; bt.setAttribute('aria-expanded', String(abrir));
   if (abrir) { const r = bt.getBoundingClientRect(); pop.style.top = Math.round(r.bottom + 8) + 'px'; pop.style.left = Math.round(Math.max(8, Math.min(r.left, innerWidth - pop.offsetWidth - 8))) + 'px'; renderSino(); const r2 = bt.getBoundingClientRect(); pop.style.left = Math.round(Math.max(8, Math.min(r2.left, innerWidth - pop.offsetWidth - 8))) + 'px'; }
@@ -6553,6 +6578,7 @@ async function entrarPerfil() {
     try { const b = await db.doc('privado/base').get(); if (b.exists) { const x = clone(b.data()); aplicarBase(x); try { localStorage.setItem('painel-priv', JSON.stringify(x)); } catch (e) {} } } catch (e) {}
   }
   const quem = souDono ? 'dono' : meuId;
+  if (souDono) try { db.doc('privado/rodando').onSnapshot(d => { rodandoDb = sanitizeRodando(d && d.exists ? d.data() : null); sinoLater(); }, () => {}); } catch (e) {}
   if (souDono) try { db.doc('privado/avisos').onSnapshot(d => { avisosDb = sanitizeAvisos(d && d.exists ? d.data() : null); sinoLater(); }, () => {}); } catch (e) {}
   if (souDono) try { db.doc('privado/acoes').onSnapshot(d => { minhasDb = sanitizeMinhas(d && d.exists ? d.data() : null); sinoLater(); if (tab === 'global') renderMundo(); if (tab === 'inicio') renderHome(); }, () => {}); } catch (e) {}
   if (quem !== quemLocal) {
