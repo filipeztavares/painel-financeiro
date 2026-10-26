@@ -780,7 +780,7 @@ a.lm-ir:hover { border-bottom-style: solid; }
     </div>
     <div class="nav-mobile-sub" id="navMobileSub"></div>
   </div>
-  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 176</div></div>
+  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 177</div></div>
 </nav>
 <div class="sino-pop" id="sino-pop" role="dialog" aria-label="Central de avisos" hidden></div>
 
@@ -1648,14 +1648,16 @@ a.lm-ir:hover { border-bottom-style: solid; }
 <script>
 /* Painel fora do Claude: login com e-mail e senha (Supabase) e um banco com a mesma cara do db do artefato.
    Dados de cada pessoa: tabela docs (owner, path, data), só o dono lê e grava (RLS).
-   Dados de mercado (mercado/*): tabela shared, todos os logados leem; só as tarefas diárias gravam. */
+   Dados de mercado (mercado/*) e análises de ações (acoes/*): tabela shared, todos os logados leem; só as tarefas diárias gravam.
+   Pedido de análise ("+ Ação"): tabela pedidos, uma fila única para todos; a pesquisa diária analisa cada ação uma vez. */
 (function () {
   if (window.claude && window.claude.use) return;   // dentro do Claude, usa o db do artefato
   const SB_URL = 'https://dxblmslfsbknimwkzbga.supabase.co', SB_KEY = 'sb_publishable_TWtgoO-ihCoxjFrrwi7ohA_acLMM3Cg';
   const sb = window.supabase.createClient(SB_URL, SB_KEY, { auth: { persistSession: true, autoRefreshToken: true } });
   window.__SITE = true;
   const clone = v => v == null ? v : JSON.parse(JSON.stringify(v));
-  const tabela = path => /^mercado\//.test(path) ? 'shared' : 'docs';
+  const tabela = path => /^(mercado|acoes)\//.test(path) ? 'shared' : 'docs';
+  const TK_OK = /^[A-Z][A-Z0-9]{3}\d{1,2}B?$/;
   const segs = p => p.split('/').length;
   let uid = null;
   // ---------- tempo real: um canal por tabela, os ouvintes refazem a leitura do que acompanham ----------
@@ -1664,7 +1666,8 @@ a.lm-ir:hover { border-bottom-style: solid; }
   function ligarTempoReal() {
     if (canal) return;
     canal = sb.channel('painel').on('postgres_changes', { event: '*', schema: 'public', table: 'docs' }, p => avisar('docs', (p.new && p.new.path) || (p.old && p.old.path)))
-      .on('postgres_changes', { event: '*', schema: 'public', table: 'shared' }, p => avisar('shared', (p.new && p.new.path) || (p.old && p.old.path))).subscribe();
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'shared' }, p => avisar('shared', (p.new && p.new.path) || (p.old && p.old.path)))
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'pedidos' }, p => avisar('shared', 'acoes/' + ((p.new && p.new.tk) || (p.old && p.old.tk) || ''))).subscribe();
   }
   function avisar(tab, path) { ouvintes.forEach(o => { if (o.tab !== tab) return; if (!path || o.casa(path)) o.ler(); }); }
   const snapDoc = (row) => ({ exists: !!row, id: row ? row.path.split('/').pop() : null, data: () => row ? clone(row.data) : undefined });
@@ -1682,9 +1685,19 @@ a.lm-ir:hover { border-bottom-style: solid; }
     let q = sb.from(t).select('path,data').like('path', cc.replace(/[%_]/g, '\\$&') + '/%');
     if (t === 'docs') q = q.eq('owner', a ? a.owner : uid);
     const { data, error } = await q; if (error) throw error;
-    return (data || []).filter(r => segs(r.path) === segs(cc) + 1);
+    const rs = (data || []).filter(r => segs(r.path) === segs(cc) + 1);
+    // ações pedidas no site que a pesquisa ainda não analisou aparecem como pendentes
+    if (c === 'acoes') try { const { data: ps } = await sb.from('pedidos').select('tk,pedido_em'); (ps || []).forEach(p => { if (TK_OK.test(p.tk) && !rs.some(r => r.path === 'acoes/' + p.tk)) rs.push({ path: 'acoes/' + p.tk, data: { tk: p.tk, status: 'pendente', pedidoEm: p.pedido_em, origem: 'site' } }); }); } catch (e) {}
+    return rs;
   }
   async function gravar(path, d) {
+    const pa = /^acoes\/([A-Z0-9]+)$/.exec(path);
+    if (pa && d && d.status === 'pendente') {   // "+ Ação": entra na fila única de pedidos
+      if (!TK_OK.test(pa[1])) throw { code: 'invalid', message: 'código inválido' };
+      const { error } = await sb.from('pedidos').insert({ tk: pa[1] });
+      if (error && error.code !== '23505') throw { code: error.code === 'P0001' ? 'limite' : 'erro', message: error.message };
+      avisar('shared', path); return;
+    }
     if (tabela(path) !== 'docs' || alheio(path)) throw { code: 'permission_denied', message: 'só leitura' };
     const { error } = await sb.from('docs').upsert({ owner: uid, path, data: d }, { onConflict: 'owner,path' }); if (error) throw error;
     avisar('docs', path);
@@ -1741,7 +1754,7 @@ a.lm-ir:hover { border-bottom-style: solid; }
     return new Promise(resolve => { const { data } = sb.auth.onAuthStateChange(async (ev) => { if (ev !== 'PASSWORD_RECOVERY') return; const s = prompt('Digite a nova senha (mínimo 8 caracteres):'); if (s && s.length >= 8) { const { error } = await sb.auth.updateUser({ password: s }); alert(error ? 'Não deu para trocar a senha: ' + error.message : 'Senha trocada.'); } }); resolve(data); });
   }
   // ---------- rodapé: compartilhar, administração e sair ----------
-  const SITE_V = 55;
+  const SITE_V = 56;
   const escH = v => String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const dataBR = v => v ? new Date(v).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' }) : '–';
   const css2 = `.side-foot .r{flex-wrap:wrap}.side-foot .lg-acoes{margin-left:auto;display:inline-flex;gap:10px}
@@ -3648,6 +3661,7 @@ async function pedirAcao(raw) {
   try {
     await db.doc('acoes/' + tk).set({ tk, status: 'pendente', pedidoEm: new Date().toISOString() });
     $('acao-tk').value = '';
+    if (window.__SITE) { msg(`${tk} pedida. A pesquisa analisa cada ação uma vez, todo dia às 12:17, e a análise aparece aqui para todos a partir da cópia das 14:07.`); return; }
     if (!sampleFn) { msg(`${tk} pedida. A análise chega na próxima rodada da pesquisa.`); return; }
     msg(`Gerando prévia de ${tk}…`);
     const r = await previaAcao(tk);
@@ -3656,6 +3670,7 @@ async function pedirAcao(raw) {
     await db.doc('acoes/' + tk).update({ status: 'previa', data: hojeISO(), nome: TXT(r.nome, 60), papel: TXT(r.papel, 40), tese: TXT(r.tese, 500), risco: TXT(r.risco, 400), ret, retTxt: TXT(r.retTxt, 200) });
     msg(`Prévia de ${tk} pronta. Clique em "Pesquisar agora" para a análise com dados atuais, ou ela sai amanhã ao meio-dia.`);
   } catch (e) {
+    if (window.__SITE) { msg(e && e.code === 'limite' ? 'Você já tem 5 ações na fila. Espere a próxima pesquisa, às 12:17.' : `Não consegui pedir ${tk} agora. Tente de novo em instantes.`); return; }
     msg(e && e.code === 'not_granted' ? `${tk} pedida. Sem permissão para a prévia; a análise chega na próxima rodada da pesquisa.` : e && e.code === 'rate_limited' ? `${tk} pedida. Muitas análises seguidas; a prévia fica para a pesquisa.` : `${tk} pedida. A prévia não saiu agora; a pesquisa completa o cartão.`);
   } finally { $('acao-go').disabled = false; }
 }
