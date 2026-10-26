@@ -67,6 +67,10 @@ h1, h2, h3 { font-family: var(--f-head); }
 .sino-i p { margin: 5px 0 0; font-size: 12.5px; line-height: 1.45; }
 .sino-vazio { margin: 0; padding: 14px; font-size: 13px; color: var(--muted); }
 .sino-f { padding: 10px 14px 12px; font-size: 12px; }
+.sino-atu { display: flex; align-items: center; gap: 10px; padding: 10px 14px; border-bottom: 1px solid var(--line); font-size: 12px; }
+.sino-atu small { flex: 1; color: var(--muted); line-height: 1.35; }
+.sino-atu small b { color: var(--ink); }
+.sino-atu .btn { flex-shrink: 0; }
 .sino-f b { display: block; margin-bottom: 4px; font-size: 11px; text-transform: uppercase; letter-spacing: .5px; color: var(--muted); }
 .sino-f div { display: flex; justify-content: space-between; gap: 10px; padding: 2px 0; }
 .sino-f .neg { color: var(--bad); font-weight: 600; }
@@ -776,7 +780,7 @@ a.lm-ir:hover { border-bottom-style: solid; }
     </div>
     <div class="nav-mobile-sub" id="navMobileSub"></div>
   </div>
-  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 172</div></div>
+  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 173</div></div>
 </nav>
 <div class="sino-pop" id="sino-pop" role="dialog" aria-label="Central de avisos" hidden></div>
 
@@ -1737,7 +1741,7 @@ a.lm-ir:hover { border-bottom-style: solid; }
     return new Promise(resolve => { const { data } = sb.auth.onAuthStateChange(async (ev) => { if (ev !== 'PASSWORD_RECOVERY') return; const s = prompt('Digite a nova senha (mínimo 8 caracteres):'); if (s && s.length >= 8) { const { error } = await sb.auth.updateUser({ password: s }); alert(error ? 'Não deu para trocar a senha: ' + error.message : 'Senha trocada.'); } }); resolve(data); });
   }
   // ---------- rodapé: compartilhar, administração e sair ----------
-  const SITE_V = 51;
+  const SITE_V = 52;
   const escH = v => String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const dataBR = v => v ? new Date(v).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' }) : '–';
   const css2 = `.side-foot .r{flex-wrap:wrap}.side-foot .lg-acoes{margin-left:auto;display:inline-flex;gap:10px}
@@ -1859,6 +1863,7 @@ a.lm-ir:hover { border-bottom-style: solid; }
     try { sb.rpc('registrar_acesso').then(() => {}, () => {}); } catch (e) {}
     try { const { data: eu } = await sb.from('perfis').select('ativo').eq('id', uid).maybeSingle(); if (eu && eu.ativo === false) { contaDesativada(); await new Promise(() => {}); } } catch (e) {}
     try { const r = await sb.rpc('sou_admin'); souAdmin = r && r.data === true; } catch (e) {}
+    window.__SITE_ADMIN = souAdmin;
     try { await lerCompart(); } catch (e) {}
     mostrarFamilia();
     const pe = document.querySelector('.side-foot .r');
@@ -4161,7 +4166,7 @@ $('acoes6m').addEventListener('click', e => {
 });
 $('acoes6m').addEventListener('change', e => { if (!e.target.matches || !e.target.matches('[data-a6cdi]')) return; a6Cdi = e.target.checked; try { localStorage.setItem('a6cdi', a6Cdi ? '1' : '0'); } catch (err) {} renderA6(); });
 // dispara na hora a tarefa agendada que pesquisa na web (conector Claude Code Remote, fire_trigger)
-const TRIG_ACOES = 'trig_01X58Eg1B2PYsMrspd99HTJZ', CCR = 'Claude Code Remote';
+const TRIG_ACOES = 'trig_013jy8Z45HHGDvumYyeFQdpP', CCR = 'Claude Code Remote';
 let acaoDisparo = 0;
 function acaoNowVis() { const pend = Object.values(acoesDb).some(x => x.status === 'pendente' || x.status === 'previa'); $('acao-now').hidden = !pend || !mcp || !souDono; }
 async function pesquisarAgora() {
@@ -6383,17 +6388,52 @@ function renderSino() {
   bt.classList.toggle('rodando', ag.length > 0); bt.title = ag.length ? 'Atualizando agora: ' + ag.map(k => ROTINAS[k]).join(', ') : '';
   $('sino-n').hidden = !novos; $('sino-n').textContent = novos > 9 ? '9+' : novos;
   bt.setAttribute('aria-label', (novos ? `Avisos: ${novos} novo${novos > 1 ? 's' : ''}` : 'Avisos') + (ag.length ? ' · atualização em andamento' : ''));
+  const atu = atuEstado(); if (atu) bt.classList.add('rodando');
   const pop = $('sino-pop'); if (pop.hidden) return;
   const NV = { erro: ['warn', 'Erro'], aviso: ['amber', 'Atenção'], ok: ['best', 'Resolvido'] };
   const hora = q => /T\d{2}:\d{2}/.test(q) ? new Date(q).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' }) : avBr(q);
   pop.innerHTML = `<div class="sino-h"><b>Avisos</b>${todos.some(x => !lid.includes(x.id)) ? '<button type="button" class="btn ghost tiny" id="sino-lidos">Marcar como lidos</button>' : ''}${todos.some(x => lid.includes(x.id)) ? '<button type="button" class="btn ghost tiny" id="sino-apagar">Apagar lidos</button>' : ''}<button type="button" class="sino-x" id="sino-x" aria-label="Fechar">×</button></div>
-    ${ag.length ? `<div class="sino-rod"><i></i><span><b>Atualizando agora</b>${ag.map(k => `${esc(ROTINAS[k])}, desde ${esc(rodHora(rodandoDb[k].inicio))}`).join('<br>')}</span></div>` : ''}
+    ${atuHtml()}${ag.length ? `<div class="sino-rod"><i></i><span><b>Atualizando agora</b>${ag.map(k => `${esc(ROTINAS[k])}, desde ${esc(rodHora(rodandoDb[k].inicio))}`).join('<br>')}</span></div>` : ''}
     <div class="sino-l">${todos.map(x => `<div class="sino-i${lid.includes(x.id) ? ' lido' : ''}"><div class="t"><span class="chip ${NV[x.nivel][0]}">${NV[x.nivel][1]}</span><b>${esc(x.fonte || 'Rotina')}</b><span class="q">${x.auto ? 'verificação do painel' : esc(hora(x.quando))}</span></div><p>${esc(x.msg)}</p></div>`).join('') || (() => { const ap = avTodos0().filter(x => avApagados().includes(x.id)).length; return ap ? `<p class="sino-vazio">Nenhum aviso novo. Você apagou ${ap} aviso${ap > 1 ? 's' : ''} já lido${ap > 1 ? 's' : ''}. <button type="button" class="btn ghost tiny" id="sino-voltar">Mostrar de novo</button></p>` : '<p class="sino-vazio">Tudo certo: nenhuma fonte de dados com problema.</p>'; })()}</div>
     <div class="sino-f"><b>Fontes · última atualização</b>${avFontes().map(f => { const n = avDias(f.d); const r = rodRes(f.id), dd = `<span class="${n != null && n > f.lim ? 'neg' : ''}">${f.d ? avBr(f.d) : '—'}</span>`;
       return `<div><span>${esc(f.nome)}<small>Atualiza ${esc(f.qdo || f.freq)}</small></span><span class="sino-r">${r ? `<span class="${r.cls}">${r.cls === 'rod-on' ? '<i></i>' : ''}${esc(r.txt)}</span><small>${r.sub ? esc(r.sub) + ' · ' : ''}dado de ${dd}</small>` : `<small>dado de</small>${dd}`}</span></div>`; }).join('')}<p class="sino-nota">Horário de Brasília. ${window.__SITE ? 'No site, os dados chegam na cópia seguinte, às 14:07 ou 19:07 dos dias úteis.' : ''}</p></div>`;
 }
+// "Atualizar agora" (só o dono): dispara a rotina de preços (minhas, brapi) e, quando ela termina, a cópia para o site
+const TRIG_MINHAS = 'trig_01MRtinKFpF2sWnzRPogYZ1J', TRIG_COPIA = 'trig_01T4D2mcGaJTpJkr8ZGGiQyC', ART_URL = 'https://claude.ai/artifact/9sw23mALkCSuQsHpejAWxx';
+const ATU_TXT = { precos: 'Disparo manual pelo botão "Atualizar agora" do painel. Se o pregão da B3 ainda estiver aberto, use a barra de hoje da brapi como preço intradiário (p1/d1 de hoje, "fonte_p1":"brapi"); a rodada das 18:43 troca pelo fechamento.', site: 'Disparo manual pelo botão "Atualizar agora" do painel, logo depois da atualização dos preços.' };
+let atuMsg = '', atuIndo = false;
+function atuLe() { try { const a = JSON.parse(localStorage.getItem('painel-atualizar')); return a && (a.fase === 'precos' || a.fase === 'site') && a.t > 0 ? a : null; } catch (e) { return null; } }
+function atuGrava(a) { try { if (a) localStorage.setItem('painel-atualizar', JSON.stringify(a)); else localStorage.removeItem('painel-atualizar'); } catch (e) {} }
+const atuErro = e => { const c = e && e.code; return c === 'consent_required' || c === 'approval_required' || c === 'not_in_manifest' ? 'O painel precisa da sua permissão para iniciar a atualização. Clique de novo e permita quando o claude.ai perguntar.' : c === 'server_not_connected' || c === 'selection_required' ? 'O conector Claude Code Remote não está ligado para você. Ligue em claude.ai, Configurações > Conectores.' : 'Não consegui iniciar a atualização agora. Tente de novo em instantes.'; };
+async function atuDispara(fase) { await mcp.callTool(CCR, 'fire_trigger', { trigger_id: fase === 'precos' ? TRIG_MINHAS : TRIG_COPIA, text: ATU_TXT[fase] }); atuGrava({ fase, t: Date.now() }); }
+// acompanha a sequência pelo privado/rodando: a rodada conta se começou depois do clique e já terminou
+function atuEstado() {
+  const a = atuLe(); if (!a) return null;
+  const e = rodandoDb[a.fase === 'precos' ? 'minhas' : 'copia'], ini = e && Date.parse(e.inicio), fim = e && Date.parse(e.fim);
+  if (e && e.status !== 'rodando' && isFinite(ini) && isFinite(fim) && ini >= a.t - 60e3 && fim >= ini) {
+    if (a.fase === 'site') { atuGrava(null); atuMsg = e.status === 'erro' ? 'A cópia para o site terminou com erro; veja os avisos.' : 'Pronto: preços atualizados e copiados para o site.'; return null; }
+    if (mcp && !atuIndo) { atuIndo = true; atuDispara('site').then(() => { atuMsg = ''; }, er => { atuGrava(null); atuMsg = 'Os preços foram atualizados, mas a cópia para o site não começou. ' + atuErro(er); }).finally(() => { atuIndo = false; sinoLater(); }); }
+    return { fase: 'site', t: a.t };
+  }
+  if (Date.now() - a.t > 45 * 60e3) { atuGrava(null); atuMsg = 'A atualização não terminou em 45 minutos. Veja os avisos ou tente de novo.'; return null; }
+  return a;
+}
+async function atualizarAgora() {
+  if (atuEstado() || atuIndo) return;
+  if (!mcp) { atuMsg = 'O botão só funciona no painel do Claude, com o conector Claude Code Remote ligado.'; renderSino(); return; }
+  atuIndo = true; atuMsg = 'Iniciando…'; renderSino();
+  try { await atuDispara('precos'); atuMsg = ''; } catch (e) { atuMsg = atuErro(e); } finally { atuIndo = false; }
+  renderSino();
+}
+function atuHtml() {
+  if (window.__SITE) return window.__SITE_ADMIN ? `<div class="sino-atu"><small><b>Atualizar fora do horário</b><br>O site não dispara as rotinas. Abra o painel do Claude e use "Atualizar agora" no sino; os dados chegam aqui quando a cópia terminar.</small><a class="btn tiny" href="${ART_URL}" target="_blank" rel="noopener">Abrir o painel</a></div>` : '';
+  const a = atuEstado(), ini = a && new Date(a.t).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+  const txt = a ? `<b>${a.fase === 'precos' ? 'Atualizando os preços (brapi)' : 'Copiando para o site'}</b><br>Começou às ${ini}. ${a.fase === 'precos' ? 'Quando terminar, a cópia para o site começa sozinha.' : 'Falta pouco.'} Pode fechar o sino.`
+    : `<b>Atualizar fora do horário</b><br>${esc(atuMsg || 'Busca os preços na brapi e depois copia para o site. Leva uns 10 a 15 minutos.')}`;
+  return `<div class="sino-atu"><small>${txt}</small><button type="button" class="btn tiny" id="sino-atu"${a || atuIndo ? ' disabled' : ''}>${a ? 'Atualizando…' : 'Atualizar agora'}</button></div>`;
+}
 const sinoLater = () => { clearTimeout(sinoT); sinoT = setTimeout(renderSino, 300); };
-setInterval(() => { if (rodAgora().length || !$('sino-pop').hidden) sinoLater(); }, 60000);
+setInterval(() => { if (rodAgora().length || atuLe() || !$('sino-pop').hidden) sinoLater(); }, 60000);
 function sinoAbre(abrir) {
   const pop = $('sino-pop'), bt = $('sino'); pop.hidden = !abrir; bt.setAttribute('aria-expanded', String(abrir));
   if (abrir) { const r = bt.getBoundingClientRect(); pop.style.top = Math.round(r.bottom + 8) + 'px'; pop.style.left = Math.round(Math.max(8, Math.min(r.left, innerWidth - pop.offsetWidth - 8))) + 'px'; renderSino(); const r2 = bt.getBoundingClientRect(); pop.style.left = Math.round(Math.max(8, Math.min(r2.left, innerWidth - pop.offsetWidth - 8))) + 'px'; }
@@ -6401,6 +6441,7 @@ function sinoAbre(abrir) {
 document.addEventListener('click', e => {
   if (e.target.closest('#sino')) { sinoAbre($('sino-pop').hidden); return; }
   if (e.target.closest('#sino-x')) { sinoAbre(false); return; }
+  if (e.target.closest('#sino-atu')) { atualizarAgora(); return; }
   if (e.target.closest('#sino-voltar')) { try { localStorage.removeItem('painel-avisos-apagados'); } catch (er) {} renderSino(); return; }
   if (e.target.closest('#sino-apagar')) { const lid = avLidos(); try { localStorage.setItem('painel-avisos-apagados', JSON.stringify(avTodos().filter(x => lid.includes(x.id)).map(x => x.id).concat(avApagados()).slice(0, 300))); } catch (er) {} renderSino(); return; }
   if (e.target.closest('#sino-lidos')) { try { localStorage.setItem('painel-avisos-lidos', JSON.stringify(avTodos().map(x => x.id).concat(avLidos()).slice(0, 300))); } catch (er) {} renderSino(); return; }
