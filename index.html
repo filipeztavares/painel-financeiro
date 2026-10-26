@@ -57,7 +57,7 @@ h1, h2, h3 { font-family: var(--f-head); }
 .sino:hover, .sino[aria-expanded="true"] { background: rgba(255,255,255,.12); }
 .side-logo .sino .sino-n { position: absolute; top: -5px; right: -5px; min-width: 17px; height: 17px; padding: 0 4px; border-radius: 9px; background: var(--accent); color: #fff; font: 700 10px/17px var(--f-ui); letter-spacing: 0; text-transform: none; opacity: 1; text-align: center; }
 .sino-pop { position: fixed; z-index: 60; width: min(380px, calc(100vw - 16px)); max-height: min(560px, calc(100vh - 80px)); overflow: auto; background: var(--panel); color: var(--ink); border: 1px solid var(--line); border-radius: 12px; box-shadow: 0 12px 32px rgba(15,31,61,.22); }
-.sino-h { display: flex; align-items: center; gap: 8px; padding: 12px 14px; border-bottom: 1px solid var(--line); position: sticky; top: 0; background: var(--panel); }
+.sino-h { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; padding: 12px 14px; border-bottom: 1px solid var(--line); position: sticky; top: 0; z-index: 3; background: var(--panel); }
 .sino-h b { flex: 1; font-family: var(--f-head); font-size: 15px; }
 .sino-x { background: none; border: 0; font-size: 20px; line-height: 1; color: var(--muted); cursor: pointer; padding: 2px 4px; }
 .sino-i { padding: 10px 14px; border-bottom: 1px solid var(--line); }
@@ -769,7 +769,7 @@ a.lm-ir:hover { border-bottom-style: solid; }
     </div>
     <div class="nav-mobile-sub" id="navMobileSub"></div>
   </div>
-  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 168</div></div>
+  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 169</div></div>
 </nav>
 <div class="sino-pop" id="sino-pop" role="dialog" aria-label="Central de avisos" hidden></div>
 
@@ -1730,7 +1730,7 @@ a.lm-ir:hover { border-bottom-style: solid; }
     return new Promise(resolve => { const { data } = sb.auth.onAuthStateChange(async (ev) => { if (ev !== 'PASSWORD_RECOVERY') return; const s = prompt('Digite a nova senha (mínimo 8 caracteres):'); if (s && s.length >= 8) { const { error } = await sb.auth.updateUser({ password: s }); alert(error ? 'Não deu para trocar a senha: ' + error.message : 'Senha trocada.'); } }); resolve(data); });
   }
   // ---------- rodapé: compartilhar, administração e sair ----------
-  const SITE_V = 47;
+  const SITE_V = 48;
   const escH = v => String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const dataBR = v => v ? new Date(v).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' }) : '–';
   const css2 = `.side-foot .r{flex-wrap:wrap}.side-foot .lg-acoes{margin-left:auto;display:inline-flex;gap:10px}
@@ -6333,7 +6333,13 @@ function avisosAuto() {
   return out;
 }
 function avLidos() { try { return JSON.parse(localStorage.getItem('painel-avisos-lidos')) || []; } catch (e) { return []; } }
+// "Apagar lidos" só esconde neste navegador: o histórico das rotinas continua no banco
+function avApagados() { try { return JSON.parse(localStorage.getItem('painel-avisos-apagados')) || []; } catch (e) { return []; } }
 function avTodos() {
+  const ap = avApagados();
+  return avTodos0().filter(x => !ap.includes(x.id));
+}
+function avTodos0() {
   const rot = avisosDb.filter(x => !x.resolvido && (avDias(x.quando) ?? 0) <= 30).sort((a, b) => a.quando < b.quando ? 1 : -1);
   return avisosAuto().concat(rot);
 }
@@ -6346,7 +6352,7 @@ function renderSino() {
   const pop = $('sino-pop'); if (pop.hidden) return;
   const NV = { erro: ['warn', 'Erro'], aviso: ['amber', 'Atenção'], ok: ['best', 'Resolvido'] };
   const hora = q => /T\d{2}:\d{2}/.test(q) ? new Date(q).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' }) : avBr(q);
-  pop.innerHTML = `<div class="sino-h"><b>Avisos</b>${todos.length ? '<button type="button" class="btn ghost tiny" id="sino-lidos">Marcar como lidos</button>' : ''}<button type="button" class="sino-x" id="sino-x" aria-label="Fechar">×</button></div>
+  pop.innerHTML = `<div class="sino-h"><b>Avisos</b>${todos.some(x => !lid.includes(x.id)) ? '<button type="button" class="btn ghost tiny" id="sino-lidos">Marcar como lidos</button>' : ''}${todos.some(x => lid.includes(x.id)) ? '<button type="button" class="btn ghost tiny" id="sino-apagar">Apagar lidos</button>' : ''}<button type="button" class="sino-x" id="sino-x" aria-label="Fechar">×</button></div>
     ${ag.length ? `<div class="sino-rod"><i></i><span><b>Atualizando agora</b>${ag.map(k => `${esc(ROTINAS[k])}, desde ${esc(rodHora(rodandoDb[k].inicio))}`).join('<br>')}</span></div>` : ''}
     <div class="sino-l">${todos.map(x => `<div class="sino-i${lid.includes(x.id) ? ' lido' : ''}"><div class="t"><span class="chip ${NV[x.nivel][0]}">${NV[x.nivel][1]}</span><b>${esc(x.fonte || 'Rotina')}</b><span class="q">${x.auto ? 'verificação do painel' : esc(hora(x.quando))}</span></div><p>${esc(x.msg)}</p></div>`).join('') || '<p class="sino-vazio">Tudo certo: nenhuma fonte de dados com problema.</p>'}</div>
     <div class="sino-f"><b>Fontes · dado mais recente</b>${avFontes().map(f => { const n = avDias(f.d); return `<div><span>${esc(f.nome)}<small>Atualiza ${esc(f.qdo || f.freq)}</small>${rodTxt(f.id)}</span><span class="${n != null && n > f.lim ? 'neg' : ''}">${f.d ? avBr(f.d) : '—'}</span></div>`; }).join('')}<p class="sino-nota">Horário de Brasília. ${window.__SITE ? 'No site, os dados chegam na cópia seguinte, às 14:07 ou 19:07 dos dias úteis.' : ''}</p></div>`;
@@ -6360,6 +6366,7 @@ function sinoAbre(abrir) {
 document.addEventListener('click', e => {
   if (e.target.closest('#sino')) { sinoAbre($('sino-pop').hidden); return; }
   if (e.target.closest('#sino-x')) { sinoAbre(false); return; }
+  if (e.target.closest('#sino-apagar')) { const lid = avLidos(); try { localStorage.setItem('painel-avisos-apagados', JSON.stringify(avTodos().filter(x => lid.includes(x.id)).map(x => x.id).concat(avApagados()).slice(0, 300))); } catch (er) {} renderSino(); return; }
   if (e.target.closest('#sino-lidos')) { try { localStorage.setItem('painel-avisos-lidos', JSON.stringify(avTodos().map(x => x.id).concat(avLidos()).slice(0, 300))); } catch (er) {} renderSino(); return; }
   const pop = $('sino-pop'); if (pop && !pop.hidden && !e.target.closest('#sino-pop')) sinoAbre(false);
 });
