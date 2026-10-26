@@ -71,6 +71,10 @@ h1, h2, h3 { font-family: var(--f-head); }
 .sino-f div { display: flex; justify-content: space-between; gap: 10px; padding: 2px 0; }
 .sino-f .neg { color: var(--bad); font-weight: 600; }
 .sino-f small { display: block; font-size: 11px; color: var(--muted); }
+.sino-f .sino-r { text-align: right; flex-shrink: 0; }
+.sino-f .sino-r small span { font-size: inherit; }
+.sino-f .okc { color: var(--good, #2e7d4f); font-weight: 600; }
+.sino-f .amb { color: var(--warn, #b7791f); font-weight: 600; }
 .sino-f em { display: block; font-style: normal; font-size: 11px; color: var(--muted); }
 .sino-f em.neg { color: var(--bad); }
 .rod-on { color: var(--accent) !important; font-weight: 600; }
@@ -769,7 +773,7 @@ a.lm-ir:hover { border-bottom-style: solid; }
     </div>
     <div class="nav-mobile-sub" id="navMobileSub"></div>
   </div>
-  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 169</div></div>
+  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 170</div></div>
 </nav>
 <div class="sino-pop" id="sino-pop" role="dialog" aria-label="Central de avisos" hidden></div>
 
@@ -1730,7 +1734,7 @@ a.lm-ir:hover { border-bottom-style: solid; }
     return new Promise(resolve => { const { data } = sb.auth.onAuthStateChange(async (ev) => { if (ev !== 'PASSWORD_RECOVERY') return; const s = prompt('Digite a nova senha (mínimo 8 caracteres):'); if (s && s.length >= 8) { const { error } = await sb.auth.updateUser({ password: s }); alert(error ? 'Não deu para trocar a senha: ' + error.message : 'Senha trocada.'); } }); resolve(data); });
   }
   // ---------- rodapé: compartilhar, administração e sair ----------
-  const SITE_V = 48;
+  const SITE_V = 49;
   const escH = v => String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const dataBR = v => v ? new Date(v).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' }) : '–';
   const css2 = `.side-foot .r{flex-wrap:wrap}.side-foot .lg-acoes{margin-left:auto;display:inline-flex;gap:10px}
@@ -6306,6 +6310,18 @@ const rodHora = q => { const t = Date.parse(q); if (!isFinite(t)) return ''; con
 // rodando de verdade só até 3 horas depois do início; depois disso a rodada provavelmente caiu
 function rodEstado(k) { const x = rodandoDb[k]; if (!x) return null; const ini = Date.parse(x.inicio); const vivo = x.status === 'rodando' && isFinite(ini) && Date.now() - ini < 3 * 3600e3; return Object.assign({ vivo, caiu: x.status === 'rodando' && !vivo }, x); }
 const rodAgora = () => Object.keys(ROTINAS).filter(k => { const e = rodEstado(k); return e && e.vivo; });
+// resultado da última rodada: status gravado pela rotina + avisos dela dentro da janela da rodada
+const AV_PFX = { mundo: 'mundo-', minhas: 'minhas-acoes-', b3: 'b3-', global: 'global-', focus: 'focus-', casas: 'casas-', pesquisa: 'pesquisa-', quedas: 'quedas-', copia: 'copia-' };
+function rodRes(k) {
+  const e = rodEstado(k); if (!e) return null;
+  if (e.vivo) return { cls: 'rod-on', txt: 'Atualizando agora', sub: 'desde ' + rodHora(e.inicio) };
+  if (e.caiu) return { cls: 'neg', txt: 'Não terminou', sub: 'começou ' + rodHora(e.inicio) };
+  const fim = Date.parse(e.fim); if (!isFinite(fim)) return null;
+  const ini = Date.parse(e.inicio), de = isFinite(ini) && ini <= fim ? ini - 5 * 60e3 : new Date(new Date(fim).toDateString()).getTime(), ate = fim + 10 * 60e3;
+  const av = avisosDb.filter(x => x.id.startsWith(AV_PFX[k]) && x.nivel !== 'ok' && (t => isFinite(t) && t >= de && t <= ate)(Date.parse(x.quando)));
+  const erro = e.status === 'erro' || av.some(x => x.nivel === 'erro'), aviso = av.some(x => x.nivel === 'aviso');
+  return { cls: erro ? 'neg' : aviso ? 'amb' : 'okc', txt: 'Rodou ' + new Date(fim).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' }).replace(',', '') + (erro ? ' · com erros' : aviso ? ' · com avisos' : ' · ok') };
+}
 function rodTxt(k) { const e = rodEstado(k); if (!e) return ''; if (e.vivo) return `<em class="rod-on"><i></i>Atualizando agora, desde ${esc(rodHora(e.inicio))}</em>`; if (e.caiu) return `<em class="neg">Começou ${esc(rodHora(e.inicio))} e não terminou</em>`; return e.fim ? `<em>Última rodada ${esc(rodHora(e.fim))}${e.status === 'erro' ? ' · com erro' : ''}</em>` : ''; }
 function sanitizeAvisos(d) {
   const it = d && Array.isArray(d.itens) ? d.itens : [];
@@ -6355,7 +6371,8 @@ function renderSino() {
   pop.innerHTML = `<div class="sino-h"><b>Avisos</b>${todos.some(x => !lid.includes(x.id)) ? '<button type="button" class="btn ghost tiny" id="sino-lidos">Marcar como lidos</button>' : ''}${todos.some(x => lid.includes(x.id)) ? '<button type="button" class="btn ghost tiny" id="sino-apagar">Apagar lidos</button>' : ''}<button type="button" class="sino-x" id="sino-x" aria-label="Fechar">×</button></div>
     ${ag.length ? `<div class="sino-rod"><i></i><span><b>Atualizando agora</b>${ag.map(k => `${esc(ROTINAS[k])}, desde ${esc(rodHora(rodandoDb[k].inicio))}`).join('<br>')}</span></div>` : ''}
     <div class="sino-l">${todos.map(x => `<div class="sino-i${lid.includes(x.id) ? ' lido' : ''}"><div class="t"><span class="chip ${NV[x.nivel][0]}">${NV[x.nivel][1]}</span><b>${esc(x.fonte || 'Rotina')}</b><span class="q">${x.auto ? 'verificação do painel' : esc(hora(x.quando))}</span></div><p>${esc(x.msg)}</p></div>`).join('') || '<p class="sino-vazio">Tudo certo: nenhuma fonte de dados com problema.</p>'}</div>
-    <div class="sino-f"><b>Fontes · dado mais recente</b>${avFontes().map(f => { const n = avDias(f.d); return `<div><span>${esc(f.nome)}<small>Atualiza ${esc(f.qdo || f.freq)}</small>${rodTxt(f.id)}</span><span class="${n != null && n > f.lim ? 'neg' : ''}">${f.d ? avBr(f.d) : '—'}</span></div>`; }).join('')}<p class="sino-nota">Horário de Brasília. ${window.__SITE ? 'No site, os dados chegam na cópia seguinte, às 14:07 ou 19:07 dos dias úteis.' : ''}</p></div>`;
+    <div class="sino-f"><b>Fontes · última atualização</b>${avFontes().map(f => { const n = avDias(f.d); const r = rodRes(f.id), dd = `<span class="${n != null && n > f.lim ? 'neg' : ''}">${f.d ? avBr(f.d) : '—'}</span>`;
+      return `<div><span>${esc(f.nome)}<small>Atualiza ${esc(f.qdo || f.freq)}</small></span><span class="sino-r">${r ? `<span class="${r.cls}">${r.cls === 'rod-on' ? '<i></i>' : ''}${esc(r.txt)}</span><small>${r.sub ? esc(r.sub) + ' · ' : ''}dado de ${dd}</small>` : `<small>dado de</small>${dd}`}</span></div>`; }).join('')}<p class="sino-nota">Horário de Brasília. ${window.__SITE ? 'No site, os dados chegam na cópia seguinte, às 14:07 ou 19:07 dos dias úteis.' : ''}</p></div>`;
 }
 const sinoLater = () => { clearTimeout(sinoT); sinoT = setTimeout(renderSino, 300); };
 setInterval(() => { if (rodAgora().length || !$('sino-pop').hidden) sinoLater(); }, 60000);
