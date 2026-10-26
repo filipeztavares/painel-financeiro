@@ -780,7 +780,7 @@ a.lm-ir:hover { border-bottom-style: solid; }
     </div>
     <div class="nav-mobile-sub" id="navMobileSub"></div>
   </div>
-  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 174</div></div>
+  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 175</div></div>
 </nav>
 <div class="sino-pop" id="sino-pop" role="dialog" aria-label="Central de avisos" hidden></div>
 
@@ -1741,7 +1741,7 @@ a.lm-ir:hover { border-bottom-style: solid; }
     return new Promise(resolve => { const { data } = sb.auth.onAuthStateChange(async (ev) => { if (ev !== 'PASSWORD_RECOVERY') return; const s = prompt('Digite a nova senha (mínimo 8 caracteres):'); if (s && s.length >= 8) { const { error } = await sb.auth.updateUser({ password: s }); alert(error ? 'Não deu para trocar a senha: ' + error.message : 'Senha trocada.'); } }); resolve(data); });
   }
   // ---------- rodapé: compartilhar, administração e sair ----------
-  const SITE_V = 53;
+  const SITE_V = 54;
   const escH = v => String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const dataBR = v => v ? new Date(v).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' }) : '–';
   const css2 = `.side-foot .r{flex-wrap:wrap}.side-foot .lg-acoes{margin-left:auto;display:inline-flex;gap:10px}
@@ -3786,15 +3786,45 @@ function quedasDe(x, pts) {
   });
 }
 // gráfico da ação contra o CDI (abre ao clicar no código); a linha liga os preços que a tabela guarda
+// preço diário dos últimos ~3 meses (mercado/diario, gravado pela rotina das 18:43): {TK: [[data, preço], ...]}
+let diarioDb = {};
+function sanitizeDiario(d) {
+  const it = d && d.itens && typeof d.itens === 'object' ? d.itens : {}, out = {};
+  Object.keys(it).slice(0, 500).forEach(tk => { const p = it[tk] && Array.isArray(it[tk].p) ? it[tk].p : [];
+    const l = p.filter(v => Array.isArray(v) && /^\d{4}-\d{2}-\d{2}$/.test(v[0]) && +v[1] > 0).map(v => [v[0], +v[1]]).sort((a, b) => a[0] < b[0] ? -1 : 1).slice(-130);
+    if (l.length >= 2 && /^[A-Z0-9][A-Z0-9.\-]{1,19}$/.test(tk)) out[tk] = l; });
+  return out;
+}
+const PER_CURTO = { '1m': 1, '3m': 3 }, PER_TODOS = [['1m', '30 dias'], ['3m', '3 meses'], ['6m', '6 meses'], ['1a', '1 ano'], ['2a', '2 anos'], ['3a', '3 anos'], ['5a', '5 anos']];
+const menosMeses = (iso, n) => { const d = new Date(iso.slice(0, 10) + 'T12:00:00Z'); d.setUTCMonth(d.getUTCMonth() - n); return d.toISOString().slice(0, 10); };
+const temPer = (x, k) => PER_CURTO[k] ? !!diarioDb[x.tk] : !!(x.h && x.h[k]);
+// pontos do ativo no período: 30 dias e 3 meses usam o fechamento de cada dia; os períodos longos usam os pontos da tabela e,
+// depois da data mais recente do histórico semanal, o fechamento diário
+function serieAt(x, per) {
+  const dia = diarioDb[x.tk] || null, hoje = x.d1 && x.p1 > 0 ? [x.d1, x.p1] : null;
+  const ateHoje = l => hoje && (!l.length || hoje[0] >= l[l.length - 1][0]) ? l.filter(v => v[0] < hoje[0]).concat([hoje]) : l;
+  if (PER_CURTO[per]) {
+    if (!dia) return null;
+    const l = ateHoje(dia.slice()), alvo = menosMeses(l[l.length - 1][0], PER_CURTO[per]);
+    let i0 = l.findIndex(v => v[0] > alvo); if (i0 < 0) return null; if (i0 > 0) i0--;
+    const pts = l.slice(i0); return pts.length >= 2 ? { ini: pts[0], d0: pts[0][0], pts, diario: true } : null;
+  }
+  const ini = x.h && x.h[per]; if (!ini || !(ini[1] > 0)) return null; const d0 = ini[0];
+  const corte = dia ? Object.values(x.h).reduce((m, v) => Array.isArray(v) && v[0] > m ? v[0] : m, '') : '';
+  let pts = [ini, ...Object.values(x.h), x.max, x.min, x.ini].filter(v => Array.isArray(v) && v[1] > 0 && v[0] >= d0 && (!corte || v[0] <= corte) && (!hoje || v[0] < hoje[0]));
+  if (corte) pts = pts.concat(dia.filter(v => v[0] > corte && v[0] >= d0));
+  pts = ateHoje(pts.sort((a, b) => a[0] < b[0] ? -1 : a[0] > b[0] ? 1 : 0).filter((v, j, a) => !j || v[0] !== a[j - 1][0]));
+  return pts.length >= 2 ? { ini, d0, pts, diario: !!corte } : null;
+}
+// rótulo do eixo: mês, ou dia/mês quando o período é curto
+const eixoLbl = (p, span) => { if (span >= 4) return mLabel(Math.floor(p)); const mi = Math.floor(p), d = new Date(BASE.getFullYear(), BASE.getMonth() + mi, 1), dim = new Date(d.getFullYear(), d.getMonth() + 1, 0).getDate(); d.setDate(1 + Math.round((p - mi) * dim)); return d.toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit' }); };
 let a6Abre = null, a6GPer = '5a', a6Cdi = true;
 try { a6Cdi = localStorage.getItem('a6cdi') !== '0'; const g = localStorage.getItem('a6gper'); if (g) a6GPer = g; } catch (e) {}
 function a6Detalhe(x) {
-  const br = s => s.split('-').reverse().join('/'), opts = [['6m', '6 meses'], ['1a', '1 ano'], ['2a', '2 anos'], ['3a', '3 anos'], ['5a', '5 anos']].filter(([k]) => x.h[k]);
+  const br = s => s.split('-').reverse().join('/'), opts = PER_TODOS.filter(([k]) => temPer(x, k) && serieAt(x, k));
   if (!opts.length) return `<div class="a6det"><p class="hint">${esc(x.tk)}: sem histórico de cotações para montar o gráfico.</p></div>`;
-  const per = opts.some(o => o[0] === a6GPer) ? a6GPer : opts[opts.length - 1][0], ini = x.h[per], d0 = ini[0];
-  const pts = [ini, ...Object.values(x.h), x.max, x.min, x.ini, [x.d1, x.p1]].filter(v => Array.isArray(v) && v[1] > 0 && v[0] >= d0 && v[0] <= x.d1)
-    .sort((a, b) => a[0] < b[0] ? -1 : 1).filter((v, i, a) => !i || v[0] !== a[i - 1][0]);
-  const p0 = posData(d0), pF = posData(x.d1), span = Math.max(pF - p0, 0.1);
+  const per = opts.some(o => o[0] === a6GPer) ? a6GPer : opts[opts.length - 1][0], sr = serieAt(x, per), ini = sr.ini, d0 = sr.d0, pts = sr.pts;
+  const p0 = posData(d0), pF = posData(pts[pts.length - 1][0]), span = Math.max(pF - p0, 0.1);
   const acao = pts.map(([d, v]) => [posData(d), v / ini[1] - 1]);
   const cdi = []; for (let p = p0; p < pF; p += Math.max(span / 60, 0.25)) cdi.push([p, cdiFat(p0, p) - 1]); cdi.push([pF, cdiFat(p0, pF) - 1]);
   const ys = acao.map(v => v[1]).concat(a6Cdi ? cdi.map(v => v[1]) : [], [0]), lo = Math.min(...ys), hi = Math.max(...ys);
@@ -3803,7 +3833,7 @@ function a6Detalhe(x) {
   const y0 = lo < -1e-9 ? lo - rg * 0.04 : 0, y1 = Math.ceil(hi / step - 1e-9) * step;
   const X = p => pl + (p - p0) / span * (W - pl - pr), Y = v => pt + (y1 - v) / (y1 - y0 || 1) * (H - pt - pb);
   let g = '<g class="gl">'; for (let v = Math.ceil(y0 / step - 1e-9) * step; v <= y1 + step / 2; v += step) g += `<line x1="${pl}" x2="${W - pr}" y1="${Y(v).toFixed(1)}" y2="${Y(v).toFixed(1)}"${Math.abs(v) < 1e-9 ? ' stroke-dasharray="3 3"' : ''}/><text x="${pl - 6}" y="${(Y(v) + 3.5).toFixed(1)}" text-anchor="end">${pct(Math.abs(v) < 1e-9 ? 0 : v, 0)}</text>`; g += '</g>';
-  const nT = W < 500 ? 3 : 5; for (let i = 0; i <= nT; i++) { const p = p0 + span * i / nT, mi = Math.floor(p); g += `<text x="${X(p).toFixed(1)}" y="${H - 6}" text-anchor="${i === 0 ? 'start' : i === nT ? 'end' : 'middle'}">${i === nT ? 'hoje' : mLabel(mi)}</text>`; }
+  const nT = W < 500 ? 3 : 5; for (let i = 0; i <= nT; i++) { const p = p0 + span * i / nT, mi = Math.floor(p); g += `<text x="${X(p).toFixed(1)}" y="${H - 6}" text-anchor="${i === 0 ? 'start' : i === nT ? 'end' : 'middle'}">${i === nT ? 'hoje' : eixoLbl(p, span)}</text>`; }
   const path = l => l.map(([p, v], i) => `${i ? 'L' : 'M'}${X(p).toFixed(1)} ${Y(v).toFixed(1)}`).join(' ');
   const corA = 'var(--s2)', corC = 'var(--plan)', qd = quedasDe(x, pts);
   const svg = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${esc(x.tk)} contra o CDI">${g}${a6Cdi ? `<path d="${path(cdi)}" fill="none" stroke="${corC}" stroke-width="2" stroke-dasharray="5 4"/>` : ''}<path d="${path(acao)}" fill="none" stroke="${corA}" stroke-width="2.4" stroke-linejoin="round"/>${qd.map((z, n) => { const a0 = acao[z.i - 1], a1 = acao[z.i]; return `<path d="M${X(a0[0]).toFixed(1)} ${Y(a0[1]).toFixed(1)} L${X(a1[0]).toFixed(1)} ${Y(a1[1]).toFixed(1)}" stroke="var(--bad)" stroke-width="3" fill="none"/><circle cx="${X(a1[0]).toFixed(1)}" cy="${(Y(a1[1]) + 14).toFixed(1)}" r="8" fill="var(--bad)"/><text x="${X(a1[0]).toFixed(1)}" y="${(Y(a1[1]) + 17.5).toFixed(1)}" text-anchor="middle" style="fill:#fff;font-weight:700;font-size:10px">${n + 1}</text>`; }).join('')}${acao.map(([p, v], i) => `<circle cx="${X(p).toFixed(1)}" cy="${Y(v).toFixed(1)}" r="3.5" fill="${corA}" class="a6pt"/>`).join('')}${acao.map(([p, v], i) => { const c = cdiFat(p0, p) - 1, ant = i ? pts[i][1] / pts[i - 1][1] - 1 : null; return `<circle cx="${X(p).toFixed(1)}" cy="${Y(v).toFixed(1)}" r="11" fill="transparent" class="a6hit" tabindex="0" data-tip="${esc(`<b>${br(pts[i][0])}</b> · ${fmx(x, pts[i][1])}<br>${x.tk}: <b class="${v >= 0 ? 'pos' : 'neg'}">${v >= 0 ? '+' : ''}${pct(v)}</b> desde o início${ant != null ? `<br>Desde o ponto anterior: <b class="${ant >= 0 ? 'pos' : 'neg'}">${ant >= 0 ? '+' : ''}${pct(ant)}</b>` : ''}${a6Cdi ? `<br>CDI: +${pct(c)}` : ''}`)}"/>`; }).join('')}</svg>`;
@@ -3811,7 +3841,7 @@ function a6Detalhe(x) {
   const us = x.mk === 'us' || x.mk === 'etfus';
   const res = `<span><b style="color:${corA}">●</b> ${esc(x.tk)}: <b>${rA >= 0 ? '+' : ''}${pct(rA)}</b>${aa(rA)}</span>${a6Cdi ? `<span><b style="color:${corC}">●</b> CDI: <b>+${pct(rC)}</b>${aa(rC)}</span><span>${anos >= 1 ? (dif => `${dif >= 0 ? 'Acima' : 'Abaixo'} do CDI: <b class="${dif >= 0 ? 'pos' : 'neg'}">${dif >= 0 ? '+' : '−'}${num(Math.abs(dif) * 100, 1)} p.p. ao ano</b>`)((Math.pow(1 + rA, 1 / anos) - 1) - (Math.pow(1 + rC, 1 / anos) - 1)) : `${rA >= rC ? 'Acima' : 'Abaixo'} do CDI: <b class="${rA >= rC ? 'pos' : 'neg'}">${rA - rC >= 0 ? '+' : '−'}${num(Math.abs(rA - rC) * 100, 1)} p.p. no período</b>`}</span>` : ''}`;
   return `<div class="a6det"><div class="a6gx"><div class="a6gx-top"><b>${esc(x.tk)} contra o CDI desde ${br(d0)}</b><div class="seg" role="group" aria-label="Período do gráfico">${opts.map(([k, t]) => `<button type="button" data-a6gper="${k}" aria-pressed="${k === per}">${t}</button>`).join('')}</div><label><input type="checkbox" data-a6cdi${a6Cdi ? ' checked' : ''}> Mostrar CDI</label><button type="button" class="btn ghost tiny" data-a6graf="${esc(x.tk)}" style="margin-left:auto">Fechar</button></div><div class="a6plot">${svg}<div class="a6tip" hidden></div></div>
-    <div class="a6gx-res">${res}</div>${qd.length ? `<div class="a6q"><b>Quedas fortes no período</b>${qd.map((z, n) => `<div class="a6q-i"><span class="a6q-n">${n + 1}</span><div><b class="neg">${pct(z.v)}</b> <span class="subdet">de ${z.txt}</span>${z.esp.map(e => `<p>${esc(e.texto)}${e.fonte ? ` <a href="${esc(e.fonte)}" target="_blank" rel="noopener">fonte</a>` : ''}</p>`).join('')}${z.mer.map(e => `<p><span class="chip">${z.merRot}</span> ${esc(e.texto)}${e.fonte ? ` <a href="${esc(e.fonte)}" target="_blank" rel="noopener">fonte</a>` : ''}</p>`).join('')}${z.ger.length ? `<p class="subdet">${z.esp.length || z.mer.length ? '' : 'Ainda sem explicação pesquisada para esta queda. '}${z.ger.map(esc).join(' ')}</p>` : ''}</div></div>`).join('')}<p class="subdet">Explicações pesquisadas em notícias pela tarefa diária${quedasDb.data ? ` (última em ${quedasDb.data.split('-').reverse().join('/')})` : ''}; quedas novas entram nas próximas rodadas.</p></div>` : ''}<p class="hint" style="margin-top:4px">Preço ajustado por proventos (como se os dividendos fossem reinvestidos), antes do IR dos dois lados. A linha liga os pontos que a tabela guarda (início de cada período, máxima e mínima de 5 anos e hoje), então é uma aproximação do caminho.${us ? ' A ação está em US$ e o CDI em R$: a comparação não inclui o câmbio.' : ''} CDI mensal do Banco Central.</p></div></div>`;
+    <div class="a6gx-res">${res}</div>${qd.length ? `<div class="a6q"><b>Quedas fortes no período</b>${qd.map((z, n) => `<div class="a6q-i"><span class="a6q-n">${n + 1}</span><div><b class="neg">${pct(z.v)}</b> <span class="subdet">de ${z.txt}</span>${z.esp.map(e => `<p>${esc(e.texto)}${e.fonte ? ` <a href="${esc(e.fonte)}" target="_blank" rel="noopener">fonte</a>` : ''}</p>`).join('')}${z.mer.map(e => `<p><span class="chip">${z.merRot}</span> ${esc(e.texto)}${e.fonte ? ` <a href="${esc(e.fonte)}" target="_blank" rel="noopener">fonte</a>` : ''}</p>`).join('')}${z.ger.length ? `<p class="subdet">${z.esp.length || z.mer.length ? '' : 'Ainda sem explicação pesquisada para esta queda. '}${z.ger.map(esc).join(' ')}</p>` : ''}</div></div>`).join('')}<p class="subdet">Explicações pesquisadas em notícias pela tarefa diária${quedasDb.data ? ` (última em ${quedasDb.data.split('-').reverse().join('/')})` : ''}; quedas novas entram nas próximas rodadas.</p></div>` : ''}<p class="hint" style="margin-top:4px">Preço ajustado por proventos (como se os dividendos fossem reinvestidos), antes do IR dos dois lados. ${PER_CURTO[per] ? 'Neste período a linha usa o fechamento de cada dia (B3 pela brapi, sem ajuste de proventos; EUA pelo Tiingo, ajustado).' : sr.diario ? 'Nos últimos meses a linha usa o fechamento de cada dia (B3 pela brapi, sem ajuste de proventos; EUA pelo Tiingo, ajustado); antes disso liga os pontos que a tabela guarda.' : 'A linha liga os pontos que a tabela guarda (início de cada período, máxima e mínima de 5 anos e hoje), então é uma aproximação do caminho.'}${us ? ' A ação está em US$ e o CDI em R$: a comparação não inclui o câmbio.' : ''} CDI mensal do Banco Central.</p></div></div>`;
 }
 // mostra o percentual do ponto ao passar o mouse (ou tocar) no gráfico do ativo
 function a6Dica(hit) { const box = hit.closest('.a6plot'), tip = box && box.querySelector('.a6tip'); if (!tip) return; const r = hit.getBoundingClientRect(), b = box.getBoundingClientRect();
@@ -4065,7 +4095,7 @@ $('acao-tk').addEventListener('input', renderA6);
 let cmpa = { tks: [], per: '1a', cdi: true };
 try { const s = JSON.parse(localStorage.getItem('painel-cmpa')); if (s && Array.isArray(s.tks)) cmpa = { tks: s.tks.filter(t => /^[A-Z][A-Z0-9]{0,14}$/.test(t)).slice(0, 8), per: s.per || '1a', cdi: s.cdi !== false, minhas: !!s.minhas }; } catch (e) {}
 const CMPA_COR = ['var(--s1)', 'var(--s2)', 'var(--s7)', 'var(--s6)', 'var(--s8)', 'var(--s3)', 'var(--s9)', 'var(--s4)'];
-const CMPA_PER = [['6m', '6 meses'], ['1a', '1 ano'], ['2a', '2 anos'], ['3a', '3 anos'], ['5a', '5 anos']];
+const CMPA_PER = PER_TODOS;
 const CMPA_GRUPOS = [['Bancos', ['ITUB4', 'BBDC4', 'BBAS3', 'SANB11', 'BPAC11', 'ROXO34']], ['Petróleo e minério', ['PETR4', 'PRIO3', 'BRAV3', 'VALE3', 'CSNA3', 'GGBR4']], ['Energia elétrica', ['AXIA3', 'EQTL3', 'CMIG4', 'TAEE11', 'EGIE3', 'CPLE3']], ['Varejo', ['LREN3', 'MGLU3', 'ASAI3', 'RADL3']],
   ['Big techs', ['AAPL', 'MSFT', 'GOOGL', 'AMZN', 'META']], ['Chips', ['NVDA', 'AVGO', 'TSM', 'ASML']], ['Bolsas', ['BOVA11', 'SMAL11', 'IVVB11', 'NASD11', 'WRLD11']], ['Proteção', ['GOLD11', 'HASH11', 'B5P211', 'IVVB11']], ['FIIs de tijolo', ['HGLG11', 'KNRI11', 'XPML11', 'VISC11', 'BTLG11', 'HGRU11']], ['FIIs de papel', ['MXRF11', 'KNCR11', 'KNIP11', 'CPTS11']]];
 const cmpaGuardar = () => { try { localStorage.setItem('painel-cmpa', JSON.stringify(cmpa)); } catch (e) {} };
@@ -4084,10 +4114,10 @@ function cmpaMinhas(pool, per) {
   // BDR sem cotação própria usa a ação americana (ex.: MSFT34 → MSFT, em US$, sem câmbio)
   const ref = tk => pool.get(tk) || (/3[2-5]$/.test(tk) ? pool.get(tk.slice(0, -2)) || pool.get(tk.slice(0, 4)) : null);
   const todas = (() => { try { return minhasAcoes(); } catch (e) { return []; } })().filter(m => m.atual > 0);
-  const ms = todas.filter(m => ref(m.tk) && ref(m.tk).h[per]);
+  const ms = todas.filter(m => ref(m.tk) && serieAt(ref(m.tk), per));
   if (!ms.length) return null;
-  const ser = ms.map(m => { const x = ref(m.tk), ini = x.h[per];
-    const l = [ini, ...Object.values(x.h), x.max, x.min, x.ini, [x.d1, x.p1]].filter(v => Array.isArray(v) && v[1] > 0 && v[0] >= ini[0] && v[0] <= x.d1).sort((a, b) => a[0] < b[0] ? -1 : 1).map(([d, v]) => [posData(d), v / ini[1] - 1]);
+  const ser = ms.map(m => { const sr = serieAt(ref(m.tk), per), ini = sr.ini;
+    const l = sr.pts.map(([d, v]) => [posData(d), v / ini[1] - 1]);
     return { w: m.atual, l }; });
   const em = (l, p) => { if (p <= l[0][0]) return l[0][1]; for (let i = 1; i < l.length; i++) if (p <= l[i][0]) { const [a, b] = [l[i - 1], l[i]]; return a[1] + (b[1] - a[1]) * ((p - a[0]) / ((b[0] - a[0]) || 1)); } return l[l.length - 1][1]; };
   const W = ser.reduce((t, x) => t + x.w, 0), xs = [...new Set(ser.flatMap(x => x.l.map(v => +v[0].toFixed(3))))].sort((a, b) => a - b);
@@ -4104,10 +4134,9 @@ function renderCmpA() {
     <p class="hint" id="cmpa-msg"></p>`;
   const chips = sel.length ? `<div class="cmpa-chips">${sel.map((x, i) => `<span class="cmpa-chip"><i style="background:${CMPA_COR[i]}"></i><b>${esc(cmpaRot(x))}</b> ${x.mk === 'fundo' ? '' : `<span class="subdet">${esc(cmpaNome(x))}</span>`}<button type="button" data-cmpa-tira="${esc(x.tk)}" aria-label="Tirar ${esc(x.tk)}">×</button></span>`).join('')}</div>` : '';
   if (!sel.length) { box.innerHTML = topo + '<p class="hm-vazio">Escolha duas ou mais ações ou ETFs (ou um grupo pronto) para ver o comportamento delas lado a lado.</p>'; return; }
-  const opts = CMPA_PER.filter(([k]) => sel.some(x => x.h[k])), per = opts.some(o => o[0] === cmpa.per) ? cmpa.per : (opts[opts.length - 1] || ['1a'])[0];
-  const sem = sel.filter(x => !x.h[per]);
-  const ser = sel.map((x, i) => { const ini = x.h[per]; if (!ini || !(ini[1] > 0)) return null; const d0 = ini[0];
-    const pts = [ini, ...Object.values(x.h), x.max, x.min, x.ini, [x.d1, x.p1]].filter(v => Array.isArray(v) && v[1] > 0 && v[0] >= d0 && v[0] <= x.d1).sort((a, b) => a[0] < b[0] ? -1 : 1).filter((v, j, a) => !j || v[0] !== a[j - 1][0]);
+  const opts = CMPA_PER.filter(([k]) => sel.some(x => temPer(x, k))), per = opts.some(o => o[0] === cmpa.per) ? cmpa.per : (opts[opts.length - 1] || ['1a'])[0];
+  const sem = sel.filter(x => !serieAt(x, per));
+  const ser = sel.map((x, i) => { const sr = serieAt(x, per); if (!sr) return null; const ini = sr.ini, d0 = sr.d0, pts = sr.pts;
     let pico = pts[0][1], dd = 0; pts.forEach(([, v]) => { pico = Math.max(pico, v); dd = Math.min(dd, v / pico - 1); });
     return { x, cor: CMPA_COR[i], d0, pts, l: pts.map(([d, v]) => [posData(d), v / ini[1] - 1]), dd }; }).filter(Boolean);
   let svg = '', tab = '';
@@ -4121,11 +4150,11 @@ function renderCmpA() {
     const y0 = lo < -1e-9 ? Math.floor(lo / step + 1e-9) * step : 0, y1 = Math.ceil(hi / step - 1e-9) * step;
     const X = p => pl + (p - p0) / span * (W - pl - pr), Y = v => pt + (y1 - v) / (y1 - y0 || 1) * (H - pt - pb);
     let g = '<g class="gl">'; for (let v = y0; v <= y1 + step / 2; v += step) g += `<line x1="${pl}" x2="${W - pr}" y1="${Y(v).toFixed(1)}" y2="${Y(v).toFixed(1)}"${Math.abs(v) < 1e-9 ? ' stroke-dasharray="3 3"' : ''}/><text x="${pl - 6}" y="${(Y(v) + 3.5).toFixed(1)}" text-anchor="end">${pct(Math.abs(v) < 1e-9 ? 0 : v, 0)}</text>`; g += '</g>';
-    const nT = W < 500 ? 3 : 5; for (let i = 0; i <= nT; i++) { const p = p0 + span * i / nT; g += `<text x="${X(p).toFixed(1)}" y="${H - 6}" text-anchor="${i === 0 ? 'start' : i === nT ? 'end' : 'middle'}">${i === nT ? 'hoje' : mLabel(Math.floor(p))}</text>`; }
+    const nT = W < 500 ? 3 : 5; for (let i = 0; i <= nT; i++) { const p = p0 + span * i / nT; g += `<text x="${X(p).toFixed(1)}" y="${H - 6}" text-anchor="${i === 0 ? 'start' : i === nT ? 'end' : 'middle'}">${i === nT ? 'hoje' : eixoLbl(p, span)}</text>`; }
     const path = l => l.map(([p, v], i) => `${i ? 'L' : 'M'}${X(p).toFixed(1)} ${Y(v).toFixed(1)}`).join(' ');
     const sinal = r => `<span class="${r >= 0 ? 'pos' : 'neg'}">${r >= 0 ? '+' : ''}${pct(r)}</span>`;
     const hits = ser.map(s => s.l.map(([p, v], j) => { const [d, pr0] = s.pts[j]; const tip = `<b>${esc(cmpaRot(s.x))}</b> · ${br(d)} · ${fmx(s.x, pr0)}<br>Desde o início: ${sinal(v)}${cmpa.cdi ? `<br>CDI no mesmo período: +${pct(cdiFat(p0, p) - 1)}` : ''}`;
-      return `<circle class="a6pt" cx="${X(p).toFixed(1)}" cy="${Y(v).toFixed(1)}" r="2.6" fill="${s.cor}"/><circle class="a6hit" tabindex="0" cx="${X(p).toFixed(1)}" cy="${Y(v).toFixed(1)}" r="9" fill="transparent" data-tip="${esc(tip)}"/>`; }).join('')).join('');
+      return `${s.pts.length > 25 ? '' : `<circle class="a6pt" cx="${X(p).toFixed(1)}" cy="${Y(v).toFixed(1)}" r="2.6" fill="${s.cor}"/>`}<circle class="a6hit" tabindex="0" cx="${X(p).toFixed(1)}" cy="${Y(v).toFixed(1)}" r="9" fill="transparent" data-tip="${esc(tip)}"/>`; }).join('')).join('');
     svg = `<div class="a6plot"><svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Comparação de ${esc(ser.map(s => s.x.tk).join(', '))}">${g}${cmpa.cdi ? `<path d="${path(cdi)}" fill="none" stroke="var(--plan)" stroke-width="2" stroke-dasharray="5 4"/>` : ''}${mn ? `<path d="${path(mn.l)}" fill="none" stroke="var(--ink)" stroke-width="2.2" stroke-dasharray="8 4" stroke-linejoin="round"/>` : ''}${ser.map(s => `<path d="${path(s.l)}" fill="none" stroke="${s.cor}" stroke-width="2.2" stroke-linejoin="round"/>`).join('')}${hits}${mn ? mn.l.map(([p, v]) => `<circle class="a6hit" tabindex="0" cx="${X(p).toFixed(1)}" cy="${Y(v).toFixed(1)}" r="8" fill="transparent" data-tip="${esc(`<b>Minhas ações</b> · ${mLabel(Math.floor(p))}<br>Desde o início: ${sinal(v)}`)}"/>`).join('') : ''}</svg><div class="a6tip" hidden></div></div>`;
     const anos = span / 12, aa = r => anos >= 1 ? pct(Math.pow(1 + r, 1 / anos) - 1) : '–', rC = cdi[cdi.length - 1][1];
     const linhas = ser.map(s => ({ s, r: s.l[s.l.length - 1][1] })).sort((a, b) => b.r - a.r);
@@ -4134,7 +4163,7 @@ function renderCmpA() {
   const mInfo = cmpaMinhas(pool, per), temMinhas = !!mInfo;
   const notas = [cmpa.minhas && temMinhas ? `A linha preta tracejada junta as suas ações e FIIs da Carteira (${mInfo.tks.join(', ')}), cada um com o peso do valor que tem hoje, sem considerar quando você comprou.${mInfo.proxy.length ? ' ' + mInfo.proxy.join('; ') + ' (sem câmbio).' : ''}${mInfo.fora.length ? ` ${mInfo.fora.join(', ')} ficou fora por não ter histórico nesse período.` : ''}` : '', sem.length ? `${sem.map(x => x.tk).join(', ')} não ${sem.length > 1 ? 'têm' : 'tem'} histórico de ${(CMPA_PER.find(o => o[0] === per) || [, per])[1]} e ficou fora do gráfico.` : '',
     sel.some(x => x.mk === 'us' || x.mk === 'etfus') && sel.some(x => !(x.mk === 'us' || x.mk === 'etfus')) ? 'Ativos dos EUA estão em US$ e não incluem a variação do câmbio; os da B3 estão em R$.' : '',
-    'Preços ajustados por proventos. A linha liga os pontos que as tabelas guardam (início de cada período, máxima, mínima e hoje), então oscilações entre eles não aparecem.'].filter(Boolean);
+    sel.some(x => diarioDb[x.tk]) ? 'Nos últimos meses a linha usa o fechamento de cada dia (B3 pela brapi, sem ajuste de proventos; EUA pelo Tiingo, ajustado). Antes disso liga os pontos que as tabelas guardam, com preços ajustados por proventos.' : 'Preços ajustados por proventos. A linha liga os pontos que as tabelas guardam (início de cada período, máxima, mínima e hoje), então oscilações entre eles não aparecem.'].filter(Boolean);
   box.innerHTML = topo + velhoAviso([{ nome: 'Preços', sing: 'preço', un: 'ativos', datas: sel.map(x => x.d1) }]) + chips + `<div class="a6gx cmpa-g"><div class="a6gx-top"><b>Variação desde o início do período</b><div class="seg" role="group" aria-label="Período">${opts.map(([k, t]) => `<button type="button" data-cmpa-per="${k}" aria-pressed="${k === per}">${t}</button>`).join('')}</div><label><input type="checkbox" data-cmpa-cdi${cmpa.cdi ? ' checked' : ''}> CDI</label>${temMinhas ? `<label title="suas ações da Carteira, cada uma com o peso do valor de hoje"><input type="checkbox" data-cmpa-minhas${cmpa.minhas ? ' checked' : ''}> Minhas ações</label>` : ''}</div>${svg}</div>${tab}<p class="hint">${notas.map(esc).join(' ')}</p>`;
 }
 $('cmpa-box').addEventListener('submit', e => { if (e.target.id !== 'cmpa-form') return; e.preventDefault(); const inp = $('cmpa-in'), v = inp.value; if (cmpaAdd(v)) { renderCmpA(); const n = $('cmpa-in'); if (n) n.focus(); } else inp.value = v; });
@@ -6399,7 +6428,7 @@ function renderSino() {
       return `<div><span>${esc(f.nome)}<small>Atualiza ${esc(f.qdo || f.freq)}</small></span><span class="sino-r">${r ? `<span class="${r.cls}">${r.cls === 'rod-on' ? '<i></i>' : ''}${esc(r.txt)}</span><small>${r.sub ? esc(r.sub) + ' · ' : ''}dado de ${dd}</small>` : `<small>dado de</small>${dd}`}</span></div>`; }).join('')}<p class="sino-nota">Horário de Brasília. ${window.__SITE ? 'No site, os dados chegam na cópia seguinte, às 14:07 ou 19:07 dos dias úteis.' : ''}</p></div>`;
 }
 // "Atualizar agora" (só o dono): dispara a rotina de preços (minhas, brapi) e, quando ela termina, a cópia para o site
-const TRIG_MINHAS = 'trig_015o8uXy2DhA9E9JrkD5vyCg', TRIG_COPIA = 'trig_01T4D2mcGaJTpJkr8ZGGiQyC', ART_URL = 'https://claude.ai/artifact/9sw23mALkCSuQsHpejAWxx';
+const TRIG_MINHAS = 'trig_011MAHr4E7D9wfbPPgeqcWUm', TRIG_COPIA = 'trig_01T4D2mcGaJTpJkr8ZGGiQyC', ART_URL = 'https://claude.ai/artifact/9sw23mALkCSuQsHpejAWxx';
 const ATU_TXT = { precos: 'Disparo manual pelo botão "Atualizar agora" do painel. Se o pregão da B3 ainda estiver aberto, use a barra de hoje da brapi como preço intradiário (p1/d1 de hoje, "fonte_p1":"brapi"); a rodada das 18:43 troca pelo fechamento.', site: 'Disparo manual pelo botão "Atualizar agora" do painel, logo depois da atualização dos preços.' };
 let atuMsg = '', atuIndo = false;
 function atuLe() { try { const a = JSON.parse(localStorage.getItem('painel-atualizar')); return a && (a.fase === 'precos' || a.fase === 'site') && a.t > 0 ? a : null; } catch (e) { return null; } }
@@ -6919,6 +6948,7 @@ showTab(tab); setSave('salvo só neste navegador');
   // acompanha as gravações da pesquisa (ação nova entra na tabela sem recarregar)
   try { db.doc('mercado/mundo').onSnapshot(g => { const s = g && g.exists ? sanitizeMundo(g.data()) : null; mundoDb = s; sinoLater(); if (tab === 'global') renderMundo(); if (tab === 'inicio') renderHome(); }, () => {}); } catch (e) {}
   try { db.doc('mercado/global').onSnapshot(g => { const s = g && g.exists ? sanitizeA6(g.data(), true) : null; if (s) { globalA6 = s; sinoLater(); if (tab === 'carteira' && a6Aba !== 'b3') renderA6(); } }, () => {}); } catch (e) {}
+  try { db.doc('mercado/diario').onSnapshot(d => { diarioDb = sanitizeDiario(d && d.exists ? d.data() : null); if (tab === 'carteira') renderA6(); }, () => {}); } catch (e) {}
   try { db.doc('mercado/acoes6m').onSnapshot(a6 => { const s = a6 && a6.exists ? sanitizeA6(a6.data()) : null; if (s) { acoes6m = s; sinoLater(); if (tab === 'carteira') renderA6(); } }, () => {}); } catch (e) {}
   try {
     try { db.doc('mercado/casas').onSnapshot(d => { const x = d && d.exists ? d.data() : null, it = {};
