@@ -648,10 +648,25 @@ tr.novo-row td { animation: novoRow 2.4s ease; }
 
 /* ---------- módulos (tela de entrada) e menu por módulo ---------- */
 .fora-mod { display: none !important; }
-.nav-modh { display: flex; flex-direction: column; gap: 2px; padding: 4px 10px 10px; }
-.nav-modh .l { font-size: 9.5px; font-weight: 600; letter-spacing: .9px; text-transform: uppercase; color: rgba(255,255,255,.5); }
-.nav-modh select { appearance: none; -webkit-appearance: none; width: 100%; font-family: var(--f-head); font-size: 14px; font-weight: 600; color: #fff; background: rgba(255,255,255,.08) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' fill='none' stroke='%23fff' stroke-width='1.5'/%3E%3C/svg%3E") no-repeat right 10px center / 10px 6px; border: 1px solid rgba(255,255,255,.18); border-radius: 8px; padding: 7px 28px 7px 10px; cursor: pointer; }
-.nav-modh select option { color: #0F1F3D; background: #fff; }
+.nav-head:has(.nav-det) { flex-wrap: wrap; row-gap: 0; }
+.nav-det { order: 3; flex-basis: 100%; padding-left: 29px; font-family: var(--f-ui); font-size: 10px; font-weight: 400; letter-spacing: 0; color: rgba(255,255,255,.6); }
+@media (max-width: 900px) { .nav-det { display: none; } }
+.h1-det { font-size: 14px; font-weight: 500; color: var(--muted); }
+.nav-modh { display: flex; flex-direction: column; gap: 10px; padding: 2px 4px 12px; }
+.nav-voltar { all: unset; box-sizing: border-box; display: flex; align-items: center; gap: 8px; padding: 9px 12px; border-radius: 9px; border: 1px solid rgba(255,255,255,.28); background: rgba(255,255,255,.06); color: #fff; font-family: var(--f-head); font-size: 12px; font-weight: 600; cursor: pointer; }
+.nav-voltar span { font-size: 16px; line-height: 1; }
+.nav-voltar:hover, .nav-voltar:focus-visible { background: rgba(255,255,255,.14); border-color: rgba(255,255,255,.5); }
+.nav-voltar[aria-current="page"] { background: #C8783F; border-color: #C8783F; }
+.nav-modbox { display: flex; align-items: center; gap: 10px; padding: 10px; border-radius: 10px; background: color-mix(in srgb, var(--mcn, #7FA6E0) 18%, transparent); border: 1px solid color-mix(in srgb, var(--mcn, #7FA6E0) 55%, transparent); border-left: 4px solid var(--mcn, #7FA6E0); }
+.nav-modbox .ic { width: 30px; height: 30px; border-radius: 9px; background: var(--mcn, #7FA6E0); color: #0F1F3D; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.nav-modbox .ic svg { width: 22px; height: 22px; }
+.nav-modbox .tx { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 1px; }
+.nav-modbox .l { font-size: 9.5px; font-weight: 600; letter-spacing: .8px; text-transform: uppercase; color: rgba(255,255,255,.7); }
+.nav-modbox select { appearance: none; -webkit-appearance: none; width: 100%; font-family: var(--f-head); font-size: 14px; font-weight: 700; color: #fff; background: transparent url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' fill='none' stroke='%23fff' stroke-width='1.5'/%3E%3C/svg%3E") no-repeat right 2px center / 10px 6px; border: 0; padding: 0 18px 0 0; cursor: pointer; }
+.nav-modbox select option { color: #0F1F3D; background: #fff; }
+@media (min-width: 901px) { .nav-mods { display: none !important; } }
+.nav-sec[data-sec="trab"] > .nav-sec-h { display: none; }
+.nav-sec[data-sec="trab"] { margin-top: 0; }
 .nav-mods { margin-bottom: 8px; padding-bottom: 8px; border-bottom: 1px solid rgba(255,255,255,.1); }
 .md-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px; margin: 16px 0 18px; }
 .md-card { all: unset; box-sizing: border-box; display: flex; flex-direction: column; gap: 8px; background: var(--panel); border: 1px solid var(--line); border-radius: 14px; box-shadow: var(--shadow); padding: 16px; cursor: pointer; min-width: 0; position: relative; transition: transform .15s, box-shadow .15s, border-color .15s; }
@@ -673,8 +688,10 @@ tr.novo-row td { animation: novoRow 2.4s ease; }
 .md-esc .subdet { margin-left: 4px; }
 @media (max-width: 1100px) { .md-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 @media (max-width: 900px) {
-  .nav-modh { flex-direction: row; align-items: center; gap: 8px; padding: 0 max(16px, env(safe-area-inset-left, 0px)) 8px; }
-  .nav-modh select { width: auto; flex: 1; font-size: 13px; padding: 6px 28px 6px 10px; }
+  .nav-modh { padding: 0 max(16px, env(safe-area-inset-left, 0px)) 8px; }
+  .nav-voltar { display: none; }
+  .nav-modbox { padding: 6px 10px; }
+  .nav-modbox .ic { width: 28px; height: 28px; } .nav-modbox .ic svg { width: 18px; height: 18px; }
   .nav-mods { margin: 0; padding: 0; border: 0; }
 }
 @media (max-width: 520px) { .md-grid { gap: 10px; } .md-card { padding: 12px; } .md-card .md-img { height: 64px; } .md-card .md-img svg { width: 34px; height: 34px; } .md-card h3 { font-size: 14.5px; } .md-card p { font-size: 11.5px; } .md-card .chip { top: 16px; right: 16px; } }
@@ -815,7 +832,7 @@ a.lm-ir:hover { border-bottom-style: solid; }
 <nav class="sidebar" aria-label="Módulos">
   <div class="side-logo"><div class="box" title="Painel financeiro"><svg viewBox="0 0 32 32" width="26" height="26" aria-hidden="true"><rect x="6" y="18" width="4.5" height="8" rx="1" fill="#0F1F3D"/><rect x="13.75" y="13" width="4.5" height="13" rx="1" fill="#A8582A"/><rect x="21.5" y="9" width="4.5" height="17" rx="1" fill="#D4A72C"/><path d="M5 15 L12 10 L17 12 L26 4.5" fill="none" stroke="#0F1F3D" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><circle cx="26" cy="4.5" r="2" fill="#A8582A"/><line x1="4.5" y1="27.5" x2="27.5" y2="27.5" stroke="#0F1F3D" stroke-width="1.2" stroke-linecap="round" opacity=".35"/></svg></div><div class="side-nome"><b>Painel financeiro</b><span id="side-quem">controle e projeção</span></div><button type="button" class="sino" id="sino" data-sodono hidden aria-label="Avisos" aria-expanded="false" aria-haspopup="dialog"><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M6 16V11a6 6 0 0 1 12 0v5l1.5 2h-15z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="M10 20.5a2 2 0 0 0 4 0" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg><span class="sino-n" id="sino-n" hidden></span></button></div>
   <div class="nav">
-    <div class="nav-modh" id="nav-modh"><span class="l">Módulo</span><select id="nav-mod-sel" aria-label="Trocar de módulo"></select></div>
+    <div class="nav-modh" id="nav-modh"><button type="button" class="nav-voltar" data-tab="modulos"><span aria-hidden="true">‹</span> Todos os módulos</button><div class="nav-modbox" id="nav-modbox"><span class="ic" id="nav-mod-ic" aria-hidden="true"></span><div class="tx"><span class="l">Você está em</span><select id="nav-mod-sel" aria-label="Trocar de módulo"></select></div></div></div>
     <div class="nav-tools"><button type="button" id="nav-recolher">Recolher todos</button><button type="button" id="nav-abrir">Abrir todos</button></div>
     <div class="nav-heads">
         <div class="nav-group nav-mods" data-mod="all"><button type="button" class="nav-head" data-tab="modulos"><span class="ico"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="3.5" width="7" height="7" rx="1.5"/><rect x="13.5" y="3.5" width="7" height="7" rx="1.5"/><rect x="3.5" y="13.5" width="7" height="7" rx="1.5"/><rect x="13.5" y="13.5" width="7" height="7" rx="1.5"/></svg></span>Módulos</button><div class="nav-sub" data-sub="modulos"></div></div>
@@ -838,7 +855,7 @@ a.lm-ir:hover { border-bottom-style: solid; }
           <div class="nav-group" data-sodono hidden><button type="button" class="nav-head" data-tab="familia"><span class="ico">08</span>Visão consolidada<span class="caret" data-navtog="familia" role="button" tabindex="0" aria-label="Abrir ou recolher submódulos">▾</span></button><div class="nav-sub" data-sub="familia"></div></div>
         </div></div>
         <div class="nav-sec" data-sec="trab" data-mod="trab"><button type="button" class="nav-sec-h" data-sectog="trab" aria-expanded="true"><span>Trabalho e Bens</span><span class="caret" aria-hidden="true">▾</span></button><div class="nav-sec-b">
-          <div class="nav-group"><button type="button" class="nav-head" data-tab="compras"><span class="ico">01</span>Compras e bens<span class="caret" data-navtog="compras" role="button" tabindex="0" aria-label="Abrir ou recolher submódulos">▾</span></button><div class="nav-sub" data-sub="compras"></div></div>
+          <div class="nav-group"><button type="button" class="nav-head" data-tab="compras"><span class="ico">01</span>Compras e bens<small class="nav-det">(imóveis, carros, ...)</small><span class="caret" data-navtog="compras" role="button" tabindex="0" aria-label="Abrir ou recolher submódulos">▾</span></button><div class="nav-sub" data-sub="compras"></div></div>
           <div class="nav-group"><button type="button" class="nav-head" data-tab="stock"><span class="ico">02</span>Stock options<span class="caret" data-navtog="stock" role="button" tabindex="0" aria-label="Abrir ou recolher submódulos">▾</span></button><div class="nav-sub" data-sub="stock"></div></div>
           <div class="nav-group"><button type="button" class="nav-head" data-tab="pjpf"><span class="ico">03</span>PJ e PF<span class="caret" data-navtog="pjpf" role="button" tabindex="0" aria-label="Abrir ou recolher submódulos">▾</span></button><div class="nav-sub" data-sub="pjpf"></div></div>
         </div></div>
@@ -849,7 +866,7 @@ a.lm-ir:hover { border-bottom-style: solid; }
     </div>
     <div class="nav-mobile-sub" id="navMobileSub"></div>
   </div>
-  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 186</div></div>
+  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 187</div></div>
 </nav>
 <div class="sino-pop" id="sino-pop" role="dialog" aria-label="Central de avisos" hidden></div>
 <div class="tour-pop" id="tour-pop" role="dialog" aria-labelledby="tour-tit" hidden></div>
@@ -1056,7 +1073,7 @@ a.lm-ir:hover { border-bottom-style: solid; }
   </section>
   <!-- ============ COMPRAS E BENS ============ -->
   <section role="tabpanel" id="p-compras" hidden>
-    <div class="block-title"><span class="num">01</span><div><h1>Compras e bens</h1><p class="desc">Cadastro de imóveis, carros e outros bens, já comprados ou planejados, e a melhor forma de pagar cada um.</p></div></div>
+    <div class="block-title"><span class="num">01</span><div><h1>Compras e bens <span class="h1-det">(imóveis, carros, ...)</span></h1><p class="desc">Cadastro de imóveis, carros e outros bens, já comprados ou planejados, e a melhor forma de pagar cada um.</p></div></div>
       <section data-nav="Compras e financiamentos" class="panel">
         <div class="row"><h2>Compras e financiamentos</h2>
           <div class="btns" style="grid-column:auto">
@@ -1845,7 +1862,7 @@ a.lm-ir:hover { border-bottom-style: solid; }
     return new Promise(resolve => { const { data } = sb.auth.onAuthStateChange(async (ev) => { if (ev !== 'PASSWORD_RECOVERY') return; const s = prompt('Digite a nova senha (mínimo 8 caracteres):'); if (s && s.length >= 8) { const { error } = await sb.auth.updateUser({ password: s }); alert(error ? 'Não deu para trocar a senha: ' + error.message : 'Senha trocada.'); } }); resolve(data); });
   }
   // ---------- rodapé: compartilhar, administração e sair ----------
-  const SITE_V = 66;
+  const SITE_V = 67;
   const escH = v => String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const dataBR = v => v ? new Date(v).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' }) : '–';
   const css2 = `.side-foot .r{flex-wrap:wrap}.side-foot .lg-acoes{margin-left:auto;display:inline-flex;gap:10px}
@@ -6339,10 +6356,10 @@ const MOD_SVG = {
   neg: '<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 19l3-9h26l3 9"/><path d="M8 19c0 3 2 5 5.3 5s5.4-2 5.4-5c0 3 2 5 5.3 5s5.3-2 5.3-5c0 3 2.1 5 5.4 5S40 22 40 19"/><path d="M11 24v15h26V24"/><path d="M20 39v-9h8v9"/></svg>'
 };
 const MODS = [
-  { id: 'fin', nome: 'Financeiro', cor: 'var(--s1)', fixo: true, vg: 'inicio', desc: 'Gastos, patrimônio, carteira, plano futuro e cenários. Recebe o que os outros módulos planejam.', tabs: ['inicio', 'global', 'gastos', 'patrimonio', 'carteira', 'comparador', 'simulador', 'orcamento', 'cenarios', 'familia'] },
-  { id: 'trab', nome: 'Trabalho e Bens', cor: 'var(--s2)', desc: 'Compras e bens, stock options e PJ e PF. O que entra no plano vai para o Plano futuro.', tabs: ['compras', 'stock', 'pjpf'] },
-  { id: 'viag', nome: 'Viagens', cor: 'var(--s8)', breve: true, desc: 'Sabático e férias regulares: roteiro, datas no futuro e custos de hoje e projetados.', tabs: [] },
-  { id: 'neg', nome: 'Negócios', cor: 'var(--s7)', breve: true, desc: 'Pesquisa de mercado, DRE, passo a passo para abrir empresa e oportunidades de custo.', tabs: [] }
+  { id: 'fin', corNav: '#7FA6E0', nome: 'Financeiro', cor: 'var(--s1)', fixo: true, vg: 'inicio', desc: 'Gastos, patrimônio, carteira, plano futuro e cenários. Recebe o que os outros módulos planejam.', tabs: ['inicio', 'global', 'gastos', 'patrimonio', 'carteira', 'comparador', 'simulador', 'orcamento', 'cenarios', 'familia'] },
+  { id: 'trab', corNav: '#E09A63', nome: 'Trabalho e Bens', cor: 'var(--s2)', desc: 'Compras e bens (imóveis, carros, ...), stock options e PJ e PF. O que entra no plano vai para o Plano futuro.', tabs: ['compras', 'stock', 'pjpf'] },
+  { id: 'viag', corNav: '#5fc2f5', nome: 'Viagens', cor: 'var(--s8)', breve: true, desc: 'Sabático e férias regulares: roteiro, datas no futuro e custos de hoje e projetados.', tabs: [] },
+  { id: 'neg', corNav: '#a3e05a', nome: 'Negócios', cor: 'var(--s7)', breve: true, desc: 'Pesquisa de mercado, DRE, passo a passo para abrir empresa e oportunidades de custo.', tabs: [] }
 ];
 const modDe = t => (MODS.find(m => m.tabs.includes(t)) || {}).id || null;
 let modAtual = modDe(tab) || 'fin';
@@ -6355,6 +6372,9 @@ const modEscolhido = m => m.fixo || !((state.app || {}).off || []).includes(m.id
 const modVisivel = m => modLiberado(m) && modEscolhido(m);
 function aplicarMod() {
   document.querySelectorAll('.nav [data-mod]').forEach(el => el.classList.toggle('fora-mod', el.dataset.mod !== 'all' && el.dataset.mod !== modAtual));
+  const mm = MODS.find(m => m.id === modAtual) || MODS[0], bx = $('nav-modbox');
+  if (bx) { bx.style.setProperty('--mcn', mm.corNav); $('nav-mod-ic').innerHTML = MOD_SVG[mm.id]; }
+  document.querySelectorAll('.nav-voltar').forEach(b => { if (tab === 'modulos') b.setAttribute('aria-current', 'page'); else b.removeAttribute('aria-current'); });
   const sel = $('nav-mod-sel'); if (!sel) return;
   const ops = MODS.filter(m => !m.breve && (modVisivel(m) || m.id === modAtual));
   sel.innerHTML = ops.map(m => `<option value="${m.id}"${m.id === modAtual ? ' selected' : ''}>${esc(m.nome)}</option>`).join('');
