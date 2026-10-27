@@ -1094,7 +1094,7 @@ a.lm-ir:hover { border-bottom-style: solid; }
     </div>
     <div class="nav-mobile-sub" id="navMobileSub"></div>
   </div>
-  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 196</div></div>
+  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 197</div></div>
 </nav>
 <div class="sino-pop" id="sino-pop" role="dialog" aria-label="Central de avisos" hidden></div>
 <div class="tour-pop" id="tour-pop" role="dialog" aria-labelledby="tour-tit" hidden></div>
@@ -2224,7 +2224,7 @@ a.lm-ir:hover { border-bottom-style: solid; }
     return new Promise(resolve => { const { data } = sb.auth.onAuthStateChange(async (ev) => { if (ev !== 'PASSWORD_RECOVERY') return; const s = prompt('Digite a nova senha (mínimo 8 caracteres):'); if (s && s.length >= 8) { const { error } = await sb.auth.updateUser({ password: s }); alert(error ? 'Não deu para trocar a senha: ' + error.message : 'Senha trocada.'); } }); resolve(data); });
   }
   // ---------- rodapé: compartilhar, administração e sair ----------
-  const SITE_V = 76;
+  const SITE_V = 77;
   const escH = v => String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const dataBR = v => v ? new Date(v).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' }) : '–';
   const css2 = `.side-foot .r{flex-wrap:wrap}.side-foot .lg-acoes{margin-left:auto;display:inline-flex;gap:10px}
@@ -2662,7 +2662,85 @@ salvador|Salvador|BR|-12.97|-38.50|pcf|350|160|900|2.3|222100112222|110000000001
 galinhas|Porto de Galinhas|BR|-8.50|-35.00|pr|450|180|1200|4|222100112222|110000100001|n
 floripa|Florianópolis|BR|-27.60|-48.55|pnf|400|180|700|1.2|222110000112|110000000001|n
 foz|Foz do Iguaçu|BR|-25.55|-54.59|n|350|180|900|1.6|211121122212|100000100001|n
-manaus|Amazônia (Manaus)|BR|-3.12|-60.02|na|400|250|1500|4|000011222221|000000100001|n`;
+manaus|Amazônia (Manaus)|BR|-3.12|-60.02|na|400|250|1500|4|000011222221|000000100001|n
+xangai|Xangai|CN|31.23|121.47|cgf|110|60|7700|28|011221112210|010000110100|
+pequim|Pequim|CN|39.90|116.40|cg|100|55|7600|26|011221112210|010000110100|
+xian|Xi'an|CN|34.34|108.94|c|70|40|7500|26|011221112210|010000110100|
+guilin|Guilin e Yangshuo|CN|25.27|110.29|nar|60|35|7600|26|011221112210|010000110100|
+chengdu|Chengdu|CN|30.57|104.07|cgn|70|40|7500|25|011221112210|010000110100|
+zhangjiajie|Zhangjiajie|CN|29.12|110.48|na|60|35|7600|26|011221112210|010000110100|
+hongkong|Hong Kong|HK|22.32|114.17|gcf|170|90|7600|27|222110001222|000000110001|n
+macau|Macau|MO|22.20|113.55|cgf|150|80|7600|27|222110001222|000000110001|n
+osaka|Osaka|JP|34.69|135.50|gfc|120|70|7800|28|112220001221|000110010000|n
+hokkaido|Hokkaido (Sapporo)|JP|43.06|141.35|sng|120|70|7600|26|222110012210|000110010000|n
+busan|Busan|KR|35.18|129.08|pgc|90|50|7700|28|112220001221|000000110001|
+taipe|Taipé|TW|25.03|121.57|gcn|100|55|7800|28|112210001221|000000110001|
+chiangmai|Chiang Mai|TH|18.79|98.98|cnr|45|30|7400|25|222110000122|110000000011|n
+krabi|Krabi e Phi Phi|TH|8.09|98.91|pna|70|40|7300|24|222210000112|110000000011|n
+hoian|Hoi An|VN|15.88|108.33|cgr|50|30|7500|26|222110000122|110000000011|
+hochiminh|Ho Chi Minh|VN|10.82|106.63|cgf|55|35|7500|25|222110000122|110000000011|
+siemreap|Siem Reap (Angkor)|KH|13.36|103.86|c|50|30|7400|25|222110000122|110000000011|
+luangprabang|Luang Prabang|LA|19.89|102.13|cnr|50|30|7500|25|222110000122|110000000011|
+kualalumpur|Kuala Lumpur|MY|3.14|101.69|cgf|70|40|7300|24|222210000112|000000110001|n
+palawan|Palawan (El Nido)|PH|11.18|119.39|pna|80|45|7600|27|222110000122|110000000011|n
+komodo|Komodo e Flores|ID|-8.50|119.88|nap|80|45|7400|24|000122222210|000000110001|e
+yogyakarta|Yogyakarta|ID|-7.80|110.36|c|45|30|7300|24|000122222210|000000110001|e
+jaipur|Rajastão (Jaipur)|IN|26.91|75.79|c|70|35|7100|22|222100000222|000000000011|e
+agra|Délhi e Agra|IN|27.18|78.04|c|70|35|7100|22|222100000222|000000000011|e
+goa|Goa|IN|15.30|74.12|pf|60|35|7000|21|222100000122|000000000011|e
+kerala|Kerala|IN|9.93|76.26|nr|60|30|7000|21|222100000122|000000000011|e
+katmandu|Katmandu e Himalaia|NP|27.72|85.32|na|40|25|7200|23|112210000221|000000110001|e
+srilanka|Sri Lanka|LK|7.29|80.63|pnc|70|35|7100|21|222100000122|000000110001|e
+petra|Petra e Wadi Rum|JO|30.33|35.44|can|100|55|6100|16|112220001221|000000110001|e
+abudhabi|Abu Dhabi|AE|24.45|54.38|cr|160|90|6800|19|222100000122|000000000001|n
+doha|Doha|QA|25.29|51.53|c|160|80|6700|18|222100000122|000000000001|n
+jerusalem|Jerusalém|IL|31.77|35.21|c|200|110|6100|17|112220001221|000000110001|
+mascate|Mascate e desertos de Omã|OM|23.59|58.41|cna|120|60|6800|19|222100000122|000000000001|
+tbilisi|Tbilisi|GE|41.72|44.79|cgn|70|40|6700|18|001222122210|000000110001|n
+kruger|Kruger (safári)|ZA|-24.01|31.49|na|250|120|4800|13|000122222211|000000110001|n
+serengeti|Serengeti (safári)|TZ|-2.33|34.83|na|350|150|5300|14|221002222211|000000110001|e
+masaimara|Masai Mara (safári)|KE|-1.49|35.14|na|300|140|5400|14|221002222211|000000110001|e
+namibia|Namíbia (Sossusvlei)|NA|-24.73|15.29|na|150|70|4000|10|000122222211|000000110001|
+victoria|Cataratas Vitória|ZW|-17.92|25.86|na|150|70|4600|12|000122222211|000000110001|
+mauricio|Maurício|MU|-20.35|57.55|pr|180|80|6000|16|221111122222|000000110001|
+seychelles|Seychelles|SC|-4.62|55.45|pr|250|120|6300|17|221111122222|000000110001|
+fez|Fez e Chefchaouen|MA|34.03|-5.00|c|70|40|4700|13|112221112221|000000110001|n
+luxor|Luxor e Nilo|EG|25.69|32.64|c|60|35|5900|16|222100000222|000000110001|e
+caboverde|Cabo Verde|CV|16.00|-24.00|p|90|50|3500|9|222222111222|000000110001|
+madagascar|Madagascar|MG|-18.88|47.51|na|70|40|5600|15|000122222210|000000110001|
+toronto|Toronto e Niágara|CA|43.65|-79.38|cg|170|95|4900|13|000122222110|000000110000|s
+vancouver|Vancouver e Rochosas|CA|49.28|-123.12|nas|180|100|6300|17|000122222110|000000110000|s
+chicago|Chicago|US|41.88|-87.63|cg|220|110|5100|13|000122222110|000000110000|s
+novaorleans|Nova Orleans|US|29.95|-90.07|fgc|180|100|4600|12|222100000122|000000110001|s
+havai|Havaí|US|21.31|-157.86|pnr|280|130|6900|20|222222222222|100000110001|s
+tulum|Tulum|MX|20.21|-87.46|pr|150|80|4200|11|222210000122|110000000001|
+oaxaca|Oaxaca|MX|17.06|-96.73|cg|80|45|4400|12|222211111222|000000110001|
+costarica|Costa Rica|CR|9.75|-83.75|nap|110|60|3700|9|222210000012|110000000001|n
+panama|Panamá e San Blas|PA|8.98|-79.52|pc|100|55|3500|9|222210000012|110000000001|n
+puntacana|Punta Cana|DO|18.58|-68.40|pr|160|80|3600|9|222210000122|110000000001|n
+aruba|Aruba|AW|12.52|-70.03|pr|220|110|3300|8|222222222222|110000000001|
+lima|Lima|PE|-12.05|-77.04|gc|90|45|2700|7|222210000012|000000110001|n
+quito|Quito e Equador|EC|-0.18|-78.47|cn|70|40|3100|8|221111222221|000000110001|n
+torres|Torres del Paine|CL|-51.00|-73.00|na|180|90|2900|7|221000000122|110000000001|n
+valparaiso|Valparaíso|CL|-33.05|-71.62|cgr|90|50|2400|6|222100001222|110000000001|n
+bogota|Bogotá|CO|4.71|-74.07|cg|70|40|3100|8|221111222221|000000110001|n
+salta|Salta e Jujuy|AR|-24.78|-65.41|nc|70|40|2000|4|111122222221|000000110001|n
+melbourne|Melbourne|AU|-37.81|144.96|cg|160|90|6900|20|222100001222|000000110001|s
+cairns|Cairns e Grande Barreira|AU|-16.92|145.77|pna|150|80|7200|23|000122222211|000000110001|s
+fiji|Fiji|FJ|-17.71|178.07|pr|180|80|6900|20|000122222211|000000110001|
+borabora|Bora Bora|PF|-16.50|-151.74|pr|400|150|6200|17|000122222211|000000110001|
+munique|Munique|DE|48.14|11.58|cg|150|85|5700|15|001122222100|000000110001|t
+hallstatt|Hallstatt e Salzburgo|AT|47.56|13.65|nr|150|80|5800|16|001122222100|000000110001|t
+copenhague|Copenhague|DK|55.68|12.57|cg|180|100|6000|16|001122222100|000000110001|t
+estocolmo|Estocolmo|SE|59.33|18.07|c|150|90|6200|17|001122222100|000000110001|t
+cracovia|Cracóvia|PL|50.06|19.94|cg|80|45|6000|16|001122222100|000000110001|t
+split|Split e ilhas|HR|43.51|16.44|pf|130|70|5700|15|001222112210|000000110001|t
+malta|Malta|MT|35.90|14.51|pc|120|70|5400|15|001222112210|000000110001|t
+mykonos|Mykonos|GR|37.45|25.33|pf|220|110|5800|16|001222112210|000000110001|t
+bruges|Bruges|BE|51.21|3.22|cr|140|80|5600|15|001122222100|000000110001|t
+provenca|Provença|FR|43.95|4.81|rgn|150|85|5400|14|001222112210|000000110001|t
+nice|Côte d'Azur (Nice)|FR|43.70|7.27|pr|180|95|5500|15|001222112210|000000110001|t
+tallinn|Tallinn|EE|59.44|24.75|c|100|60|6400|17|001122222100|000000110001|t`;
 const VG_DEST = VG_DEST_TXT.trim().split('\n').map(l => { const [id, nome, pais, lat, lon, tipos, h, d, v, hr, ep, alta, visto] = l.split('|');
   return { id, nome, pais, lat: +lat, lon: +lon, tipos, h: +h, d: +d, v: +v, hr: +hr, ep: ep.split('').map(Number), alta: alta.split('').map(Number), visto }; });
 const VG_TIPOS = [['p', 'Praia'], ['n', 'Natureza'], ['c', 'Cultura e história'], ['f', 'Festa e vida noturna'], ['g', 'Gastronomia'], ['a', 'Aventura'], ['s', 'Neve'], ['r', 'Romântica e relax']];
@@ -2706,6 +2784,7 @@ function vgNormalizar(s) {
   ['lugares', 'fui', 'cmp', 'viagens'].forEach(k => { if (!Array.isArray(v[k])) v[k] = []; });
   v.lugares = v.lugares.filter(l => l && typeof l === 'object' && l.id && l.pais);
   v.lugares.forEach(l => { if (!VG_ST[l.st]) l.st = 'quero'; l.vont = Math.min(5, Math.max(1, Math.round(+l.vont || 3))); if (typeof l.tipos !== 'string') l.tipos = ''; if (typeof l.nota !== 'string') l.nota = ''; if (!l.ov || typeof l.ov !== 'object') l.ov = {}; });
+  v.lugares.forEach(l => { if (l.dest && vgDest(l.dest)) return; const n = vgNorm(l.nome), nn = VG_ALIAS[n] || n, d = VG_DEST.find(x => x.pais === l.pais && vgNorm(x.nome) === nn); if (d) { l.dest = d.id; l.lat = d.lat; l.lon = d.lon; return; } if (l.lat == null) { const c = vgAchaCid(l.nome, l.pais); if (c) { l.lat = c.lat; l.lon = c.lon; } } });
   v.fui = [...new Set(v.fui.filter(c => /^[A-Z]{2}$/.test(c)))];
   v.cmp = v.cmp.filter(id => v.lugares.some(l => l.id === id)).slice(0, 5);
   v.viagens = v.viagens.filter(x => x && x.id); v.viagens.forEach(x => { if (!VG_VST[x.st]) x.st = 'planejada'; });
@@ -2718,11 +2797,2004 @@ function vgNormalizar(s) {
 
 /* ---------- custos de referência ---------- */
 function vgUsd() { const u = mundoDb && (mundoDb.itens || []).find(x => /usd/i.test(x.id) && x.grupo === 'cambio'); return u && +u.p1 > 0 ? { v: +u.p1, d: u.d1 } : { v: 5.4, d: '' }; }
+// cidades (GeoNames, população ≥ 250 mil, capitais e cidades turísticas): Nome|país|lat|lon|nome original
+const VG_CID_TXT = `Xangai|CN|31.22|121.46|Shanghai
+Istambul|TR|41.01|28.95|Istanbul
+Buenos Aires|AR|-34.61|-58.38
+Mumbai|IN|19.07|72.88
+Cidade do México|MX|19.43|-99.13|Mexico City
+Pequim|CN|39.91|116.40|Beijing
+Karachi|PK|24.86|67.01
+Tianjin|CN|39.14|117.18
+Cantão|CN|23.12|113.25|Guangzhou
+Délhi|IN|28.65|77.23|Delhi
+Moscou|RU|55.75|37.62|Moscow
+Shenzhen|CN|22.55|114.07
+Dhaka|BD|23.71|90.41
+Seul|KR|37.57|126.98|Seoul
+São Paulo|BR|-23.55|-46.64
+Wuhan|CN|30.58|114.27
+Lagos|NG|6.45|3.39
+Jacarta|ID|-6.21|106.85|Jakarta
+Tóquio|JP|35.69|139.69|Tokyo
+Nova York|US|40.71|-74.01|New York City
+Dongguan|CN|23.02|113.75
+Taipé|TW|25.05|121.53|Taipei
+Kinshasa|CD|-4.33|15.31
+Lima|PE|-12.04|-77.03
+Cairo|EG|30.06|31.25
+Bogotá|CO|4.61|-74.08
+Londres|GB|51.51|-0.13|London
+Chongqing|CN|29.56|106.55
+Chengdu|CN|30.67|104.07
+Bagdá|IQ|33.34|44.40|Baghdad
+Nanquim|CN|32.06|118.78|Nanjing
+Teerã|IR|35.69|51.42|Tehran
+Nanchong|CN|30.80|106.08
+Hong Kong|HK|22.28|114.17
+Xi’an|CN|34.26|108.93
+Lahore|PK|31.56|74.35
+Shenyang|CN|41.79|123.43
+Hangzhou|CN|30.29|120.16
+Rio de Janeiro|BR|-22.91|-43.18
+Harbin|CN|45.75|126.65
+Tai’an|CN|36.19|117.12
+Suzhou|CN|31.30|120.60
+Shantou|CN|23.37|116.71
+Bangkok|TH|13.75|100.50
+Bengaluru|IN|12.97|77.59
+São Petersburgo|RU|59.94|30.31|Saint Petersburg
+Santiago|CL|-33.46|-70.65
+Calcutá|IN|22.56|88.36|Kolkata
+Sydney|AU|-33.87|151.21
+Yangon|MM|16.81|96.16
+Jinan|CN|36.67|117.00
+Chennai|IN|13.09|80.28
+Zhengzhou|CN|34.76|113.65
+Melbourne|AU|-37.81|144.96
+Riad|SA|24.69|46.72|Riyadh
+Changchun|CN|43.88|125.32
+Dalian|CN|38.91|121.60
+Los Angeles|US|34.05|-118.24
+Chittagong|BD|22.34|91.83
+Kunming|CN|25.04|102.72
+Alexandria|EG|31.20|29.92
+Ahmedabad|IN|23.03|72.59
+Qingdao|CN|36.06|120.38
+Busan|KR|35.10|129.03
+Abidjan|CI|5.35|-4.00
+Kano|NG|12.00|8.52
+Foshan|CN|23.03|113.13
+Hyderabad|IN|17.38|78.46
+Puyang|CN|29.46|119.89
+Yokohama|JP|35.43|139.65
+Ibadan|NG|7.38|3.91
+Singapura|SG|1.29|103.85|Singapore
+Wuxi|CN|31.57|120.29
+Xiamen|CN|24.48|118.08
+Ankara|TR|39.92|32.85
+Tianshui|CN|34.58|105.74
+Ningbo|CN|29.88|121.55
+Ho Chi Minh|VN|10.82|106.63|Ho Chi Minh City
+Shiyan|CN|32.65|110.78
+Cidade do Cabo|ZA|-33.93|18.42|Cape Town
+Taiyuan|CN|37.87|112.56
+Berlim|DE|52.52|13.41|Berlin
+Tangshan|CN|39.63|118.18
+Hefei|CN|31.86|117.28
+Madrid|ES|40.42|-3.70
+Pyongyang|KP|39.03|125.75
+Casablanca|MA|33.59|-7.61
+Zibo|CN|36.79|118.06
+Zhongshan|CN|21.32|110.57
+Durban|ZA|-29.86|31.03
+Changsha|CN|28.20|112.97
+Kabul|AF|34.53|69.17
+Ürümqi|CN|43.80|87.60
+Caracas|VE|10.49|-66.88
+Dubai|AE|25.08|55.31
+Pune|IN|18.52|73.86
+Sūrat|IN|21.20|72.83
+Jeddah|SA|21.49|39.19
+Shijiazhuang|CN|38.04|114.48
+Kanpur|IN|26.47|80.35
+Kiev|UA|50.45|30.52|Kyiv
+Luanda|AO|-8.84|13.23
+Quezon City|PH|14.65|121.05
+Adis Abeba|ET|9.02|38.75|Addis Ababa
+Nairobi|KE|-1.28|36.82
+Chicago|US|41.85|-87.65
+Salvador|BR|-12.97|-38.51
+Jaipur|IN|26.92|75.79
+Dar es Salaam|TZ|-6.82|39.27
+Lanzhou|CN|36.06|103.84
+Incheon|KR|37.46|126.71
+Yunfu|CN|22.93|112.04
+Toronto|CA|43.70|-79.42
+Navi Mumbai|IN|19.04|73.02
+Basrah|IQ|30.51|47.78
+Osaka|JP|34.69|135.50
+Mogadishu|SO|2.04|45.34
+Daegu|KR|35.87|128.59
+Faisalabad|PK|31.42|73.09
+İzmir|TR|38.41|27.14
+Dakar|SN|14.69|-17.44
+Lucknow|IN|26.84|80.92
+Giza|EG|30.01|31.21
+Fortaleza|BR|-3.72|-38.54
+Cali|CO|3.44|-76.52
+Surabaya|ID|-7.25|112.75
+Belo Horizonte|BR|-19.92|-43.94
+Nanchang|CN|28.68|115.85
+Roma|IT|41.89|12.51|Rome
+Mashhad|IR|36.32|59.57
+Brooklyn|US|40.65|-73.95
+Houston|US|29.76|-95.36
+Queens|US|40.68|-73.84
+Nagpur|IN|21.15|79.08
+Maracaibo|VE|10.67|-71.61
+Brasília|BR|-15.78|-47.93
+Santo Domingo|DO|18.47|-69.89
+Nagoya|JP|35.18|136.91
+Brisbane|AU|-27.47|153.03
+Havana|CU|23.13|-82.38
+Paris|FR|48.85|2.35
+Al Mawşil al Jadīdah|IQ|36.33|43.11
+Joanesburgo|ZA|-26.20|28.04|Johannesburg
+Kowloon|HK|22.32|114.18
+Al Başrah al Qadīmah|IQ|30.50|47.82
+Almaty|KZ|43.26|76.93
+Dadonghai|CN|18.22|109.51
+Medellín|CO|6.25|-75.56
+Tashkent|UZ|41.26|69.22
+Argel|DZ|36.73|3.09|Algiers
+Khartoum|SD|15.55|32.53
+Accra|GH|5.56|-0.20
+Guayaquil|EC|-2.20|-79.89
+Ordos|CN|39.61|109.78
+Sanaa|YE|15.35|44.21
+Beirute|LB|33.89|35.50|Beirut
+Perth|AU|-31.95|115.86
+Sapporo|JP|43.07|141.35
+Jilin|CN|43.85|126.56
+Bucareste|RO|44.43|26.11|Bucharest
+Camayenne|GN|9.54|-13.69
+Indore|IN|22.72|75.83
+Iztapalapa|MX|19.36|-99.06
+Conakry|GN|9.54|-13.68
+Bayan Nur|CN|40.74|107.39
+Maracay|VE|10.24|-67.59
+Medan|ID|3.58|98.67
+Rawalpindi|PK|33.60|73.05
+Minsk|BY|53.90|27.57
+Budapeste|HU|47.50|19.04|Budapest
+Mosul|IQ|36.34|43.12
+Hamburgo|DE|53.55|9.99|Hamburg
+Curitiba|BR|-25.43|-49.27
+Varsóvia|PL|52.23|21.01|Warsaw
+Bandung|ID|-6.92|107.61
+Soweto|ZA|-26.27|27.86
+Viena|AT|48.21|16.37|Vienna
+Rabat|MA|34.01|-6.83
+Ecatepec de Morelos|MX|19.60|-99.06
+Barcelona|ES|41.39|2.16
+Pretoria|ZA|-25.74|28.19
+Aleppo|SY|36.20|37.16
+Montreal|CA|45.51|-73.59|Montréal
+Kunshan|CN|31.38|120.95
+Manila|PH|14.60|120.98
+Patna|IN|25.59|85.14
+Bhopal|IN|23.25|77.40
+Manaus|BR|-3.10|-60.02
+Xinyang|CN|32.12|114.07
+Kaduna|NG|10.53|7.44
+Phnom Penh|KH|11.56|104.92
+Damasco|SY|33.51|36.29|Damascus
+Filadélfia|US|39.95|-75.16|Philadelphia
+Phoenix|US|33.45|-112.07
+Isfahan|IR|32.65|51.67
+Ludhiāna|IN|30.91|75.85
+Harare|ZW|-17.83|31.05
+Kobe|JP|34.69|135.18
+Bekasi|ID|-6.23|106.99
+Kaohsiung|TW|22.62|120.31
+Estocolmo|SE|59.33|18.07|Stockholm
+Caloocan City|PH|14.65|120.97
+Guadalajara|MX|20.67|-103.39
+Manhattan|US|40.78|-73.97
+Assunção|PY|-25.29|-57.65|Asunción
+Recife|BR|-8.05|-34.88
+Daejeon|KR|36.35|127.38
+San Antonio|US|29.42|-98.49
+Kumasi|GH|6.69|-1.62
+Kota Bharu|MY|6.12|102.24
+Kyoto|JP|35.02|135.75
+Kuala Lumpur|MY|3.14|101.69
+Karaj|IR|35.83|50.99
+Katmandu|NP|27.70|85.32|Kathmandu
+Palembang|ID|-2.92|104.75
+Multan|PK|30.20|71.48
+Tirunelveli|IN|8.73|77.68
+Puebla|MX|19.04|-98.20
+Hanói|VN|21.02|105.84|Hanoi
+Kharkiv|UA|49.98|36.25
+Agra|IN|27.18|78.02
+Córdoba|AR|-31.41|-64.18
+Tabriz|IR|38.08|46.29
+Novosibirsk|RU|55.04|82.93
+Gwangju|KR|35.15|126.92
+Bursa|TR|40.20|29.06
+Vadodara|IN|22.30|73.21
+Belém|BR|-1.46|-48.50
+Fushun|CN|41.89|123.94
+Quito|EC|-0.23|-78.52
+San Diego|US|32.72|-117.16
+Fukuoka|JP|33.60|130.42
+Antananarivo|MG|-18.91|47.54
+Luoyang|CN|34.68|112.45
+Hyderabad|PK|25.39|68.37
+The Bronx|US|40.85|-73.87
+Valência|VE|10.16|-68.01|Valencia
+Gujranwala|PK|32.16|74.19
+Barranquilla|CO|10.97|-74.78
+Guankou|CN|28.16|113.63
+Lubumbashi|CD|-11.66|27.48
+Porto Alegre|BR|-30.03|-51.23
+Tangerang|ID|-6.18|106.63
+Najafgarh|IN|28.61|76.98
+Santa Cruz de la Sierra|BO|-17.79|-63.18
+Handan|CN|36.60|114.47
+Kampala|UG|0.32|32.58
+Yekaterinburg|RU|56.85|60.61
+Khulna|BD|22.81|89.56
+Douala|CM|4.05|9.70
+Gorakhpur|IN|29.45|75.67
+Sharjah|AE|25.34|55.41
+Meca|SA|21.43|39.83|Mecca
+Makassar|ID|-5.15|119.43
+Juárez|MX|31.72|-106.46
+Kawasaki|JP|35.52|139.72
+South Tangerang|ID|-6.29|106.72
+Baotou|CN|40.58|110.02
+Tijuana|MX|32.50|-117.00
+Dallas|US|32.78|-96.81
+Medina|SA|24.47|39.61
+Yaoundé|CM|3.87|11.52
+Bamako|ML|12.65|-8.00
+Nashik|IN|20.00|73.79
+Semarang|ID|-6.99|110.42
+Brazzaville|CG|-4.27|15.28
+Pimpri|IN|18.62|73.81
+Nizhniy Novgorod|RU|56.33|44.00
+Amman|JO|31.96|35.95
+Budta|PH|7.20|124.44
+Belgrado|RS|44.80|20.47|Belgrade
+Montevidéu|UY|-34.90|-56.19|Montevideo
+Lusaka|ZM|-15.41|28.29
+Xuchang|CN|34.03|113.86
+Kalyān|IN|19.24|73.14
+Thāne|IN|19.20|72.96
+Munique|DE|48.14|11.58|Munich
+Ra’s Bayrūt|LB|33.90|35.48
+Shiraz|IR|29.61|52.53
+Adana|TR|36.99|35.33
+Suwon|KR|37.29|127.01
+León de los Aldama|MX|21.13|-101.67
+Milão|IT|45.46|9.19|Milan
+Port-au-Prince|HT|18.54|-72.34
+Adelaide|AU|-34.93|138.60
+Meerut|IN|28.98|77.71
+Nowrangapur|IN|19.23|82.55
+Faridabad|IN|28.41|77.31
+Peshawar|PK|34.01|71.58
+Davao|PH|7.07|125.61
+Mandalay|MM|21.97|96.08
+Yueyang|CN|29.37|113.09
+Santiago de los Caballeros|DO|19.45|-70.70
+Omdurman|SD|15.64|32.48
+Anshan|CN|41.12|122.99
+Tongshan|CN|34.18|117.16
+Ghāziābād|IN|28.67|77.44
+Depok|ID|-6.40|106.82
+Saitama|JP|35.91|139.66
+Dombivli|IN|19.22|73.08
+Maputo|MZ|-25.97|32.58
+Gustavo Adolfo Madero|MX|19.49|-99.11
+Fuzhou|CN|26.06|119.31
+Rājkot|IN|22.29|70.79
+Rosario|AR|-32.95|-60.64
+Guiyang|CN|26.58|106.72
+Goiânia|BR|-16.68|-49.25
+Guarulhos|BR|-23.46|-46.53
+Praga|CZ|50.09|14.42|Prague
+Varanasi|IN|25.32|83.01
+Batam|ID|1.15|104.02
+Copenhague|DK|55.68|12.57|Copenhagen
+Sófia|BG|42.70|23.32|Sofia
+Tripoli|LY|32.89|13.19
+Port Harcourt|NG|4.78|7.01
+Hiroshima|JP|34.40|132.45
+Zapopan|MX|20.72|-103.38
+Lijiang|CN|26.87|100.22
+Monterrey|MX|25.68|-100.32
+Samara|RU|53.20|50.15
+Omsk|RU|54.99|73.37
+Benin City|NG|6.34|5.63
+Malingao|PH|7.16|124.47
+Baku|AZ|40.38|49.89
+Maiduguri|NG|11.85|13.16
+Kazan|RU|55.79|49.12
+Ciudad Nezahualcoyotl|MX|19.40|-99.01
+Erevan|AM|40.18|44.51|Yerevan
+Amritsar|IN|31.62|74.88
+Ouagadougou|BF|12.37|-1.53
+Yono|JP|35.88|139.63
+Rostov-na-Donu|RU|47.23|39.72
+Allahābād|IN|25.44|81.84
+Goyang-si|KR|37.66|126.83
+Gaziantep|TR|37.06|37.38
+Visakhapatnam|IN|17.68|83.20
+Sendai|JP|38.27|140.87
+Chelyabinsk|RU|55.15|61.43
+Datong|CN|40.09|113.29
+Tbilisi|GE|41.69|44.83
+Changshu City|CN|31.65|120.74
+Taichung|TW|24.15|120.68
+Teni|IN|10.01|77.48
+Xianyang|CN|34.34|108.70
+Ufa|RU|54.74|55.97
+Dnipro|UA|48.46|35.04
+Seongnam-si|KR|37.44|127.14
+Campinas|BR|-22.91|-47.06
+Jabalpur|IN|23.17|79.95
+Hāora|IN|22.58|88.32
+Huainan|CN|32.63|117.00
+San Jose|US|37.34|-121.89
+Donetsk|UA|48.02|37.80
+Dublin|IE|53.33|-6.25
+Calgary|CA|51.05|-114.09
+Bruxelas|BE|50.85|4.35|Brussels
+Aurangabad|IN|19.88|75.34
+Volgograd|RU|48.72|44.50
+Nova Iguaçu|BR|-22.76|-43.45
+Jieyang|CN|23.54|116.37
+Odessa|UA|46.48|30.73
+Zhu Cheng City|CN|36.00|119.40
+Shivaji Nagar|IN|18.53|73.85
+Kitakyushu|JP|33.85|130.85
+Solāpur|IN|17.67|75.91
+Baoding|CN|38.85|115.49
+Guatemala City|GT|14.64|-90.51
+Benxi|CN|41.29|123.77
+Birmingham|GB|52.48|-1.90
+Perm|RU|58.01|56.25
+Srinagar|IN|34.09|74.81
+Zaria|NG|11.11|7.72
+Managua|NI|12.13|-86.25
+Port Elizabeth|ZA|-33.96|25.61
+Fès|MA|34.03|-5.00
+Köln|DE|50.93|6.95
+Ulsan|KR|35.54|129.32
+Chandigarh|IN|30.74|76.79
+Coimbatore|IN|11.01|76.97
+Nápoles|IT|40.85|14.27|Naples
+Maceió|BR|-9.67|-35.74
+Cartagena|CO|10.40|-75.51
+Changzhou|CN|31.77|119.95
+Sulţānah|SA|24.49|39.59
+Monrovia|LR|6.30|-10.80
+Kingston|JM|18.00|-76.79
+Erbil|IQ|36.18|44.01
+Austin|US|30.27|-97.74
+Krasnoyarsk|RU|56.02|92.87
+Nay Pyi Taw|MM|19.75|96.13
+Jodhpur|IN|26.27|73.01
+Chiba|JP|35.60|140.12
+São Luís|BR|-2.53|-44.30
+Madurai|IN|9.92|78.12
+Sale|MA|34.05|-6.80
+Huaibei|CN|33.97|116.79
+Cochabamba|BO|-17.39|-66.16
+Abobo|CI|5.42|-4.02
+Kaifeng|CN|34.80|114.31
+Abū Ghurayb|IQ|33.31|44.18
+Qom|IR|34.64|50.88
+Bishkek|KG|42.87|74.59
+Guwahati|IN|26.18|91.75
+Aba|NG|5.11|7.37
+Pingdingshan|CN|33.74|113.30
+Gwalior|IN|26.23|78.17
+Qiqihar|CN|47.34|123.96
+Klang|MY|3.04|101.44
+Mendoza|AR|-32.89|-68.83
+Konya|TR|37.87|32.48
+Mbuji-Mayi|CD|-6.14|23.59
+Vijayawada|IN|16.51|80.65
+Pikine|SN|14.76|-17.39
+Turim|IT|45.07|7.69|Turin
+Mysore|IN|12.30|76.64
+Jacksonville|US|30.33|-81.66
+Wenzhou|CN|28.00|120.67
+São Francisco|US|37.77|-122.42|San Francisco
+Liverpool|GB|53.41|-2.98
+Saratov|RU|51.54|46.01
+Rohini|IN|28.74|77.07
+Tegucigalpa|HN|14.08|-87.21
+Bucheon-si|KR|37.50|126.78
+Columbus|US|39.96|-83.00
+Voronezh|RU|51.67|39.18
+Ranchi|IN|23.34|85.31
+Ulan Bator|MN|47.91|106.88
+Takeo|KH|10.99|104.78
+Ahvaz|IR|31.32|48.68
+Arequipa|PE|-16.40|-71.53
+Padang|ID|-0.95|100.35
+Hubli|IN|15.35|75.13
+Zhabei|CN|31.26|121.46
+Marrakech|MA|31.63|-8.00|Marrakesh
+Denpasar|ID|-8.65|115.22
+Kampung Baru Subang|MY|3.15|101.53
+Fort Worth|US|32.73|-97.32
+Indianapolis|US|39.77|-86.16
+Charlotte|US|35.23|-80.84
+Duque de Caxias|BR|-22.79|-43.31
+Jos|NG|9.93|8.89
+Valência|ES|39.47|-0.38|Valencia
+Ilorin|NG|8.50|4.54
+Callao|PE|-12.06|-77.12
+La Paz|BO|-16.50|-68.15
+Ottawa|CA|45.41|-75.70
+Barquisimeto|VE|10.06|-69.36
+Chihuahua|MX|28.64|-106.09
+Nanning|CN|22.82|108.32
+Freetown|SL|8.49|-13.24
+Johor Bahru|MY|1.47|103.76
+Jerusalém|IL|31.77|35.22|Jerusalem
+Bandar Lampung|ID|-5.43|105.26
+Bogor|ID|-6.59|106.79
+Narela|IN|28.85|77.09
+Mombasa|KE|-4.05|39.66
+Cebu|PH|10.32|123.89|Cebu City
+Muscat|OM|23.58|58.41
+Zaporizhia|UA|47.82|35.19
+Marselha|FR|43.30|5.38|Marseille
+Zarqa|JO|32.07|36.09
+Naucalpan de Juárez|MX|19.48|-99.24
+Çankaya|TR|39.92|32.86
+Rahim Yar Khan|PK|28.42|70.30
+Pasragad Branch|IR|34.78|48.47
+Boumerdas|DZ|36.77|3.48
+Jalandhar|IN|31.33|75.58
+Thiruvananthapuram|IN|8.49|76.95
+Sakai|JP|34.58|135.47
+Anyang|CN|36.10|114.38
+San Miguel de Tucumán|AR|-26.82|-65.22
+Cotonou|BJ|6.37|2.42
+Salem|IN|11.65|78.16
+Mérida|MX|20.98|-89.62
+Tiruchirappalli|IN|10.82|78.70
+Homs|SY|34.73|36.72
+Hohhot|CN|40.81|111.65
+Niamey|NE|13.51|2.11
+Tainan|TW|22.99|120.21
+Shangyu|CN|30.02|120.87
+Łódź|PL|51.77|19.47
+Dammam|SA|26.43|50.10
+Xining|CN|36.63|101.76
+Kahrīz|IR|34.38|47.06
+Kota|IN|25.18|75.84
+Natal|BR|-5.79|-35.21
+Bhubaneshwar|IN|20.27|85.83
+Qinhuangdao|CN|39.93|119.59
+Hengyang|CN|26.89|112.62
+Antalya|TR|36.91|30.70
+Cracóvia|PL|50.06|19.94|Kraków
+Alīgarh|IN|27.88|78.07
+Da Nang|VN|16.07|108.22
+Pietermaritzburg|ZA|-29.62|30.39
+Lomé|TG|6.13|1.22
+Trujillo|PE|-8.12|-79.03
+Malang|ID|-7.98|112.63
+Ciudad Guayana|VE|8.35|-62.64
+Bareilly|IN|28.37|79.43
+Kigali|RW|-1.95|30.06
+Teresina|BR|-5.09|-42.80
+Xinxiang|CN|35.19|113.80
+São Bernardo do Campo|BR|-23.69|-46.56
+Hegang|CN|47.35|130.30
+Riga|LV|56.95|24.11
+Amsterdam|NL|52.37|4.89
+Oyo|NG|7.85|3.93
+Quetta|PK|30.18|67.00
+Nottingham|GB|52.95|-1.15
+Campo Grande|BR|-20.44|-54.65
+Ashgabat|TM|37.95|58.38
+Álvaro Obregón|MX|19.36|-99.20
+Muzaffarābād|PK|34.37|73.47
+Bağcılar|TR|41.04|28.86
+As Sulaymānīyah|IQ|35.56|45.43
+San Luis Potosí|MX|22.15|-100.98
+Aguascalientes|MX|21.88|-102.28
+Cúcuta|CO|7.89|-72.51
+Morādābād|IN|28.84|78.78
+N'Djamena|TD|12.11|15.04
+Langfang|CN|39.51|116.69
+Zhumadian|CN|32.98|114.03
+Yantai|CN|37.48|121.44
+Lviv|UA|49.84|24.02
+Hermosillo|MX|29.10|-110.98
+Edmonton|CA|53.55|-113.47
+Jeonju|KR|35.82|127.15
+Saltillo|MX|25.42|-101.01
+Zhuzhou|CN|27.83|113.15
+Subang Jaya|MY|3.04|101.58
+Bhiwandi|IN|19.30|73.06
+Pekanbaru|ID|0.52|101.44
+Sevilha|ES|37.38|-5.97|Sevilla
+Tol’yatti|RU|53.53|49.35
+Jaboatão|BR|-8.18|-35.00
+Shizuoka|JP|34.98|138.38
+Santo Domingo Oeste|DO|18.50|-70.00
+Rājshāhi|BD|24.37|88.60
+Santo Domingo Este|DO|18.49|-69.86
+City of Balikpapan|ID|-1.24|116.89
+Battagram|PK|34.68|73.02
+Changzhi|CN|35.21|111.74
+Bulawayo|ZW|-20.15|28.58
+Zagreb|HR|45.81|15.98
+Agadir|MA|30.42|-9.60
+Sarajevo|BA|43.85|18.36
+La Plata|AR|-34.92|-57.95
+Túnis|TN|36.82|10.17|Tunis
+Zhangjiakou|CN|40.81|114.88
+Zigong|CN|29.34|104.78
+Mexicali|MX|32.63|-115.45
+Fuxin|CN|42.02|121.66
+Enugu|NG|6.44|7.50
+Tânger|MA|35.77|-5.80|Tangier
+Huangshi|CN|30.25|115.05
+Liaoyang|CN|41.27|123.17
+Sheffield|GB|53.38|-1.47
+Seattle|US|47.61|-122.33
+Denver|US|39.74|-104.98
+El Paso|US|31.76|-106.49
+Kumamoto|JP|32.81|130.69
+Raipur|IN|21.23|81.63
+General Santos|PH|6.11|125.17
+Dushanbe|TJ|38.54|68.78
+Osasco|BR|-23.53|-46.79
+Detroit|US|42.33|-83.05
+Culiacán|MX|24.79|-107.39
+Matola|MZ|-25.96|32.46
+Saragoça|ES|41.66|-0.88|Zaragoza
+Xiangtan|CN|27.85|112.90
+Guadalupe|MX|25.68|-100.26
+Acapulco de Juárez|MX|16.85|-99.91
+Ipoh|MY|4.58|101.08
+Mississauga|CA|43.58|-79.66
+Boston|US|42.36|-71.06
+Puyang Chengguanzhen|CN|35.71|115.01
+Nantong|CN|32.03|120.87
+Mudanjiang|CN|44.58|129.60
+Atenas|GR|37.98|23.73|Athens
+Santo André|BR|-23.66|-46.54
+Nouakchott|MR|18.09|-15.98
+Pointe-Noire|CG|-4.78|11.86
+Memphis|US|35.15|-90.05
+Tlalnepantla|MX|19.54|-99.20
+Kryvyi Rih|UA|47.91|33.38
+João Pessoa|BR|-7.12|-34.86
+Ansan-si|KR|37.32|126.82
+Benghazi|LY|32.11|20.07
+Frankfurt|DE|50.12|8.68|Frankfurt am Main
+Krasnodar|RU|45.04|38.98
+Guilin|CN|25.28|110.29
+Palermo|IT|38.13|13.34
+Colombo|LK|6.94|79.85
+Lilongwe|MW|-13.97|33.79
+Oran|DZ|35.70|-0.64
+Diyarbakır|TR|37.91|40.22
+Taguig|PH|14.52|121.08
+New South Memphis|US|35.09|-90.06
+Ulyanovsk|RU|54.33|48.39
+Kotli|PK|33.52|73.90
+Okayama|JP|34.65|133.93
+Zhanjiang|CN|21.28|110.34
+Al Aḩmadī|KW|29.08|48.08
+Yogyakarta|ID|-7.80|110.36
+North York|CA|43.77|-79.42
+Chisinau|MD|47.01|28.86
+Wrocław|PL|51.10|17.03
+Cheongju-si|KR|36.64|127.49
+Anyang-si|KR|37.39|126.93
+Tébessa|DZ|35.40|8.12
+Zhenjiang|CN|32.21|119.46
+Portland|US|45.52|-122.68
+Winnipeg|CA|49.88|-97.15
+Dandong|CN|40.13|124.39
+Oklahoma City|US|35.47|-97.52
+Izhevsk|RU|56.85|53.20
+Jaboatão dos Guararapes|BR|-8.11|-35.01
+Shaoguan|CN|24.80|113.58
+Yancheng|CN|33.36|120.16
+Cancún|MX|21.17|-86.85
+Contagem|BR|-19.93|-44.05
+Santiago de Querétaro|MX|20.59|-100.39
+Bhilai|IN|21.21|81.43
+Panshan|CN|41.19|122.05
+Djibouti|DJ|11.59|43.15
+Las Vegas|US|36.17|-115.14
+Baltimore|US|39.29|-76.61
+Kermanshah|IR|34.31|47.06
+Coyoacán|MX|19.35|-99.16
+Ribeirão Preto|BR|-21.18|-47.81
+Al Ḩudaydah|YE|14.80|42.95
+Pasig City|PH|14.59|121.06
+Bristol|GB|51.46|-2.60
+Jamshedpur|IN|22.80|86.19
+Haikou|CN|20.05|110.34
+Ta‘izz|YE|13.58|44.02
+São José dos Campos|BR|-23.18|-45.89
+Santa María Chimalhuacán|MX|19.42|-98.95
+Taizhou|CN|32.49|119.91
+Xingtai|CN|37.06|114.49
+Borivli|IN|19.23|72.86
+Torreón|MX|25.54|-103.42
+Yaroslavl|RU|57.63|39.87
+Benoni|ZA|-26.19|28.32
+Hamamatsu|JP|34.70|137.73
+Cochin|IN|9.94|76.26
+Jinzhou|CN|41.11|121.14
+Amrāvati|IN|20.93|77.75
+Abu Dhabi|AE|24.45|54.40
+Haiphong|VN|20.86|106.68
+Washington, D.C.|US|38.90|-77.04
+Islamabad|PK|33.72|73.04
+Kirkuk|IQ|35.47|44.39
+Sāngli|IN|16.85|74.56
+Milwaukee|US|43.04|-87.91
+Vancouver|CA|49.25|-123.12
+Scarborough|CA|43.77|-79.26
+Shuangyashan|CN|46.64|131.15
+Situbondo|ID|-7.71|114.01
+Barnaul|RU|53.36|83.76
+Rotterdam|NL|51.92|4.48
+Morelia|MX|19.70|-101.18
+Luancheng|CN|37.88|114.65
+Rasht|IR|37.28|49.59
+Abeokuta|NG|7.16|3.35
+Essen|DE|51.46|7.01
+Kayseri|TR|38.73|35.49
+Glasgow|GB|55.87|-4.26
+Gold Coast|AU|-28.00|153.43
+Yingkou|CN|40.66|122.23
+Abuja|NG|9.06|7.50
+Las Piñas|PH|14.45|120.98
+Zhangzhou|CN|24.51|117.66
+Stuttgart|DE|48.78|9.18
+Reynosa|MX|26.08|-98.29
+Dortmund|DE|51.51|7.47
+Vladivostok|RU|43.11|131.87
+Irkutsk|RU|52.30|104.30
+Blantyre|MW|-15.78|35.01
+New Kingston|JM|18.01|-76.78
+Üsküdar|TR|41.02|29.01
+Gênova|IT|44.40|8.94|Genoa
+Cuttack|IN|20.46|85.88
+Oslo|NO|59.91|10.75
+Hachiōji|JP|35.66|139.32
+Khabarovsk|RU|48.48|135.08
+Khabarovsk Vtoroy|RU|48.44|135.13
+Libreville|GA|0.39|9.45
+Kerman|IR|30.28|57.08
+Chiclayo|PE|-6.77|-79.84
+Orūmīyeh|IR|37.55|45.08
+Bahçelievler|TR|41.00|28.86
+Bengbu|CN|32.94|117.36
+Bīkaner|IN|28.02|73.31
+Tlaquepaque|MX|20.64|-103.29
+Tlalpan|MX|19.30|-99.16
+Umraniye|TR|41.02|29.12
+Düsseldorf|DE|51.22|6.78
+Banjarmasin|ID|-3.32|114.59
+Göteborg|SE|57.71|11.97
+Shihezi|CN|44.30|86.04
+Bucaramanga|CO|7.13|-73.12
+South Boston|US|42.33|-71.05
+Kuching|MY|1.55|110.33
+Poznań|PL|52.41|16.93
+Málaga|ES|36.72|-4.42
+Bouaké|CI|7.69|-5.03
+Nyala|SD|12.05|24.88
+Asmara|ER|15.34|38.93
+Sokoto|NG|13.06|5.24
+Uberlândia|BR|-18.92|-48.28
+Onitsha|NG|6.15|6.79
+Honchō|JP|35.70|139.99
+Albuquerque|US|35.08|-106.65
+Hamhŭng|KP|39.92|127.54
+Sorocaba|BR|-23.50|-47.46
+Helsinque|FI|60.17|24.94|Helsinki
+Warangal|IN|18.00|79.58
+Santiago de Cuba|CU|20.02|-75.83
+Siping|CN|43.16|124.38
+Kagoshima|JP|31.57|130.55
+Surakarta|ID|-7.56|110.83
+Huai'an|CN|33.59|119.02
+Bhavnagar|IN|21.76|72.15
+Mar del Plata|AR|-38.00|-57.56
+Bahawalpur|PK|29.40|71.68
+Zahedan|IR|29.50|60.86
+Aden|YE|12.78|45.04
+Nanded|IN|19.16|77.31
+Orenburg|RU|51.77|55.10
+Changwon|KR|35.23|128.68
+Pristina|XK|42.67|21.17
+Jiamusi|CN|46.80|130.32
+Antipolo|PH|14.63|121.12
+Neijiang|CN|29.58|105.06
+Bremen|DE|53.08|8.81
+Meknès|MA|33.89|-5.55
+Banqiao|TW|25.01|121.47
+Sargodha|PK|32.09|72.67
+Bangui|CF|4.36|18.55
+Vilnius|LT|54.69|25.28
+Yangzhou|CN|32.40|119.44
+Novokuznetsk|RU|53.76|87.11
+Kisangani|CD|0.52|25.19
+Port Said|EG|31.27|32.30
+Mersin|TR|36.81|34.64
+Tuxtla|MX|16.76|-93.11
+Raurkela|IN|22.22|84.86
+Warri|NG|5.52|5.75
+Guli|CN|28.88|120.03
+Ebute Ikorodu|NG|6.60|3.49
+Tanggu|CN|39.02|117.65
+Jiangmen|CN|22.58|113.08
+Cuauhtémoc|MX|19.45|-99.15
+Tucson|US|32.22|-110.93
+Nashville|US|36.17|-86.78
+Ta’if|SA|21.27|40.42
+Beira|MZ|-19.84|34.84
+Guntur|IN|16.30|80.46
+Touba|SN|14.85|-15.88
+Quebec|CA|46.81|-71.21|Québec
+Hamadān|IR|34.80|48.51
+Cangzhou|CN|38.32|116.87
+San Salvador|SV|13.69|-89.19
+Dehra Dūn|IN|30.32|78.03
+Cuiabá|BR|-15.60|-56.10
+Petaling Jaya|MY|3.11|101.61
+Macau|MO|22.20|113.55
+Bhayandar|IN|19.30|72.85
+Esenler|TR|41.04|28.88
+Ryazan’|RU|54.63|39.69
+Fresno|US|36.75|-119.77
+Hamilton|CA|43.25|-79.85
+Tyumen|RU|57.15|65.53
+Durgapur|IN|23.52|87.31
+Victoria de Durango|MX|24.02|-104.66
+Ajmer|IN|26.45|74.64
+Lisboa|PT|38.72|-9.13|Lisbon
+Changde|CN|29.03|111.70
+Jiaozuo|CN|35.24|113.23
+Ulhasnagar|IN|19.22|73.15
+Kolhāpur|IN|16.70|74.23
+Lipetsk|RU|52.60|39.57
+Siliguri|IN|26.71|88.43
+Hannover|DE|52.37|9.73
+Eskişehir|TR|39.78|30.52
+Āzādshahr|IR|34.79|48.57
+Salta|AR|-24.79|-65.41
+Penza|RU|53.20|45.00
+Tembisa|ZA|-26.00|28.23
+Bilimora|IN|20.77|72.96
+Mykolayiv|UA|46.97|32.00
+Aparecida de Goiânia|BR|-16.82|-49.24
+Puente Alto|CL|-33.61|-70.58
+Makati City|PH|14.55|121.03
+Tonghua|CN|41.72|125.93
+Naberezhnyye Chelny|RU|55.73|52.41
+Leicester|GB|52.64|-1.13
+Wuhu|CN|31.34|118.37
+Niigata|JP|37.89|139.01
+Karol Bāgh|IN|28.65|77.19
+Leipzig|DE|51.34|12.37
+Kalininskiy|RU|60.00|30.39
+Duisburg|DE|51.43|6.77
+Āsansol|IN|23.68|86.98
+Arāk|IR|34.09|49.70
+Astrakhan|RU|46.35|48.04
+Zhuhai|CN|22.28|113.57
+Pohang|KR|36.03|129.36
+Nürnberg|DE|49.45|11.08
+Shashi|CN|30.31|112.24
+Makhachkala|RU|42.98|47.50
+Cimahi|ID|-6.87|107.54
+Wuwei|CN|37.93|102.63
+Jamnagar|IN|22.47|70.07
+Sacramento|US|38.58|-121.49
+Aracaju|BR|-10.91|-37.07
+Ajman City|AE|25.40|55.48
+Jianshui|CN|24.28|101.22
+Port Sudan|SD|19.62|37.22
+Santa Fe|AR|-31.65|-60.71
+San Pedro Sula|HN|15.50|-88.03
+Toluca|MX|19.29|-99.65
+Ciudad López Mateos|MX|19.56|-99.26
+Suez|EG|29.97|32.53
+Dresden|DE|51.05|13.74
+Tomsk|RU|56.50|84.97
+Masina|CD|-4.38|15.39
+Sahāranpur|IN|29.97|77.55
+Cuautitlán Izcalli|MX|19.64|-99.22
+Gulbarga|IN|17.34|76.84
+Bhātpāra|IN|22.87|88.40
+Najaf|IQ|32.03|44.35
+Feira de Santana|BR|-12.27|-38.97
+Shah Alam|MY|3.09|101.53
+Mariupol|UA|47.10|37.54
+Himeji|JP|34.82|134.70
+Homyel'|BY|52.43|30.98
+Qionghai|CN|19.24|110.46
+Okene|NG|7.55|6.24
+Uijeongbu-si|KR|37.74|127.05
+East London|ZA|-33.02|27.91
+Yazd|IR|31.90|54.37
+Hargeysa|SO|9.56|44.06
+Sialkot|PK|32.49|74.53
+Kemerovo|RU|55.33|86.08
+Yichang|CN|30.71|111.28
+Hwaseong-si|KR|37.21|126.82
+Kansas City|US|39.10|-94.58
+Yinchuan|CN|38.47|106.27
+Skopje|MK|42.00|21.43
+Vereeniging|ZA|-26.67|27.93
+Haia|NL|52.08|4.30|The Hague
+Long Beach|US|33.77|-118.19
+Mixco|GT|14.63|-90.61
+Lyon|FR|45.75|4.85
+Londrina|BR|-23.31|-51.16
+Mesa|US|33.42|-111.82
+Jiaojiang|CN|28.70|121.47
+Matsudo|JP|35.78|139.90
+Juiz de Fora|BR|-21.76|-43.35
+Nishinomiya-hama|JP|34.72|135.33
+Tula|RU|54.20|37.62
+Staten Island|US|40.56|-74.14
+Kawaguchi|JP|35.81|139.71
+Ciudad Apodaca|MX|25.78|-100.19
+Zunyi|CN|27.69|106.91
+Jiaxing|CN|30.75|120.75
+Belford Roxo|BR|-22.76|-43.40
+Jammu|IN|32.74|74.87
+Liaoyuan|CN|42.90|125.14
+Edimburgo|GB|55.95|-3.20|Edinburgh
+Atlanta|US|33.75|-84.39
+Kananga|CD|-5.90|22.42
+Bloemfontein|ZA|-29.12|26.21
+Xiangyang|CN|32.04|112.14
+Gdańsk|PL|54.35|18.65
+Calabar|NG|4.96|8.33
+Dadukou|CN|26.55|101.71
+Joinville|BR|-26.30|-48.85
+Ḩamāh|SY|35.13|36.76
+Kurnool|IN|15.83|78.04
+Antuérpia|BE|51.22|4.40|Antwerpen
+Kanazawa|JP|36.60|136.62
+Karabağlar|TR|38.37|27.14
+Zamboanga|PH|6.91|122.07
+Kirov|RU|58.60|49.66
+Ujjain|IN|23.18|75.78
+Kota Kinabalu|MY|5.97|116.07
+Colorado Springs|US|38.83|-104.82
+Niterói|BR|-22.88|-43.10
+Hengshui|CN|37.73|115.70
+Tabuk|SA|28.40|36.57
+Pontianak|ID|-0.03|109.33
+Leeds|GB|53.80|-1.55
+Namp’o|KP|38.74|125.41
+Bacolod City|PH|10.67|122.95
+São João de Meriti|BR|-22.80|-43.37
+Mansilingan|PH|10.63|122.98
+Virginia Beach|US|36.85|-75.98
+Rāmgundam|IN|18.80|79.45
+Luhansk|UA|48.57|39.32
+Manado|ID|1.48|124.85
+Karagandy|KZ|49.80|73.10
+Raleigh|US|35.77|-78.64
+Jining|CN|35.41|116.58
+Constantine|DZ|36.37|6.61
+Wenshan City|CN|23.36|104.25
+Juba|SS|4.85|31.58
+Muratpaşa|TR|36.89|30.76
+Utsunomiya|JP|36.57|139.88
+Heroica Matamoros|MX|25.88|-97.50
+Şanlıurfa|TR|37.17|38.79
+Chengde|CN|40.95|117.96
+Ōita|JP|33.23|131.60
+Cardiff|GB|51.48|-3.18
+San Juan|AR|-31.54|-68.54
+Cheboksary|RU|56.13|47.25
+Boksburg|ZA|-26.21|28.26
+Cagayan de Oro|PH|8.48|124.65
+Omaha|US|41.26|-95.94
+Matsuyama|JP|33.84|132.77
+San Nicolás de los Garza|MX|25.74|-100.30
+Amagasaki|JP|34.72|135.42
+Carrefour|HT|18.54|-72.40
+Shyamnagar|IN|22.83|88.37
+Dasmariñas|PH|14.33|120.94
+Malatya|TR|38.35|38.32
+Miami|US|25.77|-80.19
+Nangi|IN|22.51|88.22
+Pereira|CO|4.81|-75.70
+Kozhikode|IN|11.25|75.78
+Mawlamyine|MM|16.49|97.63
+Iquitos|PE|-3.75|-73.25
+Kurashiki|JP|34.58|133.77
+Sunch’ŏn|KP|39.43|125.93
+Sultangazi|TR|41.11|28.87
+Garoua|CM|9.30|13.40
+Murcia|ES|37.99|-1.13
+Mwanza|TZ|-2.52|32.90
+Uyo|NG|5.05|7.93
+Bei’an|CN|48.27|126.60
+Kousséri|CM|12.08|15.03
+Mālegaon|IN|20.55|74.53
+Davangere|IN|14.47|75.93
+Kaliningrad|RU|54.71|20.51
+Karbala|IQ|32.62|44.02
+Masan|KR|35.13|126.83
+Ananindeua|BR|-1.37|-48.37
+Balikpapan|ID|-1.27|116.83
+Brampton|CA|43.68|-79.77
+Toulouse|FR|43.60|1.44
+Tel Aviv|IL|32.08|34.78
+Namangan|UZ|41.00|71.67
+Katsina|NG|12.99|7.60
+Welkom|ZA|-27.98|26.74
+Santa Marta|CO|11.24|-74.20
+Al Maḩallah al Kubrá|EG|30.97|31.17
+Venustiano Carranza|MX|19.44|-99.10
+Jalgaon|IN|21.00|75.57
+Yokosuka|JP|35.28|139.67
+Akola|IN|20.71|77.00
+Belgaum|IN|15.85|74.50
+Veracruz|MX|19.18|-96.14
+East Jerusalem|PS|31.78|35.23
+Luqiao|CN|28.58|121.37
+Bryansk|RU|53.25|34.37
+Maltepe|TR|40.94|29.16
+Al Kharj|SA|24.16|47.33
+Barcelona|VE|10.14|-64.69
+Chaozhou|CN|23.65|116.62
+Xalapa de Enríquez|MX|19.53|-96.92
+Ado-Ekiti|NG|7.62|5.22
+Bratislava|SK|48.15|17.11
+Gaya|IN|24.80|85.00
+Udaipur|IN|24.59|73.71
+Likasi|CD|-10.98|26.74
+Luxor|EG|25.70|32.64
+Ibagué|CO|4.44|-75.23
+Shaoxing|CN|30.00|120.58
+Ivanovo|RU|57.00|40.97
+Erzurum|TR|39.91|41.28
+Akure|NG|7.25|5.19
+Asyūţ|EG|27.18|31.18
+Jambi City|ID|-1.60|103.62
+Al Manşūrah|EG|31.04|31.38
+Oakland|US|37.80|-122.27
+Korba|IN|22.35|82.70
+Bokāro|IN|23.79|85.96
+San Juan|PR|18.47|-66.11
+Kolwezi|CD|-10.71|25.47
+Auckland|NZ|-36.85|174.76
+Sukkur|PK|27.70|68.86
+Mangalore|IN|12.92|74.86
+Luohe|CN|33.56|114.04
+Pasay|PH|14.54|121.00
+Sevastopol|UA|44.61|33.52
+Azcapotzalco|MX|19.49|-99.19
+Shymkent|KZ|42.30|69.60
+Yangquan|CN|37.86|113.56
+Magnitogorsk|RU|53.42|59.05
+Jhānsi|IN|25.46|78.58
+Florianópolis|BR|-27.60|-48.55
+Wandsbek|DE|53.58|10.08
+Santos|BR|-23.96|-46.33
+Maturín|VE|9.75|-63.18
+Minneapolis|US|44.98|-93.26
+Thoothukudi|IN|8.77|78.13
+Ardabīl|IR|38.25|48.29
+Nagasaki|JP|32.75|129.88
+Chaoyang|CN|41.57|120.46
+Gaza|PS|31.50|34.47
+Kursk|RU|51.74|36.19
+Tonalá|MX|20.62|-103.23
+Jeju|KR|33.51|126.52|Jeju City
+Panamá|PA|8.99|-79.52
+Xochimilco|MX|19.25|-99.10
+Szczecin|PL|53.43|14.55
+Biên Hòa|VN|10.94|106.82
+Villa Nueva|GT|14.53|-90.59
+Ribeirão das Neves|BR|-19.77|-44.09
+Hirakata|JP|34.81|135.65
+Oujda-Angad|MA|34.68|-1.91
+Tanda|EG|30.79|31.00
+Newcastle|ZA|-27.76|29.93
+Nellore|IN|14.45|79.99
+Hsinchu|TW|24.80|120.97
+Jixi|CN|45.30|130.96
+Zanzibar|TZ|-6.16|39.20
+Tulsa|US|36.15|-95.99
+Taoyuan City|TW|24.99|121.30
+Kassala|SD|15.45|36.40
+Lekki|NG|6.41|4.09
+Palma|ES|39.57|2.65
+Kitwe|ZM|-12.80|28.21
+Nasiriyah|IQ|31.06|46.26
+Tver|RU|56.86|35.90
+West Jerusalem|IL|31.78|35.22
+Machida|JP|35.54|139.45
+Yangjiang|CN|21.86|111.96
+Khmelnytskyi|UA|49.42|27.00
+Gifu-shi|JP|35.42|136.76
+Tiruppur|IN|11.12|77.35
+Keelung|TW|25.13|121.74
+Al Hoceïma|MA|35.25|-3.94
+Manchester|GB|53.48|-2.24
+Surrey|CA|49.11|-122.83
+Vila Velha|BR|-20.33|-40.29
+Weifang|CN|36.71|119.10
+Fujisawa|JP|35.35|139.48
+Ndola|ZM|-12.96|28.64
+Kollam|IN|8.88|76.58
+Serra|BR|-20.13|-40.31
+Samsun|TR|41.28|36.34
+Tallinn|EE|59.44|24.75
+Bamenda|CM|5.96|10.15
+El Obeid|SD|13.18|30.22
+Bello|CO|6.34|-75.56
+Xinpu|CN|34.60|119.16
+Sandakan|MY|5.84|118.12
+Buraydah|SA|26.33|43.97
+Kandahār|AF|31.61|65.71
+Diadema|BR|-23.69|-46.62
+Wichita|US|37.69|-97.34
+Nova Orleans|US|29.95|-90.08|New Orleans
+Comilla|BD|23.46|91.19
+Samut Prakan|TH|13.60|100.60
+Nampula|MZ|-15.12|39.27
+Arlington|US|32.74|-97.11
+Cleveland|US|41.50|-81.70
+Bissau|GW|11.86|-15.60
+Iloilo|PH|10.70|122.56
+Khamis Mushait|SA|18.30|42.73
+Campos dos Goytacazes|BR|-21.75|-41.33
+Resistencia|AR|-27.46|-58.98
+Mişrātah|LY|32.38|15.09
+Mauá|BR|-23.67|-46.46
+Abomey-Calavi|BJ|6.45|2.36
+Bochum|DE|51.48|7.22
+Benito Juárez|MX|19.37|-99.16
+Sector 3|RO|44.42|26.17
+Toyonaka|JP|34.78|135.47
+Iztacalco|MX|19.40|-99.10
+Betim|BR|-19.97|-44.20
+Fukuyama|JP|34.48|133.37
+N’dalatando|AO|-9.30|14.91
+Delmas 73|HT|18.54|-72.30
+Pasto|CO|1.21|-77.28
+Batman|TR|37.89|41.13
+Wellington|NZ|-41.29|174.78
+Las Palmas de Gran Canaria|ES|28.10|-15.41
+Mazatlán|MX|23.23|-106.41
+Caxias do Sul|BR|-29.17|-51.18
+Nizhny Tagil|RU|57.92|59.97
+Irapuato|MX|20.68|-101.36
+Bochum-Hordel|DE|51.50|7.18
+Dezhou|CN|37.45|116.31
+Krugersdorp|ZA|-26.09|27.78
+Pānihāti|IN|22.69|88.37
+Shibganj|BD|25.00|89.32
+Toyohashi|JP|34.77|137.38
+Zhoukou|CN|33.63|114.63
+Laval|CA|45.57|-73.69
+Huancayo|PE|-12.07|-75.20
+Makiyivka|UA|48.05|37.93
+Putian|CN|25.44|119.01
+Kahramanmaraş|TR|37.58|36.93
+Minato|JP|34.22|135.15
+Tirana|AL|41.33|19.82
+São José do Rio Preto|BR|-20.82|-49.38
+Kaunas|LT|54.90|23.91
+Nuevo Laredo|MX|27.48|-99.52
+Bakersfield|US|35.37|-119.02
+Zhangjiakou Shi Xuanhua Qu|CN|40.61|115.04
+Seremban|MY|2.73|101.94
+Miguel Hidalgo|MX|19.43|-99.20
+Stoke-on-Trent|GB|53.00|-2.19
+Pingxiang|CN|27.62|113.85
+Van|TR|38.49|43.38
+Honolulu|US|21.31|-157.86
+Abadan|IR|30.34|48.30
+Fenghuang|CN|27.94|109.60
+Puerto La Cruz|VE|10.21|-64.63
+Brno|CZ|49.20|16.61
+Mahilyow|BY|53.92|30.34
+Natore|BD|24.41|88.99
+Tampa|US|27.95|-82.46
+Sector 6|RO|44.44|26.02
+Canberra|AU|-35.28|149.13
+Nara-shi|JP|34.69|135.80
+Ahmadnagar|IN|19.09|74.74
+Dhūlia|IN|20.90|74.78
+Olinda|BR|-8.01|-34.86
+Kenitra|MA|34.26|-6.58
+Bydgoszcz|PL|53.12|18.01
+Kuantan|MY|3.81|103.33
+Bolonha|IT|44.49|11.34|Bologna
+Cheonan|KR|36.81|127.15
+Petare|VE|10.48|-66.81
+Larkana|PK|27.56|68.21
+Al Qadarif|SD|14.03|35.38
+Christchurch|NZ|-43.53|172.63
+Stavropol’|RU|45.04|41.97
+Toyota|JP|35.08|137.15
+Manukau City|NZ|-36.99|174.88
+Zhaoqing|CN|23.05|112.46
+Ataşehir|TR|40.98|29.12
+Bhāgalpur|IN|25.24|86.97
+Shekhupura|PK|31.71|73.99
+Carapicuíba|BR|-23.52|-46.84
+Wuppertal|DE|51.26|7.15
+Tamale|GH|9.40|-0.84
+Ulan-Ude|RU|51.83|107.61
+Nagano|JP|36.65|138.18
+Bobo-Dioulasso|BF|11.18|-4.30
+Lublin|PL|51.25|22.57
+Huocheng|CN|44.05|80.87
+Aurora|US|39.73|-104.83
+Coventry|GB|52.41|-1.51
+Halifax|CA|44.65|-63.57
+Anqing|CN|30.51|117.05
+Taraz|KZ|42.90|71.37
+San Jose del Monte|PH|14.81|121.05
+Manizales|CO|5.07|-75.52
+Kwangmyŏng|KR|37.48|126.87
+Zanjān|IR|36.68|48.50
+Iwaki|JP|37.05|140.88
+Bacoor|PH|14.46|120.94
+Asahikawa|JP|43.77|142.36
+Xico|MX|19.27|-98.95
+Kimhae|KR|35.23|128.88
+Arkhangel’sk|RU|64.54|40.54
+Ambon|ID|-3.70|128.18
+Samarinda|ID|-0.49|117.15
+Bilbao|ES|43.26|-2.93
+Santiago del Estero|AR|-27.80|-64.26
+Takatsuki|JP|34.85|135.62
+Thessaloníki|GR|40.64|22.93
+Villahermosa|MX|17.99|-92.93
+Barinas|VE|8.62|-70.21
+Neiva|CO|2.93|-75.28
+Ciudad General Escobedo|MX|25.80|-100.32
+Okazaki|JP|34.95|137.17
+Bandar Abbas|IR|27.19|56.28
+Vinnytsia|UA|49.23|28.48
+Ras Al Khaimah City|AE|25.79|55.94
+Anshun|CN|26.25|105.93
+Suita|JP|34.76|135.52
+Wakayama|JP|34.23|135.17
+Anaheim|US|33.84|-117.91
+Hualien City|TW|23.98|121.60
+Lapu-Lapu City|PH|10.31|123.95
+Punāsa|IN|22.24|76.39
+Diepsloot|ZA|-25.93|28.01
+Muzaffarnagar|IN|29.47|77.70
+Florença|IT|43.78|11.25|Florence
+Sanandaj|IR|35.31|47.00
+Latur|IN|18.40|76.57
+Campina Grande|BR|-7.23|-35.88
+Etobicoke|CA|43.65|-79.57
+Camagüey|CU|21.38|-77.92
+Londres|CA|42.98|-81.23|London
+Chifeng|CN|42.27|118.96
+Hŭngnam|KP|39.83|127.62
+Nur-Sultan|KZ|51.18|71.45
+Sector 2|RO|44.45|26.13
+Belgorod|RU|50.61|36.58
+Kosti|SD|13.16|32.66
+Taihecun|CN|45.76|130.85
+Doha|QA|25.29|51.53
+Turmero|VE|10.23|-67.47
+Kurgan|RU|55.45|65.33
+Rangpur|BD|25.75|89.25
+Bhimbar|PK|32.97|74.08
+Vitebsk|BY|55.19|30.20
+Iligan|PH|8.23|124.24
+Soledad|CO|10.92|-74.76
+Shiqi|CN|22.52|113.39
+Piracicaba|BR|-22.73|-47.65
+Zürich|CH|47.37|8.55
+Kūkatpalli|IN|17.48|78.41
+Jhang Sadr|PK|31.27|72.32
+Arusha|TZ|-3.37|36.68
+Ambattūr|IN|13.10|80.16
+Kōriyama|JP|37.40|140.38
+Plovdiv|BG|42.15|24.75
+Celaya|MX|20.52|-100.82
+Chitungwiza|ZW|-18.01|31.08
+Kashiwa|JP|35.86|139.98
+Latakia|SY|35.53|35.79
+Aksu|CN|41.18|80.28
+Serekunda|GM|13.44|-16.68
+Tokorozawa|JP|35.80|139.47
+Corrientes|AR|-27.47|-58.83
+Kaluga|RU|54.53|36.28
+Macapá|BR|0.04|-51.07
+West Raleigh|US|35.79|-78.66
+Cuernavaca|MX|18.93|-99.23
+Nice|FR|43.70|7.27
+Kaesŏng|KP|37.97|126.55
+Ciudad Bolívar|VE|8.13|-63.54
+Kawagoe|JP|35.91|139.49
+Tungi|BD|23.89|90.40
+Krasnogvargeisky|RU|59.97|30.48
+Randburg|ZA|-26.09|28.00
+Bellary|IN|15.14|76.92
+Itaquaquecetuba|BR|-23.49|-46.35
+Simferopol|UA|44.96|34.11
+Kochi|JP|33.55|133.53
+Sunderland|GB|54.90|-1.38
+Santa Ana|US|33.75|-117.87
+Bauru|BR|-22.31|-49.06
+San José|CR|9.93|-84.08
+Alicante|ES|38.35|-0.48
+Takamatsu|JP|34.33|134.05
+Tieling|CN|42.29|123.84
+Qazvin|IR|36.27|50.00
+Muzaffarpur|IN|26.12|85.39
+Kāmārhāti|IN|22.67|88.37
+Tepic|MX|21.51|-104.90
+Wad Medani|SD|14.40|33.52
+Jincheng|CN|35.50|112.83
+Montes Claros|BR|-16.73|-43.86
+Bielefeld|DE|52.03|8.53
+Bujumbura|BI|-3.38|29.36
+Mandaue City|PH|10.32|123.92
+Khorramshahr|IR|30.44|48.18
+Mathura|IN|27.50|77.67
+Khorramabad|IR|33.49|48.36
+Soyapango|SV|13.71|-89.14
+Patiāla|IN|30.34|76.39
+Wŏnsan|KP|39.15|127.44
+Brent|GB|51.55|-0.30
+Pavlodar|KZ|52.28|76.97
+Córdoba|ES|37.89|-4.77
+Chānda|IN|19.95|79.30
+Canoas|BR|-29.92|-51.18
+Sochi|RU|43.60|39.73
+Chongjin|KP|41.80|129.78
+Yanji|CN|42.91|129.51
+Bhīlwāra|IN|25.35|74.64
+Tétouan|MA|35.58|-5.37
+Mogi das Cruzes|BR|-23.52|-46.19
+Toyama|JP|36.70|137.22
+Piura|PE|-5.19|-80.63
+Birkenhead|GB|53.39|-3.01
+Thrissur|IN|10.52|76.22
+Brahmapur|IN|19.31|84.79
+São Vicente|BR|-23.96|-46.39
+Orël|RU|52.97|36.08
+Corpus Christi|US|27.80|-97.40
+Suizhou|CN|31.71|113.36
+Posadas|AR|-27.37|-55.90
+Al ‘Amārah|IQ|31.84|47.14
+Volzhskiy|RU|48.79|44.78
+Riverside|US|33.95|-117.40
+Ixtapaluca|MX|19.32|-98.88
+Villavicencio|CO|4.14|-73.63
+Jundiaí|BR|-23.19|-46.88
+San Miguelito|PA|9.05|-79.47
+Smolensk|RU|54.78|32.04
+Ciudad del Este|PY|-25.51|-54.61
+Pelotas|BR|-31.77|-52.34
+Kherson|UA|46.66|32.62
+Shāhjānpur|IN|27.88|79.91
+Akita|JP|39.72|140.12
+Thiès|SN|14.79|-16.93
+Maroua|CM|10.59|14.32
+Morón|AR|-34.65|-58.62
+Anápolis|BR|-16.33|-48.95
+Shimoga|IN|13.93|75.57
+Samarcanda|UZ|39.65|66.96|Samarkand
+Murmansk|RU|68.98|33.09
+Islington|GB|51.54|-0.10
+Holguín|CU|20.89|-76.26
+Ust-Kamenogorsk|KZ|49.97|82.61
+Ad Dīwānīyah|IQ|31.99|44.93
+Shangrao|CN|28.45|117.94
+Mataram|ID|-8.58|116.12
+Andijon|UZ|40.78|72.34
+Reading|GB|51.46|-0.97
+Iaşi|RO|47.17|27.60
+Valladolid|ES|41.66|-4.72
+Poltava|UA|49.59|34.54
+Nova Délhi|IN|28.64|77.22|New Delhi
+Koshigaya|JP|35.89|139.79
+Vladikavkaz|RU|43.04|44.67
+Hrodna|BY|53.69|23.83
+Katowice|PL|50.26|19.03
+Rohtak|IN|28.89|76.59
+Baicheng|CN|45.61|122.82
+Chimbote|PE|-9.09|-78.58
+Cluj-Napoca|RO|46.77|23.60
+Calamba|PH|14.21|121.17
+Bauchi|NG|10.31|9.84
+Cherepovets|RU|59.13|37.90
+St. Louis|US|38.63|-90.20
+Armenia|CO|4.53|-75.68
+Al Kūt|IQ|32.51|45.82
+Timişoara|RO|45.75|21.23
+Vologda|RU|59.22|39.88
+Şişli|TR|41.06|28.99
+Lexington-Fayette|US|38.05|-84.46
+Kingston upon Hull|GB|53.74|-0.34
+Soacha|CO|4.58|-74.22
+Temara|MA|33.93|-6.91
+Preston|GB|53.76|-2.70
+Ganja|AZ|40.68|46.36
+Lianshan|CN|40.76|120.85
+Denizli|TR|37.77|29.09
+Ikeja|NG|6.60|3.34
+Bonn|DE|50.73|7.10
+Ostrava|CZ|49.83|18.28
+Varna|BG|43.22|27.92
+Vitória|BR|-20.32|-40.34
+Wusong|CN|30.95|117.78
+Iligan City|PH|8.25|124.40
+Cusco|PE|-13.52|-71.97
+Maringá|BR|-23.43|-51.94
+Miyazaki|JP|31.92|131.42
+Percut|ID|3.63|98.86
+Pucallpa|PE|-8.38|-74.55
+Jingdezhen|CN|29.29|117.21
+Guarujá|BR|-23.99|-46.26
+Sariwŏn|KP|38.51|125.76
+Vladimir|RU|56.14|40.40
+Antofagasta|CL|-23.65|-70.40
+Botshabelo|ZA|-29.27|26.73
+Bengkulu|ID|-3.80|102.27
+Butuan|PH|8.95|125.54
+Tampico|MX|22.29|-97.88
+Oshawa|CA|43.90|-78.85
+Cabuyao|PH|14.27|121.13
+Chita|RU|52.03|113.50
+Newcastle|AU|-32.93|151.78
+Valledupar|CO|10.46|-73.25
+Biskra|DZ|34.85|5.73
+Mannheim|DE|49.49|8.47
+Chernihiv|UA|51.51|31.28
+Irbid|JO|32.56|35.85
+Tumkūr|IN|13.34|77.10
+Chinju|KR|35.19|128.08
+Newport|GB|51.59|-3.00
+Tawau|MY|4.24|117.89
+Shengli|CN|37.46|118.49
+Fīrozābād|IN|27.15|78.40
+Al Fayyūm|EG|29.31|30.84
+Porto Velho|BR|-8.76|-63.90
+San Salvador de Jujuy|AR|-24.19|-65.30
+Brakpan|ZA|-26.24|28.37
+Stockton|US|37.96|-121.29
+Mandaluyong City|PH|14.58|121.04
+Nizāmābād|IN|18.67|78.10
+Kulti|IN|23.73|86.84
+Ciudad Victoria|MX|23.74|-99.15
+Tláhuac|MX|19.29|-99.01
+Franca|BR|-20.54|-47.40
+Rājahmundry|IN|17.01|81.78
+Pittsburgh|US|40.44|-80.00
+Craiova|RO|44.32|23.80
+Constanţa|RO|44.18|28.63
+Saransk|RU|54.18|45.17
+Mazār-e Sharīf|AF|36.71|67.11
+Barddhamān|IN|23.26|87.86
+Malmö|SE|55.61|13.00
+Gujrat|PK|32.57|74.08
+Naha|JP|26.22|127.68
+Brest|BY|52.10|23.69
+Mardan|PK|34.20|72.05
+Surgut|RU|61.25|73.42
+Swansea|GB|51.62|-3.94
+Xinyuan|CN|43.43|83.25
+Yangshuo|CN|24.78|110.49
+Kyzylorda|KZ|44.85|65.51
+George Town|MY|5.41|100.34
+Biñan|PH|14.34|121.08
+Malir Cantonment|PK|24.94|67.21
+Winejok|SS|9.01|27.57
+Batikent|TR|39.97|32.73
+Mérida|VE|8.59|-71.16
+Angeles City|PH|15.15|120.58
+Bradford|GB|53.79|-1.75
+Santol|PH|15.16|120.57
+Anchorage|US|61.22|-149.90
+Ciudad Obregón|MX|27.49|-109.94
+Kasugai|JP|35.25|136.97
+Jember|ID|-8.17|113.70
+Aomori|JP|40.82|140.73
+Ōtsu|JP|35.00|135.87
+Bārāsat|IN|22.72|88.48
+Elazığ|TR|38.67|39.22
+Okanagan|CA|50.36|-119.35
+Cherkasy|UA|49.43|32.06
+Vigo|ES|42.23|-8.72
+Akashi|JP|34.66|135.01
+Bāli|IN|22.65|88.34
+Cincinnati|US|39.13|-84.51
+Hisar|IN|29.15|75.72
+Rāmpur|IN|28.81|79.03
+Yokkaichi|JP|34.97|136.62
+Yeosu|KR|34.76|127.66
+Southend-on-Sea|GB|51.54|0.71
+Morioka|JP|39.70|141.15
+Viña del Mar|CL|-33.02|-71.55
+Sumy|UA|50.92|34.80
+Fukushima|JP|37.75|140.47
+Galaţi|RO|45.44|28.05
+Blumenau|BR|-26.92|-49.07
+Greater Noida|IN|28.50|77.54
+Noida|IN|28.58|77.33
+Foz do Iguaçu|BR|-25.55|-54.59
+Al Hufūf|SA|25.36|49.59
+Kākināda|IN|16.96|82.24
+Pānīpat|IN|29.39|76.97
+Semey|KZ|50.43|80.27
+Makurdi|NG|7.73|8.52
+Wollongong|AU|-34.42|150.89
+Ponta Grossa|BR|-25.09|-50.16
+Minna|NG|9.62|6.55
+Białystok|PL|53.13|23.16
+Mbeya|TZ|-8.90|33.45
+Mueang Nonthaburi|TH|13.86|100.51
+Gumi|KR|36.11|128.34
+Tambov|RU|52.73|41.44
+Catania|IT|37.49|15.07
+Al Mubarraz|SA|25.41|49.59
+Bafoussam|CM|5.48|10.42
+Kasur|PK|31.12|74.45
+Utrecht|NL|52.09|5.12
+Xiuying|CN|20.00|110.29
+Paulista|BR|-7.94|-34.87
+Al Ḩillah|IQ|32.46|44.42
+Limeira|BR|-22.56|-47.40
+Parbhani|IN|19.27|76.77
+Victoria|CA|48.44|-123.35
+Beihai|CN|21.48|109.10
+Huizhou|CN|23.11|114.42
+Zeytinburnu|TR|40.99|28.90
+Tsuen Wan|HK|22.37|114.11
+Ironville|US|38.46|-82.69
+Meads|US|38.41|-82.71
+Sétif|DZ|36.19|5.41
+Safi|MA|32.30|-9.24
+Sinŭiju|KP|40.10|124.40
+Sector 4|RO|44.38|26.12
+Hue|VN|16.46|107.60|Huế
+Darbhanga|IN|26.15|85.90
+Marienthal|DE|53.57|10.08
+Adapazarı|TR|40.78|30.40
+Sultanbeyli|TR|40.96|29.27
+Henderson|US|36.04|-114.98
+Greensboro|US|36.07|-79.79
+Viamão|BR|-30.08|-51.02
+Zagazig|EG|30.59|31.50
+Saint Paul|US|44.94|-93.09
+Kuala Terengganu|MY|5.33|103.14
+Ismailia|EG|30.60|32.27
+Alto Barinas|VE|8.59|-70.23
+Dihok|IQ|36.87|42.99
+Karlsruhe|DE|49.01|8.40
+Port Moresby|PG|-9.48|147.15
+Plano|US|33.02|-96.70
+Ichihara|JP|35.52|140.08
+Iksan|KR|35.94|126.95
+Nha Trang|VN|12.25|109.19
+Suzano|BR|-23.54|-46.31
+Alwar|IN|27.56|76.62
+Cainta|PH|14.58|121.12
+Pétionville|HT|18.51|-72.29
+Maebashi|JP|36.40|139.08
+Bilāspur|IN|22.08|82.16
+Logan City|AU|-27.64|153.11
+Valparaíso|CL|-33.04|-71.63
+Palu|ID|-0.91|119.87
+Kupang|ID|-10.17|123.61
+Zhytomyr|UA|50.26|28.68
+Newark|US|40.74|-74.17
+Itagüí|CO|6.18|-75.60
+Nicolás Romero|MX|19.64|-99.31
+Gebze|TR|40.80|29.43
+Narsingdi|BD|23.92|90.72
+Batna|DZ|35.56|6.17
+Chuzhou|CN|32.32|118.30
+Merkezefendi|TR|37.81|29.04
+Ichinomiya|JP|35.30|136.80
+Tacna|PE|-18.01|-70.25
+Hamburg-Nord|DE|53.59|9.98
+Mingora|PK|34.78|72.36
+Toledo|US|41.66|-83.56
+Ensenada|MX|31.87|-116.60
+Efon-Alaaye|NG|7.66|4.92
+Yoshkar-Ola|RU|56.64|47.89
+Taganrog|RU|47.24|38.90
+Santa Teresa del Tuy|VE|10.23|-66.66
+Horlivka|UA|48.34|38.05
+Windsor|CA|42.30|-83.02
+Coacalco|MX|19.63|-99.11
+Ilesa|NG|7.63|4.74
+Kostroma|RU|57.77|40.93
+Gijón|ES|43.54|-5.66
+Bari|IT|41.12|16.87
+Lincoln|US|40.80|-96.67
+Khomeynī Shahr|IR|32.69|51.54
+Sfax|TN|34.74|10.76
+Nantes|FR|47.22|-1.55
+Cuenca|EC|-2.90|-79.00
+Owo|NG|7.20|5.59
+Bahía Blanca|AR|-38.72|-62.27
+Sukabumi|ID|-6.92|106.93
+Braşov|RO|45.65|25.61
+Komsomolsk-on-Amur|RU|50.55|137.01
+Hakodate|JP|41.78|140.74
+Bab Ezzouar|DZ|36.73|3.18
+Mokolo|CM|10.74|13.80
+Caucaia|BR|-3.74|-38.65
+Estrasburgo|FR|48.58|7.75|Strasbourg
+Belfast|GB|54.60|-5.93
+Kashgar|CN|39.47|75.99
+Ramadi|IQ|33.42|43.31
+Ichalkaranji|IN|16.69|74.46
+Ibaraki|JP|34.82|135.57
+Yao|JP|34.62|135.60
+Herāt|AF|34.35|62.20
+Guantánamo|CU|20.14|-75.21
+Nal’chik|RU|43.50|43.62
+Baguio|PH|16.42|120.59
+Petrópolis|BR|-22.50|-43.18
+Ar Rayyān|QA|25.29|51.42
+Wiesbaden|DE|50.08|8.25
+Montería|CO|8.75|-75.88
+Liubliana|SI|46.05|14.51|Ljubljana
+Hafar Al-Batin|SA|28.43|45.97
+Kakogawachō-honmachi|JP|34.77|134.83
+Sector 5|RO|44.39|26.07
+Tasikmalaya|ID|-7.33|108.22
+Bijapur|IN|16.82|75.72
+Orlando|US|28.54|-81.38
+Linyi|CN|35.06|118.34
+Derby|GB|52.92|-1.48
+San Pedro|PH|14.36|121.05
+Münster|DE|51.96|7.63
+Gelsenkirchen|DE|51.51|7.10
+Mokpo|KR|34.81|126.39
+Santa Catarina|MX|25.67|-100.46
+Russeifa|JO|32.02|36.05
+Windhoek|NA|-22.56|17.08
+Tshikapa|CD|-6.42|20.80
+Kafr ad Dawwār|EG|31.13|30.13
+Tokushima|JP|34.07|134.57
+Haifa|IL|32.82|34.99
+Sterlitamak|RU|53.62|55.95
+Ha'il|SA|27.52|41.69
+Eixample|ES|41.39|2.16
+Bagerhat|BD|22.66|89.79
+Chengzhong|CN|30.94|113.55
+Wuzhou|CN|23.48|111.32
+Chula Vista|US|32.64|-117.08
+Hulan Ergi|CN|47.20|123.63
+Aizawl|IN|23.73|92.72
+Aachen|DE|50.78|6.08
+Sumqayıt|AZ|40.59|49.67
+Mantampay|PH|8.17|124.22
+Petrozavodsk|RU|61.78|34.35
+El Daein|SD|11.46|26.13
+Umuahia|NG|5.52|7.49
+Uruapan|MX|19.41|-102.06
+Jersey City|US|40.73|-74.08
+Mianyang|CN|31.47|104.68
+Sivas|TR|39.75|37.02
+Witbank|ZA|-25.87|29.23
+Aktobe|KZ|50.28|57.21
+Paraná|AR|-31.73|-60.53
+Jālna|IN|19.84|75.89
+Lal Bahadur Nagar|IN|17.35|78.56
+Mönchengladbach|DE|51.19|6.44
+Markham|CA|43.87|-79.27
+Dewas|IN|22.97|76.06
+Sincelejo|CO|9.30|-75.40
+Tongliao|CN|43.61|122.27
+Uberaba|BR|-19.75|-47.93
+Chandler|US|33.31|-111.84
+Fort Wayne|US|41.13|-85.13
+Plymouth|GB|50.37|-4.14
+Baranagar|IN|22.64|88.38
+Karamay|CN|45.58|84.89
+Aral|CN|40.54|81.27
+Nakuru|KE|-0.31|36.07
+Cần Thơ|VN|10.04|105.79
+Augsburg|DE|48.37|10.90
+Hiratsuka|JP|35.33|139.34
+Gajuwaka|IN|17.70|83.22
+Jiujiang|CN|29.70|116.00
+Popayán|CO|2.44|-76.61
+Najrān|SA|17.49|44.13
+Mukalla|YE|14.54|49.12
+Buffalo|US|42.89|-78.88
+Luton|GB|51.88|-0.42
+Pekalongan|ID|-6.89|109.68
+Cumaná|VE|10.45|-64.18
+Satna|IN|24.58|80.83
+Rio Branco|BR|-9.97|-67.81
+Durham|US|35.99|-78.90
+Etāwah|IN|26.78|79.02
+Gómez Palacio|MX|25.57|-103.50
+Cascavel|BR|-24.96|-53.46
+St. Petersburg|US|27.77|-82.68
+L'Hospitalet de Llobregat|ES|41.36|2.10
+Ondo|NG|7.09|4.84
+Chimoio|MZ|-19.12|33.48
+Irvine|US|33.67|-117.82
+Espoo|FI|60.21|24.65
+Latina|ES|40.39|-3.75
+Los Mochis|MX|25.79|-109.00
+Bratsk|RU|56.13|101.61
+Pachuca de Soto|MX|20.12|-98.73
+Tarsus|TR|36.92|34.89
+Laredo|US|27.51|-99.51
+Sari|IR|36.56|53.06
+Durg|IN|21.19|81.28
+Rivne|UA|50.62|26.23
+Oaxaca|MX|17.07|-96.72
+Soledad de Graciano Sánchez|MX|22.19|-100.94
+Turpan|CN|42.95|89.18
+Ikot Ekpene|NG|5.18|7.71
+Heze|CN|35.24|115.47
+Yamagata|JP|38.23|140.37
+Cirebon|ID|-6.71|108.56
+Novo Hamburgo|BR|-29.68|-51.13
+Cox’s Bāzār|BD|21.44|92.01
+Gdynia|PL|54.52|18.53
+Carabanchel|ES|40.39|-3.72
+Naihāti|IN|22.89|88.42
+Vitória da Conquista|BR|-14.87|-40.84
+Laohekou|CN|32.39|111.67
+Talcahuano|CL|-36.72|-73.12
+Richards Bay|ZA|-28.78|32.04
+Wolverhampton|GB|52.59|-2.12
+El Fasher|SD|13.63|25.35
+Woodlands|SG|1.44|103.79
+Thiès Nones|SN|14.78|-16.97
+Dire Dawa|ET|9.59|41.87
+Floridablanca|CO|7.06|-73.09
+Suihua|CN|46.64|127.00
+Barueri|BR|-23.51|-46.88
+Borūjerd|IR|33.90|48.75
+Eimsbüttel|DE|53.57|9.96
+Liupanshui|CN|26.59|104.83
+Qarchak|IR|35.43|51.58
+Santiago de Surco|PE|-12.14|-77.01
+Taubaté|BR|-23.03|-45.56
+Nanyang|CN|32.99|112.53
+San Fernando|PH|15.03|120.68
+Morogoro|TZ|-6.82|37.66
+Governador Valadares|BR|-18.85|-41.95
+Tirupati|IN|13.64|79.42
+Banda Aceh|ID|5.54|95.33
+Wafangdian|CN|39.62|122.01
+Sonīpat|IN|28.99|77.02
+Santa Clara|CU|22.41|-79.96
+Iwo|NG|7.64|4.18
+Libertad|PH|8.94|125.50
+Gombe|NG|10.29|11.17
+Altona|DE|53.55|9.93
+Āvadi|IN|13.11|80.11
+Praia Grande|BR|-24.01|-46.40
+Port-de-Paix|HT|19.94|-72.83
+Colonia del Valle|MX|19.39|-99.16
+Niš|RS|43.32|21.90
+Singa|SD|13.15|33.93
+Bucara|UZ|39.77|64.43|Bukhara
+Aswan|EG|24.09|32.90
+Georgetown|GY|6.80|-58.16
+Granada|ES|37.19|-3.61
+Porto-Novo|BJ|6.50|2.60
+Bordéus|FR|44.84|-0.58|Bordeaux
+Gante|BE|51.05|3.72|Gent
+Nassau|BS|25.06|-77.34
+Sucre|BO|-19.03|-65.26
+Paramaribo|SR|5.87|-55.17
+Verona|IT|45.43|10.98
+Hobart|AU|-42.88|147.33
+Bergen|NO|60.39|5.32
+Gaborone|BW|-24.65|25.91
+Puerto Vallarta|MX|20.62|-105.23
+Chiang Mai|TH|18.79|98.98
+Nicosia|CY|35.18|33.36
+Pokhara|NP|28.27|83.97
+Vientiane|LA|17.97|102.60
+Yamoussoukro|CI|6.82|-5.28
+Cork|IE|51.90|-8.47
+Labuan Bajo|ID|-8.50|119.89
+Dodoma|TZ|-6.17|35.74
+Split|HR|43.51|16.44
+Oxford|GB|51.75|-1.26
+Cambridge|GB|52.20|0.12
+Malabo|GQ|3.76|8.78
+Salamanca|ES|40.97|-5.66
+Gyeongju|KR|35.84|129.21
+Port Louis|MU|-20.16|57.50
+York|GB|53.96|-1.08
+Salzburgo|AT|47.80|13.04|Salzburg
+Cairns|AU|-16.92|145.77
+Dili|TL|-8.56|125.57
+Playa del Carmen|MX|20.63|-87.08
+Manama|BH|26.23|50.59
+Siem Reap|KH|13.36|103.86
+Saint-Denis|RE|-20.88|55.45
+Podgorica|ME|42.44|19.26
+Dali|CN|25.58|100.21
+Innsbruck|AT|47.26|11.39
+Cádis|ES|36.53|-6.29|Cádiz
+Willemstad|CW|12.11|-68.93
+Porto Seguro|BR|-16.45|-39.06
+Batumi|GE|41.64|41.63
+Bern|CH|46.95|7.45
+Reykjavík|IS|64.14|-21.90
+Lhasa|CN|29.65|91.10
+Maseru|LS|-29.32|27.48
+Puno|PE|-15.84|-70.02
+Bergamo|IT|45.70|9.67
+Praia|CV|14.93|-23.51
+Kandy|LK|7.29|80.63
+Livingstone|ZM|-17.84|25.85
+Coimbra|PT|40.21|-8.42
+Mostar|BA|43.34|17.81
+Malé|MV|4.18|73.51|Male
+Funchal|PT|32.67|-16.93
+Punta Cana|DO|18.58|-68.40
+Thimphu|BT|27.47|89.64
+Bridgetown|BB|13.11|-59.62
+Hurghada|EG|27.26|33.81
+Bariloche|AR|-41.15|-71.31|San Carlos de Bariloche
+Santiago de Compostela|ES|42.88|-8.55
+Aqaba|JO|29.53|35.01
+Bath|GB|51.38|-2.36
+Stellenbosch|ZA|-33.93|18.87
+Galle|LK|6.05|80.21
+Nouméa|NC|-22.27|166.45
+Fort-de-France|MQ|14.60|-61.07
+Avignon|FR|43.95|4.81
+Granada|NI|11.93|-85.96
+Huaraz|PE|-9.53|-77.53
+Zhangjiajie|CN|29.13|110.48
+Toledo|ES|39.86|-4.02
+Como|IT|45.81|9.08
+Lucca|IT|43.84|10.50
+Ubatuba|BR|-23.43|-45.07
+Suva|FJ|-18.14|178.44
+Pisa|IT|43.71|10.40
+Luxembourg|LU|49.61|6.13
+Mbabane|SZ|-26.32|31.13
+Essaouira|MA|31.51|-9.77
+Cannes|FR|43.55|7.01
+San Miguel de Allende|MX|20.92|-100.74
+Cabo San Lucas|MX|22.89|-109.91
+Rotorua|NZ|-38.14|176.25
+Colmar|FR|48.08|7.36
+Puerto Madryn|AR|-42.77|-65.04
+Bandar Seri Begawan|BN|4.89|114.94
+Ouro Preto|BR|-20.39|-43.51
+Cayenne|GF|4.93|-52.33
+Fethiye|TR|36.64|29.13
+Kuwait City|KW|29.37|47.98
+Ushuaia|AR|-54.81|-68.32
+Segóvia|ES|40.95|-4.12|Segovia
+Honiara|SB|-9.43|159.95
+Évora|PT|38.57|-7.90
+Ohrid|MK|41.12|20.80
+Matera|IT|40.67|16.60
+Mamoudzou|YT|-12.78|45.23
+Chania|GR|35.51|24.03
+São Tomé|ST|0.34|6.73
+Tromsø|NO|69.65|18.96
+Maun|BW|-19.98|23.42
+Annecy|FR|45.91|6.13
+Port of Spain|TT|10.67|-61.52
+Ibiza|ES|38.91|1.43
+Saipan|MP|15.21|145.75
+Luang Prabang|LA|19.89|102.14
+Inverness|GB|57.48|-4.22
+Moroni|KM|-11.70|43.26
+Siena|IT|43.32|11.33
+Nadi|FJ|-17.80|177.42
+Gitega|BI|-3.43|29.92
+Apia|WS|-13.83|-171.77
+Tarawa|KI|1.33|172.98
+Antigua Guatemala|GT|14.56|-90.73
+Bodrum|TR|37.04|27.43
+Ronda|ES|36.74|-5.17
+Cascais|PT|38.70|-9.42
+Port-Vila|VU|-17.74|168.31
+Victoria Falls|ZW|-17.93|25.83
+Rovaniemi|FI|66.50|25.72
+Banjul|GM|13.45|-16.58
+Canela|BR|-29.36|-50.81
+Monaco|MC|43.73|7.42
+Ilhabela|BR|-23.78|-45.36
+Hoi An|VN|15.88|108.33
+Krabi|TH|8.07|98.91
+Oranjestad|AW|12.52|-70.03
+George Town|KY|19.29|-81.37
+Dubrovnik|HR|42.64|18.11
+Ubud|ID|-8.51|115.27
+Saint Helier|JE|49.19|-2.10
+Corfu|GR|39.62|19.92
+Pucón|CL|-39.28|-71.95
+Gibraltar|GI|36.14|-5.35
+Papeete|PF|-17.54|-149.57
+Douglas|IM|54.15|-4.48
+Sintra|PT|38.80|-9.38
+Arraial do Cabo|BR|-22.97|-42.03
+Key West|US|24.56|-81.78
+Majuro|MH|7.09|171.38
+Swakopmund|NA|-22.68|14.53
+Kingstown|VC|13.16|-61.23
+Saint John’s|AG|17.12|-61.84
+Victoria|SC|-4.62|55.46
+Nuku‘alofa|TO|-21.14|-175.20
+Colonia del Sacramento|UY|-34.46|-57.84
+Flores|GT|16.92|-89.90
+Andorra la Vella|AD|42.51|1.52
+Ponta Delgada|PT|37.74|-25.67
+Castries|LC|14.00|-61.01
+Charlotte Amalie|VI|18.34|-64.93
+Puerto Natales|CL|-51.73|-72.51
+Brotas|BR|-22.28|-48.13
+Tulum|MX|20.21|-87.46
+Akureyri|IS|65.68|-18.09
+Barreirinhas|BR|-2.76|-42.83
+Roseau|DM|15.30|-61.39
+Saint Peter Port|GG|49.46|-2.54
+Maragogi|BR|-9.01|-35.22
+Nikko|JP|36.75|139.62|Nikkō
+Paraty|BR|-23.22|-44.71
+Nuuk|GL|64.18|-51.72
+Sorrento|IT|40.63|14.38
+Bonito|BR|-21.12|-56.48
+Český Krumlov|CZ|48.81|14.32
+Pirenópolis|BR|-15.85|-48.96
+Belmopan|BZ|17.25|-88.77
+Avarua|CK|-21.21|-159.78
+Hakone|JP|35.19|139.03
+Tórshavn|FO|62.01|-6.77
+Basseterre|KN|17.30|-62.72
+Itacaré|BR|-14.28|-39.00
+Sharm el-Sheikh|EG|27.92|34.33
+Cafayate|AR|-26.07|-65.98
+Pago Pago|AS|-14.28|-170.70
+Basse-Terre|GP|16.00|-61.73
+Mariehamn|AX|60.10|19.93
+Sapa|VN|22.34|103.84|Sa Pa
+Queenstown|NZ|-45.03|168.66
+Sedona|US|34.87|-111.76
+Uyuni|BO|-20.46|-66.83
+Baños|EC|-1.40|-78.42
+Puerto Ayora|EC|-0.74|-90.31
+Whistler|CA|50.12|-122.95
+Road Town|VG|18.43|-64.62
+El Calafate|AR|-50.34|-72.28
+El Nido|PH|11.19|119.40
+Banff|CA|51.18|-115.57
+Saint George's|GD|12.05|-61.75
+Punta del Este|UY|-34.95|-54.93
+Aspen|US|39.19|-106.82
+Valletta|MT|35.90|14.51
+Capri|IT|40.55|14.24
+Zermatt|CH|46.02|7.75
+Byron Bay|AU|-28.65|153.61
+Göreme|TR|38.64|34.84
+Saint-Pierre|PM|46.78|-56.18
+Gustavia|BL|17.90|-62.85
+Taormina|IT|37.85|15.29
+Marigot|MF|18.07|-63.08
+Cortina d'Ampezzo|IT|46.54|12.14
+Bocas del Toro|PA|9.34|-82.24
+Kotor|ME|42.42|18.77
+Vaduz|LI|47.14|9.52
+Bled|SI|46.37|14.11
+Interlaken|CH|46.68|7.87
+Amalfi|IT|40.63|14.60
+Vaitape|PF|-16.51|-151.75
+San Marino|SM|43.94|12.45
+Funafuti|TV|-8.52|179.19
+Tiradentes|BR|-21.11|-44.18
+Salento|CO|4.64|-75.57
+Mykonos|GR|37.45|25.33|Mýkonos
+Cockburn Town|TC|21.46|-71.14
+Kralendijk|BQ|12.15|-68.27
+Ilha Grande|BR|-23.15|-44.23
+Fira (Santorini)|GR|36.42|25.43|Firá
+Positano|IT|40.63|14.48
+Pai|TH|19.36|98.44
+Stanley|FK|-51.69|-57.86
+Paro|BT|27.43|89.41
+Sal Rei|CV|16.18|-22.92
+Longyearbyen|SJ|78.22|15.65
+The Valley|AI|18.22|-63.06
+San Pedro de Atacama|CL|-22.91|-68.20
+Gili Trawangan|ID|-8.35|116.04
+Philipsburg|SX|18.03|-63.05
+Mata-Utu|WF|-13.28|-176.17
+Yaren|NR|-0.55|166.93
+Hagåtña|GU|13.48|144.75
+Hamilton|BM|32.29|-64.78
+Kingston|NF|-29.05|167.97
+Vatican City|VA|41.90|12.45
+Jamestown|SH|-15.94|-5.72
+Alofi|NU|-19.05|-169.92
+Flying Fish Cove|CX|-10.42|105.68
+West Island|CC|-12.16|96.82
+Adamstown|PN|-25.07|-130.10
+Port-aux-Français|TF|-49.35|70.22
+Grytviken|GS|-54.28|-36.51
+Palikir - National Government Center|FM|6.92|158.16
+Plymouth|MS|16.71|-62.21
+Ngerulmud|PW|7.50|134.62
+Búzios|BR|-22.75|-41.88
+Gramado|BR|-29.38|-50.87
+Jericoacoara|BR|-2.79|-40.51
+Lençóis|BR|-12.56|-41.39
+Alto Paraíso de Goiás|BR|-14.13|-47.51
+Vang Vieng|LA|18.92|102.45
+Hallstatt|AT|47.56|13.65
+Lucerna|CH|47.05|8.31
+Bruges|BE|51.21|3.22
+San Sebastián|ES|43.32|-1.98
+Rodes|GR|36.43|28.22
+Galway|IE|53.27|-9.05
+Chefchaouen|MA|35.17|-5.27
+Wadi Musa (Petra)|JO|30.32|35.48
+Nara|JP|34.69|135.80
+Fernando de Noronha|BR|-3.85|-32.42
+Santorini|GR|36.42|25.43
+Da Lat|VN|11.94|108.44
+Phu Quoc|VN|10.23|103.96
+Koh Samui|TH|9.51|100.01
+Langkawi|MY|6.35|99.80
+Moorea|PF|-17.53|-149.83
+Nosy Be|MG|-13.33|48.27`;
+let VG_CID = null;
+const vgCids = () => VG_CID || (VG_CID = VG_CID_TXT.split('\n').map(l => { const [nome, pais, lat, lon, alt] = l.split('|'); return { nome, pais, lat: +lat, lon: +lon, alt: alt || '', n: vgNorm(nome), na: alt ? vgNorm(alt) : '' }; }));
+function vgAchaCid(txt, pais) { let n = vgNorm(String(txt).split('·')[0]); if (!n) return null; const cs = vgCids().filter(c => (c.n === n || c.na === n) && (!pais || c.pais === pais)); return cs[0] || null; }
+// custo de referência por país (USD; hotel por noite, quarto duplo, e gasto por dia por pessoa, estilo meio a meio)
+const VG_PAIS_REF = Object.fromEntries('PT:110/65 ES:120/70 FR:160/90 IT:150/85 DE:130/80 GB:170/100 IE:170/95 NL:160/90 BE:140/80 LU:160/95 CH:220/130 AT:140/80 CZ:100/55 PL:90/50 HU:95/55 SK:85/50 SI:110/65 HR:120/70 BA:70/40 RS:75/45 ME:90/50 MK:60/35 AL:65/40 GR:120/70 BG:70/40 RO:75/45 MD:60/35 UA:60/35 BY:60/35 RU:90/50 LT:85/50 LV:90/50 EE:100/60 FI:140/85 SE:140/85 NO:180/110 DK:170/100 IS:220/120 MT:120/70 CY:110/65 AD:130/75 MC:300/150 SM:110/65 LI:180/110 VA:150/85 XK:60/35 TR:90/50 GE:70/40 AM:70/40 AZ:80/45 US:200/110 CA:170/95 MX:100/55 GT:70/40 BZ:110/60 SV:70/40 HN:70/40 NI:65/35 CR:110/60 PA:100/55 CU:80/45 JM:140/70 HT:70/40 DO:110/60 BS:220/110 BB:200/100 TT:120/60 LC:200/100 AG:200/100 KN:180/90 DM:150/80 GD:170/90 VC:160/80 PR:180/90 AW:220/110 CW:150/80 CO:70/40 VE:60/35 EC:70/40 PE:75/40 BO:55/30 CL:100/55 AR:80/45 UY:100/55 PY:60/35 GY:100/55 SR:80/45 GL:220/120 CN:90/50 HK:170/90 MO:150/80 TW:100/55 JP:140/75 KR:120/65 MN:70/40 IN:60/30 PK:50/25 BD:50/25 NP:40/25 BT:200/250 LK:70/35 MV:300/120 TH:60/35 VN:50/30 KH:45/30 LA:40/25 MM:50/30 MY:60/35 SG:200/90 ID:60/35 PH:60/35 BN:90/50 TL:80/40 AE:170/90 QA:160/85 BH:130/70 KW:140/70 OM:120/60 SA:140/70 JO:100/55 IL:200/110 PS:70/40 LB:90/50 IQ:70/40 IR:50/30 KZ:70/40 UZ:60/35 KG:50/30 TJ:50/30 TM:70/40 EG:60/35 MA:70/40 TN:60/35 DZ:70/40 ZA:90/50 NA:100/55 BW:150/80 ZW:100/50 ZM:100/50 MZ:90/50 MW:70/40 TZ:120/70 KE:110/65 UG:80/45 RW:100/55 ET:70/40 MG:60/35 MU:150/70 SC:220/110 CV:90/50 SN:80/45 GH:90/50 NG:100/55 CI:90/50 CM:80/45 AU:160/90 NZ:150/85 FJ:150/70 PF:280/130 NC:160/80 WS:120/60 TO:110/60 VU:130/60 PG:150/70'.split(' ').map(x => { const [c, v] = x.split(':'); const [h, d] = v.split('/').map(Number); return [c, [h, d]]; }));
+const vgKm = (la1, lo1, la2, lo2) => { const r = Math.PI / 180, a = Math.sin((la2 - la1) * r / 2) ** 2 + Math.cos(la1 * r) * Math.cos(la2 * r) * Math.sin((lo2 - lo1) * r / 2) ** 2; return 12742 * Math.asin(Math.sqrt(a)); };
+// passagem ida e volta por pessoa e horas de voo pela distância de São Paulo (ajustado na tabela base)
+function vgVooDist(km, br) { if (br) return [Math.round((500 + 0.8 * km) / 100) * 100, Math.max(1, Math.round(1 + km / 700))]; return [Math.round((km <= 12000 ? 1100 + 0.47 * km : 6740 + 0.15 * (km - 12000)) / 100) * 100, Math.min(30, Math.round(1.8 + km / 720))]; }
+let VG_PAIS_DEST = null; const vgPaisDest = c => (VG_PAIS_DEST || (VG_PAIS_DEST = VG_DEST.reduce((m, d) => (m[d.pais] = m[d.pais] || d, m), {})))[c] || null;
+const vgEpLat = la => la == null || Math.abs(la) < 15 ? [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1] : la > 0 ? [0, 0, 1, 1, 2, 2, 2, 2, 2, 1, 0, 0] : [2, 2, 2, 1, 1, 0, 0, 0, 1, 1, 2, 2];
 function vgInfo(l) {
   const b = l.dest ? vgDest(l.dest) : null, br = l.pais === 'BR', ct = br ? 'BR' : vgContDe(l.pais), pd = VG_CONT_PADRAO[ct];
-  return { base: !!b, br, cont: vgContDe(l.pais), h: b ? b.h : pd[0], d: b ? b.d : pd[1], v: b ? b.v : pd[2], hr: b ? b.hr : pd[3],
-    ep: b ? b.ep : br ? [2, 2, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2] : ct === 'EU' ? [0, 0, 1, 2, 2, 2, 1, 1, 2, 2, 1, 0] : [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-    alta: b ? b.alta : [1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1], visto: b ? b.visto : br ? 'n' : VG_SCHENGEN.includes(l.pais) ? 't' : '', tipos: l.tipos || (b ? b.tipos : '') };
+  if (b) return { base: true, ref: 'base', br, cont: vgContDe(l.pais), h: b.h, d: b.d, v: b.v, hr: b.hr, ep: b.ep, alta: b.alta, visto: b.visto, tipos: l.tipos || b.tipos };
+  const pr = !br && VG_PAIS_REF[l.pais], pdst = vgPaisDest(l.pais), temLL = l.lat != null && isFinite(l.lat) && isFinite(l.lon);
+  const [v, hr] = temLL ? vgVooDist(vgKm(-23.43, -46.47, +l.lat, +l.lon), br) : pdst ? [pdst.v, pdst.hr] : [pd[2], pd[3]];
+  return { base: false, ref: pr ? 'pais' : 'cont', br, cont: vgContDe(l.pais), h: pr ? pr[0] : pd[0], d: pr ? pr[1] : pd[1], v, hr,
+    ep: pdst ? pdst.ep : br ? [2, 2, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2] : vgEpLat(temLL ? +l.lat : null),
+    alta: pdst ? pdst.alta : [1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1], visto: pdst ? pdst.visto : br ? 'n' : VG_SCHENGEN.includes(l.pais) ? 't' : '', tipos: l.tipos || '' };
 }
 const vgDias = P => Math.max(1, Math.round((Date.parse(P.volta + 'T12:00:00') - Date.parse(P.ida + 'T12:00:00')) / 864e5));
 function vgCusto(l, P) {
@@ -2887,12 +4959,13 @@ function renderVgLista() {
 }
 function vgAddLugar(o) {
   const v = state.viag, d = o.dest ? vgDest(o.dest) : null;
-  const l = { id: vgId(), dest: d ? d.id : '', nome: o.nome || (d ? d.nome : ''), pais: o.pais || (d ? d.pais : ''), lat: d ? d.lat : null, lon: d ? d.lon : null, st: o.st || 'quero', vont: o.vont || 3, tipos: o.tipos || '', nota: o.nota || '', ov: {} };
+  const l = { id: vgId(), dest: d ? d.id : '', nome: o.nome || (d ? d.nome : ''), pais: o.pais || (d ? d.pais : ''), lat: d ? d.lat : o.lat != null ? o.lat : null, lon: d ? d.lon : o.lon != null ? o.lon : null, st: o.st || 'quero', vont: o.vont || 3, tipos: o.tipos || '', nota: o.nota || '', ov: {} };
   if (!l.nome || !l.pais) return null;
+  if (!d && l.lat == null) { const c = vgAchaCid(l.nome, l.pais); if (c) { l.lat = c.lat; l.lon = c.lon; } }
   v.lugares.push(l); return l;
 }
 // lugar digitado: tenta a tabela base pelo nome (com ou sem o país depois do ponto)
-const VG_ALIAS = { sevilla: 'sevilha', seville: 'sevilha', pyrenees: 'pirineus', 'the pyrenees': 'pirineus', pirineos: 'pirineus', florence: 'florenca', venice: 'veneza', rome: 'roma', naples: 'napoles', lisbon: 'lisboa', azores: 'acores', 'new york': 'nova york', prague: 'praga', vienna: 'viena', budapest: 'budapeste', athens: 'atenas', crete: 'creta', istanbul: 'istambul', tokyo: 'toquio', seoul: 'seul', amsterdam: 'amsterda', london: 'londres', berlin: 'berlim', sicily: 'sicilia', sardinia: 'sardenha', bologna: 'bolonha', malaga: 'malaga', cadiz: 'pueblos blancos' };
+const VG_ALIAS = { sevilla: 'sevilha', seville: 'sevilha', pyrenees: 'pirineus', 'the pyrenees': 'pirineus', pirineos: 'pirineus', florence: 'florenca', venice: 'veneza', rome: 'roma', naples: 'napoles', lisbon: 'lisboa', azores: 'acores', 'new york': 'nova york', prague: 'praga', vienna: 'viena', budapest: 'budapeste', athens: 'atenas', crete: 'creta', istanbul: 'istambul', tokyo: 'toquio', seoul: 'seul', amsterdam: 'amsterda', london: 'londres', berlin: 'berlim', sicily: 'sicilia', sardinia: 'sardenha', bologna: 'bolonha', malaga: 'malaga', cadiz: 'pueblos blancos', shanghai: 'xangai', shangai: 'xangai', beijing: 'pequim', peking: 'pequim', 'xi an': 'xi an', xian: 'xi an', guilin: 'guilin e yangshuo', yangshuo: 'guilin e yangshuo', sapporo: 'hokkaido sapporo', hokkaido: 'hokkaido sapporo', taipei: 'taipe', 'chiang mai': 'chiang mai', angkor: 'siem reap angkor', 'siem reap': 'siem reap angkor', 'el nido': 'palawan el nido', palawan: 'palawan el nido', jaipur: 'rajastao jaipur', agra: 'delhi e agra', delhi: 'delhi e agra', petra: 'petra e wadi rum', jerusalem: 'jerusalem', serengeti: 'serengeti safari', kruger: 'kruger safari', 'masai mara': 'masai mara safari', sossusvlei: 'namibia sossusvlei', mauritius: 'mauricio', 'victoria falls': 'cataratas vitoria', fes: 'fez e chefchaouen', fez: 'fez e chefchaouen', chefchaouen: 'fez e chefchaouen', luxor: 'luxor e nilo', hawaii: 'havai', honolulu: 'havai', toronto: 'toronto e niagara', niagara: 'toronto e niagara', vancouver: 'vancouver e rochosas', 'new orleans': 'nova orleans', 'punta cana': 'punta cana', quito: 'quito e equador', 'torres del paine': 'torres del paine', salta: 'salta e jujuy', jujuy: 'salta e jujuy', cairns: 'cairns e grande barreira', munich: 'munique', hallstatt: 'hallstatt e salzburgo', salzburg: 'hallstatt e salzburgo', salzburgo: 'hallstatt e salzburgo', copenhagen: 'copenhague', stockholm: 'estocolmo', krakow: 'cracovia', split: 'split e ilhas', nice: 'cote d azur nice', provence: 'provenca', 'hong kong': 'hong kong', 'ho chi minh': 'ho chi minh', saigon: 'ho chi minh', kathmandu: 'katmandu e himalaia', katmandu: 'katmandu e himalaia', mascate: 'mascate e desertos de oma', muscat: 'mascate e desertos de oma' };
 function vgAchaDest(txt, pais) { let n = vgNorm(String(txt).split('·')[0]).replace(/\b(andalucia|andaluzia)\b/g, '').trim(); if (!n) return null; n = VG_ALIAS[n] || n;
   const cs = VG_DEST.filter(d => !pais || d.pais === pais); return cs.find(d => vgNorm(d.nome) === n) || cs.find(d => n.length > 3 && (vgNorm(d.nome).includes(n) || n.includes(vgNorm(d.nome)))) || null; }
 // colar da planilha: colunas País, Cidade, O que fazer, Melhor época (aceita tab, ponto e vírgula ou vírgula; ? no nome = Talvez)
@@ -3020,11 +5093,11 @@ document.addEventListener('click', e => {
   if (d.vgetipo) { const l = v.lugares.find(x => x.id === $('vg-ed').dataset.id); if (!l) return; const cur = vgInfo(l).tipos, k = d.vgetipo; l.tipos = (cur.includes(k) ? cur.replace(k, '') : cur + k) || '-'; if (l.tipos !== '-') l.tipos = l.tipos.replace('-', ''); save(); t.setAttribute('aria-pressed', String(!cur.includes(k))); return; }
   if (d.vgimp != null) { const r = vgImportar($('vg-imp-txt').value); save(); $('vg-imp-msg').innerHTML = `<div class="ok">${r.n} ${r.n === 1 ? 'lugar importado' : 'lugares importados'}.${r.ign.length ? ` Não reconheci o país de: ${esc(r.ign.slice(0, 6).join('; '))}${r.ign.length > 6 ? '…' : ''}.` : ''}</div>`; if (r.n) $('vg-imp-txt').value = ''; renderTab(); return; }
   if (d.vgaddbtn != null) { const txt = $('vg-novo').value.trim(), pais0 = $('vg-pais').value; if (!txt) { $('vg-novo').focus(); return; }
-    const dd = vgAchaDest(txt, pais0 || null), pais = pais0 || (dd && dd.pais) || (txt.includes('·') ? vgPaisPorNome(txt.split('·')[1]) : '');
+    const pTxt = txt.includes('·') ? vgPaisPorNome(txt.split('·')[1]) : '', cc = !pais0 && !pTxt ? vgAchaCid(txt, null) : null, dd = vgAchaDest(txt, pais0 || pTxt || (cc && cc.pais) || null), pais = pais0 || pTxt || (cc && cc.pais) || (dd && dd.pais) || '';
     if (!pais) { $('vg-add-msg').innerHTML = '<div class="warn">Escolha o país.</div>'; $('vg-pais').focus(); return; }
     const exato = dd && (vgNorm(dd.nome) === vgNorm(txt.split('·')[0]) || txt.includes('·'));
     const l = vgAddLugar({ dest: exato ? dd.id : '', nome: exato ? dd.nome : txt.split('·')[0].trim(), pais, st: $('vg-novo-st').value });
-    if (l) { $('vg-novo').value = ''; $('vg-add-msg').innerHTML = `<div class="ok">${esc(l.nome)} entrou na lista${exato ? '' : ' com valores de referência do continente; ajuste em Editar'}.</div>`; save(); vgRe(); } return; }
+    if (l) { $('vg-novo').value = ''; $('vg-pais').value = ''; $('vg-add-msg').innerHTML = `<div class="ok">${esc(l.nome)} entrou na lista${exato ? '' : vgInfo(l).ref === 'pais' || l.pais === 'BR' ? ' com o custo médio do país e a passagem pela distância; ajuste em Editar se quiser' : ' com valores de referência do continente; ajuste em Editar'}.</div>`; save(); vgRe(); } return; }
 });
 document.addEventListener('change', e => {
   const t = e.target, d = t.dataset || {}; if (!state.viag) return; const v = state.viag;
@@ -3053,10 +5126,13 @@ function vgSugAbre() {
     if (!q) sc = pais ? (d.pais === pais ? 3 : 0) : 1;
     else if (n.startsWith(qa) || n.startsWith(q)) sc = 4; else if (n.includes(qa) || n.includes(q)) sc = 3; else if (pn.startsWith(q)) sc = 2; else if (q.length > 2 && pn.includes(q)) sc = 1;
     if (sc && pais && d.pais === pais) sc += 2; return { d, sc };
-  }).filter(x => x.sc).sort((a, b) => b.sc - a.sc || a.d.nome.localeCompare(b.d.nome, 'pt-BR')).slice(0, 8);
-  const txt = inp.value.split('·')[0].trim(), exato = ls.some(x => vgNorm(x.d.nome) === vgNorm(txt));
+  }).filter(x => x.sc).sort((a, b) => b.sc - a.sc || a.d.nome.localeCompare(b.d.nome, 'pt-BR')).slice(0, q ? 6 : 8);
+  const txt = inp.value.split('·')[0].trim(), ja = new Set(ls.map(x => vgNorm(x.d.nome) + '|' + x.d.pais).concat(v.lugares.map(l => vgNorm(l.nome) + '|' + l.pais)));
+  const cs = q.length < 2 ? [] : vgCids().map((c, i) => ({ c, i, m: c.n.startsWith(q) || c.na.startsWith(q) ? 2 : q.length > 3 && (c.n.includes(q) || c.na.includes(q)) ? 1 : 0 })).filter(x => x.m && !ja.has(x.c.n + '|' + x.c.pais)).map(x => (x.sc = x.m + (pais && x.c.pais === pais ? 2 : 0), x)).sort((a, b) => b.sc - a.sc || a.i - b.i).slice(0, 10 - ls.length);
+  const exato = ls.some(x => vgNorm(x.d.nome) === qa) || cs.some(x => x.c.n === vgNorm(txt) || x.c.na === vgNorm(txt)), nOp = ls.length + cs.length;
   let h = ls.map((x, i) => `<button type="button" role="option" data-vgsug="${x.d.id}"${i === vgSugI ? ' class="on"' : ''}><b>${esc(x.d.nome)}</b><span>${esc(vgPaisNome(x.d.pais))}</span></button>`).join('');
-  if (txt && !exato) h += `<button type="button" role="option" class="vg-sug-novo${ls.length === vgSugI ? ' on' : ''}" data-vgsugnovo><b>Usar "${esc(txt)}" como novo lugar</b><span>escolha o país ao lado</span></button>`;
+  h += cs.map((x, k) => `<button type="button" role="option" data-vgsugcid="${x.i}"${ls.length + k === vgSugI ? ' class="on"' : ''}><b>${esc(x.c.nome)}</b><span>${esc(vgPaisNome(x.c.pais))} · custo médio do país</span></button>`).join('');
+  if (txt && !exato) h += `<button type="button" role="option" class="vg-sug-novo${nOp === vgSugI ? ' on' : ''}" data-vgsugnovo><b>Usar "${esc(txt)}" como novo lugar</b><span>escolha o país ao lado</span></button>`;
   if (!h && pais && !q) h = '<div class="vg-sug-h">Ainda não há sugestões com custos neste país. Digite o nome do lugar.</div>';
   if (!h) { box.hidden = true; inp.setAttribute('aria-expanded', 'false'); return; }
   box.innerHTML = (!q ? `<div class="vg-sug-h">${pais ? 'Sugestões neste país' : 'Sugestões com custos de referência'}</div>` : '') + h; box.hidden = false; inp.setAttribute('aria-expanded', 'true');
@@ -3073,7 +5149,8 @@ document.addEventListener('keydown', e => {
 });
 document.addEventListener('mousedown', e => { const b = $('vg-sug'); if (b && !b.hidden && !e.target.closest('.vg-add-n')) vgSugFecha(); });
 document.addEventListener('click', e => {
-  const t = e.target.closest('[data-vgsug],[data-vgsugnovo],[data-vgdatas]'); if (!t) return;
+  const t = e.target.closest('[data-vgsug],[data-vgsugcid],[data-vgsugnovo],[data-vgdatas]'); if (!t) return;
+  if (t.dataset.vgsugcid != null) { const c = vgCids()[+t.dataset.vgsugcid]; if (c) { $('vg-novo').value = `${c.nome} · ${vgPaisNome(c.pais)}`; $('vg-pais').value = c.pais; } vgSugFecha(); $('vg-novo-st').focus(); return; }
   if (t.dataset.vgdatas != null) { e.preventDefault(); const s = [...document.querySelectorAll('#p-viagens [data-nav]')].find(x => x.dataset.nav === 'Datas'); if (s) { abrirSecao(s); s.scrollIntoView({ behavior: 'smooth', block: 'start' }); setTimeout(() => { const i = s.querySelector('[data-vgp="ida"]'); if (i) i.focus(); }, 400); } return; }
   if (t.dataset.vgsug) { vgSugEscolhe(t.dataset.vgsug); return; }
   vgSugFecha(); $('vg-novo').value = $('vg-novo').value.split('·')[0].trim(); if (!$('vg-pais').value) $('vg-pais').focus(); else $('vg-novo-st').focus();
@@ -7218,7 +9295,7 @@ const INFO_SEC = {
   'viagens:Mapa': 'Países em azul: onde você já foi. Laranja e amarelo: países com lugares Quero ir ou Talvez na sua lista. Os pontos são os lugares; países pequenos demais para o mapa aparecem como bolinhas. As barras mostram quantos países de cada continente você já conhece.',
   'viagens:Datas': 'As datas, o número de pessoas e o estilo (econômica, meio a meio ou luxo) valem para todos os lugares: o total estimado da lista, o sorteio e o Comparar mudam juntos. Tipo de viagem filtra o sorteio.',
   'viagens:Sortear': 'O sorteio escolhe entre os lugares da lista que passam nos filtros (status, tipo de viagem, boa época nas datas e teto de gasto). Quanto mais estrelas de vontade, maior a chance.',
-  'viagens:Lista de lugares': 'Os lugares que você quer conhecer. Os que vêm das sugestões têm custos e épocas de referência; os digitados usam a média do continente até você ajustar em Editar.',
+  'viagens:Lista de lugares': 'Os lugares que você quer conhecer. Os que vêm das sugestões têm custos e épocas de referência; as cidades da busca (cerca de 2.000) ficam no lugar certo do mapa e usam o custo médio do país, com a passagem estimada pela distância de São Paulo. Um lugar que não está em nenhuma das duas usa a média do continente. Ajuste tudo em Editar.',
   'viagens:Países que já fui': 'Lista dos países marcados como Já fui, por continente. A conta usa os 195 países: 193 da ONU, Vaticano e Palestina. Territórios como Groenlândia e Porto Rico podem ser marcados, mas ficam fora da conta.',
   'viagcmp:Datas': 'As mesmas datas e preferências de Mapa e lugares: mudar aqui muda lá.',
   'viagcmp:Lado a lado': 'Passagem: média de referência ida e volta saindo de São Paulo, por pessoa. Hospedagem: quarto duplo por noite. Dia a dia: comida, transporte local e passeios por pessoa. Tudo no estilo escolhido, convertido com spread e IOF e corrigido até a data da viagem. Seguro: estimativa por dia. Custo de oportunidade: quanto o total renderia em 10 anos no rendimento real do Plano futuro.',
