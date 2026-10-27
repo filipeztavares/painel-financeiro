@@ -674,6 +674,41 @@ tr.novo-row td { animation: novoRow 2.4s ease; }
   #tbl-itens td.it-v { grid-column: 1 / -1; min-width: 0; }
   #tbl-itens td[data-l]::before { content: attr(data-l) " "; font-size: 10px; text-transform: uppercase; letter-spacing: .5px; color: var(--faint); }
 }
+
+/* ---------- linha do tempo e visões gerais ---------- */
+.tl { --tlw: 30%; position: relative; }
+.tl-h, .tl-r { display: grid; grid-template-columns: var(--tlw) 1fr; gap: 12px; align-items: center; }
+.tl-h { font-size: 10.5px; color: var(--faint); margin-bottom: 4px; }
+.tl-ax { position: relative; height: 16px; }
+.tl-ax span { position: absolute; transform: translateX(-50%); white-space: nowrap; }
+.tl-r { padding: 6px 0; border-top: 1px solid var(--line); }
+.tl-n { min-width: 0; font-size: 12.5px; line-height: 1.35; }
+.tl-n a { color: var(--ink); font-weight: 600; text-decoration: none; } .tl-n a:hover { color: var(--accent); text-decoration: underline; }
+.tl-n small { display: block; color: var(--muted); font-size: 11px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.tl-b { position: relative; height: 22px; background-image: linear-gradient(to right, var(--line) 1px, transparent 1px); background-size: var(--tly, 10%) 100%; }
+.tl-bar { position: absolute; top: 7px; height: 8px; border-radius: 99px; background: var(--mc); min-width: 4px; }
+.tl-bar.sim { background: transparent; border: 2px dashed var(--mc); top: 6px; height: 10px; }
+.tl-dot { position: absolute; top: 4px; width: 14px; height: 14px; margin-left: -7px; border-radius: 50%; background: var(--mc); border: 2px solid var(--panel); box-shadow: 0 0 0 1px var(--mc); }
+.tl-dot.sim { background: var(--panel); border: 2px dashed var(--mc); box-shadow: none; }
+.tl-hoje { position: absolute; top: 0; bottom: 0; width: 0; border-left: 1.5px solid var(--accent); pointer-events: none; }
+.tl-hoje span { position: absolute; top: -2px; left: 4px; font-size: 10px; font-weight: 600; color: var(--accent); }
+.tl-ch { font-size: 10px; font-weight: 600; color: var(--warn); margin-left: 4px; }
+.tl-list { display: none; }
+.tl-ano { font-family: var(--f-head); font-size: 13px; font-weight: 600; margin: 12px 0 4px; color: var(--accent-strong); }
+.tl-li { display: flex; gap: 10px; align-items: flex-start; padding: 7px 0; border-top: 1px solid var(--line); font-size: 12.5px; }
+.tl-li i { flex: none; width: 10px; height: 10px; margin-top: 4px; border-radius: 50%; background: var(--mc); }
+.tl-li i.sim { background: transparent; border: 2px dashed var(--mc); }
+.tl-li .q { flex: none; width: 52px; color: var(--muted); }
+.tl-li a { color: var(--ink); font-weight: 600; text-decoration: none; }
+.tl-li small { display: block; color: var(--muted); font-size: 11px; }
+.tl-vazio { font-size: 12.5px; color: var(--muted); margin: 4px 0; }
+@media (max-width: 700px) { .tl-wide { display: none; } .tl-list { display: block; } }
+.tv-links { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+.tv-links .md-card .md-img { height: 64px; } .tv-links .md-card .md-img svg { width: 32px; height: 32px; }
+@media (max-width: 900px) { .tv-links { grid-template-columns: minmax(0, 1fr); } }
+#tbl-hm-tot td, #tbl-hm-tot th { text-align: right; } #tbl-hm-tot td:first-child, #tbl-hm-tot th:first-child { text-align: left; }
+#tbl-hm-tot tr.tot td { font-weight: 700; border-top: 2px solid var(--line); }
+#tbl-hm-tot td i { display: inline-block; width: 9px; height: 9px; border-radius: 3px; margin-right: 7px; }
 /* ---------- módulos (tela de entrada) e menu por módulo ---------- */
 .fora-mod { display: none !important; }
 .nav-head:has(.nav-det) { flex-wrap: wrap; row-gap: 0; }
@@ -903,6 +938,7 @@ a.lm-ir:hover { border-bottom-style: solid; }
           <div class="nav-group" data-sodono hidden><button type="button" class="nav-head" data-tab="familia"><span class="ico">08</span>Visão consolidada<span class="caret" data-navtog="familia" role="button" tabindex="0" aria-label="Abrir ou recolher submódulos">▾</span></button><div class="nav-sub" data-sub="familia"></div></div>
         </div></div>
         <div class="nav-sec" data-sec="trab" data-mod="trab"><button type="button" class="nav-sec-h" data-sectog="trab" aria-expanded="true"><span>Trabalho e Bens</span><span class="caret" aria-hidden="true">▾</span></button><div class="nav-sec-b">
+          <div class="nav-group"><button type="button" class="nav-head" data-tab="trabvg"><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 11.5 12 4l9 7.5"/><path d="M5.5 10v9.5h13V10"/><path d="M10 19.5v-5h4v5"/></svg></span>Visão geral</button><div class="nav-sub" data-sub="trabvg"></div></div>
           <div class="nav-group"><button type="button" class="nav-head" data-tab="compras"><span class="ico">01</span>Compras e bens<small class="nav-det">(imóveis, carros, ...)</small><span class="caret" data-navtog="compras" role="button" tabindex="0" aria-label="Abrir ou recolher submódulos">▾</span></button><div class="nav-sub" data-sub="compras"></div></div>
           <div class="nav-group"><button type="button" class="nav-head" data-tab="stock"><span class="ico">02</span>Stock options<span class="caret" data-navtog="stock" role="button" tabindex="0" aria-label="Abrir ou recolher submódulos">▾</span></button><div class="nav-sub" data-sub="stock"></div></div>
           <div class="nav-group"><button type="button" class="nav-head" data-tab="pjpf"><span class="ico">03</span>PJ e PF<span class="caret" data-navtog="pjpf" role="button" tabindex="0" aria-label="Abrir ou recolher submódulos">▾</span></button><div class="nav-sub" data-sub="pjpf"></div></div>
@@ -914,7 +950,7 @@ a.lm-ir:hover { border-bottom-style: solid; }
     </div>
     <div class="nav-mobile-sub" id="navMobileSub"></div>
   </div>
-  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 190</div></div>
+  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 191</div></div>
 </nav>
 <div class="sino-pop" id="sino-pop" role="dialog" aria-label="Central de avisos" hidden></div>
 <div class="tour-pop" id="tour-pop" role="dialog" aria-labelledby="tour-tit" hidden></div>
@@ -927,16 +963,48 @@ a.lm-ir:hover { border-bottom-style: solid; }
   <section role="tabpanel" id="p-inicio" hidden>
     <div class="block-title"><span class="num">⌂</span><div><h1>Visão geral do Financeiro</h1><p class="desc" id="hm-desc">O resumo de cada parte. Clique em Abrir para ir ao detalhe.</p></div></div>
     <div id="hm-passos"></div>
+    <section data-nav="Total dos módulos" class="panel" id="hm-tot" hidden>
+      <h2>Total dos módulos no plano</h2>
+      <p class="sub">Quanto o que cada módulo planeja muda o investido no fim do plano. Projeção real já está no plano; as simulações marcadas em Comparar ficam fora dele.</p>
+      <div class="tscroll"><table id="tbl-hm-tot"></table></div>
+    </section>
     <div class="hm-grid" id="hm-grid"><div class="hm-col"></div><div class="hm-col"></div></div>
   </section>
   <!-- ============ MÓDULOS (tela de entrada) ============ -->
   <section role="tabpanel" id="p-modulos" hidden>
     <div class="block-title"><span class="num"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="3.5" width="7" height="7" rx="1.5"/><rect x="13.5" y="3.5" width="7" height="7" rx="1.5"/><rect x="3.5" y="13.5" width="7" height="7" rx="1.5"/><rect x="13.5" y="13.5" width="7" height="7" rx="1.5"/></svg></span><div><h1>Módulos</h1><p class="desc">Escolha uma área da sua vida. Cada módulo funciona sozinho, e o que ele planeja entra no Financeiro.</p></div></div>
     <div class="md-grid" id="md-grid"></div>
+    <section data-nav="Linha do tempo" class="panel">
+      <h2>Linha do tempo da vida</h2>
+      <p class="sub">O que cada módulo planeja, no tempo. Barra cheia: Projeção real; tracejada: Só simulação. Clique no nome para abrir o item.</p>
+      <div id="md-tl"></div>
+    </section>
+    <section data-nav="Patrimônio projetado" class="panel chart">
+      <h2>Patrimônio projetado</h2>
+      <p class="sub">Investido no plano atual, com as simulações que você marcou em Comparar e o esperado pela chance de cada item acontecer.</p>
+      <div class="legend" id="lg-md"></div>
+      <div id="ch-md"></div>
+      <div class="readout" id="ro-md"></div>
+      <p class="pl-cmp" id="md-cmp"></p>
+    </section>
     <section data-nav="Escolher módulos" class="panel" id="md-esc">
       <h2>Escolher módulos</h2>
       <p class="sub">Marque o que você quer ver. O que você desligar some desta tela e do menu, mas os dados ficam guardados: religou, volta tudo.</p>
       <div class="md-esc" id="md-esc-l"></div>
+    </section>
+  </section>
+  <!-- ============ TRABALHO E BENS: VISÃO GERAL ============ -->
+  <section role="tabpanel" id="p-trabvg" hidden>
+    <div class="block-title"><span class="num"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 11.5 12 4l9 7.5"/><path d="M5.5 10v9.5h13V10"/><path d="M10 19.5v-5h4v5"/></svg></span><div><h1>Visão geral de Trabalho e Bens</h1><p class="desc">Bens, dívidas, stock options e o que vem pela frente neste módulo.</p></div></div>
+    <div class="kpis" id="kpi-tv"></div>
+    <section data-nav="Próximos no tempo" class="panel">
+      <h2>Próximos no tempo</h2>
+      <p class="sub">Compras, parcelas e eventos de stock options deste módulo. Barra cheia: Projeção real; tracejada: Só simulação.</p>
+      <div id="tv-tl"></div>
+    </section>
+    <section data-nav="Partes do módulo" class="panel">
+      <h2>Partes do módulo</h2>
+      <div class="tv-links" id="tv-links"></div>
     </section>
   </section>
   <section role="tabpanel" id="p-leia" hidden>
@@ -1913,7 +1981,7 @@ a.lm-ir:hover { border-bottom-style: solid; }
     return new Promise(resolve => { const { data } = sb.auth.onAuthStateChange(async (ev) => { if (ev !== 'PASSWORD_RECOVERY') return; const s = prompt('Digite a nova senha (mínimo 8 caracteres):'); if (s && s.length >= 8) { const { error } = await sb.auth.updateUser({ password: s }); alert(error ? 'Não deu para trocar a senha: ' + error.message : 'Senha trocada.'); } }); resolve(data); });
   }
   // ---------- rodapé: compartilhar, administração e sair ----------
-  const SITE_V = 70;
+  const SITE_V = 71;
   const escH = v => String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const dataBR = v => v ? new Date(v).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' }) : '–';
   const css2 = `.side-foot .r{flex-wrap:wrap}.side-foot .lg-acoes{margin-left:auto;display:inline-flex;gap:10px}
@@ -2296,7 +2364,7 @@ function normalizar(s) {
 try { if (quemLocal === 'dono') { const b = JSON.parse(localStorage.getItem('painel-priv')); if (b) aplicarBase(b); } } catch (e) {}
 try { const l = JSON.parse(localStorage.getItem(LSK('painel-fin-v2'))); if (l) state = normalizar(l); } catch (e) {}
 tab = 'modulos';
-const TABS = ['modulos', 'inicio', 'leia', 'global', 'gastos', 'carteira', 'orcamento', 'compras', 'cenarios', 'patrimonio', 'comparador', 'simulador', 'pjpf', 'stock', 'config', 'familia'];
+const TABS = ['modulos', 'inicio', 'trabvg', 'leia', 'global', 'gastos', 'carteira', 'orcamento', 'compras', 'cenarios', 'patrimonio', 'comparador', 'simulador', 'pjpf', 'stock', 'config', 'familia'];
 if (TABS.includes(location.hash.slice(1))) tab = location.hash.slice(1);
 if (!TABS.includes(tab)) tab = 'modulos';
 
@@ -5768,7 +5836,7 @@ function calcPlano(extra) {
   const P = state.plan, i0 = mIndex(P.inicio), fim = Math.max(i0 + Math.round((+P.anos || 10) * 12), HOJE_IDX + Math.round(state.cfg.anos * 12) + 13);
   const L = linhasPlano(), cur = {}, mud = (P.mud || []).filter(m => m.key && m.mes).slice().sort((a, b) => a.mes < b.mes ? -1 : 1);
   L.forEach(l => { cur[l.key] = l.base; mud.filter(m => m.key === l.key && mIndex(m.mes) <= i0).forEach(m => { cur[l.key] = +m.valor || 0; }); });
-  const buys = state.compras.filter(b => (P.inc || []).includes(b.id) || (extra && extra.has('compra:' + b.id))).map(b => ({ b, m0: mIndex(b.mes), sch: schedule(b, b.modo) }));
+  const buys = state.compras.filter(b => ((P.inc || []).includes(b.id) && !(extra && extra.has('-compra:' + b.id))) || (extra && extra.has('compra:' + b.id))).map(b => ({ b, m0: mIndex(b.mes), sch: schedule(b, b.modo) }));
   const reinv = Math.min(100, Math.max(0, +P.reinv || 0)) / 100;
   const out = { i0, fim, meses: {}, inv: { [i0]: +P.valor || 0 }, parado: { [i0]: 0 }, buys: buys.map(x => x.b), L };
   let inv = +P.valor || 0, parado = 0, fIpca = 1;
@@ -6341,9 +6409,14 @@ $('cpform').addEventListener('submit', async e => {
 });
 
 /* ---------- abas ---------- */
-const BUILD = { modulos: () => {}, inicio: () => {}, leia: buildLeia, global: () => {}, cenarios: buildCenarios, compras: buildCenarios, carteira: buildCarteira, comparador: buildComparador, simulador: buildSimulador, gastos: buildGastos, orcamento: buildOrcamento, config: buildConfig, pjpf: buildPj, stock: buildStock, familia: () => carregarPerfis(), patrimonio: () => {} };
+const BUILD = { modulos: () => {}, inicio: () => {}, trabvg: () => {}, leia: buildLeia, global: () => {}, cenarios: buildCenarios, compras: buildCenarios, carteira: buildCarteira, comparador: buildComparador, simulador: buildSimulador, gastos: buildGastos, orcamento: buildOrcamento, config: buildConfig, pjpf: buildPj, stock: buildStock, familia: () => carregarPerfis(), patrimonio: () => {} };
 // (i) de cada seção: o que mostra e de onde vêm os números (chave: aba:data-nav)
 const INFO_SEC = {
+  'modulos:Linha do tempo': 'Os itens de todos os módulos no tempo: quando começam e, se tiverem parcelas, até quando vão. Cheio é Projeção real; tracejado é Só simulação. A % ao lado do nome é a chance de acontecer, quando for menor que 100%.',
+  'modulos:Patrimônio projetado': 'Linha azul: investido no plano atual (Plano futuro). Verde tracejada: o plano somando os itens em Só simulação marcados em Comparar. Amarela: o esperado, pesando cada item pela chance de acontecer.',
+  'inicio:Total dos módulos': 'Para cada módulo, quanto os itens em Projeção real mudam o investido no fim do plano (já incluído no plano) e quanto mudariam as simulações marcadas em Comparar (fora do plano).',
+  'trabvg:Próximos no tempo': 'A linha do tempo só com os itens deste módulo: compras e as parcelas até o fim, e os eventos de stock options.',
+  'trabvg:Partes do módulo': 'Atalhos para Compras e bens, Stock options e PJ e PF.',
   'orcamento:Itens dos módulos': 'A lista única do que os módulos planejam (compras e bens, stock options e os eventos do próprio plano), cada um com quando, quanto, chance de acontecer e se entra na projeção real ou fica só para simular.',
   'modulos:Escolher módulos': 'Quais módulos aparecem para você. O administrador decide quais estão disponíveis; aqui você escolhe, entre eles, o que quer ver. Desligar não apaga nada.',
   'config:Módulos': 'Só o administrador vê. Define quais módulos ficam disponíveis para todas as pessoas que usam o painel.',
@@ -6425,7 +6498,7 @@ function infoSecoes() {
       if (h && !h.id) h.append(btn); else if (h) h.after(btn); else if (lg) lg.append(btn); }); });
 }
 infoSecoes();
-const RENDER = { modulos: renderModulos, inicio: renderHome, leia: () => {}, global: renderGlobal, cenarios: renderCenarios, compras: renderCenarios, carteira: renderCarteira, comparador: renderComparador, simulador: renderSimulador, gastos: () => { renderGastos(); renderFechamento(); renderHistorico(); }, orcamento: renderOrcamento, config: renderConfig, pjpf: renderPj, stock: renderStock, familia: renderFamilia, patrimonio: renderPatr };
+const RENDER = { modulos: renderModulos, inicio: renderHome, trabvg: renderTrabVg, leia: () => {}, global: renderGlobal, cenarios: renderCenarios, compras: renderCenarios, carteira: renderCarteira, comparador: renderComparador, simulador: renderSimulador, gastos: () => { renderGastos(); renderFechamento(); renderHistorico(); }, orcamento: renderOrcamento, config: renderConfig, pjpf: renderPj, stock: renderStock, familia: renderFamilia, patrimonio: renderPatr };
 function renderTab() { planCache = null; try { RENDER[tab](); } catch (err) { console.error(err); setSave('erro ao recalcular: ' + (err && err.message || err)); } }
 let navAbertos = null;
 try { navAbertos = JSON.parse(localStorage.getItem('painel-nav-abertos')); } catch (e) {}
@@ -6485,7 +6558,7 @@ const MOD_SVG = {
 };
 const MODS = [
   { id: 'fin', corNav: '#7FA6E0', nome: 'Financeiro', cor: 'var(--s1)', fixo: true, vg: 'inicio', desc: 'Gastos, patrimônio, carteira, plano futuro e cenários. Recebe o que os outros módulos planejam.', tabs: ['inicio', 'global', 'gastos', 'patrimonio', 'carteira', 'comparador', 'simulador', 'orcamento', 'cenarios', 'familia'] },
-  { id: 'trab', corNav: '#E09A63', nome: 'Trabalho e Bens', cor: 'var(--s2)', desc: 'Compras e bens (imóveis, carros, ...), stock options e PJ e PF. O que entra no plano vai para o Plano futuro.', tabs: ['compras', 'stock', 'pjpf'] },
+  { id: 'trab', corNav: '#E09A63', nome: 'Trabalho e Bens', cor: 'var(--s2)', vg: 'trabvg', desc: 'Compras e bens (imóveis, carros, ...), stock options e PJ e PF. O que entra no plano vai para o Plano futuro.', tabs: ['trabvg', 'compras', 'stock', 'pjpf'] },
   { id: 'viag', corNav: '#5fc2f5', nome: 'Viagens', cor: 'var(--s8)', breve: true, desc: 'Sabático e férias regulares: roteiro, datas no futuro e custos de hoje e projetados.', tabs: [] },
   { id: 'neg', corNav: '#a3e05a', nome: 'Negócios', cor: 'var(--s7)', breve: true, desc: 'Pesquisa de mercado, DRE, passo a passo para abrir empresa e oportunidades de custo.', tabs: [] }
 ];
@@ -6505,6 +6578,75 @@ function aplicarMod() {
   document.querySelectorAll('.nav-voltar').forEach(b => { if (tab === 'modulos') b.setAttribute('aria-current', 'page'); else b.removeAttribute('aria-current'); });
   if ($('nav-mod-nome')) $('nav-mod-nome').textContent = mm.nome;
   if (!$('nav-mod-pop').hidden) pintaModPop();
+}
+
+/* ---------- linha do tempo, impacto dos itens e visões gerais (Fase 2, etapa 3) ---------- */
+const itensVisiveis = () => itensModulos().filter(x => { const m = MODS.find(y => y.id === x.mod); return m && modVisivel(m); });
+// efeito de cada item no investido do plano: real = plano − plano sem ele; simulação = plano com ele − plano
+function impactos(its) {
+  const base = calcPlano(), out = {};
+  its.forEach(x => { if (x.bloq || !x.ini) return; const alt = calcPlano(new Set([(x.uso === 'real' ? '-' : '') + x.id])); out[x.id] = { alt, ef: i => x.uso === 'real' ? (base.inv[i] ?? 0) - (alt.inv[i] ?? 0) : (alt.inv[i] ?? 0) - (base.inv[i] ?? 0) }; });
+  return out;
+}
+function tlHtml(its) {
+  const ev = its.filter(x => x.ini && /^\d{4}-\d{2}$/.test(x.ini)).map(x => { const a = mIndex(x.ini); return Object.assign({ a, b: a + (x.meses || 0) }, x); });
+  if (!ev.length) return '<p class="tl-vazio">Nada no tempo ainda. Cadastre compras em Trabalho e Bens, eventos de stock options ou eventos no Plano futuro.</p>';
+  const a0 = Math.min(HOJE_IDX - calMonth(HOJE_IDX), ...ev.map(x => x.a - calMonth(x.a)));
+  let a1 = Math.max(a0 + 60, ...ev.map(x => x.b + 6)); a1 = Math.min(a1, a0 + 30 * 12); a1 = a1 + (12 - (a1 - a0) % 12) % 12;
+  const W = a1 - a0, pc = i => Math.max(0, Math.min(100, (i - a0) / W * 100)), anos = W / 12, passo = anos > 16 ? 4 : anos > 8 ? 2 : 1;
+  const ticks = []; for (let i = a0; i <= a1; i += 12 * passo) ticks.push(`<span style="left:${pc(i)}%">${mKey(i).slice(0, 4)}</span>`);
+  const cor = id => (MODS.find(m => m.id === id) || {}).cor || 'var(--s1)', ch = x => x.chance < 100 ? `<span class="tl-ch">${x.chance}%</span>` : '';
+  const sub = x => `${esc((MODS.find(m => m.id === x.mod) || {}).nome || '')} · ${esc(x.sub)} · ${mLabel(x.a)}${x.meses ? ' a ' + mLabel(x.b) : ''}`;
+  ev.sort((p, q) => p.a - q.a || p.nome.localeCompare(q.nome));
+  const larga = `<div class="tl tl-wide" style="--tly:${(12 * passo / W * 100).toFixed(4)}%"><div class="tl-h"><span></span><div class="tl-ax">${ticks.join('')}</div></div>` + ev.map(x => {
+    const sm = x.uso === 'sim' ? ' sim' : '', st = `--mc:${cor(x.mod)}`;
+    return `<div class="tl-r"><div class="tl-n"><a href="#" data-lmtab="${x.tab}" data-lmsec="${esc(x.sec || '')}">${esc(x.nome)}</a>${ch(x)}<small>${sub(x)} · ${esc(x.resumo)}</small></div><div class="tl-b">${x.b > x.a ? `<span class="tl-bar${sm}" style="${st};left:${pc(x.a)}%;width:${Math.max(0.6, pc(x.b) - pc(x.a))}%"></span>` : ''}<span class="tl-dot${sm}" style="${st};left:${pc(x.a)}%" title="${esc(x.nome)}: ${mLabel(x.a)}"></span>${''}</div></div>`;
+  }).join('') + `<span class="tl-hoje" style="left:calc(var(--tlw) + 12px + (100% - var(--tlw) - 12px) * ${(pc(HOJE_IDX) / 100).toFixed(4)})"><span>hoje</span></span></div>`;
+  const porAno = {}; ev.forEach(x => { const y = x.a < HOJE_IDX - calMonth(HOJE_IDX) ? 'Em andamento' : mKey(x.a).slice(0, 4); (porAno[y] = porAno[y] || []).push(x); });
+  const lista = `<div class="tl-list">${Object.keys(porAno).sort((p, q) => p === 'Em andamento' ? -1 : q === 'Em andamento' ? 1 : p.localeCompare(q)).map(y => `<div class="tl-ano">${y}</div>` + porAno[y].map(x => `<div class="tl-li"><i class="${x.uso === 'sim' ? 'sim' : ''}" style="--mc:${cor(x.mod)}"></i><span class="q">${mLabel(x.a)}</span><span><a href="#" data-lmtab="${x.tab}" data-lmsec="${esc(x.sec || '')}">${esc(x.nome)}</a>${ch(x)}<small>${esc(x.resumo)}${x.uso === 'sim' ? ' · só simulação' : ''}</small></span></div>`).join('')).join('')}</div>`;
+  return larga + lista;
+}
+function renderMdChart() {
+  const pl = calcPlano(), fimI = pl.i0 + Math.round((+state.plan.anos || 10) * 12), st = Math.max(pl.i0, HOJE_IDX), n = fimI - st + 1;
+  if (n < 2) { $('ch-md').innerHTML = '<p class="tl-vazio">Monte o Plano futuro para ver a projeção.</p>'; $('lg-md').innerHTML = ''; $('md-cmp').textContent = ''; return; }
+  const its = itensVisiveis(), cmp = cmpItens(), arr = f => Array.from({ length: n }, (_, t) => f(st + t));
+  const series = [{ name: 'Plano atual', c: 'var(--s1)', v: arr(i => pl.inv[i] ?? null), w: 2.6 }];
+  let pc = null; if (cmp.size) { pc = calcPlano(cmp); series.push({ name: 'Com as simulações', c: 'var(--s7)', v: arr(i => pc.inv[i] ?? null), dash: true, w: 2.2 }); }
+  // esperado: tira de cada item real a parte que pode não acontecer e soma a parte provável das simulações marcadas
+  const pesados = its.filter(x => !x.bloq && x.ini && ((x.uso === 'real' && x.chance < 100) || (x.uso === 'sim' && cmp.has(x.id))));
+  let esp = null;
+  if (pesados.length) { const im = impactos(pesados); esp = arr(i => { let v = pl.inv[i] ?? 0; pesados.forEach(x => { const e = im[x.id]; if (!e) return; v += x.uso === 'real' ? -(1 - x.chance / 100) * e.ef(i) : (x.chance / 100) * e.ef(i); }); return v; });
+    if (pesados.some(x => x.chance < 100)) series.push({ name: 'Esperado (pela chance)', c: 'var(--s3)', v: esp, dash: true, w: 2 }); else esp = null; }
+  legend($('lg-md'), series);
+  chart($('ch-md'), $('ro-md'), n, series, k, t => mLabel(st + t), 0);
+  const fim = pl.inv[fimI] ?? 0, partes = [`Plano atual em ${mLabel(fimI)}: <b>${k(fim)}</b>`];
+  if (pc) { const d = (pc.inv[fimI] ?? 0) - fim; partes.push(`com as simulações: <b>${k(pc.inv[fimI] ?? 0)}</b> (<span class="${d < 0 ? 'neg' : 'pos'}">${d >= 0 ? '+' : '−'}${k(Math.abs(d))}</span>)`); }
+  if (esp) partes.push(`esperado pela chance: <b>${k(esp[n - 1])}</b>`);
+  $('md-cmp').innerHTML = partes.join(' · ') + `. Escolha o que comparar e a chance de cada item em <a href="#" data-lmtab="orcamento" data-lmsec="Itens dos módulos">Itens dos módulos</a>.`;
+}
+function renderHmTot() {
+  const box = $('hm-tot'), its = itensModulos().filter(x => !x.bloq && x.ini); box.hidden = !its.length; if (!its.length) return;
+  const pl = calcPlano(), fimI = pl.i0 + Math.round((+state.plan.anos || 10) * 12), cmp = cmpItens(), im = impactos(its.filter(x => x.uso === 'real' || cmp.has(x.id)));
+  const sg = v => `<span class="${v < 0 ? 'neg' : v > 0 ? 'pos' : ''}">${v > 0 ? '+' : v < 0 ? '−' : ''}${k(Math.abs(v))}</span>`;
+  let tR = 0, tS = 0; const linhas = MODS.filter(m => its.some(x => x.mod === m.id)).map(m => {
+    const mi = its.filter(x => x.mod === m.id), real = mi.filter(x => x.uso === 'real'), sims = mi.filter(x => x.uso === 'sim' && cmp.has(x.id));
+    const eR = real.reduce((t, x) => t + (im[x.id] ? im[x.id].ef(fimI) : 0), 0), eS = sims.reduce((t, x) => t + (im[x.id] ? im[x.id].ef(fimI) : 0), 0); tR += eR; tS += eS;
+    return `<tr><td><i style="background:${m.cor}"></i>${esc(m.nome)}</td><td>${real.length}</td><td>${sg(eR)}</td><td>${sims.length}</td><td>${sims.length ? sg(eS) : '–'}</td></tr>`; });
+  $('tbl-hm-tot').innerHTML = `<thead><tr><th>Módulo</th><th>Itens no plano</th><th>Efeito em ${mLabel(fimI)}</th><th>Simulações marcadas</th><th>Efeito se entrassem</th></tr></thead><tbody>${linhas.join('')}<tr class="tot"><td>Total</td><td></td><td>${sg(tR)}</td><td></td><td>${tS ? sg(tS) : '–'}</td></tr></tbody>`;
+}
+function renderTrabVg() {
+  const B = bensHoje(), meus = B.filter(x => x.tenho), bens = meus.reduce((t, x) => t + x.valor, 0), div = meus.reduce((t, x) => t + x.divida, 0);
+  const parc = meus.reduce((t, x) => { const kk = HOJE_IDX - x.m0; return t + (kk >= 1 && kk <= x.sch.parc.length ? x.sch.parc[kk - 1] : 0); }, 0);
+  let so = 0, nSo = 0; ((state.so || {}).empresas || []).forEach(e => { try { const v = soHoje(e).liq; if (isFinite(v)) { so += v; nSo++; } } catch (er) {} });
+  kpis($('kpi-tv'), [
+    ['Bens hoje', fm(bens), meus.length ? `${meus.length} ${meus.length > 1 ? 'bens' : 'bem'} no valor estimado de hoje` : 'nenhum bem cadastrado'],
+    ['Dívidas', fm(div), div ? 'saldo dos financiamentos' : 'nenhuma', div > 0],
+    ['Parcelas este mês', fm(parc), parc ? 'financiamentos em andamento' : 'nenhuma parcela'],
+    ['Stock options hoje', nSo ? fm(so) : '—', nSo ? 'líquido se o preço de hoje valesse, já com imposto' : 'nenhuma empresa cadastrada']
+  ]);
+  $('tv-tl').innerHTML = tlHtml(itensModulos().filter(x => x.mod === 'trab'));
+  const m = MODS.find(x => x.id === 'trab'), lk = [['compras', 'Compras e bens', 'Imóveis, carros, outros bens e novos negócios: preço, financiamento, custos de ter e venda.', 'trab'], ['stock', 'Stock options', 'Opções, phantom shares e RSUs: vesting, valor hoje e num evento de liquidez.', 'trab'], ['pjpf', 'PJ e PF', 'Do faturamento ao bolso, melhor pró-labore e PJ contra CLT.', 'trab']];
+  $('tv-links').innerHTML = lk.map(([t, n, d]) => `<button type="button" class="md-card" style="--mc:${m.cor}" data-tab="${t}"><div class="md-img">${MOD_SVG.trab}</div><h3>${esc(n)}</h3><p>${esc(d)}</p></button>`).join('');
 }
 // trocar de módulo: menu próprio (a lista do navegador não mostra ícone nem cor)
 function pintaModPop() {
@@ -6544,6 +6686,7 @@ function modResumo(m) {
   return '';
 }
 function renderModulos() {
+  setTimeout(() => { if (tab !== 'modulos') return; try { $('md-tl').innerHTML = tlHtml(itensVisiveis()); renderMdChart(); } catch (er) { console.error(er); } }, 0);
   const vis = MODS.filter(m => modLiberado(m) && (m.breve || modEscolhido(m)));
   $('md-grid').innerHTML = vis.map(m => m.breve
     ? `<div class="md-card breve" style="--mc:${m.cor}" aria-disabled="true"><div class="md-img">${MOD_SVG[m.id]}</div><span class="chip">Em breve</span><h3>${esc(m.nome)}</h3><p>${esc(m.desc)}</p><div class="md-res">Ainda em construção</div></div>`
@@ -6816,6 +6959,7 @@ document.addEventListener('click', e => {
 });
 function renderHome() {
   renderPassos();
+  try { renderHmTot(); } catch (er) { console.error(er); }
   const g = $('hm-grid'); if (!g) return; const cols = [...g.children], cs = hmCards();
   cols.forEach(c => { c.innerHTML = ''; });
   if (!cs.length) { cols[0].innerHTML = $('hm-passos').innerHTML ? '' : '<p class="hm-vazio">Ainda não há dados. Comece pelo Leia-me.</p>'; return; }
@@ -6937,12 +7081,12 @@ function soHoje(e) { return soValor(e, HOJE_IDX, soPpsHoje(e), null, false); }
 // para o Plano futuro: o líquido do cenário base, se o evento estiver definido
 function soPlanEvs(extra) {
   const out = []; ((state.so || {}).empresas || []).forEach(e => {
-    const evI = soMes(e.ev.mes); if (!e.ev.definido || !(e.ev.plano || (extra && extra.has('so:' + e.id))) || evI == null || !(+e.ev.base > 0)) return;
+    const evI = soMes(e.ev.mes); if (!e.ev.definido || !((e.ev.plano && !(extra && extra.has('-so:' + e.id))) || (extra && extra.has('so:' + e.id))) || evI == null || !(+e.ev.base > 0)) return;
     const r = soEvento(e, +e.ev.base, evI); if (r.liq > 0) out.push({ id: 'so-' + e.id, nome: 'Stock options: ' + e.nome, tipo: 'receita', valor: Math.round(r.liq), mes: e.ev.mes, anual: false, so: true });
   });
   return out;
 }
-const planEvs = (P, extra) => (P.ev || []).concat(soPlanEvs(extra));
+const planEvs = (P, extra) => (P.ev || []).filter(e => !(extra && extra.has('-ev:' + e.id))).concat(soPlanEvs(extra));
 // chance de acontecer por item (informativa nesta etapa): { 'compra:<id>' | 'so:<id>' | 'ev:<id>': 0–100 }
 function soQuebra(e, evI) {
   // menor valor de venda a partir do qual você recebe algo
@@ -7259,6 +7403,7 @@ const LM_MODS = [
   ['cenarios', 'Onde você testa futuros diferentes. Cada cenário tem a sua carteira, ajustes de CDI e IPCA, renda extra e escolhe quais bens de Compras e bens entram. Mostra patrimônio, sobra mensal e rebalanceamento.', 'antes de uma compra grande ou para comparar caminhos.'],
   ['familia', 'Soma os perfis das pessoas com quem você compartilhou o painel, com a parte de cada uma em ganhos, gastos e patrimônio. Só você vê.', 'para olhar a família como um todo.'],
   'Trabalho e Bens',
+  ['trabvg', 'O resumo do módulo: valor dos bens, dívidas, parcelas do mês, quanto valem as stock options hoje e o que vem pela frente na linha do tempo.', 'para ver tudo do trabalho e dos bens de uma vez.'],
   ['compras', 'O cadastro de bens: imóveis, carros e outros, já comprados ou planejados, com preço, entrada, financiamento, custos de ter e valorização. Compara à vista, SAC, Price e consórcio.', 'quando comprar, planejar ou financiar um bem.'],
   ['stock', 'Simula stock options, phantom shares e RSUs de uma ou mais empresas: vesting com cliff, quanto vale hoje e num evento de liquidez, preferências dos investidores, diluição das próximas rodadas, imposto e o que você perde se sair.', 'quando receber uma concessão, negociar uma proposta ou pensar em sair.'],
   ['pjpf', 'Converte faturamento PJ em dinheiro no bolso, ou o contrário: DAS, contabilidade, pró-labore, melhor regime e comparação com CLT, nas regras de 2026.', 'ao negociar um contrato PJ ou comparar com uma proposta CLT.'],
