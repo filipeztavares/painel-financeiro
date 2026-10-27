@@ -808,7 +808,7 @@ a.lm-ir:hover { border-bottom-style: solid; }
     </div>
     <div class="nav-mobile-sub" id="navMobileSub"></div>
   </div>
-  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 183</div></div>
+  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 184</div></div>
 </nav>
 <div class="sino-pop" id="sino-pop" role="dialog" aria-label="Central de avisos" hidden></div>
 <div class="tour-pop" id="tour-pop" role="dialog" aria-labelledby="tour-tit" hidden></div>
@@ -1287,9 +1287,10 @@ a.lm-ir:hover { border-bottom-style: solid; }
         <p class="hint full" id="fat-msg" role="status">Fatura do cartão ou extrato da conta, de qualquer banco: CSV, OFX, PDF ou o ZIP com senha que o banco envia. O painel identifica sozinho o banco, se é fatura ou extrato e quais colunas são data, descrição e valor; você confere antes de importar. Na fatura, pagamentos são ignorados e cada gasto vem com categoria sugerida. No extrato, Pix, boletos e transferências viram gasto, receita (ex.: salário) ou dedução (ex.: DAS); aplicações, resgates e o pagamento da fatura não entram. Se o arquivo tiver senha, digite na primeira vez; a do ZIP o painel lembra.</p>
         <p class="hint full" id="ext-msg" role="status"></p>
       </fieldset>
-      <fieldset>
-        <legend>Importar CSV</legend>
-        <label class="full">Arquivo<input type="file" id="csv-file" accept=".csv,text/csv,text/plain"></label>
+      <fieldset id="csv-box" hidden>
+        <legend>Dizer qual coluna é qual</legend>
+        <p class="hint full">O importador não identificou sozinho as colunas deste arquivo. Escolha qual coluna é a data, a descrição e o valor; o painel guarda a escolha para os próximos arquivos iguais.</p>
+        <label class="full" hidden>Arquivo<input type="file" id="csv-file" accept=".csv,text/csv,text/plain"></label>
         <div id="csv-map" class="full" style="grid-column:1/-1;display:grid;grid-template-columns:1fr 1fr;gap:8px 10px"></div>
         <p class="hint" id="csv-msg"></p>
       </fieldset>
@@ -1780,7 +1781,7 @@ a.lm-ir:hover { border-bottom-style: solid; }
     return new Promise(resolve => { const { data } = sb.auth.onAuthStateChange(async (ev) => { if (ev !== 'PASSWORD_RECOVERY') return; const s = prompt('Digite a nova senha (mínimo 8 caracteres):'); if (s && s.length >= 8) { const { error } = await sb.auth.updateUser({ password: s }); alert(error ? 'Não deu para trocar a senha: ' + error.message : 'Senha trocada.'); } }); resolve(data); });
   }
   // ---------- rodapé: compartilhar, administração e sair ----------
-  const SITE_V = 62;
+  const SITE_V = 63;
   const escH = v => String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const dataBR = v => v ? new Date(v).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' }) : '–';
   const css2 = `.side-foot .r{flex-wrap:wrap}.side-foot .lg-acoes{margin-left:auto;display:inline-flex;gap:10px}
@@ -3264,7 +3265,7 @@ function corSugere(p) {
 const IMP_FMT = {
   gas: 'Fatura do cartão ou extrato da conta de qualquer banco, em CSV, OFX, PDF ou o ZIP com senha que o banco envia. O painel identifica sozinho o banco, se é fatura ou extrato e onde estão data, descrição e valor. Já treinado com Nubank, C6, Itaú e Mercado Pago; outros bancos passam pelo leitor genérico e podem precisar de ajuste. PDF escaneado (foto) não tem texto e não é lido.',
   cor: 'Posição ou custódia: Extrato de Custódia do Nubank (PDF), relatório mensal de investimentos do C6 (PDF) ou CSV com colunas de aplicação e valor atual, como o da Área do Investidor da B3. Extrato de movimentações: o extrato detalhado mensal da Toro/Santander (PDF, com o mês escrito por extenso, como "abril de 2025"). Outras corretoras ainda precisam de treino: mande um arquivo de exemplo.',
-  fat: 'CSV da fatura do Nubank, ou o ZIP com senha que o app envia. CSV de outro banco também serve: o painel abre o "Importar CSV" para você dizer qual coluna é a data, a descrição e o valor. PDF da fatura ainda não é lido.',
+  fat: 'CSV da fatura do Nubank, ou o ZIP com senha que o app envia. CSV de outro banco também serve: o painel abre um quadro para você dizer qual coluna é a data, a descrição e o valor. PDF da fatura ainda não é lido.',
   ext: 'CSV do extrato da conta do Nubank ou do C6 Bank, ou o ZIP com senha que o banco envia. O arquivo precisa ter colunas de data, valor e descrição. PDF do extrato ainda não é lido.',
   csv: 'Arquivo CSV (separado por vírgula ou ponto e vírgula) com uma linha de cabeçalho e colunas de data, descrição e valor.'
 };
@@ -4832,6 +4833,7 @@ function guessCol(headers, campo) {
 }
 function renderCsvMap() {
   const box = $('csv-map');
+  $('csv-box').hidden = !csvData;
   if (!csvData) { box.innerHTML = ''; return; }
   const sig = csvData.headers.join('|');
   const saved = (state.gastosCfg.csvMaps || {})[sig];
@@ -4861,7 +4863,7 @@ function importarCsv() {
   salvarMeses(res.meses);
   $('csv-msg').textContent = `${res.n} lançamentos importados${res.dup ? `, ${res.dup} repetidos ignorados` : ''}${ruins ? `, ${ruins} linhas sem data, descrição ou valor` : ''}.`;
   impPop('csv', res.n ? (ruins ? 'aviso' : 'ok') : 'erro', res.n ? `${plural(res.n, 'lançamento importado', 'lançamentos importados')} do CSV` : 'Nenhum lançamento importado', [...(res.dup ? [`${plural(res.dup, 'repetido ignorado', 'repetidos ignorados')}.`] : []), ...(ruins ? [`${plural(ruins, 'linha sem', 'linhas sem')} data, descrição ou valor.`] : [])]);
-  csvData = null; $('csv-file').value = ''; $('csv-map').innerHTML = '';
+  csvData = null; $('csv-file').value = ''; renderCsvMap();
   if (res.meses.length) gMes = res.meses.sort()[res.meses.length - 1];
   renderGastos();
 }
@@ -5184,7 +5186,7 @@ async function abrirGastos(files) {
       for (const a of partes) {
         try { const r = await lerArquivoGastos(a.nome, a.bytes);
           if (r.erro) msgs.push(r.erro);
-          else if (r.generico) { gen = r.generico; msgs.push(`${a.nome}: não identifiquei as colunas sozinho; abri no "Importar CSV" para você dizer qual é qual.`); }
+          else if (r.generico) { gen = r.generico; msgs.push(`${a.nome}: não identifiquei as colunas sozinho; abri o quadro "Dizer qual coluna é qual" logo abaixo.`); }
           else if (r.tipo === 'fatura') { lotes.push(Object.assign(r.lote, { banco: r.banco })); if (r.banco) bF.add(r.banco); }
           else { linhas.push(...r.linhas); if (r.banco) bE.add(r.banco); }
         } catch (err) { msgs.push(`${a.nome}: ${err.message}`); if (err.senha) $('fat-senha').focus(); }
@@ -5205,7 +5207,7 @@ async function abrirGastos(files) {
   if (itens.length) res.push(`Fatura do cartão${bF.size ? ` (${[...bF].join(', ')})` : ''}: ${plural(itens.length, 'gasto', 'gastos')}${lotes.length > 1 ? ` em ${lotes.length} faturas` : ` de ${mLabel(mIndex(lotes[0].comp))}`}${nRF ? `, ${nRF} já no painel` : ''}.`);
   if (linhas.length) res.push(`Extrato da conta${bE.size ? ` (${[...bE].join(', ')})` : ''}: ${plural(linhas.length, 'movimentação', 'movimentações')}${nRE ? `, ${nRE} já no painel` : ''}.`);
   if (res.length) impPop('gas', msgs.length ? 'aviso' : 'ok', 'Arquivos lidos', [...res, ...msgs, 'Nada foi salvo ainda: confira abaixo e clique em importar.'], 'Conferir', itens.length ? 'fat-prev' : 'ext-prev');
-  else if (gen) impPop('gas', 'aviso', 'Não identifiquei as colunas sozinho', [...msgs, 'Diga qual coluna é a data, a descrição e o valor no "Importar CSV".'], 'Mapear colunas', 'csv-map');
+  else if (gen) impPop('gas', 'aviso', 'Não identifiquei as colunas sozinho', [...msgs, 'Diga qual coluna é a data, a descrição e o valor no quadro que abriu logo abaixo.'], 'Mapear colunas', 'csv-map');
   else impPop('gas', 'erro', 'Não consegui ler os arquivos', msgs.length ? msgs : ['Nenhum lançamento encontrado nos arquivos.']);
 }
 function fatResumo() {
