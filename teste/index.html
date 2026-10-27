@@ -675,6 +675,27 @@ tr.novo-row td { animation: novoRow 2.4s ease; }
   #tbl-itens td[data-l]::before { content: attr(data-l) " "; font-size: 10px; text-transform: uppercase; letter-spacing: .5px; color: var(--faint); }
 }
 
+
+/* ---------- como usar ---------- */
+.cu-res { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; margin-top: 12px; }
+.cu-card { border: 1px solid var(--line); border-top: 4px solid var(--mc); border-radius: 12px; padding: 14px; display: flex; flex-direction: column; gap: 8px; background: var(--panel); min-width: 0; }
+.cu-card h3 { margin: 0; font-family: var(--f-head); font-size: 15px; display: flex; align-items: center; gap: 8px; }
+.cu-card h3 .ic { width: 22px; height: 22px; color: var(--mc); display: inline-flex; } .cu-card h3 .ic svg { width: 22px; height: 22px; }
+.cu-card .cu-l { font-size: 12px; color: var(--muted); display: flex; justify-content: space-between; gap: 8px; }
+.cu-card .cu-l b { color: var(--ink); }
+.cu-card .hp-barra { margin: 0; } .cu-card .hp-barra i { background: var(--mc); }
+.cu-card .cu-st { font-size: 12.5px; font-weight: 600; }
+.cu-card .cu-st.ok { color: var(--good); } .cu-card .cu-st.falta { color: var(--bad); }
+.cu-card .btn { align-self: flex-start; margin-top: auto; }
+.cu-card.breve { opacity: .7; }
+.cu-mod { border-left: 4px solid var(--mc); }
+.cu-mod .cu-sobre { font-size: 13px; line-height: 1.55; margin: 6px 0 4px; max-width: 900px; }
+.cu-mod .cu-precisa { font-size: 12.5px; line-height: 1.5; color: var(--muted); margin: 0 0 6px; max-width: 900px; }
+.cu-mod .cu-precisa b { color: var(--ink); }
+.cu-grupo { font-size: 10.5px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--faint); margin: 14px 0 2px; }
+.chip.cu-op { background: var(--line); color: var(--muted); }
+.cu-mod .hint a, .cu-card a { color: var(--accent); }
+.hp-t .cu-tag { display: inline-flex; gap: 6px; align-items: center; }
 /* ---------- linha do tempo e visões gerais ---------- */
 .tl { --tlw: 30%; position: relative; }
 .tl-h, .tl-r { display: grid; grid-template-columns: var(--tlw) 1fr; gap: 12px; align-items: center; }
@@ -750,7 +771,8 @@ tr.novo-row td { animation: novoRow 2.4s ease; }
 .nav-sec[data-sec="trab"] > .nav-sec-h { display: none; }
 .nav-sec[data-sec="trab"] { margin-top: 0; }
 .nav-mods { margin-bottom: 8px; padding-bottom: 8px; border-bottom: 1px solid rgba(255,255,255,.1); }
-.md-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px; margin: 16px 0 18px; }
+.md-grid { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 14px; margin: 16px 0 18px; }
+@media (max-width: 1350px) { .md-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
 .md-card { all: unset; box-sizing: border-box; display: flex; flex-direction: column; gap: 8px; background: var(--panel); border: 1px solid var(--line); border-radius: 14px; box-shadow: var(--shadow); padding: 16px; cursor: pointer; min-width: 0; position: relative; transition: transform .15s, box-shadow .15s, border-color .15s; }
 .md-card:hover, .md-card:focus-visible { transform: translateY(-2px); border-color: var(--mc); box-shadow: 0 8px 22px rgba(15,31,61,.12); }
 .md-card:focus-visible { outline: 2px solid var(--mc); outline-offset: 2px; }
@@ -919,6 +941,7 @@ a.lm-ir:hover { border-bottom-style: solid; }
     <div class="nav-tools"><button type="button" id="nav-recolher">Recolher todos</button><button type="button" id="nav-abrir">Abrir todos</button></div>
     <div class="nav-heads">
         <div class="nav-group nav-mods" data-mod="all"><button type="button" class="nav-head" data-tab="modulos"><span class="ico"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="3.5" width="7" height="7" rx="1.5"/><rect x="13.5" y="3.5" width="7" height="7" rx="1.5"/><rect x="3.5" y="13.5" width="7" height="7" rx="1.5"/><rect x="13.5" y="13.5" width="7" height="7" rx="1.5"/></svg></span>Módulos</button><div class="nav-sub" data-sub="modulos"></div></div>
+        <div class="nav-group" data-mod="uso"><button type="button" class="nav-head" data-tab="comousar"><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 4V2.8h6V4"/><path d="m8.5 10 1.6 1.6 3-3"/><path d="m8.5 16 1.6 1.6 3-3"/></svg></span>Como usar</button><div class="nav-sub" data-sub="comousar"></div></div>
         <div class="nav-group" data-mod="fin"><button type="button" class="nav-head" data-tab="inicio"><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 11.5 12 4l9 7.5"/><path d="M5.5 10v9.5h13V10"/><path d="M10 19.5v-5h4v5"/></svg></span>Visão geral</button><div class="nav-sub" data-sub="inicio"></div></div>
         <div class="nav-group" data-mod="fin"><button type="button" class="nav-head" data-tab="global"><span class="ico"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.6 3.8 5.6 3.8 9s-1.3 6.4-3.8 9c-2.5-2.6-3.8-5.6-3.8-9S9.5 5.6 12 3z"/></svg></span>Visão global<span class="caret" data-navtog="global" role="button" tabindex="0" aria-label="Abrir ou recolher submódulos">▾</span></button><div class="nav-sub" data-sub="global"></div></div>
         <div class="nav-sec" data-sec="dia" data-mod="fin"><button type="button" class="nav-sec-h" data-sectog="dia" aria-expanded="true"><span>Dia a dia</span><span class="caret" aria-hidden="true">▾</span></button><div class="nav-sec-b">
@@ -950,7 +973,7 @@ a.lm-ir:hover { border-bottom-style: solid; }
     </div>
     <div class="nav-mobile-sub" id="navMobileSub"></div>
   </div>
-  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 191</div></div>
+  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 192</div></div>
 </nav>
 <div class="sino-pop" id="sino-pop" role="dialog" aria-label="Central de avisos" hidden></div>
 <div class="tour-pop" id="tour-pop" role="dialog" aria-labelledby="tour-tit" hidden></div>
@@ -992,6 +1015,19 @@ a.lm-ir:hover { border-bottom-style: solid; }
       <p class="sub">Marque o que você quer ver. O que você desligar some desta tela e do menu, mas os dados ficam guardados: religou, volta tudo.</p>
       <div class="md-esc" id="md-esc-l"></div>
     </section>
+  </section>
+  <!-- ============ COMO USAR ============ -->
+  <section role="tabpanel" id="p-comousar" hidden>
+    <div class="block-title"><span class="num"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 4V2.8h6V4"/><path d="m8.5 10 1.6 1.6 3-3"/><path d="m8.5 16 1.6 1.6 3-3"/></svg></span><div><h1>Como usar</h1><p class="desc">O que cada módulo faz, o que você precisa preencher para ele funcionar e o que é opcional. Cada passo tem um botão que leva direto ao lugar certo.</p></div></div>
+    <section data-nav="Resumo" class="panel">
+      <h2>Quanto já está configurado</h2>
+      <p class="sub"><span class="chip warn">obrigatório</span> sem isso o módulo não calcula. <span class="chip cu-op">opcional</span> melhora o que você vê, mas dá para deixar para depois ou marcar que não tem.</p>
+      <div class="cu-res" id="cu-res"></div>
+    </section>
+    <section data-nav="Financeiro" class="panel cu-mod" id="cu-fin"></section>
+    <section data-nav="Trabalho e Bens" class="panel cu-mod" id="cu-trab"></section>
+    <section data-nav="Viagens" class="panel cu-mod" id="cu-viag"></section>
+    <section data-nav="Negócios" class="panel cu-mod" id="cu-neg"></section>
   </section>
   <!-- ============ TRABALHO E BENS: VISÃO GERAL ============ -->
   <section role="tabpanel" id="p-trabvg" hidden>
@@ -1981,7 +2017,7 @@ a.lm-ir:hover { border-bottom-style: solid; }
     return new Promise(resolve => { const { data } = sb.auth.onAuthStateChange(async (ev) => { if (ev !== 'PASSWORD_RECOVERY') return; const s = prompt('Digite a nova senha (mínimo 8 caracteres):'); if (s && s.length >= 8) { const { error } = await sb.auth.updateUser({ password: s }); alert(error ? 'Não deu para trocar a senha: ' + error.message : 'Senha trocada.'); } }); resolve(data); });
   }
   // ---------- rodapé: compartilhar, administração e sair ----------
-  const SITE_V = 71;
+  const SITE_V = 72;
   const escH = v => String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const dataBR = v => v ? new Date(v).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' }) : '–';
   const css2 = `.side-foot .r{flex-wrap:wrap}.side-foot .lg-acoes{margin-left:auto;display:inline-flex;gap:10px}
@@ -2364,7 +2400,7 @@ function normalizar(s) {
 try { if (quemLocal === 'dono') { const b = JSON.parse(localStorage.getItem('painel-priv')); if (b) aplicarBase(b); } } catch (e) {}
 try { const l = JSON.parse(localStorage.getItem(LSK('painel-fin-v2'))); if (l) state = normalizar(l); } catch (e) {}
 tab = 'modulos';
-const TABS = ['modulos', 'inicio', 'trabvg', 'leia', 'global', 'gastos', 'carteira', 'orcamento', 'compras', 'cenarios', 'patrimonio', 'comparador', 'simulador', 'pjpf', 'stock', 'config', 'familia'];
+const TABS = ['modulos', 'comousar', 'inicio', 'trabvg', 'leia', 'global', 'gastos', 'carteira', 'orcamento', 'compras', 'cenarios', 'patrimonio', 'comparador', 'simulador', 'pjpf', 'stock', 'config', 'familia'];
 if (TABS.includes(location.hash.slice(1))) tab = location.hash.slice(1);
 if (!TABS.includes(tab)) tab = 'modulos';
 
@@ -6409,9 +6445,14 @@ $('cpform').addEventListener('submit', async e => {
 });
 
 /* ---------- abas ---------- */
-const BUILD = { modulos: () => {}, inicio: () => {}, trabvg: () => {}, leia: buildLeia, global: () => {}, cenarios: buildCenarios, compras: buildCenarios, carteira: buildCarteira, comparador: buildComparador, simulador: buildSimulador, gastos: buildGastos, orcamento: buildOrcamento, config: buildConfig, pjpf: buildPj, stock: buildStock, familia: () => carregarPerfis(), patrimonio: () => {} };
+const BUILD = { modulos: () => {}, comousar: () => {}, inicio: () => {}, trabvg: () => {}, leia: buildLeia, global: () => {}, cenarios: buildCenarios, compras: buildCenarios, carteira: buildCarteira, comparador: buildComparador, simulador: buildSimulador, gastos: buildGastos, orcamento: buildOrcamento, config: buildConfig, pjpf: buildPj, stock: buildStock, familia: () => carregarPerfis(), patrimonio: () => {} };
 // (i) de cada seção: o que mostra e de onde vêm os números (chave: aba:data-nav)
 const INFO_SEC = {
+  'comousar:Resumo': 'Para cada módulo: se já tem o mínimo para funcionar (os obrigatórios), quantos opcionais você resolveu e um botão para o próximo passo. Um opcional conta como resolvido quando você preenche ou marca que não tem.',
+  'comousar:Financeiro': 'Os passos do Financeiro. Os três obrigatórios são a base de tudo: sem renda, aplicações e checkpoint, o plano não tem de onde partir.',
+  'comousar:Trabalho e Bens': 'Os passos de Trabalho e Bens. Todos são opcionais: o módulo só mostra o que você cadastrar.',
+  'comousar:Viagens': 'Módulo em construção.',
+  'comousar:Negócios': 'Módulo em construção.',
   'modulos:Linha do tempo': 'Os itens de todos os módulos no tempo: quando começam e, se tiverem parcelas, até quando vão. Cheio é Projeção real; tracejado é Só simulação. A % ao lado do nome é a chance de acontecer, quando for menor que 100%.',
   'modulos:Patrimônio projetado': 'Linha azul: investido no plano atual (Plano futuro). Verde tracejada: o plano somando os itens em Só simulação marcados em Comparar. Amarela: o esperado, pesando cada item pela chance de acontecer.',
   'inicio:Total dos módulos': 'Para cada módulo, quanto os itens em Projeção real mudam o investido no fim do plano (já incluído no plano) e quanto mudariam as simulações marcadas em Comparar (fora do plano).',
@@ -6498,7 +6539,7 @@ function infoSecoes() {
       if (h && !h.id) h.append(btn); else if (h) h.after(btn); else if (lg) lg.append(btn); }); });
 }
 infoSecoes();
-const RENDER = { modulos: renderModulos, inicio: renderHome, trabvg: renderTrabVg, leia: () => {}, global: renderGlobal, cenarios: renderCenarios, compras: renderCenarios, carteira: renderCarteira, comparador: renderComparador, simulador: renderSimulador, gastos: () => { renderGastos(); renderFechamento(); renderHistorico(); }, orcamento: renderOrcamento, config: renderConfig, pjpf: renderPj, stock: renderStock, familia: renderFamilia, patrimonio: renderPatr };
+const RENDER = { modulos: renderModulos, comousar: renderComoUsar, inicio: renderHome, trabvg: renderTrabVg, leia: () => {}, global: renderGlobal, cenarios: renderCenarios, compras: renderCenarios, carteira: renderCarteira, comparador: renderComparador, simulador: renderSimulador, gastos: () => { renderGastos(); renderFechamento(); renderHistorico(); }, orcamento: renderOrcamento, config: renderConfig, pjpf: renderPj, stock: renderStock, familia: renderFamilia, patrimonio: renderPatr };
 function renderTab() { planCache = null; try { RENDER[tab](); } catch (err) { console.error(err); setSave('erro ao recalcular: ' + (err && err.message || err)); } }
 let navAbertos = null;
 try { navAbertos = JSON.parse(localStorage.getItem('painel-nav-abertos')); } catch (e) {}
@@ -6551,12 +6592,14 @@ document.addEventListener('click', e => {
 
 /* ---------- módulos do app: tela de entrada, menu por módulo e quem liga o quê ---------- */
 const MOD_SVG = {
+  uso: '<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="10" y="8" width="28" height="34" rx="4"/><path d="M18 8V5h12v3"/><path d="m16 20 3 3 6-6"/><path d="M29 21h4"/><path d="m16 32 3 3 6-6"/><path d="M29 33h4"/></svg>',
   fin: '<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 40h32"/><rect x="11" y="24" width="6" height="12" rx="1.5"/><rect x="21" y="17" width="6" height="19" rx="1.5"/><rect x="31" y="10" width="6" height="26" rx="1.5"/><path d="M9 19l9-6 6 3 13-9"/></svg>',
   trab: '<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="7" y="15" width="34" height="23" rx="3"/><path d="M18 15v-4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v4"/><path d="M7 25h34"/><path d="M21 25v3h6v-3"/></svg>',
   viag: '<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 27l-9 9M27 21l14-14M41 7c-3-1-6 0-8 2l-5 5-15-4-3 3 12 7-6 6-5-1-2 2 6 3 3 6 2-2-1-5 6-6 7 12 3-3-4-15 5-5c2-2 3-5 2-8z"/></svg>',
   neg: '<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 19l3-9h26l3 9"/><path d="M8 19c0 3 2 5 5.3 5s5.4-2 5.4-5c0 3 2 5 5.3 5s5.3-2 5.3-5c0 3 2.1 5 5.4 5S40 22 40 19"/><path d="M11 24v15h26V24"/><path d="M20 39v-9h8v9"/></svg>'
 };
 const MODS = [
+  { id: 'uso', corNav: '#D4A72C', nome: 'Como usar', cor: 'var(--accent)', fixo: true, vg: 'comousar', desc: 'O que cada módulo faz, o que é obrigatório preencher, o que é opcional e quanto você já configurou.', tabs: ['comousar'] },
   { id: 'fin', corNav: '#7FA6E0', nome: 'Financeiro', cor: 'var(--s1)', fixo: true, vg: 'inicio', desc: 'Gastos, patrimônio, carteira, plano futuro e cenários. Recebe o que os outros módulos planejam.', tabs: ['inicio', 'global', 'gastos', 'patrimonio', 'carteira', 'comparador', 'simulador', 'orcamento', 'cenarios', 'familia'] },
   { id: 'trab', corNav: '#E09A63', nome: 'Trabalho e Bens', cor: 'var(--s2)', vg: 'trabvg', desc: 'Compras e bens (imóveis, carros, ...), stock options e PJ e PF. O que entra no plano vai para o Plano futuro.', tabs: ['trabvg', 'compras', 'stock', 'pjpf'] },
   { id: 'viag', corNav: '#5fc2f5', nome: 'Viagens', cor: 'var(--s8)', breve: true, desc: 'Sabático e férias regulares: roteiro, datas no futuro e custos de hoje e projetados.', tabs: [] },
@@ -6573,13 +6616,78 @@ const modEscolhido = m => m.fixo || !((state.app || {}).off || []).includes(m.id
 const modVisivel = m => modLiberado(m) && modEscolhido(m);
 function aplicarMod() {
   document.querySelectorAll('.nav [data-mod]').forEach(el => el.classList.toggle('fora-mod', el.dataset.mod !== 'all' && el.dataset.mod !== modAtual));
-  const mm = MODS.find(m => m.id === modAtual) || MODS[0], bx = $('nav-modbox');
+  const mm = MODS.find(m => m.id === modAtual) || MODS.find(m => m.id === 'fin'), bx = $('nav-modbox');
   if (bx) { bx.style.setProperty('--mcn', mm.corNav); $('nav-mod-ic').innerHTML = MOD_SVG[mm.id]; }
   document.querySelectorAll('.nav-voltar').forEach(b => { if (tab === 'modulos') b.setAttribute('aria-current', 'page'); else b.removeAttribute('aria-current'); });
   if ($('nav-mod-nome')) $('nav-mod-nome').textContent = mm.nome;
   if (!$('nav-mod-pop').hidden) pintaModPop();
 }
 
+
+/* ---------- Como usar: passos de cada módulo (obrigatório x opcional) ---------- */
+// ok = feito; pular = texto do botão que marca como resolvido (vai para state.passos.pulados); nota = sem status (só consultar)
+function cuPassos() {
+  const pul = (state.passos && state.passos.pulados) || [], vis = (state.passos && state.passos.vistos) || [];
+  const rec = (state.orc && state.orc.receitas || []).some(r => +r.valor > 0);
+  return {
+    fin: {
+      sobre: 'O centro do app. Junta a sua renda, os gastos, os investimentos e o plano para o futuro. Os outros módulos mandam para cá o que planejam, e é aqui que você vê o total.',
+      precisa: 'Para funcionar, precisa de <b>renda e custos</b>, das <b>aplicações que você já tem</b> e de um <b>primeiro checkpoint</b>. Sem isso, o plano futuro, a Visão global e as projeções ficam vazios.',
+      passos: [
+        { id: 'renda', ob: true, t: 'Renda e custos do mês', d: 'Salário ou faturamento, impostos e quanto gasta por categoria. É a base do plano.', ok: rec, tab: 'orcamento', sec: 'Receitas e custos' },
+        { id: 'cart', ob: true, t: 'O que você já tem aplicado', d: 'Cadastre cada aplicação ou suba o PDF da corretora.', ok: ativos().length > 0, tab: 'carteira', sec: 'Cadastrar aplicação' },
+        { id: 'cp', ob: true, t: 'Primeiro checkpoint', d: 'Salve o total da carteira de hoje. As projeções partem dele.', ok: cps.length > 0, tab: 'carteira', sec: 'Cadastrar aplicação' },
+        { id: 'alvo', t: 'A carteira que você quer ter', d: 'Escolha um perfil e ajuste a divisão entre as classes. Usada nos cenários e para dizer o que comprar.', ok: !!state.alvoOk, tab: 'carteira', sec: 'Carteira-alvo' },
+        { id: 'gastos', t: 'Gastos do mês', d: 'Importe a fatura do cartão e o extrato, ou lance à mão. Serve para fechar o mês comparando o real com o planejado.', ok: Object.keys(gastos || {}).length > 0 || pul.includes('gastos'), tab: 'gastos', sec: 'Lançar e importar', pular: 'Depois' },
+        { id: 'plano', t: 'Conferir as premissas do plano', d: 'Rendimento, inflação, quanto reinveste e por quantos anos. Já vem preenchido; ajuste se quiser.', ok: vis.includes('orcamento') || pul.includes('plano'), tab: 'orcamento', sec: 'Premissas', pular: 'Está bom assim' }
+      ]
+    },
+    trab: {
+      sobre: 'Os seus bens e o que vem do trabalho: imóveis, carros e outras compras com financiamento, stock options e a conta de PJ para PF.',
+      precisa: 'Nada aqui é obrigatório: preencha só o que fizer parte da sua vida. Cada compra ou evento pode ficar como <b>Só simulação</b> ou entrar na <b>Projeção real</b> do Plano futuro. Para entrar no plano, o Financeiro precisa estar com os obrigatórios feitos.',
+      passos: [
+        { id: 'bens', t: 'Bens e compras', d: 'Carro, imóvel e financiamentos, já comprados ou planejados: preço, entrada, parcelas e custos de ter.', ok: (state.compras || []).length > 0 || pul.includes('bens'), tab: 'compras', sec: 'Compras e financiamentos', pular: 'Não tenho' },
+        { id: 'so', t: 'Stock options', d: 'Se você tem opções, phantom shares ou RSUs: concessões, vesting e o evento de liquidez.', ok: ((state.so || {}).empresas || []).length > 0 || pul.includes('so'), tab: 'stock', sec: 'Empresa', pular: 'Não tenho' },
+        { id: 'pj', t: 'PJ e PF', d: 'Se você recebe como PJ: do faturamento ao bolso e o melhor pró-labore. Já vem preenchido a partir da sua renda.', ok: vis.includes('pjpf') || pul.includes('pj'), tab: 'pjpf', sec: 'Parâmetros', pular: 'Não sou PJ' }
+      ]
+    }
+  };
+}
+function cuTotais() {
+  const P = cuPassos(), r = { n: 0, f: 0, ob: 0, obF: 0 };
+  MODS.forEach(m => { const x = P[m.id]; if (!x || !modLiberado(m) || !modEscolhido(m)) return; x.passos.forEach(p => { r.n++; if (p.ok) r.f++; if (p.ob) { r.ob++; if (p.ok) r.obF++; } }); });
+  return r;
+}
+function renderComoUsar() {
+  const P = cuPassos(), vis = MODS.filter(m => m.id !== 'uso' && modLiberado(m) && (m.breve || modEscolhido(m)));
+  $('cu-res').innerHTML = vis.map(m => {
+    const x = P[m.id], ic = `<span class="ic">${MOD_SVG[m.id]}</span>`;
+    if (!x) return `<div class="cu-card breve" style="--mc:${m.cor}"><h3>${ic}${esc(m.nome)}</h3><div class="cu-l"><span>${esc(m.desc)}</span></div><span class="chip">Em breve</span></div>`;
+    const ps = x.passos, f = ps.filter(p => p.ok).length, ob = ps.filter(p => p.ob), obF = ob.filter(p => p.ok).length, prox = ps.find(p => p.ob && !p.ok) || ps.find(p => !p.ok);
+    const st = ob.length ? (obF === ob.length ? '<span class="cu-st ok">Pronto para usar</span>' : `<span class="cu-st falta">Faltam ${ob.length - obF} ${ob.length - obF > 1 ? 'obrigatórios' : 'obrigatório'}</span>`) : '<span class="cu-st ok">Funciona sem nada obrigatório</span>';
+    return `<div class="cu-card" style="--mc:${m.cor}"><h3>${ic}${esc(m.nome)}</h3>${st}
+      <div class="hp-barra"><i style="width:${(f / ps.length * 100).toFixed(0)}%"></i></div>
+      <div class="cu-l"><span>Obrigatórios</span><b>${ob.length ? obF + ' de ' + ob.length : 'nenhum'}</b></div>
+      <div class="cu-l"><span>Opcionais</span><b>${ps.filter(p => !p.ob && p.ok).length} de ${ps.length - ob.length}</b></div>
+      ${prox ? `<button type="button" class="btn tiny${prox.ob ? '' : ' ghost'}" data-lmtab="${prox.tab}" data-lmsec="${esc(prox.sec)}">Configurar: ${esc(prox.t)}</button>` : `<button type="button" class="btn tiny ghost" data-tab="${m.vg}">Abrir ${esc(m.nome)}</button>`}</div>`;
+  }).join('');
+  MODS.forEach(m => {
+    const box = $('cu-' + m.id); if (!box) return;
+    box.hidden = !vis.includes(m); if (box.hidden) return; box.style.setProperty('--mc', m.cor);
+    const x = P[m.id];
+    if (!x) { box.innerHTML = `<h2>${esc(m.nome)}</h2><p class="cu-sobre">${esc(m.desc)}</p><p class="cu-precisa">Ainda em construção. Quando ficar pronto, os passos dele aparecem aqui.</p>`; prepSecoes(); return; }
+    const linha = (p, i) => `<li class="${p.ok ? 'ok' : ''}"><span class="hp-n">${p.ok ? '✓' : i + 1}</span><div class="hp-t"><b class="cu-tag">${esc(p.t)} ${p.ob ? '<span class="chip warn">obrigatório</span>' : '<span class="chip cu-op">opcional</span>'}</b><span>${esc(p.d)}</span></div>
+      ${p.ok ? '<span class="chip ok">feito</span>' : `<div class="hp-acs">${p.pular ? `<button type="button" class="btn ghost tiny" data-passo-pular="${p.id}">${esc(p.pular)}</button>` : ''}<button type="button" class="btn tiny${p.ob ? '' : ' ghost'}" data-lmtab="${p.tab}" data-lmsec="${esc(p.sec)}">Configurar</button></div>`}</li>`;
+    const ob = x.passos.filter(p => p.ob), op = x.passos.filter(p => !p.ob), f = x.passos.filter(p => p.ok).length;
+    box.innerHTML = `<h2>${esc(m.nome)}</h2>
+      <p class="cu-sobre">${esc(x.sobre)}</p><p class="cu-precisa">${x.precisa}</p>
+      <div class="hp-barra"><i style="width:${(f / x.passos.length * 100).toFixed(0)}%;background:${m.cor}"></i></div>
+      ${ob.length ? `<div class="cu-grupo">Obrigatório para funcionar</div><ol class="hp-lista">${ob.map(linha).join('')}</ol>` : ''}
+      <div class="cu-grupo">Opcional</div><ol class="hp-lista">${op.map((p, i) => linha(p, ob.length + i)).join('')}</ol>
+      <p class="hint" style="margin-top:8px">${f} de ${x.passos.length} passos resolvidos. <a href="#" data-tab="${m.vg}">Abrir ${esc(m.nome)}</a></p>`;
+  });
+  prepSecoes();
+}
 /* ---------- linha do tempo, impacto dos itens e visões gerais (Fase 2, etapa 3) ---------- */
 const itensVisiveis = () => itensModulos().filter(x => { const m = MODS.find(y => y.id === x.mod); return m && modVisivel(m); });
 // efeito de cada item no investido do plano: real = plano − plano sem ele; simulação = plano com ele − plano
@@ -6675,6 +6783,7 @@ function plHojeRapido() {
 }
 function modResumo(m) {
   try {
+    if (m.id === 'uso') { const t = cuTotais(); return t.obF === t.ob ? `Obrigatórios feitos · <b>${t.f} de ${t.n}</b> passos` : `<b>${t.obF} de ${t.ob}</b> obrigatórios feitos`; }
     if (m.id === 'fin') { const v = plHojeRapido(); return v ? `Patrimônio hoje <b>${fm(v)}</b>` : 'Comece pelos primeiros passos'; }
     if (m.id === 'trab') {
       const nb = (state.compras || []).length, ns = ((state.so || {}).empresas || []).length, parts = [];
@@ -6721,6 +6830,7 @@ function showTab(t, keepScroll) {
   const mudou = tab !== t;
   tab = t;
   const md = modDe(t); if (md) modAtual = md; aplicarMod();
+  if ((t === 'orcamento' || t === 'pjpf') && state && state.plan) { state.passos = state.passos || { pulados: [] }; const v = state.passos.vistos = Array.isArray(state.passos.vistos) ? state.passos.vistos : []; if (!v.includes(t)) { v.push(t); save(); } }
   document.querySelectorAll('.nav-head').forEach(bt => { if (bt.dataset.tab === t) bt.setAttribute('aria-current', 'page'); else bt.removeAttribute('aria-current'); });
   Object.keys(RENDER).forEach(x => $('p-' + x).hidden = x !== t);
   $('navMobileSub').innerHTML = document.querySelector(`.nav-sub[data-sub="${t}"]`).innerHTML;
@@ -6955,7 +7065,7 @@ document.addEventListener('click', e => {
   const o = e.target.closest('[data-passo-ocultar]'), pu = e.target.closest('[data-passo-pular]'); if (!o && !pu) return;
   state.passos = state.passos || { pulados: [] }; state.passos.pulados = state.passos.pulados || [];
   if (o) state.passos.oculto = true; else if (!state.passos.pulados.includes(pu.dataset.passoPular)) state.passos.pulados.push(pu.dataset.passoPular);
-  save(); renderPassos();
+  save(); renderPassos(); if (tab === 'comousar') renderComoUsar();
 });
 function renderHome() {
   renderPassos();
@@ -7392,6 +7502,8 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape' && $('sino-po
 
 /* ---------- 00 Leia-me: resumo de cada módulo e atalhos ---------- */
 const LM_MODS = [
+  'Como usar',
+  ['comousar', 'O passo a passo de todos os módulos: o que cada um faz, o que é obrigatório para funcionar, o que é opcional e quanto você já configurou, com um botão para cada passo.', 'quando estiver começando ou quiser ver o que falta.'],
   'Financeiro',
   ['global', 'A foto geral. No topo, câmbio e bolsas do mundo; depois os números principais, o plano contra os seus checkpoints reais e a projeção de cada cenário, mês a mês e ano a ano.', 'toda semana, para ver se está no caminho.'],
   ['gastos', 'O dia a dia do dinheiro: lançar gastos ou importar fatura e extrato, ver por categoria e fechar o mês comparando o real com o projetado.', 'todo mês, depois que a fatura fecha.'],
@@ -7884,9 +7996,9 @@ showTab(tab); setSave('salvo só neste navegador');
     else if (souDono) { const old = await db.doc('painel/estado').get(); if (old.exists) { state = normalizar(migrarV1(old.data())); flush(); } }
     setSave('salvo');
   } catch (e) { setSave('salvo só neste navegador'); }
-  pcol('checkpoints').onSnapshot(s => { const l = s.docs.map(d => d.data()).filter(d => d && d.mes && isFinite(d.valor)).map(d => ({ mes: String(d.mes).slice(0, 7), valor: +d.valor })); cps = l.length ? l : CP_PLANILHA.slice(); if (tab === 'global' || tab === 'cenarios' || tab === 'inicio') renderTab(); },
+  pcol('checkpoints').onSnapshot(s => { const l = s.docs.map(d => d.data()).filter(d => d && d.mes && isFinite(d.valor)).map(d => ({ mes: String(d.mes).slice(0, 7), valor: +d.valor })); cps = l.length ? l : CP_PLANILHA.slice(); if (tab === 'global' || tab === 'cenarios' || tab === 'inicio' || tab === 'modulos' || tab === 'comousar') renderTab(); },
     () => setSave('checkpoints indisponíveis agora'));
-  pcol('gastos').onSnapshot(s => { const g = {}; s.docs.forEach(d => { const x = clone(d.data() || null); if (x && /^\d{4}-\d{2}$/.test(x.mes) && Array.isArray(x.itens)) g[x.mes] = x.itens.filter(it => it && it.data && it.comp && isFinite(+it.valor)); }); gastos = g; if (tab === 'gastos') renderGastos(); if (tab === 'inicio') renderHome(); },
+  pcol('gastos').onSnapshot(s => { const g = {}; s.docs.forEach(d => { const x = clone(d.data() || null); if (x && /^\d{4}-\d{2}$/.test(x.mes) && Array.isArray(x.itens)) g[x.mes] = x.itens.filter(it => it && it.data && it.comp && isFinite(+it.valor)); }); gastos = g; if (tab === 'gastos') renderGastos(); if (tab === 'inicio') renderHome(); if (tab === 'modulos' || tab === 'comousar') renderTab(); },
     () => setSave('gastos indisponíveis agora'));
   db.collection('acoes').onSnapshot(s => { const m = {}; s.docs.forEach(d => { const x = clone(d.data() || null); if (x && /^[A-Z][A-Z0-9]{3}\d{1,2}B?$/.test(x.tk)) m[x.tk] = x; }); acoesDb = m; if (tab === 'carteira') renderAcoes(); }, () => {});
   showTab(tab);
