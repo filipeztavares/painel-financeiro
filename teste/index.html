@@ -1169,7 +1169,7 @@ a.lm-ir:hover { border-bottom-style: solid; }
     </div>
     <div class="nav-mobile-sub" id="navMobileSub"></div>
   </div>
-  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 201</div></div>
+  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 202</div></div>
 </nav>
 <div class="sino-pop" id="sino-pop" role="dialog" aria-label="Central de avisos" hidden></div>
 <div class="tour-pop" id="tour-pop" role="dialog" aria-labelledby="tour-tit" hidden></div>
@@ -1937,7 +1937,6 @@ a.lm-ir:hover { border-bottom-style: solid; }
         <h2>Receitas e custos de hoje</h2>
         <p class="sub">Valores de um mês típico, em reais de hoje, e como cada linha reajusta no futuro. Contas sobem com o IPCA todo mês e aluguel uma vez por ano, como na planilha; o salário só muda quando você programar. Para mudar só um mês, edite o Projetado no fechamento daquele mês, em Gastos e fechamento.</p>
         <div class="orc-modelo" id="orc-modelo-box"><span class="orc-h">Como você recebe</span><div class="seg" id="orc-modelo"><button type="button" data-modelo="pj" aria-pressed="false">PJ (empresa própria)</button><button type="button" data-modelo="clt" aria-pressed="false">CLT (carteira assinada)</button></div><div class="seg" id="orc-cltmodo" hidden><button type="button" data-cltmodo="liq" aria-pressed="false">Digito o líquido</button><button type="button" data-cltmodo="bruto" aria-pressed="false">Digito o bruto</button></div><p class="hint" id="orc-modelo-hint"></p></div>
-        <div class="sobra-box" id="orc-resumo" role="status"></div>
         <div class="orc-grid">
           <div><h3 class="orc-h">Receitas e deduções</h3><div class="tscroll"><table id="tbl-orc-rec"></table></div></div>
           <div><div class="row" style="margin-bottom:0"><h3 class="orc-h">Custos por categoria</h3><span class="btns" style="margin:0"><button class="btn ghost tiny" type="button" id="orc-sug">Usar a distribuição sugerida</button> <button type="button" class="ibtn" data-info="orc:sug" aria-label="De onde vem a sugestão">i</button><button class="btn ghost tiny" type="button" id="orc-media">Usar a média dos últimos 3 meses</button></span></div>
@@ -1946,6 +1945,7 @@ a.lm-ir:hover { border-bottom-style: solid; }
             <p class="hint" id="orc-catmsg" role="status"></p>
           </div>
         </div>
+        <div class="sobra-box" id="orc-resumo" role="status" style="margin:16px 0 4px"></div>
               </section>
       <section data-nav="Mudanças e eventos" class="panel">
         <h2>Mudanças programadas e eventos</h2>
@@ -2364,7 +2364,7 @@ a.lm-ir:hover { border-bottom-style: solid; }
     return new Promise(resolve => { const { data } = sb.auth.onAuthStateChange(async (ev) => { if (ev !== 'PASSWORD_RECOVERY') return; const s = prompt('Digite a nova senha (mínimo 8 caracteres):'); if (s && s.length >= 8) { const { error } = await sb.auth.updateUser({ password: s }); alert(error ? 'Não deu para trocar a senha: ' + error.message : 'Senha trocada.'); } }); resolve(data); });
   }
   // ---------- rodapé: compartilhar, administração e sair ----------
-  const SITE_V = 81;
+  const SITE_V = 82;
   const escH = v => String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const dataBR = v => v ? new Date(v).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' }) : '–';
   const css2 = `.side-foot .r{flex-wrap:wrap}.side-foot .lg-acoes{margin-left:auto;display:inline-flex;gap:10px}
