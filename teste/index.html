@@ -181,7 +181,7 @@ h1, h2, h3 { font-family: var(--f-head); }
 .sec-title h2, .panel h2 { font-size: 14.5px; font-weight: 600; color: var(--accent-strong); letter-spacing: .2px; margin: 0; }
 .panel h2 { display: flex; align-items: center; gap: 9px; margin: 0 0 4px; }
 .params { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 14px; align-items: start; }
-.sub { color: var(--muted); margin: 4px 0 0; max-width: 90ch; }
+.sub { color: var(--muted); margin: 4px 0 0; }
 .save { font-family: var(--f-ui); }
 
 button:focus-visible, input:focus-visible, select:focus-visible, summary:focus-visible, a:focus-visible { outline: 2px solid var(--dotc); outline-offset: 2px; }
@@ -689,8 +689,8 @@ tr.novo-row td { animation: novoRow 2.4s ease; }
 .cu-card .btn { align-self: flex-start; margin-top: auto; }
 .cu-card.breve { opacity: .7; }
 .cu-mod { border-left: 4px solid var(--mc); }
-.cu-mod .cu-sobre { font-size: 13px; line-height: 1.55; margin: 6px 0 4px; max-width: 900px; }
-.cu-mod .cu-precisa { font-size: 12.5px; line-height: 1.5; color: var(--muted); margin: 0 0 6px; max-width: 900px; }
+.cu-mod .cu-sobre { font-size: 13px; line-height: 1.55; margin: 6px 0 4px; }
+.cu-mod .cu-precisa { font-size: 12.5px; line-height: 1.5; color: var(--muted); margin: 0 0 6px; }
 .cu-mod .cu-precisa b { color: var(--ink); }
 .cu-grupo { font-size: 10.5px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--faint); margin: 14px 0 2px; }
 .chip.cu-op { background: var(--line); color: var(--muted); }
@@ -858,7 +858,7 @@ tr.novo-row td { animation: novoRow 2.4s ease; }
 .lm-passo b { display: block; font-family: var(--f-head); font-size: 15px; margin: 2px 0 4px; color: var(--ink); }
 .lm-passo p { margin: 0; font-size: 12px; color: var(--muted); line-height: 1.45; }
 .lm-passo:not(:last-child)::after { content: "→"; position: absolute; right: -9px; top: 50%; transform: translateY(-50%); color: var(--accent); font-size: 14px; background: var(--panel); line-height: 1; padding: 1px 0; }
-.lm-txt { font-size: 12.5px; color: var(--ink); line-height: 1.55; max-width: 90ch; margin: 0 0 10px; }
+.lm-txt { font-size: 12.5px; color: var(--ink); line-height: 1.55; margin: 0 0 10px; }
 .lm-txt:last-child { margin-bottom: 0; }
 .lm-ol { list-style: none; counter-reset: lm; margin: 4px 0 0; padding: 0; display: flex; flex-direction: column; gap: 10px; }
 .lm-ol li { counter-increment: lm; display: grid; grid-template-columns: 26px minmax(0, 1fr); gap: 10px; align-items: start; font-size: 12.5px; line-height: 1.5; }
@@ -973,7 +973,7 @@ a.lm-ir:hover { border-bottom-style: solid; }
     </div>
     <div class="nav-mobile-sub" id="navMobileSub"></div>
   </div>
-  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 192</div></div>
+  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 193</div></div>
 </nav>
 <div class="sino-pop" id="sino-pop" role="dialog" aria-label="Central de avisos" hidden></div>
 <div class="tour-pop" id="tour-pop" role="dialog" aria-labelledby="tour-tit" hidden></div>
@@ -2017,7 +2017,7 @@ a.lm-ir:hover { border-bottom-style: solid; }
     return new Promise(resolve => { const { data } = sb.auth.onAuthStateChange(async (ev) => { if (ev !== 'PASSWORD_RECOVERY') return; const s = prompt('Digite a nova senha (mínimo 8 caracteres):'); if (s && s.length >= 8) { const { error } = await sb.auth.updateUser({ password: s }); alert(error ? 'Não deu para trocar a senha: ' + error.message : 'Senha trocada.'); } }); resolve(data); });
   }
   // ---------- rodapé: compartilhar, administração e sair ----------
-  const SITE_V = 72;
+  const SITE_V = 73;
   const escH = v => String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const dataBR = v => v ? new Date(v).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' }) : '–';
   const css2 = `.side-foot .r{flex-wrap:wrap}.side-foot .lg-acoes{margin-left:auto;display:inline-flex;gap:10px}
