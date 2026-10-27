@@ -2491,7 +2491,7 @@ a.lm-ir:hover { border-bottom-style: solid; }
     return new Promise(resolve => { const { data } = sb.auth.onAuthStateChange(async (ev) => { if (ev !== 'PASSWORD_RECOVERY') return; const s = prompt('Digite a nova senha (mínimo 8 caracteres):'); if (s && s.length >= 8) { const { error } = await sb.auth.updateUser({ password: s }); alert(error ? 'Não deu para trocar a senha: ' + error.message : 'Senha trocada.'); } }); resolve(data); });
   }
   // ---------- rodapé: compartilhar, administração e sair ----------
-  const SITE_V = 91;
+  const SITE_V = 92;
   const escH = v => String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const dataBR = v => v ? new Date(v).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' }) : '–';
   const css2 = `.side-foot .r{flex-wrap:wrap}.side-foot .lg-acoes{margin-left:auto;display:inline-flex;gap:10px}
@@ -2600,10 +2600,23 @@ a.lm-ir:hover { border-bottom-style: solid; }
     const ov = modal(topo('Conta desativada', 'Esta conta foi desativada pelo administrador do site. Fale com ele para reativar.') + '<button class="bt pri" type="button" id="sv-sair">Sair</button>', true, true);
     ov.querySelector('.x').remove(); ov.querySelector('#sv-sair').onclick = () => sb.auth.signOut();
   }
+  // ---------- tempo da sessão: sai 24h depois de entrar ou depois de 6h sem uso (vale para todas as abas) ----------
+  const SESS_MAX = 24 * 3600e3, SESS_INAT = 6 * 3600e3, K_INI = 'sessao-inicio', K_USO = 'sessao-uso';
+  const lsN = k => { try { return +localStorage.getItem(k) || 0; } catch (e) { return 0; } }, lsP = (k, v) => { try { localStorage.setItem(k, String(v)); } catch (e) {} };
+  const sessVencida = () => { const t = Date.now(), i = lsN(K_INI), u = lsN(K_USO); return (i > 0 && t - i > SESS_MAX) || (u > 0 && t - u > SESS_INAT); };
+  function vigiarSessao() {
+    let ult = 0; const uso = () => { const t = Date.now(); if (t - ult > 60e3) { ult = t; lsP(K_USO, t); } };
+    ['pointerdown', 'keydown', 'wheel', 'touchstart'].forEach(ev => addEventListener(ev, uso, { passive: true, capture: true }));
+    const checa = () => { if (sessVencida()) sb.auth.signOut({ scope: 'local' }); };
+    setInterval(checa, 60e3); document.addEventListener('visibilitychange', () => { if (!document.hidden) checa(); });
+  }
   const pronto = (async () => {
     await novaSenhaSePreciso();
     let { data } = await sb.auth.getSession(); sessao = data.session;
-    if (!sessao) sessao = await telaLogin();
+    if (sessao && sessVencida()) { await sb.auth.signOut({ scope: 'local' }); sessao = null; }
+    if (!sessao) { sessao = await telaLogin(); lsP(K_INI, Date.now()); }
+    else if (!lsN(K_INI)) lsP(K_INI, Date.now());
+    lsP(K_USO, Date.now()); vigiarSessao();
     uid = sessao.user.id;
     sb.auth.onAuthStateChange((ev, s) => { if (ev === 'SIGNED_OUT') location.reload(); else if (s) sessao = s; });
     const cs = document.createElement('style'); cs.textContent = css2; document.head.appendChild(cs);
