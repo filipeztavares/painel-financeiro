@@ -808,7 +808,7 @@ a.lm-ir:hover { border-bottom-style: solid; }
     </div>
     <div class="nav-mobile-sub" id="navMobileSub"></div>
   </div>
-  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 181</div></div>
+  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 182</div></div>
 </nav>
 <div class="sino-pop" id="sino-pop" role="dialog" aria-label="Central de avisos" hidden></div>
 <div class="tour-pop" id="tour-pop" role="dialog" aria-labelledby="tour-tit" hidden></div>
@@ -1083,9 +1083,9 @@ a.lm-ir:hover { border-bottom-style: solid; }
         <p class="hint" id="af-msg">Para renda fixa, o valor atual é estimado pela taxa e pela curva de Configurações. Se tiver o extrato, informe o valor atual e ele passa a valer. Para ações, FIIs e outros, informe o valor atual.</p>
       </fieldset>
       <fieldset>
-        <legend><span class="cad-n">2</span>Importar extrato da corretora (PDF)</legend>
-        <label class="full">PDFs do extrato mensal (pode escolher vários)<input type="file" id="cor-file" multiple accept=".pdf,application/pdf"></label>
-        <p class="hint" id="cor-msg" role="status">Soma juros, cupons, amortizações e resgates de cada CRA, CRI ou CDB, e proventos de ações e FIIs, e preenche o "Já recebido". Pode mandar todos os meses de uma vez; meses repetidos são ignorados. O valor atual continua sendo o que você informa.</p>
+        <legend><span class="cad-n">2</span>Importar extrato ou posição da corretora</legend>
+        <label class="full">PDF ou CSV (pode escolher vários)<input type="file" id="cor-file" multiple accept=".pdf,.csv,.txt,application/pdf,text/csv"></label>
+        <p class="hint" id="cor-msg" role="status">Dois tipos de arquivo. <b>Posição ou custódia</b> (ex.: Extrato de Custódia do Nubank, relatório mensal do C6, posição em CSV da B3): cadastra as aplicações novas e atualiza o valor atual das que você já tem. <b>Extrato de movimentações</b> (ex.: extrato detalhado mensal da Toro/Santander): soma juros, cupons, amortizações, resgates e proventos de cada aplicação e preenche o "Já recebido". Pode mandar vários de uma vez; você confere antes de salvar.</p>
       </fieldset>
       <fieldset>
         <legend><span class="cad-n">3</span>Usar na projeção</legend>
@@ -1095,6 +1095,7 @@ a.lm-ir:hover { border-bottom-style: solid; }
       </fieldset>
         </div>
         <div id="cor-prev" class="panel" hidden></div>
+        <div id="pos-prev" class="panel" hidden></div>
       </section>
       <section data-nav="Aplicações" class="panel">
         <h2>Aplicações</h2>
@@ -1779,7 +1780,7 @@ a.lm-ir:hover { border-bottom-style: solid; }
     return new Promise(resolve => { const { data } = sb.auth.onAuthStateChange(async (ev) => { if (ev !== 'PASSWORD_RECOVERY') return; const s = prompt('Digite a nova senha (mínimo 8 caracteres):'); if (s && s.length >= 8) { const { error } = await sb.auth.updateUser({ password: s }); alert(error ? 'Não deu para trocar a senha: ' + error.message : 'Senha trocada.'); } }); resolve(data); });
   }
   // ---------- rodapé: compartilhar, administração e sair ----------
-  const SITE_V = 60;
+  const SITE_V = 61;
   const escH = v => String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const dataBR = v => v ? new Date(v).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' }) : '–';
   const css2 = `.side-foot .r{flex-wrap:wrap}.side-foot .lg-acoes{margin-left:auto;display:inline-flex;gap:10px}
@@ -3262,7 +3263,7 @@ function corSugere(p) {
 }
 const IMP_FMT = {
   gas: 'Fatura do cartão ou extrato da conta de qualquer banco, em CSV, OFX, PDF ou o ZIP com senha que o banco envia. O painel identifica sozinho o banco, se é fatura ou extrato e onde estão data, descrição e valor. Já treinado com Nubank, C6, Itaú e Mercado Pago; outros bancos passam pelo leitor genérico e podem precisar de ajuste. PDF escaneado (foto) não tem texto e não é lido.',
-  cor: 'PDF do extrato detalhado mensal da conta na corretora (um arquivo por mês; pode mandar vários de uma vez). O PDF precisa ter o mês escrito por extenso, como "abril de 2025", e os lançamentos com data e valor em R$. Outros modelos de corretora e arquivos CSV ainda não são lidos.',
+  cor: 'Posição ou custódia: Extrato de Custódia do Nubank (PDF), relatório mensal de investimentos do C6 (PDF) ou CSV com colunas de aplicação e valor atual, como o da Área do Investidor da B3. Extrato de movimentações: o extrato detalhado mensal da Toro/Santander (PDF, com o mês escrito por extenso, como "abril de 2025"). Outras corretoras ainda precisam de treino: mande um arquivo de exemplo.',
   fat: 'CSV da fatura do Nubank, ou o ZIP com senha que o app envia. CSV de outro banco também serve: o painel abre o "Importar CSV" para você dizer qual coluna é a data, a descrição e o valor. PDF da fatura ainda não é lido.',
   ext: 'CSV do extrato da conta do Nubank ou do C6 Bank, ou o ZIP com senha que o banco envia. O arquivo precisa ter colunas de data, valor e descrição. PDF do extrato ainda não é lido.',
   csv: 'Arquivo CSV (separado por vírgula ou ponto e vírgula) com uma linha de cabeçalho e colunas de data, descrição e valor.'
@@ -3282,30 +3283,165 @@ $('imp-pop').addEventListener('click', e => { if (e.target.id === 'imp-ok' || e.
 document.addEventListener('keydown', e => { if (e.key === 'Escape' && !$('imp-pop').hidden) impFecha(); });
 const ehPdf = buf => { const b = new Uint8Array(buf.slice(0, 5)); return b[0] === 0x25 && b[1] === 0x50 && b[2] === 0x44 && b[3] === 0x46; };
 const plural = (n, a, b) => `${n} ${n === 1 ? a : b}`;
+/* ---------- posição da corretora: cadastrar ou atualizar aplicações a partir do relatório ---------- */
+// cada linha vira {nome, tipo, idx, taxa, inst, venc, data, aplic, atual, liq, grupo, origem}
+const vBR = x => parseValor(String(x || '').replace(/R\$/g, ''));
+const brISO = s => { const m = String(s || '').match(/(\d{2})\/(\d{2})\/(\d{4})/); return m ? `${m[3]}-${m[2]}-${m[1]}` : ''; };
+function tipoPorNome(n) {
+  const s = normDesc(n);
+  if (/^(lca|lci)\b/.test(s)) return 'lci'; if (/^(cra|cri)\b/.test(s)) return 'cri'; if (/debenture incentivada/.test(s)) return 'debinc'; if (/debenture/.test(s)) return 'deb';
+  if (/tesouro selic/.test(s)) return 'tsel'; if (/tesouro (prefixado|pre)/.test(s)) return 'tpre'; if (/tesouro ipca|tesouro renda|tesouro educa/.test(s)) return 'tipca';
+  if (/\b(cdb|rdb|lc)\b/.test(s)) return 'cdb'; if (/poupanca/.test(s)) return 'poup'; if (/previd|pgbl|vgbl/.test(s)) return 'prev';
+  if (/^[a-z]{4}11\b/.test(s)) return 'fii'; if (/^[a-z]{4}\d{1,2}\b/.test(s)) return 'acoes'; if (/\bfundo\b|\bfic\b|\bfi\b|\bfia\b|\bfim\b/.test(s)) return 'fundo'; if (/ouro/.test(s)) return 'ouro';
+  return 'outro';
+}
+function taxaDe(t) {
+  const s = String(t || '').replace(/\s+/g, ' ');
+  let m = s.match(/ipca\s*\+\s*([\d.,]+)\s*%/i); if (m) return { idx: 'ipca', taxa: vBR(m[1]) };
+  m = s.match(/([\d.,]+)\s*%\s*(?:do\s*)?cdi/i); if (m) return { idx: 'pos', taxa: vBR(m[1]) };
+  m = s.match(/selic\s*\+\s*([\d.,]+)/i); if (m) return { idx: 'selic', taxa: vBR(m[1]) };
+  m = s.match(/([\d.,]+)\s*%\s*a\.?\s*a\.?/i); if (m) return { idx: 'pre', taxa: vBR(m[1]) };
+  return null;
+}
+const liqDe = t => /vencimento/i.test(t) ? 'No vencimento' : /car[eê]ncia/i.test(t) ? 'Com carência' : /d\s*\+\s*([3-9]\d|\d{3})/i.test(t) ? 'D+30 ou mais' : 'Diária';
+const LIQ_TXT = /\s*(at[ée] \d+ dias? [úu]t(?:il|eis)|no mesmo dia|no vencimento|sujeito a taxa por|antecipa[çc][ãa]o|d\+\d+)\s*/gi;
+// Nubank: "Extrato de Custódia" (caixinhas, fundos e renda fixa com taxa, aplicação e vencimento)
+function lerPosNubank(ls) {
+  const txt = ls.join('\n'); if (!/extrato de cust[óo]dia/i.test(txt) || !/nu investimentos|nubank/i.test(txt)) return null;
+  const ref = brISO((txt.match(/cust[óo]dia em:?\s*(\d{2}\/\d{2}\/\d{4})/i) || [])[1]) || hojeISO(), L = ls.map(l => l.replace(/\s+/g, ' ').trim()), out = [];
+  const N = '(\\d{1,3}(?:\\.\\d{3})*,\\d{2})', RX_CX = new RegExp('^(RDB[^\\d]*?)\\s+(Nubank)\\s+' + N + '\\s+' + N + '\\s+' + N + '\\s+' + N + '\\s*(.*)$', 'i');
+  const RX_RF = new RegExp('^(CDB|LCA|LCI|LC|RDB|CRA|CRI|Deb[êe]nture(?: incentivada)?)\\s+(P[óo]s-?fixado|Pr[ée]-?fixado|IPCA\\+?|H[íi]brido|Infla[çc][ãa]o)?\\s*(.*?)\\s*(\\d{2}\\/\\d{2}\\/\\d{4})\\s+(.+?%\\s*(?:CDI|a\\.?\\s*a\\.?)?)\\s+' + N + '\\s+(\\d{2}\\/\\d{2}\\/\\d{4})\\s+' + N + '\\s+' + N + '\\s+' + N + '\\s+' + N + '\\s*(.*)$', 'i');
+  const RX_FU = new RegExp('^(.*?)\\s*(\\d{1,3}(?:\\.\\d{3})*,\\d{2,8})\\s+' + N + '\\s+' + N + '\\s+' + N + '\\s+' + N + '\\s*((?:at[ée]|no|d\\+).*)$', 'i');
+  const resto = l => (l || '').replace(LIQ_TXT, ' ').replace(/\s+/g, ' ').trim(), soTexto = l => l && !/\d{1,3},\d{2}/.test(l) && !/^(total|tipo de ativo|valor aplicado|\(r\$\)|custódia|caixinha|documento|nu investimentos|nu pagamentos|os valores|página|capitais|gerado)/i.test(l);
+  let cx = '', sec = '';
+  L.forEach((l, i) => {
+    if (/^cust[óo]dia em fundos/i.test(l)) sec = 'fundos'; else if (/^cust[óo]dia em renda fixa/i.test(l)) sec = 'rf'; else if (/^cust[óo]dia em caixinhas/i.test(l)) sec = 'cx'; else if (/^cust[óo]dia em/i.test(l)) sec = '';
+    let m = l.match(/^Caixinha\s+["“](.+?)["”]/i); if (m) { cx = m[1]; return; }
+    if ((m = l.match(RX_CX)) && cx) { out.push({ nome: cx, tipo: 'cdb', idx: 'pos', taxa: null, inst: 'Nubank', venc: '', data: '', aplic: null, atual: vBR(m[3]), liq: liqDe(m[7] + ' ' + m[1]), grupo: 'caixinha', det: m[1].trim() }); cx = ''; return; }
+    if ((m = l.match(RX_RF))) {
+      const em = [resto(soTexto(L[i - 1]) ? L[i - 1] : ''), m[3], resto(soTexto(L[i + 1]) ? L[i + 1] : '')].filter(Boolean).join(' ').replace(/\s+/g, ' ').trim(), tx = taxaDe(m[5]) || {};
+      const tipo = tipoPorNome(m[1]); out.push({ nome: `${m[1].toUpperCase()} ${em}`.trim(), tipo, idx: tx.idx || (/pr[ée]/i.test(m[2] || '') ? 'pre' : /ipca|infla/i.test(m[2] || '') ? 'ipca' : 'pos'), taxa: tx.taxa ?? null, inst: em, venc: brISO(m[4]), data: brISO(m[7]), aplic: vBR(m[6]), atual: vBR(m[8]), liq: liqDe(m[12] + ' ' + (L[i - 1] || '')), grupo: 'aplicacao' }); return;
+    }
+    if (sec === 'fundos' && (m = l.match(RX_FU))) {
+      const nome = [soTexto(L[i - 1]) ? L[i - 1] : '', m[1], soTexto(L[i + 1]) ? L[i + 1] : ''].filter(Boolean).join(' ').replace(/\s+-\s*$/, '').replace(/\s+/g, ' ').trim();
+      out.push({ nome, tipo: 'fundo', idx: 'pos', taxa: null, inst: /^nu /i.test(nome) ? 'Nu Asset' : '', venc: '', data: '', aplic: null, atual: vBR(m[3]), liq: liqDe(m[7]), grupo: 'fundo' });
+    }
+  });
+  return out.length ? { banco: 'Nubank', ref, linhas: out } : null;
+}
+// C6: "Relatório mensal" de investimentos (só o total por produto, sem taxa nem data de aplicação)
+function lerPosC6(ls) {
+  const txt = ls.join('\n'); if (!/relat[óo]rio\s*mensal|r e l at/i.test(txt) || !/c6/i.test(txt) || !/posi[çc][ãa]o por produto/i.test(txt)) return null;
+  const ref = brISO((txt.match(/\b(\d{2}\/\d{2}\/20\d{2})\b/) || [])[1]) || hojeISO(), L = ls.map(l => l.replace(/\s+/g, ' ').trim()), out = [];
+  const i0 = L.findIndex(l => /^posi[çc][ãa]o por produto/i.test(l)); if (i0 < 0) return null;
+  for (let i = i0 + 1; i < L.length && !/^rentabilidade por produto/i.test(L[i]); i++) {
+    const l = L[i], m = l.match(/^([A-Za-zÀ-ú+][^R$]*?)\s+((?:R\$\s*[\d.]+,\d{2}|-)(?:\s+(?:R\$\s*[\d.]+,\d{2}|-))*)\s*$/); if (!m || /^(total|to tal|renda fixa|renda vari)/i.test(m[1])) continue;
+    const vs = m[2].match(/R\$\s*[\d.]+,\d{2}|-/g), ult = vs[vs.length - 1]; if (ult === '-') continue;
+    const nome = m[1].trim(), tx = taxaDe(nome) || {}; out.push({ nome, tipo: tipoPorNome(nome), idx: tx.idx || (/p[óo]s/i.test(nome) ? 'pos' : /pr[ée]/i.test(nome) ? 'pre' : /ipca/i.test(nome) ? 'ipca' : 'pos'), taxa: null, inst: 'C6 Bank', venc: '', data: '', aplic: null, atual: vBR(ult), liq: /liq\.? di[áa]ria/i.test(nome) ? 'Diária' : 'No vencimento', grupo: 'produto' });
+  }
+  return out.length ? { banco: 'C6 Bank', ref, linhas: out } : null;
+}
+// CSV de posição (B3 Área do Investidor, planilhas de corretora): nome e valor atual, e o que mais houver
+function lerPosCsv(rows) {
+  const N = x => normDesc(x);
+  for (let i = 0; i < Math.min(rows.length, 30); i++) {
+    const h = rows[i].map(N), c = rx => h.findIndex(x => rx.test(x));
+    const iN = c(/^(produto|ativo|nome|titulo|papel|investimento|codigo de negociacao)$/), iV = c(/valor atualizado|saldo bruto|valor bruto|valor atual|^posicao|^saldo$|valor de mercado|valor liquido/);
+    if (iN < 0 || iV < 0) continue;
+    const iVe = c(/vencimento/), iD = c(/data (de |da )?(aplicacao|compra|emissao)/), iA = c(/valor aplicado|valor investido|custo/), iT = c(/^taxa|indexador|rentabilidade contratada|remuneracao/), iE = c(/^emissor/) >= 0 ? c(/^emissor/) : c(/^instituicao|^corretora/), iQ = c(/^quantidade$/), iTk = c(/codigo de negociacao|^codigo$|^ticker/);
+    const out = rows.slice(i + 1).map(r => { const nome = String(r[iN] || '').trim(), atual = vBR(r[iV]); if (!nome || !(atual > 0) || /^total/i.test(nome)) return null;
+      const tk = iTk >= 0 && iTk !== iN ? String(r[iTk] || '').trim() : '', nm = tk && /^[A-Z]{4}\d{1,2}$/.test(tk) ? tk : nome, tx = taxaDe(iT >= 0 ? r[iT] : nome) || {};
+      const dD = iD >= 0 ? parseData(String(r[iD] || '').trim(), /^\d{4}-/.test(String(r[iD] || '')) ? 'ymd' : 'dmy') : null, dV = iVe >= 0 ? parseData(String(r[iVe] || '').trim(), /^\d{4}-/.test(String(r[iVe] || '')) ? 'ymd' : 'dmy') : null;
+      return { nome: nm, tipo: tipoPorNome(nm), idx: tx.idx || 'pos', taxa: tx.taxa ?? null, inst: iE >= 0 ? String(r[iE] || '').trim() : '', venc: dV || '', data: dD || '', aplic: iA >= 0 ? vBR(r[iA]) : null, atual, liq: dV ? 'No vencimento' : 'Diária', grupo: 'aplicacao', qtd: iQ >= 0 ? vBR(r[iQ]) : null };
+    }).filter(Boolean);
+    return out.length ? { banco: '', ref: hojeISO(), linhas: out } : null;
+  }
+  return null;
+}
+// quais aplicações já cadastradas parecem ser cada linha
+function posCandidatos(r) {
+  const em = normDesc(r.inst + ' ' + r.nome), toks = em.split(/[^a-z0-9]+/).filter(t => t.length >= 3 && !['banco', 'financeira', 'cfi', 'ltda', 'pos', 'fixado', 'pre', 'cdb', 'rdb', 'lca', 'lci', 'resgate', 'fundo', 'resp'].includes(t));
+  return ativos().map(a => { let s = 0; const n1 = normDesc(a.nome + ' ' + (a.inst || ''));
+    if (r.data && a.data === r.data) s += 3; if (r.aplic && Math.abs(+a.aplic - r.aplic) <= Math.max(1, r.aplic * 0.01)) s += 3; if (r.venc && a.venc === r.venc) s += 2;
+    if (toks.some(t => n1.includes(t))) s += 2; if ((r.grupo === 'caixinha' || r.grupo === 'fundo') && normDesc(a.nome).length > 4 && (normDesc(a.nome) === normDesc(r.nome) || normDesc(r.nome).startsWith(normDesc(a.nome)))) s += 6;
+    if (r.taxa != null && +a.taxa === r.taxa) s += 1; if (!!ATIVO_RV[a.tipo] !== !!ATIVO_RV[r.tipo]) s -= 5;
+    return { a, s }; }).filter(x => x.s >= 2).sort((x, y) => y.s - x.s);
+}
+let posPrev = null;
+function prepPos(res) {
+  const usados = new Set(), linhas = res.flatMap(x => x.linhas.map(r => Object.assign(r, { banco: x.banco, ref: x.ref, arq: x.arq })));
+  linhas.forEach(r => { r.cand = posCandidatos(r); });
+  linhas.slice().sort((a, b) => ((b.cand[0] || {}).s || 0) - ((a.cand[0] || {}).s || 0)).forEach(r => { const c = r.cand.find(x => x.s >= 5 && !usados.has(x.a.id)); if (c) { usados.add(c.a.id); r.acao = c.a.id; } else r.acao = 'nova'; });
+  const insts = [...new Set(linhas.map(r => normDesc(r.banco || r.inst).split(' ')[0]).filter(Boolean))];
+  const soltas = ativos().filter(a => !usados.has(a.id) && insts.some(t => normDesc((a.inst || '') + ' ' + a.nome).includes(t)));
+  // caixinha ou total de produto sem par, quando há aplicações soltas da mesma instituição: provavelmente já estão lá, uma a uma
+  linhas.forEach(r => { if (r.acao === 'nova' && (r.grupo === 'caixinha' || r.grupo === 'produto') && soltas.some(a => normDesc((a.inst || '') + ' ' + a.nome).includes(normDesc(r.banco || r.inst).split(' ')[0]))) { r.acao = 'ignorar'; r.somada = true; } });
+  posPrev = { linhas, soltas };
+}
+function renderPosPrev() {
+  const box = $('pos-prev'); if (!posPrev) { box.innerHTML = ''; box.hidden = true; return; }
+  box.hidden = false; const dt = d => d ? d.split('-').reverse().join('/') : '—';
+  const optsDe = (r, j) => `<option value="nova"${r.acao === 'nova' ? ' selected' : ''}>Cadastrar como nova</option><option value="ignorar"${r.acao === 'ignorar' ? ' selected' : ''}>Ignorar</option>` + (r.cand.length ? `<optgroup label="Atualizar a aplicação">${r.cand.slice(0, 6).map(c => `<option value="${c.a.id}"${r.acao === c.a.id ? ' selected' : ''}>${esc(c.a.nome)} · ${dt(c.a.data)} · ${fm(+c.a.atual || +c.a.aplic || 0)}</option>`).join('')}</optgroup>` : '') + `<optgroup label="Outra aplicação">${ativos().filter(a => !r.cand.some(c => c.a.id === a.id)).map(a => `<option value="${a.id}"${r.acao === a.id ? ' selected' : ''}>${esc(a.nome)} · ${fm(+a.atual || +a.aplic || 0)}</option>`).join('')}</optgroup>`;
+  const tx = r => r.taxa != null ? `${num(r.taxa)}${r.idx === 'pos' ? '% do CDI' : r.idx === 'ipca' ? '% + IPCA' : '% a.a.'}` : '<span class="subdet">sem taxa</span>';
+  const nA = posPrev.linhas.filter(r => r.acao !== 'nova' && r.acao !== 'ignorar').length, nN = posPrev.linhas.filter(r => r.acao === 'nova').length;
+  box.innerHTML = `<h2>Conferir a posição da corretora</h2><p class="hint">Cada linha é uma aplicação do relatório. Escolha se ela atualiza uma aplicação que você já tem (o valor atual passa a ser o do relatório e os campos vazios são preenchidos) ou se entra como nova. Linhas sem taxa ou sem data de aplicação entram com a data do relatório e o valor atual como aplicado; ajuste depois em Editar.</p>
+    ${posPrev.soltas.length ? `<p class="hint"><span class="chip amber">confira</span> ${plural(posPrev.soltas.length, 'aplicação sua dessa instituição não apareceu', 'aplicações suas dessa instituição não apareceram')} no relatório: ${posPrev.soltas.slice(0, 6).map(a => esc(a.nome)).join(', ')}${posPrev.soltas.length > 6 ? '…' : ''}. Podem ter vencido, sido resgatadas ou estar somadas numa caixinha ou produto.</p>` : ''}
+    <div class="tscroll"><table id="tbl-pos"><thead><tr><th>Aplicação no relatório</th><th>Taxa</th><th>Aplicado</th><th>Valor atual</th><th>O que fazer</th></tr></thead><tbody>
+    ${posPrev.linhas.map((r, j) => `<tr${r.acao === 'ignorar' ? ' style="opacity:.55"' : ''}><td class="name"><b>${esc(r.nome)}</b><div class="subdet">${esc(r.banco || r.inst || '')}${r.grupo === 'caixinha' ? ' · caixinha' : r.grupo === 'produto' ? ' · total do produto' : ''}${r.somada ? '<br>ignorada: você já tem aplicações dessa instituição uma a uma' : ''}${r.venc ? ` · vence ${dt(r.venc)}` : ''}</div></td><td>${tx(r)}</td><td>${r.aplic ? fm2(r.aplic) + `<div class="subdet">${dt(r.data)}</div>` : '<span class="subdet">—</span>'}</td><td>${fm2(r.atual)}<div class="subdet">em ${dt(r.ref)}</div></td><td class="name"><select data-posacao="${j}" style="max-width:280px" aria-label="O que fazer com ${esc(r.nome)}">${optsDe(r, j)}</select></td></tr>`).join('')}
+    </tbody></table></div>
+    <div class="btns" style="margin-top:10px"><button class="btn" type="button" id="pos-go">Aplicar: ${plural(nA, 'atualização', 'atualizações')} e ${plural(nN, 'nova', 'novas')}</button><button class="btn ghost" type="button" id="pos-cancel">Cancelar</button></div>`;
+}
+function aplicarPos() {
+  let nA = 0, nN = 0; const nomes = [];
+  posPrev.linhas.forEach(r => {
+    if (r.acao === 'ignorar') return;
+    if (r.acao === 'nova') { const tp = TIPOS[r.tipo] || {}, rv = !!ATIVO_RV[r.tipo];
+      state.ativos = ativos().concat({ id: uid(), nome: r.nome, inst: r.inst || r.banco || '', tipo: r.tipo, idx: rv ? '' : (tp.idxs || []).includes(r.idx) ? r.idx : (tp.idxs || ['pos'])[0], taxa: rv ? '' : r.taxa ?? (r.idx === 'pos' ? 100 : 0), adm: tp.fundo ? 0 : '', cc: 'lp', data: r.data || r.ref, venc: r.venc || '', aplic: r.aplic || r.atual, atual: r.atual, receb: 0, liq: r.liq || 'Diária', classe: '' });
+      nN++; nomes.push(`nova: ${r.nome}`); return; }
+    state.ativos = ativos().map(a => { if (a.id !== r.acao) return a; nA++; nomes.push(`${a.nome}: ${fm(+a.atual || 0)} → ${fm2(r.atual)}`);
+      return Object.assign({}, a, { atual: r.atual, venc: a.venc || r.venc || '', taxa: a.taxa === '' || a.taxa == null || (!+a.taxa && r.taxa != null) ? r.taxa ?? a.taxa : a.taxa, data: a.data || r.data || a.data, aplic: isFinite(+a.aplic) && +a.aplic ? a.aplic : r.aplic || a.aplic }); });
+  });
+  save(); posPrev = null; renderPosPrev(); renderCarteira();
+  $('cor-msg').textContent = `${plural(nA, 'aplicação atualizada', 'aplicações atualizadas')} e ${plural(nN, 'nova cadastrada', 'novas cadastradas')}.`;
+  impPop('cor', 'ok', `${plural(nA, 'aplicação atualizada', 'aplicações atualizadas')} e ${plural(nN, 'nova', 'novas')}`, nomes.slice(0, 12).concat(nomes.length > 12 ? [`e mais ${nomes.length - 12}`] : []));
+}
+$('pos-prev').addEventListener('change', e => { const j = e.target.dataset && e.target.dataset.posacao; if (j == null || !posPrev) return; posPrev.linhas[+j].acao = e.target.value; renderPosPrev(); });
+$('pos-prev').addEventListener('click', e => { if (e.target.id === 'pos-cancel') { posPrev = null; renderPosPrev(); $('cor-msg').textContent = 'Importação cancelada.'; } if (e.target.id === 'pos-go' && posPrev) aplicarPos(); });
 async function abrirCorretora(files) {
-  $('cor-msg').textContent = `Lendo ${files.length} arquivo${files.length > 1 ? 's' : ''}…`;
-  const meses = {}, rep = [], ruins = [];
-  const naoPdf = []; for (const f of files) if (!ehPdf(await f.slice(0, 5).arrayBuffer())) naoPdf.push(f);
-  if (naoPdf.length === files.length) { $('cor-msg').textContent = 'Nenhum dos arquivos é PDF.'; impPop('cor', 'erro', 'Não consegui ler o extrato da corretora', naoPdf.map(f => `${f.name}: não é um PDF.${/\.(csv|zip)$/i.test(f.name) ? ' CSV e ZIP de banco vão em Gastos e fechamento › Importar fatura ou extrato.' : ''}`)); return; }
-  try { await carregarPdfJs(); } catch (e) { $('cor-msg').textContent = 'Não consegui carregar o leitor de PDF. Confira a conexão e tente de novo.'; impPop('cor', 'erro', 'Não consegui abrir o leitor de PDF', ['Confira a conexão e tente de novo.']); return; }
-  const motivos = [];
+  $('cor-msg').textContent = `Lendo ${plural(files.length, 'arquivo', 'arquivos')}…`;
+  const meses = {}, rep = [], motivos = [], posRes = [];
   for (const f of files) {
     try {
       const buf = await f.arrayBuffer();
-      if (!ehPdf(buf)) { ruins.push(f.name); motivos.push(`${f.name}: não é um PDF.${/\.(csv|zip)$/i.test(f.name) ? ' CSV e ZIP de banco vão em Gastos e fechamento › Importar fatura ou extrato.' : ''}`); continue; }
-      const r = lerCorretora(await linhasPdf(buf));
-      if (!r) { ruins.push(f.name); motivos.push(`${f.name}: é um PDF, mas não achei o mês ("abril de 2025") nem lançamentos de extrato da corretora.`); continue; }
-      if (meses[r.mes]) rep.push(f.name); else meses[r.mes] = r;
-    } catch (e) { ruins.push(f.name); motivos.push(`${f.name}: não consegui abrir o arquivo (PDF protegido ou corrompido?).`); }
+      if (!ehPdf(buf)) {
+        const texto = textoDe(new Uint8Array(buf)), r = /\.(csv|txt)$/i.test(f.name) || /[;,\t]/.test(texto.slice(0, 500)) ? lerPosCsv(parseCSV(texto.replace(/^﻿/, ''))) : null;
+        if (r) { posRes.push(Object.assign(r, { arq: f.name, banco: r.banco || bancoDe(texto) })); continue; }
+        motivos.push(`${f.name}: ${/\.(csv|txt)$/i.test(f.name) ? 'não achei colunas de aplicação e valor atual (ex.: Produto e Valor atualizado).' : 'não é PDF nem CSV.'}${tipoGastos(texto) ? ' Parece fatura ou extrato de banco: use Gastos e fechamento › Importar fatura ou extrato.' : ''}`); continue;
+      }
+      let ls; try { ls = await linhasPdf(buf); } catch (e) { motivos.push(`${f.name}: ${e && e.name === 'PasswordException' ? 'o PDF tem senha.' : /pdfjs|carregar|fetch/i.test(String(e && e.message)) ? 'não consegui carregar o leitor de PDF; confira a conexão.' : 'não consegui abrir o PDF.'}`); continue; }
+      const r = lerCorretora(ls);
+      if (r) { if (meses[r.mes]) rep.push(f.name); else meses[r.mes] = r; continue; }
+      const p = lerPosNubank(ls) || lerPosC6(ls);
+      if (p) { posRes.push(Object.assign(p, { arq: f.name })); continue; }
+      const t = ls.join('\n'); motivos.push(`${f.name}: abri o PDF${bancoDe(t) ? ` (${bancoDe(t)})` : ''}, mas não reconheci extrato nem posição de investimentos.${tipoGastos(t) ? ' Parece fatura ou extrato de banco: use Gastos e fechamento › Importar fatura ou extrato.' : ''}`);
+    } catch (e) { motivos.push(`${f.name}: não consegui abrir o arquivo.`); }
   }
-  const ms = Object.keys(meses).sort();
-  if (!ms.length) { $('cor-msg').textContent = 'Não achei lançamentos de extrato da corretora nesses arquivos.'; impPop('cor', 'erro', 'Não consegui ler o extrato da corretora', motivos); return; }
-  const pos = posicoesCorretora(ms.map(m => meses[m])).filter(p => p.evs.length);
-  pos.forEach(p => { const mp = corMap()[p.key]; p.ativo = mp !== undefined && (mp === 'fora' || ativos().some(a => a.id === mp)) ? mp : corSugere(p); p.usar = !!p.ativo && p.ativo !== 'fora'; });
-  corPrev = { ms, pos, rep, ruins };
-  $('cor-msg').textContent = `${ms.length} ${ms.length > 1 ? 'meses lidos' : 'mês lido'} (${mLabel(mIndex(ms[0]))} a ${mLabel(mIndex(ms[ms.length - 1]))})${rep.length ? `, ${rep.length} repetido${rep.length > 1 ? 's' : ''} ignorado${rep.length > 1 ? 's' : ''}` : ''}${ruins.length ? `, ${ruins.length} sem extrato reconhecido` : ''}. Confira abaixo.`;
-  renderCorPrev();
-  impPop('cor', ruins.length ? 'aviso' : 'ok', `${ms.length > 1 ? `${ms.length} meses lidos` : '1 mês lido'} do extrato da corretora`, [`${mLabel(mIndex(ms[0]))}${ms.length > 1 ? ` a ${mLabel(mIndex(ms[ms.length - 1]))}` : ''}, com ${plural(pos.length, 'aplicação', 'aplicações')} com juros, amortizações, resgates ou proventos.`, ...(rep.length ? [`${plural(rep.length, 'arquivo repetido ignorado', 'arquivos repetidos ignorados')}: ${rep.join(', ')}.`] : []), ...motivos, 'Nada foi salvo ainda: confira o vínculo de cada aplicação e clique em importar.'], 'Conferir', 'cor-prev');
+  const ms = Object.keys(meses).sort(), res = [];
+  if (ms.length) {
+    const pos = posicoesCorretora(ms.map(m => meses[m])).filter(p => p.evs.length);
+    pos.forEach(p => { const mp = corMap()[p.key]; p.ativo = mp !== undefined && (mp === 'fora' || ativos().some(a => a.id === mp)) ? mp : corSugere(p); p.usar = !!p.ativo && p.ativo !== 'fora'; });
+    corPrev = { ms, pos, rep, ruins: [] }; renderCorPrev();
+    res.push(`Extrato de movimentações: ${ms.length > 1 ? `${ms.length} meses` : '1 mês'} (${mLabel(mIndex(ms[0]))}${ms.length > 1 ? ` a ${mLabel(mIndex(ms[ms.length - 1]))}` : ''}), ${plural(pos.length, 'aplicação', 'aplicações')} com juros, amortizações, resgates ou proventos. Isso preenche o "Já recebido".`);
+    if (rep.length) res.push(`${plural(rep.length, 'mês repetido ignorado', 'meses repetidos ignorados')}: ${rep.join(', ')}.`);
+  }
+  if (posRes.length) { prepPos(posRes); renderPosPrev();
+    const nA = posPrev.linhas.filter(r => r.acao !== 'nova' && r.acao !== 'ignorar').length;
+    posRes.forEach(p => res.push(`Posição${p.banco ? ` ${p.banco}` : ''} em ${p.ref.split('-').reverse().join('/')}: ${plural(p.linhas.length, 'aplicação', 'aplicações')}.`));
+    res.push(`${plural(nA, 'parece', 'parecem')} com aplicações que você já tem; as demais entram como novas.`);
+  }
+  $('cor-msg').textContent = res.length ? res.join(' ') + (motivos.length ? ' ' + motivos.join(' ') : '') : motivos.join(' ');
+  if (res.length) impPop('cor', motivos.length ? 'aviso' : 'ok', 'Arquivos da corretora lidos', [...res, ...motivos, 'Nada foi salvo ainda: confira abaixo e clique em aplicar.'], 'Conferir', posRes.length ? 'pos-prev' : 'cor-prev');
+  else impPop('cor', 'erro', 'Não consegui ler os arquivos da corretora', motivos);
 }
 const COR_TIPO = { juros: 'juros', amort: 'amortização', resgate: 'resgate', ir: 'IR do resgate', provento: 'provento', aluguel: 'aluguel de ações' };
 function corTotais() { const t = {}; corPrev.pos.forEach(p => { if (p.usar && p.ativo && p.ativo !== 'fora') t[p.ativo] = (t[p.ativo] || 0) + p.total; }); return t; }
@@ -3895,11 +4031,10 @@ function serieAt(x, per) {
     const pts = l.slice(i0); return pts.length >= 2 ? { ini: pts[0], d0: pts[0][0], pts, diario: true } : null;
   }
   const ini = x.h && x.h[per]; if (!ini || !(ini[1] > 0)) return null; const d0 = ini[0];
-  const corte = dia ? Object.values(x.h).reduce((m, v) => Array.isArray(v) && v[0] > m ? v[0] : m, '') : '';
-  let pts = [ini, ...Object.values(x.h), x.max, x.min, x.ini].filter(v => Array.isArray(v) && v[1] > 0 && v[0] >= d0 && (!corte || v[0] <= corte) && (!hoje || v[0] < hoje[0]));
-  if (corte) pts = pts.concat(dia.filter(v => v[0] > corte && v[0] >= d0));
+  // períodos longos: só os pontos do histórico e o preço de hoje (os dias úteis ficam para 30 dias e 3 meses)
+  let pts = [ini, ...Object.values(x.h), x.max, x.min, x.ini].filter(v => Array.isArray(v) && v[1] > 0 && v[0] >= d0 && (!hoje || v[0] < hoje[0]));
   pts = ateHoje(pts.sort((a, b) => a[0] < b[0] ? -1 : a[0] > b[0] ? 1 : 0).filter((v, j, a) => !j || v[0] !== a[j - 1][0]));
-  return pts.length >= 2 ? { ini, d0, pts, diario: !!corte } : null;
+  return pts.length >= 2 ? { ini, d0, pts, diario: false } : null;
 }
 // rótulo do eixo: mês, ou dia/mês quando o período é curto
 const eixoLbl = (p, span) => { if (span >= 4) return mLabel(Math.floor(p)); const mi = Math.floor(p), d = new Date(BASE.getFullYear(), BASE.getMonth() + mi, 1), dim = new Date(d.getFullYear(), d.getMonth() + 1, 0).getDate(); d.setDate(1 + Math.round((p - mi) * dim)); return d.toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit' }); };
