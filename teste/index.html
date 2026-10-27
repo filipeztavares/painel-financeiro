@@ -571,6 +571,10 @@ tr.totrow td { font-weight: 700; border-top: 2px solid var(--line); }
 .orc-h { font-family: var(--f-head); font-size: 13px; font-weight: 600; color: var(--accent-strong); margin: 4px 0 8px; }
 .orc-add { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 8px; }
 .orc-add input, .orc-add select { width: auto; flex: 1 1 110px; }
+.pj-bens .orc-h { display: block; margin: 4px 0 2px; }
+.pj-ben { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) auto; gap: 6px; align-items: center; padding: 6px 0; border-bottom: 1px solid var(--line); }
+.pj-ben:last-of-type { border-bottom: 0; }
+.pj-ben input[type=text] { grid-column: 1 / -1; } .pj-ben input, .pj-ben select { width: 100%; }
 #fat-prev:empty, #ext-prev:empty { display: none; }
 #ext-prev { margin-top: 14px; }
 #tbl-ext input.fatcat { min-width: 250px; }
@@ -1194,7 +1198,7 @@ a.lm-ir:hover { border-bottom-style: solid; }
     </div>
     <div class="nav-mobile-sub" id="navMobileSub"></div>
   </div>
-  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 209</div></div>
+  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 210</div></div>
 </nav>
 <div class="sino-pop" id="sino-pop" role="dialog" aria-label="Central de avisos" hidden></div>
 <div class="tour-pop" id="tour-pop" role="dialog" aria-labelledby="tour-tit" hidden></div>
@@ -2095,11 +2099,11 @@ a.lm-ir:hover { border-bottom-style: solid; }
       <fieldset>
         <legend>Comparar com CLT</legend>
         <label>Salário CLT bruto (R$/mês)<input type="number" step="500" min="0" data-bind="pj::clt"></label>
-        <label>Vale-refeição e alimentação (R$/mês)<input type="number" step="50" min="0" data-bind="pj::benef"></label>
         <label>Plano de saúde (R$/mês)<input type="number" step="50" min="0" data-bind="pj::saude"></label>
         <label>Vale-transporte (R$/mês)<input type="number" step="50" min="0" data-bind="pj::vt"></label>
+        <div class="pj-bens" id="pj-bens" style="grid-column:1/-1"></div>
         <label class="check"><input type="checkbox" data-bind="pj::fgts"> Contar o FGTS como ganho</label>
-        <p class="hint">Benefícios só entram se você preencher. Plano de saúde: o que você pagaria por um plano igual. Vale-transporte: entra só o que passa do desconto de 6% do salário, e só vale a pena contar se você gastaria com transporte de qualquer jeito. Deixe o salário em branco para ver só o CLT equivalente ao seu faturamento.</p>
+        <p class="hint">Benefícios só entram se você preencher. Em "+ Benefício" entram VR, VA e outros que nem todo emprego tem (auxílio home office, seguro de vida, PLR, bônus...), com o valor que chega para você, por mês ou por ano. Plano de saúde: o que você pagaria por um plano igual. Vale-transporte: entra só o que passa do desconto de 6% do salário, e só vale a pena contar se você gastaria com transporte de qualquer jeito. Deixe o salário em branco para ver só o CLT equivalente ao seu faturamento.</p>
       </fieldset>
         </div>
       </section>
@@ -2487,7 +2491,7 @@ a.lm-ir:hover { border-bottom-style: solid; }
     return new Promise(resolve => { const { data } = sb.auth.onAuthStateChange(async (ev) => { if (ev !== 'PASSWORD_RECOVERY') return; const s = prompt('Digite a nova senha (mínimo 8 caracteres):'); if (s && s.length >= 8) { const { error } = await sb.auth.updateUser({ password: s }); alert(error ? 'Não deu para trocar a senha: ' + error.message : 'Senha trocada.'); } }); resolve(data); });
   }
   // ---------- rodapé: compartilhar, administração e sair ----------
-  const SITE_V = 90;
+  const SITE_V = 91;
   const escH = v => String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const dataBR = v => v ? new Date(v).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' }) : '–';
   const css2 = `.side-foot .r{flex-wrap:wrap}.side-foot .lg-acoes{margin-left:auto;display:inline-flex;gap:10px}
@@ -11797,6 +11801,30 @@ function pjCalc(fat, o, reg = o.reg, plModo = o.pl) {
   if (plModo !== 'otimo') return conta(plModo);
   const a = conta('minimo'), b = conta('fatorR'); return b.anual >= a.anual ? b : a;
 }
+// benefícios da CLT que nem todo emprego tem (VR, VA, PLR...): lista em state.pj.bens; o campo antigo pj.benef (VR/VA) vira o primeiro item
+function pjBens(p) { return Array.isArray(p.bens) ? p.bens.filter(b => b && +b.valor > 0) : (+p.benef > 0 ? [{ id: 'vrva', nome: 'VR/VA', valor: +p.benef, freq: 'mes' }] : []); }
+function pjBensMes(p) { return pjBens(p).reduce((t, b) => t + (b.freq === 'ano' ? +b.valor / 12 : +b.valor), 0); }
+const PJ_BEN_SUG = ['Vale-refeição (VR)', 'Vale-alimentação (VA)', 'Auxílio home office', 'Seguro de vida', 'Auxílio academia (Wellhub/Gympass)', 'Auxílio creche', 'Previdência privada (parte da empresa)', 'PLR', 'Bônus anual'];
+function pjBensMig() { const p = state.pj; if (Array.isArray(p.bens)) return; p.bens = +p.benef > 0 ? [{ id: uid(), nome: 'VR/VA', valor: +p.benef, freq: 'mes' }] : []; p.benef = 0; }
+function renderPjBens() {
+  pjBensMig(); const box = $('pj-bens'); if (!box) return;
+  const ativo = document.activeElement && box.contains(document.activeElement) && document.activeElement.dataset.pjben ? document.activeElement.dataset.pjben + '|' + document.activeElement.dataset.campo : '';
+  box.innerHTML = `<span class="orc-h">Outros benefícios</span>` + state.pj.bens.map(b => `<div class="pj-ben"><input type="text" class="name" data-pjben="${b.id}" data-campo="nome" value="${esc(b.nome || '')}" aria-label="Benefício"><input type="number" step="50" min="0" data-pjben="${b.id}" data-campo="valor" value="${+b.valor || ''}" aria-label="Valor"><select data-pjben="${b.id}" data-campo="freq" aria-label="Frequência"><option value="mes"${b.freq !== 'ano' ? ' selected' : ''}>por mês</option><option value="ano"${b.freq === 'ano' ? ' selected' : ''}>por ano</option></select><button class="btn ghost tiny" type="button" data-pjbendel="${b.id}">Remover</button></div>`).join('')
+    + `<div class="pj-ben"><input type="text" class="name" id="pj-bnome" list="pj-ben-sug" placeholder="Benefício (ex.: VR, VA, PLR)" aria-label="Nome do benefício"><input type="number" step="50" min="0" id="pj-bval" placeholder="R$ que chega" aria-label="Valor do benefício"><select id="pj-bfreq" aria-label="Frequência"><option value="mes">por mês</option><option value="ano">por ano</option></select><button class="btn tiny" type="button" id="pj-badd">+ Benefício</button></div>
+    <datalist id="pj-ben-sug">${PJ_BEN_SUG.map(n => `<option value="${esc(n)}">`).join('')}</datalist>`;
+  if (ativo) { const [id, c] = ativo.split('|'), el = box.querySelector(`[data-pjben="${id}"][data-campo="${c}"]`); if (el) el.focus(); }
+}
+function pjBenAdd() {
+  const nome = $('pj-bnome').value.trim(), valor = +$('pj-bval').value || 0, freq = $('pj-bfreq').value;
+  if (!nome) { $('pj-bnome').focus(); return; }
+  pjBensMig(); state.pj.bens.push({ id: uid(), nome, valor, freq: freq === 'ano' ? 'ano' : 'mes' }); save(); renderPjBens(); renderPj();
+  if (!valor) { const el = $('pj-bens').querySelector(`[data-pjben="${state.pj.bens[state.pj.bens.length - 1].id}"][data-campo="valor"]`); if (el) el.focus(); } else $('pj-bnome').focus();
+}
+$('pj-bens').addEventListener('click', e => { const t = e.target; if (t.id === 'pj-badd') { pjBenAdd(); return; }
+  if (t.dataset.pjbendel) { state.pj.bens = state.pj.bens.filter(b => b.id !== t.dataset.pjbendel); save(); renderPjBens(); renderPj(); } });
+$('pj-bens').addEventListener('keydown', e => { if (e.key === 'Enter' && ['pj-bnome', 'pj-bval'].includes(e.target.id)) { e.preventDefault(); pjBenAdd(); } });
+$('pj-bens').addEventListener('change', e => { const t = e.target, b = t.dataset.pjben && state.pj.bens.find(x => x.id === t.dataset.pjben); if (!b) return;
+  const c = t.dataset.campo; b[c] = c === 'valor' ? (+t.value || 0) : c === 'freq' ? (t.value === 'ano' ? 'ano' : 'mes') : t.value.trim(); save(); renderPj(); });
 // CLT: 12 salários líquidos + 13º (tributado à parte) + 1/3 de férias + FGTS (opcional) + benefícios
 function cltAnual(S, o) {
   const n = netCLT(S, o.dep), n13 = netCLT(S, o.dep), fer = netCLT(S * 4 / 3, o.dep) - n, fgts = o.fgts ? 0.08 * (13 + 1 / 3) * S : 0;
@@ -11807,7 +11835,7 @@ function cltAnual(S, o) {
 const busca = (f, alvo, hi) => { let lo = 0; while (f(hi) < alvo && hi < 1e7) hi *= 2; for (let i = 0; i < 60; i++) { const m = (lo + hi) / 2; if (f(m) < alvo) lo = m; else hi = m; } return (lo + hi) / 2; };
 function pjOpts() {
   const p = state.pj, rec = (state.orc.receitas[0] || {}).valor, cb = (state.orc.deducoes.find(d => d.id === 'contab' && d.modo === 'fixo') || {}).valor;
-  const o = { fat: p.fat != null ? +p.fat : (+rec || 0), meses: +p.meses === 11 ? 11 : 12, reg: p.reg, iss: +p.iss || 0, pl: p.pl, plValor: +p.plValor || 0, contab: p.contab != null ? +p.contab : (+cb || 0), outros: +p.outros || 0, dep: +p.dep || 0, clt: +p.clt || 0, benef: +p.benef || 0, saude: +p.saude || 0, vt: +p.vt || 0, fgts: p.fgts !== false };
+  const o = { fat: p.fat != null ? +p.fat : (+rec || 0), meses: +p.meses === 11 ? 11 : 12, reg: p.reg, iss: +p.iss || 0, pl: p.pl, plValor: +p.plValor || 0, contab: p.contab != null ? +p.contab : (+cb || 0), outros: +p.outros || 0, dep: +p.dep || 0, clt: +p.clt || 0, benef: pjBensMes(p), bens: pjBens(p), saude: +p.saude || 0, vt: +p.vt || 0, fgts: p.fgts !== false };
   // PF → PJ: parte do que a pessoa quer receber e acha o faturamento que chega lá
   o.dir = p.dir === 'pfpj' ? 'pfpj' : 'pjpf'; o.meta = p.meta === 'clt' ? 'clt' : 'bolso'; o.fatDigitado = o.fat;
   if (o.dir === 'pfpj') {
@@ -11824,6 +11852,7 @@ function buildPj() {
   $('pj-desc').textContent = pf ? 'Quanto sua empresa precisa faturar para você receber o que quer no bolso (ou empatar com um salário CLT), com o melhor regime e pró-labore. Regras de 2026.' : 'Quanto do faturamento da sua empresa chega ao seu bolso, qual regime e pró-labore rendem mais, e quanto valeria o mesmo trabalho na CLT. Regras de 2026.';
   $('pj-l-fat').hidden = pf; $('pj-l-meta').hidden = !pf; $('pj-l-alvo').hidden = !pf || state.pj.meta === 'clt'; $('pj-fatcalc').hidden = !pf;
   document.querySelectorAll('#p-pjpf [data-bind]').forEach(fillBound);
+  renderPjBens();
 }
 function renderPj() {
   if (($('pj-l-alvo').hidden) !== (state.pj.dir !== 'pfpj' || state.pj.meta === 'clt')) buildPj();
@@ -11889,7 +11918,7 @@ function renderPj() {
     + L('13º líquido', c => c.a.n13, '', 'mesmo desconto de um salário, tributado à parte')
     + L('1/3 de férias líquido', c => c.a.fer, '', 'no mês de férias recebe 4/3 do salário; conta só o que passa do salário normal')
     + L('FGTS', c => c.f ? c.a.fgts : null, '', '8% sobre 13 salários + 1/3 de férias')
-    + ((o.benef || o.saude || o.vt) ? L('Benefícios no ano', c => c.a.ben, '', `VR/VA ${fm(o.benef)}, saúde ${fm(o.saude)}, VT acima dos 6%`) : '')
+    + ((o.benef || o.saude || o.vt) ? L('Benefícios no ano', c => c.a.ben, '', [...o.bens.map(b => `${esc(b.nome)} ${fm(b.valor)}${b.freq === 'ano' ? ' por ano' : ''}`), ...(o.saude ? [`saúde ${fm(o.saude)}`] : []), ...(o.vt ? ['VT acima dos 6%'] : [])].join(', ')) : '')
     + L('Total líquido no ano', c => c.a.total, 'tot')
     + L('Seu PJ no ano', () => alvoPJ) + L('Diferença CLT − PJ', c => c.a.total - alvoPJ) + '</tbody>';
   const pf = o.dir === 'pfpj';
