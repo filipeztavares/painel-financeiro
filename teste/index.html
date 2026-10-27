@@ -1183,7 +1183,7 @@ a.lm-ir:hover { border-bottom-style: solid; }
     </div>
     <div class="nav-mobile-sub" id="navMobileSub"></div>
   </div>
-  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 204</div></div>
+  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 205</div></div>
 </nav>
 <div class="sino-pop" id="sino-pop" role="dialog" aria-label="Central de avisos" hidden></div>
 <div class="tour-pop" id="tour-pop" role="dialog" aria-labelledby="tour-tit" hidden></div>
@@ -2404,7 +2404,7 @@ a.lm-ir:hover { border-bottom-style: solid; }
     return new Promise(resolve => { const { data } = sb.auth.onAuthStateChange(async (ev) => { if (ev !== 'PASSWORD_RECOVERY') return; const s = prompt('Digite a nova senha (mínimo 8 caracteres):'); if (s && s.length >= 8) { const { error } = await sb.auth.updateUser({ password: s }); alert(error ? 'Não deu para trocar a senha: ' + error.message : 'Senha trocada.'); } }); resolve(data); });
   }
   // ---------- rodapé: compartilhar, administração e sair ----------
-  const SITE_V = 84;
+  const SITE_V = 85;
   const escH = v => String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const dataBR = v => v ? new Date(v).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' }) : '–';
   const css2 = `.side-foot .r{flex-wrap:wrap}.side-foot .lg-acoes{margin-left:auto;display:inline-flex;gap:10px}
@@ -2967,7 +2967,7 @@ function vgNormalizar(s) {
   v.lugares.forEach(l => { if (l.dest && vgDest(l.dest)) return; const n = vgNorm(l.nome), nn = VG_ALIAS[n] || n, d = VG_DEST.find(x => x.pais === l.pais && vgNorm(x.nome) === nn); if (d) { l.dest = d.id; l.lat = d.lat; l.lon = d.lon; return; } if (l.lat == null) { const c = vgAchaCid(l.nome, l.pais); if (c) { l.lat = c.lat; l.lon = c.lon; } } });
   v.fui = [...new Set(v.fui.filter(c => /^[A-Z]{2}$/.test(c)))];
   v.cmp = v.cmp.filter(id => v.lugares.some(l => l.id === id)).slice(0, 5);
-  v.viagens = v.viagens.filter(x => x && x.id); v.viagens.forEach(x => { if (!VG_VST[x.st]) x.st = 'planejada'; vgRotNorm(x, v); vgCusNorm(x); vgDurNorm(x); }); if (typeof v.rotSel !== 'string') v.rotSel = '';
+  v.viagens = v.viagens.filter(x => x && x.id); v.viagens.forEach(x => { if (!VG_VST[x.st]) x.st = 'planejada'; vgRotNorm(x, v); vgCusNorm(x); vgDurNorm(x); vgAutoSt(x); }); if (typeof v.rotSel !== 'string') v.rotSel = '';
   if (!v.plano || typeof v.plano !== 'object') v.plano = {};
   const [a, b] = vgDataPadrao(); if (!dt.test(v.plano.ida)) v.plano.ida = a; if (!dt.test(v.plano.volta) || v.plano.volta <= v.plano.ida) { const x = new Date(v.plano.ida + 'T12:00:00'); x.setDate(x.getDate() + 14); v.plano.volta = x.toISOString().slice(0, 10); }
   v.plano.pessoas = Math.min(20, Math.max(1, Math.round(+v.plano.pessoas || 2))); if (!VG_EST[v.plano.estilo]) v.plano.estilo = 'meio'; if (!Array.isArray(v.plano.tipos)) v.plano.tipos = [];
@@ -5560,7 +5560,7 @@ document.addEventListener('click', e => {
     a.noites += b.noites; a.hosp = a.hosp.concat(b.hosp); r.itens.forEach(it => { if (it.par === b.id) it.par = a.id; }); r.paradas.splice(i, 1); save(); vgRe(); return; }
 });
 document.addEventListener('keydown', e => { if (e.target.id === 'vgr-dtxt' && e.key === 'Enter') { e.preventDefault(); const b = document.querySelector('[data-vgrdnovo]'); if (b) b.click(); } });
-function renderViagRot() {
+function renderViagRot() { vgAutoTodos();
   const v = state.viag, x = vgRotSel(), box = $('vgr-viagem');
   if (!x) { box.innerHTML = `<p class="hint">Nenhuma viagem ainda. Escolha um lugar em Comparar ou comece uma do zero.</p><div class="vg-pa"><button type="button" class="btn" data-vgrnova>+ Nova viagem</button></div>`; ['vgr-rota', 'vgr-dias', 'vgr-paradas', 'vgr-resumo', 'vgr-otim', 'vgr-mapa', 'vgr-check'].forEach(id => { const e = $(id); if (e) e.innerHTML = ''; }); kpis($('kpi-vgr'), []); return; }
   vgRotNorm(x, v); const r = x.rot, n = vgRotNoites(x), soma = r.paradas.reduce((s, p) => s + p.noites, 0);
@@ -5759,18 +5759,18 @@ function vgCaixinha(x, total) { const p = x.cus.pag, iv = mIndex(x.ida.slice(0, 
 // eventos para o Plano futuro (Projeção real ou comparação de simulação)
 function vgPlanEvs(extra) {
   const out = []; ((state.viag || {}).viagens || []).forEach(x => {
-    if (!x.cus) return; const on = (x.cus.plano && !(extra && extra.has('-viag:' + x.id))) || (extra && extra.has('viag:' + x.id)); if (!on || x.st === 'concluida') return;
+    if (!x.cus) return; const on = (x.cus.plano && !(extra && extra.has('-viag:' + x.id))) || (extra && extra.has('viag:' + x.id)); if (!on || (x.st === 'concluida' && !x.cus.plano)) return;
     const t = vgCusLinhas(x).tot.proj; if (!(t > 0)) return;
     vgCusPag(x, t).forEach(pg => out.push({ id: 'vg-' + x.id, nome: 'Viagem: ' + x.nome, tipo: 'gasto', valor: Math.round(pg.v), mes: mKey(pg.i), anual: false, vg: true }));
   });
   return out;
 }
 function vgItensMod() {
-  return ((state.viag || {}).viagens || []).filter(x => x.st !== 'concluida').map(x => { vgCusNorm(x); const t = vgCusLinhas(x).tot.proj, p = x.cus.pag, pags = vgCusPag(x, t), par = p.modo === 'parcelar';
+  return ((state.viag || {}).viagens || []).filter(x => x.st !== 'concluida' || (x.cus && x.cus.plano)).map(x => { vgCusNorm(x); const t = vgCusLinhas(x).tot.proj, p = x.cus.pag, pags = vgCusPag(x, t), par = p.modo === 'parcelar';
     return { id: 'viag:' + x.id, mod: 'viag', sub: 'Viagens', tab: 'viagcus', sec: 'No Plano futuro', nome: 'Viagem: ' + x.nome, tipo: 'gasto', ini: mKey(pags[0].i), unico: par ? 0 : -t, mensal: par ? -t / p.n : 0, meses: par ? p.n : 0,
       resumo: t > 0 ? (par ? `${p.n}× ${fm(t / p.n)}` : `${fm(t)} em ${mLabel(pags[0].i)}`) + (p.modo === 'caixinha' ? ' (guardado na caixinha)' : '') : 'monte o roteiro para ter o custo', uso: x.cus.plano ? 'real' : 'sim', bloq: !(t > 0) }; });
 }
-function renderViagCus() {
+function renderViagCus() { vgAutoTodos();
   const v = state.viag, x = vgRotSel(), box = $('vgc-viagem');
   const ids = ['vgc-linhas', 'vgc-extras', 'vgc-pag', 'vgc-plano', 'vgc-estilo', 'vgc-check'];
   if (!x) { box.innerHTML = `<p class="hint">Nenhuma viagem ainda. Escolha um lugar em Comparar ou crie uma em Roteiro.</p>`; ids.forEach(id => { $(id).innerHTML = ''; }); kpis($('kpi-vgc'), []); return; }
@@ -5866,8 +5866,11 @@ function vgDurDias(x) {
 }
 function vgDurParDe(x, dias, d) { const f = dias.find(q => q.d === d); return f ? f.p : d < x.ida ? x.rot.paradas[0] : x.rot.paradas[x.rot.paradas.length - 1]; }
 const vgHojeIso = () => { const t = new Date(); return new Date(t.getTime() - t.getTimezoneOffset() * 6e4).toISOString().slice(0, 10); };
+// viagens em Projeção real mudam de status sozinhas pelas datas (em andamento entre a ida e a volta, concluída depois); se você trocar à mão, vale a sua escolha
+function vgAutoSt(x) { if (!x || !x.cus || !x.cus.plano || x.stManual || !x.ida || !x.volta) return; const h = vgHojeIso(); if (h >= x.volta) x.st = 'concluida'; else if (h >= x.ida) x.st = 'andamento'; }
+const vgAutoTodos = () => ((state.viag || {}).viagens || []).forEach(vgAutoSt);
 let vgdData = null;
-function renderViagDur() {
+function renderViagDur() { vgAutoTodos();
   const v = state.viag, x = vgRotSel(), box = $('vgd-viagem'), ids = ['vgd-hoje', 'vgd-lista', 'vgd-resumo'];
   if (!x) { box.innerHTML = `<p class="hint">Nenhuma viagem ainda. Escolha um lugar em Comparar ou crie uma em Roteiro.</p>`; ids.forEach(id => { $(id).innerHTML = ''; }); kpis($('kpi-vgd'), []); return; }
   const g = vgDurNorm(x), r = x.rot, hoje = vgHojeIso(), n = vgRotNoites(x);
@@ -5940,7 +5943,7 @@ document.addEventListener('change', e => {
 });
 document.addEventListener('keydown', e => { if (e.key === 'Enter' && ['vgd-valor', 'vgd-nota'].includes(e.target.id)) { e.preventDefault(); const b = document.querySelector('[data-vgdadd]'); if (b) b.click(); } });
 
-function renderViagVg() {
+function renderViagVg() { vgAutoTodos();
   const v = state.viag; vgKpis($('kpi-vgv'));
   const tb = $('tbl-vgv');
   if (!v.viagens.length) tb.innerHTML = '<tbody><tr><td class="hint">Nenhuma viagem escolhida ainda. Em Comparar, toque em "Escolher este" no lugar que ganhou.</td></tr></tbody>';
@@ -6002,7 +6005,7 @@ document.addEventListener('change', e => {
   if (d.vgcmptroca) { if (t.value) { v.cmp = v.cmp.map(x => x === d.vgcmptroca ? t.value : x); save(); vgRe(); } return; }
   if (d.vgcfg) { const n = +t.value; if (isFinite(n) && n >= 0) { v.cfg[d.vgcfg] = n; save(); vgRe(); } return; }
   if (d.vgvnome) { const x = v.viagens.find(y => y.id === d.vgvnome); if (x) { x.nome = t.value.slice(0, 60) || x.nome; save(); } return; }
-  if (d.vgvst) { const x = v.viagens.find(y => y.id === d.vgvst); if (x) { x.st = t.value; save(); vgRe(); } return; }
+  if (d.vgvst) { const x = v.viagens.find(y => y.id === d.vgvst); if (x) { x.st = t.value; x.stManual = true; save(); vgRe(); } return; }
   const ed = $('vg-ed'); if (ed && !ed.hidden && ed.contains(t)) { const l = v.lugares.find(x => x.id === ed.dataset.id); if (!l) return;
     if (d.vge === 'nome') l.nome = t.value.trim().slice(0, 60) || l.nome; else if (d.vge === 'pais') { l.pais = t.value; if (l.dest && vgDest(l.dest).pais !== l.pais) { l.dest = ''; l.lat = null; l.lon = null; } } else if (d.vge === 'st') l.st = t.value; else if (d.vge === 'nota') l.nota = t.value.slice(0, 300);
     else if (d.vgeov) { const n = +t.value; if (n > 0) l.ov[d.vgeov] = n; else delete l.ov[d.vgeov]; }
