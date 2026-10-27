@@ -808,7 +808,7 @@ a.lm-ir:hover { border-bottom-style: solid; }
     </div>
     <div class="nav-mobile-sub" id="navMobileSub"></div>
   </div>
-  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 182</div></div>
+  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 183</div></div>
 </nav>
 <div class="sino-pop" id="sino-pop" role="dialog" aria-label="Central de avisos" hidden></div>
 <div class="tour-pop" id="tour-pop" role="dialog" aria-labelledby="tour-tit" hidden></div>
@@ -841,7 +841,7 @@ a.lm-ir:hover { border-bottom-style: solid; }
         <p class="sub">De preferência logo depois que a fatura do cartão fecha.</p>
         <ol class="lm-ol">
           <li><div><b>Importe a fatura do cartão e o extrato da conta.</b> <span>Em <a class="lm-ir" data-lmtab="gastos" data-lmsec="Lançar e importar">01. Gastos › Lançar e importar</a>. O painel classifica cada linha numa categoria e aprende quando você corrige.</span></div></li>
-          <li><div><b>Confira as categorias.</b> <span>Em <a class="lm-ir" data-lmtab="gastos" data-lmsec="Lançamentos">01. Gastos › Lançamentos</a> e <a class="lm-ir" data-lmtab="gastos" data-lmsec="Por categoria">Por categoria</a>. Ajuste o que caiu errado; a planilha de gastos acompanha.</span></div></li>
+          <li><div><b>Confira as categorias.</b> <span>Em <a class="lm-ir" data-lmtab="gastos" data-lmsec="Lançamentos">01. Gastos › Lançamentos</a> e <a class="lm-ir" data-lmtab="gastos" data-lmsec="Por categoria">Por categoria</a>. Ajuste o que caiu errado.</span></div></li>
           <li><div><b>Atualize as aplicações.</b> <span>Em <a class="lm-ir" data-lmtab="carteira" data-lmsec="Cadastrar aplicação">04. Carteira › Cadastrar aplicação</a>, ou importe o PDF mensal da corretora. Valores brutos, antes do IR, deixam a comparação com o CDI certa.</span></div></li>
           <li><div><b>Salve o checkpoint do mês.</b> <span>Em <a class="lm-ir" data-lmtab="global" data-lmsec="Cenário e checkpoints">Visão global › Cenário e checkpoints</a>: quanto você tem aplicado no total. É o ponto de partida de todas as projeções.</span></div></li>
           <li><div><b>Feche o mês.</b> <span>Em <a class="lm-ir" data-lmtab="gastos" data-lmsec="Fechamento do mês">01. Gastos › Fechamento do mês</a> e <a class="lm-ir" data-lmtab="gastos" data-lmsec="Real vs. projetado">Real vs. projetado</a>: o que foi planejado contra o que aconteceu, linha a linha.</span></div></li>
@@ -1238,7 +1238,7 @@ a.lm-ir:hover { border-bottom-style: solid; }
   </section>
   <!-- ============ GASTOS ============ -->
   <section role="tabpanel" id="p-gastos" hidden>
-    <div class="block-title"><span class="num">01</span><div><h1>Gastos e fechamento</h1><p class="desc">Lançamentos do mês, importação de CSV e fatura, sincronia com a planilha e o fechamento de cada mês contra o plano.</p></div></div>
+    <div class="block-title"><span class="num">01</span><div><h1>Gastos e fechamento</h1><p class="desc">Lançamentos do mês, importação de fatura e extrato e o fechamento de cada mês contra o plano.</p></div></div>
       <div class="row" style="margin:0">
         <div style="display:flex;gap:6px;align-items:center">
           <button class="btn ghost tiny" type="button" id="gm-prev" aria-label="Mês anterior">‹</button>
@@ -1249,7 +1249,7 @@ a.lm-ir:hover { border-bottom-style: solid; }
       </div>
       <div class="kpis" id="kpi-x"></div>
       <section data-nav="Lançar e importar">
-        <div class="sec-band"><h2>Lançar e importar gastos do mês</h2><span class="hint">Lance um gasto à mão, importe a fatura do cartão ou o extrato da conta e sincronize com a planilha.</span></div>
+        <div class="sec-band"><h2>Lançar e importar gastos do mês</h2><span class="hint">Lance um gasto à mão, importe a fatura do cartão ou o extrato da conta.</span></div>
         <div class="params">
       <fieldset>
         <legend>Novo gasto</legend>
@@ -1264,12 +1264,12 @@ a.lm-ir:hover { border-bottom-style: solid; }
           <label>Parcela<input type="text" id="gf-parcela" placeholder="ex.: 3/10"></label>
           <label class="inline" style="align-self:end"><input type="checkbox" id="gf-rec"> Recorrente</label>
           <label class="full">Observação<input type="text" class="name" id="gf-obs"></label>
-          <label class="check"><input type="checkbox" id="gf-sheet" checked> Enviar também para a planilha</label>
+          <label class="check" hidden><input type="checkbox" id="gf-sheet"> Enviar também para a planilha</label>
           <button class="btn" type="submit">Salvar gasto</button>
         </form>
         <p class="hint" id="gf-msg">Valores positivos são gastos; estornos entram negativos. A categoria é sugerida pela descrição quando já houver lançamento parecido.</p>
       </fieldset>
-      <fieldset>
+      <fieldset hidden>
         <legend>Google Sheets</legend>
         <p class="hint" id="sh-status">Planilha Controle de Gastos, aba Lançamentos.</p>
         <div class="btns">
@@ -1780,7 +1780,7 @@ a.lm-ir:hover { border-bottom-style: solid; }
     return new Promise(resolve => { const { data } = sb.auth.onAuthStateChange(async (ev) => { if (ev !== 'PASSWORD_RECOVERY') return; const s = prompt('Digite a nova senha (mínimo 8 caracteres):'); if (s && s.length >= 8) { const { error } = await sb.auth.updateUser({ password: s }); alert(error ? 'Não deu para trocar a senha: ' + error.message : 'Senha trocada.'); } }); resolve(data); });
   }
   // ---------- rodapé: compartilhar, administração e sair ----------
-  const SITE_V = 61;
+  const SITE_V = 62;
   const escH = v => String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const dataBR = v => v ? new Date(v).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' }) : '–';
   const css2 = `.side-foot .r{flex-wrap:wrap}.side-foot .lg-acoes{margin-left:auto;display:inline-flex;gap:10px}
@@ -4859,8 +4859,8 @@ function importarCsv() {
     itens.push({ data, desc, valor, comp: parseComp(get(r, 'comp'), data), cat: normCat(get(r, 'cat'), desc), forma: get(r, 'forma'), conta: get(r, 'conta'), parcela: pm, obs: get(r, 'obs') }); });
   const res = addItens(itens, 'csv');
   salvarMeses(res.meses);
-  $('csv-msg').textContent = `${res.n} lançamentos importados${res.dup ? `, ${res.dup} repetidos ignorados` : ''}${ruins ? `, ${ruins} linhas sem data, descrição ou valor` : ''}. Use "Enviar pendentes" para levá-los à planilha.`;
-  impPop('csv', res.n ? (ruins ? 'aviso' : 'ok') : 'erro', res.n ? `${plural(res.n, 'lançamento importado', 'lançamentos importados')} do CSV` : 'Nenhum lançamento importado', [...(res.dup ? [`${plural(res.dup, 'repetido ignorado', 'repetidos ignorados')}.`] : []), ...(ruins ? [`${plural(ruins, 'linha sem', 'linhas sem')} data, descrição ou valor.`] : []), ...(res.n ? ['Use "Enviar pendentes" para levá-los à planilha.'] : [])]);
+  $('csv-msg').textContent = `${res.n} lançamentos importados${res.dup ? `, ${res.dup} repetidos ignorados` : ''}${ruins ? `, ${ruins} linhas sem data, descrição ou valor` : ''}.`;
+  impPop('csv', res.n ? (ruins ? 'aviso' : 'ok') : 'erro', res.n ? `${plural(res.n, 'lançamento importado', 'lançamentos importados')} do CSV` : 'Nenhum lançamento importado', [...(res.dup ? [`${plural(res.dup, 'repetido ignorado', 'repetidos ignorados')}.`] : []), ...(ruins ? [`${plural(ruins, 'linha sem', 'linhas sem')} data, descrição ou valor.`] : [])]);
   csvData = null; $('csv-file').value = ''; $('csv-map').innerHTML = '';
   if (res.meses.length) gMes = res.meses.sort()[res.meses.length - 1];
   renderGastos();
@@ -4908,7 +4908,7 @@ function renderGastos() {
     ['Total do mês', fm(t.tot), orcTot ? `orçamento de ${fm(orcTot)} (${pct(t.tot / orcTot, 0)})` : '', orcTot && t.tot > orcTot],
     ['Maior categoria', top ? esc(top[0]) : '—', top ? fm(top[1]) : 'sem lançamentos'],
     ['Média dos 3 meses anteriores', media3 == null ? '—' : fm(media3), media3 == null ? 'sem histórico' : `${t.tot >= media3 ? '+' : ''}${fm(t.tot - media3)} este mês`],
-    ['Lançamentos', String(t.n), pend ? `${pend} ainda não estão na planilha` : 'tudo na planilha']
+    ['Lançamentos', String(t.n), 'neste mês']
   ]);
   $('cat-sub').textContent = `${mLabel(idx)}. Orçamentos vêm da aba Configurações da planilha.`;
   { const porG = {}; Object.entries(t.porCat).forEach(([c, v]) => { const g = (cats().find(x => x.nome === c) || {}).grupo || 'Estilo de vida'; porG[g] = (porG[g] || 0) + v; });
@@ -5381,8 +5381,8 @@ $('ext-prev').addEventListener('click', e => {
   extPrev.linhas.forEach(l => { if (l.man || l.como === 'aprendido') memSet(normDesc(l.desc), l.v, l.rot); });
   const novos = extPrev.linhas.filter(l => !l.rep).map(extItem).filter(Boolean);
   const res = addItens(novos, 'extrato'); save(); salvarMeses(res.meses);
-  $('ext-msg').textContent = `${res.n} lançamentos importados${res.dup ? `, ${res.dup} repetidos ignorados` : ''}. Gastos podem ir para a planilha em "Enviar pendentes"; receitas e deduções ficam só no painel e entram no fechamento.`;
-  impPop('ext', 'ok', `${plural(res.n, 'lançamento importado', 'lançamentos importados')} do extrato`, [...(res.dup ? [`${plural(res.dup, 'repetido ignorado', 'repetidos ignorados')}.`] : []), 'Gastos podem ir para a planilha em "Enviar pendentes"; receitas e deduções ficam no painel e entram no fechamento.']);
+  $('ext-msg').textContent = `${res.n} lançamentos importados${res.dup ? `, ${res.dup} repetidos ignorados` : ''}. Receitas e deduções entram no fechamento do mês.`;
+  impPop('ext', 'ok', `${plural(res.n, 'lançamento importado', 'lançamentos importados')} do extrato`, [...(res.dup ? [`${plural(res.dup, 'repetido ignorado', 'repetidos ignorados')}.`] : []), 'Gastos, receitas e deduções já entram no fechamento do mês.']);
   extPrev = null; renderExtPrev();
   if (res.meses.length) { gMes = res.meses.sort()[res.meses.length - 1]; fMes = gMes; }
   renderTab();
@@ -5462,8 +5462,8 @@ $('fat-prev').addEventListener('click', e => {
   const conta = $('fat-conta').value.trim();
   const res = addItens(fatPrev.itens.filter(i => !i.rep).map(i => ({ data: i.data, desc: i.desc, valor: i.valor, comp: i.comp, cat: i.cat, forma: 'Cartão de crédito', conta, parcela: i.parcela, obs: '' })), 'fatura');
   salvarMeses(res.meses);
-  $('fat-msg').textContent = `${res.n} lançamentos importados${res.dup ? `, ${res.dup} repetidos ignorados` : ''}. Use "Enviar pendentes" para levá-los à planilha.`;
-  impPop('fat', 'ok', `${plural(res.n, 'lançamento importado', 'lançamentos importados')} da fatura`, [...(res.dup ? [`${plural(res.dup, 'repetido ignorado', 'repetidos ignorados')}.`] : []), 'Eles já aparecem em Gastos e no fechamento do mês. Use "Enviar pendentes" para levá-los à planilha.']);
+  $('fat-msg').textContent = `${res.n} lançamentos importados${res.dup ? `, ${res.dup} repetidos ignorados` : ''}.`;
+  impPop('fat', 'ok', `${plural(res.n, 'lançamento importado', 'lançamentos importados')} da fatura`, [...(res.dup ? [`${plural(res.dup, 'repetido ignorado', 'repetidos ignorados')}.`] : []), 'Eles já aparecem em Gastos e no fechamento do mês.']);
   fatPrev = null; renderFatPrev();
   if (res.meses.length) gMes = res.meses.sort()[res.meses.length - 1];
   buildGastos(); renderGastos();
@@ -6164,7 +6164,7 @@ const INFO_SEC = {
   'simulador:Parâmetros': 'Valor inicial, aporte mensal, reajuste do aporte, prazo, produto e meta da simulação.',
   'simulador:Evolução': 'Como o patrimônio da simulação cresce mês a mês, comparando aportes acumulados com o valor total (aportes mais juros).',
   'simulador:Ano a ano': 'A simulação resumida por ano: aportes, juros, IR e saldo, em reais correntes e de hoje.',
-  'gastos:Lançar e importar': 'Lance gastos à mão, importe a fatura do cartão ou o extrato da conta (CSV ou ZIP) e sincronize com a planilha do Google.',
+  'gastos:Lançar e importar': 'Lance gastos à mão, importe a fatura do cartão ou o extrato da conta (CSV, OFX, PDF ou ZIP).',
   'gastos:Por categoria': 'Os gastos do mês por categoria contra o orçamento de cada uma. As roscas mostram a divisão por categoria e por grupo.',
   'gastos:Lançamentos': 'Todos os lançamentos do mês, agrupados por categoria. Dá para buscar, mudar a categoria ou remover.',
   'gastos:Fechamento do mês': 'O mês linha a linha: projetado pelo plano contra o real (lançamentos, extrato ou o que você digitar). No fim: sobra, rendimento estimado pela carteira, checkpoint e a diferença que eles não explicam. Fechar o mês congela o projetado.',
@@ -6935,7 +6935,7 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape' && $('sino-po
 /* ---------- 00 Leia-me: resumo de cada módulo e atalhos ---------- */
 const LM_MODS = [
   ['global', 'A foto geral. No topo, câmbio e bolsas do mundo; depois os números principais, o plano contra os seus checkpoints reais e a projeção de cada cenário, mês a mês e ano a ano.', 'toda semana, para ver se está no caminho.'],
-  ['gastos', 'O dia a dia do dinheiro: lançar gastos ou importar fatura e extrato, ver por categoria, sincronizar com a planilha e fechar o mês comparando o real com o projetado.', 'todo mês, depois que a fatura fecha.'],
+  ['gastos', 'O dia a dia do dinheiro: lançar gastos ou importar fatura e extrato, ver por categoria e fechar o mês comparando o real com o projetado.', 'todo mês, depois que a fatura fecha.'],
   ['patrimonio', 'Tudo o que você tem menos o que deve: investimentos, bens (carro deprecia, imóvel valoriza), dívidas, quanto custa ter cada bem e o que acontece se vender.', 'para ver o patrimônio total e antes de vender ou trocar um bem.'],
   ['compras', 'O cadastro de bens: imóveis, carros e outros, já comprados ou planejados, com preço, entrada, financiamento, custos de ter e valorização. Compara à vista, SAC, Price e consórcio.', 'quando comprar, planejar ou financiar um bem.'],
   ['carteira', 'Tudo o que você tem aplicado hoje: valor estimado, IR e FGC, saúde da carteira, rentabilidade contra o CDI, vencimentos, oportunidades e a tabela de ações (B3, internacionais e ETFs) com o score.', 'ao aplicar ou resgatar, e uma vez por mês.'],
