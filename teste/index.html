@@ -659,6 +659,9 @@ tr.novo-row td { animation: novoRow 2.4s ease; }
 #tbl-itens select { width: auto; }
 #tbl-itens tr.it-sim td.name, #tbl-itens tr.it-sim td.it-v { color: var(--muted); }
 #tbl-itens .it-tipo { font-size: 10px; }
+.pl-cmp { margin: 8px 0 0; font-size: 12.5px; line-height: 1.5; color: var(--muted); }
+.pl-cmp b { color: var(--ink); }
+.pl-cmp a { color: var(--accent); }
 #tbl-itens td.name a { color: var(--accent); }
 @media (max-width: 700px) {
   #tbl-itens thead { display: none; }
@@ -911,7 +914,7 @@ a.lm-ir:hover { border-bottom-style: solid; }
     </div>
     <div class="nav-mobile-sub" id="navMobileSub"></div>
   </div>
-  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 189</div></div>
+  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 190</div></div>
 </nav>
 <div class="sino-pop" id="sino-pop" role="dialog" aria-label="Central de avisos" hidden></div>
 <div class="tour-pop" id="tour-pop" role="dialog" aria-labelledby="tour-tit" hidden></div>
@@ -1506,13 +1509,14 @@ a.lm-ir:hover { border-bottom-style: solid; }
         <p class="sub">Tudo o que os módulos planejam, no mesmo formato: quando começa, quanto custa ou rende e por quanto tempo. Em <b>Projeção real</b> o item entra no plano (linha Plano da Visão global e fechamento do mês); em <b>Só simulação</b> fica de fora e serve para testar nos cenários. A mesma escolha aparece no cadastro de cada item.</p>
         <div class="it-res" id="pl-itens-res"></div>
         <div class="tscroll" id="pl-inc"><table id="tbl-itens"></table></div>
-        <p class="hint" style="margin-top:8px">Chance de acontecer: só informativa por enquanto. O plano usa o valor cheio dos itens em Projeção real; a chance vai aparecer na linha do tempo e no patrimônio esperado.</p>
+        <p class="hint" style="margin-top:8px">Comparar: os itens em Só simulação marcados aqui viram a linha tracejada "Com as simulações" no gráfico do plano, sem mudar a projeção real. Chance de acontecer: só informativa por enquanto. O plano usa o valor cheio dos itens em Projeção real; a chance vai aparecer na linha do tempo e no patrimônio esperado.</p>
       </section>
       <section data-nav="Plano mês a mês" class="panel chart">
         <div class="row"><h2>Plano mês a mês</h2><div class="seg" id="pl-per" role="group" aria-label="Período"></div></div>
         <div class="legend" id="lg-pl"></div>
         <div id="ch-pl"></div>
         <div class="readout" id="ro-pl"></div>
+        <p class="pl-cmp" id="pl-cmp" hidden></p>
         <div class="tscroll mm-wrap" style="margin-top:12px"><table id="tbl-plano" class="mm"></table></div>
       </section>
   </section>
@@ -1909,7 +1913,7 @@ a.lm-ir:hover { border-bottom-style: solid; }
     return new Promise(resolve => { const { data } = sb.auth.onAuthStateChange(async (ev) => { if (ev !== 'PASSWORD_RECOVERY') return; const s = prompt('Digite a nova senha (mínimo 8 caracteres):'); if (s && s.length >= 8) { const { error } = await sb.auth.updateUser({ password: s }); alert(error ? 'Não deu para trocar a senha: ' + error.message : 'Senha trocada.'); } }); resolve(data); });
   }
   // ---------- rodapé: compartilhar, administração e sair ----------
-  const SITE_V = 69;
+  const SITE_V = 70;
   const escH = v => String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const dataBR = v => v ? new Date(v).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' }) : '–';
   const css2 = `.side-foot .r{flex-wrap:wrap}.side-foot .lg-acoes{margin-left:auto;display:inline-flex;gap:10px}
@@ -2280,6 +2284,7 @@ function normalizar(s) {
   if (!Array.isArray(s.plan.ev)) s.plan.ev = [];
   if (!s.app || typeof s.app !== 'object') s.app = {};
   if (!s.plan.chance || typeof s.plan.chance !== 'object' || Array.isArray(s.plan.chance)) s.plan.chance = {};
+  if (!s.plan.cmp || typeof s.plan.cmp !== 'object' || Array.isArray(s.plan.cmp)) s.plan.cmp = {};
   if (!Array.isArray(s.app.off)) s.app.off = [];
   if (!Array.isArray(s.plan.inc)) s.plan.inc = [];
   soNormalizar(s);
@@ -5757,12 +5762,13 @@ function taxaPlanoMes(i) {
   const n = pc.length ? carteiraNetA(pc, r) : null;
   return Math.pow(1 + (n ?? cenNetA(cen, r)), 1 / 12) - 1;
 }
-function calcPlano() {
-  if (planCache) return planCache;
+// extra = Set de ids de itens ("compra:<id>", "so:<id>") somados ao plano só para comparar; sem extra, é o plano de verdade (com cache)
+function calcPlano(extra) {
+  if (!extra && planCache) return planCache;
   const P = state.plan, i0 = mIndex(P.inicio), fim = Math.max(i0 + Math.round((+P.anos || 10) * 12), HOJE_IDX + Math.round(state.cfg.anos * 12) + 13);
   const L = linhasPlano(), cur = {}, mud = (P.mud || []).filter(m => m.key && m.mes).slice().sort((a, b) => a.mes < b.mes ? -1 : 1);
   L.forEach(l => { cur[l.key] = l.base; mud.filter(m => m.key === l.key && mIndex(m.mes) <= i0).forEach(m => { cur[l.key] = +m.valor || 0; }); });
-  const buys = state.compras.filter(b => (P.inc || []).includes(b.id)).map(b => ({ b, m0: mIndex(b.mes), sch: schedule(b, b.modo) }));
+  const buys = state.compras.filter(b => (P.inc || []).includes(b.id) || (extra && extra.has('compra:' + b.id))).map(b => ({ b, m0: mIndex(b.mes), sch: schedule(b, b.modo) }));
   const reinv = Math.min(100, Math.max(0, +P.reinv || 0)) / 100;
   const out = { i0, fim, meses: {}, inv: { [i0]: +P.valor || 0 }, parado: { [i0]: 0 }, buys: buys.map(x => x.b), L };
   let inv = +P.valor || 0, parado = 0, fIpca = 1;
@@ -5781,7 +5787,7 @@ function calcPlano() {
     L.filter(l => l.tipo === 'cat').forEach(l => { v[l.key] = ov[l.key] ?? cur[l.key]; custos += v[l.key]; porGrupo[l.grupo] = (porGrupo[l.grupo] || 0) + v[l.key]; });
     // eventos: férias, bônus... (os anuais repetem corrigidos pelo IPCA)
     let evRec = 0, evGas = 0; const evs = {};
-    planEvs(P).forEach(e => { const m0 = mIndex(e.mes); if (!e.mes || i < m0 || (i !== m0 && !(e.anual && (i - m0) % 12 === 0))) return;
+    planEvs(P, extra).forEach(e => { const m0 = mIndex(e.mes); if (!e.mes || i < m0 || (i !== m0 && !(e.anual && (i - m0) % 12 === 0))) return;
       const anos = Math.round((i - m0) / 12), val = ov['ev~' + e.id] ?? (+e.valor || 0) * Math.pow(1 + ip, anos);
       evs[e.id] = val; if (e.tipo === 'receita') evRec += val; else evGas += val; });
     // compras do plano
@@ -5802,7 +5808,7 @@ function calcPlano() {
     inv += re + venda; parado += liquido - re;
     out.inv[i] = inv; out.parado[i] = parado;
   }
-  return (planCache = out);
+  return extra ? out : (planCache = out);
 }
 const planoMes = i => calcPlano().meses[i] || null;
 
@@ -5844,6 +5850,15 @@ function renderPlano() {
   const sInv = Array.from({ length: n }, (_, i) => i >= i0 ? pl.inv[i] ?? null : null), sPat = Array.from({ length: n }, (_, i) => i >= i0 ? (pl.inv[i] ?? 0) + (pl.parado[i] ?? 0) : null);
   const series = [{ name: 'Investido no plano', c: 'var(--s1)', v: sInv, w: 2.6 }];
   if (Object.values(pl.parado).some(x => Math.abs(x) > 1)) series.push({ name: 'Investido + parado', c: 'var(--s2)', v: sPat, dash: true });
+  // comparação com os itens "Só simulação" marcados em Comparar (Itens dos módulos)
+  const cmpS = cmpItens(), cmpEl = $('pl-cmp');
+  if (cmpS.size) {
+    const pc = calcPlano(cmpS), sCmp = Array.from({ length: n }, (_, i) => i >= i0 ? pc.inv[i] ?? null : null);
+    series.push({ name: 'Com as simulações', c: 'var(--s7)', v: sCmp, dash: true, w: 2.2 });
+    const a = pl.inv[fimI] ?? 0, b2 = pc.inv[fimI] ?? 0, d = b2 - a, nomes = itensModulos().filter(x => cmpS.has(x.id)).map(x => x.nome);
+    cmpEl.hidden = false;
+    cmpEl.innerHTML = `<b>Com as simulações</b> (${esc(nomes.join(', '))}): ${k(b2)} investido em ${mLabel(fimI)}, <span class="${d < 0 ? 'neg' : 'pos'}">${d >= 0 ? '+' : '−'}${k(Math.abs(d))}</span> contra o plano atual (${k(a)}). Escolha o que comparar na coluna Comparar de <a href="#" data-lmtab="orcamento" data-lmsec="Itens dos módulos">Itens dos módulos</a>.`;
+  } else cmpEl.hidden = true;
   series.push({ name: 'Checkpoints reais', c: 'var(--bad)', v: cpsV, dots: true });
   const stP = Math.min(Math.max(i0, HOJE_IDX), Math.max(0, mIndex(INICIO_TELAS)));
   legend($('lg-pl'), series); series.forEach(x => { x.v = x.v.slice(stP); });
@@ -5895,6 +5910,8 @@ document.addEventListener('change', e => { const ds = e.target.dataset || {}, id
             resumo, chance 0–100, uso: real|sim, fixo (uso não muda aqui), tab/sec (onde editar) }
    O cálculo continua no módulo (parcelas, venda, waterfall das stock options); o item é a forma de apresentar e de escolher o uso. */
 const IT_TIPO = { bem: 'Compra de bem', negocio: 'Novo negócio', receita: 'Receita', gasto: 'Gasto' };
+// itens "Só simulação" que entram na linha de comparação: todos, menos os desmarcados (state.plan.cmp[id] === false)
+const cmpItens = () => new Set(itensModulos().filter(x => x.uso === 'sim' && !x.bloq && !x.fixo && ((state.plan || {}).cmp || {})[x.id] !== false).map(x => x.id));
 const chanceItem = id => { const v = ((state.plan || {}).chance || {})[id]; return v == null || !isFinite(+v) ? 100 : Math.min(100, Math.max(0, +v)); };
 function itensModulos() {
   const P = state.plan, out = [];
@@ -5932,18 +5949,21 @@ function renderItens() {
   $('pl-itens-res').innerHTML = its.length ? `<span><b>${nR}</b> em Projeção real</span><span><b>${its.length - nR}</b> só simulação</span>` : '';
   if (!its.length) { tb.innerHTML = '<tbody><tr><td class="hint">Nenhum item ainda. Cadastre bens em Trabalho e Bens › Compras e bens, eventos de stock options ou eventos aqui no Plano.</td></tr></tbody>'; return; }
   const grupos = MODS.filter(m => its.some(x => x.mod === m.id));
-  tb.innerHTML = `<thead><tr><th>Item</th><th>Tipo</th><th>Quando</th><th>Valores</th><th>Chance</th><th>Uso</th></tr></thead><tbody>${grupos.map(m => `<tr class="it-g"><td colspan="6"><i style="background:${m.cor}"></i>${esc(m.nome)}</td></tr>` +
+  tb.innerHTML = `<thead><tr><th>Item</th><th>Tipo</th><th>Quando</th><th>Valores</th><th>Chance</th><th>Uso</th><th>Comparar</th></tr></thead><tbody>${grupos.map(m => `<tr class="it-g"><td colspan="7"><i style="background:${m.cor}"></i>${esc(m.nome)}</td></tr>` +
     its.filter(x => x.mod === m.id).sort((a, b) => (a.ini || '9999') < (b.ini || '9999') ? -1 : 1).map(x => `<tr class="${x.uso === 'sim' ? 'it-sim' : ''}">
       <td class="name"><a href="#" data-lmtab="${x.tab}" data-lmsec="${esc(x.sec || '')}">${esc(x.nome)}</a> <span class="subdet">${esc(x.sub)}</span></td>
       <td data-l="Tipo"><span class="chip ${x.unico >= 0 && x.mensal >= 0 ? 'best' : 'info'} it-tipo">${IT_TIPO[x.tipo] || x.tipo}</span></td>
       <td data-l="Quando">${x.ini ? mLabel(mIndex(x.ini)) : '–'}</td>
       <td class="it-v">${esc(x.resumo)}</td>
       <td data-l="Chance"><input type="number" min="0" max="100" step="5" data-ichance="${esc(x.id)}" value="${x.chance}" aria-label="Chance de acontecer (%) de ${esc(x.nome)}">%</td>
-      <td data-l="Uso">${x.fixo ? '<span class="subdet">Projeção real (evento do plano)</span>' : `<select data-iuso="${esc(x.id)}" aria-label="Uso de ${esc(x.nome)}"${x.bloq ? ' disabled title="Defina o evento de liquidez primeiro"' : ''}><option value="sim">Só simulação</option><option value="real"${x.uso === 'real' ? ' selected' : ''}>Projeção real</option></select>`}</td></tr>`).join('')).join('')}</tbody>`;
+      <td data-l="Uso">${x.fixo ? '<span class="subdet">Projeção real (evento do plano)</span>' : `<select data-iuso="${esc(x.id)}" aria-label="Uso de ${esc(x.nome)}"${x.bloq ? ' disabled title="Defina o evento de liquidez primeiro"' : ''}><option value="sim">Só simulação</option><option value="real"${x.uso === 'real' ? ' selected' : ''}>Projeção real</option></select>`}</td>
+      <td data-l="Comparar">${x.uso === 'sim' && !x.bloq && !x.fixo ? `<label class="inline"><input type="checkbox" data-icmp="${esc(x.id)}"${((state.plan || {}).cmp || {})[x.id] !== false ? ' checked' : ''}> no gráfico</label>` : '<span class="subdet">–</span>'}</td></tr>`).join('')).join('')}</tbody>`;
 }
 document.addEventListener('change', e => {
   const u = e.target.closest('[data-iuso]');
   if (u) { if (setUsoItem(u.dataset.iuso, u.value)) renderTab(); return; }
+  const cm = e.target.closest('[data-icmp]');
+  if (cm) { const P = state.plan; P.cmp = P.cmp && typeof P.cmp === 'object' ? P.cmp : {}; if (cm.checked) delete P.cmp[cm.dataset.icmp]; else P.cmp[cm.dataset.icmp] = false; save(); renderTab(); return; }
   const c = e.target.closest('[data-ichance]');
   if (c) { const P = state.plan; P.chance = P.chance && typeof P.chance === 'object' ? P.chance : {}; const v = Math.min(100, Math.max(0, Math.round(+c.value || 0))); if (v === 100) delete P.chance[c.dataset.ichance]; else P.chance[c.dataset.ichance] = v; c.value = v; save(); }
 });
@@ -6915,14 +6935,14 @@ function soEvento(e, V, evI) {
 const soPpsHoje = e => (+e.preco || 0) * (e.modo === 'acao' ? 1 : (soN(e.fatorComum) ?? 100) / 100);
 function soHoje(e) { return soValor(e, HOJE_IDX, soPpsHoje(e), null, false); }
 // para o Plano futuro: o líquido do cenário base, se o evento estiver definido
-function soPlanEvs() {
+function soPlanEvs(extra) {
   const out = []; ((state.so || {}).empresas || []).forEach(e => {
-    const evI = soMes(e.ev.mes); if (!e.ev.definido || !e.ev.plano || evI == null || !(+e.ev.base > 0)) return;
+    const evI = soMes(e.ev.mes); if (!e.ev.definido || !(e.ev.plano || (extra && extra.has('so:' + e.id))) || evI == null || !(+e.ev.base > 0)) return;
     const r = soEvento(e, +e.ev.base, evI); if (r.liq > 0) out.push({ id: 'so-' + e.id, nome: 'Stock options: ' + e.nome, tipo: 'receita', valor: Math.round(r.liq), mes: e.ev.mes, anual: false, so: true });
   });
   return out;
 }
-const planEvs = P => (P.ev || []).concat(soPlanEvs());
+const planEvs = (P, extra) => (P.ev || []).concat(soPlanEvs(extra));
 // chance de acontecer por item (informativa nesta etapa): { 'compra:<id>' | 'so:<id>' | 'ev:<id>': 0–100 }
 function soQuebra(e, evI) {
   // menor valor de venda a partir do qual você recebe algo
