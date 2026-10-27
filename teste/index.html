@@ -1051,7 +1051,11 @@ a.lm-ir:hover { border-bottom-style: solid; }
 .vg-add.vgr-add { grid-template-columns: minmax(0, 1fr) auto; max-width: 620px; }
 .vgr-aviso { margin: 6px 0 10px; display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
 .vgr-lista { display: flex; flex-direction: column; margin-top: 10px; }
-.vgr-par { display: grid; grid-template-columns: 26px minmax(0, 1fr) auto auto; gap: 10px; align-items: center; border: 1px solid var(--line); border-radius: 10px; padding: 10px 12px; background: var(--panel); }
+.vgr-par { display: grid; grid-template-columns: 14px 26px minmax(0, 1fr) auto auto; cursor: grab; user-select: none; gap: 10px; align-items: center; border: 1px solid var(--line); border-radius: 10px; padding: 10px 12px; background: var(--panel); }
+.vgr-alca { color: var(--faint); font-size: 16px; line-height: 1; cursor: grab; touch-action: none; padding: 6px 0; text-align: center; }
+.vgr-par.arr { position: relative; z-index: 5; box-shadow: 0 8px 22px rgba(15,31,61,.22); cursor: grabbing; transition: none; opacity: .95; }
+.vgr-par.alvo-a { box-shadow: 0 -3px 0 var(--accent); } .vgr-par.alvo-d { box-shadow: 0 3px 0 var(--accent); }
+.vgr-lista.arrastando .vgr-leg { opacity: .35; }
 .vgr-n { width: 24px; height: 24px; border-radius: 50%; background: var(--accent); color: #fff; display: inline-flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; flex-shrink: 0; }
 .vgr-pn b { font-family: var(--f-head); font-size: 14px; }
 .vgr-noi { display: flex; align-items: center; gap: 6px; font-size: 12.5px; white-space: nowrap; }
@@ -1087,7 +1091,7 @@ a.lm-ir:hover { border-bottom-style: solid; }
 .vgr-sg { display: grid; grid-template-columns: minmax(0, 1fr) auto auto; gap: 10px; align-items: center; padding: 7px 0; border-bottom: 1px solid var(--line); font-size: 12.5px; } .vgr-sg:last-child { border-bottom: 0; }
 .vgr-sites { display: flex; flex-wrap: wrap; gap: 4px 6px; align-items: baseline; font-size: 12px; margin-top: 12px; padding-top: 8px; border-top: 1px solid var(--line); } .vgr-sites .vg-lbl { width: 100%; margin: 4px 0 0; }
 @media (max-width: 900px) {
-  .vgr-par { grid-template-columns: 26px minmax(0, 1fr) auto; row-gap: 8px; } .vgr-noi { grid-column: 2; } .vgr-ac { grid-column: 3; grid-row: 2; }
+  .vgr-par { grid-template-columns: 14px 26px minmax(0, 1fr) auto; row-gap: 8px; } .vgr-noi { grid-column: 3; } .vgr-ac { grid-column: 4; grid-row: 2; }
   .vgr-leg { padding-left: 16px; }
   .vgr-sg { grid-template-columns: minmax(0, 1fr) auto; } .vgr-sg .btn { grid-column: 1 / -1; justify-self: start; }
 }
@@ -1149,7 +1153,7 @@ a.lm-ir:hover { border-bottom-style: solid; }
     </div>
     <div class="nav-mobile-sub" id="navMobileSub"></div>
   </div>
-  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 198</div></div>
+  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 199</div></div>
 </nav>
 <div class="sino-pop" id="sino-pop" role="dialog" aria-label="Central de avisos" hidden></div>
 <div class="tour-pop" id="tour-pop" role="dialog" aria-labelledby="tour-tit" hidden></div>
@@ -1314,7 +1318,7 @@ a.lm-ir:hover { border-bottom-style: solid; }
     </section>
     <section data-nav="Rota" class="panel">
       <h2>Cidades e rota</h2>
-      <p class="sub">Saindo e voltando de São Paulo. Ajuste as noites com − e +, mude a ordem com as setas e escolha o meio de transporte de cada trecho. Valores por pessoa, só ida; digite o preço que achou para trocar a estimativa.</p>
+      <p class="sub">Saindo e voltando de São Paulo. Ajuste as noites com − e +, mude a ordem arrastando os cards (no celular, pela alça ⠿) ou com as setas, e escolha o meio de transporte de cada trecho. Valores por pessoa, só ida; digite o preço que achou para trocar a estimativa.</p>
       <div id="vgr-rota"></div>
       <div id="vgr-otim" class="vgr-otim"></div>
       <div class="vgr-mapa" id="vgr-mapa"></div>
@@ -2309,7 +2313,7 @@ a.lm-ir:hover { border-bottom-style: solid; }
     return new Promise(resolve => { const { data } = sb.auth.onAuthStateChange(async (ev) => { if (ev !== 'PASSWORD_RECOVERY') return; const s = prompt('Digite a nova senha (mínimo 8 caracteres):'); if (s && s.length >= 8) { const { error } = await sb.auth.updateUser({ password: s }); alert(error ? 'Não deu para trocar a senha: ' + error.message : 'Senha trocada.'); } }); resolve(data); });
   }
   // ---------- rodapé: compartilhar, administração e sair ----------
-  const SITE_V = 78;
+  const SITE_V = 79;
   const escH = v => String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const dataBR = v => v ? new Date(v).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' }) : '–';
   const css2 = `.side-foot .r{flex-wrap:wrap}.side-foot .lg-acoes{margin-left:auto;display:inline-flex;gap:10px}
@@ -5461,7 +5465,7 @@ function renderViagRot() {
       <span class="vgr-ll">${vgLnk(`https://www.rome2rio.com/pt/map/${encodeURIComponent(a.nome)}/${encodeURIComponent(b.nome)}`, 'Rome2rio')}${l.meio === 'aviao' ? ' · ' + vgLnk(`https://www.google.com/travel/flights?hl=pt-BR&q=${encodeURIComponent(`voos de ${a.nome} para ${b.nome}`)}`, 'Google Voos') : ''}</span></div>`; };
   if (r.paradas.length) {
     const seq = [VG_SP].concat(r.paradas.map(vgParLL), [VG_SP]);
-    h += `<div class="vgr-lista">${legHtml(legs[0], seq[0], seq[1])}${dts.map(({ p, ent, sai }, i) => `<div class="vgr-par" data-par="${p.id}"><span class="vgr-n">${i + 1}</span><div class="vgr-pn"><b>${esc(p.nome)}</b> <span class="subdet">${esc(vgPaisNome(p.pais))}</span><div class="subdet">${p.noites ? `${vgSem(ent)} ${vgBrd(ent).slice(0, 5)} → ${vgSem(sai)} ${vgBrd(sai).slice(0, 5)}` : 'só de passagem'}</div></div>
+    h += `<div class="vgr-lista">${legHtml(legs[0], seq[0], seq[1])}${dts.map(({ p, ent, sai }, i) => `<div class="vgr-par" data-par="${p.id}"><span class="vgr-alca" title="Arraste para mudar a ordem" aria-hidden="true">⠿</span><span class="vgr-n">${i + 1}</span><div class="vgr-pn"><b>${esc(p.nome)}</b> <span class="subdet">${esc(vgPaisNome(p.pais))}</span><div class="subdet">${p.noites ? `${vgSem(ent)} ${vgBrd(ent).slice(0, 5)} → ${vgSem(sai)} ${vgBrd(sai).slice(0, 5)}` : 'só de passagem'}</div></div>
       <div class="vgr-noi"><button type="button" class="btn ghost tiny" data-vgrnoi="${p.id}" data-d="-1" aria-label="Menos uma noite">−</button><span><b>${p.noites}</b> ${p.noites === 1 ? 'noite' : 'noites'}</span><button type="button" class="btn ghost tiny" data-vgrnoi="${p.id}" data-d="1" aria-label="Mais uma noite">+</button></div>
       <div class="vgr-ac"><button type="button" class="btn ghost tiny" data-vgrmov="${p.id}" data-d="-1" aria-label="Subir"${i ? '' : ' disabled'}>↑</button><button type="button" class="btn ghost tiny" data-vgrmov="${p.id}" data-d="1" aria-label="Descer"${i < r.paradas.length - 1 ? '' : ' disabled'}>↓</button><button type="button" class="vg-x mini" data-vgrdel="${p.id}" aria-label="Tirar ${esc(p.nome)}">×</button></div></div>${legHtml(legs[i + 1], seq[i + 1], seq[i + 2])}`).join('')}</div>`;
   } else h += '<p class="hint">Nenhuma cidade ainda. A viagem sai e volta de São Paulo; adicione as cidades na ordem que imagina e ajuste as noites.</p>';
@@ -5500,6 +5504,28 @@ function renderViagRot() {
   $('vgr-resumo').innerHTML = !r.paradas.length ? '' : `<div class="tscroll"><table class="vgr-rtbl"><thead><tr><th>Item</th><th class="vg-num">Definido</th><th class="vg-num">Opção ou estimado</th><th class="vg-num">Total</th></tr></thead><tbody>${RL.map(([k, nn]) => `<tr><td>${nn}</td><td class="vg-num">${res.out[k][0] ? fm(res.out[k][0]) : '—'}</td><td class="vg-num">${res.out[k][1] ? fm(res.out[k][1]) : '—'}</td><td class="vg-num"><b>${fm(res.out[k][0] + res.out[k][1])}</b></td></tr>`).join('')}
     <tr class="vg-trow"><td><b>Total</b></td><td class="vg-num">${fm(res.tot[0])}</td><td class="vg-num">${fm(res.tot[1])}</td><td class="vg-num vg-tot">${fm(res.total)}</td></tr></tbody></table></div><p class="hint">Preço de hoje, para ${x.pessoas} ${x.pessoas > 1 ? 'pessoas' : 'pessoa'}, com câmbio + spread + IOF. Seguro viagem, preço projetado para a data, parcelas e a ligação com o Plano futuro entram na etapa de custos.</p>`;
 }
+// arrastar as cidades: o card inteiro com o mouse; no celular, pela alça à esquerda
+let vgrArr = null;
+document.addEventListener('pointerdown', e => {
+  const el = e.target.closest('.vgr-par'); if (!el || e.button > 0 || e.target.closest('button,input,select,a,label')) return;
+  if (e.pointerType !== 'mouse' && !e.target.closest('.vgr-alca')) return;
+  vgrArr = { el, id: el.dataset.par, y0: e.clientY, mov: false, para: -1, pid: e.pointerId }; if (e.pointerType !== 'mouse') e.preventDefault();
+});
+document.addEventListener('pointermove', e => {
+  const a = vgrArr; if (!a || e.pointerId !== a.pid) return; const dy = e.clientY - a.y0;
+  if (!a.mov) { if (Math.abs(dy) < 6) return; a.mov = true; a.el.classList.add('arr'); a.el.closest('.vgr-lista').classList.add('arrastando'); try { a.el.setPointerCapture(e.pointerId); } catch (_) {} }
+  e.preventDefault(); a.el.style.transform = `translateY(${dy}px)`;
+  const cs = [...document.querySelectorAll('.vgr-lista .vgr-par')], ix = cs.indexOf(a.el); let alvo = ix;
+  cs.forEach((c, i) => { c.classList.remove('alvo-a', 'alvo-d'); if (c === a.el) return; const r = c.getBoundingClientRect(), m = r.top + r.height / 2; if (i < ix && e.clientY < m) alvo = Math.min(alvo, i); if (i > ix && e.clientY > m) alvo = Math.max(alvo, i); });
+  a.para = alvo; if (alvo !== ix) cs[alvo].classList.add(alvo < ix ? 'alvo-a' : 'alvo-d');
+}, { passive: false });
+function vgrSolta() {
+  const a = vgrArr; vgrArr = null; if (!a || !a.mov) return; a.el.style.transform = '';
+  const x = vgRotSel(); if (!x || a.para < 0) { vgRe(); return; } const r = x.rot, i = r.paradas.findIndex(p => p.id === a.id);
+  if (i >= 0 && a.para !== i) { const [p] = r.paradas.splice(i, 1); r.paradas.splice(a.para, 0, p); save(); }
+  vgRe();
+}
+document.addEventListener('pointerup', vgrSolta); document.addEventListener('pointercancel', vgrSolta);
 function vgrSugAbre() {
   const inp = $('vgr-novo'), box = $('vgr-sug'); if (!inp || !box) return; const q = vgNorm(inp.value), qa = VG_ALIAS[q] || q;
   if (q.length < 2) { box.hidden = true; inp.setAttribute('aria-expanded', 'false'); return; }
