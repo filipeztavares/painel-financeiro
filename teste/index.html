@@ -1141,6 +1141,8 @@ a.lm-ir:hover { border-bottom-style: solid; }
 .vgs-f { display: flex; flex-wrap: wrap; gap: 8px 16px; align-items: flex-end; } .vgs-f label { max-width: 180px; } .vgs-f .subdet { flex: 1 1 260px; }
 .vgs-lst { list-style: none; padding: 0; margin: 0 0 10px; max-width: 760px; } .vgs-lst li { display: flex; flex-wrap: wrap; gap: 6px 12px; align-items: center; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid var(--line); }
 .vgs-lst li > div:first-child { display: flex; flex-direction: column; gap: 2px; } .vgs-noi { display: flex; align-items: center; gap: 8px; font-size: 13px; } .vgs-noi span { min-width: 64px; text-align: center; }
+.vg-wip { display: inline-block; margin-left: 4px; padding: 1px 6px; border-radius: 999px; background: #F6E3B8; color: #7A4B00; font-size: 9.5px; font-weight: 700; letter-spacing: .02em; text-transform: none; vertical-align: middle; line-height: 1.5; }
+.vgpdf-box h3 .vg-wip { font-size: 10.5px; } .vg-wipt { margin: -4px 0 0; font-size: 12px; color: #7A4B00; }
 </style>
 
 
@@ -1191,7 +1193,7 @@ a.lm-ir:hover { border-bottom-style: solid; }
     </div>
     <div class="nav-mobile-sub" id="navMobileSub"></div>
   </div>
-  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 207</div></div>
+  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 208</div></div>
 </nav>
 <div class="sino-pop" id="sino-pop" role="dialog" aria-label="Central de avisos" hidden></div>
 <div class="tour-pop" id="tour-pop" role="dialog" aria-labelledby="tour-tit" hidden></div>
@@ -2417,7 +2419,7 @@ a.lm-ir:hover { border-bottom-style: solid; }
     return new Promise(resolve => { const { data } = sb.auth.onAuthStateChange(async (ev) => { if (ev !== 'PASSWORD_RECOVERY') return; const s = prompt('Digite a nova senha (mínimo 8 caracteres):'); if (s && s.length >= 8) { const { error } = await sb.auth.updateUser({ password: s }); alert(error ? 'Não deu para trocar a senha: ' + error.message : 'Senha trocada.'); } }); resolve(data); });
   }
   // ---------- rodapé: compartilhar, administração e sair ----------
-  const SITE_V = 87;
+  const SITE_V = 88;
   const escH = v => String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const dataBR = v => v ? new Date(v).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' }) : '–';
   const css2 = `.side-foot .r{flex-wrap:wrap}.side-foot .lg-acoes{margin-left:auto;display:inline-flex;gap:10px}
@@ -5577,7 +5579,7 @@ function renderViagRot() { vgAutoTodos();
   const v = state.viag, x = vgRotSel(), box = $('vgr-viagem');
   if (!x) { box.innerHTML = `<p class="hint">Nenhuma viagem ainda. Escolha um lugar em Comparar ou comece uma do zero.</p><div class="vg-pa"><button type="button" class="btn" data-vgrnova>+ Nova viagem</button></div>`; ['vgr-rota', 'vgr-dias', 'vgr-paradas', 'vgr-resumo', 'vgr-otim', 'vgr-mapa', 'vgr-check'].forEach(id => { const e = $(id); if (e) e.innerHTML = ''; }); kpis($('kpi-vgr'), []); return; }
   vgRotNorm(x, v); const r = x.rot, n = vgRotNoites(x), soma = r.paradas.reduce((s, p) => s + p.noites, 0);
-  box.innerHTML = `<div class="vgr-top"><label>Viagem<select data-vgrsel aria-label="Escolher viagem">${v.viagens.slice().sort((a, b) => a.ida < b.ida ? -1 : 1).map(y => `<option value="${y.id}"${y.id === x.id ? ' selected' : ''}>${esc(y.nome)} · ${vgBrd(y.ida)}</option>`).join('')}</select></label><button type="button" class="btn ghost tiny" data-vgrnova>+ Nova viagem</button><button type="button" class="btn ghost tiny" data-vgpdf="${x.id}">Gerar PDF</button></div>
+  box.innerHTML = `<div class="vgr-top"><label>Viagem<select data-vgrsel aria-label="Escolher viagem">${v.viagens.slice().sort((a, b) => a.ida < b.ida ? -1 : 1).map(y => `<option value="${y.id}"${y.id === x.id ? ' selected' : ''}>${esc(y.nome)} · ${vgBrd(y.ida)}</option>`).join('')}</select></label><button type="button" class="btn ghost tiny" data-vgrnova>+ Nova viagem</button><button type="button" class="btn ghost tiny" data-vgpdf="${x.id}">Gerar PDF <span class="vg-wip">Em andamento</span></button></div>
     <div class="vg-form"><label class="vgr-nome">Nome<input type="text" data-vgrf="nome" value="${esc(x.nome)}" maxlength="60"></label><label>Ida<input type="date" data-vgrf="ida" value="${x.ida}"></label><label>Volta<input type="date" data-vgrf="volta" value="${x.volta}" min="${x.ida}"></label><label>Pessoas<input type="number" min="1" max="20" step="1" data-vgrf="pessoas" value="${x.pessoas}"></label></div>
     <div class="vg-lbl">Viagem de</div><div class="seg">${[['ferias', 'Férias'], ['sabatico', 'Sabático']].map(([k, nn]) => `<button type="button" data-vgrkind="${k}" aria-pressed="${(x.tipo || 'ferias') === k}">${nn}</button>`).join('')}</div>
     <div class="vg-lbl">Estilo</div><div class="seg">${Object.entries(VG_EST).map(([k, e]) => `<button type="button" data-vgrest="${k}" aria-pressed="${x.estilo === k}">${e.n}</button>`).join('')}</div>
@@ -5889,7 +5891,7 @@ function renderViagDur() { vgAutoTodos();
   const v = state.viag, x = vgRotSel(), box = $('vgd-viagem'), ids = ['vgd-hoje', 'vgd-lista', 'vgd-resumo', 'vgd-mudar'];
   if (!x) { box.innerHTML = `<p class="hint">Nenhuma viagem ainda. Escolha um lugar em Comparar ou crie uma em Roteiro.</p>`; ids.forEach(id => { $(id).innerHTML = ''; }); kpis($('kpi-vgd'), []); return; }
   const g = vgDurNorm(x), r = x.rot, hoje = vgHojeIso(), n = vgRotNoites(x);
-  box.innerHTML = `<div class="vgr-top"><label>Viagem<select data-vgrsel aria-label="Escolher viagem">${v.viagens.slice().sort((a, b) => a.ida < b.ida ? -1 : 1).map(y => `<option value="${y.id}"${y.id === x.id ? ' selected' : ''}>${esc(y.nome)} · ${vgBrd(y.ida)}</option>`).join('')}</select></label><button type="button" class="btn ghost tiny" data-tab="viagrot">Ver roteiro</button><button type="button" class="btn ghost tiny" data-vgpdf="${x.id}">Gerar PDF</button></div>
+  box.innerHTML = `<div class="vgr-top"><label>Viagem<select data-vgrsel aria-label="Escolher viagem">${v.viagens.slice().sort((a, b) => a.ida < b.ida ? -1 : 1).map(y => `<option value="${y.id}"${y.id === x.id ? ' selected' : ''}>${esc(y.nome)} · ${vgBrd(y.ida)}</option>`).join('')}</select></label><button type="button" class="btn ghost tiny" data-tab="viagrot">Ver roteiro</button><button type="button" class="btn ghost tiny" data-vgpdf="${x.id}">Gerar PDF <span class="vg-wip">Em andamento</span></button></div>
     <p class="subdet">${vgBrd(x.ida)} a ${vgBrd(x.volta)} · ${n} noites · ${x.pessoas} ${x.pessoas > 1 ? 'pessoas' : 'pessoa'} · ${r.paradas.map(p => esc(p.nome)).join(', ') || 'sem cidades no roteiro'}</p>`;
   if (!r.paradas.length) { $('vgd-hoje').innerHTML = '<p class="hint">Monte as cidades no Roteiro para acompanhar os gastos por dia.</p>'; ['vgd-lista', 'vgd-resumo', 'vgd-mudar'].forEach(id => { $(id).innerHTML = ''; }); kpis($('kpi-vgd'), []); return; }
   const dias = vgDurDias(x), dentro = hoje >= x.ida && hoje < x.volta, antes = hoje < x.ida;
@@ -6046,7 +6048,7 @@ function vgPdfAbrir(id) {
   const x = ((state.viag || {}).viagens || []).find(y => y.id === id); if (!x) return;
   let pop = $('vgpdf-pop'); if (!pop) { pop = document.createElement('div'); pop.id = 'vgpdf-pop'; pop.className = 'vgpdf-fundo'; document.body.appendChild(pop); }
   pop.dataset.id = id; pop.hidden = false;
-  pop.innerHTML = `<div class="vgpdf-box" role="dialog" aria-modal="true" aria-labelledby="vgpdf-t"><h3 id="vgpdf-t">PDF do plano: ${esc(x.nome)}</h3>
+  pop.innerHTML = `<div class="vgpdf-box" role="dialog" aria-modal="true" aria-labelledby="vgpdf-t"><h3 id="vgpdf-t">PDF do plano: ${esc(x.nome)} <span class="vg-wip">Em andamento</span></h3><p class="vg-wipt">Versão inicial: o formato do PDF ainda vai melhorar.</p>
     <p class="subdet">Roteiro, rota, dia a dia, hospedagem e passeios, em formato de celular, para acompanhar ou mandar para quem vai junto.</p>
     <div class="seg" role="group" aria-label="Para quem"><button type="button" data-vgpdfpara="eu" aria-pressed="true">Para mim</button><button type="button" data-vgpdfpara="junto" aria-pressed="false">Para quem vai junto</button></div>
     <label class="inline"><input type="checkbox" id="vgpdf-cus" checked> Incluir custos</label>
@@ -6126,7 +6128,7 @@ function renderViagVg() { vgAutoTodos();
     <td data-l="Datas">${vgBrd(x.ida)} a ${vgBrd(x.volta)}</td><td data-l="Quem">${x.pessoas} ${x.pessoas > 1 ? 'pessoas' : 'pessoa'} · ${(VG_EST[x.estilo] || VG_EST.meio).n.toLowerCase()}${x.tipo === 'sabatico' ? ' · <b>sabático</b>' : ''}</td>
     <td data-l="Total" class="vg-num">${(vgRotNorm(x, v), fm(x.rot.paradas.length ? vgRotResumo(x).total : x.total))}</td>
     <td data-l="Status"><select data-vgvst="${x.id}" aria-label="Status da viagem">${Object.entries(VG_VST).map(([k, n]) => `<option value="${k}"${x.st === k ? ' selected' : ''}>${n}</option>`).join('')}</select></td>
-    <td><div class="vg-pa"><button type="button" class="btn tiny" data-vgrabre="${x.id}">Roteiro</button><button type="button" class="btn ghost tiny" data-vgpdf="${x.id}">PDF</button><button type="button" class="btn danger tiny" data-vgvdel="${x.id}">Remover</button></div></td></tr>`).join('')}</tbody>`;
+    <td><div class="vg-pa"><button type="button" class="btn tiny" data-vgrabre="${x.id}">Roteiro</button><button type="button" class="btn ghost tiny" data-vgpdf="${x.id}">PDF <span class="vg-wip">Em andamento</span></button><button type="button" class="btn danger tiny" data-vgvdel="${x.id}">Remover</button></div></td></tr>`).join('')}</tbody>`;
   const m = MODS.find(x => x.id === 'viag'), lk = [['viagens', 'Mapa e lugares', 'Onde já foi, a lista de lugares, as datas e o sorteio.'], ['viagcmp', 'Comparar', 'Os lugares lado a lado nas suas datas: época, custos, visto e o melhor mês.'], ['viagrot', 'Roteiro', 'Cidades, noites, trechos, rota mais barata, hospedagem e passeios.'], ['viagcus', 'Custos', 'Hoje x projetado, seguro, como pagar, Plano futuro e checklist.'], ['viagdur', 'Durante a viagem', '+ Gasto no celular, saldo do dia e resumo por país e mês.']];
   $('vgv-links').innerHTML = lk.map(([t, n, d]) => `<button type="button" class="md-card" style="--mc:${m.cor}" data-tab="${t}"><div class="md-img">${MOD_SVG.viag}</div><h3>${esc(n)}</h3><p>${esc(d)}</p></button>`).join('');
 }
