@@ -1081,6 +1081,11 @@ a.lm-ir:hover { border-bottom-style: solid; }
 .vgr-pt circle { fill: var(--accent); stroke: #fff; } .vgr-pt text { fill: #fff; text-anchor: middle; font-weight: 700; font-family: var(--f-ui); }
 .vgr-dtbl th, .vgr-dtbl td, .vgr-tbl th, .vgr-tbl td, .vgr-rtbl th:first-child, .vgr-rtbl td:first-child { text-align: left !important; }
 .vgr-dtbl td { vertical-align: top; } .vgr-dd { white-space: nowrap; } .vgr-dd b { display: block; }
+.vgr-dl { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-top: 2px; } .vgr-dmais { padding: 3px 10px; }
+.vgr-it .vg-x.mini { margin-left: 2px; font-size: 14px; opacity: .6; } .vgr-it .vg-x.mini:hover { opacity: 1; }
+.vgr-dpop { margin-top: 8px; border: 1px solid var(--line); border-left: 3px solid var(--accent); border-radius: 8px; padding: 6px 12px 10px; background: var(--panel); max-width: 560px; }
+.vgr-dpop .vg-lbl { margin-top: 8px; } .vgr-dnovo { display: flex; gap: 8px; } .vgr-dnovo input { flex: 1; min-width: 0; padding: 5px 9px; font-size: 12.5px; }
+.vgr-dsites { margin-top: 8px; padding-top: 6px; }
 .vgr-it { margin: 1px 0 3px; display: flex; flex-wrap: wrap; align-items: center; gap: 2px 4px; } .vgr-it .chip { font-size: 10px; margin-left: 4px; }
 .vgr-cid { border: 1px solid var(--line); border-radius: 10px; padding: 10px 14px; margin-bottom: 10px; }
 .vgr-cid summary { cursor: pointer; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; list-style: none; } .vgr-cid summary::-webkit-details-marker { display: none; }
@@ -1103,7 +1108,7 @@ a.lm-ir:hover { border-bottom-style: solid; }
   .vgr-tbl td[data-l]::before { content: attr(data-l); display: block; font-size: 9.5px; text-transform: uppercase; letter-spacing: .5px; color: var(--faint); font-family: var(--f-head); }
   .vgr-tbl input, .vgr-tbl select, .vgr-tbl input[type=number], .vgr-tbl input[type=url], .vgr-tbl input[type=text] { width: 100%; min-width: 0; }
   .vgr-dtbl thead { display: none; } .vgr-dtbl tr { display: grid; grid-template-columns: 110px minmax(0, 1fr); gap: 2px 10px; padding: 8px 0; border-bottom: 1px solid var(--line); }
-  .vgr-dtbl td { border: 0 !important; padding: 0 !important; font-size: 12px; } .vgr-dtbl td:nth-child(3) { grid-column: 2; } .vgr-dtbl td:nth-child(3):has(> .subdet:only-child) { display: none; }
+  .vgr-dtbl td { border: 0 !important; padding: 0 !important; font-size: 12px; } .vgr-dtbl td:nth-child(3) { grid-column: 1 / -1; }
 }
 </style>
 
@@ -1153,7 +1158,7 @@ a.lm-ir:hover { border-bottom-style: solid; }
     </div>
     <div class="nav-mobile-sub" id="navMobileSub"></div>
   </div>
-  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 199</div></div>
+  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 200</div></div>
 </nav>
 <div class="sino-pop" id="sino-pop" role="dialog" aria-label="Central de avisos" hidden></div>
 <div class="tour-pop" id="tour-pop" role="dialog" aria-labelledby="tour-tit" hidden></div>
@@ -2313,7 +2318,7 @@ a.lm-ir:hover { border-bottom-style: solid; }
     return new Promise(resolve => { const { data } = sb.auth.onAuthStateChange(async (ev) => { if (ev !== 'PASSWORD_RECOVERY') return; const s = prompt('Digite a nova senha (mínimo 8 caracteres):'); if (s && s.length >= 8) { const { error } = await sb.auth.updateUser({ password: s }); alert(error ? 'Não deu para trocar a senha: ' + error.message : 'Senha trocada.'); } }); resolve(data); });
   }
   // ---------- rodapé: compartilhar, administração e sair ----------
-  const SITE_V = 79;
+  const SITE_V = 80;
   const escH = v => String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const dataBR = v => v ? new Date(v).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' }) : '–';
   const css2 = `.side-foot .r{flex-wrap:wrap}.side-foot .lg-acoes{margin-left:auto;display:inline-flex;gap:10px}
@@ -5389,9 +5394,10 @@ function vgRotLegs(x, ordem) {
 const vgRotCusto = (x, ordem) => vgRotLegs(x, ordem).reduce((s, l) => ({ v: s.v + l.valorEf, h: s.h + l.dur, km: s.km + l.km }), { v: 0, h: 0, km: 0 });
 const vgRotScore = c => c.v + c.h * VG_HORA;
 // melhor ordem das paradas, saindo e voltando de São Paulo: todas as ordens até 8 cidades; acima disso, vizinho mais próximo + 2-opt
+const vgMesma = (a, b) => !!a && !!b && ((a.dest && a.dest === b.dest) || (vgNorm(a.nome) === vgNorm(b.nome) && a.pais === b.pais));
 function vgRotOtim(x) {
   const ps = x.rot.paradas.slice(), n = ps.length; if (n < 2) return null;
-  const f = o => vgRotScore(vgRotCusto(x, o)); let best = ps, bs = f(ps);
+  const f = o => o.some((p, i) => i && vgMesma(p, o[i - 1])) ? Infinity : vgRotScore(vgRotCusto(x, o)); let best = ps, bs = f(ps);
   if (n <= 8) {
     const perm = (arr, k) => { if (k === arr.length) { const s = f(arr); if (s < bs - 0.5) { bs = s; best = arr.slice(); } return; } for (let i = k; i < arr.length; i++) { [arr[k], arr[i]] = [arr[i], arr[k]]; perm(arr, k + 1); [arr[k], arr[i]] = [arr[i], arr[k]]; } };
     perm(ps.slice(), 0);
@@ -5439,6 +5445,35 @@ function vgRotMapa(x) {
     <polyline class="vgr-linha" points="${pts.map(p => p.map(n => n.toFixed(2)).join(',')).join(' ')}" stroke-width="${(2 * k).toFixed(3)}" stroke-dasharray="${(5 * k).toFixed(3)} ${(4 * k).toFixed(3)}"/>
     ${pts.map((p, i) => `<g class="vgr-pt" transform="translate(${p[0].toFixed(2)} ${p[1].toFixed(2)})"><circle r="${(9 * k).toFixed(3)}" stroke-width="${(1.6 * k).toFixed(3)}"/><text font-size="${(10 * k).toFixed(3)}" dy="${(3.5 * k).toFixed(3)}">${i + 1}</text><title>${esc(ps[i].nome)}</title></g>`).join('')}</svg>`;
 }
+// dia a dia: o que está marcado no dia + botão para pôr passeios, sugestões ou algo novo
+let vgrDiaAb = '';
+function vgrDiaCel(x, p, d, its) {
+  const r = x.rot, k = p.id + '|' + d, ab = vgrDiaAb === k;
+  let h = its.map(it => `<div class="vgr-it${it.st === 'def' ? ' def' : ''}">${'★'.repeat(it.est || 0)} ${esc(it.nome)} <span class="chip ${it.st === 'def' ? 'best' : 'info'}">${VG_RST[it.st]}</span><button type="button" class="vg-x mini" data-vgrdtira="${it.id}" aria-label="Tirar deste dia" title="Tirar deste dia">×</button></div>`).join('');
+  h += `<div class="vgr-dl">${its.length ? '' : '<span class="subdet">livre</span>'}<button type="button" class="btn ghost tiny vgr-dmais" data-vgrdia="${k}" aria-expanded="${ab}">${ab ? 'Fechar' : '+ O que fazer'}</button></div>`;
+  if (!ab) return h;
+  const semDia = r.itens.filter(it => it.par === p.id && !it.dia), tps = r.tipos, br = p.pais === 'BR';
+  const sug = p.dest ? vgExp(p.dest).filter(e => !r.itens.some(it => it.par === p.id && vgNorm(it.nome) === vgNorm(e.nome))) : [], sugT = tps.length ? sug.filter(e => [...e.tipos].some(t => tps.includes(t))) : sug;
+  h += `<div class="vgr-dpop">${semDia.length ? `<div class="vg-lbl">Já na lista de ${esc(p.nome)}, sem dia</div>${semDia.map(it => `<div class="vgr-sg"><div><b>${esc(it.nome || 'Sem nome')}</b></div><span></span><button type="button" class="btn tiny" data-vgrdpor="${it.id}|${d}">Pôr neste dia</button></div>`).join('')}` : ''}
+    ${(sugT.length ? sugT : sug).length ? `<div class="vg-lbl">Sugestões${tps.length && sugT.length ? ' para o seu tipo de viagem' : ''}</div>${(sugT.length ? sugT : sug).map(e => `<div class="vgr-sg"><div><b>${esc(e.nome)}</b><div class="vg-tps">${VG_TIPOS.filter(([t]) => e.tipos.includes(t)).map(([, nn]) => `<span>${nn}</span>`).join('')}</div></div><span class="vg-num">${e.p ? `≈ ${br ? fm(e.p) : fm(e.p * vgMoedaFx('USD'))}` : 'grátis'}</span><button type="button" class="btn tiny" data-vgrdsug="${p.id}|${d}|${esc(e.nome)}">+ Neste dia</button></div>`).join('')}` : ''}
+    <div class="vg-lbl">Outra coisa</div><div class="vgr-dnovo"><input type="text" id="vgr-dtxt" maxlength="100" placeholder="Ex.: jantar no restaurante X, praia, museu…" aria-label="O que fazer"><button type="button" class="btn tiny" data-vgrdnovo="${k}">Adicionar</button></div>
+    <div class="vgr-sites vgr-dsites"><span class="vg-lbl">Mais ideias</span>${vgLnk('https://www.tripadvisor.com.br/Search?q=' + encodeURIComponent(p.nome + ', ' + vgPaisNome(p.pais)), 'Tripadvisor')} · ${vgLnk('https://www.getyourguide.com.br/s/?q=' + encodeURIComponent(p.nome), 'GetYourGuide')} · ${vgLnk('https://www.google.com/maps/search/o+que+fazer+em+' + encodeURIComponent(p.nome + ', ' + vgPaisNome(p.pais)), 'Google Maps')}</div></div>`;
+  return h;
+}
+document.addEventListener('click', e => {
+  const t = e.target.closest('[data-vgrdia],[data-vgrdpor],[data-vgrdsug],[data-vgrdnovo],[data-vgrdtira],[data-vgrjunta]'); if (!t || !state.viag) return;
+  const d = t.dataset, x = vgRotSel(); if (!x) return; const r = x.rot;
+  if (d.vgrdia) { vgrDiaAb = vgrDiaAb === d.vgrdia ? '' : d.vgrdia; vgRe(); if (vgrDiaAb) setTimeout(() => { const b = document.querySelector(`[data-vgrdia="${vgrDiaAb}"]`); if (b) b.closest('tr').scrollIntoView({ block: 'nearest', behavior: 'smooth' }); }, 50); return; }
+  if (d.vgrdpor) { const [iid, dia] = d.vgrdpor.split('|'), it = r.itens.find(y => y.id === iid); if (it) { it.dia = dia; save(); vgRe(); } return; }
+  if (d.vgrdtira) { const it = r.itens.find(y => y.id === d.vgrdtira); if (it) { it.dia = ''; save(); vgRe(); } return; }
+  if (d.vgrdsug) { const [pid, dia, ...nm] = d.vgrdsug.split('|'), nome = nm.join('|'), p = r.paradas.find(y => y.id === pid), e2 = p && vgExp(p.dest).find(y => y.nome === nome); if (!e2) return;
+    r.itens.push({ id: vgId(), par: pid, dia, nome: e2.nome, est: 0, valor: e2.p, moeda: p.pais === 'BR' ? 'BRL' : 'USD', st: 'op', link: '' }); save(); vgRe(); return; }
+  if (d.vgrdnovo) { const [pid, dia] = d.vgrdnovo.split('|'), txt = ($('vgr-dtxt').value || '').trim(); if (!txt) { $('vgr-dtxt').focus(); return; }
+    r.itens.push({ id: vgId(), par: pid, dia, nome: txt.slice(0, 100), est: 0, valor: 0, moeda: 'BRL', st: 'op', link: '' }); save(); vgRe(); return; }
+  if (d.vgrjunta) { const i = r.paradas.findIndex(y => y.id === d.vgrjunta); if (i < 1) return; const a = r.paradas[i - 1], b = r.paradas[i];
+    a.noites += b.noites; a.hosp = a.hosp.concat(b.hosp); r.itens.forEach(it => { if (it.par === b.id) it.par = a.id; }); r.paradas.splice(i, 1); save(); vgRe(); return; }
+});
+document.addEventListener('keydown', e => { if (e.target.id === 'vgr-dtxt' && e.key === 'Enter') { e.preventDefault(); const b = document.querySelector('[data-vgrdnovo]'); if (b) b.click(); } });
 function renderViagRot() {
   const v = state.viag, x = vgRotSel(), box = $('vgr-viagem');
   if (!x) { box.innerHTML = `<p class="hint">Nenhuma viagem ainda. Escolha um lugar em Comparar ou comece uma do zero.</p><div class="vg-pa"><button type="button" class="btn" data-vgrnova>+ Nova viagem</button></div>`; ['vgr-rota', 'vgr-dias', 'vgr-paradas', 'vgr-resumo', 'vgr-otim', 'vgr-mapa'].forEach(id => { const e = $(id); if (e) e.innerHTML = ''; }); kpis($('kpi-vgr'), []); return; }
@@ -5462,7 +5497,7 @@ function renderViagRot() {
       <span class="subdet">${vgKmT(l.km)} · ≈ ${vgHm(l.dur)}</span></div>
       <label class="vgr-lv">R$ por pessoa<input type="number" min="0" step="10" data-vgrlv="${l.key}" value="${l.valorUsr || ''}" placeholder="${num(l.valor, 0)}"></label>
       <select data-vgrlst="${l.key}" aria-label="Status do trecho" class="vgr-st">${Object.entries(VG_RST).map(([k, nn]) => `<option value="${k}"${l.st === k ? ' selected' : ''}>${nn}</option>`).join('')}</select>
-      <span class="vgr-ll">${vgLnk(`https://www.rome2rio.com/pt/map/${encodeURIComponent(a.nome)}/${encodeURIComponent(b.nome)}`, 'Rome2rio')}${l.meio === 'aviao' ? ' · ' + vgLnk(`https://www.google.com/travel/flights?hl=pt-BR&q=${encodeURIComponent(`voos de ${a.nome} para ${b.nome}`)}`, 'Google Voos') : ''}</span></div>`; };
+      ${!l.sp && vgMesma(a, b) ? `<button type="button" class="btn tiny" data-vgrjunta="${b.id}">Juntar as duas ${esc(a.nome)}</button>` : ''}<span class="vgr-ll">${vgLnk(`https://www.rome2rio.com/pt/map/${encodeURIComponent(a.nome)}/${encodeURIComponent(b.nome)}`, 'Rome2rio')}${l.meio === 'aviao' ? ' · ' + vgLnk(`https://www.google.com/travel/flights?hl=pt-BR&q=${encodeURIComponent(`voos de ${a.nome} para ${b.nome}`)}`, 'Google Voos') : ''}</span></div>`; };
   if (r.paradas.length) {
     const seq = [VG_SP].concat(r.paradas.map(vgParLL), [VG_SP]);
     h += `<div class="vgr-lista">${legHtml(legs[0], seq[0], seq[1])}${dts.map(({ p, ent, sai }, i) => `<div class="vgr-par" data-par="${p.id}"><span class="vgr-alca" title="Arraste para mudar a ordem" aria-hidden="true">⠿</span><span class="vgr-n">${i + 1}</span><div class="vgr-pn"><b>${esc(p.nome)}</b> <span class="subdet">${esc(vgPaisNome(p.pais))}</span><div class="subdet">${p.noites ? `${vgSem(ent)} ${vgBrd(ent).slice(0, 5)} → ${vgSem(sai)} ${vgBrd(sai).slice(0, 5)}` : 'só de passagem'}</div></div>
@@ -5474,14 +5509,15 @@ function renderViagRot() {
   const ot = vgRotOtim(x);
   if (!ot) $('vgr-otim').innerHTML = '<p class="hint">Com duas cidades ou mais, o painel procura a ordem com menor custo e menos tempo de deslocamento.</p>';
   else { const c2 = vgRotCusto(x, ot), mesma = ot.every((p, i) => p.id === r.paradas[i].id);
-    $('vgr-otim').innerHTML = mesma || vgRotScore(c) - vgRotScore(c2) < 1 ? `<div class="ok">A sua ordem já é a melhor: ${fm(c.v)} por pessoa em deslocamentos e ${vgHm(c.h)} viajando entre cidades.</div>`
-      : `<div class="vgr-ot"><div><span class="vg-lbl">Rota otimizada</span><b>${ot.map(p => esc(p.nome)).join(' → ')}</b><div class="subdet">Economiza ${c.v - c2.v > 0 ? `${fm(c.v - c2.v)} por pessoa` : ''}${c.v - c2.v > 0 && c.h - c2.h > 0.1 ? ' e ' : ''}${c.h - c2.h > 0.1 ? vgHm(c.h - c2.h) + ' de deslocamento' : ''}${c.v - c2.v <= 0 && c.h - c2.h <= 0.1 ? 'distância' : ''} (${vgKmT(c.km - c2.km)} a menos). As noites de cada cidade ficam iguais.</div></div><button type="button" class="btn" data-vgrotim>Usar esta ordem</button></div>`; }
+    const rep2 = r.paradas.some((p, i) => i && vgMesma(p, r.paradas[i - 1]));
+    $('vgr-otim').innerHTML = rep2 && mesma ? '<div class="warn">A mesma cidade aparece duas vezes seguidas. Junte as duas no trecho entre elas ou mude a ordem.</div>' : !rep2 && (mesma || vgRotScore(c) - vgRotScore(c2) < 1) ? `<div class="ok">A sua ordem já é a melhor: ${fm(c.v)} por pessoa em deslocamentos e ${vgHm(c.h)} viajando entre cidades.</div>`
+      : `<div class="vgr-ot"><div><span class="vg-lbl">Rota otimizada</span><b>${ot.map(p => esc(p.nome)).join(' → ')}</b><div class="subdet">${rep2 ? 'Sem a mesma cidade duas vezes seguidas: ' : ''}${c.v - c2.v > 0 || c.h - c2.h > 0.1 ? `economiza ${[c.v - c2.v > 0 ? fm(c.v - c2.v) + ' por pessoa' : '', c.h - c2.h > 0.1 ? vgHm(c.h - c2.h) + ' de deslocamento' : ''].filter(Boolean).join(' e ')}${c.km - c2.km > 0 ? ` (${vgKmT(c.km - c2.km)} a menos)` : ''}.` : `${fm(c2.v)} por pessoa e ${vgHm(c2.h)} de deslocamento.`} As noites de cada cidade ficam iguais.</div></div><button type="button" class="btn" data-vgrotim>Usar esta ordem</button></div>`; }
   $('vgr-mapa').innerHTML = vgRotMapa(x);
   // dia a dia
   if (!r.paradas.length) $('vgr-dias').innerHTML = ''; else {
     const linhas = []; let dia = 1;
     dts.forEach(({ p, ent }, i) => { for (let k = 0; k < Math.max(1, p.noites); k++) { const d = vgDtAdd(ent, k), its = r.itens.filter(it => it.par === p.id && it.dia === d), leg = k === 0 ? legs[i] : null;
-      linhas.push(`<tr><td class="vgr-dd"><b>Dia ${dia}</b><span class="subdet">${vgSem(d)} ${vgBrd(d)}</span></td><td>${esc(p.nome)}${leg ? `<div class="subdet">${(VG_MEIO[leg.meio] || VG_MEIO.carro)[1]} chega ${i ? 'de ' + esc(r.paradas[i - 1].nome) : 'de São Paulo'} (≈ ${vgHm(leg.dur)})</div>` : ''}</td><td>${its.length ? its.map(it => `<div class="vgr-it${it.st === 'def' ? ' def' : ''}">${'★'.repeat(it.est || 0)} ${esc(it.nome)} <span class="chip ${it.st === 'def' ? 'best' : 'info'}">${VG_RST[it.st]}</span></div>`).join('') : '<span class="subdet">livre</span>'}</td></tr>`); if (p.noites) dia++; } });
+      linhas.push(`<tr><td class="vgr-dd"><b>Dia ${dia}</b><span class="subdet">${vgSem(d)} ${vgBrd(d)}</span></td><td>${esc(p.nome)}${leg ? `<div class="subdet">${(VG_MEIO[leg.meio] || VG_MEIO.carro)[1]} chega ${i ? 'de ' + esc(r.paradas[i - 1].nome) : 'de São Paulo'} (≈ ${vgHm(leg.dur)})</div>` : ''}</td><td>${vgrDiaCel(x, p, d, its)}</td></tr>`); if (p.noites) dia++; } });
     const fim = vgDtAdd(x.ida, soma); linhas.push(`<tr><td class="vgr-dd"><b>Volta</b><span class="subdet">${vgSem(fim)} ${vgBrd(fim)}</span></td><td>São Paulo<div class="subdet">✈ de ${esc(r.paradas[r.paradas.length - 1].nome)} (≈ ${vgHm(legs[legs.length - 1].dur)})</div></td><td></td></tr>`);
     $('vgr-dias').innerHTML = `<div class="tscroll"><table class="vgr-dtbl"><thead><tr><th>Dia</th><th>Onde</th><th>Programação</th></tr></thead><tbody>${linhas.join('')}</tbody></table></div>`;
   }
