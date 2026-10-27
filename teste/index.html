@@ -1120,6 +1120,19 @@ a.lm-ir:hover { border-bottom-style: solid; }
 .vgc-ck { list-style: none; padding: 0; margin: 12px 0; columns: 2; column-gap: 24px; } .vgc-ck li { break-inside: avoid; display: flex; align-items: center; gap: 4px; padding: 4px 0; font-size: 13px; }
 .vgc-cknovo { max-width: 460px; }
 @media (max-width: 640px) { .vgc-ck { columns: 1; } .vgc-pf { grid-template-columns: minmax(0, 1fr); } }
+.vgd-dia { display: flex; flex-wrap: wrap; gap: 10px 24px; align-items: center; justify-content: space-between; padding: 10px 12px; border: 1px solid var(--line); border-radius: 10px; margin-bottom: 12px; max-width: 760px; }
+.vgd-dia > div:first-child { display: flex; flex-direction: column; gap: 2px; } .vgd-dia b { font-size: 15px; }
+.vgd-saldo { display: flex; flex-direction: column; gap: 2px; font-size: 12.5px; min-width: 220px; } .vgd-saldo b { font-size: 14px; } .vgd-saldo.ok b { color: var(--good); } .vgd-saldo.neg b { color: var(--bad); }
+.vgd-barra { margin-top: 4px; } .vgd-saldo.ok .vgd-barra i { background: var(--good); } .vgd-saldo.neg .vgd-barra i { background: var(--bad); }
+.vgd-form { max-width: 760px; grid-template-columns: repeat(3, minmax(0, 1fr)); } .vgd-form #vgd-valor { font-size: 16px; }
+.vgd-fx { margin-top: 12px; font-size: 13px; max-width: 520px; } .vgd-fx summary { cursor: pointer; color: var(--muted); }
+.vgd-fxl { list-style: none; padding: 0; margin: 8px 0; } .vgd-fxl li { display: flex; gap: 8px; align-items: center; padding: 3px 0; } .vgd-fxl input { max-width: 120px; }
+.vgd-grp { border-top: 1px solid var(--line); padding: 8px 0; max-width: 760px; }
+.vgd-gh { display: flex; flex-wrap: wrap; gap: 4px 10px; align-items: baseline; } .vgd-gt { margin-left: auto; font-size: 13px; } .vgd-gt.ok { color: var(--good); } .vgd-gt.neg { color: var(--bad); }
+.vgd-its { list-style: none; padding: 0; margin: 4px 0 0; } .vgd-its li { display: grid; grid-template-columns: 96px minmax(0, 1fr) auto 24px; gap: 8px; align-items: center; padding: 3px 0; font-size: 13px; }
+.vgd-cat { font-size: 11px; text-transform: uppercase; letter-spacing: .04em; color: var(--muted); } .vgd-nt { overflow-wrap: anywhere; }
+@media (max-width: 640px) { .vgd-form { grid-template-columns: repeat(2, minmax(0, 1fr)); } .vgd-form .vgd-nota { grid-column: 1 / -1; } .vgd-its li { grid-template-columns: 74px minmax(0, 1fr) auto 24px; } .vgd-saldo { min-width: 0; width: 100%; } }
+.vgd-form + .vg-pa { margin-top: 12px; align-items: center; }
 </style>
 
 
@@ -1161,6 +1174,7 @@ a.lm-ir:hover { border-bottom-style: solid; }
           <div class="nav-group"><button type="button" class="nav-head" data-tab="viagcmp"><span class="ico">02</span>Comparar<span class="caret" data-navtog="viagcmp" role="button" tabindex="0" aria-label="Abrir ou recolher submódulos">▾</span></button><div class="nav-sub" data-sub="viagcmp"></div></div>
           <div class="nav-group"><button type="button" class="nav-head" data-tab="viagrot"><span class="ico">03</span>Roteiro<span class="caret" data-navtog="viagrot" role="button" tabindex="0" aria-label="Abrir ou recolher submódulos">▾</span></button><div class="nav-sub" data-sub="viagrot"></div></div>
           <div class="nav-group"><button type="button" class="nav-head" data-tab="viagcus"><span class="ico">04</span>Custos<span class="caret" data-navtog="viagcus" role="button" tabindex="0" aria-label="Abrir ou recolher submódulos">▾</span></button><div class="nav-sub" data-sub="viagcus"></div></div>
+          <div class="nav-group"><button type="button" class="nav-head" data-tab="viagdur"><span class="ico">05</span>Durante a viagem<span class="caret" data-navtog="viagdur" role="button" tabindex="0" aria-label="Abrir ou recolher submódulos">▾</span></button><div class="nav-sub" data-sub="viagdur"></div></div>
         </div></div>
         <div class="nav-pe">
         <div class="nav-group mini"><button type="button" class="nav-head" data-tab="leia"><span class="ico">?</span>Leia-me<span class="caret" data-navtog="leia" role="button" tabindex="0" aria-label="Abrir ou recolher submódulos">▾</span></button><div class="nav-sub" data-sub="leia"></div></div>
@@ -1169,7 +1183,7 @@ a.lm-ir:hover { border-bottom-style: solid; }
     </div>
     <div class="nav-mobile-sub" id="navMobileSub"></div>
   </div>
-  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 203</div></div>
+  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 204</div></div>
 </nav>
 <div class="sino-pop" id="sino-pop" role="dialog" aria-label="Central de avisos" hidden></div>
 <div class="tour-pop" id="tour-pop" role="dialog" aria-labelledby="tour-tit" hidden></div>
@@ -1392,6 +1406,27 @@ a.lm-ir:hover { border-bottom-style: solid; }
     <section data-nav="Checklist" class="panel">
       <h2>Checklist da viagem</h2>
       <div id="vgc-check"></div>
+    </section>
+  </section>
+  <!-- ============ VIAGENS: DURANTE A VIAGEM ============ -->
+  <section role="tabpanel" id="p-viagdur" hidden>
+    <div class="block-title"><span class="num">05</span><div><h1>Durante a viagem</h1><p class="desc">Lance cada gasto na hora pelo celular e veja o saldo do dia contra o planejado, com o resumo por país, por mês e por categoria.</p></div></div>
+    <div class="kpis" id="kpi-vgd"></div>
+    <section data-nav="Viagem" class="panel">
+      <h2>Viagem</h2>
+      <div id="vgd-viagem"></div>
+    </section>
+    <section data-nav="Hoje" class="panel">
+      <h2>Hoje: + Gasto</h2>
+      <div id="vgd-hoje"></div>
+    </section>
+    <section data-nav="Gastos lançados" class="panel">
+      <h2>Gastos lançados</h2>
+      <div id="vgd-lista"></div>
+    </section>
+    <section data-nav="Resumo" class="panel">
+      <h2>Resumo por país, mês e categoria</h2>
+      <div id="vgd-resumo"></div>
     </section>
   </section>
   <div class="vg-ed" id="vg-ed" role="dialog" aria-modal="true" aria-label="Editar lugar" hidden></div>
@@ -2369,7 +2404,7 @@ a.lm-ir:hover { border-bottom-style: solid; }
     return new Promise(resolve => { const { data } = sb.auth.onAuthStateChange(async (ev) => { if (ev !== 'PASSWORD_RECOVERY') return; const s = prompt('Digite a nova senha (mínimo 8 caracteres):'); if (s && s.length >= 8) { const { error } = await sb.auth.updateUser({ password: s }); alert(error ? 'Não deu para trocar a senha: ' + error.message : 'Senha trocada.'); } }); resolve(data); });
   }
   // ---------- rodapé: compartilhar, administração e sair ----------
-  const SITE_V = 83;
+  const SITE_V = 84;
   const escH = v => String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const dataBR = v => v ? new Date(v).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' }) : '–';
   const css2 = `.side-foot .r{flex-wrap:wrap}.side-foot .lg-acoes{margin-left:auto;display:inline-flex;gap:10px}
@@ -2932,7 +2967,7 @@ function vgNormalizar(s) {
   v.lugares.forEach(l => { if (l.dest && vgDest(l.dest)) return; const n = vgNorm(l.nome), nn = VG_ALIAS[n] || n, d = VG_DEST.find(x => x.pais === l.pais && vgNorm(x.nome) === nn); if (d) { l.dest = d.id; l.lat = d.lat; l.lon = d.lon; return; } if (l.lat == null) { const c = vgAchaCid(l.nome, l.pais); if (c) { l.lat = c.lat; l.lon = c.lon; } } });
   v.fui = [...new Set(v.fui.filter(c => /^[A-Z]{2}$/.test(c)))];
   v.cmp = v.cmp.filter(id => v.lugares.some(l => l.id === id)).slice(0, 5);
-  v.viagens = v.viagens.filter(x => x && x.id); v.viagens.forEach(x => { if (!VG_VST[x.st]) x.st = 'planejada'; vgRotNorm(x, v); vgCusNorm(x); }); if (typeof v.rotSel !== 'string') v.rotSel = '';
+  v.viagens = v.viagens.filter(x => x && x.id); v.viagens.forEach(x => { if (!VG_VST[x.st]) x.st = 'planejada'; vgRotNorm(x, v); vgCusNorm(x); vgDurNorm(x); }); if (typeof v.rotSel !== 'string') v.rotSel = '';
   if (!v.plano || typeof v.plano !== 'object') v.plano = {};
   const [a, b] = vgDataPadrao(); if (!dt.test(v.plano.ida)) v.plano.ida = a; if (!dt.test(v.plano.volta) || v.plano.volta <= v.plano.ida) { const x = new Date(v.plano.ida + 'T12:00:00'); x.setDate(x.getDate() + 14); v.plano.volta = x.toISOString().slice(0, 10); }
   v.plano.pessoas = Math.min(20, Math.max(1, Math.round(+v.plano.pessoas || 2))); if (!VG_EST[v.plano.estilo]) v.plano.estilo = 'meio'; if (!Array.isArray(v.plano.tipos)) v.plano.tipos = [];
@@ -5771,7 +5806,7 @@ function renderViagCus() {
     imp = `<p>Com a viagem, o patrimônio do plano em ${mLabel(fimI)} fica <b class="neg">${fm(Math.abs(d))}</b> menor${c.plano ? ' (já está na projeção)' : ' do que a projeção atual'}. É o custo de hoje somado ao que esse dinheiro renderia até lá.</p>`; } catch (er) { imp = ''; } }
   $('vgc-plano').innerHTML = `<div class="vgc-uso"><label>Uso no Plano futuro<select data-vgcuso aria-label="Uso no Plano futuro"><option value="sim">Só simulação</option><option value="real"${c.plano ? ' selected' : ''}>Projeção real</option></select></label><span class="subdet">${it ? esc(it.resumo) : ''}</span></div>${imp}<p class="hint">Projeção real: os pagamentos entram no seu plano como gasto. Só simulação: aparece em Plano futuro › Itens dos módulos e na linha de comparação, sem mudar a projeção.</p>`;
   // média por estilo
-  const linhas = Object.entries(VG_EST).map(([k, e]) => { const vs = v.viagens.filter(y => y.estilo === k && y.rot && y.rot.paradas && y.rot.paradas.length).map(y => { const t = vgCusLinhas(y).tot, nn = vgRotNoites(y); return { y, pd: t.hoje / y.pessoas / Math.max(1, nn), ok: y.st === 'concluida' }; });
+  const linhas = Object.entries(VG_EST).map(([k, e]) => { const vs = v.viagens.filter(y => y.estilo === k && y.rot && y.rot.paradas && y.rot.paradas.length).map(y => { const t = vgCusLinhas(y).tot, nn = vgRotNoites(y), real = y.st === 'concluida' && y.dur ? vgDurTot(y) : 0; return { y, pd: (real > 0 ? real + t.def : t.hoje) / y.pessoas / Math.max(1, nn), ok: y.st === 'concluida' }; });
     const ref = VG_DEST.length ? VG_DEST.filter(d => d.pais !== 'BR').reduce((s, d) => s + (d.h * e.h / 2 + d.d * e.d), 0) / VG_DEST.filter(d => d.pais !== 'BR').length * vgMoedaFx('USD') : 0;
     return `<tr><td>${e.n}</td><td class="vg-num">${fm(ref)}</td><td class="vg-num">${vs.length ? fm(vs.reduce((s, q) => s + q.pd, 0) / vs.length) : '—'}</td><td>${vs.length ? vs.map(q => esc(q.y.nome)).join(', ') : '<span class="subdet">nenhuma ainda</span>'}</td></tr>`; }).join('');
   $('vgc-estilo').innerHTML = `<div class="tscroll"><table class="vgr-rtbl vgc-tbl"><thead><tr><th>Estilo</th><th class="vg-num">Referência</th><th class="vg-num">Suas viagens</th><th>Quais</th></tr></thead><tbody>${linhas}</tbody></table></div><p class="hint">Por pessoa por dia, preço de hoje, sem passagem de ida e volta na referência (hotel em quarto duplo + dia a dia, média dos destinos fora do Brasil). Suas viagens: o roteiro inteiro dividido por pessoas e noites. Quando as viagens terminarem com os gastos reais (próxima etapa), a média passa a usar o que você gastou de verdade.</p>`;
@@ -5805,6 +5840,106 @@ document.addEventListener('change', e => {
 let vgPeC = { k: null, t: 0, v: [] };
 function vgPlanEvsC(extra) { const k = extra ? [...extra].sort().join(',') : ''; if (vgPeC.k === k && Date.now() - vgPeC.t < 80) return vgPeC.v; let v = []; try { v = vgPlanEvs(extra); } catch (er) {} vgPeC = { k, t: Date.now(), v }; return v; }
 
+/* ---------- Durante a viagem (etapa 4): + Gasto, saldo do dia x planejado, resumo por país, mês e categoria ---------- */
+const VG_GCAT = { comida: 'Comida', hosp: 'Hospedagem', transp: 'Transporte', passeio: 'Passeios', compras: 'Compras', outros: 'Outros' };
+function vgDurNorm(x) {
+  if (!x.dur || typeof x.dur !== 'object' || Array.isArray(x.dur)) x.dur = {};
+  const g = x.dur; if (!Array.isArray(g.gastos)) g.gastos = []; if (!g.fx || typeof g.fx !== 'object' || Array.isArray(g.fx)) g.fx = {};
+  g.gastos = g.gastos.filter(e => e && e.id && /^\d{4}-\d{2}-\d{2}$/.test(e.data || ''));
+  return g;
+}
+// valor em R$: R$, US$ e € pelo câmbio do painel (com spread e IOF); outras moedas pela cotação que você informou
+function vgDurBrl(x, e) { const m = e.moeda || 'BRL'; if (m === 'BRL' || m === 'USD' || m === 'EUR') return (+e.valor || 0) * vgMoedaFx(m); return (+e.valor || 0) * (+x.dur.fx[m] || 0); }
+const vgDurTot = x => (x.dur && x.dur.gastos || []).reduce((s, e) => s + vgDurBrl(x, e), 0);
+// cada dia da viagem com a cidade e o que estava planejado gastar nele (preço de hoje, sem o que já estava Definido e sem as passagens de ida e volta)
+function vgDurDias(x) {
+  vgRotNorm(x, state.viag); vgCusNorm(x);
+  const r = x.rot, pes = x.pessoas, legs = vgRotLegs(x), out = [];
+  vgRotDatas(x).forEach(({ p, ent }, i) => {
+    const n = Math.max(1, p.noites), def = p.hosp.filter(h => h.st === 'def' && +h.valor > 0), op = p.hosp.filter(h => +h.valor > 0);
+    const hosp = !p.noites || def.length ? 0 : op.length ? Math.min(...op.map(h => +h.valor * vgMoedaFx(h.moeda))) : vgHospEst(x, p);
+    const pas = r.itens.filter(it => it.par === p.id && it.st !== 'def' && +it.valor > 0).reduce((s, it) => s + +it.valor * vgMoedaFx(it.moeda) * pes, 0) / n;
+    const leg = i > 0 && legs[i] && legs[i].st !== 'def' ? legs[i].valorEf * pes : 0;
+    for (let k = 0; k < n; k++) out.push({ d: vgDtAdd(ent, k), p, plan: hosp + (p.noites ? vgDiaEst(x, p) : 0) + pas + (k === 0 ? leg : 0) });
+  });
+  return out;
+}
+function vgDurParDe(x, dias, d) { const f = dias.find(q => q.d === d); return f ? f.p : d < x.ida ? x.rot.paradas[0] : x.rot.paradas[x.rot.paradas.length - 1]; }
+const vgHojeIso = () => { const t = new Date(); return new Date(t.getTime() - t.getTimezoneOffset() * 6e4).toISOString().slice(0, 10); };
+let vgdData = null;
+function renderViagDur() {
+  const v = state.viag, x = vgRotSel(), box = $('vgd-viagem'), ids = ['vgd-hoje', 'vgd-lista', 'vgd-resumo'];
+  if (!x) { box.innerHTML = `<p class="hint">Nenhuma viagem ainda. Escolha um lugar em Comparar ou crie uma em Roteiro.</p>`; ids.forEach(id => { $(id).innerHTML = ''; }); kpis($('kpi-vgd'), []); return; }
+  const g = vgDurNorm(x), r = x.rot, hoje = vgHojeIso(), n = vgRotNoites(x);
+  box.innerHTML = `<div class="vgr-top"><label>Viagem<select data-vgrsel aria-label="Escolher viagem">${v.viagens.slice().sort((a, b) => a.ida < b.ida ? -1 : 1).map(y => `<option value="${y.id}"${y.id === x.id ? ' selected' : ''}>${esc(y.nome)} · ${vgBrd(y.ida)}</option>`).join('')}</select></label><button type="button" class="btn ghost tiny" data-tab="viagrot">Ver roteiro</button></div>
+    <p class="subdet">${vgBrd(x.ida)} a ${vgBrd(x.volta)} · ${n} noites · ${x.pessoas} ${x.pessoas > 1 ? 'pessoas' : 'pessoa'} · ${r.paradas.map(p => esc(p.nome)).join(', ') || 'sem cidades no roteiro'}</p>`;
+  if (!r.paradas.length) { $('vgd-hoje').innerHTML = '<p class="hint">Monte as cidades no Roteiro para acompanhar os gastos por dia.</p>'; ['vgd-lista', 'vgd-resumo'].forEach(id => { $(id).innerHTML = ''; }); kpis($('kpi-vgd'), []); return; }
+  const dias = vgDurDias(x), dentro = hoje >= x.ida && hoje < x.volta, antes = hoje < x.ida;
+  if (!vgdData || vgdData < x.ida || vgdData > x.volta) vgdData = dentro ? hoje : antes ? x.ida : dias[dias.length - 1].d;
+  const ate = antes ? null : dentro ? hoje : x.volta, porDia = {};
+  g.gastos.forEach(e => { porDia[e.data] = (porDia[e.data] || 0) + vgDurBrl(x, e); });
+  const gasto = vgDurTot(x), planAte = ate ? dias.filter(q => q.d <= ate).reduce((s, q) => s + q.plan, 0) : 0, planTot = dias.reduce((s, q) => s + q.plan, 0);
+  const diasPass = ate ? dias.filter(q => q.d <= ate).length : 0, saldo = planAte - gasto;
+  kpis($('kpi-vgd'), [
+    ['Gasto até agora', fm(gasto), `${g.gastos.length} ${g.gastos.length === 1 ? 'lançamento' : 'lançamentos'}`],
+    ['Planejado até hoje', ate ? fm(planAte) : '—', antes ? `a viagem começa em ${vgBrd(x.ida)}` : `de ${fm(planTot)} na viagem toda`],
+    [saldo >= 0 ? 'Sobra' : 'Passou', ate ? fm(Math.abs(saldo)) : '—', ate ? (saldo >= 0 ? 'abaixo do planejado' : 'acima do planejado') : 'sem dias passados ainda'],
+    ['Média por dia', diasPass ? fm(gasto / diasPass) : '—', diasPass ? `planejado ${fm(planAte / diasPass)} por dia` : 'gasto por dia da viagem']
+  ]);
+  // hoje: + Gasto e saldo do dia
+  const q = dias.find(y => y.d === vgdData), pq = vgDurParDe(x, dias, vgdData), nd = dias.findIndex(y => y.d === vgdData) + 1, gd = porDia[vgdData] || 0, pd = q ? q.plan : 0;
+  const moedas = ['BRL', 'USD', 'EUR'].concat(Object.keys(g.fx)), mn = m => m === 'BRL' ? 'R$' : m === 'USD' ? 'US$' : m === 'EUR' ? '€' : m;
+  $('vgd-hoje').innerHTML = `${antes ? `<p class="hint">A viagem começa em ${vgBrd(x.ida)}. Já dá para lançar gastos para testar; durante a viagem a data começa no dia de hoje.</p>` : ''}
+    <div class="vgd-dia"><div><span class="vg-lbl">${nd ? 'Dia ' + nd : 'Volta'} · ${vgSem(vgdData)} ${vgBrd(vgdData)}</span><b>${esc(pq ? pq.nome : '')}</b></div>
+      <div class="vgd-saldo ${pd - gd >= 0 ? 'ok' : 'neg'}"><span>Planejado ${fm(pd)} · gasto ${fm(gd)}</span><b>${pd - gd >= 0 ? 'Sobra ' + fm(pd - gd) : 'Passou ' + fm(gd - pd)}</b><div class="hp-barra vgd-barra"><i style="width:${Math.min(100, pd ? gd / pd * 100 : gd ? 100 : 0).toFixed(1)}%"></i></div></div></div>
+    <div class="vg-form vgd-form">
+      <label>Valor<input type="number" id="vgd-valor" min="0" step="0.01" inputmode="decimal" placeholder="0,00"></label>
+      <label>Moeda<select id="vgd-moeda" aria-label="Moeda">${moedas.map(m => `<option value="${m}"${m === (g.ultMoeda || 'BRL') ? ' selected' : ''}>${mn(m)}</option>`).join('')}</select></label>
+      <label>Categoria<select id="vgd-cat">${Object.entries(VG_GCAT).map(([k, t]) => `<option value="${k}">${t}</option>`).join('')}</select></label>
+      <label>Data<input type="date" id="vgd-data" min="${x.ida}" max="${x.volta}" value="${vgdData}"></label>
+      <label>Cidade<select id="vgd-par">${r.paradas.map(p => `<option value="${p.id}"${pq && p.id === pq.id ? ' selected' : ''}>${esc(p.nome)}</option>`).join('')}</select></label>
+      <label class="vgd-nota">O quê (opcional)<input type="text" id="vgd-nota" maxlength="80" placeholder="Ex.: jantar, metrô, museu"></label>
+    </div>
+    <div class="vg-pa"><button type="button" class="btn" data-vgdadd>+ Gasto</button><span id="vgd-msg" class="subdet" role="status"></span></div>
+    <details class="vgd-fx"><summary>Outras moedas</summary><p class="subdet">US$ e € usam o câmbio do painel com spread e IOF. Para outra moeda, diga quanto 1 unidade vale em reais.</p>
+      ${Object.keys(g.fx).length ? `<ul class="vgd-fxl">${Object.entries(g.fx).map(([m, t]) => `<li><b>${esc(m)}</b><input type="number" min="0" step="0.0001" data-vgdfx="${esc(m)}" value="${t}" aria-label="Quanto vale 1 ${esc(m)} em reais"><button type="button" class="vg-x mini" data-vgdfxdel="${esc(m)}" aria-label="Remover">×</button></li>`).join('')}</ul>` : ''}
+      <div class="vgr-dnovo"><input type="text" id="vgd-fxm" maxlength="3" placeholder="Código (GBP, JPY…)" aria-label="Código da moeda"><input type="number" id="vgd-fxv" min="0" step="0.0001" placeholder="1 vale R$" aria-label="Quanto vale em reais"><button type="button" class="btn tiny ghost" data-vgdfxadd>Adicionar</button></div></details>`;
+  // gastos lançados, por dia
+  const datas = [...new Set(g.gastos.map(e => e.data))].sort().reverse();
+  $('vgd-lista').innerHTML = !datas.length ? '<p class="hint">Nenhum gasto lançado ainda.</p>' : datas.map(d => { const its = g.gastos.filter(e => e.data === d), qq = dias.find(y => y.d === d), tt = porDia[d] || 0, pl = qq ? qq.plan : 0, pp = vgDurParDe(x, dias, d);
+    return `<div class="vgd-grp"><div class="vgd-gh"><b>${vgSem(d)} ${vgBrd(d)}</b><span class="subdet">${esc(pp ? pp.nome : '')}</span><span class="vgd-gt ${pl - tt >= 0 ? 'ok' : 'neg'}">${fm(tt)}${pl ? ` de ${fm(pl)}` : ''}</span></div>
+      <ul class="vgd-its">${its.map(e => { const p = r.paradas.find(y => y.id === e.par); return `<li><span class="vgd-cat">${VG_GCAT[e.cat] || 'Outros'}</span><span class="vgd-nt">${esc(e.nota || '')}${p && pp && p.id !== pp.id ? ` <span class="subdet">${esc(p.nome)}</span>` : ''}</span><span class="vg-num">${e.moeda && e.moeda !== 'BRL' ? `<span class="subdet">${mn(e.moeda)} ${num(+e.valor, 2)}</span> ` : ''}<b>${fm(vgDurBrl(x, e))}</b></span><button type="button" class="vg-x mini" data-vgddel="${e.id}" aria-label="Apagar gasto">×</button></li>`; }).join('')}</ul></div>`; }).join('');
+  // resumo por país, por mês e por categoria
+  const agrupa = (chave) => { const m = {}; dias.forEach(y => { const k = chave(y.d, y.p); m[k] = m[k] || { plan: 0, gasto: 0, dias: 0, passou: 0 }; m[k].plan += y.plan; m[k].dias++; if (ate && y.d <= ate) m[k].passou++; });
+    g.gastos.forEach(e => { const p = r.paradas.find(y => y.id === e.par) || vgDurParDe(x, dias, e.data), k = chave(e.data, p); m[k] = m[k] || { plan: 0, gasto: 0, dias: 0, passou: 0 }; m[k].gasto += vgDurBrl(x, e); }); return m; };
+  const tab = (tit, m, nome) => `<div class="tscroll"><table class="vgr-rtbl vgc-tbl"><thead><tr><th>${tit}</th><th class="vg-num">Dias</th><th class="vg-num">Planejado</th><th class="vg-num">Gasto</th><th class="vg-num">Diferença</th><th class="vg-num">Gasto por dia</th></tr></thead><tbody>${Object.entries(m).map(([k, o]) => `<tr><td>${nome(k)}</td><td class="vg-num">${o.dias}</td><td class="vg-num">${fm(o.plan)}</td><td class="vg-num"><b>${fm(o.gasto)}</b></td><td class="vg-num ${o.plan - o.gasto >= 0 ? 'pos' : 'neg'}">${o.gasto ? fm(o.plan - o.gasto) : '—'}</td><td class="vg-num">${o.gasto && (o.passou || o.dias) ? fm(o.gasto / (o.passou || o.dias)) : '—'}</td></tr>`).join('')}</tbody></table></div>`;
+  const cats = {}; g.gastos.forEach(e => { const k = VG_GCAT[e.cat] ? e.cat : 'outros'; cats[k] = (cats[k] || 0) + vgDurBrl(x, e); });
+  $('vgd-resumo').innerHTML = `<div class="vg-lbl">Por país</div>${tab('País', agrupa((d, p) => p ? p.pais : '??'), k => esc(vgPaisNome(k) || k))}
+    <div class="vg-lbl">Por mês</div>${tab('Mês', agrupa(d => d.slice(0, 7)), k => mLabel(mIndex(k)))}
+    ${gasto ? `<div class="vg-lbl">Por categoria</div><div class="tscroll"><table class="vgr-rtbl vgc-tbl"><thead><tr><th>Categoria</th><th class="vg-num">Gasto</th><th class="vg-num">%</th></tr></thead><tbody>${Object.entries(cats).sort((a, b) => b[1] - a[1]).map(([k, val]) => `<tr><td>${VG_GCAT[k]}</td><td class="vg-num"><b>${fm(val)}</b></td><td class="vg-num">${num(val / gasto * 100, 0)}%</td></tr>`).join('')}</tbody></table></div>` : ''}
+    <p class="hint">Planejado: hospedagem ainda não paga, dia a dia (comida e transporte local), passeios e trechos entre cidades que não estavam Definidos, no preço de hoje. O que já estava pago antes (Definido) e as passagens de ida e volta não entram, então lance só o que pagar durante a viagem. Gasto por dia: dividido pelos dias que já passaram naquele país ou mês.</p>`;
+}
+document.addEventListener('click', e => {
+  const t = e.target.closest('[data-vgdadd],[data-vgddel],[data-vgdfxadd],[data-vgdfxdel]'); if (!t || !state.viag) return;
+  const x = vgRotSel(); if (!x) return; const g = vgDurNorm(x), d = t.dataset;
+  if (d.vgdadd != null) {
+    const val = +String($('vgd-valor').value).replace(',', '.'); if (!(val > 0)) { $('vgd-msg').textContent = 'Digite o valor.'; $('vgd-valor').focus(); return; }
+    const data = $('vgd-data').value || vgdData, m = $('vgd-moeda').value;
+    g.gastos.push({ id: vgId(), data, valor: Math.round(val * 100) / 100, moeda: m, cat: $('vgd-cat').value, par: $('vgd-par').value, nota: ($('vgd-nota').value || '').trim().slice(0, 80) });
+    g.ultMoeda = m; vgdData = data; if (x.st !== 'concluida' && x.st !== 'andamento' && data <= vgHojeIso() && vgHojeIso() < x.volta) x.st = 'andamento';
+    save(); vgRe(); setTimeout(() => { const i = $('vgd-valor'); if (i) i.focus(); const s = $('vgd-msg'); if (s) s.textContent = 'Gasto lançado.'; }, 40); return;
+  }
+  if (d.vgddel) { g.gastos = g.gastos.filter(y => y.id !== d.vgddel); save(); vgRe(); return; }
+  if (d.vgdfxadd != null) { const m = ($('vgd-fxm').value || '').trim().toUpperCase().replace(/[^A-Z]/g, ''), v = +$('vgd-fxv').value; if (m.length !== 3 || ['BRL', 'USD', 'EUR'].includes(m) || !(v > 0)) { $('vgd-fxm').focus(); return; } g.fx[m] = v; save(); vgRe(); return; }
+  if (d.vgdfxdel) { if (g.gastos.some(y => y.moeda === d.vgdfxdel)) { alert('Há gastos nessa moeda. Apague ou mude esses gastos antes.'); return; } delete g.fx[d.vgdfxdel]; if (g.ultMoeda === d.vgdfxdel) g.ultMoeda = 'BRL'; save(); vgRe(); return; }
+});
+document.addEventListener('change', e => {
+  const t = e.target; if (!state.viag) return;
+  if (t.id === 'vgd-data') { const x = vgRotSel(); if (!x || !t.value) return; vgdData = t.value; const p = vgDurParDe(x, vgDurDias(x), t.value), s = $('vgd-par'); if (p && s) s.value = p.id; const keep = ['vgd-valor', 'vgd-moeda', 'vgd-cat', 'vgd-nota'].map(id => [id, $(id).value]); vgRe(); keep.forEach(([id, v]) => { const el = $(id); if (el) el.value = v; }); return; }
+  if (t.dataset && t.dataset.vgdfx) { const x = vgRotSel(); if (!x) return; const v = +t.value; if (v > 0) { vgDurNorm(x).fx[t.dataset.vgdfx] = v; save(); vgRe(); } }
+});
+document.addEventListener('keydown', e => { if (e.key === 'Enter' && ['vgd-valor', 'vgd-nota'].includes(e.target.id)) { e.preventDefault(); const b = document.querySelector('[data-vgdadd]'); if (b) b.click(); } });
+
 function renderViagVg() {
   const v = state.viag; vgKpis($('kpi-vgv'));
   const tb = $('tbl-vgv');
@@ -5815,7 +5950,7 @@ function renderViagVg() {
     <td data-l="Total" class="vg-num">${(vgRotNorm(x, v), fm(x.rot.paradas.length ? vgRotResumo(x).total : x.total))}</td>
     <td data-l="Status"><select data-vgvst="${x.id}" aria-label="Status da viagem">${Object.entries(VG_VST).map(([k, n]) => `<option value="${k}"${x.st === k ? ' selected' : ''}>${n}</option>`).join('')}</select></td>
     <td><div class="vg-pa"><button type="button" class="btn tiny" data-vgrabre="${x.id}">Roteiro</button><button type="button" class="btn danger tiny" data-vgvdel="${x.id}">Remover</button></div></td></tr>`).join('')}</tbody>`;
-  const m = MODS.find(x => x.id === 'viag'), lk = [['viagens', 'Mapa e lugares', 'Onde já foi, a lista de lugares, as datas e o sorteio.'], ['viagcmp', 'Comparar', 'Os lugares lado a lado nas suas datas: época, custos, visto e o melhor mês.'], ['viagrot', 'Roteiro', 'Cidades, noites, trechos, rota mais barata, hospedagem e passeios.'], ['viagcus', 'Custos', 'Hoje x projetado, seguro, como pagar, Plano futuro e checklist.']];
+  const m = MODS.find(x => x.id === 'viag'), lk = [['viagens', 'Mapa e lugares', 'Onde já foi, a lista de lugares, as datas e o sorteio.'], ['viagcmp', 'Comparar', 'Os lugares lado a lado nas suas datas: época, custos, visto e o melhor mês.'], ['viagrot', 'Roteiro', 'Cidades, noites, trechos, rota mais barata, hospedagem e passeios.'], ['viagcus', 'Custos', 'Hoje x projetado, seguro, como pagar, Plano futuro e checklist.'], ['viagdur', 'Durante a viagem', '+ Gasto no celular, saldo do dia e resumo por país e mês.']];
   $('vgv-links').innerHTML = lk.map(([t, n, d]) => `<button type="button" class="md-card" style="--mc:${m.cor}" data-tab="${t}"><div class="md-img">${MOD_SVG.viag}</div><h3>${esc(n)}</h3><p>${esc(d)}</p></button>`).join('');
 }
 
@@ -5989,7 +6124,7 @@ function normalizar(s) {
 try { if (quemLocal === 'dono') { const b = JSON.parse(localStorage.getItem('painel-priv')); if (b) aplicarBase(b); } } catch (e) {}
 try { const l = JSON.parse(localStorage.getItem(LSK('painel-fin-v2'))); if (l) state = normalizar(l); } catch (e) {}
 tab = 'modulos';
-const TABS = ['modulos', 'comousar', 'inicio', 'trabvg', 'viagvg', 'viagens', 'viagcmp', 'viagrot', 'viagcus', 'leia', 'global', 'gastos', 'carteira', 'orcamento', 'compras', 'cenarios', 'patrimonio', 'comparador', 'simulador', 'pjpf', 'stock', 'config', 'familia'];
+const TABS = ['modulos', 'comousar', 'inicio', 'trabvg', 'viagvg', 'viagens', 'viagcmp', 'viagrot', 'viagcus', 'viagdur', 'leia', 'global', 'gastos', 'carteira', 'orcamento', 'compras', 'cenarios', 'patrimonio', 'comparador', 'simulador', 'pjpf', 'stock', 'config', 'familia'];
 if (TABS.includes(location.hash.slice(1))) tab = location.hash.slice(1);
 if (!TABS.includes(tab)) tab = 'modulos';
 
@@ -10036,7 +10171,7 @@ $('cpform').addEventListener('submit', async e => {
 });
 
 /* ---------- abas ---------- */
-const BUILD = { modulos: () => {}, comousar: () => {}, inicio: () => {}, trabvg: () => {}, viagvg: () => {}, viagens: () => {}, viagcmp: () => {}, viagrot: () => {}, viagcus: () => {}, leia: buildLeia, global: () => {}, cenarios: buildCenarios, compras: buildCenarios, carteira: buildCarteira, comparador: buildComparador, simulador: buildSimulador, gastos: buildGastos, orcamento: buildOrcamento, config: buildConfig, pjpf: buildPj, stock: buildStock, familia: () => carregarPerfis(), patrimonio: () => {} };
+const BUILD = { modulos: () => {}, comousar: () => {}, inicio: () => {}, trabvg: () => {}, viagvg: () => {}, viagens: () => {}, viagcmp: () => {}, viagrot: () => {}, viagcus: () => {}, viagdur: () => {}, leia: buildLeia, global: () => {}, cenarios: buildCenarios, compras: buildCenarios, carteira: buildCarteira, comparador: buildComparador, simulador: buildSimulador, gastos: buildGastos, orcamento: buildOrcamento, config: buildConfig, pjpf: buildPj, stock: buildStock, familia: () => carregarPerfis(), patrimonio: () => {} };
 // (i) de cada seção: o que mostra e de onde vêm os números (chave: aba:data-nav)
 const INFO_SEC = {
   'comousar:Resumo': 'Para cada módulo: se já tem o mínimo para funcionar (os obrigatórios), quantos opcionais você resolveu e um botão para o próximo passo. Um opcional conta como resolvido quando você preenche ou marca que não tem.',
@@ -10056,6 +10191,8 @@ const INFO_SEC = {
   'viagens:Sortear': 'O sorteio escolhe entre os lugares da lista que passam nos filtros (status, tipo de viagem, boa época nas datas e teto de gasto). Quanto mais estrelas de vontade, maior a chance.',
   'viagens:Lista de lugares': 'Os lugares que você quer conhecer. Os que vêm das sugestões têm custos e épocas de referência; as cidades da busca (cerca de 2.000) ficam no lugar certo do mapa e usam o custo médio do país, com a passagem estimada pela distância de São Paulo. Um lugar que não está em nenhuma das duas usa a média do continente. Ajuste tudo em Editar.',
   'viagens:Países que já fui': 'Lista dos países marcados como Já fui, por continente. A conta usa os 195 países: 193 da ONU, Vaticano e Palestina. Territórios como Groenlândia e Porto Rico podem ser marcados, mas ficam fora da conta.',
+  'viagdur:Hoje': 'O planejado do dia é a hospedagem ainda não paga daquela cidade, o dia a dia (comida e transporte local) e os passeios e trechos que não estavam Definidos, no preço de hoje. Lance só o que pagar durante a viagem.',
+  'viagdur:Resumo': 'Por país e por mês: dias, planejado, gasto e quanto gastou por dia (dividido pelos dias que já passaram). Quando a viagem estiver Concluída, a Média por estilo em Custos passa a usar estes gastos.',
   'viagcus:Custos': 'Preço de hoje: o roteiro inteiro com o câmbio de hoje. Já definido: o que você marcou como Definido ou já pago, que fica no preço travado. Projetado: o resto corrigido até a data da viagem pela inflação lá fora ou pelo IPCA. Seguro: estimativa por pessoa por dia conforme o continente, até você digitar o valor que achou.',
   'viagcus:Como pagar': 'A caixinha é uma meta: o dinheiro continua investido até a viagem, então no plano o gasto entra no mês da ida. No parcelado, cada parcela entra no mês dela. O valor usado é o projetado.',
   'viagcus:No Plano futuro': 'Projeção real coloca os pagamentos da viagem no seu plano como gasto. Só simulação deixa a viagem em Itens dos módulos para comparar, sem mudar a projeção. A diferença no fim do plano inclui o que o dinheiro renderia.',
@@ -10150,7 +10287,7 @@ function infoSecoes() {
       if (h && !h.id) h.append(btn); else if (h) h.after(btn); else if (lg) lg.append(btn); }); });
 }
 infoSecoes();
-const RENDER = { modulos: renderModulos, comousar: renderComoUsar, inicio: renderHome, trabvg: renderTrabVg, viagvg: renderViagVg, viagens: renderViagens, viagcmp: renderViagCmp, viagrot: renderViagRot, viagcus: renderViagCus, leia: () => {}, global: renderGlobal, cenarios: renderCenarios, compras: renderCenarios, carteira: renderCarteira, comparador: renderComparador, simulador: renderSimulador, gastos: () => { renderGastos(); renderFechamento(); renderHistorico(); }, orcamento: renderOrcamento, config: renderConfig, pjpf: renderPj, stock: renderStock, familia: renderFamilia, patrimonio: renderPatr };
+const RENDER = { modulos: renderModulos, comousar: renderComoUsar, inicio: renderHome, trabvg: renderTrabVg, viagvg: renderViagVg, viagens: renderViagens, viagcmp: renderViagCmp, viagrot: renderViagRot, viagcus: renderViagCus, viagdur: renderViagDur, leia: () => {}, global: renderGlobal, cenarios: renderCenarios, compras: renderCenarios, carteira: renderCarteira, comparador: renderComparador, simulador: renderSimulador, gastos: () => { renderGastos(); renderFechamento(); renderHistorico(); }, orcamento: renderOrcamento, config: renderConfig, pjpf: renderPj, stock: renderStock, familia: renderFamilia, patrimonio: renderPatr };
 function renderTab() { planCache = null; try { RENDER[tab](); } catch (err) { console.error(err); setSave('erro ao recalcular: ' + (err && err.message || err)); } }
 let navAbertos = null;
 try { navAbertos = JSON.parse(localStorage.getItem('painel-nav-abertos')); } catch (e) {}
@@ -10213,7 +10350,7 @@ const MODS = [
   { id: 'uso', corNav: '#D4A72C', nome: 'Como usar', cor: 'var(--accent)', fixo: true, vg: 'comousar', desc: 'O que cada módulo faz, o que é obrigatório preencher, o que é opcional e quanto você já configurou.', tabs: ['comousar'] },
   { id: 'fin', corNav: '#7FA6E0', nome: 'Financeiro', cor: 'var(--s1)', fixo: true, vg: 'inicio', desc: 'Gastos, patrimônio, carteira, plano futuro e cenários. Recebe o que os outros módulos planejam.', tabs: ['inicio', 'global', 'gastos', 'patrimonio', 'carteira', 'comparador', 'simulador', 'orcamento', 'cenarios', 'familia'] },
   { id: 'trab', corNav: '#E09A63', nome: 'Trabalho e Bens', cor: 'var(--s2)', vg: 'trabvg', desc: 'Compras e bens (imóveis, carros, ...), stock options e PJ e PF. O que entra no plano vai para o Plano futuro.', tabs: ['trabvg', 'compras', 'stock', 'pjpf'] },
-  { id: 'viag', corNav: '#5fc2f5', nome: 'Viagens', cor: 'var(--s8)', vg: 'viagens', desc: 'Mapa de onde já foi e de onde quer ir, sorteio, comparação de destinos nas suas datas o roteiro com a rota mais barata e os custos ligados ao Plano futuro. Durante a viagem e sabático vêm a seguir.', tabs: ['viagvg', 'viagens', 'viagcmp', 'viagrot', 'viagcus'] },
+  { id: 'viag', corNav: '#5fc2f5', nome: 'Viagens', cor: 'var(--s8)', vg: 'viagens', desc: 'Mapa de onde já foi e de onde quer ir, sorteio, comparação de destinos nas suas datas o roteiro com a rota mais barata, os custos ligados ao Plano futuro e os gastos durante a viagem.', tabs: ['viagvg', 'viagens', 'viagcmp', 'viagrot', 'viagcus', 'viagdur'] },
   { id: 'neg', corNav: '#a3e05a', nome: 'Negócios', cor: 'var(--s7)', breve: true, desc: 'Pesquisa de mercado, DRE, passo a passo para abrir empresa e oportunidades de custo.', tabs: [] }
 ];
 const modDe = t => (MODS.find(m => m.tabs.includes(t)) || {}).id || null;
@@ -11147,6 +11284,7 @@ const LM_MODS = [
   'Viagens',
   ['viagvg', 'O resumo do módulo: países que você já conhece, lugares na lista e as viagens escolhidas, com datas, total estimado e status.', 'para ver as próximas viagens.'],
   ['viagens', 'Mapa-múndi com os países em que você já foi e os lugares que quer conhecer, a lista de lugares com estrelas de vontade e o sorteio entre eles para as suas datas.', 'quando bater a vontade de viajar e não souber para onde.'],
+  ['viagdur', 'Durante a viagem: + Gasto na hora (com moeda, categoria e cidade), saldo do dia contra o planejado e resumo por país, por mês e por categoria.', 'durante a viagem, para acompanhar quanto já gastou.'],
   ['viagcus', 'Os custos de uma viagem: preço de hoje, já definido e projetado na data, seguro viagem, outros custos, custo de oportunidade, como pagar (caixinha, parcelado ou à vista), efeito no Plano futuro, média por estilo e checklist.', 'quando for decidir quanto guardar e como pagar.'],
   ['viagrot', 'O roteiro de uma viagem: cidades na ordem com noites, trechos com tempo e preço, rota otimizada (menor custo e menos tempo), dia a dia, hospedagem, passeios com estrelas, sugestões por tipo de viagem e links para pesquisar.', 'quando decidir para onde vai e começar a montar a viagem.'],
   ['viagcmp', 'Até 5 destinos lado a lado nas suas datas: época, passagem, hospedagem, dia a dia, seguro, total, visto, custo de oportunidade e o melhor mês para ir.', 'para decidir entre destinos.'],
