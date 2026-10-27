@@ -646,6 +646,31 @@ tr.novo-row td { animation: novoRow 2.4s ease; }
 .meter i.on { background: var(--c, var(--accent)); }
 [hidden] { display: none !important; }
 
+
+/* ---------- itens dos módulos (Plano futuro) ---------- */
+.it-res { display: flex; flex-wrap: wrap; gap: 6px 16px; margin: 4px 0 10px; font-size: 12.5px; color: var(--muted); }
+.it-res b { color: var(--ink); }
+#tbl-itens td, #tbl-itens th { vertical-align: middle; }
+#tbl-itens tr.it-g td { background: var(--field); font-family: var(--f-head); font-size: 11px; font-weight: 600; letter-spacing: .5px; text-transform: uppercase; color: var(--muted); }
+#tbl-itens tr.it-g td i { display: inline-block; width: 9px; height: 9px; border-radius: 3px; margin-right: 7px; vertical-align: 0; }
+#tbl-itens td.it-v { white-space: normal; min-width: 200px; text-align: left; }
+#tbl-itens td.it-v .subdet { display: block; }
+#tbl-itens input[type="number"] { width: 70px; }
+#tbl-itens select { width: auto; }
+#tbl-itens tr.it-sim td.name, #tbl-itens tr.it-sim td.it-v { color: var(--muted); }
+#tbl-itens .it-tipo { font-size: 10px; }
+#tbl-itens td.name a { color: var(--accent); }
+@media (max-width: 700px) {
+  #tbl-itens thead { display: none; }
+  #tbl-itens, #tbl-itens tbody { display: block; }
+  #tbl-itens tr { display: grid; grid-template-columns: 1fr auto; gap: 4px 10px; padding: 10px 2px; border-bottom: 1px solid var(--line); }
+  #tbl-itens tr.it-g { display: block; padding: 0; }
+  #tbl-itens tr.it-g td { display: block; }
+  #tbl-itens td { display: block; border: 0; padding: 0; text-align: left !important; }
+  #tbl-itens td.name { grid-column: 1 / -1; }
+  #tbl-itens td.it-v { grid-column: 1 / -1; min-width: 0; }
+  #tbl-itens td[data-l]::before { content: attr(data-l) " "; font-size: 10px; text-transform: uppercase; letter-spacing: .5px; color: var(--faint); }
+}
 /* ---------- módulos (tela de entrada) e menu por módulo ---------- */
 .fora-mod { display: none !important; }
 .nav-head:has(.nav-det) { flex-wrap: wrap; row-gap: 0; }
@@ -866,7 +891,7 @@ a.lm-ir:hover { border-bottom-style: solid; }
     </div>
     <div class="nav-mobile-sub" id="navMobileSub"></div>
   </div>
-  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 187</div></div>
+  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 188</div></div>
 </nav>
 <div class="sino-pop" id="sino-pop" role="dialog" aria-label="Central de avisos" hidden></div>
 <div class="tour-pop" id="tour-pop" role="dialog" aria-labelledby="tour-tit" hidden></div>
@@ -1432,11 +1457,6 @@ a.lm-ir:hover { border-bottom-style: solid; }
         <label>Horizonte (anos)<input type="number" step="1" min="1" max="40" data-bind="plan::anos"></label>
         <p class="hint" style="grid-column:1/-1">Como na planilha: rendimento = investido × taxa ÷ 12; a sobra do mês mais o rendimento voltam para o investimento na proporção do reinvestimento, e o resto fica parado.</p>
       </fieldset>
-      <fieldset>
-        <legend>Compras no plano</legend>
-        <div id="pl-inc" style="grid-column:1/-1;display:flex;flex-direction:column;gap:6px"></div>
-        <p class="hint" style="grid-column:1/-1">Bens marcados como "Projeção real" em Compras e bens: parcelas, entrada e custos de ter entram no plano. Os demais ficam só para simular nos cenários.</p>
-      </fieldset>
         </div>
       </section>
       <section data-nav="Receitas e custos" class="panel">
@@ -1460,6 +1480,13 @@ a.lm-ir:hover { border-bottom-style: solid; }
           <div><div class="row" style="margin-bottom:0"><h3 class="orc-h">Mudanças programadas</h3><button class="btn ghost tiny" type="button" data-addpl="mud">+ Mudança</button></div><div class="tscroll"><table id="tbl-mud"></table></div></div>
           <div><div class="row" style="margin-bottom:0"><h3 class="orc-h">Eventos</h3><button class="btn ghost tiny" type="button" data-addpl="ev">+ Evento</button></div><div class="tscroll"><table id="tbl-ev"></table></div></div>
         </div>
+      </section>
+      <section data-nav="Itens dos módulos" class="panel" id="pl-itens">
+        <h2>Itens dos módulos</h2>
+        <p class="sub">Tudo o que os módulos planejam, no mesmo formato: quando começa, quanto custa ou rende e por quanto tempo. Em <b>Projeção real</b> o item entra no plano (linha Plano da Visão global e fechamento do mês); em <b>Só simulação</b> fica de fora e serve para testar nos cenários. A mesma escolha aparece no cadastro de cada item.</p>
+        <div class="it-res" id="pl-itens-res"></div>
+        <div class="tscroll" id="pl-inc"><table id="tbl-itens"></table></div>
+        <p class="hint" style="margin-top:8px">Chance de acontecer: só informativa por enquanto. O plano usa o valor cheio dos itens em Projeção real; a chance vai aparecer na linha do tempo e no patrimônio esperado.</p>
       </section>
       <section data-nav="Plano mês a mês" class="panel chart">
         <div class="row"><h2>Plano mês a mês</h2><div class="seg" id="pl-per" role="group" aria-label="Período"></div></div>
@@ -1862,7 +1889,7 @@ a.lm-ir:hover { border-bottom-style: solid; }
     return new Promise(resolve => { const { data } = sb.auth.onAuthStateChange(async (ev) => { if (ev !== 'PASSWORD_RECOVERY') return; const s = prompt('Digite a nova senha (mínimo 8 caracteres):'); if (s && s.length >= 8) { const { error } = await sb.auth.updateUser({ password: s }); alert(error ? 'Não deu para trocar a senha: ' + error.message : 'Senha trocada.'); } }); resolve(data); });
   }
   // ---------- rodapé: compartilhar, administração e sair ----------
-  const SITE_V = 67;
+  const SITE_V = 68;
   const escH = v => String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const dataBR = v => v ? new Date(v).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' }) : '–';
   const css2 = `.side-foot .r{flex-wrap:wrap}.side-foot .lg-acoes{margin-left:auto;display:inline-flex;gap:10px}
@@ -2232,6 +2259,7 @@ function normalizar(s) {
   if (!Array.isArray(s.plan.mud)) s.plan.mud = [];
   if (!Array.isArray(s.plan.ev)) s.plan.ev = [];
   if (!s.app || typeof s.app !== 'object') s.app = {};
+  if (!s.plan.chance || typeof s.plan.chance !== 'object' || Array.isArray(s.plan.chance)) s.plan.chance = {};
   if (!Array.isArray(s.app.off)) s.app.off = [];
   if (!Array.isArray(s.plan.inc)) s.plan.inc = [];
   soNormalizar(s);
@@ -5773,7 +5801,7 @@ function renderPlano() {
   $('pl-ini-hint').textContent = `O plano começa no fim de ${mLabel(i0)} com patrimônio de ${fm(+P.valor || 0)}; o primeiro mês projetado é ${mLabel(i0 + 1)}. ${+P.valor > 0 ? `Esse valor é o checkpoint inicial de ${mLabel(i0)}; os próximos checkpoints, salvos no fechamento de cada mês, são comparados com o plano.` : 'Preencha o patrimônio líquido total: ele vira o checkpoint inicial do plano.'}`;
   $('pl-rend').closest('label').hidden = P.rendModo !== 'fixo';
   $('pl-ipca').closest('label').hidden = P.ipcaModo !== 'fixo';
-  $('pl-inc').innerHTML = state.compras.length ? state.compras.map(b => `<label class="check"><input type="checkbox" data-plinc="${b.id}" ${(P.inc || []).includes(b.id) ? 'checked' : ''}> ${esc(b.nome)} <span class="subdet">${mLabel(mIndex(b.mes))}</span></label>`).join('') : '<p class="hint">Nenhuma compra cadastrada.</p>';
+  renderItens();
   // mudanças programadas
   const L = pl.L, opL = sel => L.map(l => `<option value="${esc(l.key)}" ${l.key === sel ? 'selected' : ''}>${esc(l.nome)}${l.pct ? ' (%)' : ''}</option>`).join('');
   $('tbl-mud').innerHTML = `<thead><tr><th>Linha</th><th>A partir de</th><th>Novo valor</th><th></th></tr></thead><tbody>${(P.mud || []).map(m => `<tr><td class="name"><select data-bind="plmud:${m.id}:key" aria-label="Linha">${opL(m.key)}</select></td><td><input type="month" data-bind="plmud:${m.id}:mes" value="${esc(m.mes)}" aria-label="A partir de"></td><td><input type="number" step="100" data-bind="plmud:${m.id}:valor" value="${+m.valor || 0}" aria-label="Novo valor"></td><td><button class="btn danger tiny" type="button" data-delpl="mud:${m.id}">remover</button></td></tr>`).join('') || '<tr><td class="name" colspan="4"><span class="subdet">Nenhuma mudança. Ex.: salário bruto R$ 22.000 a partir de mar/27.</span></td></tr>'}</tbody>`;
@@ -5841,6 +5869,65 @@ document.addEventListener('click', e => {
 });
 document.addEventListener('change', e => { const ds = e.target.dataset || {}, id = ds.plinc || ds.plsel; if (!id) return; const P = state.plan, on = ds.plsel ? e.target.value === 'real' : e.target.checked; P.inc = (P.inc || []).filter(x => x !== id); if (on) P.inc.push(id); save(); if (ds.plsel) { buildCompras(); renderTab(); if ($('compraMsg')) $('compraMsg').innerHTML = `<div class="ok">${on ? 'Entra na projeção real: 06. Plano futuro, linha Plano da Visão global e fechamento.' : 'Só simulação: aparece nos cenários de 08, fora da projeção real.'}</div>`; } else renderOrcamento(); });
 
+
+/* ---------- contrato comum dos itens: cada módulo entrega o que planeja no mesmo formato ----------
+   item = { id, mod, sub, nome, tipo: bem|negocio|receita|gasto, ini 'AAAA-MM', unico (R$, + entra / − sai), mensal, meses, anual,
+            resumo, chance 0–100, uso: real|sim, fixo (uso não muda aqui), tab/sec (onde editar) }
+   O cálculo continua no módulo (parcelas, venda, waterfall das stock options); o item é a forma de apresentar e de escolher o uso. */
+const IT_TIPO = { bem: 'Compra de bem', negocio: 'Novo negócio', receita: 'Receita', gasto: 'Gasto' };
+const chanceItem = id => { const v = ((state.plan || {}).chance || {})[id]; return v == null || !isFinite(+v) ? 100 : Math.min(100, Math.max(0, +v)); };
+function itensModulos() {
+  const P = state.plan, out = [];
+  (state.compras || []).forEach(b => {
+    const sch = schedule(b, b.modo), n = sch.parc.length, p1 = sch.parc[0] || 0, vd = b.venda && b.venda.ativa && b.venda.mes;
+    const partes = [sch.lump > 0 ? fm(sch.lump) + (n ? ' de entrada e custos' : ' à vista') : '', n ? `${n}× ${fm(p1)}` : '', b.tipo === 'negocio' ? 'lucro mensal conforme o cadastro' : 'custos de ter todo mês'].filter(Boolean);
+    out.push({ id: 'compra:' + b.id, mod: 'trab', sub: 'Compras e bens', tab: 'compras', sec: 'Compras e financiamentos', nome: b.nome || 'Bem', tipo: b.tipo === 'negocio' ? 'negocio' : 'bem',
+      ini: b.mes, unico: -(sch.lump || 0), mensal: -p1, meses: n, resumo: partes.join(' + ') + (vd ? ` · venda em ${mLabel(mIndex(b.venda.mes))}` : ''), uso: (P.inc || []).includes(b.id) ? 'real' : 'sim' });
+  });
+  ((state.so || {}).empresas || []).forEach(e => {
+    const ev = e.ev || {}, evI = soMes(ev.mes), ok = ev.definido && evI != null && +ev.base > 0;
+    let liq = 0; if (ok) try { liq = Math.round(soEvento(e, +ev.base, evI).liq || 0); } catch (er) {}
+    out.push({ id: 'so:' + e.id, mod: 'trab', sub: 'Stock options', tab: 'stock', sec: 'Evento de liquidez', nome: 'Stock options: ' + (e.nome || 'empresa'), tipo: 'receita', ini: ok ? ev.mes : '',
+      unico: liq, mensal: 0, meses: 0, resumo: ok ? (liq > 0 ? `${fm(liq)} líquido no cenário base` : 'nada a receber no cenário base') : 'defina o evento de liquidez para entrar no plano',
+      uso: ok && ev.plano ? 'real' : 'sim', bloq: !ok });
+  });
+  (P.ev || []).forEach(e => {
+    const v = +e.valor || 0, rec = e.tipo === 'receita';
+    out.push({ id: 'ev:' + e.id, mod: 'fin', sub: 'Plano futuro', tab: 'orcamento', sec: 'Mudanças e eventos', nome: e.nome || 'Evento', tipo: rec ? 'receita' : 'gasto', ini: e.mes,
+      unico: rec ? v : -v, mensal: 0, meses: 0, anual: !!e.anual, resumo: fm(v) + (e.anual ? ' todo ano, corrigido pelo IPCA' : ' uma vez'), uso: 'real', fixo: true });
+  });
+  out.forEach(x => { x.chance = chanceItem(x.id); });
+  return out;
+}
+function setUsoItem(id, uso) {
+  const P = state.plan, on = uso === 'real', [k, x] = [id.slice(0, id.indexOf(':')), id.slice(id.indexOf(':') + 1)];
+  if (k === 'compra') { P.inc = (P.inc || []).filter(y => y !== x); if (on) P.inc.push(x); }
+  else if (k === 'so') { const e = ((state.so || {}).empresas || []).find(y => y.id === x); if (!e || !e.ev || !e.ev.definido) return false; e.ev.plano = on; }
+  else return false;
+  planCache = null; save(); return true;
+}
+function renderItens() {
+  const tb = $('tbl-itens'); if (!tb) return;
+  const its = itensModulos(), nR = its.filter(x => x.uso === 'real').length;
+  $('pl-itens-res').innerHTML = its.length ? `<span><b>${nR}</b> em Projeção real</span><span><b>${its.length - nR}</b> só simulação</span>` : '';
+  if (!its.length) { tb.innerHTML = '<tbody><tr><td class="hint">Nenhum item ainda. Cadastre bens em Trabalho e Bens › Compras e bens, eventos de stock options ou eventos aqui no Plano.</td></tr></tbody>'; return; }
+  const grupos = MODS.filter(m => its.some(x => x.mod === m.id));
+  tb.innerHTML = `<thead><tr><th>Item</th><th>Tipo</th><th>Quando</th><th>Valores</th><th>Chance</th><th>Uso</th></tr></thead><tbody>${grupos.map(m => `<tr class="it-g"><td colspan="6"><i style="background:${m.cor}"></i>${esc(m.nome)}</td></tr>` +
+    its.filter(x => x.mod === m.id).sort((a, b) => (a.ini || '9999') < (b.ini || '9999') ? -1 : 1).map(x => `<tr class="${x.uso === 'sim' ? 'it-sim' : ''}">
+      <td class="name"><a href="#" data-lmtab="${x.tab}" data-lmsec="${esc(x.sec || '')}">${esc(x.nome)}</a> <span class="subdet">${esc(x.sub)}</span></td>
+      <td data-l="Tipo"><span class="chip ${x.unico >= 0 && x.mensal >= 0 ? 'best' : 'info'} it-tipo">${IT_TIPO[x.tipo] || x.tipo}</span></td>
+      <td data-l="Quando">${x.ini ? mLabel(mIndex(x.ini)) : '–'}</td>
+      <td class="it-v">${esc(x.resumo)}</td>
+      <td data-l="Chance"><input type="number" min="0" max="100" step="5" data-ichance="${esc(x.id)}" value="${x.chance}" aria-label="Chance de acontecer (%) de ${esc(x.nome)}">%</td>
+      <td data-l="Uso">${x.fixo ? '<span class="subdet">Projeção real (evento do plano)</span>' : `<select data-iuso="${esc(x.id)}" aria-label="Uso de ${esc(x.nome)}"${x.bloq ? ' disabled title="Defina o evento de liquidez primeiro"' : ''}><option value="sim">Só simulação</option><option value="real"${x.uso === 'real' ? ' selected' : ''}>Projeção real</option></select>`}</td></tr>`).join('')).join('')}</tbody>`;
+}
+document.addEventListener('change', e => {
+  const u = e.target.closest('[data-iuso]');
+  if (u) { if (setUsoItem(u.dataset.iuso, u.value)) renderTab(); return; }
+  const c = e.target.closest('[data-ichance]');
+  if (c) { const P = state.plan; P.chance = P.chance && typeof P.chance === 'object' ? P.chance : {}; const v = Math.min(100, Math.max(0, Math.round(+c.value || 0))); if (v === 100) delete P.chance[c.dataset.ichance]; else P.chance[c.dataset.ichance] = v; c.value = v; save(); }
+});
+
 let fMes = mKey(HOJE_IDX);
 function guardarFoco() { const a = document.activeElement; return a && a.dataset && a.dataset.bind ? a.dataset.bind : null; }
 function voltarFoco(b) { if (!b) return; const el = document.querySelector(`[data-bind="${CSS.escape(b)}"]`); if (el) { el.focus({ preventScroll: true }); if (el.select) el.select(); } }
@@ -5857,7 +5944,7 @@ const TOUR_PL = [
   { sel: '[data-bind="orcded:das:valor"]', t: 'Deduções da empresa', o: 'DAS: o imposto do Simples, em % do faturamento (6% no Anexo III para começar). Contabilidade: a mensalidade do contador.', p: 'Saem do faturamento antes de virar dinheiro seu.', ok: () => true, so: () => orcModelo() === 'pj' },
   { sel: '#tbl-orc-cat', t: 'Custos por categoria', o: 'Quanto você gasta por mês em cada categoria. Se estava tudo zerado, já preenchi uma sugestão (80% da receita líquida, pesos da POF/IBGE); troque pelos seus valores.', p: 'Os custos definem a sobra. A coluna Reajuste diz como cada linha sobe no futuro.', ok: () => cats().some(c => +c.orc > 0) },
   { sel: '#orc-resumo', t: 'Sobra para investir', o: 'Receita líquida menos custos: o que sobra por mês para investir.', p: 'É o número mais importante do plano. Se estiver baixo ou negativo, reveja os custos ou a receita.', ok: () => true },
-  { sel: '#pl-inc', t: 'Compras no plano', o: 'Carro, imóvel e outros bens marcados como "Projeção real" em Compras e bens. Marque aqui o que entra no plano.', p: 'Parcelas, entrada e custos de ter um bem reduzem a sobra nos meses em que acontecem.', ok: () => true },
+  { sel: '#pl-inc', t: 'Itens dos módulos', o: 'Bens, stock options e eventos que os módulos planejam. Em cada um, escolha Projeção real (entra no plano) ou Só simulação.', p: 'Parcelas, entrada e custos de ter um bem reduzem a sobra nos meses em que acontecem.', ok: () => true },
   { sel: '#p-orcamento [data-nav="Mudanças e eventos"]', t: 'Mudanças e eventos', o: 'Um aumento de salário a partir de um mês, ou um gasto ou receita pontual: férias, 13º, bônus, IPVA.', p: 'Deixa o plano mais perto do real nos meses que fogem do típico.', ok: () => true }
 ];
 let tourI = -1, tourEl = null;
@@ -6217,6 +6304,7 @@ $('cpform').addEventListener('submit', async e => {
 const BUILD = { modulos: () => {}, inicio: () => {}, leia: buildLeia, global: () => {}, cenarios: buildCenarios, compras: buildCenarios, carteira: buildCarteira, comparador: buildComparador, simulador: buildSimulador, gastos: buildGastos, orcamento: buildOrcamento, config: buildConfig, pjpf: buildPj, stock: buildStock, familia: () => carregarPerfis(), patrimonio: () => {} };
 // (i) de cada seção: o que mostra e de onde vêm os números (chave: aba:data-nav)
 const INFO_SEC = {
+  'orcamento:Itens dos módulos': 'A lista única do que os módulos planejam (compras e bens, stock options e os eventos do próprio plano), cada um com quando, quanto, chance de acontecer e se entra na projeção real ou fica só para simular.',
   'modulos:Escolher módulos': 'Quais módulos aparecem para você. O administrador decide quais estão disponíveis; aqui você escolhe, entre eles, o que quer ver. Desligar não apaga nada.',
   'config:Módulos': 'Só o administrador vê. Define quais módulos ficam disponíveis para todas as pessoas que usam o painel.',
   'global:Projeção': 'Quanto você terá ao longo do tempo. Tracejado: o plano do 06. Plano futuro. Linhas cheias: cada cenário do 07, partindo do último checkpoint, com renda, gastos, parcelas e rendimento reinvestido todo mês. Pontos vermelhos: checkpoints reais. Os botões mudam o período.',
@@ -6797,6 +6885,7 @@ function soPlanEvs() {
   return out;
 }
 const planEvs = P => (P.ev || []).concat(soPlanEvs());
+// chance de acontecer por item (informativa nesta etapa): { 'compra:<id>' | 'so:<id>' | 'ev:<id>': 0–100 }
 function soQuebra(e, evI) {
   // menor valor de venda a partir do qual você recebe algo
   const f = V => soEvento(e, V, evI).liq > 0; let hi = Math.max(1, +e.ev.base || (+e.preco || 1) * (+e.fd || 1));
