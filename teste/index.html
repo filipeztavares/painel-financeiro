@@ -1038,6 +1038,15 @@ a.lm-ir:hover { border-bottom-style: solid; }
   .vg-ctbl th[scope="row"] { white-space: normal; min-width: 88px; max-width: 96px; font-size: 9.5px; }
   .vg-ctbl th[scope="col"], .vg-ctbl td { min-width: 150px; }
 }
+.vg-sug { width: 100%; max-height: 280px; }
+.vg-sug button { align-items: baseline; }
+.vg-sug button b { min-width: 0; font-weight: 600; }
+.vg-sug button span { margin-left: auto; text-align: right; }
+.vg-sug button.vg-sug-novo b { font-weight: 400; }
+.vg-sug .vg-sug-h { padding: 6px 10px 2px; font-size: 11px; color: var(--muted); }
+.vg-lst-dt { font-size: 13px; color: var(--muted); margin: 10px 0 6px; }
+.vg-lst-dt b { color: var(--ink, inherit); font-weight: 600; }
+.vg-lst-dt a { margin-left: 6px; }
 </style>
 
 
@@ -1085,7 +1094,7 @@ a.lm-ir:hover { border-bottom-style: solid; }
     </div>
     <div class="nav-mobile-sub" id="navMobileSub"></div>
   </div>
-  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 194</div></div>
+  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 195</div></div>
 </nav>
 <div class="sino-pop" id="sino-pop" role="dialog" aria-label="Central de avisos" hidden></div>
 <div class="tour-pop" id="tour-pop" role="dialog" aria-labelledby="tour-tit" hidden></div>
@@ -1181,18 +1190,15 @@ a.lm-ir:hover { border-bottom-style: solid; }
       <div class="vg-leg"><span><i class="vg-sw fui"></i>País em que já fui</span><span><i class="vg-sw quero"></i>Quero ir</span><span><i class="vg-sw talvez"></i>Talvez</span><span><i class="vg-dot st-fui"></i>Lugar em que já fui</span></div>
       <div class="vg-cont" id="vg-cont"></div>
     </section>
-    <section data-nav="Sortear" class="panel">
-      <h2>Datas e sorteio</h2>
-      <p class="sub">Escolha as datas e o jeito da viagem. O sorteio escolhe um lugar da sua lista, com mais chance para os que têm mais estrelas de vontade.</p>
+    <section data-nav="Datas" class="panel">
+      <h2>Datas da viagem</h2>
+      <p class="sub">Ida, volta, pessoas e o jeito da viagem. O total estimado da lista, o sorteio e o Comparar usam estas datas.</p>
       <div id="vg-form-s"></div>
-      <div id="vg-filtros" class="vg-filtros"></div>
-      <div class="vg-pa"><button type="button" class="btn" data-vgsortear>Sortear um lugar</button><span class="hint" id="vg-cands"></span></div>
-      <div id="vg-res"></div>
     </section>
     <section data-nav="Lista de lugares" class="panel">
       <h2>Lista de lugares</h2>
       <p class="sub">O que você quer conhecer. Escolha da lista de sugestões (já vem com custos e épocas de referência) ou escreva qualquer lugar.</p>
-      <div class="vg-add"><label class="vg-add-n">Lugar<input type="text" id="vg-novo" list="vg-dl" placeholder="Ex.: Lisboa, Patagônia, Kyoto…" autocomplete="off"></label><datalist id="vg-dl"></datalist>
+      <div class="vg-add"><div class="acao-box vg-add-n"><label>Lugar<input type="text" id="vg-novo" placeholder="Ex.: Lisboa, Patagônia, Kyoto…" autocomplete="off" role="combobox" aria-autocomplete="list" aria-controls="vg-sug" aria-expanded="false"></label><div class="acao-sug vg-sug" id="vg-sug" role="listbox" hidden></div></div>
         <label>País<select id="vg-pais"></select></label>
         <label>Status<select id="vg-novo-st"><option value="quero">Quero ir</option><option value="talvez">Talvez</option><option value="fui">Já fui</option></select></label>
         <button type="button" class="btn tiny" data-vgaddbtn>Adicionar</button></div>
@@ -1201,8 +1207,16 @@ a.lm-ir:hover { border-bottom-style: solid; }
         <p class="hint">Copie as colunas País, Cidade, O que fazer e Melhor época (nessa ordem) e cole aqui. Um "?" no nome entra como Talvez.</p>
         <textarea id="vg-imp-txt" rows="5" placeholder="Portugal&#9;Lisboa&#9;Torre de Belém&#9;maio a setembro"></textarea>
         <div class="vg-pa"><button type="button" class="btn tiny" data-vgimp>Importar</button></div><div id="vg-imp-msg"></div></details>
+      <div class="vg-lst-dt" id="vg-lst-dt"></div>
       <div class="tscroll"><table id="tbl-vgl" class="vg-tbl"></table></div>
-      <p class="hint">Total estimado para as datas e pessoas de "Datas e sorteio". Toque no nome para ver no mapa e em Editar para ajustar tipo, notas e os seus valores.</p>
+      <p class="hint">Total estimado para as datas e pessoas de "Datas da viagem", logo acima. Toque no nome para ver no mapa e em Editar para ajustar tipo, notas e os seus valores.</p>
+    </section>
+    <section data-nav="Sortear" class="panel">
+      <h2>Sorteio</h2>
+      <p class="sub">O sorteio escolhe um lugar da sua lista, com mais chance para os que têm mais estrelas de vontade.</p>
+      <div id="vg-filtros" class="vg-filtros"></div>
+      <div class="vg-pa"><button type="button" class="btn" data-vgsortear>Sortear um lugar</button><span class="hint" id="vg-cands"></span></div>
+      <div id="vg-res"></div>
     </section>
     <section data-nav="Países que já fui" class="panel">
       <h2>Países que já fui</h2>
@@ -2210,7 +2224,7 @@ a.lm-ir:hover { border-bottom-style: solid; }
     return new Promise(resolve => { const { data } = sb.auth.onAuthStateChange(async (ev) => { if (ev !== 'PASSWORD_RECOVERY') return; const s = prompt('Digite a nova senha (mínimo 8 caracteres):'); if (s && s.length >= 8) { const { error } = await sb.auth.updateUser({ password: s }); alert(error ? 'Não deu para trocar a senha: ' + error.message : 'Senha trocada.'); } }); resolve(data); });
   }
   // ---------- rodapé: compartilhar, administração e sair ----------
-  const SITE_V = 74;
+  const SITE_V = 75;
   const escH = v => String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const dataBR = v => v ? new Date(v).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' }) : '–';
   const css2 = `.side-foot .r{flex-wrap:wrap}.side-foot .lg-acoes{margin-left:auto;display:inline-flex;gap:10px}
@@ -2858,7 +2872,7 @@ function vgResSorteio() {
 }
 function renderVgLista() {
   const v = state.viag, P = v.plano, tb = $('tbl-vgl');
-  $('vg-dl').innerHTML = VG_DEST.filter(d => !v.lugares.some(l => l.dest === d.id)).map(d => `<option value="${esc(d.nome)} · ${esc(vgPaisNome(d.pais))}"></option>`).join('');
+  $('vg-lst-dt').innerHTML = `Total estimado para <b>${vgBrd(P.ida)} a ${vgBrd(P.volta)}</b> · ${vgDias(P)} noites · ${P.pessoas} ${P.pessoas > 1 ? 'pessoas' : 'pessoa'} · ${(VG_EST[P.estilo] || VG_EST.meio).n.toLowerCase()} <a href="#" data-vgdatas>mudar datas</a>`;
   if (!$('vg-pais').options.length) $('vg-pais').innerHTML = '<option value="">País…</option>' + vgPaises().map(([c, n]) => `<option value="${c}">${esc(n)}</option>`).join('');
   if (!v.lugares.length) { tb.innerHTML = '<tbody><tr><td class="hint">Nenhum lugar ainda. Adicione acima, cole a sua lista ou toque num país do mapa.</td></tr></tbody>'; return; }
   const ord = { quero: 0, talvez: 1, fui: 2 }, ls = v.lugares.slice().sort((a, b) => ord[a.st] - ord[b.st] || b.vont - a.vont || a.nome.localeCompare(b.nome, 'pt-BR'));
@@ -3028,6 +3042,41 @@ document.addEventListener('change', e => {
     if (d.vge === 'nome') l.nome = t.value.trim().slice(0, 60) || l.nome; else if (d.vge === 'pais') { l.pais = t.value; if (l.dest && vgDest(l.dest).pais !== l.pais) { l.dest = ''; l.lat = null; l.lon = null; } } else if (d.vge === 'st') l.st = t.value; else if (d.vge === 'nota') l.nota = t.value.slice(0, 300);
     else if (d.vgeov) { const n = +t.value; if (n > 0) l.ov[d.vgeov] = n; else delete l.ov[d.vgeov]; }
     save(); }
+});
+/* ---------- busca de lugares (substitui a lista nativa do navegador) ---------- */
+let vgSugI = -1;
+function vgSugAbre() {
+  const inp = $('vg-novo'), box = $('vg-sug'); if (!inp || !box || !state.viag) return;
+  const v = state.viag, q = vgNorm(inp.value.split('·')[0]), qa = VG_ALIAS[q] || q, pais = $('vg-pais').value;
+  let ls = VG_DEST.filter(d => !v.lugares.some(l => l.dest === d.id)).map(d => {
+    const n = vgNorm(d.nome), pn = vgNorm(vgPaisNome(d.pais)); let sc = 0;
+    if (!q) sc = pais ? (d.pais === pais ? 3 : 0) : 1;
+    else if (n.startsWith(qa) || n.startsWith(q)) sc = 4; else if (n.includes(qa) || n.includes(q)) sc = 3; else if (pn.startsWith(q)) sc = 2; else if (q.length > 2 && pn.includes(q)) sc = 1;
+    if (sc && pais && d.pais === pais) sc += 2; return { d, sc };
+  }).filter(x => x.sc).sort((a, b) => b.sc - a.sc || a.d.nome.localeCompare(b.d.nome, 'pt-BR')).slice(0, 8);
+  const txt = inp.value.split('·')[0].trim(), exato = ls.some(x => vgNorm(x.d.nome) === vgNorm(txt));
+  let h = ls.map((x, i) => `<button type="button" role="option" data-vgsug="${x.d.id}"${i === vgSugI ? ' class="on"' : ''}><b>${esc(x.d.nome)}</b><span>${esc(vgPaisNome(x.d.pais))}</span></button>`).join('');
+  if (txt && !exato) h += `<button type="button" role="option" class="vg-sug-novo${ls.length === vgSugI ? ' on' : ''}" data-vgsugnovo><b>Usar "${esc(txt)}" como novo lugar</b><span>escolha o país ao lado</span></button>`;
+  if (!h && pais && !q) h = '<div class="vg-sug-h">Ainda não há sugestões com custos neste país. Digite o nome do lugar.</div>';
+  if (!h) { box.hidden = true; inp.setAttribute('aria-expanded', 'false'); return; }
+  box.innerHTML = (!q ? `<div class="vg-sug-h">${pais ? 'Sugestões neste país' : 'Sugestões com custos de referência'}</div>` : '') + h; box.hidden = false; inp.setAttribute('aria-expanded', 'true');
+}
+function vgSugFecha() { const b = $('vg-sug'); if (b) b.hidden = true; vgSugI = -1; const i = $('vg-novo'); if (i) i.setAttribute('aria-expanded', 'false'); }
+function vgSugEscolhe(id) { const d = VG_DEST.find(x => x.id === id); if (!d) return; $('vg-novo').value = `${d.nome} · ${vgPaisNome(d.pais)}`; $('vg-pais').value = d.pais; vgSugFecha(); $('vg-novo-st').focus(); }
+document.addEventListener('input', e => { if (e.target.id === 'vg-novo') { vgSugI = -1; vgSugAbre(); } });
+document.addEventListener('focusin', e => { if (e.target.id === 'vg-novo') vgSugAbre(); });
+document.addEventListener('keydown', e => {
+  if (e.target.id !== 'vg-novo') return; const box = $('vg-sug'), bs = box && !box.hidden ? [...box.querySelectorAll('button')] : [];
+  if (e.key === 'ArrowDown' || e.key === 'ArrowUp') { if (!bs.length) { vgSugAbre(); return; } e.preventDefault(); vgSugI = (vgSugI + (e.key === 'ArrowDown' ? 1 : -1) + bs.length) % bs.length; bs.forEach((b, i) => b.classList.toggle('on', i === vgSugI)); bs[vgSugI].scrollIntoView({ block: 'nearest' }); return; }
+  if (e.key === 'Enter') { e.preventDefault(); const b = bs[vgSugI]; if (b) b.click(); else { vgSugFecha(); const a = document.querySelector('[data-vgaddbtn]'); if (a) a.click(); } return; }
+  if (e.key === 'Escape' && bs.length) { e.stopPropagation(); vgSugFecha(); }
+});
+document.addEventListener('mousedown', e => { const b = $('vg-sug'); if (b && !b.hidden && !e.target.closest('.vg-add-n')) vgSugFecha(); });
+document.addEventListener('click', e => {
+  const t = e.target.closest('[data-vgsug],[data-vgsugnovo],[data-vgdatas]'); if (!t) return;
+  if (t.dataset.vgdatas != null) { e.preventDefault(); const s = [...document.querySelectorAll('#p-viagens [data-nav]')].find(x => x.dataset.nav === 'Datas'); if (s) { abrirSecao(s); s.scrollIntoView({ behavior: 'smooth', block: 'start' }); setTimeout(() => { const i = s.querySelector('[data-vgp="ida"]'); if (i) i.focus(); }, 400); } return; }
+  if (t.dataset.vgsug) { vgSugEscolhe(t.dataset.vgsug); return; }
+  vgSugFecha(); $('vg-novo').value = $('vg-novo').value.split('·')[0].trim(); if (!$('vg-pais').value) $('vg-pais').focus(); else $('vg-novo-st').focus();
 });
 document.addEventListener('keydown', e => { if (e.key === 'Escape' && $('vg-ed') && !$('vg-ed').hidden) { $('vg-ed').hidden = true; vgRe(); } });
 document.addEventListener('click', e => { const ed = $('vg-ed'); if (ed && !ed.hidden && e.target === ed) { ed.hidden = true; vgRe(); } });
@@ -7167,6 +7216,7 @@ const INFO_SEC = {
   'viagvg:Minhas viagens': 'As viagens escolhidas no Comparar, com datas, pessoas, estilo, total estimado no momento da escolha e o status.',
   'viagvg:Partes do módulo': 'Atalhos para Mapa e lugares e Comparar.',
   'viagens:Mapa': 'Países em azul: onde você já foi. Laranja e amarelo: países com lugares Quero ir ou Talvez na sua lista. Os pontos são os lugares; países pequenos demais para o mapa aparecem como bolinhas. As barras mostram quantos países de cada continente você já conhece.',
+  'viagens:Datas': 'As datas, o número de pessoas e o estilo (econômica, meio a meio ou luxo) valem para todos os lugares: o total estimado da lista, o sorteio e o Comparar mudam juntos. Tipo de viagem filtra o sorteio.',
   'viagens:Sortear': 'O sorteio escolhe entre os lugares da lista que passam nos filtros (status, tipo de viagem, boa época nas datas e teto de gasto). Quanto mais estrelas de vontade, maior a chance.',
   'viagens:Lista de lugares': 'Os lugares que você quer conhecer. Os que vêm das sugestões têm custos e épocas de referência; os digitados usam a média do continente até você ajustar em Editar.',
   'viagens:Países que já fui': 'Lista dos países marcados como Já fui, por continente. A conta usa os 195 países: 193 da ONU, Vaticano e Palestina. Territórios como Groenlândia e Porto Rico podem ser marcados, mas ficam fora da conta.',
