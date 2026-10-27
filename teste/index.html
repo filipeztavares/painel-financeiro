@@ -1143,6 +1143,7 @@ a.lm-ir:hover { border-bottom-style: solid; }
 .vgs-lst li > div:first-child { display: flex; flex-direction: column; gap: 2px; } .vgs-noi { display: flex; align-items: center; gap: 8px; font-size: 13px; } .vgs-noi span { min-width: 64px; text-align: center; }
 .vg-wip { display: inline-block; margin-left: 4px; padding: 1px 6px; border-radius: 999px; background: #F6E3B8; color: #7A4B00; font-size: 9.5px; font-weight: 700; letter-spacing: .02em; text-transform: none; vertical-align: middle; line-height: 1.5; }
 .vgpdf-box h3 .vg-wip { font-size: 10.5px; } .vg-wipt { margin: -4px 0 0; font-size: 12px; color: #7A4B00; }
+.vgd-imp { display: flex; flex-wrap: wrap; gap: 6px 12px; align-items: center; margin-top: 10px; } .vgd-imp button[disabled] { opacity: .75; cursor: not-allowed; }
 </style>
 
 
@@ -1193,7 +1194,7 @@ a.lm-ir:hover { border-bottom-style: solid; }
     </div>
     <div class="nav-mobile-sub" id="navMobileSub"></div>
   </div>
-  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 208</div></div>
+  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 209</div></div>
 </nav>
 <div class="sino-pop" id="sino-pop" role="dialog" aria-label="Central de avisos" hidden></div>
 <div class="tour-pop" id="tour-pop" role="dialog" aria-labelledby="tour-tit" hidden></div>
@@ -2419,7 +2420,7 @@ a.lm-ir:hover { border-bottom-style: solid; }
     return new Promise(resolve => { const { data } = sb.auth.onAuthStateChange(async (ev) => { if (ev !== 'PASSWORD_RECOVERY') return; const s = prompt('Digite a nova senha (mínimo 8 caracteres):'); if (s && s.length >= 8) { const { error } = await sb.auth.updateUser({ password: s }); alert(error ? 'Não deu para trocar a senha: ' + error.message : 'Senha trocada.'); } }); resolve(data); });
   }
   // ---------- rodapé: compartilhar, administração e sair ----------
-  const SITE_V = 88;
+  const SITE_V = 89;
   const escH = v => String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const dataBR = v => v ? new Date(v).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' }) : '–';
   const css2 = `.side-foot .r{flex-wrap:wrap}.side-foot .lg-acoes{margin-left:auto;display:inline-flex;gap:10px}
@@ -5921,6 +5922,7 @@ function renderViagDur() { vgAutoTodos();
       <label class="vgd-nota">O quê (opcional)<input type="text" id="vgd-nota" maxlength="80" placeholder="Ex.: jantar, metrô, museu"></label>
     </div>
     <div class="vg-pa"><button type="button" class="btn" data-vgdadd>+ Gasto</button><span id="vgd-msg" class="subdet" role="status"></span></div>
+    <div class="vgd-imp"><button type="button" class="btn ghost tiny" disabled aria-disabled="true">Importar extrato do Wise ou Nubank internacional <span class="vg-wip">Em andamento</span></button><span class="subdet">Em breve: os gastos do cartão e da conta internacional entram aqui sozinhos, sem contar duas vezes.</span></div>
     <details class="vgd-fx"><summary>Outras moedas</summary><p class="subdet">US$ e € usam o câmbio do painel com spread e IOF. Para outra moeda, diga quanto 1 unidade vale em reais.</p>
       ${Object.keys(g.fx).length ? `<ul class="vgd-fxl">${Object.entries(g.fx).map(([m, t]) => `<li><b>${esc(m)}</b><input type="number" min="0" step="0.0001" data-vgdfx="${esc(m)}" value="${t}" aria-label="Quanto vale 1 ${esc(m)} em reais"><button type="button" class="vg-x mini" data-vgdfxdel="${esc(m)}" aria-label="Remover">×</button></li>`).join('')}</ul>` : ''}
       <div class="vgr-dnovo"><input type="text" id="vgd-fxm" maxlength="3" placeholder="Código (GBP, JPY…)" aria-label="Código da moeda"><input type="number" id="vgd-fxv" min="0" step="0.0001" placeholder="1 vale R$" aria-label="Quanto vale em reais"><button type="button" class="btn tiny ghost" data-vgdfxadd>Adicionar</button></div></details>`;
