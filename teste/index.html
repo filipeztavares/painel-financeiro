@@ -1047,6 +1047,60 @@ a.lm-ir:hover { border-bottom-style: solid; }
 .vg-lst-dt { font-size: 13px; color: var(--muted); margin: 10px 0 6px; }
 .vg-lst-dt b { color: var(--ink, inherit); font-weight: 600; }
 .vg-lst-dt a { margin-left: 6px; }
+.vgr-top { display: flex; flex-wrap: wrap; gap: 10px; align-items: flex-end; margin-bottom: 10px; } .vgr-top label { flex: 1 1 260px; max-width: 420px; }
+.vg-add.vgr-add { grid-template-columns: minmax(0, 1fr) auto; max-width: 620px; }
+.vgr-aviso { margin: 6px 0 10px; display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.vgr-lista { display: flex; flex-direction: column; margin-top: 10px; }
+.vgr-par { display: grid; grid-template-columns: 26px minmax(0, 1fr) auto auto; gap: 10px; align-items: center; border: 1px solid var(--line); border-radius: 10px; padding: 10px 12px; background: var(--panel); }
+.vgr-n { width: 24px; height: 24px; border-radius: 50%; background: var(--accent); color: #fff; display: inline-flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; flex-shrink: 0; }
+.vgr-pn b { font-family: var(--f-head); font-size: 14px; }
+.vgr-noi { display: flex; align-items: center; gap: 6px; font-size: 12.5px; white-space: nowrap; }
+.vgr-noi .btn, .vgr-ac .btn { width: 30px; height: 30px; padding: 0; display: inline-flex; align-items: center; justify-content: center; font-size: 15px; }
+.vgr-ac { display: flex; gap: 4px; align-items: center; }
+.vgr-leg { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 12px; margin-left: 13px; padding: 8px 0 8px 22px; border-left: 2px dashed var(--line); font-size: 12px; }
+.vgr-leg.def { border-left: 2px solid var(--good); }
+.vgr-ic { font-size: 15px; width: 20px; text-align: center; }
+.vgr-lt { display: flex; flex-wrap: wrap; gap: 4px 10px; align-items: center; }
+.vgr-leg select { width: auto; padding: 4px 8px; font-size: 12px; }
+.vgr-lv { display: flex !important; flex-direction: row !important; align-items: center; gap: 6px; font-size: 11px; color: var(--muted); text-transform: none !important; letter-spacing: 0 !important; margin: 0 !important; }
+.vgr-lv input { width: 90px; padding: 4px 8px; font-size: 12px; }
+.vgr-ll { font-size: 11.5px; }
+.vgr-otim { margin-top: 12px; }
+.vgr-ot { display: flex; flex-wrap: wrap; gap: 10px 16px; align-items: center; justify-content: space-between; border: 1px solid var(--line); border-left: 4px solid var(--good); border-radius: 10px; padding: 12px 14px; }
+.vgr-ot b { font-family: var(--f-head); display: block; margin: 2px 0; } .vgr-ot .vg-lbl { margin: 0; }
+.vgr-mapa { margin-top: 12px; border: 1px solid var(--line); border-radius: 10px; overflow: hidden; background: var(--vg-mar); }
+.vgr-mapa:empty { display: none; } .vgr-mapa > .hint { padding: 12px; margin: 0; }
+.vgr-svg { width: 100%; height: clamp(220px, 36vw, 380px); display: block; }
+.vgr-paises path { fill: var(--vg-terra); stroke: var(--panel); stroke-width: .6px; vector-effect: non-scaling-stroke; }
+.vgr-paises path.on { fill: color-mix(in srgb, var(--vg-quero) 45%, var(--vg-terra)); }
+.vgr-linha { fill: none; stroke: var(--accent); stroke-linejoin: round; }
+.vgr-pt circle { fill: var(--accent); stroke: #fff; } .vgr-pt text { fill: #fff; text-anchor: middle; font-weight: 700; font-family: var(--f-ui); }
+.vgr-dtbl th, .vgr-dtbl td, .vgr-tbl th, .vgr-tbl td, .vgr-rtbl th:first-child, .vgr-rtbl td:first-child { text-align: left !important; }
+.vgr-dtbl td { vertical-align: top; } .vgr-dd { white-space: nowrap; } .vgr-dd b { display: block; }
+.vgr-it { margin: 1px 0 3px; display: flex; flex-wrap: wrap; align-items: center; gap: 2px 4px; } .vgr-it .chip { font-size: 10px; margin-left: 4px; }
+.vgr-cid { border: 1px solid var(--line); border-radius: 10px; padding: 10px 14px; margin-bottom: 10px; }
+.vgr-cid summary { cursor: pointer; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; list-style: none; } .vgr-cid summary::-webkit-details-marker { display: none; }
+.vgr-cid summary b { font-family: var(--f-head); font-size: 14px; } .vgr-cid[open] summary { margin-bottom: 4px; }
+.vgr-tbl input, .vgr-tbl select { padding: 4px 8px; font-size: 12px; } .vgr-tbl td { vertical-align: middle; }
+.vgr-tbl input[type=number] { width: 90px; } .vgr-tbl input[type=url] { width: 150px; } .vgr-tbl input[type=text] { min-width: 180px; }
+.vgr-sugs { display: flex; flex-direction: column; }
+.vgr-sg { display: grid; grid-template-columns: minmax(0, 1fr) auto auto; gap: 10px; align-items: center; padding: 7px 0; border-bottom: 1px solid var(--line); font-size: 12.5px; } .vgr-sg:last-child { border-bottom: 0; }
+.vgr-sites { display: flex; flex-wrap: wrap; gap: 4px 6px; align-items: baseline; font-size: 12px; margin-top: 12px; padding-top: 8px; border-top: 1px solid var(--line); } .vgr-sites .vg-lbl { width: 100%; margin: 4px 0 0; }
+@media (max-width: 900px) {
+  .vgr-par { grid-template-columns: 26px minmax(0, 1fr) auto; row-gap: 8px; } .vgr-noi { grid-column: 2; } .vgr-ac { grid-column: 3; grid-row: 2; }
+  .vgr-leg { padding-left: 16px; }
+  .vgr-sg { grid-template-columns: minmax(0, 1fr) auto; } .vgr-sg .btn { grid-column: 1 / -1; justify-self: start; }
+}
+@media (max-width: 640px) {
+  .vgr-tbl thead { display: none; }
+  .vgr-tbl tr { display: grid; grid-template-columns: 1fr 1fr; gap: 6px 10px; padding: 10px 0; border-bottom: 1px solid var(--line); position: relative; }
+  .vgr-tbl td { border: 0 !important; padding: 0 !important; } .vgr-tbl td:last-child { position: absolute; right: 0; top: 8px; }
+  .vgr-tbl td[data-l="Nome"], .vgr-tbl td[data-l="O quê"], .vgr-tbl td[data-l="Link"] { grid-column: 1 / -1; padding-right: 28px !important; }
+  .vgr-tbl td[data-l]::before { content: attr(data-l); display: block; font-size: 9.5px; text-transform: uppercase; letter-spacing: .5px; color: var(--faint); font-family: var(--f-head); }
+  .vgr-tbl input, .vgr-tbl select, .vgr-tbl input[type=number], .vgr-tbl input[type=url], .vgr-tbl input[type=text] { width: 100%; min-width: 0; }
+  .vgr-dtbl thead { display: none; } .vgr-dtbl tr { display: grid; grid-template-columns: 110px minmax(0, 1fr); gap: 2px 10px; padding: 8px 0; border-bottom: 1px solid var(--line); }
+  .vgr-dtbl td { border: 0 !important; padding: 0 !important; font-size: 12px; } .vgr-dtbl td:nth-child(3) { grid-column: 2; } .vgr-dtbl td:nth-child(3):has(> .subdet:only-child) { display: none; }
+}
 </style>
 
 
@@ -1086,6 +1140,7 @@ a.lm-ir:hover { border-bottom-style: solid; }
           <div class="nav-group"><button type="button" class="nav-head" data-tab="viagvg"><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 11.5 12 4l9 7.5"/><path d="M5.5 10v9.5h13V10"/><path d="M10 19.5v-5h4v5"/></svg></span>Visão geral</button><div class="nav-sub" data-sub="viagvg"></div></div>
           <div class="nav-group"><button type="button" class="nav-head" data-tab="viagens"><span class="ico">01</span>Mapa e lugares<span class="caret" data-navtog="viagens" role="button" tabindex="0" aria-label="Abrir ou recolher submódulos">▾</span></button><div class="nav-sub" data-sub="viagens"></div></div>
           <div class="nav-group"><button type="button" class="nav-head" data-tab="viagcmp"><span class="ico">02</span>Comparar<span class="caret" data-navtog="viagcmp" role="button" tabindex="0" aria-label="Abrir ou recolher submódulos">▾</span></button><div class="nav-sub" data-sub="viagcmp"></div></div>
+          <div class="nav-group"><button type="button" class="nav-head" data-tab="viagrot"><span class="ico">03</span>Roteiro<span class="caret" data-navtog="viagrot" role="button" tabindex="0" aria-label="Abrir ou recolher submódulos">▾</span></button><div class="nav-sub" data-sub="viagrot"></div></div>
         </div></div>
         <div class="nav-pe">
         <div class="nav-group mini"><button type="button" class="nav-head" data-tab="leia"><span class="ico">?</span>Leia-me<span class="caret" data-navtog="leia" role="button" tabindex="0" aria-label="Abrir ou recolher submódulos">▾</span></button><div class="nav-sub" data-sub="leia"></div></div>
@@ -1094,7 +1149,7 @@ a.lm-ir:hover { border-bottom-style: solid; }
     </div>
     <div class="nav-mobile-sub" id="navMobileSub"></div>
   </div>
-  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 197</div></div>
+  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 198</div></div>
 </nav>
 <div class="sino-pop" id="sino-pop" role="dialog" aria-label="Central de avisos" hidden></div>
 <div class="tour-pop" id="tour-pop" role="dialog" aria-labelledby="tour-tit" hidden></div>
@@ -1170,7 +1225,7 @@ a.lm-ir:hover { border-bottom-style: solid; }
     <div class="kpis" id="kpi-vgv"></div>
     <section data-nav="Minhas viagens" class="panel">
       <h2>Minhas viagens</h2>
-      <p class="sub">As viagens que você escolheu em Comparar. Roteiro dia a dia, custos detalhados e a ligação com o Plano futuro chegam nas próximas etapas.</p>
+      <p class="sub">As viagens que você escolheu em Comparar. Toque em Roteiro para montar cidades, noites e passeios. O total usa o roteiro quando ele existe. Custos detalhados e a ligação com o Plano futuro chegam na próxima etapa.</p>
       <div class="tscroll"><table id="tbl-vgv"></table></div>
     </section>
     <section data-nav="Partes do módulo" class="panel">
@@ -1247,6 +1302,36 @@ a.lm-ir:hover { border-bottom-style: solid; }
       <h2>Premissas</h2>
       <p class="sub">Usadas em todos os lugares. O câmbio de hoje vem da tarefa diária de mercados.</p>
       <div class="vg-form" id="vg-cfg"></div>
+    </section>
+  </section>
+  <!-- ============ VIAGENS: ROTEIRO ============ -->
+  <section role="tabpanel" id="p-viagrot" hidden>
+    <div class="block-title"><span class="num">03</span><div><h1>Roteiro</h1><p class="desc">As cidades na ordem da viagem, quantas noites em cada uma, como ir de uma para outra, onde ficar e o que fazer. O painel sugere a ordem mais barata e mais rápida.</p></div></div>
+    <div class="kpis" id="kpi-vgr"></div>
+    <section data-nav="Viagem" class="panel">
+      <h2>Viagem</h2>
+      <div id="vgr-viagem"></div>
+    </section>
+    <section data-nav="Rota" class="panel">
+      <h2>Cidades e rota</h2>
+      <p class="sub">Saindo e voltando de São Paulo. Ajuste as noites com − e +, mude a ordem com as setas e escolha o meio de transporte de cada trecho. Valores por pessoa, só ida; digite o preço que achou para trocar a estimativa.</p>
+      <div id="vgr-rota"></div>
+      <div id="vgr-otim" class="vgr-otim"></div>
+      <div class="vgr-mapa" id="vgr-mapa"></div>
+    </section>
+    <section data-nav="Dia a dia" class="panel">
+      <h2>Dia a dia</h2>
+      <p class="sub">Cada dia da viagem, onde você está e o que está marcado. Para pôr um passeio num dia, escolha o dia na cidade, em Hospedagem e passeios.</p>
+      <div id="vgr-dias"></div>
+    </section>
+    <section data-nav="Por cidade" class="panel">
+      <h2>Hospedagem e passeios</h2>
+      <p class="sub">Por cidade: as hospedagens que está olhando (Opção) ou já reservou (Definido), os passeios com estrelas e sugestões para o seu tipo de viagem, com links para pesquisar mais.</p>
+      <div id="vgr-paradas"></div>
+    </section>
+    <section data-nav="Resumo" class="panel">
+      <h2>Resumo do roteiro</h2>
+      <div id="vgr-resumo"></div>
     </section>
   </section>
   <div class="vg-ed" id="vg-ed" role="dialog" aria-modal="true" aria-label="Editar lugar" hidden></div>
@@ -2224,7 +2309,7 @@ a.lm-ir:hover { border-bottom-style: solid; }
     return new Promise(resolve => { const { data } = sb.auth.onAuthStateChange(async (ev) => { if (ev !== 'PASSWORD_RECOVERY') return; const s = prompt('Digite a nova senha (mínimo 8 caracteres):'); if (s && s.length >= 8) { const { error } = await sb.auth.updateUser({ password: s }); alert(error ? 'Não deu para trocar a senha: ' + error.message : 'Senha trocada.'); } }); resolve(data); });
   }
   // ---------- rodapé: compartilhar, administração e sair ----------
-  const SITE_V = 77;
+  const SITE_V = 78;
   const escH = v => String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const dataBR = v => v ? new Date(v).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' }) : '–';
   const css2 = `.side-foot .r{flex-wrap:wrap}.side-foot .lg-acoes{margin-left:auto;display:inline-flex;gap:10px}
@@ -2787,7 +2872,7 @@ function vgNormalizar(s) {
   v.lugares.forEach(l => { if (l.dest && vgDest(l.dest)) return; const n = vgNorm(l.nome), nn = VG_ALIAS[n] || n, d = VG_DEST.find(x => x.pais === l.pais && vgNorm(x.nome) === nn); if (d) { l.dest = d.id; l.lat = d.lat; l.lon = d.lon; return; } if (l.lat == null) { const c = vgAchaCid(l.nome, l.pais); if (c) { l.lat = c.lat; l.lon = c.lon; } } });
   v.fui = [...new Set(v.fui.filter(c => /^[A-Z]{2}$/.test(c)))];
   v.cmp = v.cmp.filter(id => v.lugares.some(l => l.id === id)).slice(0, 5);
-  v.viagens = v.viagens.filter(x => x && x.id); v.viagens.forEach(x => { if (!VG_VST[x.st]) x.st = 'planejada'; });
+  v.viagens = v.viagens.filter(x => x && x.id); v.viagens.forEach(x => { if (!VG_VST[x.st]) x.st = 'planejada'; vgRotNorm(x, v); }); if (typeof v.rotSel !== 'string') v.rotSel = '';
   if (!v.plano || typeof v.plano !== 'object') v.plano = {};
   const [a, b] = vgDataPadrao(); if (!dt.test(v.plano.ida)) v.plano.ida = a; if (!dt.test(v.plano.volta) || v.plano.volta <= v.plano.ida) { const x = new Date(v.plano.ida + 'T12:00:00'); x.setDate(x.getDate() + 14); v.plano.volta = x.toISOString().slice(0, 10); }
   v.plano.pessoas = Math.min(20, Math.max(1, Math.round(+v.plano.pessoas || 2))); if (!VG_EST[v.plano.estilo]) v.plano.estilo = 'meio'; if (!Array.isArray(v.plano.tipos)) v.plano.tipos = [];
@@ -5048,6 +5133,436 @@ function renderViagCmp() {
 }
 
 /* ---------- Visão geral ---------- */
+/* ---------- Roteiro (etapa 2): paradas, trechos, rota otimizada, hospedagem, passeios e sugestões ---------- */
+// experiências de referência por destino da tabela base: nome~tipos~preço por pessoa (US$; no Brasil, R$)
+const VG_EXP_TXT = `lisboa|Torre de Belém e Mosteiro dos Jerónimos~c~25;Bairro Alto e Alfama à noite~fg~0;Pastéis de Belém e LX Factory~g~10;Fado numa casa tradicional~cr~45;Pôr do sol no Miradouro da Senhora do Monte~r~0
+sintra|Palácio da Pena~c~25;Quinta da Regaleira~cr~15;Cabo da Roca e praia da Ursa~n~0;Castelo dos Mouros~ca~12
+porto|Caves de vinho do Porto em Gaia~g~25;Ribeira e Ponte Dom Luís a pé~c~0;Livraria Lello~c~10;Cruzeiro no Douro (vale do Douro)~ngr~110;Francesinha num tasco~g~15
+algarve|Passeio de barco à Benagil~npa~35;Trilha dos Sete Vales Suspensos~na~0;Praia da Marinha~p~0;Lagos e Ponta da Piedade de caiaque~pa~35
+acores|Lagoa das Sete Cidades~n~0;Observação de baleias~na~65;Termas da Poça da Dona Beija~nr~10;Cozido das Furnas~g~25
+obidos|Muralhas e vila medieval~c~0;Ginjinha em copo de chocolate~g~3;Festival do Chocolate ou Vila Natal~cf~10
+evora|Capela dos Ossos e Templo Romano~c~8;Vinícolas do Alentejo~gr~40;Cromeleque dos Almendres~cn~0
+elvas|Aqueduto da Amoreira e fortificações~c~5;Forte de Nossa Senhora da Graça~c~5;Cozinha alentejana~g~25
+nazare|Ondas gigantes no Forte da Nazaré~na~0;Sítio da Nazaré pelo funicular~c~3;Peixe grelhado na praia~gp~25
+geres|Cascatas e lagoas do Gerês~na~0;Trilha da Geira romana~nac~0;Vila do Soajo e espigueiros~c~0
+madrid|Museu do Prado~c~17;Parque do Retiro~nr~0;Tapas na La Latina~gf~25;Vida noturna em Malasaña~f~20;Bate-volta a Toledo~c~40
+barcelona|Sagrada Família~c~33;Park Güell~c~13;Bairro Gótico e El Born~c~0;Praia da Barceloneta~pf~0;Mercado da Boqueria~g~15
+sevilla|Alcázar de Sevilha~c~16;Catedral e Giralda~c~13;Show de flamenco~cf~30;Plaza de España~c~0
+granada|Alhambra e Generalife~c~22;Mirador de San Nicolás ao pôr do sol~r~0;Tapas grátis com bebida~gf~15;Albaicín e Sacromonte~c~0
+malaga|Museu Picasso~c~12;Alcazaba e Gibralfaro~c~10;Caminito del Rey~na~25;Praia de La Malagueta~p~0
+ronda|Puente Nuevo e garganta~cn~0;Praça de touros histórica~c~9;Vinícolas da Serranía~g~30
+pueblos|Rota de carro pelos Pueblos Blancos~cr~0;Setenil de las Bodegas~c~0;Zahara de la Sierra e mirante~n~0
+tarifa|Kitesurf~pa~70;Observação de baleias e golfinhos~n~50;Bate-volta a Tânger de barco~c~80;Praia de Bolonia e ruínas romanas~pc~0
+costabrava|Cadaqués e Museu Dalí em Figueres~c~20;Caminho de Ronda entre calas~pn~0;Caiaque nas calas~pa~40
+pireneus|Trilhas no Parque Nacional de Ordesa~na~0;Esqui em Baqueira-Beret~sa~70;Vilas de pedra do Vale de Arán~cr~0
+ibiza|Festas nos superclubes~f~60;Pôr do sol em Café del Mar~fr~15;Calas de Ibiza de barco~p~70;Dalt Vila~c~0
+formentera|Praia de Ses Illetes~p~0;Bicicleta pela ilha~na~20;Pôr do sol no Cap de Barbaria~r~0
+tenerife|Teide de teleférico~na~45;Observação de baleias~n~50;Praias vulcânicas~p~0;Floresta de Anaga~n~0
+sansebastian|Pintxos na Parte Vieja~gf~30;Praia de La Concha~p~0;Monte Igueldo~nr~5;Jantar num restaurante com estrela~g~200
+picos|Rota del Cares~na~0;Teleférico de Fuente Dé~n~20;Lagos de Covadonga~n~0
+roma|Coliseu, Fórum e Palatino~c~25;Fontana di Trevi e Panteão~c~0;Trastevere à noite~gf~30;Galleria Borghese~c~25
+vaticano|Museus Vaticanos e Capela Sistina~c~30;Basílica de São Pedro e cúpula~c~10;Missa ou audiência papal~c~0
+florenca|Galeria Uffizi~c~30;Duomo e subida na cúpula~c~35;Piazzale Michelangelo ao pôr do sol~r~0;Bate-volta ao Chianti~g~90
+veneza|Gôndola pelos canais~r~90;Basílica e Praça de São Marcos~c~10;Burano e Murano~c~25;Caiaque nos canais~a~80
+pisa|Torre de Pisa~c~22;Piazza dei Miracoli~c~0;Bate-volta a Lucca de bicicleta~c~15
+cinqueterre|Trilha Monterosso a Vernazza~na~10;Barco entre as vilas~p~35;Pôr do sol em Manarola~r~0
+amalfi|Trilha dos Deuses~na~0;Positano e praias~pr~0;Barco a Capri~p~90;Limoncello em Ravello~gr~10
+dolomitas|Tre Cime di Lavaredo~na~30;Lago di Braies~nr~0;Esqui em Cortina~sa~80;Seceda de teleférico~n~45
+saturnia|Cascate del Mulino (termas grátis)~nr~0;Termas de Saturnia resort~r~40;Vilas da Maremma~c~0
+taormina|Teatro Grego~c~12;Etna de jipe~na~70;Isola Bella~p~5
+sicilia|Vale dos Templos em Agrigento~c~12;Mercados de Palermo~g~15;Etna~na~70;Praias de San Vito Lo Capo~p~0
+sardenha|Cala Goloritzé~pn~10;Arquipélago de La Maddalena de barco~p~60;Nuraghe Su Nuraxi~c~15
+salento|Praias da Puglia (Torre dell'Orso)~p~0;Lecce barroca~c~0;Polignano a Mare~pr~0
+palmarola|Barco de Ponza a Palmarola~p~60;Grutas marinhas~pa~40;Frutos do mar em Ponza~g~40
+marassi|Jogo no Estádio Luigi Ferraris~f~40;Centro histórico e Via Garibaldi~c~0;Focaccia genovese~g~5;Portofino de barco~pr~25
+bolonha|Aula de massa fresca~g~80;Torres de Bolonha~c~5;Mortadela e tortellini no Quadrilatero~g~20
+verona|Arena de Verona (ópera)~cr~60;Casa de Julieta~cr~6;Walking tour~c~50
+garda|Kitesurf no Lago di Garda~a~150;Sirmione e grutas de Catulo~cr~10;Vinícolas do Bardolino~g~30
+milao|Duomo e terraços~c~20;A Última Ceia~c~15;Aperitivo nos Navigli~gf~15;Lago de Como~nr~30
+atenas|Acrópole e museu~c~35;Ágora antiga~c~20;Plaka e Monastiraki~cg~0;Cabo Sounion ao pôr do sol~r~50
+santorini|Trilha Fira a Oia~n~0;Barco pela caldeira com comida~pr~200;Vinícolas~g~60;Pôr do sol em Oia~r~0
+creta|Garganta de Samariá~na~10;Praia de Balos~p~30;Palácio de Cnossos~c~20;Chania antiga~cg~0
+milos|Sarakiniko~pa~0;Barco até Kleftiko~p~220;Vilas de pescadores Klima~cr~0
+paris|Torre Eiffel~cr~35;Museu do Louvre~c~25;Montmartre~c~0;Cruzeiro no Sena~r~20;Versalhes~c~25
+londres|Museu Britânico~c~0;Torre de Londres~c~40;West End (musical)~cf~80;Camden e Shoreditch~f~0;Borough Market~g~20
+amsterda|Museu Van Gogh~c~25;Casa de Anne Frank~c~16;Canais de bicicleta~a~15;Rijksmuseum~c~25
+berlim|Muro e East Side Gallery~c~0;Ilha dos Museus~c~25;Clubes de techno~f~25;Portão de Brandemburgo e Reichstag~c~0
+praga|Castelo de Praga~c~20;Ponte Carlos ao amanhecer~r~0;Cerveja tcheca e tour de pubs~gf~25;Cidade Velha e relógio astronômico~c~10
+budapeste|Banhos Széchenyi~r~30;Parlamento~c~25;Ruin bars~f~15;Cruzeiro no Danúbio à noite~r~25
+viena|Palácio de Schönbrunn~c~30;Ópera de Viena~c~50;Cafés vienenses~g~15;Mercados de Natal (dez)~cg~10
+ljubljana|Lago Bled e ilha~nr~20;Garganta de Vintgar~n~10;Caverna de Postojna~n~40;Centro de Ljubljana~c~0
+bratislava|Castelo de Bratislava~c~10;Centro histórico~c~0;Castelo de Devín~c~5
+dubrovnik|Muralhas da cidade~c~40;Caiaque até a ilha Lokrum~pa~45;Teleférico Srđ~r~25
+istambul|Santa Sofia e Mesquita Azul~c~25;Grande Bazar e Bazar das Especiarias~cg~0;Cruzeiro no Bósforo~r~15;Hamam turco~r~50
+capadocia|Balão ao amanhecer~ra~230;Museu ao ar livre de Göreme~c~20;Cidade subterrânea~c~15;Vale Rosa a cavalo~na~45
+reykjavik|Círculo Dourado~n~70;Aurora boreal~nr~70;Blue Lagoon~r~80;Caminhada em geleira~ans~120
+fiordes|Flåm Railway~n~60;Cruzeiro no Nærøyfjord~n~50;Trilha Preikestolen~na~0
+rovaniemi|Vila do Papai Noel~cr~0;Trenó de huskies~as~150;Aurora boreal~nr~80;Iglu de vidro~r~400
+interlaken|Jungfraujoch~ns~220;Parapente~a~180;Grindelwald First e trilhas~na~70;Lauterbrunnen e cachoeiras~n~0
+edimburgo|Castelo de Edimburgo~c~25;Arthur's Seat~na~0;Whisky tour~g~25;Royal Mile e pubs~cf~0
+dublin|Guinness Storehouse~gf~30;Temple Bar~f~0;Trinity College e Book of Kells~c~20;Falésias de Moher~n~70
+marrakech|Medina e Jemaa el-Fna~cg~0;Jardim Majorelle~c~15;Deserto de Agafay ao pôr do sol~nr~60;Hammam marroquino~r~40
+cairo|Pirâmides de Gizé~c~25;Grande Museu Egípcio~c~30;Khan el-Khalili~cg~0;Felucca no Nilo~r~15
+capetown|Table Mountain~na~25;Cabo da Boa Esperança~n~50;Vinícolas de Stellenbosch~gr~60;Pinguins em Boulders~n~10
+zanzibar|Stone Town~c~0;Spice tour~g~25;Mergulho em Mnemba~pa~80;Praias de Nungwi~pf~0
+dubai|Burj Khalifa~c~45;Safári no deserto~na~70;Dubai Mall e fonte~c~0;Mercado do ouro e das especiarias~c~0
+maldivas|Snorkel com tubarões-baleia e arraias~pa~100;Bangalô sobre a água~r~500;Jantar na praia~gr~150
+bali|Terraços de Tegalalang~n~5;Templo Uluwatu e dança Kecak~c~15;Nascer do sol no Monte Batur~na~45;Praias de Uluwatu e surfe~pa~20
+bangkok|Grande Palácio e Wat Pho~c~20;Mercados flutuantes~cg~25;Comida de rua em Yaowarat~g~10;Rooftop bars~f~20
+phuket|Ilhas Phi Phi de barco~p~60;Baía de Phang Nga~n~60;Bangla Road~f~0;Big Buddha~c~0
+hanoi|Baía de Ha Long (pernoite)~nr~150;Bairro Antigo e street food~g~10;Rua do trem~c~0;Mausoléu de Ho Chi Minh~c~0
+toquio|Shibuya e Shinjuku~cf~0;Templo Senso-ji~c~0;TeamLab~c~30;Mercado de Tsukiji~g~20;Monte Fuji (bate-volta)~n~80
+kyoto|Fushimi Inari~c~0;Bosque de bambu de Arashiyama~n~0;Gion e cerimônia do chá~c~40;Templo Kinkaku-ji~c~5
+seul|Palácio Gyeongbokgung com hanbok~c~15;Bukchon Hanok Village~c~0;Hongdae à noite~f~0;Zona desmilitarizada (DMZ)~c~70
+singapura|Gardens by the Bay~cr~25;Marina Bay Sands SkyPark~r~25;Hawker centres~g~10;Sentosa~pf~30
+sydney|Opera House~c~30;Bondi a Coogee a pé~pn~0;Blue Mountains~na~80;Manly de ferry~p~10
+queenstown|Bungee jump~a~150;Milford Sound~n~150;Jetboat no Shotover~a~110;Esqui em Coronet Peak~s~110
+novayork|Central Park~n~0;Broadway~cf~150;Estátua da Liberdade~c~25;MoMA e Met~c~30;Rooftops e jazz~f~30
+miami|South Beach~pf~0;Wynwood Walls~c~0;Everglades de aerobarco~n~40;Little Havana~g~15
+orlando|Disney (Magic Kingdom)~f~150;Universal Studios~fa~140;Kennedy Space Center~c~75;Outlets~c~0
+lasvegas|Grand Canyon (South Rim)~na~35;Show do Cirque du Soleil~f~100;Strip à noite~f~0;Antelope Canyon~n~90
+saofrancisco|Golden Gate de bicicleta~n~30;Alcatraz~c~45;Napa Valley~gr~120;Big Sur e Highway 1~nr~0
+cancun|Cenotes~na~40;Chichén Itzá~c~60;Isla Mujeres~p~30;Xcaret~f~130
+cdmx|Teotihuacán~c~10;Museu Nacional de Antropologia~c~6;Casa de Frida Kahlo~c~15;Tacos e mezcal na Roma e Condesa~gf~20
+havana|Havana Velha~c~0;Carro antigo pelo Malecón~c~50;Música ao vivo e mojitos~f~20;Vale de Viñales~n~60
+cartagena|Cidade amuralhada~c~0;Ilhas do Rosário~p~60;Getsemaní à noite~f~0
+medellin|Comuna 13~c~20;Guatapé e Piedra del Peñol~n~40;Metrocable~c~2;Festas em El Poblado~f~20
+cusco|Machu Picchu~cn~200;Vale Sagrado~cn~40;Montanha Colorida~na~40;Trilha Inca (4 dias)~na~700
+atacama|Gêiseres del Tatio~n~50;Vale da Lua~n~20;Lagunas Altiplânicas~n~70;Observação de estrelas~r~45
+santiago|Vinícolas (Concha y Toro, Casablanca)~g~40;Cerro San Cristóbal~n~5;Esqui no Valle Nevado~sa~80;Valparaíso (bate-volta)~c~40
+calafate|Glaciar Perito Moreno~n~45;Minitrekking no glaciar~na~300;Trilha Laguna de los Tres (El Chaltén)~na~0
+bariloche|Cerro Catedral (esqui)~sa~70;Circuito Chico~nr~0;Cerro Campanario~n~15;Chocolates e cervejarias~g~20
+ushuaia|Canal de Beagle~n~70;Parque Nacional Terra do Fogo~na~30;Trem do Fim do Mundo~c~50;Glaciar Martial~na~0
+buenosaires|Tango em San Telmo~cf~50;La Boca e Caminito~c~0;Recoleta~c~0;Parrilla e vinho~g~40;Jogo do Boca~f~100
+mendoza|Vinícolas de Luján de Cuyo de bicicleta~gr~40;Aconcágua (mirante)~na~60;Valle de Uco~gr~90
+montevideu|Mercado del Puerto~g~25;Cidade Velha e Rambla~c~0;Colonia del Sacramento~cr~30
+puntadeleste|La Mano e praia Brava~p~0;Casapueblo ao pôr do sol~cr~15;José Ignacio~pr~0;Festas de verão~f~40
+uyuni|Salar de Uyuni (3 dias)~na~200;Cemitério de trens~c~0;Lagunas coloridas~n~0
+galapagos|Snorkel com leões-marinhos~pa~80;Tartarugas gigantes~n~10;Cruzeiro pelas ilhas~na~400
+noronha|Baía do Sancho~p~0;Mergulho com cilindro~pa~500;Ilhatour~n~250;Pôr do sol no Forte do Boldró~r~0
+jeri|Pedra Furada~n~0;Lagoa do Paraíso~pr~0;Buggy até Tatajuba~a~350;Pôr do sol na duna~r~0
+lencois|Lagoa Azul e Lagoa Bonita~n~150;Sobrevoo~n~600;Rio Preguiças e Caburé~n~150
+chapada|Cachoeira da Fumaça~na~0;Poço Azul e Poço Encantado~n~100;Vale do Pati (3 dias)~na~900;Morro do Pai Inácio~n~0
+bonito|Flutuação no Rio da Prata~na~300;Gruta do Lago Azul~n~100;Buraco das Araras~n~100;Abismo Anhumas~a~1000
+gramado|Snowland~s~200;Lago Negro~r~0;Fondue~g~150;Cascata do Caracol~n~60
+rio|Pão de Açúcar~n~200;Cristo Redentor~c~100;Trilha Dois Irmãos~na~0;Samba na Pedra do Sal~f~0;Ilha Grande~p~150
+salvador|Pelourinho~c~0;Olodum e música ao vivo~f~50;Praia do Forte~p~0;Acarajé e moqueca~g~80
+galinhas|Piscinas naturais de jangada~p~40;Praia dos Carneiros~pr~150;Maracaípe e cavalos-marinhos~n~30
+floripa|Lagoinha do Leste~pn~0;Joaquina e sandboard~pa~40;Ostras em Santo Antônio de Lisboa~g~100;Vida noturna em Jurerê~f~150
+foz|Cataratas do Iguaçu (lado brasileiro)~n~100;Cataratas (lado argentino)~n~200;Macuco Safari~a~400;Itaipu~c~50
+manaus|Teatro Amazonas~c~20;Encontro das Águas~n~150;Lodge na floresta (3 dias)~na~1500;Botos no Rio Negro~n~150
+xangai|The Bund à noite~cr~0;Jardim Yu e bazar~c~6;Torre de Xangai~c~25;Zhujiajiao (vila de canais)~c~10
+pequim|Grande Muralha em Mutianyu~ca~25;Cidade Proibida~c~10;Templo do Céu~c~5;Pato laqueado~g~30
+xian|Guerreiros de Terracota~c~20;Muralha da cidade de bicicleta~a~10;Bairro muçulmano e comida de rua~g~10
+guilin|Cruzeiro no Rio Li~n~60;Bicicleta em Yangshuo~na~10;Terraços de Longji~n~20
+chengdu|Base de pandas gigantes~n~10;Hot pot de Sichuan~g~20;Montanha Leshan e Buda gigante~c~25
+zhangjiajie|Parque Nacional (montanhas de Avatar)~na~35;Ponte de vidro~a~20;Montanha Tianmen~n~40
+hongkong|Victoria Peak~n~10;Star Ferry~c~1;Dim sum~g~20;Trilha Dragon's Back~na~0;Lan Kwai Fong~f~0
+macau|Ruínas de São Paulo~c~0;Cassinos do Cotai~f~0;Pastel de nata e comida macaense~g~10
+osaka|Dotonbori e street food~gf~20;Castelo de Osaka~c~5;Universal Studios Japan~f~70;Nara e cervos (bate-volta)~cn~10
+hokkaido|Festival de neve de Sapporo (fev)~cs~0;Esqui em Niseko~sa~60;Campos de lavanda de Furano (jul)~nr~0
+busan|Gamcheon Culture Village~c~0;Praia de Haeundae~p~0;Mercado de peixes Jagalchi~g~20
+taipe|Taipei 101~c~20;Mercados noturnos~g~10;Jiufen~cr~0;Termas de Beitou~r~10
+chiangmai|Santuário ético de elefantes~n~70;Doi Suthep~c~2;Aula de culinária tailandesa~g~30;Mercado noturno de domingo~g~0
+krabi|Railay Beach~pa~0;Ilhas Phi Phi~p~60;Escalada em Railay~a~60;Quatro ilhas de long tail~p~30
+hoian|Cidade antiga com lanternas~cr~5;Alfaiataria sob medida~c~80;Praia de An Bang~p~0;My Son~c~8
+hochiminh|Túneis de Cu Chi~c~15;Delta do Mekong~n~30;Bui Vien à noite~f~0;Museu dos Remanescentes de Guerra~c~2
+siemreap|Angkor Wat ao amanhecer~c~37;Bayon e Ta Prohm~c~0;Pub Street~f~0
+luangprabang|Cachoeira Kuang Si~n~3;Oferenda de almas aos monges~c~0;Mercado noturno~g~0
+kualalumpur|Torres Petronas~c~20;Batu Caves~c~0;Jalan Alor~g~10
+palawan|Island hopping em El Nido~pa~25;Lagoas de Bacuit de caiaque~pa~20;Rio subterrâneo de Puerto Princesa~n~30
+komodo|Dragões de Komodo~n~80;Praia Rosa~p~0;Mergulho com mantas~pa~120
+yogyakarta|Borobudur ao amanhecer~c~50;Prambanan~c~25;Kraton e batik~c~5
+jaipur|Forte Amber~c~8;Hawa Mahal~c~3;City Palace~c~10;Mercados de Johari~cg~0
+agra|Taj Mahal~cr~15;Forte de Agra~c~8;Velha Délhi e Chandni Chowk~cg~0
+goa|Praias de Palolem e Anjuna~pf~0;Festas trance~f~20;Igrejas de Old Goa~c~0
+kerala|Houseboat em Alleppey~nr~120;Plantações de chá em Munnar~n~10;Massagem ayurvédica~r~30
+katmandu|Durbar Square~c~10;Stupa de Boudhanath~c~5;Trekking Poon Hill~na~300;Voo pelo Everest~n~230
+srilanka|Rocha de Sigiriya~ca~30;Trem Kandy a Ella~n~5;Safári em Yala~n~70;Galle Fort~cp~0
+petra|Petra (Tesouro e Monastério)~ca~70;Petra à noite~cr~20;Noite no deserto de Wadi Rum~nr~80;Mar Morto~nr~30
+abudhabi|Mesquita Sheikh Zayed~c~0;Louvre Abu Dhabi~c~20;Ferrari World~f~90
+doha|Museu de Arte Islâmica~c~0;Souq Waqif~cg~0;Dunas e mar interior~na~80
+jerusalem|Cidade Velha e Muro das Lamentações~c~0;Santo Sepulcro~c~0;Mar Morto e Massada~nc~80;Mercado Mahane Yehuda~g~20
+mascate|Grande Mesquita do Sultão Qaboos~c~0;Wadi Shab~na~0;Deserto de Wahiba~nr~100
+tbilisi|Cidade Velha e banhos sulfurosos~cr~20;Vinho georgiano em Kakheti~g~50;Kazbegi~n~40
+kruger|Safári de jipe (Big Five)~na~120;Safári a pé~na~80;Lodge privado~r~300
+serengeti|Safári de 3 dias~na~800;Grande migração (jul a out)~n~0;Balão sobre a savana~nr~550;Cratera de Ngorongoro~n~300
+masaimara|Safári na reserva~na~200;Aldeia masai~c~20;Balão ao amanhecer~nr~450
+namibia|Dunas de Sossusvlei~na~0;Deadvlei~n~0;Etosha~n~20;Skeleton Coast~n~100
+victoria|Cataratas Vitória~n~50;Cruzeiro ao pôr do sol no Zambeze~r~70;Devil's Pool~a~110;Rafting no Zambeze~a~150
+mauricio|Le Morne e cachoeira submarina (sobrevoo)~nr~350;Catamarã na Île aux Cerfs~p~70;Chamarel (terra das sete cores)~n~10
+seychelles|Anse Source d'Argent~p~10;Vallée de Mai~n~40;Snorkel em Praslin~pa~40
+fez|Medina de Fez e curtumes~c~0;Chefchaouen, a cidade azul~cr~0;Volubilis~c~7
+luxor|Vale dos Reis~c~30;Templo de Karnak~c~25;Balão sobre Luxor~nr~70;Cruzeiro no Nilo até Assuã~cr~400
+caboverde|Praia de Santa Maria no Sal~p~0;Pico do Fogo~na~40;Mergulho~pa~60;Música ao vivo (morna)~f~10
+madagascar|Avenida dos Baobás~n~0;Lêmures em Andasibe~n~30;Tsingy de Bemaraha~na~80
+toronto|Cataratas do Niágara~n~25;CN Tower~c~35;Distillery District~cg~0
+vancouver|Stanley Park de bicicleta~na~20;Banff e Lake Louise~n~0;Whistler~sa~150
+chicago|Cruzeiro de arquitetura~c~50;Art Institute~c~35;Pizza deep dish~g~25;Blues ao vivo~f~25
+novaorleans|French Quarter e Bourbon Street~fc~0;Jazz na Frenchmen Street~f~20;Pântanos de airboat~n~50;Comida cajun e crioula~g~30
+havai|Pearl Harbor~c~0;Nascer do sol no Haleakalā~n~30;Surfe em Waikiki~pa~60;Na Pali Coast~n~150
+tulum|Ruínas de Tulum~c~10;Cenotes Dos Ojos e Calavera~na~30;Beach clubs~pf~40
+oaxaca|Monte Albán~c~6;Hierve el Agua~n~5;Mezcalerias~g~30;Mercado 20 de Novembro~g~10
+costarica|Vulcão Arenal e termas~nr~60;Monteverde (pontes suspensas)~na~40;Manuel Antonio~pn~20;Rafting~a~80
+panama|Canal do Panamá (Miraflores)~c~20;San Blas (2 dias)~p~200;Casco Viejo~cf~0
+puntacana|Isla Saona~p~90;Hoyo Azul~n~80;Resort all inclusive~r~0
+aruba|Eagle Beach~p~0;Parque Arikok~na~15;Snorkel no Antilla~pa~60
+lima|Barranco e Miraflores~cf~0;Ceviche e cozinha peruana~g~40;Jantar num top 50 do mundo~g~250;Huacachina e Paracas~na~90
+quito|Mitad del Mundo~c~5;Centro histórico~c~0;Teleférico ao Pichincha~n~10;Cotopaxi~na~60
+torres|Trilha W (5 dias)~na~600;Base das Torres~na~0;Glaciar Grey~n~80
+valparaiso|Cerros e murais de Valparaíso~c~0;Casa de Neruda (La Sebastiana)~c~10;Vinícolas do Vale de Casablanca~g~40
+bogota|Museu do Ouro~c~2;Monserrate~n~8;La Candelaria e grafite~c~0;Andrés Carne de Res~f~40
+salta|Quebrada de Humahuaca~n~40;Salinas Grandes~n~50;Cafayate e vinhos~g~30;Trem das Nuvens~n~100
+melbourne|Great Ocean Road~n~80;Laneways e cafés~g~15;Phillip Island (pinguins)~n~60
+cairns|Grande Barreira de Corais (snorkel)~pa~150;Floresta de Daintree~n~100;Kuranda~n~50
+fiji|Island hopping nas Yasawas~p~150;Mergulho com tubarões~a~200;Vila fijiana e kava~c~30
+borabora|Snorkel com arraias e tubarões~pa~120;Bangalô sobre a água~r~900;Monte Otemanu de 4x4~n~90
+munique|Oktoberfest (set e out)~f~60;Castelo de Neuschwanstein~cr~50;Cervejarias e Englischer Garten~gf~20
+hallstatt|Vila de Hallstatt~cr~0;Minas de sal~c~40;Salzburgo e A Noviça Rebelde~c~50
+copenhague|Nyhavn~cr~0;Tivoli~f~25;Bicicleta pela cidade~a~15;Noma e nova cozinha nórdica~g~250
+estocolmo|Gamla Stan~c~0;Museu Vasa~c~20;Arquipélago de barco~n~30
+cracovia|Cidade Velha e Wawel~c~10;Auschwitz-Birkenau~c~25;Mina de sal de Wieliczka~c~30
+split|Palácio de Diocleciano~c~10;Hvar e as festas~pf~40;Cachoeiras de Krka~n~30;Blue Cave~pa~110
+malta|Lagoa Azul de Comino~p~30;Valletta~c~0;Mdina~c~0;Mergulho~pa~60
+mykonos|Little Venice ao pôr do sol~r~0;Festas em Paradise Beach~f~50;Delos~c~30
+bruges|Canais de barco~cr~15;Chocolates e cervejas belgas~g~25;Campanário~c~15
+provenca|Campos de lavanda (jun a jul)~nr~0;Gordes e Luberon~cr~0;Avignon e Palácio dos Papas~c~15;Châteauneuf-du-Pape~g~30
+nice|Promenade des Anglais~p~0;Èze e Mônaco~cr~20;Cannes e Antibes~pr~0
+tallinn|Cidade Velha medieval~c~0;Telliskivi~cf~0;Saunas estonianas~r~25`;
+let VG_EXP = null;
+const vgExp = id => (VG_EXP || (VG_EXP = Object.fromEntries(VG_EXP_TXT.trim().split('\n').map(l => { const [k, r] = l.split('|'); return [k, r.split(';').map(x => { const [nome, tipos, p] = x.split('~'); return { nome, tipos, p: +p || 0 }; })]; }))))[id] || [];
+const VG_SP = { id: 'sp', nome: 'São Paulo', pais: 'BR', lat: -23.43, lon: -46.47 };
+const VG_MEIO = { aviao: ['Avião', '✈'], trem: ['Trem', '🚆'], onibus: ['Ônibus', '🚌'], carro: ['Carro', '🚗'], barco: ['Barco', '⛴'] };
+const VG_RST = { op: 'Opção', def: 'Definido' };
+const VG_HORA = 50;   // R$ por hora de deslocamento, para a rota que pesa custo e tempo
+let vgrSugI = -1;
+function vgMoedaFx(m) {
+  if (m === 'BRL' || !m) return 1; const C = state.viag.cfg, k = (1 + C.spread / 100) * (1 + C.iof / 100), u = vgUsd().v;
+  if (m === 'EUR') { const e = mundoDb && (mundoDb.itens || []).find(x => /eur/i.test(x.id) && x.grupo === 'cambio'); return (e && +e.p1 > 0 ? +e.p1 : u * 1.08) * k; }
+  return u * k;
+}
+const vgFxPais = pais => pais === 'BR' ? 1 : vgMoedaFx('USD');
+// trecho entre duas paradas: meio sugerido pela distância, horas e preço por pessoa (R$, só ida)
+function vgLegEst(a, b, meio) {
+  const km = vgKm(+a.lat, +a.lon, +b.lat, +b.lon), br = a.pais === 'BR' && b.pais === 'BR', sp = a.id === 'sp' || b.id === 'sp';
+  if (sp) { const o = a.id === 'sp' ? b : a; const [v, hr] = vgVooDist(km, o.pais === 'BR'); return { km, meio: 'aviao', dur: hr, valor: v / 2, sp: true }; }
+  const m = meio || (km < 60 ? 'carro' : br ? (km < 450 ? 'onibus' : 'aviao') : km < 450 ? 'trem' : km < 750 ? 'trem' : 'aviao');
+  let usd, dur;
+  if (m === 'aviao') { usd = 50 + 0.065 * km; dur = 3 + km / 750; }
+  else if (m === 'trem') { usd = km < 450 ? 10 + 0.13 * km : 40 + 0.09 * km; dur = 0.5 + km / (km < 450 ? 90 : 140); }
+  else if (m === 'onibus') { usd = 6 + 0.06 * km; dur = 0.5 + km / 65; }
+  else if (m === 'barco') { usd = 15 + 0.12 * km; dur = 0.5 + km / 30; }
+  else { usd = 10 + 0.08 * km; dur = 0.3 + km / 75; }
+  const valor = br ? Math.round(usd * 5.4) : usd * vgMoedaFx('USD');
+  return { km, meio: m, dur, valor, sp: false };
+}
+const vgLegKey = (a, b) => a.id + '>' + b.id;
+function vgLeg(x, a, b) {
+  const o = (x.rot.legs || {})[vgLegKey(a, b)] || {}, e = vgLegEst(a, b, o.meio);
+  return Object.assign(e, { key: vgLegKey(a, b), st: o.st === 'def' ? 'def' : 'op', valorUsr: +o.valor > 0 ? +o.valor : null, valorEf: +o.valor > 0 ? +o.valor : e.valor, info: o.info || '' });
+}
+const vgRotNoites = x => Math.max(1, Math.round((Date.parse(x.volta + 'T12:00:00') - Date.parse(x.ida + 'T12:00:00')) / 864e5));
+const vgDtAdd = (d, n) => { const x = new Date(d + 'T12:00:00'); x.setDate(x.getDate() + n); return x.toISOString().slice(0, 10); };
+const VG_SEM = ['dom', 'seg', 'ter', 'qua', 'qui', 'sex', 'sáb'];
+const vgSem = d => VG_SEM[new Date(d + 'T12:00:00').getDay()];
+function vgRotNorm(x, v) {
+  if (!x.rot || typeof x.rot !== 'object' || Array.isArray(x.rot)) x.rot = {};
+  const r = x.rot; if (!Array.isArray(r.tipos)) r.tipos = []; if (!Array.isArray(r.paradas)) r.paradas = []; if (!Array.isArray(r.itens)) r.itens = []; if (!r.legs || typeof r.legs !== 'object' || Array.isArray(r.legs)) r.legs = {};
+  if (!r.paradas.length && !r.criado) { const l = v.lugares.find(y => y.id === x.lugar); const d = l && l.dest ? vgDest(l.dest) : null; const la = l ? (l.lat != null ? l.lat : d && d.lat) : null;
+    if (l) r.paradas.push({ id: vgId(), nome: l.nome, pais: l.pais, lat: la, lon: l ? (l.lon != null ? l.lon : d && d.lon) : null, dest: l.dest || '', noites: vgRotNoites(x), hosp: [] }); r.criado = true; }
+  r.paradas = r.paradas.filter(p => p && p.id && p.nome && p.pais);
+  r.paradas.forEach(p => { p.noites = Math.max(0, Math.round(+p.noites || 0)); if (!Array.isArray(p.hosp)) p.hosp = []; if (p.lat == null || !isFinite(p.lat)) { const c = p.dest ? vgDest(p.dest) : vgAchaCid(p.nome, p.pais); if (c) { p.lat = c.lat; p.lon = c.lon; } } });
+  r.itens = r.itens.filter(i => i && i.id && r.paradas.some(p => p.id === i.par));
+}
+// posição de uma parada (sem coordenadas: centro do país pela tabela base ou o padrão do continente)
+function vgParLL(p) { if (p.lat != null && isFinite(p.lat)) return p; const d = vgPaisDest(p.pais); return d ? Object.assign({}, p, { lat: d.lat, lon: d.lon }) : Object.assign({}, p, { lat: 0, lon: 0, semLL: true }); }
+function vgRotLegs(x, ordem) {
+  const ps = (ordem || x.rot.paradas).map(vgParLL); if (!ps.length) return [];
+  const seq = [VG_SP].concat(ps, [VG_SP]), out = [];
+  for (let i = 0; i < seq.length - 1; i++) out.push(vgLeg(x, seq[i], seq[i + 1]));
+  return out;
+}
+const vgRotCusto = (x, ordem) => vgRotLegs(x, ordem).reduce((s, l) => ({ v: s.v + l.valorEf, h: s.h + l.dur, km: s.km + l.km }), { v: 0, h: 0, km: 0 });
+const vgRotScore = c => c.v + c.h * VG_HORA;
+// melhor ordem das paradas, saindo e voltando de São Paulo: todas as ordens até 8 cidades; acima disso, vizinho mais próximo + 2-opt
+function vgRotOtim(x) {
+  const ps = x.rot.paradas.slice(), n = ps.length; if (n < 2) return null;
+  const f = o => vgRotScore(vgRotCusto(x, o)); let best = ps, bs = f(ps);
+  if (n <= 8) {
+    const perm = (arr, k) => { if (k === arr.length) { const s = f(arr); if (s < bs - 0.5) { bs = s; best = arr.slice(); } return; } for (let i = k; i < arr.length; i++) { [arr[k], arr[i]] = [arr[i], arr[k]]; perm(arr, k + 1); [arr[k], arr[i]] = [arr[i], arr[k]]; } };
+    perm(ps.slice(), 0);
+  } else {
+    let cur = [], rest = ps.slice(), at = VG_SP; while (rest.length) { rest.sort((a, b) => vgKm(at.lat, at.lon, vgParLL(a).lat, vgParLL(a).lon) - vgKm(at.lat, at.lon, vgParLL(b).lat, vgParLL(b).lon)); at = vgParLL(rest[0]); cur.push(rest.shift()); }
+    let cs = f(cur), mel = true; while (mel) { mel = false; for (let i = 0; i < n - 1; i++) for (let j = i + 1; j < n; j++) { const t = cur.slice(0, i).concat(cur.slice(i, j + 1).reverse(), cur.slice(j + 1)), s = f(t); if (s < cs - 0.5) { cur = t; cs = s; mel = true; } } }
+    if (cs < bs - 0.5) { best = cur; bs = cs; }
+  }
+  return best;
+}
+function vgRotDatas(x) { let d = x.ida; return x.rot.paradas.map(p => { const ent = d; d = vgDtAdd(d, p.noites); return { p, ent, sai: d }; }); }
+function vgHospEst(x, p) { const I = vgInfo(p), E = VG_EST[x.estilo] || VG_EST.meio, ov = (v => v && v.ov)(state.viag.lugares.find(l => l.dest && l.dest === p.dest)) || {};
+  return (ov.h > 0 ? +ov.h : I.h * E.h * vgFxPais(p.pais)) * Math.ceil(x.pessoas / 2); }
+function vgDiaEst(x, p) { const I = vgInfo(p), E = VG_EST[x.estilo] || VG_EST.meio; return I.d * E.d * vgFxPais(p.pais) * x.pessoas; }
+// resumo: definido, ainda opção ou estimado
+function vgRotResumo(x) {
+  const r = x.rot, pes = x.pessoas, out = { pass: [0, 0], trecho: [0, 0], hosp: [0, 0], passeio: [0, 0], dia: [0, 0] };
+  vgRotLegs(x).forEach(l => { const k = l.sp ? 'pass' : 'trecho'; out[k][l.st === 'def' ? 0 : 1] += l.valorEf * pes; });
+  r.paradas.forEach(p => { if (!p.noites) return; const def = p.hosp.filter(h => h.st === 'def' && +h.valor > 0), op = p.hosp.filter(h => +h.valor > 0);
+    if (def.length) out.hosp[0] += def.reduce((s, h) => s + +h.valor * vgMoedaFx(h.moeda), 0) * p.noites;
+    else if (op.length) out.hosp[1] += Math.min(...op.map(h => +h.valor * vgMoedaFx(h.moeda))) * p.noites;
+    else out.hosp[1] += vgHospEst(x, p) * p.noites;
+    out.dia[1] += vgDiaEst(x, p) * p.noites; });
+  r.itens.forEach(i => { if (+i.valor > 0) out.passeio[i.st === 'def' ? 0 : 1] += +i.valor * vgMoedaFx(i.moeda) * pes; });
+  const tot = Object.values(out).reduce((s, a) => [s[0] + a[0], s[1] + a[1]], [0, 0]);
+  return { out, tot, total: tot[0] + tot[1] };
+}
+const vgRotSel = () => { const v = state.viag; let x = v.viagens.find(y => y.id === v.rotSel); if (!x && v.viagens.length) { x = v.viagens.slice().sort((a, b) => a.ida < b.ida ? -1 : 1).find(y => y.st !== 'concluida') || v.viagens[0]; v.rotSel = x.id; } return x || null; };
+const vgHm = h => h < 1 ? `${Math.round(h * 60)} min` : `${num(Math.floor(h), 0)}h${Math.round((h % 1) * 60) ? String(Math.round((h % 1) * 60)).padStart(2, '0') : ''}`;
+const vgKmT = km => `${num(km, 0)} km`;
+const vgLnk = (u, t) => `<a href="${u}" target="_blank" rel="noopener">${t}</a>`;
+function vgSites(x, p, ent, sai) {
+  const q = encodeURIComponent(p.nome + ', ' + vgPaisNome(p.pais)), qs = encodeURIComponent(p.nome);
+  return `<div class="vgr-sites"><span class="vg-lbl">O que fazer</span>${vgLnk('https://www.tripadvisor.com.br/Search?q=' + q, 'Tripadvisor')} · ${vgLnk('https://www.getyourguide.com.br/s/?q=' + qs, 'GetYourGuide')} · ${vgLnk('https://www.viator.com/pt-BR/searchResults/all?text=' + qs, 'Viator')} · ${vgLnk('https://www.civitatis.com/br/busca/?q=' + qs, 'Civitatis')} · ${vgLnk('https://www.atlasobscura.com/search?q=' + qs, 'Atlas Obscura')} · ${vgLnk('https://www.google.com/maps/search/o+que+fazer+em+' + q, 'Google Maps')}
+    <span class="vg-lbl">Onde ficar</span>${vgLnk(`https://www.booking.com/searchresults.pt-br.html?ss=${q}&checkin=${ent}&checkout=${sai}&group_adults=${x.pessoas}&no_rooms=${Math.ceil(x.pessoas / 2)}`, 'Booking')} · ${vgLnk(`https://www.airbnb.com.br/s/${q}/homes?checkin=${ent}&checkout=${sai}&adults=${x.pessoas}`, 'Airbnb')} · ${vgLnk(`https://www.hostelworld.com/pt/st/hosteis/procurar?search_keywords=${qs}`, 'Hostelworld')}</div>`;
+}
+function vgRotMapa(x) {
+  const ps = x.rot.paradas.map(vgParLL).filter(p => !p.semLL); if (!ps.length) return '<p class="hint">Adicione cidades para ver a rota no mapa.</p>';
+  const pts = ps.map(p => vgProj(+p.lon, +p.lat)), xs = pts.map(p => p[0]), ys = pts.map(p => p[1]);
+  let x0 = Math.min(...xs), x1 = Math.max(...xs), y0 = Math.min(...ys), y1 = Math.max(...ys); const w = Math.max(x1 - x0, 12), h = Math.max(y1 - y0, 7);
+  const cx = (x0 + x1) / 2, cy = (y0 + y1) / 2, W = Math.max(w * 1.35, h * 1.35 * 1.8), H = W / 1.8;
+  const k = W / 600, paises = new Set(ps.map(p => p.pais));
+  return `<svg class="vgr-svg" viewBox="${(cx - W / 2).toFixed(2)} ${(cy - H / 2).toFixed(2)} ${W.toFixed(2)} ${H.toFixed(2)}" role="img" aria-label="Mapa da rota"><rect class="vg-mar" x="-2000" y="-2000" width="4000" height="4000"/>
+    <g class="vgr-paises">${Object.entries(VG_PATHS).map(([c, d]) => `<path d="${d}"${paises.has(c) ? ' class="on"' : ''}/>`).join('')}</g>
+    <polyline class="vgr-linha" points="${pts.map(p => p.map(n => n.toFixed(2)).join(',')).join(' ')}" stroke-width="${(2 * k).toFixed(3)}" stroke-dasharray="${(5 * k).toFixed(3)} ${(4 * k).toFixed(3)}"/>
+    ${pts.map((p, i) => `<g class="vgr-pt" transform="translate(${p[0].toFixed(2)} ${p[1].toFixed(2)})"><circle r="${(9 * k).toFixed(3)}" stroke-width="${(1.6 * k).toFixed(3)}"/><text font-size="${(10 * k).toFixed(3)}" dy="${(3.5 * k).toFixed(3)}">${i + 1}</text><title>${esc(ps[i].nome)}</title></g>`).join('')}</svg>`;
+}
+function renderViagRot() {
+  const v = state.viag, x = vgRotSel(), box = $('vgr-viagem');
+  if (!x) { box.innerHTML = `<p class="hint">Nenhuma viagem ainda. Escolha um lugar em Comparar ou comece uma do zero.</p><div class="vg-pa"><button type="button" class="btn" data-vgrnova>+ Nova viagem</button></div>`; ['vgr-rota', 'vgr-dias', 'vgr-paradas', 'vgr-resumo', 'vgr-otim', 'vgr-mapa'].forEach(id => { const e = $(id); if (e) e.innerHTML = ''; }); kpis($('kpi-vgr'), []); return; }
+  vgRotNorm(x, v); const r = x.rot, n = vgRotNoites(x), soma = r.paradas.reduce((s, p) => s + p.noites, 0);
+  box.innerHTML = `<div class="vgr-top"><label>Viagem<select data-vgrsel aria-label="Escolher viagem">${v.viagens.slice().sort((a, b) => a.ida < b.ida ? -1 : 1).map(y => `<option value="${y.id}"${y.id === x.id ? ' selected' : ''}>${esc(y.nome)} · ${vgBrd(y.ida)}</option>`).join('')}</select></label><button type="button" class="btn ghost tiny" data-vgrnova>+ Nova viagem</button></div>
+    <div class="vg-form"><label class="vgr-nome">Nome<input type="text" data-vgrf="nome" value="${esc(x.nome)}" maxlength="60"></label><label>Ida<input type="date" data-vgrf="ida" value="${x.ida}"></label><label>Volta<input type="date" data-vgrf="volta" value="${x.volta}" min="${x.ida}"></label><label>Pessoas<input type="number" min="1" max="20" step="1" data-vgrf="pessoas" value="${x.pessoas}"></label></div>
+    <div class="vg-lbl">Estilo</div><div class="seg">${Object.entries(VG_EST).map(([k, e]) => `<button type="button" data-vgrest="${k}" aria-pressed="${x.estilo === k}">${e.n}</button>`).join('')}</div>
+    <div class="vg-lbl">Tipo de viagem <span class="subdet">(nenhum marcado = todos; filtra as sugestões)</span></div><div class="seg">${VG_TIPOS.map(([k, nn]) => `<button type="button" data-vgrtipo="${k}" aria-pressed="${r.tipos.includes(k)}">${nn}</button>`).join('')}</div>`;
+  const legs = vgRotLegs(x), c = vgRotCusto(x), res = vgRotResumo(x), dts = vgRotDatas(x);
+  kpis($('kpi-vgr'), [
+    ['Noites', `${soma} de ${n}`, soma === n ? 'roteiro fecha com as datas' : soma < n ? `faltam ${n - soma} ${n - soma === 1 ? 'noite' : 'noites'}` : `${soma - n} a mais que as datas`],
+    ['Cidades', `${r.paradas.length}`, r.paradas.length ? r.paradas.map(p => p.nome).slice(0, 3).join(', ') + (r.paradas.length > 3 ? '…' : '') : 'adicione abaixo'],
+    ['Deslocamento', legs.length ? vgHm(c.h) : '—', legs.length ? `${vgKmT(c.km)} contando ida e volta` : 'saindo de São Paulo'],
+    ['Custo do roteiro', legs.length ? fm(res.total) : '—', legs.length ? `${fm(res.tot[0])} já definido` : 'preço de hoje']
+  ]);
+  // rota
+  let h = `<div class="vg-add vgr-add"><div class="acao-box vg-add-n"><label>Adicionar cidade<input type="text" id="vgr-novo" placeholder="Ex.: Kyoto, Porto, Cusco…" autocomplete="off" role="combobox" aria-autocomplete="list" aria-controls="vgr-sug" aria-expanded="false"></label><div class="acao-sug vg-sug" id="vgr-sug" role="listbox" hidden></div></div><button type="button" class="btn" data-vgradd>Adicionar</button></div><div id="vgr-msg"></div>`;
+  if (soma !== n && r.paradas.length) h += `<div class="warn vgr-aviso">As noites das cidades somam ${soma} e as datas têm ${n}. <button type="button" class="btn tiny ghost" data-vgrajusta>Mudar a volta para ${vgBrd(vgDtAdd(x.ida, soma || 1))}</button></div>`;
+  const legHtml = (l, a, b) => { const md = VG_MEIO[l.meio] || VG_MEIO.carro;
+    return `<div class="vgr-leg${l.st === 'def' ? ' def' : ''}"><span class="vgr-ic" aria-hidden="true">${md[1]}</span><div class="vgr-lt">${l.sp ? `<b>${esc(a.nome)} → ${esc(b.nome)}</b> · voo ${a.id === 'sp' ? 'de ida' : 'de volta'}` : `<select data-vgrmeio="${l.key}" aria-label="Meio de transporte">${Object.entries(VG_MEIO).map(([k, m]) => `<option value="${k}"${l.meio === k ? ' selected' : ''}>${m[0]}</option>`).join('')}</select>`}
+      <span class="subdet">${vgKmT(l.km)} · ≈ ${vgHm(l.dur)}</span></div>
+      <label class="vgr-lv">R$ por pessoa<input type="number" min="0" step="10" data-vgrlv="${l.key}" value="${l.valorUsr || ''}" placeholder="${num(l.valor, 0)}"></label>
+      <select data-vgrlst="${l.key}" aria-label="Status do trecho" class="vgr-st">${Object.entries(VG_RST).map(([k, nn]) => `<option value="${k}"${l.st === k ? ' selected' : ''}>${nn}</option>`).join('')}</select>
+      <span class="vgr-ll">${vgLnk(`https://www.rome2rio.com/pt/map/${encodeURIComponent(a.nome)}/${encodeURIComponent(b.nome)}`, 'Rome2rio')}${l.meio === 'aviao' ? ' · ' + vgLnk(`https://www.google.com/travel/flights?hl=pt-BR&q=${encodeURIComponent(`voos de ${a.nome} para ${b.nome}`)}`, 'Google Voos') : ''}</span></div>`; };
+  if (r.paradas.length) {
+    const seq = [VG_SP].concat(r.paradas.map(vgParLL), [VG_SP]);
+    h += `<div class="vgr-lista">${legHtml(legs[0], seq[0], seq[1])}${dts.map(({ p, ent, sai }, i) => `<div class="vgr-par" data-par="${p.id}"><span class="vgr-n">${i + 1}</span><div class="vgr-pn"><b>${esc(p.nome)}</b> <span class="subdet">${esc(vgPaisNome(p.pais))}</span><div class="subdet">${p.noites ? `${vgSem(ent)} ${vgBrd(ent).slice(0, 5)} → ${vgSem(sai)} ${vgBrd(sai).slice(0, 5)}` : 'só de passagem'}</div></div>
+      <div class="vgr-noi"><button type="button" class="btn ghost tiny" data-vgrnoi="${p.id}" data-d="-1" aria-label="Menos uma noite">−</button><span><b>${p.noites}</b> ${p.noites === 1 ? 'noite' : 'noites'}</span><button type="button" class="btn ghost tiny" data-vgrnoi="${p.id}" data-d="1" aria-label="Mais uma noite">+</button></div>
+      <div class="vgr-ac"><button type="button" class="btn ghost tiny" data-vgrmov="${p.id}" data-d="-1" aria-label="Subir"${i ? '' : ' disabled'}>↑</button><button type="button" class="btn ghost tiny" data-vgrmov="${p.id}" data-d="1" aria-label="Descer"${i < r.paradas.length - 1 ? '' : ' disabled'}>↓</button><button type="button" class="vg-x mini" data-vgrdel="${p.id}" aria-label="Tirar ${esc(p.nome)}">×</button></div></div>${legHtml(legs[i + 1], seq[i + 1], seq[i + 2])}`).join('')}</div>`;
+  } else h += '<p class="hint">Nenhuma cidade ainda. A viagem sai e volta de São Paulo; adicione as cidades na ordem que imagina e ajuste as noites.</p>';
+  $('vgr-rota').innerHTML = h;
+  // rota otimizada
+  const ot = vgRotOtim(x);
+  if (!ot) $('vgr-otim').innerHTML = '<p class="hint">Com duas cidades ou mais, o painel procura a ordem com menor custo e menos tempo de deslocamento.</p>';
+  else { const c2 = vgRotCusto(x, ot), mesma = ot.every((p, i) => p.id === r.paradas[i].id);
+    $('vgr-otim').innerHTML = mesma || vgRotScore(c) - vgRotScore(c2) < 1 ? `<div class="ok">A sua ordem já é a melhor: ${fm(c.v)} por pessoa em deslocamentos e ${vgHm(c.h)} viajando entre cidades.</div>`
+      : `<div class="vgr-ot"><div><span class="vg-lbl">Rota otimizada</span><b>${ot.map(p => esc(p.nome)).join(' → ')}</b><div class="subdet">Economiza ${c.v - c2.v > 0 ? `${fm(c.v - c2.v)} por pessoa` : ''}${c.v - c2.v > 0 && c.h - c2.h > 0.1 ? ' e ' : ''}${c.h - c2.h > 0.1 ? vgHm(c.h - c2.h) + ' de deslocamento' : ''}${c.v - c2.v <= 0 && c.h - c2.h <= 0.1 ? 'distância' : ''} (${vgKmT(c.km - c2.km)} a menos). As noites de cada cidade ficam iguais.</div></div><button type="button" class="btn" data-vgrotim>Usar esta ordem</button></div>`; }
+  $('vgr-mapa').innerHTML = vgRotMapa(x);
+  // dia a dia
+  if (!r.paradas.length) $('vgr-dias').innerHTML = ''; else {
+    const linhas = []; let dia = 1;
+    dts.forEach(({ p, ent }, i) => { for (let k = 0; k < Math.max(1, p.noites); k++) { const d = vgDtAdd(ent, k), its = r.itens.filter(it => it.par === p.id && it.dia === d), leg = k === 0 ? legs[i] : null;
+      linhas.push(`<tr><td class="vgr-dd"><b>Dia ${dia}</b><span class="subdet">${vgSem(d)} ${vgBrd(d)}</span></td><td>${esc(p.nome)}${leg ? `<div class="subdet">${(VG_MEIO[leg.meio] || VG_MEIO.carro)[1]} chega ${i ? 'de ' + esc(r.paradas[i - 1].nome) : 'de São Paulo'} (≈ ${vgHm(leg.dur)})</div>` : ''}</td><td>${its.length ? its.map(it => `<div class="vgr-it${it.st === 'def' ? ' def' : ''}">${'★'.repeat(it.est || 0)} ${esc(it.nome)} <span class="chip ${it.st === 'def' ? 'best' : 'info'}">${VG_RST[it.st]}</span></div>`).join('') : '<span class="subdet">livre</span>'}</td></tr>`); if (p.noites) dia++; } });
+    const fim = vgDtAdd(x.ida, soma); linhas.push(`<tr><td class="vgr-dd"><b>Volta</b><span class="subdet">${vgSem(fim)} ${vgBrd(fim)}</span></td><td>São Paulo<div class="subdet">✈ de ${esc(r.paradas[r.paradas.length - 1].nome)} (≈ ${vgHm(legs[legs.length - 1].dur)})</div></td><td></td></tr>`);
+    $('vgr-dias').innerHTML = `<div class="tscroll"><table class="vgr-dtbl"><thead><tr><th>Dia</th><th>Onde</th><th>Programação</th></tr></thead><tbody>${linhas.join('')}</tbody></table></div>`;
+  }
+  // por cidade: hospedagem, passeios e sugestões
+  const tps = r.tipos, mo = (m, attr) => `<select ${attr} aria-label="Moeda">${['BRL', 'USD', 'EUR'].map(k => `<option value="${k}"${(m || 'BRL') === k ? ' selected' : ''}>${k === 'BRL' ? 'R$' : k === 'USD' ? 'US$' : '€'}</option>`).join('')}</select>`;
+  $('vgr-paradas').innerHTML = !r.paradas.length ? '<p class="hint">As cidades aparecem aqui quando você montar a rota.</p>' : dts.map(({ p, ent, sai }, i) => {
+    const he = vgHospEst(x, p), its = r.itens.filter(it => it.par === p.id), dias = []; for (let k = 0; k < Math.max(1, p.noites); k++) dias.push(vgDtAdd(ent, k));
+    const sug = p.dest ? vgExp(p.dest).filter(e => !its.some(it => vgNorm(it.nome) === vgNorm(e.nome))) : [], sugT = tps.length ? sug.filter(e => [...e.tipos].some(t => tps.includes(t))) : sug, br = p.pais === 'BR';
+    return `<details class="vgr-cid"${i === 0 ? ' open' : ''}><summary><span class="vgr-n">${i + 1}</span><b>${esc(p.nome)}</b> <span class="subdet">${p.noites} ${p.noites === 1 ? 'noite' : 'noites'} · ${its.length} ${its.length === 1 ? 'passeio' : 'passeios'}${p.hosp.some(hh => hh.st === 'def') ? ' · hospedagem definida' : ''}</span></summary>
+      <div class="vg-lbl">Hospedagem <span class="subdet">(valor por noite, total dos quartos; referência ≈ ${fm(he)})</span></div>
+      ${p.hosp.length ? `<div class="tscroll"><table class="vgr-tbl"><thead><tr><th>Nome</th><th>Por noite</th><th>Moeda</th><th>Status</th><th>Link</th><th></th></tr></thead><tbody>${p.hosp.map(hh => `<tr><td data-l="Nome"><input type="text" data-vgrh="${p.id}|${hh.id}|nome" value="${esc(hh.nome || '')}" placeholder="Hotel ou apartamento" maxlength="80"></td><td data-l="Por noite"><input type="number" min="0" step="10" data-vgrh="${p.id}|${hh.id}|valor" value="${+hh.valor || ''}"></td><td data-l="Moeda">${mo(hh.moeda, `data-vgrh="${p.id}|${hh.id}|moeda"`)}</td><td data-l="Status"><select data-vgrh="${p.id}|${hh.id}|st">${Object.entries(VG_RST).map(([k, nn]) => `<option value="${k}"${hh.st === k ? ' selected' : ''}>${nn}</option>`).join('')}</select></td><td data-l="Link"><input type="url" data-vgrh="${p.id}|${hh.id}|link" value="${esc(hh.link || '')}" placeholder="https://"></td><td><button type="button" class="vg-x mini" data-vgrhdel="${p.id}|${hh.id}" aria-label="Remover">×</button></td></tr>`).join('')}</tbody></table></div>` : ''}
+      <div class="vg-pa"><button type="button" class="btn ghost tiny" data-vgrhadd="${p.id}">+ Hospedagem</button></div>
+      <div class="vg-lbl">Passeios e experiências <span class="subdet">(valor por pessoa)</span></div>
+      ${its.length ? `<div class="tscroll"><table class="vgr-tbl"><thead><tr><th>Nota</th><th>O quê</th><th>Dia</th><th>Valor</th><th>Moeda</th><th>Status</th><th>Link</th><th></th></tr></thead><tbody>${its.map(it => `<tr><td data-l="Nota"><select data-vgri="${it.id}|est" aria-label="Estrelas">${[0, 1, 2, 3, 4, 5].map(s => `<option value="${s}"${(it.est || 0) === s ? ' selected' : ''}>${s ? '★'.repeat(s) : '—'}</option>`).join('')}</select></td><td data-l="O quê"><input type="text" data-vgri="${it.id}|nome" value="${esc(it.nome)}" maxlength="100"></td><td data-l="Dia"><select data-vgri="${it.id}|dia"><option value="">sem dia</option>${dias.map(d => `<option value="${d}"${it.dia === d ? ' selected' : ''}>${vgSem(d)} ${vgBrd(d).slice(0, 5)}</option>`).join('')}</select></td><td data-l="Valor"><input type="number" min="0" step="1" data-vgri="${it.id}|valor" value="${+it.valor || ''}" placeholder="0"></td><td data-l="Moeda">${mo(it.moeda, `data-vgri="${it.id}|moeda"`)}</td><td data-l="Status"><select data-vgri="${it.id}|st">${Object.entries(VG_RST).map(([k, nn]) => `<option value="${k}"${it.st === k ? ' selected' : ''}>${nn}</option>`).join('')}</select></td><td data-l="Link"><input type="url" data-vgri="${it.id}|link" value="${esc(it.link || '')}" placeholder="https://"></td><td><button type="button" class="vg-x mini" data-vgridel="${it.id}" aria-label="Remover">×</button></td></tr>`).join('')}</tbody></table></div>` : ''}
+      <div class="vg-pa"><button type="button" class="btn ghost tiny" data-vgriadd="${p.id}">+ Passeio</button></div>
+      ${sug.length ? `<div class="vg-lbl">Sugestões${tps.length ? ' para o seu tipo de viagem' : ''}</div><div class="vgr-sugs">${(sugT.length ? sugT : sug).map(e => `<div class="vgr-sg"><div><b>${esc(e.nome)}</b><div class="vg-tps">${VG_TIPOS.filter(([k]) => e.tipos.includes(k)).map(([, nn]) => `<span>${nn}</span>`).join('')}</div></div><span class="vg-num">${e.p ? `≈ ${br ? fm(e.p) : fm(e.p * vgMoedaFx('USD'))}` : 'grátis'}</span><button type="button" class="btn tiny" data-vgrsug="${p.id}|${esc(e.nome)}">+ Roteiro</button></div>`).join('')}</div>${tps.length && sugT.length < sug.length ? `<p class="hint">${sug.length - sugT.length} sugestões de outros tipos ficaram de fora. Desmarque os tipos de viagem para ver todas.</p>` : ''}` : p.dest ? '' : '<p class="hint">Esta cidade ainda não tem sugestões próprias; use os sites abaixo.</p>'}
+      ${vgSites(x, p, ent, sai)}</details>`; }).join('');
+  // resumo
+  const RL = [['pass', 'Passagens de ida e volta'], ['trecho', 'Deslocamentos entre cidades'], ['hosp', 'Hospedagem'], ['passeio', 'Passeios e experiências'], ['dia', 'Dia a dia (comida e transporte local)']];
+  $('vgr-resumo').innerHTML = !r.paradas.length ? '' : `<div class="tscroll"><table class="vgr-rtbl"><thead><tr><th>Item</th><th class="vg-num">Definido</th><th class="vg-num">Opção ou estimado</th><th class="vg-num">Total</th></tr></thead><tbody>${RL.map(([k, nn]) => `<tr><td>${nn}</td><td class="vg-num">${res.out[k][0] ? fm(res.out[k][0]) : '—'}</td><td class="vg-num">${res.out[k][1] ? fm(res.out[k][1]) : '—'}</td><td class="vg-num"><b>${fm(res.out[k][0] + res.out[k][1])}</b></td></tr>`).join('')}
+    <tr class="vg-trow"><td><b>Total</b></td><td class="vg-num">${fm(res.tot[0])}</td><td class="vg-num">${fm(res.tot[1])}</td><td class="vg-num vg-tot">${fm(res.total)}</td></tr></tbody></table></div><p class="hint">Preço de hoje, para ${x.pessoas} ${x.pessoas > 1 ? 'pessoas' : 'pessoa'}, com câmbio + spread + IOF. Seguro viagem, preço projetado para a data, parcelas e a ligação com o Plano futuro entram na etapa de custos.</p>`;
+}
+function vgrSugAbre() {
+  const inp = $('vgr-novo'), box = $('vgr-sug'); if (!inp || !box) return; const q = vgNorm(inp.value), qa = VG_ALIAS[q] || q;
+  if (q.length < 2) { box.hidden = true; inp.setAttribute('aria-expanded', 'false'); return; }
+  const ds = VG_DEST.filter(d => { const n = vgNorm(d.nome); return n.startsWith(q) || n.startsWith(qa) || (q.length > 3 && (n.includes(q) || n.includes(qa))); }).slice(0, 5), ja = new Set(ds.map(d => vgNorm(d.nome) + '|' + d.pais));
+  const cs = vgCids().map((c, i) => ({ c, i })).filter(({ c }) => (c.n.startsWith(q) || c.na.startsWith(q) || (q.length > 3 && (c.n.includes(q) || c.na.includes(q)))) && !ja.has(c.n + '|' + c.pais)).slice(0, 9 - ds.length);
+  const all = ds.map(d => `<button type="button" role="option" data-vgrsd="${d.id}"><b>${esc(d.nome)}</b><span>${esc(vgPaisNome(d.pais))}</span></button>`).concat(cs.map(({ c, i }) => `<button type="button" role="option" data-vgrsc="${i}"><b>${esc(c.nome)}</b><span>${esc(vgPaisNome(c.pais))} · custo médio do país</span></button>`));
+  if (!all.length) { box.innerHTML = '<div class="vg-sug-h">Não achei. Tente o nome em português ou em inglês.</div>'; box.hidden = false; return; }
+  box.innerHTML = all.map((b, k) => k === vgrSugI ? b.replace('<button ', '<button class="on" ') : b).join(''); box.hidden = false; inp.setAttribute('aria-expanded', 'true');
+}
+function vgrAddPar(o) { const x = vgRotSel(); if (!x) return; vgRotNorm(x, state.viag); const r = x.rot, soma = r.paradas.reduce((s, p) => s + p.noites, 0), falta = Math.max(0, vgRotNoites(x) - soma);
+  const p = { id: vgId(), nome: o.nome, pais: o.pais, lat: o.lat, lon: o.lon, dest: o.dest || '', noites: falta || 2, hosp: [] }; r.paradas.push(p); $('vgr-novo').value = '';
+  save(); vgRe(); const m = $('vgr-msg'); if (m) m.innerHTML = `<div class="ok">${esc(p.nome)} entrou no roteiro com ${p.noites} ${p.noites === 1 ? 'noite' : 'noites'}.</div>`; }
+document.addEventListener('input', e => { if (e.target.id === 'vgr-novo') { vgrSugI = -1; vgrSugAbre(); } });
+document.addEventListener('keydown', e => {
+  if (e.target.id !== 'vgr-novo') return; const box = $('vgr-sug'), bs = box && !box.hidden ? [...box.querySelectorAll('button')] : [];
+  if ((e.key === 'ArrowDown' || e.key === 'ArrowUp') && bs.length) { e.preventDefault(); vgrSugI = (vgrSugI + (e.key === 'ArrowDown' ? 1 : -1) + bs.length) % bs.length; bs.forEach((b, i) => b.classList.toggle('on', i === vgrSugI)); bs[vgrSugI].scrollIntoView({ block: 'nearest' }); return; }
+  if (e.key === 'Enter') { e.preventDefault(); (bs[Math.max(0, vgrSugI)] || {}).click && bs[Math.max(0, vgrSugI)].click(); return; }
+  if (e.key === 'Escape') { box.hidden = true; vgrSugI = -1; }
+});
+document.addEventListener('mousedown', e => { const b = $('vgr-sug'); if (b && !b.hidden && !e.target.closest('.vgr-add')) b.hidden = true; });
+document.addEventListener('click', e => {
+  const t = e.target.closest('[data-vgrnova],[data-vgrest],[data-vgrtipo],[data-vgradd],[data-vgrsd],[data-vgrsc],[data-vgrnoi],[data-vgrmov],[data-vgrdel],[data-vgrajusta],[data-vgrotim],[data-vgrhadd],[data-vgrhdel],[data-vgriadd],[data-vgridel],[data-vgrsug],[data-vgrabre]'); if (!t || !state.viag) return;
+  const v = state.viag, d = t.dataset;
+  if (d.vgrabre) { v.rotSel = d.vgrabre; save(); showTab('viagrot'); return; }
+  if (d.vgrnova != null) { const P = v.plano, x = { id: vgId(), nome: 'Nova viagem', lugar: '', lugarNome: '', pais: '', ida: P.ida, volta: P.volta, pessoas: P.pessoas, estilo: P.estilo, total: 0, st: 'ideia', criado: new Date().toISOString().slice(0, 10), rot: { tipos: P.tipos.slice(), paradas: [], itens: [], legs: {}, criado: true } };
+    v.viagens.push(x); v.rotSel = x.id; save(); vgRe(); setTimeout(() => { const i = $('vgr-novo'); if (i) i.focus(); }, 200); return; }
+  const x = vgRotSel(); if (!x) return; vgRotNorm(x, v); const r = x.rot;
+  if (d.vgrest) { x.estilo = d.vgrest; save(); vgRe(); return; }
+  if (d.vgrtipo) { const k = d.vgrtipo; r.tipos = r.tipos.includes(k) ? r.tipos.filter(y => y !== k) : r.tipos.concat(k); save(); vgRe(); return; }
+  if (d.vgrsd) { const dd = vgDest(d.vgrsd); if (dd) vgrAddPar({ nome: dd.nome, pais: dd.pais, lat: dd.lat, lon: dd.lon, dest: dd.id }); return; }
+  if (d.vgrsc != null) { const c = vgCids()[+d.vgrsc]; if (c) { const dd = VG_DEST.find(y => y.pais === c.pais && vgNorm(y.nome) === c.n); vgrAddPar(dd ? { nome: dd.nome, pais: dd.pais, lat: dd.lat, lon: dd.lon, dest: dd.id } : { nome: c.nome, pais: c.pais, lat: c.lat, lon: c.lon }); } return; }
+  if (d.vgradd != null) { const txt = ($('vgr-novo').value || '').trim(); if (!txt) { $('vgr-novo').focus(); return; } const dd = vgAchaDest(txt, null), c = vgAchaCid(txt, null);
+    if (dd && (vgNorm(dd.nome) === (VG_ALIAS[vgNorm(txt)] || vgNorm(txt)) || !c)) vgrAddPar({ nome: dd.nome, pais: dd.pais, lat: dd.lat, lon: dd.lon, dest: dd.id });
+    else if (c) vgrAddPar({ nome: c.nome, pais: c.pais, lat: c.lat, lon: c.lon });
+    else $('vgr-msg').innerHTML = '<div class="warn">Não achei essa cidade. Escolha uma das sugestões que aparecem ao digitar.</div>'; return; }
+  if (d.vgrnoi) { const p = r.paradas.find(y => y.id === d.vgrnoi); if (p) { p.noites = Math.max(0, p.noites + (+d.d)); save(); vgRe(); } return; }
+  if (d.vgrmov) { const i = r.paradas.findIndex(y => y.id === d.vgrmov), j = i + (+d.d); if (i >= 0 && j >= 0 && j < r.paradas.length) { [r.paradas[i], r.paradas[j]] = [r.paradas[j], r.paradas[i]]; save(); vgRe(); } return; }
+  if (d.vgrdel) { const p = r.paradas.find(y => y.id === d.vgrdel); if (!p || !confirmar(`Tirar ${p.nome} do roteiro? Hospedagem e passeios dessa cidade também saem.`)) return; r.paradas = r.paradas.filter(y => y.id !== p.id); r.itens = r.itens.filter(i => i.par !== p.id); save(); vgRe(); return; }
+  if (d.vgrajusta != null) { const s = r.paradas.reduce((a, p) => a + p.noites, 0); x.volta = vgDtAdd(x.ida, Math.max(1, s)); save(); vgRe(); return; }
+  if (d.vgrotim != null) { const o = vgRotOtim(x); if (o) { r.paradas = o; save(); vgRe(); } return; }
+  if (d.vgrhadd) { const p = r.paradas.find(y => y.id === d.vgrhadd); if (p) { p.hosp.push({ id: vgId(), nome: '', valor: 0, moeda: p.pais === 'BR' ? 'BRL' : 'USD', st: 'op', link: '' }); save(); vgRe(); } return; }
+  if (d.vgrhdel) { const [pid, hid] = d.vgrhdel.split('|'), p = r.paradas.find(y => y.id === pid); if (p) { p.hosp = p.hosp.filter(hh => hh.id !== hid); save(); vgRe(); } return; }
+  if (d.vgriadd) { r.itens.push({ id: vgId(), par: d.vgriadd, dia: '', nome: '', est: 0, valor: 0, moeda: 'BRL', st: 'op', link: '' }); save(); vgRe(); return; }
+  if (d.vgridel) { r.itens = r.itens.filter(i => i.id !== d.vgridel); save(); vgRe(); return; }
+  if (d.vgrsug) { const k = d.vgrsug.indexOf('|'), pid = d.vgrsug.slice(0, k), nome = d.vgrsug.slice(k + 1), p = r.paradas.find(y => y.id === pid); if (!p) return; const e2 = vgExp(p.dest).find(y => y.nome === nome); if (!e2) return;
+    r.itens.push({ id: vgId(), par: pid, dia: '', nome: e2.nome, est: 0, valor: e2.p, moeda: p.pais === 'BR' ? 'BRL' : 'USD', st: 'op', link: '' }); save(); vgRe(); return; }
+});
+document.addEventListener('change', e => {
+  const t = e.target, d = t.dataset || {}; if (!state.viag) return; const v = state.viag;
+  if (d.vgrsel != null) { v.rotSel = t.value; save(); vgRe(); return; }
+  if (!(d.vgrf || d.vgrmeio || d.vgrlv || d.vgrlst || d.vgrh || d.vgri)) return;
+  const x = vgRotSel(); if (!x) return; vgRotNorm(x, v); const r = x.rot;
+  if (d.vgrf) { const k = d.vgrf; if (k === 'nome') x.nome = t.value.trim().slice(0, 60) || x.nome; else if (k === 'pessoas') x.pessoas = Math.min(20, Math.max(1, Math.round(+t.value || 1))); else if (/^\d{4}-\d{2}-\d{2}$/.test(t.value)) { x[k] = t.value; if (x.volta <= x.ida) x.volta = vgDtAdd(x.ida, 7); } save(); vgRe(); return; }
+  const leg = k => (r.legs[k] = r.legs[k] || {});
+  if (d.vgrmeio) { leg(d.vgrmeio).meio = t.value; delete r.legs[d.vgrmeio].valor; save(); vgRe(); return; }
+  if (d.vgrlv) { const n = +t.value; if (n > 0) leg(d.vgrlv).valor = n; else if (r.legs[d.vgrlv]) delete r.legs[d.vgrlv].valor; save(); vgRe(); return; }
+  if (d.vgrlst) { leg(d.vgrlst).st = t.value; save(); vgRe(); return; }
+  if (d.vgrh) { const [pid, hid, campo] = d.vgrh.split('|'), p = r.paradas.find(y => y.id === pid), hh = p && p.hosp.find(y => y.id === hid); if (!hh) return;
+    hh[campo] = campo === 'valor' ? Math.max(0, +t.value || 0) : campo === 'link' ? (/^https?:\/\//i.test(t.value.trim()) ? t.value.trim().slice(0, 500) : '') : t.value.slice(0, 80); save(); vgRe(); return; }
+  if (d.vgri) { const [iid, campo] = d.vgri.split('|'), it = r.itens.find(y => y.id === iid); if (!it) return;
+    it[campo] = campo === 'valor' ? Math.max(0, +t.value || 0) : campo === 'est' ? Math.min(5, Math.max(0, +t.value || 0)) : campo === 'link' ? (/^https?:\/\//i.test(t.value.trim()) ? t.value.trim().slice(0, 500) : '') : t.value.slice(0, 100); save(); vgRe(); return; }
+});
+
 function renderViagVg() {
   const v = state.viag; vgKpis($('kpi-vgv'));
   const tb = $('tbl-vgv');
@@ -5055,10 +5570,10 @@ function renderViagVg() {
   else tb.innerHTML = `<thead><tr><th>Viagem</th><th>Datas</th><th>Quem e como</th><th>Total estimado</th><th>Status</th><th></th></tr></thead><tbody>${v.viagens.slice().sort((a, b) => a.ida < b.ida ? -1 : 1).map(x => `<tr>
     <td class="name"><input type="text" data-vgvnome="${x.id}" value="${esc(x.nome)}" maxlength="60" aria-label="Nome da viagem"> <span class="subdet">${esc(x.lugarNome || '')}${x.pais ? ' · ' + esc(vgPaisNome(x.pais)) : ''}</span></td>
     <td data-l="Datas">${vgBrd(x.ida)} a ${vgBrd(x.volta)}</td><td data-l="Quem">${x.pessoas} ${x.pessoas > 1 ? 'pessoas' : 'pessoa'} · ${(VG_EST[x.estilo] || VG_EST.meio).n.toLowerCase()}</td>
-    <td data-l="Total" class="vg-num">${fm(x.total)}</td>
+    <td data-l="Total" class="vg-num">${(vgRotNorm(x, v), fm(x.rot.paradas.length ? vgRotResumo(x).total : x.total))}</td>
     <td data-l="Status"><select data-vgvst="${x.id}" aria-label="Status da viagem">${Object.entries(VG_VST).map(([k, n]) => `<option value="${k}"${x.st === k ? ' selected' : ''}>${n}</option>`).join('')}</select></td>
-    <td><button type="button" class="btn danger tiny" data-vgvdel="${x.id}">Remover</button></td></tr>`).join('')}</tbody>`;
-  const m = MODS.find(x => x.id === 'viag'), lk = [['viagens', 'Mapa e lugares', 'Onde já foi, a lista de lugares, as datas e o sorteio.'], ['viagcmp', 'Comparar', 'Os lugares lado a lado nas suas datas: época, custos, visto e o melhor mês.']];
+    <td><div class="vg-pa"><button type="button" class="btn tiny" data-vgrabre="${x.id}">Roteiro</button><button type="button" class="btn danger tiny" data-vgvdel="${x.id}">Remover</button></div></td></tr>`).join('')}</tbody>`;
+  const m = MODS.find(x => x.id === 'viag'), lk = [['viagens', 'Mapa e lugares', 'Onde já foi, a lista de lugares, as datas e o sorteio.'], ['viagcmp', 'Comparar', 'Os lugares lado a lado nas suas datas: época, custos, visto e o melhor mês.'], ['viagrot', 'Roteiro', 'Cidades, noites, trechos, rota mais barata, hospedagem e passeios.']];
   $('vgv-links').innerHTML = lk.map(([t, n, d]) => `<button type="button" class="md-card" style="--mc:${m.cor}" data-tab="${t}"><div class="md-img">${MOD_SVG.viag}</div><h3>${esc(n)}</h3><p>${esc(d)}</p></button>`).join('');
 }
 
@@ -5087,7 +5602,7 @@ document.addEventListener('click', e => {
   if (d.vgdel) { const l = v.lugares.find(x => x.id === d.vgdel); if (!l || !confirmar(`Remover ${l.nome} da lista?`)) return; v.lugares = v.lugares.filter(x => x.id !== l.id); v.cmp = v.cmp.filter(x => x !== l.id); if (vgSel && vgSel.lugar === l.id) vgSel = null; save(); vgRe(); return; }
   if (d.vgescolhe) { const l = v.lugares.find(x => x.id === d.vgescolhe); if (!l) return; const P = v.plano, c = vgCusto(l, P);
     v.viagens.push({ id: vgId(), nome: `${l.nome} ${new Date(P.ida + 'T12:00:00').getFullYear()}`, lugar: l.id, lugarNome: l.nome, pais: l.pais, ida: P.ida, volta: P.volta, pessoas: P.pessoas, estilo: P.estilo, total: Math.round(c.total), st: 'planejada', criado: new Date().toISOString().slice(0, 10) });
-    save(); showTab('viagvg'); return; }
+    v.rotSel = v.viagens[v.viagens.length - 1].id; save(); showTab('viagrot'); return; }
   if (d.vgvdel) { const x = v.viagens.find(y => y.id === d.vgvdel); if (!x || !confirmar(`Remover a viagem ${x.nome}?`)) return; v.viagens = v.viagens.filter(y => y.id !== x.id); save(); vgRe(); return; }
   if (d.vgedfecha != null) { $('vg-ed').hidden = true; vgRe(); return; }
   if (d.vgetipo) { const l = v.lugares.find(x => x.id === $('vg-ed').dataset.id); if (!l) return; const cur = vgInfo(l).tipos, k = d.vgetipo; l.tipos = (cur.includes(k) ? cur.replace(k, '') : cur + k) || '-'; if (l.tipos !== '-') l.tipos = l.tipos.replace('-', ''); save(); t.setAttribute('aria-pressed', String(!cur.includes(k))); return; }
@@ -5232,7 +5747,7 @@ function normalizar(s) {
 try { if (quemLocal === 'dono') { const b = JSON.parse(localStorage.getItem('painel-priv')); if (b) aplicarBase(b); } } catch (e) {}
 try { const l = JSON.parse(localStorage.getItem(LSK('painel-fin-v2'))); if (l) state = normalizar(l); } catch (e) {}
 tab = 'modulos';
-const TABS = ['modulos', 'comousar', 'inicio', 'trabvg', 'viagvg', 'viagens', 'viagcmp', 'leia', 'global', 'gastos', 'carteira', 'orcamento', 'compras', 'cenarios', 'patrimonio', 'comparador', 'simulador', 'pjpf', 'stock', 'config', 'familia'];
+const TABS = ['modulos', 'comousar', 'inicio', 'trabvg', 'viagvg', 'viagens', 'viagcmp', 'viagrot', 'leia', 'global', 'gastos', 'carteira', 'orcamento', 'compras', 'cenarios', 'patrimonio', 'comparador', 'simulador', 'pjpf', 'stock', 'config', 'familia'];
 if (TABS.includes(location.hash.slice(1))) tab = location.hash.slice(1);
 if (!TABS.includes(tab)) tab = 'modulos';
 
@@ -9277,7 +9792,7 @@ $('cpform').addEventListener('submit', async e => {
 });
 
 /* ---------- abas ---------- */
-const BUILD = { modulos: () => {}, comousar: () => {}, inicio: () => {}, trabvg: () => {}, viagvg: () => {}, viagens: () => {}, viagcmp: () => {}, leia: buildLeia, global: () => {}, cenarios: buildCenarios, compras: buildCenarios, carteira: buildCarteira, comparador: buildComparador, simulador: buildSimulador, gastos: buildGastos, orcamento: buildOrcamento, config: buildConfig, pjpf: buildPj, stock: buildStock, familia: () => carregarPerfis(), patrimonio: () => {} };
+const BUILD = { modulos: () => {}, comousar: () => {}, inicio: () => {}, trabvg: () => {}, viagvg: () => {}, viagens: () => {}, viagcmp: () => {}, viagrot: () => {}, leia: buildLeia, global: () => {}, cenarios: buildCenarios, compras: buildCenarios, carteira: buildCarteira, comparador: buildComparador, simulador: buildSimulador, gastos: buildGastos, orcamento: buildOrcamento, config: buildConfig, pjpf: buildPj, stock: buildStock, familia: () => carregarPerfis(), patrimonio: () => {} };
 // (i) de cada seção: o que mostra e de onde vêm os números (chave: aba:data-nav)
 const INFO_SEC = {
   'comousar:Resumo': 'Para cada módulo: se já tem o mínimo para funcionar (os obrigatórios), quantos opcionais você resolveu e um botão para o próximo passo. Um opcional conta como resolvido quando você preenche ou marca que não tem.',
@@ -9297,6 +9812,11 @@ const INFO_SEC = {
   'viagens:Sortear': 'O sorteio escolhe entre os lugares da lista que passam nos filtros (status, tipo de viagem, boa época nas datas e teto de gasto). Quanto mais estrelas de vontade, maior a chance.',
   'viagens:Lista de lugares': 'Os lugares que você quer conhecer. Os que vêm das sugestões têm custos e épocas de referência; as cidades da busca (cerca de 2.000) ficam no lugar certo do mapa e usam o custo médio do país, com a passagem estimada pela distância de São Paulo. Um lugar que não está em nenhuma das duas usa a média do continente. Ajuste tudo em Editar.',
   'viagens:Países que já fui': 'Lista dos países marcados como Já fui, por continente. A conta usa os 195 países: 193 da ONU, Vaticano e Palestina. Territórios como Groenlândia e Porto Rico podem ser marcados, mas ficam fora da conta.',
+  'viagrot:Viagem': 'Cada viagem escolhida tem o seu roteiro. Datas, pessoas e estilo valem só para esta viagem; o tipo de viagem filtra as sugestões de passeios.',
+  'viagrot:Rota': 'Trechos estimados pela distância: perto, carro; até uns 750 km, trem (no Brasil, ônibus até 450 km); mais longe, avião. Ida e volta de São Paulo pela distância do primeiro e do último lugar. A rota otimizada testa todas as ordens até 8 cidades e soma o preço por pessoa com R$ 50 por hora de deslocamento, para não trocar um dia inteiro de ônibus por uma economia pequena.',
+  'viagrot:Dia a dia': 'O dia de chegada em cada cidade mostra de onde você vem e o tempo de viagem. Uma cidade com zero noites é só de passagem.',
+  'viagrot:Por cidade': 'Hospedagem: o valor é por noite, somando os quartos. Se houver uma Definida, o resumo usa ela; senão, a opção mais barata; sem nenhuma, a referência do lugar no seu estilo. Sugestões: uma primeira lista de referência com preço aproximado por pessoa; uma rotina vai pesquisar e atualizar depois.',
+  'viagrot:Resumo': 'Definido: trechos, hospedagens e passeios marcados como Definido. Opção ou estimado: o resto, incluindo o dia a dia (comida e transporte local) pela referência do lugar.',
   'viagcmp:Datas': 'As mesmas datas e preferências de Mapa e lugares: mudar aqui muda lá.',
   'viagcmp:Lado a lado': 'Passagem: média de referência ida e volta saindo de São Paulo, por pessoa. Hospedagem: quarto duplo por noite. Dia a dia: comida, transporte local e passeios por pessoa. Tudo no estilo escolhido, convertido com spread e IOF e corrigido até a data da viagem. Seguro: estimativa por dia. Custo de oportunidade: quanto o total renderia em 10 anos no rendimento real do Plano futuro.',
   'viagcmp:Melhor mês': 'O total estimado se a viagem saísse em cada mês, com o mesmo número de noites. A borda escura é o mês que você escolheu; o número em negrito é o mês de boa época mais barato.',
@@ -9382,7 +9902,7 @@ function infoSecoes() {
       if (h && !h.id) h.append(btn); else if (h) h.after(btn); else if (lg) lg.append(btn); }); });
 }
 infoSecoes();
-const RENDER = { modulos: renderModulos, comousar: renderComoUsar, inicio: renderHome, trabvg: renderTrabVg, viagvg: renderViagVg, viagens: renderViagens, viagcmp: renderViagCmp, leia: () => {}, global: renderGlobal, cenarios: renderCenarios, compras: renderCenarios, carteira: renderCarteira, comparador: renderComparador, simulador: renderSimulador, gastos: () => { renderGastos(); renderFechamento(); renderHistorico(); }, orcamento: renderOrcamento, config: renderConfig, pjpf: renderPj, stock: renderStock, familia: renderFamilia, patrimonio: renderPatr };
+const RENDER = { modulos: renderModulos, comousar: renderComoUsar, inicio: renderHome, trabvg: renderTrabVg, viagvg: renderViagVg, viagens: renderViagens, viagcmp: renderViagCmp, viagrot: renderViagRot, leia: () => {}, global: renderGlobal, cenarios: renderCenarios, compras: renderCenarios, carteira: renderCarteira, comparador: renderComparador, simulador: renderSimulador, gastos: () => { renderGastos(); renderFechamento(); renderHistorico(); }, orcamento: renderOrcamento, config: renderConfig, pjpf: renderPj, stock: renderStock, familia: renderFamilia, patrimonio: renderPatr };
 function renderTab() { planCache = null; try { RENDER[tab](); } catch (err) { console.error(err); setSave('erro ao recalcular: ' + (err && err.message || err)); } }
 let navAbertos = null;
 try { navAbertos = JSON.parse(localStorage.getItem('painel-nav-abertos')); } catch (e) {}
@@ -9445,7 +9965,7 @@ const MODS = [
   { id: 'uso', corNav: '#D4A72C', nome: 'Como usar', cor: 'var(--accent)', fixo: true, vg: 'comousar', desc: 'O que cada módulo faz, o que é obrigatório preencher, o que é opcional e quanto você já configurou.', tabs: ['comousar'] },
   { id: 'fin', corNav: '#7FA6E0', nome: 'Financeiro', cor: 'var(--s1)', fixo: true, vg: 'inicio', desc: 'Gastos, patrimônio, carteira, plano futuro e cenários. Recebe o que os outros módulos planejam.', tabs: ['inicio', 'global', 'gastos', 'patrimonio', 'carteira', 'comparador', 'simulador', 'orcamento', 'cenarios', 'familia'] },
   { id: 'trab', corNav: '#E09A63', nome: 'Trabalho e Bens', cor: 'var(--s2)', vg: 'trabvg', desc: 'Compras e bens (imóveis, carros, ...), stock options e PJ e PF. O que entra no plano vai para o Plano futuro.', tabs: ['trabvg', 'compras', 'stock', 'pjpf'] },
-  { id: 'viag', corNav: '#5fc2f5', nome: 'Viagens', cor: 'var(--s8)', vg: 'viagens', desc: 'Mapa de onde já foi e de onde quer ir, sorteio e comparação de destinos nas suas datas. Roteiro, custos e sabático vêm a seguir.', tabs: ['viagvg', 'viagens', 'viagcmp'] },
+  { id: 'viag', corNav: '#5fc2f5', nome: 'Viagens', cor: 'var(--s8)', vg: 'viagens', desc: 'Mapa de onde já foi e de onde quer ir, sorteio, comparação de destinos nas suas datas e o roteiro com a rota mais barata. Custos detalhados e sabático vêm a seguir.', tabs: ['viagvg', 'viagens', 'viagcmp', 'viagrot'] },
   { id: 'neg', corNav: '#a3e05a', nome: 'Negócios', cor: 'var(--s7)', breve: true, desc: 'Pesquisa de mercado, DRE, passo a passo para abrir empresa e oportunidades de custo.', tabs: [] }
 ];
 const modDe = t => (MODS.find(m => m.tabs.includes(t)) || {}).id || null;
@@ -9501,7 +10021,8 @@ function cuPassos() {
         { id: 'vgfui', t: 'Países em que já esteve', d: 'Toque nos países do mapa ou escolha na lista. Mostra quantos dos 195 você já conhece.', ok: ((state.viag || {}).fui || []).length > 0 || pul.includes('vgfui'), tab: 'viagens', sec: 'Países que já fui', pular: 'Depois' },
         { id: 'vglista', t: 'Lista de lugares', d: 'Os lugares que quer conhecer, com estrelas de vontade. Dá para colar de uma planilha.', ok: ((state.viag || {}).lugares || []).some(l => l.st !== 'fui') || pul.includes('vglista'), tab: 'viagens', sec: 'Lista de lugares', pular: 'Depois' },
         { id: 'vgcmp', t: 'Comparar destinos', d: 'Escolha as datas e veja dois ou mais lugares lado a lado: época, custos e visto.', ok: ((state.viag || {}).cmp || []).length >= 2 || pul.includes('vgcmp'), tab: 'viagcmp', sec: 'Lado a lado', pular: 'Depois' },
-        { id: 'vgviag', t: 'Escolher uma viagem', d: 'Quando decidir, toque em "Escolher este" no Comparar.', ok: ((state.viag || {}).viagens || []).length > 0 || pul.includes('vgviag'), tab: 'viagcmp', sec: 'Lado a lado', pular: 'Depois' }
+        { id: 'vgviag', t: 'Escolher uma viagem', d: 'Quando decidir, toque em "Escolher este" no Comparar.', ok: ((state.viag || {}).viagens || []).length > 0 || pul.includes('vgviag'), tab: 'viagcmp', sec: 'Lado a lado', pular: 'Depois' },
+        { id: 'vgrot', t: 'Montar o roteiro', d: 'As cidades na ordem, noites, trechos, hospedagem e passeios. O painel sugere a rota mais barata.', ok: ((state.viag || {}).viagens || []).some(x => x.rot && (x.rot.paradas || []).length >= 2) || pul.includes('vgrot'), tab: 'viagrot', sec: 'Rota', pular: 'Depois' }
       ]
     }
   };
@@ -10377,6 +10898,7 @@ const LM_MODS = [
   'Viagens',
   ['viagvg', 'O resumo do módulo: países que você já conhece, lugares na lista e as viagens escolhidas, com datas, total estimado e status.', 'para ver as próximas viagens.'],
   ['viagens', 'Mapa-múndi com os países em que você já foi e os lugares que quer conhecer, a lista de lugares com estrelas de vontade e o sorteio entre eles para as suas datas.', 'quando bater a vontade de viajar e não souber para onde.'],
+  ['viagrot', 'O roteiro de uma viagem: cidades na ordem com noites, trechos com tempo e preço, rota otimizada (menor custo e menos tempo), dia a dia, hospedagem, passeios com estrelas, sugestões por tipo de viagem e links para pesquisar.', 'quando decidir para onde vai e começar a montar a viagem.'],
   ['viagcmp', 'Até 5 destinos lado a lado nas suas datas: época, passagem, hospedagem, dia a dia, seguro, total, visto, custo de oportunidade e o melhor mês para ir.', 'para decidir entre destinos.'],
   'Geral',
   ['config', 'As premissas: renda e projeção, a curva de juros (Focus, atualizada toda segunda) e o retorno esperado de cada classe de ativo.', 'raramente; só para ajustar uma premissa.']
