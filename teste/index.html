@@ -1169,7 +1169,7 @@ a.lm-ir:hover { border-bottom-style: solid; }
     </div>
     <div class="nav-mobile-sub" id="navMobileSub"></div>
   </div>
-  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 201</div></div>
+  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 203</div></div>
 </nav>
 <div class="sino-pop" id="sino-pop" role="dialog" aria-label="Central de avisos" hidden></div>
 <div class="tour-pop" id="tour-pop" role="dialog" aria-labelledby="tour-tit" hidden></div>
@@ -1352,6 +1352,11 @@ a.lm-ir:hover { border-bottom-style: solid; }
     <section data-nav="Resumo" class="panel">
       <h2>Resumo do roteiro</h2>
       <div id="vgr-resumo"></div>
+    </section>
+    <section data-nav="Checklist" class="panel">
+      <h2>Checklist da viagem</h2>
+      <p class="sub">A mesma lista da aba Custos: o que marcar aqui aparece marcado lá.</p>
+      <div id="vgr-check"></div>
     </section>
   </section>
   <!-- ============ VIAGENS: CUSTOS ============ -->
@@ -1937,7 +1942,6 @@ a.lm-ir:hover { border-bottom-style: solid; }
         <h2>Receitas e custos de hoje</h2>
         <p class="sub">Valores de um mês típico, em reais de hoje, e como cada linha reajusta no futuro. Contas sobem com o IPCA todo mês e aluguel uma vez por ano, como na planilha; o salário só muda quando você programar. Para mudar só um mês, edite o Projetado no fechamento daquele mês, em Gastos e fechamento.</p>
         <div class="orc-modelo" id="orc-modelo-box"><span class="orc-h">Como você recebe</span><div class="seg" id="orc-modelo"><button type="button" data-modelo="pj" aria-pressed="false">PJ (empresa própria)</button><button type="button" data-modelo="clt" aria-pressed="false">CLT (carteira assinada)</button></div><div class="seg" id="orc-cltmodo" hidden><button type="button" data-cltmodo="liq" aria-pressed="false">Digito o líquido</button><button type="button" data-cltmodo="bruto" aria-pressed="false">Digito o bruto</button></div><p class="hint" id="orc-modelo-hint"></p></div>
-        <div class="sobra-box" id="orc-resumo" role="status"></div>
         <div class="orc-grid">
           <div><h3 class="orc-h">Receitas e deduções</h3><div class="tscroll"><table id="tbl-orc-rec"></table></div></div>
           <div><div class="row" style="margin-bottom:0"><h3 class="orc-h">Custos por categoria</h3><span class="btns" style="margin:0"><button class="btn ghost tiny" type="button" id="orc-sug">Usar a distribuição sugerida</button> <button type="button" class="ibtn" data-info="orc:sug" aria-label="De onde vem a sugestão">i</button><button class="btn ghost tiny" type="button" id="orc-media">Usar a média dos últimos 3 meses</button></span></div>
@@ -1946,6 +1950,7 @@ a.lm-ir:hover { border-bottom-style: solid; }
             <p class="hint" id="orc-catmsg" role="status"></p>
           </div>
         </div>
+        <div class="sobra-box" id="orc-resumo" role="status" style="margin:16px 0 4px"></div>
               </section>
       <section data-nav="Mudanças e eventos" class="panel">
         <h2>Mudanças programadas e eventos</h2>
@@ -2364,7 +2369,7 @@ a.lm-ir:hover { border-bottom-style: solid; }
     return new Promise(resolve => { const { data } = sb.auth.onAuthStateChange(async (ev) => { if (ev !== 'PASSWORD_RECOVERY') return; const s = prompt('Digite a nova senha (mínimo 8 caracteres):'); if (s && s.length >= 8) { const { error } = await sb.auth.updateUser({ password: s }); alert(error ? 'Não deu para trocar a senha: ' + error.message : 'Senha trocada.'); } }); resolve(data); });
   }
   // ---------- rodapé: compartilhar, administração e sair ----------
-  const SITE_V = 81;
+  const SITE_V = 83;
   const escH = v => String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const dataBR = v => v ? new Date(v).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' }) : '–';
   const css2 = `.side-foot .r{flex-wrap:wrap}.side-foot .lg-acoes{margin-left:auto;display:inline-flex;gap:10px}
@@ -5522,7 +5527,7 @@ document.addEventListener('click', e => {
 document.addEventListener('keydown', e => { if (e.target.id === 'vgr-dtxt' && e.key === 'Enter') { e.preventDefault(); const b = document.querySelector('[data-vgrdnovo]'); if (b) b.click(); } });
 function renderViagRot() {
   const v = state.viag, x = vgRotSel(), box = $('vgr-viagem');
-  if (!x) { box.innerHTML = `<p class="hint">Nenhuma viagem ainda. Escolha um lugar em Comparar ou comece uma do zero.</p><div class="vg-pa"><button type="button" class="btn" data-vgrnova>+ Nova viagem</button></div>`; ['vgr-rota', 'vgr-dias', 'vgr-paradas', 'vgr-resumo', 'vgr-otim', 'vgr-mapa'].forEach(id => { const e = $(id); if (e) e.innerHTML = ''; }); kpis($('kpi-vgr'), []); return; }
+  if (!x) { box.innerHTML = `<p class="hint">Nenhuma viagem ainda. Escolha um lugar em Comparar ou comece uma do zero.</p><div class="vg-pa"><button type="button" class="btn" data-vgrnova>+ Nova viagem</button></div>`; ['vgr-rota', 'vgr-dias', 'vgr-paradas', 'vgr-resumo', 'vgr-otim', 'vgr-mapa', 'vgr-check'].forEach(id => { const e = $(id); if (e) e.innerHTML = ''; }); kpis($('kpi-vgr'), []); return; }
   vgRotNorm(x, v); const r = x.rot, n = vgRotNoites(x), soma = r.paradas.reduce((s, p) => s + p.noites, 0);
   box.innerHTML = `<div class="vgr-top"><label>Viagem<select data-vgrsel aria-label="Escolher viagem">${v.viagens.slice().sort((a, b) => a.ida < b.ida ? -1 : 1).map(y => `<option value="${y.id}"${y.id === x.id ? ' selected' : ''}>${esc(y.nome)} · ${vgBrd(y.ida)}</option>`).join('')}</select></label><button type="button" class="btn ghost tiny" data-vgrnova>+ Nova viagem</button></div>
     <div class="vg-form"><label class="vgr-nome">Nome<input type="text" data-vgrf="nome" value="${esc(x.nome)}" maxlength="60"></label><label>Ida<input type="date" data-vgrf="ida" value="${x.ida}"></label><label>Volta<input type="date" data-vgrf="volta" value="${x.volta}" min="${x.ida}"></label><label>Pessoas<input type="number" min="1" max="20" step="1" data-vgrf="pessoas" value="${x.pessoas}"></label></div>
@@ -5585,6 +5590,7 @@ function renderViagRot() {
   const RL = [['pass', 'Passagens de ida e volta'], ['trecho', 'Deslocamentos entre cidades'], ['hosp', 'Hospedagem'], ['passeio', 'Passeios e experiências'], ['dia', 'Dia a dia (comida e transporte local)']];
   $('vgr-resumo').innerHTML = !r.paradas.length ? '' : `<div class="tscroll"><table class="vgr-rtbl"><thead><tr><th>Item</th><th class="vg-num">Definido</th><th class="vg-num">Opção ou estimado</th><th class="vg-num">Total</th></tr></thead><tbody>${RL.map(([k, nn]) => `<tr><td>${nn}</td><td class="vg-num">${res.out[k][0] ? fm(res.out[k][0]) : '—'}</td><td class="vg-num">${res.out[k][1] ? fm(res.out[k][1]) : '—'}</td><td class="vg-num"><b>${fm(res.out[k][0] + res.out[k][1])}</b></td></tr>`).join('')}
     <tr class="vg-trow"><td><b>Total</b></td><td class="vg-num">${fm(res.tot[0])}</td><td class="vg-num">${fm(res.tot[1])}</td><td class="vg-num vg-tot">${fm(res.total)}</td></tr></tbody></table></div><p class="hint">Preço de hoje, para ${x.pessoas} ${x.pessoas > 1 ? 'pessoas' : 'pessoa'}, com câmbio + spread + IOF. Seguro viagem, preço projetado para a data, parcelas e a ligação com o Plano futuro entram na etapa de custos.</p>`;
+  $('vgr-check').innerHTML = vgCheckHtml(x, r.paradas.some(p => p.pais && p.pais !== 'BR'), 'vgr');
 }
 // arrastar as cidades: o card inteiro com o mouse; no celular, pela alça à esquerda
 let vgrArr = null;
@@ -5675,6 +5681,11 @@ document.addEventListener('change', e => {
 const VG_CHECK = [['passaporte', 'Passaporte válido por 6 meses depois da volta'], ['visto', 'Visto ou autorização de entrada'], ['seguro', 'Seguro viagem contratado'], ['passagens', 'Passagens compradas'], ['hosp', 'Hospedagens reservadas'], ['cartao', 'Cartão internacional ou conta global (Wise, Nomad)'], ['banco', 'Avisar o banco da viagem'], ['chip', 'Chip ou eSIM de dados'], ['vacinas', 'Vacinas exigidas (febre amarela etc.)'], ['docs', 'Cópia digital dos documentos'], ['tomada', 'Adaptador de tomada'], ['cnh', 'Permissão internacional para dirigir, se for alugar carro']];
 const VG_EXTRA_SUG = ['Visto', 'Chip ou eSIM', 'Bagagem extra', 'Transfer do aeroporto', 'Compras', 'Taxas de turismo'];
 const VG_PAG = { caixinha: 'Caixinha até a viagem', parcelar: 'Parcelado', avista: 'À vista no mês da viagem' };
+function vgCheckHtml(x, fora, pre) {
+  vgCusNorm(x); const c = x.cus;
+  const ck = VG_CHECK.filter(([k]) => k !== 'seguro' || fora).concat(c.checkExtra.map(e => [e.id, e.t, true])), feitos = ck.filter(([k]) => c.check[k]).length;
+  return `<div class="vgc-ckh"><span><b>${feitos} de ${ck.length}</b> prontos</span><div class="hp-barra vgc-barra"><i style="width:${(feitos / Math.max(1, ck.length) * 100).toFixed(1)}%"></i></div></div><ul class="vgc-ck">${ck.map(([k, t, ex]) => `<li><label class="inline"><input type="checkbox" data-vgcck="${k}"${c.check[k] ? ' checked' : ''}> ${esc(t)}</label>${ex ? `<button type="button" class="vg-x mini" data-vgcckdel="${k}" aria-label="Remover">×</button>` : ''}</li>`).join('')}</ul><div class="vgr-dnovo vgc-cknovo"><input type="text" id="${pre}-cktxt" maxlength="100" placeholder="Outro item da lista" aria-label="Novo item"><button type="button" class="btn tiny ghost" data-vgcckadd="${pre}">Adicionar</button></div>`;
+}
 function vgCusNorm(x) {
   if (!x.cus || typeof x.cus !== 'object' || Array.isArray(x.cus)) x.cus = {};
   const c = x.cus; if (!Array.isArray(c.extras)) c.extras = []; if (!c.check || typeof c.check !== 'object' || Array.isArray(c.check)) c.check = {}; if (!Array.isArray(c.checkExtra)) c.checkExtra = [];
@@ -5765,8 +5776,7 @@ function renderViagCus() {
     return `<tr><td>${e.n}</td><td class="vg-num">${fm(ref)}</td><td class="vg-num">${vs.length ? fm(vs.reduce((s, q) => s + q.pd, 0) / vs.length) : '—'}</td><td>${vs.length ? vs.map(q => esc(q.y.nome)).join(', ') : '<span class="subdet">nenhuma ainda</span>'}</td></tr>`; }).join('');
   $('vgc-estilo').innerHTML = `<div class="tscroll"><table class="vgr-rtbl vgc-tbl"><thead><tr><th>Estilo</th><th class="vg-num">Referência</th><th class="vg-num">Suas viagens</th><th>Quais</th></tr></thead><tbody>${linhas}</tbody></table></div><p class="hint">Por pessoa por dia, preço de hoje, sem passagem de ida e volta na referência (hotel em quarto duplo + dia a dia, média dos destinos fora do Brasil). Suas viagens: o roteiro inteiro dividido por pessoas e noites. Quando as viagens terminarem com os gastos reais (próxima etapa), a média passa a usar o que você gastou de verdade.</p>`;
   // checklist
-  const ck = VG_CHECK.filter(([k]) => k !== 'seguro' || R.fora).concat(c.checkExtra.map(e => [e.id, e.t, true])), feitos = ck.filter(([k]) => c.check[k]).length;
-  $('vgc-check').innerHTML = `<div class="vgc-ckh"><b>${feitos} de ${ck.length}</b> prontos<div class="hp-barra vgc-barra"><i style="width:${(feitos / Math.max(1, ck.length) * 100).toFixed(1)}%"></i></div></div><ul class="vgc-ck">${ck.map(([k, t, ex]) => `<li><label class="inline"><input type="checkbox" data-vgcck="${k}"${c.check[k] ? ' checked' : ''}> ${esc(t)}</label>${ex ? `<button type="button" class="vg-x mini" data-vgcckdel="${k}" aria-label="Remover">×</button>` : ''}</li>`).join('')}</ul><div class="vgr-dnovo vgc-cknovo"><input type="text" id="vgc-cktxt" maxlength="100" placeholder="Outro item da lista" aria-label="Novo item"><button type="button" class="btn tiny ghost" data-vgcckadd>Adicionar</button></div>`;
+  $('vgc-check').innerHTML = vgCheckHtml(x, R.fora, 'vgc');
 }
 document.addEventListener('click', e => {
   const t = e.target.closest('[data-vgcxadd],[data-vgcxdel],[data-vgcpag],[data-vgcckdel],[data-vgcckadd]'); if (!t || !state.viag) return;
@@ -5775,9 +5785,9 @@ document.addEventListener('click', e => {
   if (d.vgcxdel) { c.extras = c.extras.filter(y => y.id !== d.vgcxdel); save(); vgRe(); return; }
   if (d.vgcpag) { c.pag.modo = d.vgcpag; save(); vgRe(); return; }
   if (d.vgcckdel) { c.checkExtra = c.checkExtra.filter(y => y.id !== d.vgcckdel); delete c.check[d.vgcckdel]; save(); vgRe(); return; }
-  if (d.vgcckadd != null) { const v = ($('vgc-cktxt').value || '').trim(); if (!v) { $('vgc-cktxt').focus(); return; } c.checkExtra.push({ id: 'x' + vgId(), t: v.slice(0, 100) }); save(); vgRe(); return; }
+  if (d.vgcckadd != null) { const ti = $((d.vgcckadd || 'vgc') + '-cktxt'), v = (ti.value || '').trim(); if (!v) { ti.focus(); return; } c.checkExtra.push({ id: 'x' + vgId(), t: v.slice(0, 100) }); save(); vgRe(); return; }
 });
-document.addEventListener('keydown', e => { if (e.target.id === 'vgc-cktxt' && e.key === 'Enter') { e.preventDefault(); const b = document.querySelector('[data-vgcckadd]'); if (b) b.click(); } });
+document.addEventListener('keydown', e => { if ((e.target.id === 'vgc-cktxt' || e.target.id === 'vgr-cktxt') && e.key === 'Enter') { e.preventDefault(); const b = document.querySelector(`[data-vgcckadd="${e.target.id.slice(0, 3)}"]`); if (b) b.click(); } });
 document.addEventListener('change', e => {
   const t = e.target, d = t.dataset || {}; if (!state.viag || !(d.vgcx || d.vgcseg != null || d.vgcsegv != null || d.vgcsegd != null || d.vgcp || d.vgcuso != null || d.vgcck)) return;
   const x = vgRotSel(); if (!x) return; vgCusNorm(x); const c = x.cus;
