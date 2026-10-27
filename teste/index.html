@@ -1137,6 +1137,10 @@ a.lm-ir:hover { border-bottom-style: solid; }
 .vgpdf-fundo[hidden] { display: none; }
 .vgpdf-box { width: min(420px, 100%); background: var(--panel); color: var(--ink); border: 1px solid var(--line); border-radius: 12px; box-shadow: 0 12px 32px rgba(15,31,61,.25); padding: 18px; display: flex; flex-direction: column; gap: 10px; }
 .vgpdf-box h3 { margin: 0; font-size: 16px; } .vgpdf-box .seg { align-self: flex-start; flex-wrap: wrap; }
+.vgs-box { margin-top: 14px; padding: 12px; border: 1px solid var(--line); border-radius: 10px; max-width: 760px; display: flex; flex-direction: column; gap: 8px; }
+.vgs-f { display: flex; flex-wrap: wrap; gap: 8px 16px; align-items: flex-end; } .vgs-f label { max-width: 180px; } .vgs-f .subdet { flex: 1 1 260px; }
+.vgs-lst { list-style: none; padding: 0; margin: 0 0 10px; max-width: 760px; } .vgs-lst li { display: flex; flex-wrap: wrap; gap: 6px 12px; align-items: center; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid var(--line); }
+.vgs-lst li > div:first-child { display: flex; flex-direction: column; gap: 2px; } .vgs-noi { display: flex; align-items: center; gap: 8px; font-size: 13px; } .vgs-noi span { min-width: 64px; text-align: center; }
 </style>
 
 
@@ -1187,7 +1191,7 @@ a.lm-ir:hover { border-bottom-style: solid; }
     </div>
     <div class="nav-mobile-sub" id="navMobileSub"></div>
   </div>
-  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 206</div></div>
+  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 207</div></div>
 </nav>
 <div class="sino-pop" id="sino-pop" role="dialog" aria-label="Central de avisos" hidden></div>
 <div class="tour-pop" id="tour-pop" role="dialog" aria-labelledby="tour-tit" hidden></div>
@@ -1423,6 +1427,11 @@ a.lm-ir:hover { border-bottom-style: solid; }
     <section data-nav="Hoje" class="panel">
       <h2>Hoje: + Gasto</h2>
       <div id="vgd-hoje"></div>
+    </section>
+    <section data-nav="Mudar o roteiro" class="panel">
+      <h2>Mudar o roteiro no caminho</h2>
+      <p class="sub">Esticar, encurtar ou tirar cidades daqui para frente, sem mexer no que já passou.</p>
+      <div id="vgd-mudar"></div>
     </section>
     <section data-nav="Gastos lançados" class="panel">
       <h2>Gastos lançados</h2>
@@ -2408,7 +2417,7 @@ a.lm-ir:hover { border-bottom-style: solid; }
     return new Promise(resolve => { const { data } = sb.auth.onAuthStateChange(async (ev) => { if (ev !== 'PASSWORD_RECOVERY') return; const s = prompt('Digite a nova senha (mínimo 8 caracteres):'); if (s && s.length >= 8) { const { error } = await sb.auth.updateUser({ password: s }); alert(error ? 'Não deu para trocar a senha: ' + error.message : 'Senha trocada.'); } }); resolve(data); });
   }
   // ---------- rodapé: compartilhar, administração e sair ----------
-  const SITE_V = 86;
+  const SITE_V = 87;
   const escH = v => String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const dataBR = v => v ? new Date(v).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' }) : '–';
   const css2 = `.side-foot .r{flex-wrap:wrap}.side-foot .lg-acoes{margin-left:auto;display:inline-flex;gap:10px}
@@ -2971,7 +2980,7 @@ function vgNormalizar(s) {
   v.lugares.forEach(l => { if (l.dest && vgDest(l.dest)) return; const n = vgNorm(l.nome), nn = VG_ALIAS[n] || n, d = VG_DEST.find(x => x.pais === l.pais && vgNorm(x.nome) === nn); if (d) { l.dest = d.id; l.lat = d.lat; l.lon = d.lon; return; } if (l.lat == null) { const c = vgAchaCid(l.nome, l.pais); if (c) { l.lat = c.lat; l.lon = c.lon; } } });
   v.fui = [...new Set(v.fui.filter(c => /^[A-Z]{2}$/.test(c)))];
   v.cmp = v.cmp.filter(id => v.lugares.some(l => l.id === id)).slice(0, 5);
-  v.viagens = v.viagens.filter(x => x && x.id); v.viagens.forEach(x => { if (!VG_VST[x.st]) x.st = 'planejada'; vgRotNorm(x, v); vgCusNorm(x); vgDurNorm(x); vgAutoSt(x); }); if (typeof v.rotSel !== 'string') v.rotSel = '';
+  v.viagens = v.viagens.filter(x => x && x.id); v.viagens.forEach(x => { if (!VG_VST[x.st]) x.st = 'planejada'; vgRotNorm(x, v); vgCusNorm(x); vgDurNorm(x); vgSabNorm(x); vgAutoSt(x); }); if (typeof v.rotSel !== 'string') v.rotSel = '';
   if (!v.plano || typeof v.plano !== 'object') v.plano = {};
   const [a, b] = vgDataPadrao(); if (!dt.test(v.plano.ida)) v.plano.ida = a; if (!dt.test(v.plano.volta) || v.plano.volta <= v.plano.ida) { const x = new Date(v.plano.ida + 'T12:00:00'); x.setDate(x.getDate() + 14); v.plano.volta = x.toISOString().slice(0, 10); }
   v.plano.pessoas = Math.min(20, Math.max(1, Math.round(+v.plano.pessoas || 2))); if (!VG_EST[v.plano.estilo]) v.plano.estilo = 'meio'; if (!Array.isArray(v.plano.tipos)) v.plano.tipos = [];
@@ -5570,6 +5579,7 @@ function renderViagRot() { vgAutoTodos();
   vgRotNorm(x, v); const r = x.rot, n = vgRotNoites(x), soma = r.paradas.reduce((s, p) => s + p.noites, 0);
   box.innerHTML = `<div class="vgr-top"><label>Viagem<select data-vgrsel aria-label="Escolher viagem">${v.viagens.slice().sort((a, b) => a.ida < b.ida ? -1 : 1).map(y => `<option value="${y.id}"${y.id === x.id ? ' selected' : ''}>${esc(y.nome)} · ${vgBrd(y.ida)}</option>`).join('')}</select></label><button type="button" class="btn ghost tiny" data-vgrnova>+ Nova viagem</button><button type="button" class="btn ghost tiny" data-vgpdf="${x.id}">Gerar PDF</button></div>
     <div class="vg-form"><label class="vgr-nome">Nome<input type="text" data-vgrf="nome" value="${esc(x.nome)}" maxlength="60"></label><label>Ida<input type="date" data-vgrf="ida" value="${x.ida}"></label><label>Volta<input type="date" data-vgrf="volta" value="${x.volta}" min="${x.ida}"></label><label>Pessoas<input type="number" min="1" max="20" step="1" data-vgrf="pessoas" value="${x.pessoas}"></label></div>
+    <div class="vg-lbl">Viagem de</div><div class="seg">${[['ferias', 'Férias'], ['sabatico', 'Sabático']].map(([k, nn]) => `<button type="button" data-vgrkind="${k}" aria-pressed="${(x.tipo || 'ferias') === k}">${nn}</button>`).join('')}</div>
     <div class="vg-lbl">Estilo</div><div class="seg">${Object.entries(VG_EST).map(([k, e]) => `<button type="button" data-vgrest="${k}" aria-pressed="${x.estilo === k}">${e.n}</button>`).join('')}</div>
     <div class="vg-lbl">Tipo de viagem <span class="subdet">(nenhum marcado = todos; filtra as sugestões)</span></div><div class="seg">${VG_TIPOS.map(([k, nn]) => `<button type="button" data-vgrtipo="${k}" aria-pressed="${r.tipos.includes(k)}">${nn}</button>`).join('')}</div>`;
   const legs = vgRotLegs(x), c = vgRotCusto(x), res = vgRotResumo(x), dts = vgRotDatas(x);
@@ -5764,6 +5774,7 @@ function vgCaixinha(x, total) { const p = x.cus.pag, iv = mIndex(x.ida.slice(0, 
 function vgPlanEvs(extra) {
   const out = []; ((state.viag || {}).viagens || []).forEach(x => {
     if (!x.cus) return; const on = (x.cus.plano && !(extra && extra.has('-viag:' + x.id))) || (extra && extra.has('viag:' + x.id)); if (!on || (x.st === 'concluida' && !x.cus.plano)) return;
+    if (x.tipo === 'sabatico' && x.sab && x.sab.pausa) { const i0 = mIndex(x.ida.slice(0, 7)); for (let k = 0; k < vgSabMeses(x); k++) out.push({ id: 'vgsab-' + x.id, nome: 'Sabático: salário parado (' + x.nome + ')', tipo: 'gasto', valor: 0, pausa: true, mes: mKey(i0 + k), anual: false, vg: true }); }
     const t = vgCusLinhas(x).tot.proj; if (!(t > 0)) return;
     vgCusPag(x, t).forEach(pg => out.push({ id: 'vg-' + x.id, nome: 'Viagem: ' + x.nome, tipo: 'gasto', valor: Math.round(pg.v), mes: mKey(pg.i), anual: false, vg: true }));
   });
@@ -5772,7 +5783,7 @@ function vgPlanEvs(extra) {
 function vgItensMod() {
   return ((state.viag || {}).viagens || []).filter(x => x.st !== 'concluida' || (x.cus && x.cus.plano)).map(x => { vgCusNorm(x); const t = vgCusLinhas(x).tot.proj, p = x.cus.pag, pags = vgCusPag(x, t), par = p.modo === 'parcelar';
     return { id: 'viag:' + x.id, mod: 'viag', sub: 'Viagens', tab: 'viagcus', sec: 'No Plano futuro', nome: 'Viagem: ' + x.nome, tipo: 'gasto', ini: mKey(pags[0].i), unico: par ? 0 : -t, mensal: par ? -t / p.n : 0, meses: par ? p.n : 0,
-      resumo: t > 0 ? (par ? `${p.n}× ${fm(t / p.n)}` : `${fm(t)} em ${mLabel(pags[0].i)}`) + (p.modo === 'caixinha' ? ' (guardado na caixinha)' : '') : 'monte o roteiro para ter o custo', uso: x.cus.plano ? 'real' : 'sim', bloq: !(t > 0) }; });
+      resumo: t > 0 ? (par ? `${p.n}× ${fm(t / p.n)}` : `${fm(t)} em ${mLabel(pags[0].i)}`) + (p.modo === 'caixinha' ? ' (guardado na caixinha)' : '') + (x.tipo === 'sabatico' && x.sab && x.sab.pausa ? ` + ${vgSabMeses(x)} ${vgSabMeses(x) === 1 ? 'mês' : 'meses'} sem salário` : '') : 'monte o roteiro para ter o custo', uso: x.cus.plano ? 'real' : 'sim', bloq: !(t > 0) }; });
 }
 function renderViagCus() { vgAutoTodos();
   const v = state.viag, x = vgRotSel(), box = $('vgc-viagem');
@@ -5784,7 +5795,7 @@ function renderViagCus() { vgAutoTodos();
   const cx = vgCaixinha(x, T.proj);
   kpis($('kpi-vgc'), [
     ['Projetado na data', T.proj ? fm(T.proj) : '—', T.proj ? `hoje ${fm(T.hoje)} · ${fm(T.def)} já definido` : 'monte o roteiro'],
-    ['Por pessoa por dia', T.proj ? fm(T.proj / x.pessoas / Math.max(1, n)) : '—', 'projetado, tudo incluído'],
+    x.tipo === 'sabatico' ? ['Por mês', T.proj ? fm(T.proj / vgMesesViagem(x)) : '—', T.proj ? `projetado; ${fm(T.proj / x.pessoas / Math.max(1, n))} por pessoa por dia` : 'monte o roteiro'] : ['Por pessoa por dia', T.proj ? fm(T.proj / x.pessoas / Math.max(1, n)) : '—', 'projetado, tudo incluído'],
     [c.pag.modo === 'parcelar' ? 'Parcela' : 'Caixinha por mês', T.proj ? fm(c.pag.modo === 'parcelar' ? T.proj / c.pag.n : cx.mes) : '—', c.pag.modo === 'parcelar' ? `${c.pag.n}× a partir de ${mLabel(mIndex(c.pag.ini))}` : c.pag.modo === 'avista' ? `se guardar até ${mLabel(cx.iv)}` : `${cx.n} ${cx.n === 1 ? 'mês' : 'meses'} até a viagem`],
     ['Custo de oportunidade', T.proj ? fm(vgOport(T.proj)) : '—', 'se investisse em vez de viajar, em 10 anos (reais de hoje)']
   ]);
@@ -5808,7 +5819,7 @@ function renderViagCus() { vgAutoTodos();
   let imp = '';
   if (T.proj > 0) { try { const pl0 = calcPlano(), P = state.plan, fimI = pl0.i0 + Math.round((+P.anos || 10) * 12), com = calcPlano(new Set([c.plano ? '-viag:' + x.id : 'viag:' + x.id])), a0 = (pl0.inv[fimI] ?? 0) + (pl0.parado[fimI] ?? 0), a1 = (com.inv[fimI] ?? 0) + (com.parado[fimI] ?? 0), d = c.plano ? a0 - a1 : a1 - a0;
     imp = `<p>Com a viagem, o patrimônio do plano em ${mLabel(fimI)} fica <b class="neg">${fm(Math.abs(d))}</b> menor${c.plano ? ' (já está na projeção)' : ' do que a projeção atual'}. É o custo de hoje somado ao que esse dinheiro renderia até lá.</p>`; } catch (er) { imp = ''; } }
-  $('vgc-plano').innerHTML = `<div class="vgc-uso"><label>Uso no Plano futuro<select data-vgcuso aria-label="Uso no Plano futuro"><option value="sim">Só simulação</option><option value="real"${c.plano ? ' selected' : ''}>Projeção real</option></select></label><span class="subdet">${it ? esc(it.resumo) : ''}</span></div>${imp}<p class="hint">Projeção real: os pagamentos entram no seu plano como gasto. Só simulação: aparece em Plano futuro › Itens dos módulos e na linha de comparação, sem mudar a projeção.</p>`;
+  $('vgc-plano').innerHTML = `<div class="vgc-uso"><label>Uso no Plano futuro<select data-vgcuso aria-label="Uso no Plano futuro"><option value="sim">Só simulação</option><option value="real"${c.plano ? ' selected' : ''}>Projeção real</option></select></label><span class="subdet">${it ? esc(it.resumo) : ''}</span></div>${imp}${vgSabHtml(x)}<p class="hint">Projeção real: os pagamentos entram no seu plano como gasto. Só simulação: aparece em Plano futuro › Itens dos módulos e na linha de comparação, sem mudar a projeção.</p>`;
   // média por estilo
   const linhas = Object.entries(VG_EST).map(([k, e]) => { const vs = v.viagens.filter(y => y.estilo === k && y.rot && y.rot.paradas && y.rot.paradas.length).map(y => { const t = vgCusLinhas(y).tot, nn = vgRotNoites(y), real = y.st === 'concluida' && y.dur ? vgDurTot(y) : 0; return { y, pd: (real > 0 ? real + t.def : t.hoje) / y.pessoas / Math.max(1, nn), ok: y.st === 'concluida' }; });
     const ref = VG_DEST.length ? VG_DEST.filter(d => d.pais !== 'BR').reduce((s, d) => s + (d.h * e.h / 2 + d.d * e.d), 0) / VG_DEST.filter(d => d.pais !== 'BR').length * vgMoedaFx('USD') : 0;
@@ -5875,12 +5886,12 @@ function vgAutoSt(x) { if (!x || !x.cus || !x.cus.plano || x.stManual || !x.ida 
 const vgAutoTodos = () => ((state.viag || {}).viagens || []).forEach(vgAutoSt);
 let vgdData = null;
 function renderViagDur() { vgAutoTodos();
-  const v = state.viag, x = vgRotSel(), box = $('vgd-viagem'), ids = ['vgd-hoje', 'vgd-lista', 'vgd-resumo'];
+  const v = state.viag, x = vgRotSel(), box = $('vgd-viagem'), ids = ['vgd-hoje', 'vgd-lista', 'vgd-resumo', 'vgd-mudar'];
   if (!x) { box.innerHTML = `<p class="hint">Nenhuma viagem ainda. Escolha um lugar em Comparar ou crie uma em Roteiro.</p>`; ids.forEach(id => { $(id).innerHTML = ''; }); kpis($('kpi-vgd'), []); return; }
   const g = vgDurNorm(x), r = x.rot, hoje = vgHojeIso(), n = vgRotNoites(x);
   box.innerHTML = `<div class="vgr-top"><label>Viagem<select data-vgrsel aria-label="Escolher viagem">${v.viagens.slice().sort((a, b) => a.ida < b.ida ? -1 : 1).map(y => `<option value="${y.id}"${y.id === x.id ? ' selected' : ''}>${esc(y.nome)} · ${vgBrd(y.ida)}</option>`).join('')}</select></label><button type="button" class="btn ghost tiny" data-tab="viagrot">Ver roteiro</button><button type="button" class="btn ghost tiny" data-vgpdf="${x.id}">Gerar PDF</button></div>
     <p class="subdet">${vgBrd(x.ida)} a ${vgBrd(x.volta)} · ${n} noites · ${x.pessoas} ${x.pessoas > 1 ? 'pessoas' : 'pessoa'} · ${r.paradas.map(p => esc(p.nome)).join(', ') || 'sem cidades no roteiro'}</p>`;
-  if (!r.paradas.length) { $('vgd-hoje').innerHTML = '<p class="hint">Monte as cidades no Roteiro para acompanhar os gastos por dia.</p>'; ['vgd-lista', 'vgd-resumo'].forEach(id => { $(id).innerHTML = ''; }); kpis($('kpi-vgd'), []); return; }
+  if (!r.paradas.length) { $('vgd-hoje').innerHTML = '<p class="hint">Monte as cidades no Roteiro para acompanhar os gastos por dia.</p>'; ['vgd-lista', 'vgd-resumo', 'vgd-mudar'].forEach(id => { $(id).innerHTML = ''; }); kpis($('kpi-vgd'), []); return; }
   const dias = vgDurDias(x), dentro = hoje >= x.ida && hoje < x.volta, antes = hoje < x.ida;
   if (!vgdData || vgdData < x.ida || vgdData > x.volta) vgdData = dentro ? hoje : antes ? x.ida : dias[dias.length - 1].d;
   const ate = antes ? null : dentro ? hoje : x.volta, porDia = {};
@@ -5911,6 +5922,7 @@ function renderViagDur() { vgAutoTodos();
     <details class="vgd-fx"><summary>Outras moedas</summary><p class="subdet">US$ e € usam o câmbio do painel com spread e IOF. Para outra moeda, diga quanto 1 unidade vale em reais.</p>
       ${Object.keys(g.fx).length ? `<ul class="vgd-fxl">${Object.entries(g.fx).map(([m, t]) => `<li><b>${esc(m)}</b><input type="number" min="0" step="0.0001" data-vgdfx="${esc(m)}" value="${t}" aria-label="Quanto vale 1 ${esc(m)} em reais"><button type="button" class="vg-x mini" data-vgdfxdel="${esc(m)}" aria-label="Remover">×</button></li>`).join('')}</ul>` : ''}
       <div class="vgr-dnovo"><input type="text" id="vgd-fxm" maxlength="3" placeholder="Código (GBP, JPY…)" aria-label="Código da moeda"><input type="number" id="vgd-fxv" min="0" step="0.0001" placeholder="1 vale R$" aria-label="Quanto vale em reais"><button type="button" class="btn tiny ghost" data-vgdfxadd>Adicionar</button></div></details>`;
+  $('vgd-mudar').innerHTML = vgMudarHtml(x);
   // gastos lançados, por dia
   const datas = [...new Set(g.gastos.map(e => e.data))].sort().reverse();
   $('vgd-lista').innerHTML = !datas.length ? '<p class="hint">Nenhum gasto lançado ainda.</p>' : datas.map(d => { const its = g.gastos.filter(e => e.data === d), qq = dias.find(y => y.d === d), tt = porDia[d] || 0, pl = qq ? qq.plan : 0, pp = vgDurParDe(x, dias, d);
@@ -6063,13 +6075,55 @@ document.addEventListener('click', async e => {
 });
 document.addEventListener('keydown', e => { if (e.key === 'Escape') { const p = $('vgpdf-pop'); if (p && !p.hidden) vgPdfFecha(); } });
 
+/* ---------- Sabático: tipo da viagem, salário parado no plano, custo por mês e mudar o roteiro no caminho ---------- */
+function vgSabNorm(x) {
+  if (x.tipo !== 'sabatico') x.tipo = 'ferias';
+  if (!x.sab || typeof x.sab !== 'object' || Array.isArray(x.sab)) x.sab = { pausa: true, meses: 0 };
+  x.sab.pausa = x.sab.pausa !== false; x.sab.meses = Math.max(0, Math.min(60, Math.round(+x.sab.meses || 0)));
+}
+const vgSabAuto = x => Math.max(1, Math.round(vgRotNoites(x) / 30.44));
+const vgSabMeses = x => (x.sab && x.sab.meses) || vgSabAuto(x);
+const vgMesesViagem = x => Math.max(1, vgRotNoites(x) / 30.44);
+// renda líquida do plano no mês da ida (salário menos deduções), para mostrar quanto deixa de entrar
+function vgSabRenda(x) { try { const pl = calcPlano(), m = pl.meses[mIndex(x.ida.slice(0, 7))]; return m ? Math.max(0, m.liq) : 0; } catch (e) { return 0; } }
+function vgSabHtml(x) {
+  if (x.tipo !== 'sabatico') return '';
+  const s = x.sab, nm = vgSabMeses(x), i0 = mIndex(x.ida.slice(0, 7)), rd = vgSabRenda(x);
+  return `<div class="vgs-box"><div class="vg-lbl">Sabático</div>
+    <label class="inline"><input type="checkbox" data-vgsabp${s.pausa ? ' checked' : ''}> Parar o salário no plano durante o sabático</label>
+    ${s.pausa ? `<div class="vgs-f"><label>Meses sem salário<input type="number" min="1" max="60" step="1" data-vgsabm value="${s.meses || ''}" placeholder="${vgSabAuto(x)}"></label><span class="subdet">De ${mLabel(i0)} a ${mLabel(i0 + nm - 1)}. ${s.meses ? '' : 'Vazio: pelas datas da viagem. '}Em cada um desses meses, a renda líquida do plano (salário menos impostos e deduções${rd ? `, hoje ≈ ${fm(rd)} por mês` : ''}) deixa de entrar. Os custos de casa continuam como estão no plano.</span></div>` : '<p class="subdet">O plano continua contando o salário nesses meses (por exemplo, sabático remunerado ou trabalhando de longe).</p>'}</div>`;
+}
+// Durante a viagem: mudar o roteiro daqui para frente
+function vgMudarHtml(x) {
+  const r = x.rot; if (!r.paradas.length) return '';
+  const hoje = vgHojeIso(), dts = vgRotDatas(x), dias = vgDurDias(x), falta = dias.filter(q => q.d >= hoje), planF = falta.reduce((s, q) => s + q.plan, 0);
+  const lin = dts.map(({ p, ent, sai }) => { if (sai <= hoje && hoje > x.ida) return ''; const fut = ent > hoje, minN = fut ? 0 : Math.max(1, Math.round((Date.parse(hoje + 'T12:00:00') - Date.parse(ent + 'T12:00:00')) / 864e5) + 1);
+    return `<li><div><b>${esc(p.nome)}</b><span class="subdet">${vgBrd(ent)} a ${vgBrd(sai)}${fut ? '' : ' · você está aqui'}</span></div><div class="vgs-noi"><button type="button" class="btn ghost tiny" data-vgdnoi="${p.id}|-1"${p.noites <= minN ? ' disabled' : ''} aria-label="Uma noite a menos">−</button><span>${p.noites} ${p.noites === 1 ? 'noite' : 'noites'}</span><button type="button" class="btn ghost tiny" data-vgdnoi="${p.id}|1" aria-label="Uma noite a mais">+</button>${fut ? `<button type="button" class="vg-x mini" data-vgdtira="${p.id}" aria-label="Tirar ${esc(p.nome)} do roteiro">×</button>` : ''}</div></li>`; }).join('');
+  return `<ul class="vgs-lst">${lin}</ul><div class="vg-pa"><button type="button" class="btn ghost tiny" data-tab="viagrot">+ Cidade no Roteiro</button></div>
+    <p class="vgc-res">Volta em <b>${vgBrd(x.volta)}</b>. Faltam ${falta.length} ${falta.length === 1 ? 'dia' : 'dias'} com ${fm(planF)} planejados${x.tipo === 'sabatico' && falta.length > 31 ? ` (≈ ${fm(planF / (falta.length / 30.44))} por mês)` : ''}.</p>
+    <p class="hint">Cada noite a mais ou a menos muda a data da volta junto; os custos, o saldo do dia, o Plano futuro e o PDF se ajustam sozinhos. Tirar uma cidade apaga os passeios dela.</p>`;
+}
+document.addEventListener('click', e => {
+  const t = e.target.closest('[data-vgrkind],[data-vgdnoi],[data-vgdtira]'); if (!t || !state.viag) return;
+  const x = vgRotSel(); if (!x) return; const d = t.dataset;
+  if (d.vgrkind) { x.tipo = d.vgrkind; vgSabNorm(x); save(); vgRe(); return; }
+  if (d.vgdnoi) { const [id, s] = d.vgdnoi.split('|'), p = x.rot.paradas.find(y => y.id === id), k = +s; if (!p) return; if (k < 0 && p.noites <= 0) return; p.noites += k; x.volta = vgDtAdd(x.volta, k); save(); vgRe(); return; }
+  if (d.vgdtira) { const p = x.rot.paradas.find(y => y.id === d.vgdtira); if (!p || !confirmar(`Tirar ${p.nome} do roteiro? Os passeios dela também saem.`)) return; x.volta = vgDtAdd(x.volta, -p.noites); x.rot.paradas = x.rot.paradas.filter(y => y.id !== p.id); x.rot.itens = x.rot.itens.filter(it => it.par !== p.id); save(); vgRe(); return; }
+});
+document.addEventListener('change', e => {
+  const t = e.target, d = t.dataset || {}; if (!state.viag || !(d.vgsabp != null || d.vgsabm != null)) return;
+  const x = vgRotSel(); if (!x) return; vgSabNorm(x);
+  if (d.vgsabp != null) x.sab.pausa = t.checked; else x.sab.meses = Math.max(0, Math.min(60, Math.round(+t.value || 0)));
+  save(); vgRe();
+});
+
 function renderViagVg() { vgAutoTodos();
   const v = state.viag; vgKpis($('kpi-vgv'));
   const tb = $('tbl-vgv');
   if (!v.viagens.length) tb.innerHTML = '<tbody><tr><td class="hint">Nenhuma viagem escolhida ainda. Em Comparar, toque em "Escolher este" no lugar que ganhou.</td></tr></tbody>';
   else tb.innerHTML = `<thead><tr><th>Viagem</th><th>Datas</th><th>Quem e como</th><th>Total estimado</th><th>Status</th><th></th></tr></thead><tbody>${v.viagens.slice().sort((a, b) => a.ida < b.ida ? -1 : 1).map(x => `<tr>
     <td class="name"><input type="text" data-vgvnome="${x.id}" value="${esc(x.nome)}" maxlength="60" aria-label="Nome da viagem"> <span class="subdet">${esc(x.lugarNome || '')}${x.pais ? ' · ' + esc(vgPaisNome(x.pais)) : ''}</span></td>
-    <td data-l="Datas">${vgBrd(x.ida)} a ${vgBrd(x.volta)}</td><td data-l="Quem">${x.pessoas} ${x.pessoas > 1 ? 'pessoas' : 'pessoa'} · ${(VG_EST[x.estilo] || VG_EST.meio).n.toLowerCase()}</td>
+    <td data-l="Datas">${vgBrd(x.ida)} a ${vgBrd(x.volta)}</td><td data-l="Quem">${x.pessoas} ${x.pessoas > 1 ? 'pessoas' : 'pessoa'} · ${(VG_EST[x.estilo] || VG_EST.meio).n.toLowerCase()}${x.tipo === 'sabatico' ? ' · <b>sabático</b>' : ''}</td>
     <td data-l="Total" class="vg-num">${(vgRotNorm(x, v), fm(x.rot.paradas.length ? vgRotResumo(x).total : x.total))}</td>
     <td data-l="Status"><select data-vgvst="${x.id}" aria-label="Status da viagem">${Object.entries(VG_VST).map(([k, n]) => `<option value="${k}"${x.st === k ? ' selected' : ''}>${n}</option>`).join('')}</select></td>
     <td><div class="vg-pa"><button type="button" class="btn tiny" data-vgrabre="${x.id}">Roteiro</button><button type="button" class="btn ghost tiny" data-vgpdf="${x.id}">PDF</button><button type="button" class="btn danger tiny" data-vgvdel="${x.id}">Remover</button></div></td></tr>`).join('')}</tbody>`;
@@ -9739,7 +9793,7 @@ function calcPlano(extra) {
     // eventos: férias, bônus... (os anuais repetem corrigidos pelo IPCA)
     let evRec = 0, evGas = 0; const evs = {};
     planEvs(P, extra).forEach(e => { const m0 = mIndex(e.mes); if (!e.mes || i < m0 || (i !== m0 && !(e.anual && (i - m0) % 12 === 0))) return;
-      const anos = Math.round((i - m0) / 12), val = ov['ev~' + e.id] ?? (+e.valor || 0) * Math.pow(1 + ip, anos);
+      const anos = Math.round((i - m0) / 12), val = e.pausa ? Math.max(0, bruto - ded) : ov['ev~' + e.id] ?? (+e.valor || 0) * Math.pow(1 + ip, anos);
       evs[e.id] = val; if (e.tipo === 'receita') evRec += val; else evGas += val; });
     // compras do plano
     let parc = 0, lump = 0, posse = 0, rendaB = 0; const porCompra = [];
@@ -10314,6 +10368,7 @@ const INFO_SEC = {
   'viagens:Sortear': 'O sorteio escolhe entre os lugares da lista que passam nos filtros (status, tipo de viagem, boa época nas datas e teto de gasto). Quanto mais estrelas de vontade, maior a chance.',
   'viagens:Lista de lugares': 'Os lugares que você quer conhecer. Os que vêm das sugestões têm custos e épocas de referência; as cidades da busca (cerca de 2.000) ficam no lugar certo do mapa e usam o custo médio do país, com a passagem estimada pela distância de São Paulo. Um lugar que não está em nenhuma das duas usa a média do continente. Ajuste tudo em Editar.',
   'viagens:Países que já fui': 'Lista dos países marcados como Já fui, por continente. A conta usa os 195 países: 193 da ONU, Vaticano e Palestina. Territórios como Groenlândia e Porto Rico podem ser marcados, mas ficam fora da conta.',
+  'viagdur:Mudar o roteiro': 'Uma noite a mais ou a menos numa cidade muda a data da volta junto. Cidades que você ainda não começou podem sair do roteiro. Para pôr uma cidade nova, use o Roteiro.',
   'viagdur:Hoje': 'O planejado do dia é a hospedagem ainda não paga daquela cidade, o dia a dia (comida e transporte local) e os passeios e trechos que não estavam Definidos, no preço de hoje. Lance só o que pagar durante a viagem.',
   'viagdur:Resumo': 'Por país e por mês: dias, planejado, gasto e quanto gastou por dia (dividido pelos dias que já passaram). Quando a viagem estiver Concluída, a Média por estilo em Custos passa a usar estes gastos.',
   'viagcus:Custos': 'Preço de hoje: o roteiro inteiro com o câmbio de hoje. Já definido: o que você marcou como Definido ou já pago, que fica no preço travado. Projetado: o resto corrigido até a data da viagem pela inflação lá fora ou pelo IPCA. Seguro: estimativa por pessoa por dia conforme o continente, até você digitar o valor que achou.',
