@@ -1258,6 +1258,34 @@ dl.ng-gloss dd { margin: 2px 0 0; font-size: 12.5px; color: var(--muted); line-h
   .ng-obr tr { border-bottom: 1px solid var(--line); padding: 8px 0; } .ng-obr td { border: 0; padding: 2px 0; min-width: 0 !important; }
   .ng-obr td[data-l]::before { content: attr(data-l); display: block; font-size: 9.5px; text-transform: uppercase; letter-spacing: .5px; color: var(--faint); font-family: var(--f-head); }
 }
+.ng-auto { font-family: var(--f-ui); font-size: 10.5px; font-weight: 400; color: var(--faint); text-transform: none; letter-spacing: 0; }
+.ng-precbar { display: flex; height: 22px; border-radius: 6px; overflow: hidden; margin: 4px 0 12px; max-width: 760px; }
+.ng-precbar span { min-width: 2px; }
+.ng-preckv { max-width: 420px; font-size: 12.5px; gap: 5px 12px; }
+.ng-preckv dt i { display: inline-block; width: 9px; height: 9px; border-radius: 2px; margin-right: 7px; vertical-align: 0; }
+.ng-faixa { margin: 16px 0 6px; max-width: 760px; }
+.ng-faixa .bar { position: relative; height: 14px; border-radius: 7px; background: var(--line); }
+.ng-faixa .bar i { position: absolute; top: 0; bottom: 0; background: color-mix(in srgb, var(--s7) 45%, transparent); border-radius: 7px; }
+.ng-faixa .bar b, .ng-faixa .bar em { position: absolute; top: -4px; width: 4px; height: 22px; margin-left: -2px; border-radius: 2px; background: var(--accent); }
+.ng-faixa .bar em { background: var(--s1); }
+.ng-faixa .lg { display: flex; flex-wrap: wrap; gap: 4px 16px; margin-top: 8px; font-size: 12px; color: var(--muted); }
+.ng-faixa .lg i { display: inline-block; width: 10px; height: 10px; border-radius: 2px; margin-right: 6px; vertical-align: -1px; }
+.ng-faixa .lg i.f { background: color-mix(in srgb, var(--s7) 45%, transparent); } .ng-faixa .lg i.s { background: var(--accent); } .ng-faixa .lg i.d { background: var(--s1); }
+.ng-soc input[type="number"] { width: 72px; } .ng-soc input[type="text"] { min-width: 140px; }
+.ng-soc th, .ng-soc td.name { text-align: left; }
+.ng-valt td:nth-child(2) { text-align: left; min-width: 260px; font-size: 12.5px; color: var(--muted); }
+.ng-valt th:nth-child(2) { text-align: left; }
+.ng-cmpn td.best { color: var(--good); font-weight: 700; }
+.ng-cmpn td.best .neg { color: inherit; }
+.ng-cmpn th a { color: inherit; }
+ul.ng-acordo li { margin-bottom: 4px; }
+@media (max-width: 760px) { .ng-valt td:nth-child(2) { min-width: 0; } }
+@media (max-width: 760px) {
+  .ng-stk thead { display: none; } .ng-stk, .ng-stk tbody, .ng-stk tr, .ng-stk td { display: block; width: 100%; }
+  .ng-stk tr { border-bottom: 1px solid var(--line); padding: 8px 0; } .ng-stk td { border: 0; padding: 3px 0; text-align: left !important; min-width: 0 !important; }
+  .ng-stk td[data-l]::before { content: attr(data-l); display: block; font-size: 9.5px; text-transform: uppercase; letter-spacing: .5px; color: var(--faint); font-family: var(--f-head); }
+  .ng-stk td:empty { display: none; }
+}
 </style>
 
 
@@ -1311,6 +1339,10 @@ dl.ng-gloss dd { margin: 2px 0 0; font-size: 12.5px; color: var(--muted); line-h
           <div class="nav-group"><button type="button" class="nav-head" data-tab="negpesq"><span class="ico">06</span>Pesquisa de mercado<span class="caret" data-navtog="negpesq" role="button" tabindex="0" aria-label="Abrir ou recolher submódulos">▾</span></button><div class="nav-sub" data-sub="negpesq"></div></div>
           <div class="nav-group"><button type="button" class="nav-head" data-tab="negviab"><span class="ico">07</span>Viabilidade<span class="caret" data-navtog="negviab" role="button" tabindex="0" aria-label="Abrir ou recolher submódulos">▾</span></button><div class="nav-sub" data-sub="negviab"></div></div>
           <div class="nav-group"><button type="button" class="nav-head" data-tab="negcont"><span class="ico">08</span>Contabilidade fácil<span class="caret" data-navtog="negcont" role="button" tabindex="0" aria-label="Abrir ou recolher submódulos">▾</span></button><div class="nav-sub" data-sub="negcont"></div></div>
+          <div class="nav-group"><button type="button" class="nav-head" data-tab="negprec"><span class="ico">09</span>Precificação<span class="caret" data-navtog="negprec" role="button" tabindex="0" aria-label="Abrir ou recolher submódulos">▾</span></button><div class="nav-sub" data-sub="negprec"></div></div>
+          <div class="nav-group"><button type="button" class="nav-head" data-tab="negval"><span class="ico">10</span>Valuation<span class="caret" data-navtog="negval" role="button" tabindex="0" aria-label="Abrir ou recolher submódulos">▾</span></button><div class="nav-sub" data-sub="negval"></div></div>
+          <div class="nav-group"><button type="button" class="nav-head" data-tab="negsoc"><span class="ico">11</span>Sócios<span class="caret" data-navtog="negsoc" role="button" tabindex="0" aria-label="Abrir ou recolher submódulos">▾</span></button><div class="nav-sub" data-sub="negsoc"></div></div>
+          <div class="nav-group"><button type="button" class="nav-head" data-tab="negcmp"><span class="ico">12</span>Comparar negócios<span class="caret" data-navtog="negcmp" role="button" tabindex="0" aria-label="Abrir ou recolher submódulos">▾</span></button><div class="nav-sub" data-sub="negcmp"></div></div>
         </div></div>
         <div class="nav-pe">
         <div class="nav-group mini"><button type="button" class="nav-head" data-tab="leia"><span class="ico">?</span>Leia-me<span class="caret" data-navtog="leia" role="button" tabindex="0" aria-label="Abrir ou recolher submódulos">▾</span></button><div class="nav-sub" data-sub="leia"></div></div>
@@ -1319,7 +1351,7 @@ dl.ng-gloss dd { margin: 2px 0 0; font-size: 12.5px; color: var(--muted); line-h
     </div>
     <div class="nav-mobile-sub" id="navMobileSub"></div>
   </div>
-  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 218</div></div>
+  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 219</div></div>
 </nav>
 <div class="sino-pop" id="sino-pop" role="dialog" aria-label="Central de avisos" hidden></div>
 <div class="tour-pop" id="tour-pop" role="dialog" aria-labelledby="tour-tit" hidden></div>
@@ -1718,6 +1750,64 @@ dl.ng-gloss dd { margin: 2px 0 0; font-size: 12.5px; color: var(--muted); line-h
       <h2>Glossário</h2>
       <input type="search" id="ngct-q" placeholder="Procurar um termo (ex.: DAS, pró-labore)" aria-label="Procurar no glossário">
       <div id="ngct-gloss"></div>
+    </section>
+  </section>
+
+  <!-- ============ NEGÓCIOS: PRECIFICAÇÃO ============ -->
+  <section role="tabpanel" id="p-negprec" hidden>
+    <div class="block-title"><span class="num">09</span><div><h1>Precificação</h1><p class="desc">Quanto cobrar para pagar os custos, os impostos e as taxas e ainda sobrar a margem que você quer.</p></div></div>
+    <div id="ngpr-sel"></div>
+    <div class="kpis" id="kpi-ngpr"></div>
+    <section data-nav="Composição do preço" class="panel">
+      <h2>Composição do preço</h2>
+      <div id="ngpr-form"></div>
+    </section>
+    <section data-nav="Preço sugerido" class="panel">
+      <h2>Preço sugerido</h2>
+      <div id="ngpr-res"></div>
+    </section>
+  </section>
+
+  <!-- ============ NEGÓCIOS: VALUATION ============ -->
+  <section role="tabpanel" id="p-negval" hidden>
+    <div class="block-title"><span class="num">10</span><div><h1>Valuation</h1><p class="desc">Quanto o negócio vale, por três métodos, e quanto vale a sua parte.</p></div></div>
+    <div id="ngva-sel"></div>
+    <div class="kpis" id="kpi-ngva"></div>
+    <section data-nav="Valor do negócio" class="panel">
+      <h2>Valor do negócio</h2>
+      <div id="ngva-res"></div>
+    </section>
+    <section data-nav="Sensibilidade do valor" class="panel">
+      <h2>Sensibilidade do valor</h2>
+      <div id="ngva-sens"></div>
+    </section>
+  </section>
+
+  <!-- ============ NEGÓCIOS: SÓCIOS ============ -->
+  <section role="tabpanel" id="p-negsoc" hidden>
+    <div class="block-title"><span class="num">11</span><div><h1>Sócios</h1><p class="desc">De quanto cada sócio é dono, quanto põe, quanto recebe e o que vale combinar no acordo.</p></div></div>
+    <div id="ngso-sel"></div>
+    <section data-nav="Quotas e aportes" class="panel">
+      <h2>Quotas e aportes</h2>
+      <div id="ngso-lista"></div>
+    </section>
+    <section data-nav="Quanto cada um põe e recebe" class="panel">
+      <h2>Quanto cada um põe e recebe</h2>
+      <div id="ngso-res"></div>
+    </section>
+    <section data-nav="Acordo de sócios" class="panel">
+      <h2>Acordo de sócios</h2>
+      <div id="ngso-acordo"></div>
+    </section>
+  </section>
+
+  <!-- ============ NEGÓCIOS: COMPARAR ============ -->
+  <section role="tabpanel" id="p-negcmp" hidden>
+    <div class="block-title"><span class="num">12</span><div><h1>Comparar negócios</h1><p class="desc">Dois a quatro negócios lado a lado, com o melhor de cada linha em destaque.</p></div></div>
+    <section data-nav="Lado a lado" class="panel">
+      <h2>Lado a lado</h2>
+      <div id="ngcm-sel"></div>
+      <div id="ngcm-tab"></div>
     </section>
   </section>
 
@@ -2801,7 +2891,7 @@ dl.ng-gloss dd { margin: 2px 0 0; font-size: 12.5px; color: var(--muted); line-h
     return new Promise(resolve => { const { data } = sb.auth.onAuthStateChange(async (ev) => { if (ev !== 'PASSWORD_RECOVERY') return; const s = prompt('Digite a nova senha (mínimo 8 caracteres):'); if (s && s.length >= 8) { const { error } = await sb.auth.updateUser({ password: s }); alert(error ? 'Não deu para trocar a senha: ' + error.message : 'Senha trocada.'); } }); resolve(data); });
   }
   // ---------- rodapé: compartilhar, administração e sair ----------
-  const SITE_V = 100;
+  const SITE_V = 101;
   const escH = v => String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const dataBR = v => v ? new Date(v).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' }) : '–';
   const css2 = `.side-foot .r{flex-wrap:wrap}.side-foot .lg-acoes{margin-left:auto;display:inline-flex;gap:10px}
@@ -3405,10 +3495,11 @@ function ngLinhasPadrao() {
 }
 function ngNovo(nome) {
   return { id: uid(), nome: nome || 'Novo negócio', setor: '', cidade: '', tipo: 'ideia', ini: mKey(HOJE_IDX + 6), anos: 5, rampa: 12, fatIni: 30, part: 100, dist: 80, uso: 'sim',
-    saida: { on: false, mes: '' }, linhas: ngLinhasPadrao(), inv: [], giro: { receb: 30, estoque: 0, pagar: 30, caixaMin: 0 }, emp: { on: false, valor: 0, mes: '', taxa: 18, prazo: 36 }, real: {}, nota: '', trib: {}, abr: {}, econ: [], pesq: {}, viab: { tma: 15 } };
+    saida: { on: false, mes: '' }, linhas: ngLinhasPadrao(), inv: [], giro: { receb: 30, estoque: 0, pagar: 30, caixaMin: 0 }, emp: { on: false, valor: 0, mes: '', taxa: 18, prazo: 36 }, real: {}, nota: '', trib: {}, abr: {}, econ: [], pesq: {}, viab: { tma: 15 }, prec: { mg: 15 }, valu: { mLL: 4, mEb: 4, g: 3 }, socios: [], partAp: null };
 }
 const ngN = (v, d, lo, hi) => { const x = +v; return v === '' || v == null || !isFinite(x) ? d : Math.min(hi ?? Infinity, Math.max(lo ?? -Infinity, x)); };
 const ngMes = (v, d) => /^\d{4}-\d{2}$/.test(String(v || '')) ? String(v) : d;
+const NG_PREC_K = ['cu', 'un', 'F', 'imp', 'tx', 'com'];
 function ngNorm(x) {
   if (!NG_TIPO[x.tipo]) x.tipo = 'ideia';
   ['nome', 'setor', 'cidade', 'nota'].forEach(k => { if (typeof x[k] !== 'string') x[k] = ''; }); if (!x.nome) x.nome = 'Negócio';
@@ -3430,6 +3521,10 @@ function ngNorm(x) {
   if (!NG_NAT[Tb.nat]) Tb.nat = x.part < 100 ? 'ltda' : 'slu'; if (!NG_ATIV[Tb.ativ]) Tb.ativ = 'servico'; if (!['III', 'IV', 'V', 'fatorR'].includes(Tb.anexo)) Tb.anexo = 'fatorR';
   Tb.iss = ngN(Tb.iss, 5, 0, 5); Tb.icms = ngN(Tb.icms, 5, 0, 30); if (!NG_REG[Tb.regime]) Tb.regime = 'manual'; Tb.ano = Math.round(ngN(Tb.ano, 2, 1, 30));
   if (!x.viab || typeof x.viab !== 'object' || Array.isArray(x.viab)) x.viab = {}; x.viab.tma = ngN(x.viab.tma, 15, 0, 100);
+  if (!x.prec || typeof x.prec !== 'object' || Array.isArray(x.prec)) x.prec = {}; NG_PREC_K.forEach(k => { x.prec[k] = x.prec[k] === '' || x.prec[k] == null ? null : ngN(x.prec[k], null, 0, k === 'un' || k === 'cu' || k === 'F' ? Infinity : 100); }); x.prec.mg = ngN(x.prec.mg, 15, 0, 90);
+  if (!x.valu || typeof x.valu !== 'object' || Array.isArray(x.valu)) x.valu = {}; x.valu.mLL = ngN(x.valu.mLL, 4, 0, 50); x.valu.mEb = ngN(x.valu.mEb, 4, 0, 50); x.valu.g = ngN(x.valu.g, 3, 0, 20);
+  if (!Array.isArray(x.socios)) x.socios = []; x.socios = x.socios.filter(q => q && q.id).slice(0, 12); x.socios.forEach(q => { if (typeof q.nome !== 'string') q.nome = ''; q.quota = ngN(q.quota, 0, 0, 100); q.aporte = ngN(q.aporte, 0, 0, 100); });
+  x.partAp = x.partAp === '' || x.partAp == null ? null : ngN(x.partAp, null, 0, 100);
   if (!x.pesq || typeof x.pesq !== 'object' || Array.isArray(x.pesq)) x.pesq = {}; ['produto', 'regiao', 'publico', 'obs'].forEach(k => { if (typeof x.pesq[k] !== 'string') x.pesq[k] = ''; }); x.pesq.ticket = ngN(x.pesq.ticket, 0, 0);
   if (!Array.isArray(x.econ)) x.econ = []; x.econ = x.econ.filter(c => c && c.id && NG_ECON[c.cat]); x.econ.forEach(c => ngEcNorm(x, c));
   if (!x.abr || typeof x.abr !== 'object') x.abr = {}; if (!x.abr.feito || typeof x.abr.feito !== 'object') x.abr.feito = {}; if (!x.abr.custo || typeof x.abr.custo !== 'object') x.abr.custo = {};
@@ -3463,6 +3558,7 @@ function ngNormalizar(s) {
   }
   v.negocios.forEach(ngNorm); if (typeof v.sel !== 'string') v.sel = '';
   if (!v.ecBase || typeof v.ecBase !== 'object' || Array.isArray(v.ecBase)) v.ecBase = {};
+  if (!Array.isArray(v.cmp)) v.cmp = []; v.cmp = v.cmp.filter(id => typeof id === 'string').slice(0, 4);
 }
 const ngPartAp = x => x.partAp != null && isFinite(+x.partAp) ? +x.partAp : x.part;
 const ngLista = () => ((state.neg || {}).negocios || []);
@@ -3563,7 +3659,7 @@ function ngCalc(x, ateI) {
   const fl = noH.map(m => m.proj), npv = r => fl.reduce((s, v, k) => s + v / Math.pow(1 + r, k), 0);
   let tir = null; if (fl.some(v => v < 0) && fl.some(v => v > 0) && npv(-0.99) * npv(1) < 0) { let lo = -0.99, hi = 1; for (let j = 0; j < 80; j++) { const mid = (lo + hi) / 2; if (npv(lo) * npv(mid) <= 0) hi = mid; else lo = mid; } tir = Math.pow(1 + (lo + hi) / 2, 12) - 1; }
   const tMad = Math.max(x.rampa, ...x.linhas.map(l => l.ini - 1)), mad = op.length ? op[Math.min(op.length - 1, tMad)] : null, ult12 = op.slice(-12);
-  const voce = m => m.distrib * x.part / 100 + m.plLiq - m.aporte * x.part / 100;
+  const voce = m => m.distrib * x.part / 100 + m.plLiq - m.aporte * ngPartAp(x) / 100;
   const r = { i0, T, tmin, meses, porG, folhas, pay, tir, mad,
     invTot: x.inv.reduce((s, v) => s + v.valor, 0), aportes: noH.reduce((s, m) => s + m.aporte, 0), piorCaixa: Math.min(0, ...noH.reduce((a, m) => { a.push((a.length ? a[a.length - 1] : 0) + m.fc); return a; }, [])),
     pos1: (op.find(m => m.fc > 0) || {}).t, llAno1: op.slice(0, 12).reduce((s, m) => s + m.LL, 0), llMad: ult12.length ? ult12.reduce((s, m) => s + m.LL, 0) / ult12.length : 0,
@@ -3581,7 +3677,7 @@ function ngPlanEvs(extra) {
   ngLista().forEach(x => {
     const on = (x.uso === 'real' && !(extra && extra.has('-neg:' + x.id))) || (extra && extra.has('neg:' + x.id)); if (!on) return;
     const R = ngCalcC(x);
-    R.meses.forEach(m => { if (m.i < HOJE_IDX) return; const rec = m.distrib * x.part / 100 + m.plLiq, gas = m.aporte * x.part / 100;
+    R.meses.forEach(m => { if (m.i < HOJE_IDX) return; const rec = m.distrib * x.part / 100 + m.plLiq, gas = m.aporte * ngPartAp(x) / 100;
       if (rec > 0.5) out.push({ id: 'negr-' + x.id, nome: 'Negócio: ' + x.nome + ' (o que chega para você)', tipo: 'receita', valor: Math.round(rec), mes: m.mk, anual: false, neg: true });
       if (gas > 0.5) out.push({ id: 'nega-' + x.id, nome: 'Negócio: ' + x.nome + ' (dinheiro que você põe)', tipo: 'gasto', valor: Math.round(gas), mes: m.mk, anual: false, neg: true }); });
     if (x.saida.on && x.saida.mes) for (let i = Math.max(mIndex(x.saida.mes), HOJE_IDX); i <= fim; i++) pausa.add(i);
@@ -3593,8 +3689,8 @@ let ngPeC = { k: null, t: 0, v: [] };
 function ngPlanEvsC(extra) { const k = extra ? [...extra].sort().join(',') : ''; if (ngPeC.k === k && Date.now() - ngPeC.t < 80) return ngPeC.v; let v = []; try { v = ngPlanEvs(extra); } catch (er) { console.error(er); } ngPeC = { k, t: Date.now(), v }; return v; }
 function ngItensMod() {
   return ngLista().map(x => { const R = ngCalcC(x), ini = mKey(R.i0 + R.tmin);
-    const partes = [R.invTot ? fm(R.invTot) + ' de investimento' : '', R.aportes > 0.5 ? `você põe ${fm(R.aportes * x.part / 100)}` : '', R.voceMad ? `${R.voceMad < 0 ? '−' : ''}${fm(Math.abs(R.voceMad))}/mês para você quando maduro` : '', x.saida.on && x.saida.mes ? `sai do emprego em ${mLabel(mIndex(x.saida.mes))}` : ''].filter(Boolean);
-    return { id: 'neg:' + x.id, mod: 'neg', sub: 'Negócios', tab: 'negfc', sec: 'No Plano futuro', nome: 'Negócio: ' + x.nome, tipo: 'negocio', ini, unico: -(R.aportes * x.part / 100), mensal: R.voceMad, meses: R.T + Math.max(0, -R.tmin),
+    const partes = [R.invTot ? fm(R.invTot) + ' de investimento' : '', R.aportes > 0.5 ? `você põe ${fm(R.aportes * ngPartAp(x) / 100)}` : '', R.voceMad ? `${R.voceMad < 0 ? '−' : ''}${fm(Math.abs(R.voceMad))}/mês para você quando maduro` : '', x.saida.on && x.saida.mes ? `sai do emprego em ${mLabel(mIndex(x.saida.mes))}` : ''].filter(Boolean);
+    return { id: 'neg:' + x.id, mod: 'neg', sub: 'Negócios', tab: 'negfc', sec: 'No Plano futuro', nome: 'Negócio: ' + x.nome, tipo: 'negocio', ini, unico: -(R.aportes * ngPartAp(x) / 100), mensal: R.voceMad, meses: R.T + Math.max(0, -R.tmin),
       resumo: R.temRec ? partes.join(' · ') : 'preencha a receita no DRE para entrar no plano', uso: x.uso, bloq: !R.temRec }; });
 }
 
@@ -3607,7 +3703,7 @@ function ngKpis(el, x, R) {
   kpis(el, [
     ['Investimento', fm(R.invTot), R.invTot ? `${x.inv.length} ${x.inv.length > 1 ? 'itens' : 'item'} em Fluxo de caixa` : 'cadastre em Fluxo de caixa'],
     ['Lucro líquido por mês', fm(R.llMad), R.rbMad ? `margem ${pct(R.margem)} no último ano do horizonte` : 'preencha a receita', R.llMad < 0],
-    ['Dinheiro que precisa pôr', fm(R.aportes), R.aportes ? `o que os sócios põem até o caixa se pagar${x.part < 100 ? `; a sua parte é ${fm(R.aportes * x.part / 100)}` : ''}` : 'o próprio caixa cobre'],
+    ['Dinheiro que precisa pôr', fm(R.aportes), R.aportes ? `o que os sócios põem até o caixa se pagar${ngPartAp(x) < 100 ? `; a sua parte é ${fm(R.aportes * ngPartAp(x) / 100)}` : ''}` : 'o próprio caixa cobre'],
     ['Payback', R.pay != null ? `${R.pay + 1} ${R.pay ? 'meses' : 'mês'}` : '—', R.pay != null ? `do início da operação; TIR ${R.tir != null ? pct(R.tir) + ' a.a.' : '—'}` : `não se paga em ${x.anos} ${x.anos > 1 ? 'anos' : 'ano'}`, R.pay == null && R.invTot > 0]
   ]);
 }
@@ -3626,7 +3722,7 @@ function renderNegVg() {
       <td data-l="Tipo">${NG_TIPO[x.tipo]}</td><td data-l="Início">${mLabel(R.i0)}</td><td data-l="Investimento">${fm(R.invTot)}</td><td data-l="Lucro/mês">${ngSg(R.llMad)}</td><td data-l="Para você">${ngSg(R.voceMad)}</td>
       <td data-l="Payback">${R.pay != null ? R.pay + 1 + ' meses' : '—'}</td><td data-l="Uso">${x.uso === 'real' ? '<span class="chip info">Projeção real</span>' : '<span class="subdet">Só simulação</span>'}</td></tr>`).join('')}</tbody>`;
   $('ngv-tl').innerHTML = tlHtml(itensModulos().filter(y => y.mod === 'neg'));
-  const m = MODS.find(y => y.id === 'neg'), lk = [['negcad', 'Meus negócios', 'Cadastro de cada ideia ou empresa: tipo, setor, cidade, sua parte e o que vai para o plano.'], ['negdre', 'Meu DRE', 'Receitas, custos e despesas mês a mês, com linhas suas e desdobramentos.'], ['negfc', 'Fluxo de caixa', 'Investimentos, capital de giro, empréstimo, quanto pôr e quando o caixa vira.'], ['negabr', 'Abrir empresa', 'MEI, SLU ou LTDA, Simples x Presumido x Real lado a lado e o passo a passo com custos.'], ['negeco', 'Oportunidades de custo', 'Energia, maquininha, aluguel, fornecedores e mais: quanto dá para economizar e o efeito no lucro.'], ['negpesq', 'Pesquisa de mercado', 'Tamanho do mercado, concorrentes, preços, riscos e um veredito, pesquisados com IA.'], ['negviab', 'Viabilidade', 'Ponto de equilíbrio, payback, TIR, VPL e o que acontece se as vendas ou os custos mudarem.'], ['negcont', 'Contabilidade fácil', 'As obrigações de cada regime, os próximos vencimentos e um glossário dos termos.']];
+  const m = MODS.find(y => y.id === 'neg'), lk = [['negcad', 'Meus negócios', 'Cadastro de cada ideia ou empresa: tipo, setor, cidade, sua parte e o que vai para o plano.'], ['negdre', 'Meu DRE', 'Receitas, custos e despesas mês a mês, com linhas suas e desdobramentos.'], ['negfc', 'Fluxo de caixa', 'Investimentos, capital de giro, empréstimo, quanto pôr e quando o caixa vira.'], ['negabr', 'Abrir empresa', 'MEI, SLU ou LTDA, Simples x Presumido x Real lado a lado e o passo a passo com custos.'], ['negeco', 'Oportunidades de custo', 'Energia, maquininha, aluguel, fornecedores e mais: quanto dá para economizar e o efeito no lucro.'], ['negpesq', 'Pesquisa de mercado', 'Tamanho do mercado, concorrentes, preços, riscos e um veredito, pesquisados com IA.'], ['negviab', 'Viabilidade', 'Ponto de equilíbrio, payback, TIR, VPL e o que acontece se as vendas ou os custos mudarem.'], ['negcont', 'Contabilidade fácil', 'As obrigações de cada regime, os próximos vencimentos e um glossário dos termos.'], ['negprec', 'Precificação', 'O preço de venda pelo custo, impostos, taxas e a margem que você quer.'], ['negval', 'Valuation', 'Quanto o negócio vale: múltiplos do lucro e do EBITDA e fluxo de caixa descontado.'], ['negsoc', 'Sócios', 'Quotas, quem põe quanto, o que cada um recebe e o que combinar no acordo.'], ['negcmp', 'Comparar negócios', 'Dois a quatro negócios lado a lado: investimento, lucro, payback, TIR e valor.']];
   $('ngv-links').innerHTML = lk.map(([t, n, d]) => `<button type="button" class="md-card" style="--mc:${m.cor}" data-tab="${t}"><div class="md-img">${MOD_SVG.neg}</div><h3>${esc(n)}</h3><p>${esc(d)}</p></button>`).join('');
 }
 function renderNegCad() {
@@ -3754,7 +3850,7 @@ function renderNegFc() {
     <label>Juros (% a.a.)<input type="number" min="0" step="0.5" data-ngf="${b('emp.taxa')}" value="${E.taxa}"></label>
     <label>Prazo (meses)<input type="number" min="1" max="360" step="1" data-ngf="${b('emp.prazo')}" value="${E.prazo}"></label></div>
     ${sch.length ? `<p class="subdet">Parcela fixa (Price) de ${fm(sch[0].p)} por ${E.prazo} meses, ${fm(sch.reduce((s, q) => s + q.j, 0))} de juros no total. Os juros entram no DRE; o valor emprestado e a amortização, só no caixa.</p>` : ''}` : ''}`;
-  const { p, html } = ngPerHtml(x, R, 'negfc'), cols = ngCols(R, p, x), part = x.part / 100;
+  const { p, html } = ngPerHtml(x, R, 'negfc'), cols = ngCols(R, p, x), part = x.part / 100, partA = ngPartAp(x) / 100;
   const GF = [
     { id: 'op', nome: 'Caixa da operação', f: m => m.oper, linhas: [{ nome: 'Lucro líquido', f: m => m.LL }, { nome: '+ Depreciação (não sai do caixa)', f: m => m.DEP }, { nome: '− Dinheiro preso no giro', f: m => -m.dGiro }] },
     { id: 'inv', nome: 'Investimentos', f: m => -m.invT, linhas: [] },
@@ -3762,7 +3858,7 @@ function renderNegFc() {
     { id: 'fc', nome: '= Fluxo do mês', f: m => m.fc, cls: 'saldo' },
     { id: 'soc', nome: 'Sócios', f: m => m.aporte - m.distrib, linhas: [{ nome: 'Dinheiro que os sócios põem', f: m => m.aporte }, { nome: '− Lucro distribuído', f: m => -m.distrib }] },
     { id: 'cx', nome: 'Caixa da empresa no fim do mês', f: () => 0, cls: 'saldo', saldo: true },
-    { id: 'voce', nome: 'Para você', f: m => R.voce(m), cls: 'res', linhas: [{ nome: `Lucro distribuído × ${num(x.part, 0)}%`, f: m => m.distrib * part }, { nome: 'Pró-labore líquido', f: m => m.plLiq }, { nome: `− Dinheiro que você põe (${num(x.part, 0)}%)`, f: m => -m.aporte * part }] }
+    { id: 'voce', nome: 'Para você', f: m => R.voce(m), cls: 'res', linhas: [{ nome: `Lucro distribuído × ${num(x.part, 0)}%`, f: m => m.distrib * part }, { nome: 'Pró-labore líquido', f: m => m.plLiq }, { nome: `− Dinheiro que você põe (${num(ngPartAp(x), 0)}%)`, f: m => -m.aporte * partA }] }
   ];
   let tbl = cols.length ? ngMMTabela('fc', cols, GF) : '';
   // caixa é saldo: mostra o do último mês de cada coluna
@@ -3782,7 +3878,7 @@ function renderNegFc() {
     <label class="check"><input type="checkbox" data-ngf="${b('saida.on')}"${x.saida.on ? ' checked' : ''}> Vou deixar minha renda atual para tocar o negócio</label>
     ${x.saida.on ? `<label>A partir de<input type="month" data-ngf="${b('saida.mes')}" value="${esc(x.saida.mes || x.ini)}"></label>` : ''}</div>
     <ul class="ng-plano">
-      <li>Meses em que o caixa do negócio fica negativo entram no plano como <b>gasto</b> (o dinheiro que você põe${x.part < 100 ? `, ${num(x.part, 0)}% do total` : ''}): ${R.aportes > 0.5 ? `${fm(R.aportes * part)} no total` : 'nenhum por enquanto'}.</li>
+      <li>Meses em que o caixa do negócio fica negativo entram no plano como <b>gasto</b> (o dinheiro que você põe${ngPartAp(x) < 100 ? `, ${num(ngPartAp(x), 0)}% do total` : ''}): ${R.aportes > 0.5 ? `${fm(R.aportes * partA)} no total` : 'nenhum por enquanto'}.</li>
       <li>O lucro distribuído e o pró-labore líquido entram como <b>receita</b>: ${fm(R.voceMad)}/mês quando maduro.</li>
       ${x.saida.on ? `<li>A partir de ${mLabel(mIndex(x.saida.mes || x.ini))}, a sua receita atual do Plano futuro para${fimPl ? ` até o fim do plano (${mLabel(fimPl)})` : ''}, como no sabático.</li>` : ''}
       <li>Depois do horizonte de ${x.anos} ${x.anos > 1 ? 'anos' : 'ano'}, o plano segue com o negócio rodando nas mesmas premissas.</li></ul>
@@ -4099,7 +4195,7 @@ function renderNegViab() {
   ]);
   const ok = R.tir != null && R.tir >= tma / 100 && R.pay != null, meio = R.pay != null;
   $('ngvi-res').innerHTML = `<div class="ng-vered"><span class="chip ${ok ? 'best' : meio ? 'amber' : 'warn'}">${ok ? 'Viável nas premissas' : meio ? 'Se paga, mas rende pouco' : 'Não se paga no horizonte'}</span><p>${ok ? `O negócio devolve o dinheiro em ${R.pay + 1} meses e rende ${ngTir(R.tir)} ao ano, mais que os ${tma}% que você pediu.` : meio ? `Devolve o dinheiro em ${R.pay + 1} meses, mas rende ${R.tir != null ? ngTir(R.tir) : 'menos'} ao ano, abaixo dos ${tma}% da taxa mínima. O dinheiro renderia mais em outro lugar com risco parecido.` : `Nas premissas do DRE e do fluxo de caixa, o caixa acumulado não volta a ficar positivo em ${x.anos} ${x.anos > 1 ? 'anos' : 'ano'}.`}</p></div>
-    <ul class="ng-plano"><li>Dinheiro que os sócios precisam pôr: <b>${fm(R.aportes)}</b>${x.part < 100 ? ` (a sua parte: ${fm(R.aportes * ngPartAp(x) / 100)})` : ''}.</li><li>Primeiro mês com lucro: <b>${E && E.m1.i != null ? mLabel(E.m1.i) : 'nenhum no horizonte'}</b>${E && E.m1.t != null ? ` (mês ${E.m1.t + 1} de operação)` : ''}.</li><li>Lucro líquido médio quando maduro: <b>${fm(R.llMad)}/mês</b>, margem de ${pct(R.margem)}.</li></ul>`;
+    <ul class="ng-plano"><li>Dinheiro que os sócios precisam pôr: <b>${fm(R.aportes)}</b>${ngPartAp(x) < 100 ? ` (a sua parte: ${fm(R.aportes * ngPartAp(x) / 100)})` : ''}.</li><li>Primeiro mês com lucro: <b>${E && E.m1.i != null ? mLabel(E.m1.i) : 'nenhum no horizonte'}</b>${E && E.m1.t != null ? ` (mês ${E.m1.t + 1} de operação)` : ''}.</li><li>Lucro líquido médio quando maduro: <b>${fm(R.llMad)}/mês</b>, margem de ${pct(R.margem)}.</li></ul>`;
   if (!E || E.pe == null) { $('ngvi-pe').innerHTML = '<p class="warn">O que sobra de cada venda (margem de contribuição) não cobre os custos variáveis. Reveja o preço ou os custos que acompanham as vendas.</p>'; }
   else {
     const ms = R.meses.filter(m => m.t >= 0).slice(0, Math.min(R.T, 36)), mx = Math.max(E.pe * 1.15, ...ms.map(m => m.RB)), W = 640, H = 170, px = k => 34 + k * (W - 44) / Math.max(1, ms.length - 1), py = v => H - 22 - v / mx * (H - 34);
@@ -4201,6 +4297,180 @@ function renderNegGloss() {
 }
 document.addEventListener('click', e => { const b = e.target.closest('[data-ngcreg]'); if (!b) return; ngContReg = b.dataset.ngcreg; renderNegCont(); });
 document.addEventListener('input', e => { if (e.target.id !== 'ngct-q') return; ngGlossQ = e.target.value; renderNegGloss(); });
+
+/* ---------- Precificação: preço pelo markup ---------- */
+// campos em branco vêm do DRE (médias do último ano do horizonte)
+function ngPrecAuto(x, R) {
+  const E = ngEquil(x, R), ms = R.meses.filter(m => m.t >= 0 && m.t < R.T).slice(-12); if (!E || !ms.length) return null;
+  const av = f => ms.reduce((q, m) => q + f(m), 0) / ms.length, RB = E.RB, pc = v => RB > 0 ? Math.max(0, v / RB * 100) : 0;
+  const imp = av(m => m.impV + R.porG.ded.filter(l => l.imp).reduce((q, l) => q + (m.val[l.id] || 0), 0));
+  const tx = av(m => R.porG.ded.filter(l => !l.imp).reduce((q, l) => q + (m.val[l.id] || 0), 0) - m.ecG.ded);
+  // CMV em % da receita fica junto dos percentuais; só o resto vira custo por unidade
+  const cmv = av(m => R.porG.cmv.filter(l => l.modo !== 'pct').reduce((q, l) => q + (m.val[l.id] || 0), 0)), un = E.U > 0 ? E.U : 0;
+  return { cu: un > 0 ? cmv / un : 0, un, F: E.F, imp: pc(imp), tx: pc(tx), com: pc(E.V - imp - tx - cmv), preco: E.preco };
+}
+function ngPrec(x, R) {
+  const A = ngPrecAuto(x, R) || { cu: 0, un: 0, F: 0, imp: 0, tx: 0, com: 0, preco: null }, P = x.prec, v = {};
+  NG_PREC_K.forEach(k => { v[k] = P[k] != null ? P[k] : A[k]; });
+  const pcs = v.imp + v.tx + v.com, den = 1 - (pcs + P.mg) / 100, fu = v.un > 0 ? v.F / v.un : null;
+  const preco = fu != null && den > 0 ? (v.cu + fu) / den : null;
+  const mgDe = p => p > 0 && fu != null ? (p * (1 - pcs / 100) - v.cu - fu) / p : null;
+  return { A, v, fu, pcs, den, preco, mgDe, mg: P.mg };
+}
+// o preço sugerido vale para o último ano do horizonte; no DRE entra o equivalente de hoje, que sobe com o reajuste da linha
+function ngPrecHoje(x, R, Q) {
+  const l = x.linhas.find(y => y.g === 'rb' && !x.linhas.some(c => c.pai === y.id)); if (!l || Q.preco == null) return null;
+  const ms = R.meses.filter(m => m.t >= 0 && m.t < R.T).slice(-12), r = ms.length ? Math.pow(1 + l.reaj / 100, Math.floor(Math.max(0, ms[ms.length - 1].t - l.ini + 1) / 12)) : 1;
+  return { l, v: Math.round(Q.preco / r * 100) / 100, qtd: Math.round(Q.v.un), r };
+}
+function renderNegPrec() {
+  const x = ngSel(), ids = ['ngpr-form', 'ngpr-res'];
+  if (!x) { $('ngpr-sel').innerHTML = ngVazio(); ids.forEach(id => { $(id).innerHTML = ''; }); kpis($('kpi-ngpr'), []); return; }
+  $('ngpr-sel').innerHTML = ngSelHtml(x, `<button type="button" class="btn ghost tiny" data-tab="negdre">Ver DRE</button>`);
+  const R = ngCalcC(x), Q = ngPrec(x, R), A = Q.A, v = Q.v, Ps = ngPesq[x.id], pr = Ps && Ps.res && Ps.res.preco, atual = A.preco;
+  const nf = (k, n, d, st, un) => `<label>${n}<input type="number" min="0" step="${st}" data-ngf="${x.id}:prec.${k}" value="${x.prec[k] != null ? x.prec[k] : ''}" placeholder="${A[k] ? num(A[k], un === '%' ? 1 : A[k] < 100 ? 2 : 0) : '0'}">${x.prec[k] != null ? `<small class="ng-auto">do DRE: ${un === '%' ? num(A[k], 1) + '%' : un === 'un' ? num(A[k], 0) : fm(A[k])}</small>` : `<small class="ng-auto">${d}</small>`}</label>`;
+  $('ngpr-form').innerHTML = `<div class="ng-form">
+    ${nf('cu', 'Custo de cada unidade (R$)', 'vem do DRE', '0.01', 'R$')}
+    ${nf('un', 'Unidades vendidas por mês', 'vem do DRE', '1', 'un')}
+    ${nf('F', 'Custos fixos por mês (R$)', 'vem do DRE', '100', 'R$')}
+    ${nf('imp', 'Impostos sobre a venda (%)', 'vem do DRE', '0.1', '%')}
+    ${nf('tx', 'Taxas: cartão, marketplace (%)', 'vem do DRE', '0.1', '%')}
+    ${nf('com', 'Comissões e outros custos em % (%)', 'vem do DRE', '0.1', '%')}
+    <label>Margem de lucro desejada (%)<input type="number" min="0" max="90" step="1" data-ngf="${x.id}:prec.mg" value="${x.prec.mg}"><small class="ng-auto">antes do IR</small></label></div>
+    <p class="subdet">Em branco, cada campo usa o número do DRE (média do último ano do horizonte). Digite para simular outro valor; apague para voltar ao DRE.</p>`;
+  if (Q.fu == null) { kpis($('kpi-ngpr'), []); $('ngpr-res').innerHTML = '<p class="hint">Informe quantas unidades vende por mês. Se a receita no DRE está em R$ por mês, use Preço × quantidade para o painel trazer esse número sozinho.</p>'; return; }
+  if (Q.preco == null) { kpis($('kpi-ngpr'), []); $('ngpr-res').innerHTML = `<p class="warn">Impostos, taxas, comissões e margem somam ${num(Q.pcs + Q.mg, 1)}% do preço: não sobra nada para pagar os custos. Diminua a margem ou os percentuais.</p>`; return; }
+  const mgA = atual ? Q.mgDe(atual) : null;
+  kpis($('kpi-ngpr'), [
+    ['Preço sugerido', fm2(Q.preco), `para ${num(Q.mg, 0)}% de margem antes do IR`],
+    ['Preço no DRE', atual ? fm2(atual) : '—', atual ? (Math.abs(atual / Q.preco - 1) < 0.0005 ? 'igual ao sugerido' : `${atual >= Q.preco ? 'acima' : 'abaixo'} do sugerido em ${pct(Math.abs(atual / Q.preco - 1))}`) : 'a receita não está em preço × quantidade', atual != null && atual < Q.preco],
+    ['Margem com o preço do DRE', mgA != null ? pct(mgA) : '—', mgA != null ? 'antes do IR, nas premissas acima' : '', mgA != null && mgA < 0],
+    ['Pesquisa de mercado', pr && pr.med ? fm2(pr.med) : '—', pr && pr.med ? `faixa de ${pr.min ? fm2(pr.min) : '?'} a ${pr.max ? fm2(pr.max) : '?'}${pr.unidade ? ' por ' + esc(pr.unidade) : ''}` : 'peça em Pesquisa de mercado']
+  ]);
+  const p = Q.preco, partes = [['Custo da unidade', v.cu, 'var(--s4)'], ['Custos fixos por unidade', Q.fu, 'var(--s1)'], ['Impostos', p * v.imp / 100, 'var(--bad)'], ['Taxas', p * v.tx / 100, 'var(--s2)'], ['Comissões e outros', p * v.com / 100, 'var(--s3)'], ['Lucro', p * Q.mg / 100, 'var(--good)']].filter(a => a[1] > 0.005);
+  const faixa = pr && pr.min && pr.max && pr.max > pr.min ? (() => { const lo = Math.min(pr.min, p, atual || p) * 0.9, hi = Math.max(pr.max, p, atual || p) * 1.1, ps = q => ((q - lo) / (hi - lo) * 100).toFixed(1) + '%';
+    return `<div class="ng-faixa" aria-label="Preço sugerido na faixa da pesquisa"><div class="bar"><i style="left:${ps(pr.min)};width:calc(${ps(pr.max)} - ${ps(pr.min)})"></i><b style="left:${ps(p)}" title="Sugerido"></b>${atual ? `<em style="left:${ps(atual)}" title="No DRE"></em>` : ''}</div>
+      <div class="lg"><span><i class="f"></i>Faixa da pesquisa ${fm2(pr.min)} a ${fm2(pr.max)}</span><span><i class="s"></i>Sugerido ${fm2(p)}</span>${atual ? `<span><i class="d"></i>No DRE ${fm2(atual)}</span>` : ''}</div></div>`; })() : '';
+  const tbl = [5, 10, 15, 20, 25, 30].map(mg => { const d = 1 - (Q.pcs + mg) / 100, q = d > 0 ? (v.cu + Q.fu) / d : null; return `<tr${mg === Math.round(Q.mg) ? ' class="on"' : ''}><td class="name">${mg}%</td><td data-l="Preço">${q ? fm2(q) : '—'}</td><td data-l="Lucro por unidade">${q ? fm2(q * mg / 100) : '—'}</td><td data-l="Lucro por mês">${q ? fm(q * mg / 100 * v.un) : '—'}</td></tr>`; }).join('');
+  $('ngpr-res').innerHTML = `<div class="ng-precbar" role="img" aria-label="Do que é feito o preço">${partes.map(([n, q, c]) => `<span style="flex:${q.toFixed(4)};background:${c}" title="${n}: ${fm2(q)}"></span>`).join('')}</div>
+    <dl class="kv ng-preckv">${partes.map(([n, q, c]) => `<dt><i style="background:${c}"></i>${n}</dt><dd>${fm2(q)} <small>(${pct(q / p)})</small></dd>`).join('')}<dt class="big">Preço sugerido</dt><dd class="big">${fm2(p)}</dd></dl>
+    ${faixa}
+    ${(() => { const H = ngPrecHoje(x, R, Q); return H ? `<div class="row ng-levar"><button type="button" class="btn" data-ngprusar="${x.id}">Usar no DRE</button><span class="subdet">Troca "${esc(H.l.nome)}" por ${fm2(H.v)} × ${num(H.qtd, 0)} unidades por mês${H.r > 1.0001 ? `. É o preço de hoje: com o reajuste de ${num(H.l.reaj, 1)}% ao ano da linha, chega a ${fm2(p)} no último ano` : ''}.</span></div>` : ''; })()}
+    <h3 class="ng-h3">Preço para cada margem</h3>
+    <div class="tscroll"><table class="ng-cmp"><thead><tr><th>Margem</th><th>Preço</th><th>Lucro por unidade</th><th>Lucro por mês</th></tr></thead><tbody>${tbl}</tbody></table></div>
+    <p class="subdet">Preço = (custo da unidade + custos fixos por unidade) ÷ (1 − impostos − taxas − comissões − margem). Lucro antes do IR; no Simples o IR já está no DAS.</p>`;
+}
+
+/* ---------- Valuation: múltiplos e fluxo de caixa descontado ---------- */
+function ngValu(x, R, tma, g) {
+  const H = R.meses.filter(m => m.t < R.T), ms = H.filter(m => m.t >= 0).slice(-12); if (!ms.length) return null;
+  const av = f => ms.reduce((q, m) => q + f(m), 0) / ms.length, llA = av(m => m.LL) * 12, ebA = av(m => m.EBITDA) * 12, fcA = av(m => m.proj) * 12;
+  const saldo = i => x.emp.on && x.emp.valor > 0 && R.meses.some(m => m.empIn > 0 && m.i <= i) ? Math.max(0, x.emp.valor - R.meses.filter(m => m.i <= i).reduce((q, m) => q + m.amort, 0)) : 0;
+  const fimI = H[H.length - 1].i, r = Math.pow(1 + tma / 100, 1 / 12) - 1, base = Math.max(HOJE_IDX, H[0].i);
+  const fut = H.filter(m => m.i >= base), pv = fut.reduce((q, m) => q + m.proj / Math.pow(1 + r, m.i - base), 0);
+  const term = tma > g ? fcA * (1 + g / 100) / ((tma - g) / 100) : null, pvT = term != null ? term / Math.pow(1 + r, fimI - base + 1) : null;
+  return { llA, ebA, fcA, dH: saldo(fimI), d0: saldo(HOJE_IDX), pv, term, pvT, dcf: pvT != null ? pv + pvT - saldo(HOJE_IDX) : null, base, fimI };
+}
+function renderNegVal() {
+  const x = ngSel(), ids = ['ngva-res', 'ngva-sens'];
+  if (!x) { $('ngva-sel').innerHTML = ngVazio(); ids.forEach(id => { $(id).innerHTML = ''; }); kpis($('kpi-ngva'), []); return; }
+  const b = k => `${x.id}:valu.${k}`, U = x.valu;
+  $('ngva-sel').innerHTML = ngSelHtml(x, `<label>Múltiplo do lucro<input type="number" min="0" max="50" step="0.5" data-ngf="${b('mLL')}" value="${U.mLL}" title="Quantas vezes o lucro de um ano"></label><label>Múltiplo do EBITDA<input type="number" min="0" max="50" step="0.5" data-ngf="${b('mEb')}" value="${U.mEb}"></label><label>Crescimento depois do horizonte (% a.a.)<input type="number" min="0" max="20" step="0.5" data-ngf="${b('g')}" value="${U.g}"></label>`);
+  const R = ngCalcC(x), tma = x.viab.tma, V = R.temRec ? ngValu(x, R, tma, U.g) : null;
+  if (!V) { kpis($('kpi-ngva'), []); $('ngva-res').innerHTML = '<p class="hint">Preencha a receita no DRE para ver quanto o negócio vale.</p>'; $('ngva-sens').innerHTML = ''; return; }
+  const v1 = V.llA * U.mLL, v2 = V.ebA * U.mEb - V.dH, pt = x.part / 100, vs = [v1, v2, V.dcf].filter(q => q != null);
+  kpis($('kpi-ngva'), [
+    ['Fluxo de caixa descontado', V.dcf != null ? fm(V.dcf) : '—', V.dcf != null ? `valor hoje, a ${tma}% a.a.` : 'a TMA precisa ser maior que o crescimento', V.dcf != null && V.dcf < 0],
+    ['Pelo lucro', fm(v1), `${num(U.mLL, 1)} × ${fm(V.llA)} de lucro por ano`, v1 < 0],
+    ['Pelo EBITDA', fm(v2), `${num(U.mEb, 1)} × ${fm(V.ebA)}${V.dH > 0.5 ? ' − dívida' : ''}`, v2 < 0],
+    ['Sua parte', fm(Math.min(...vs) * pt) + (vs.length > 1 ? ' a ' + fm(Math.max(...vs) * pt) : ''), `${num(x.part, 0)}% do negócio`]
+  ]);
+  $('ngva-res').innerHTML = `<div class="tscroll"><table class="ng-cmp ng-valt ng-stk"><thead><tr><th>Método</th><th>Como calcula</th><th>Valor</th><th>Sua parte</th></tr></thead><tbody>
+    <tr><td class="name">Fluxo de caixa descontado</td><td data-l="Como calcula">O caixa que o negócio gera de ${mLabel(V.base)} até ${mLabel(V.fimI)} (${fm(V.pv)} hoje) mais o que vem depois, crescendo ${num(U.g, 1)}% ao ano (${V.pvT != null ? fm(V.pvT) : '—'} hoje), descontados a ${tma}% ao ano${V.d0 > 0.5 ? `, menos ${fm(V.d0)} de dívida` : ''}.</td><td data-l="Valor">${V.dcf != null ? ngSg(V.dcf) : '—'}</td><td data-l="Sua parte">${V.dcf != null ? ngSg(V.dcf * pt) : '—'}</td></tr>
+    <tr><td class="name">Múltiplo do lucro</td><td data-l="Como calcula">Lucro líquido do último ano do horizonte × ${num(U.mLL, 1)}. É como pequenas empresas costumam ser negociadas.</td><td data-l="Valor">${ngSg(v1)}</td><td data-l="Sua parte">${ngSg(v1 * pt)}</td></tr>
+    <tr><td class="name">Múltiplo do EBITDA</td><td data-l="Como calcula">EBITDA do último ano × ${num(U.mEb, 1)}${V.dH > 0.5 ? `, menos ${fm(V.dH)} de dívida que ainda falta pagar` : ''}. Comum quando há investidor ou empresa maior comprando.</td><td data-l="Valor">${ngSg(v2)}</td><td data-l="Sua parte">${ngSg(v2 * pt)}</td></tr></tbody></table></div>
+    <p class="subdet">Os múltiplos usam o último ano do horizonte (o negócio maduro); o fluxo descontado traz tudo para hoje e já desconta o que ainda falta investir. Referência comum para negócios pequenos no Brasil: 2 a 5 vezes o lucro de um ano; negócios que crescem rápido ou têm receita recorrente valem mais. É uma estimativa para conversar, não um laudo.</p>`;
+  const TS = [tma - 5, tma, tma + 5].filter(q => q > 0), GS = [Math.max(0, U.g - 2), U.g, U.g + 2].filter((q, k, a) => a.indexOf(q) === k);
+  $('ngva-sens').innerHTML = `<div class="tscroll"><table class="ng-cmp ng-sens"><thead><tr><th>Taxa de desconto</th>${GS.map(g => `<th>Cresce ${num(g, 1)}% a.a.</th>`).join('')}</tr></thead><tbody>${TS.map(t => `<tr${t === tma ? ' class="on"' : ''}><td class="name">${num(t, 0)}% a.a.</td>${GS.map(g => { const W = ngValu(x, R, t, g); return `<td data-l="Cresce ${num(g, 1)}%">${W && W.dcf != null ? ngSg(W.dcf) : '—'}</td>`; }).join('')}</tr>`).join('')}</tbody></table></div>
+    <p class="subdet">O valor pelo fluxo descontado muda muito com a taxa e com o crescimento. A taxa de desconto é a taxa mínima de Viabilidade.</p>`;
+}
+
+/* ---------- Sócios: quotas, quem põe quanto e o que recebe ---------- */
+function renderNegSoc() {
+  const x = ngSel(), ids = ['ngso-lista', 'ngso-res', 'ngso-acordo'];
+  if (!x) { $('ngso-sel').innerHTML = ngVazio(); ids.forEach(id => { $(id).innerHTML = ''; }); return; }
+  $('ngso-sel').innerHTML = ngSelHtml(x, `<button type="button" class="btn ghost tiny" data-tab="negfc">Ver fluxo de caixa</button>`);
+  const R = ngCalcC(x), S = x.socios, pa = ngPartAp(x), sq = x.part + S.reduce((q, s) => q + s.quota, 0), sa = pa + S.reduce((q, s) => q + s.aporte, 0);
+  const nf = (id, k, vl, lab) => `<input type="number" min="0" max="100" step="5" data-ngso="${x.id}:${id}:${k}" value="${vl}" aria-label="${lab}">%`;
+  const falta = (s, n) => Math.abs(s - 100) < 0.01 ? '' : `<p class="warn">${n} somam ${num(s, 1)}%: ${s < 100 ? `faltam ${num(100 - s, 1)}%` : `passam ${num(s - 100, 1)}%`}.</p>`;
+  $('ngso-lista').innerHTML = `<div class="tscroll"><table class="ng-cmp ng-soc ng-stk"><thead><tr><th>Sócio</th><th>Quota (dono de)</th><th>Põe do dinheiro</th><th></th></tr></thead><tbody>
+    <tr><td class="name"><b>Você</b></td><td data-l="Quota (dono de)">${nf('eu', 'part', x.part, 'Sua quota')}</td><td data-l="Põe do dinheiro">${nf('eu', 'partAp', pa, 'Quanto você põe do dinheiro')}</td><td></td></tr>
+    ${S.map(s => `<tr><td class="name"><input type="text" maxlength="40" data-ngso="${x.id}:${s.id}:nome" value="${esc(s.nome)}" aria-label="Nome do sócio"></td><td data-l="Quota (dono de)">${nf(s.id, 'quota', s.quota, 'Quota')}</td><td data-l="Põe do dinheiro">${nf(s.id, 'aporte', s.aporte, 'Quanto põe do dinheiro')}</td><td><button type="button" class="btn ghost tiny" data-ngsodel="${x.id}:${s.id}" aria-label="Remover sócio">✕</button></td></tr>`).join('')}</tbody></table></div>
+    <div class="row so-addrow"><button type="button" class="btn ghost tiny" data-ngsoadd="${x.id}">+ Sócio</button></div>
+    ${falta(sq, 'As quotas')}${falta(sa, 'As partes do dinheiro')}
+    <p class="subdet">Quota: de quanto do negócio cada um é dono, e quanto do lucro distribuído recebe. Põe do dinheiro: quanto cada um põe quando o caixa fica negativo. São diferentes quando um sócio entra mais com dinheiro e o outro mais com trabalho. A sua quota e a sua parte do dinheiro são as que vão para o Plano futuro.</p>`;
+  const H = R.meses.filter(m => m.t < R.T), ms = H.filter(m => m.t >= 0).slice(-12), avD = ms.length ? ms.reduce((q, m) => q + m.distrib, 0) / ms.length : 0;
+  const totD = H.reduce((q, m) => q + m.distrib, 0), totP = H.reduce((q, m) => q + m.plLiq, 0), plM = ms.length ? ms.reduce((q, m) => q + m.plLiq, 0) / ms.length : 0;
+  const lin = (n, q, a, pl) => { const poe = R.aportes * a / 100, rec = totD * q / 100 + (pl ? totP : 0); return `<tr><td class="name">${n}</td><td data-l="Põe no total">${fm(poe)}</td><td data-l="Recebe por mês">${fm(avD * q / 100 + (pl ? plM : 0))}${pl && plM > 0.5 ? '<small> com pró-labore</small>' : ''}</td><td data-l="No horizonte">${ngSg(rec - poe)}</td></tr>`; };
+  $('ngso-res').innerHTML = `<div class="tscroll"><table class="ng-cmp ng-stk"><thead><tr><th>Sócio</th><th>Põe no total</th><th>Recebe por mês quando maduro</th><th>Saldo em ${x.anos} ${x.anos > 1 ? 'anos' : 'ano'}</th></tr></thead><tbody>
+    ${lin('<b>Você</b>', x.part, pa, true)}${S.map(s => lin(esc(s.nome || 'Sócio'), s.quota, s.aporte, false)).join('')}</tbody></table></div>
+    <p class="subdet">Põe no total: a parte de cada um em ${fm(R.aportes)} que o negócio precisa até o caixa se pagar. Recebe: lucro distribuído × quota (${num(x.dist, 0)}% do que sobra no caixa). O pró-labore do DRE conta como seu; se outro sócio também trabalha, inclua o pró-labore dele numa linha do DRE.</p>`;
+  $('ngso-acordo').innerHTML = `<ul class="ng-pl ng-acordo">${NG_ACORDO.map(([t, d]) => `<li><b>${t}.</b> ${d}</li>`).join('')}</ul><p class="subdet">O contrato social diz as quotas; o acordo de sócios cobre o resto. Vale fazer com um advogado antes de começar.</p>`;
+}
+const NG_ACORDO = [
+  ['Quem faz o quê', 'Funções de cada sócio, horas dedicadas e quem decide o dia a dia.'],
+  ['Pró-labore', 'Quem recebe, quanto e a partir de quando.'],
+  ['Aportes', 'Quanto cada um põe agora e o que acontece se o caixa precisar de mais e alguém não puder pôr (diluição).'],
+  ['Lucro', 'Quanto do lucro é distribuído e quanto fica na empresa.'],
+  ['Decisões importantes', 'O que precisa de todos ou de maioria: dívidas, novos sócios, venda de bens.'],
+  ['Saída de um sócio', 'Como calcular o valor das quotas (por exemplo, um múltiplo do lucro) e em quanto tempo pagar.'],
+  ['Vesting', 'Quem entra com trabalho ganha as quotas aos poucos, ao longo dos anos.'],
+  ['Tag along e drag along', 'Se um vende, o outro pode vender junto (tag); se a maioria quer vender a empresa inteira, a minoria acompanha (drag).'],
+  ['Não concorrência', 'Ninguém abre um negócio igual enquanto for sócio e por um tempo depois.'],
+  ['Falecimento ou divórcio', 'O que acontece com as quotas: herdeiros entram ou recebem em dinheiro.']
+];
+document.addEventListener('click', e => {
+  const t = e.target.closest('[data-ngsoadd],[data-ngsodel],[data-ngprusar],[data-ngcmpx]'); if (!t || !state.neg) return; const d = t.dataset; e.preventDefault();
+  if (d.ngsoadd) { const x = ngAcha(d.ngsoadd); if (!x) return; const resto = Math.max(0, 100 - x.part - x.socios.reduce((q, s) => q + s.quota, 0)), restoA = Math.max(0, 100 - ngPartAp(x) - x.socios.reduce((q, s) => q + s.aporte, 0));
+    x.socios.push({ id: uid(), nome: 'Sócio ' + (x.socios.length + 1), quota: resto, aporte: restoA }); ngNorm(x); ngRe(); return; }
+  if (d.ngsodel) { const [id, sid] = d.ngsodel.split(':'), x = ngAcha(id); if (!x) return; x.socios = x.socios.filter(s => s.id !== sid); ngRe(); return; }
+  if (d.ngprusar) { const x = ngAcha(d.ngprusar); if (!x) return; const R = ngCalcC(x), Q = ngPrec(x, R); if (Q.preco == null) return;
+    const H = ngPrecHoje(x, R, Q); if (!H) return; const l = H.l;
+    l.modo = 'un'; l.v = H.v; l.qtd = H.qtd; ngNorm(x); ngRe(); ngToast(`"${l.nome}" agora é ${fm2(l.v)} × ${num(l.qtd, 0)} por mês.`); return; }
+  if (d.ngcmpx) { const v = state.neg, id = d.ngcmpx; let c = ngCmpIds(); c = c.includes(id) ? c.filter(y => y !== id) : c.concat(id); if (c.length > 4) { ngToast('Compare até 4 negócios por vez.'); return; } v.cmp = c; save(); renderTab(); return; }
+});
+document.addEventListener('change', e => {
+  const t = e.target, d = t.dataset || {}; if (!d.ngso || !state.neg) return;
+  const [id, sid, k] = d.ngso.split(':'), x = ngAcha(id); if (!x) return; const vl = k === 'nome' ? t.value : t.value === '' ? null : +t.value;
+  if (sid === 'eu') { if (k === 'part') x.part = vl == null ? 100 : vl; else x.partAp = vl == null || vl === x.part ? null : vl; }
+  else { const s = x.socios.find(y => y.id === sid); if (!s) return; s[k] = vl == null ? 0 : vl; }
+  ngNorm(x); ngRe();
+});
+
+/* ---------- Comparar negócios ---------- */
+const ngCmpIds = () => { const L = ngLista(), c = (state.neg.cmp || []).filter(id => L.some(x => x.id === id)); return c.length ? c : L.slice(0, 3).map(x => x.id); };
+function renderNegCmp() {
+  const L = ngLista();
+  if (L.length < 2) { $('ngcm-sel').innerHTML = ''; $('ngcm-tab').innerHTML = `<p class="hint">Cadastre pelo menos dois negócios para comparar. <button type="button" class="btn tiny" data-ngadd>+ Novo negócio</button></p>`; return; }
+  const ids = ngCmpIds();
+  $('ngcm-sel').innerHTML = `<div class="cmpa-grupos" role="group" aria-label="Negócios na comparação">${L.map(x => `<button type="button" class="btn ghost tiny" data-ngcmpx="${x.id}" aria-pressed="${ids.includes(x.id)}">${esc(x.nome)}</button>`).join('')}</div><p class="subdet">Escolha de 2 a 4. Cada um usa a própria taxa mínima de Viabilidade.</p>`;
+  const C = ids.map(id => ngAcha(id)).filter(Boolean).map(x => { const R = ngCalcC(x), E = R.temRec ? ngEquil(x, R) : null, V = R.temRec ? ngValu(x, R, x.viab.tma, x.valu.g) : null; return { x, R, E, V, vpl: ngVpl(R, x.viab.tma) }; });
+  if (C.length < 2) { $('ngcm-tab').innerHTML = '<p class="hint">Escolha pelo menos dois negócios acima.</p>'; return; }
+  const M = [
+    ['Tipo', c => NG_TIPO[c.x.tipo], null], ['Início', c => mLabel(c.R.i0), null],
+    ['Investimento', c => c.R.invTot, -1], ['Dinheiro que precisa pôr', c => c.R.aportes, -1],
+    ['Lucro líquido por mês (maduro)', c => c.R.llMad, 1], ['Margem líquida', c => c.R.margem, 1, 'p'],
+    ['Ponto de equilíbrio por mês', c => c.E && c.E.pe != null ? c.E.pe : null, -1],
+    ['Payback (meses)', c => c.R.pay != null ? c.R.pay + 1 : null, -1, 'n'], ['TIR', c => c.R.tir, 1, 't'],
+    ['VPL', c => c.vpl, 1], ['Valor hoje (fluxo descontado)', c => c.V && c.V.dcf != null ? c.V.dcf : null, 1],
+    ['Para você por mês (maduro)', c => c.R.voceMad, 1]
+  ];
+  const fmt = (v, k) => v == null ? '—' : typeof v === 'string' ? esc(v) : k === 'p' ? pct(v) : k === 't' ? ngTir(v) : k === 'n' ? String(v) : ngSg(v);
+  $('ngcm-tab').innerHTML = `<div class="tscroll"><table class="ng-cmp ng-cmpn"><thead><tr><th></th>${C.map(c => `<th><a href="#" data-ngabre="${c.x.id}:negviab">${esc(c.x.nome)}</a></th>`).join('')}</tr></thead><tbody>${M.map(([n, f, dir, k]) => {
+    const vs = C.map(f), nums = vs.filter(v => typeof v === 'number'), best = dir && nums.length > 1 ? (dir > 0 ? Math.max(...nums) : Math.min(...nums)) : null;
+    return `<tr><td class="name">${n}</td>${vs.map((v, j) => `<td data-l="${esc(C[j].x.nome)}"${best != null && v === best && nums.filter(q => q === best).length < nums.length ? ' class="best"' : ''}>${fmt(v, k)}</td>`).join('')}</tr>`; }).join('')}</tbody></table></div>
+    <p class="subdet">Em verde, o melhor de cada linha. Os números vêm do DRE e do fluxo de caixa de cada negócio, no horizonte de cada um.</p>`;
+}
 
 /* ---------- eventos ---------- */
 const ngAcha = id => ngLista().find(y => y.id === id);
@@ -7574,7 +7844,7 @@ function normalizar(s) {
 try { if (quemLocal === 'dono') { const b = JSON.parse(localStorage.getItem('painel-priv')); if (b) aplicarBase(b); } } catch (e) {}
 try { const l = JSON.parse(localStorage.getItem(LSK('painel-fin-v2'))); if (l) state = normalizar(l); } catch (e) {}
 tab = 'modulos';
-const TABS = ['modulos', 'comousar', 'inicio', 'trabvg', 'viagvg', 'viagens', 'viagcmp', 'viagrot', 'viagcus', 'viagdur', 'negvg', 'negcad', 'negdre', 'negfc', 'negabr', 'negeco', 'negpesq', 'negviab', 'negcont', 'leia', 'global', 'gastos', 'carteira', 'orcamento', 'compras', 'cenarios', 'patrimonio', 'comparador', 'simulador', 'pjpf', 'stock', 'config', 'familia'];
+const TABS = ['modulos', 'comousar', 'inicio', 'trabvg', 'viagvg', 'viagens', 'viagcmp', 'viagrot', 'viagcus', 'viagdur', 'negvg', 'negcad', 'negdre', 'negfc', 'negabr', 'negeco', 'negpesq', 'negviab', 'negcont', 'negprec', 'negval', 'negsoc', 'negcmp', 'leia', 'global', 'gastos', 'carteira', 'orcamento', 'compras', 'cenarios', 'patrimonio', 'comparador', 'simulador', 'pjpf', 'stock', 'config', 'familia'];
 if (TABS.includes(location.hash.slice(1))) tab = location.hash.slice(1);
 if (!TABS.includes(tab)) tab = 'modulos';
 
@@ -11623,7 +11893,7 @@ $('cpform').addEventListener('submit', async e => {
 });
 
 /* ---------- abas ---------- */
-const BUILD = { modulos: () => {}, comousar: () => {}, inicio: () => {}, trabvg: () => {}, viagvg: () => {}, viagens: () => {}, viagcmp: () => {}, viagrot: () => {}, viagcus: () => {}, viagdur: () => {}, negvg: () => {}, negcad: () => {}, negdre: () => {}, negfc: () => {}, negabr: () => {}, negeco: () => {}, negpesq: () => {}, negviab: () => {}, negcont: () => {}, leia: buildLeia, global: () => {}, cenarios: buildCenarios, compras: buildCenarios, carteira: buildCarteira, comparador: buildComparador, simulador: buildSimulador, gastos: buildGastos, orcamento: buildOrcamento, config: buildConfig, pjpf: buildPj, stock: buildStock, familia: () => carregarPerfis(), patrimonio: () => {} };
+const BUILD = { modulos: () => {}, comousar: () => {}, inicio: () => {}, trabvg: () => {}, viagvg: () => {}, viagens: () => {}, viagcmp: () => {}, viagrot: () => {}, viagcus: () => {}, viagdur: () => {}, negvg: () => {}, negcad: () => {}, negdre: () => {}, negfc: () => {}, negabr: () => {}, negeco: () => {}, negpesq: () => {}, negviab: () => {}, negcont: () => {}, negprec: () => {}, negval: () => {}, negsoc: () => {}, negcmp: () => {}, leia: buildLeia, global: () => {}, cenarios: buildCenarios, compras: buildCenarios, carteira: buildCarteira, comparador: buildComparador, simulador: buildSimulador, gastos: buildGastos, orcamento: buildOrcamento, config: buildConfig, pjpf: buildPj, stock: buildStock, familia: () => carregarPerfis(), patrimonio: () => {} };
 // (i) de cada seção: o que mostra e de onde vêm os números (chave: aba:data-nav)
 const INFO_SEC = {
   'comousar:Resumo': 'Para cada módulo: se já tem o mínimo para funcionar (os obrigatórios), quantos opcionais você resolveu e um botão para o próximo passo. Um opcional conta como resolvido quando você preenche ou marca que não tem.',
@@ -11646,6 +11916,14 @@ const INFO_SEC = {
   'negcont:Obrigações': 'Lista de referência das declarações e guias de cada regime (prazos de out/2026). A lei muda: confirme com o seu contador.',
   'negcont:Próximos vencimentos': 'As obrigações com dia fixo que vencem nos próximos 30 dias, no regime escolhido acima.',
   'negcont:Glossário': 'Termos de contabilidade e impostos explicados sem jargão. Digite para filtrar.',
+  'negprec:Composição do preço': 'Markup: o preço cobre o custo de cada unidade, a parte dos custos fixos que cabe a cada unidade, os percentuais que saem da venda (impostos, taxas, comissões) e a margem. Os campos em branco vêm do DRE.',
+  'negprec:Preço sugerido': 'Usar no DRE troca a primeira linha de receita por preço × quantidade. Se a pesquisa de mercado tiver uma faixa de preço, ela aparece para comparar.',
+  'negval:Valor do negócio': 'Fluxo de caixa descontado: soma o caixa que o negócio gera, trazido para hoje pela taxa mínima de Viabilidade, mais o valor depois do horizonte (perpetuidade com crescimento). Múltiplos: quantas vezes o lucro ou o EBITDA de um ano alguém pagaria.',
+  'negval:Sensibilidade do valor': 'O mesmo fluxo descontado com outras taxas e outros crescimentos.',
+  'negsoc:Quotas e aportes': 'A sua quota é a mesma de Meus negócios. Quando você põe uma parte do dinheiro diferente da sua quota, o Plano futuro usa essa parte para os aportes.',
+  'negsoc:Quanto cada um põe e recebe': 'Dinheiro que o negócio precisa até o caixa se pagar, dividido pela parte de cada um, e o lucro distribuído pela quota.',
+  'negsoc:Acordo de sócios': 'Pontos que costumam dar briga quando não estão escritos.',
+  'negcmp:Lado a lado': 'Escolha de 2 a 4 negócios. O verde marca o melhor de cada linha: menor investimento, payback e ponto de equilíbrio; maior lucro, TIR, VPL e valor.',
   'negpesq:Pedido': 'Uma rotina do painel faz a pesquisa uma vez por dia, com IA e fontes públicas, e grava a resposta só na sua conta. No site, cada conta pode pedir um número de pesquisas a cada 30 dias, definido pelo administrador em Configurações. Pedir de novo troca a resposta anterior quando a nova chegar.',
   'negpesq:Resultado': 'TAM: tudo o que o mercado movimenta por ano. SAM: a parte que o seu negócio consegue atender (região, público). SOM: o que é realista conquistar em 3 a 5 anos. Levar ao DRE troca a primeira linha de receita por preço × quantidade da pesquisa.',
   'negeco:Minhas oportunidades': 'Com uma linha do DRE escolhida, a economia é o % daquela linha em cada mês e acompanha as vendas. Sem linha, é o % do custo que você informou, fixo. O investimento dos cards feitos sai do caixa no mês de início. Meses com realizado lançado naquela linha já mostram o custo de verdade e não descontam a economia de novo.',
@@ -11769,7 +12047,7 @@ function infoSecoes() {
       if (h && !h.id) h.append(btn); else if (h) h.after(btn); else if (lg) lg.append(btn); }); });
 }
 infoSecoes();
-const RENDER = { modulos: renderModulos, comousar: renderComoUsar, inicio: renderHome, trabvg: renderTrabVg, viagvg: renderViagVg, viagens: renderViagens, viagcmp: renderViagCmp, viagrot: renderViagRot, viagcus: renderViagCus, viagdur: renderViagDur, negvg: renderNegVg, negcad: renderNegCad, negdre: renderNegDre, negfc: renderNegFc, negabr: renderNegAbr, negeco: renderNegEco, negpesq: renderNegPesq, negviab: renderNegViab, negcont: renderNegCont, leia: () => {}, global: renderGlobal, cenarios: renderCenarios, compras: renderCenarios, carteira: renderCarteira, comparador: renderComparador, simulador: renderSimulador, gastos: () => { renderGastos(); renderFechamento(); renderHistorico(); }, orcamento: renderOrcamento, config: renderConfig, pjpf: renderPj, stock: renderStock, familia: renderFamilia, patrimonio: renderPatr };
+const RENDER = { modulos: renderModulos, comousar: renderComoUsar, inicio: renderHome, trabvg: renderTrabVg, viagvg: renderViagVg, viagens: renderViagens, viagcmp: renderViagCmp, viagrot: renderViagRot, viagcus: renderViagCus, viagdur: renderViagDur, negvg: renderNegVg, negcad: renderNegCad, negdre: renderNegDre, negfc: renderNegFc, negabr: renderNegAbr, negeco: renderNegEco, negpesq: renderNegPesq, negviab: renderNegViab, negcont: renderNegCont, negprec: renderNegPrec, negval: renderNegVal, negsoc: renderNegSoc, negcmp: renderNegCmp, leia: () => {}, global: renderGlobal, cenarios: renderCenarios, compras: renderCenarios, carteira: renderCarteira, comparador: renderComparador, simulador: renderSimulador, gastos: () => { renderGastos(); renderFechamento(); renderHistorico(); }, orcamento: renderOrcamento, config: renderConfig, pjpf: renderPj, stock: renderStock, familia: renderFamilia, patrimonio: renderPatr };
 function renderTab() { planCache = null; try { RENDER[tab](); } catch (err) { console.error(err); setSave('erro ao recalcular: ' + (err && err.message || err)); } }
 let navAbertos = null;
 try { navAbertos = JSON.parse(localStorage.getItem('painel-nav-abertos')); } catch (e) {}
@@ -11835,7 +12113,7 @@ const MODS = [
   { id: 'fin', corNav: '#7FA6E0', nome: 'Financeiro', cor: 'var(--s1)', fixo: true, vg: 'inicio', desc: 'Gastos, patrimônio, carteira, plano futuro e cenários. Recebe o que os outros módulos planejam.', tabs: ['inicio', 'global', 'gastos', 'patrimonio', 'carteira', 'comparador', 'simulador', 'orcamento', 'cenarios', 'familia'] },
   { id: 'trab', corNav: '#E09A63', nome: 'Trabalho e Bens', cor: 'var(--s2)', vg: 'trabvg', desc: 'Compras e bens (imóveis, carros, ...), stock options e PJ e PF. O que entra no plano vai para o Plano futuro.', tabs: ['trabvg', 'compras', 'stock', 'pjpf'] },
   { id: 'viag', corNav: '#5fc2f5', nome: 'Viagens', cor: 'var(--s8)', vg: 'viagens', desc: 'Mapa de onde já foi e de onde quer ir, sorteio, comparação de destinos nas suas datas o roteiro com a rota mais barata, os custos ligados ao Plano futuro e os gastos durante a viagem.', tabs: ['viagvg', 'viagens', 'viagcmp', 'viagrot', 'viagcus', 'viagdur'] },
-  { id: 'neg', corNav: '#a3e05a', nome: 'Negócios', cor: 'var(--s7)', vg: 'negvg', desc: 'Suas ideias e empresas: DRE com as suas linhas, fluxo de caixa, quanto pôr e quanto chega para você no Plano futuro. Abrir empresa com a comparação de regimes, oportunidades de custo, pesquisa de mercado com IA, viabilidade e contabilidade fácil.', tabs: ['negvg', 'negcad', 'negdre', 'negfc', 'negabr', 'negeco', 'negpesq', 'negviab', 'negcont'] },
+  { id: 'neg', corNav: '#a3e05a', nome: 'Negócios', cor: 'var(--s7)', vg: 'negvg', desc: 'Suas ideias e empresas: DRE com as suas linhas, fluxo de caixa, quanto pôr e quanto chega para você no Plano futuro. Abrir empresa com a comparação de regimes, oportunidades de custo, pesquisa de mercado com IA, viabilidade, contabilidade fácil, preço, valuation, sócios e comparação.', tabs: ['negvg', 'negcad', 'negdre', 'negfc', 'negabr', 'negeco', 'negpesq', 'negviab', 'negcont', 'negprec', 'negval', 'negsoc', 'negcmp'] },
   { id: 'fam', corNav: '#fb7185', nome: 'Família', cor: 'var(--s6)', breve: true, desc: 'Contas conjuntas, filhos (do bebê à escola), divisão de gastos e dados compartilhados com quem mora com você.', tabs: [] },
   { id: 'indep', corNav: '#E3B848', nome: 'Independência financeira', cor: 'var(--s3)', breve: true, desc: 'Quando dá para parar de trabalhar: quanto juntar, renda passiva, INSS e previdência privada.', tabs: [] }
 ];
@@ -12801,6 +13079,10 @@ const LM_MODS = [
   ['negpesq', 'A pesquisa de mercado de cada ideia, feita com IA: tamanho do mercado (TAM, SAM, SOM), concorrentes com preço, faixa de preço, riscos, regras e um veredito, com o relatório completo e um botão para levar os números ao DRE.', 'antes de investir numa ideia.'],
   ['negviab', 'Se o negócio se paga: ponto de equilíbrio em reais e em unidades, payback, TIR e VPL contra a sua taxa mínima, e uma tabela com vendas e custos fixos para mais e para menos.', 'antes de decidir investir.'],
   ['negcont', 'As obrigações da empresa em cada regime (MEI, Simples, Presumido, Real), o que vence nos próximos 30 dias e um glossário de contabilidade em português simples.', 'quando for abrir ou já tiver a empresa.'],
+  ['negprec', 'O preço de venda pelo markup: custo da unidade, custos fixos, impostos, taxas, comissões e margem, comparado com o preço do DRE e a faixa da pesquisa de mercado.', 'para decidir quanto cobrar.'],
+  ['negval', 'Quanto o negócio vale por fluxo de caixa descontado e por múltiplos do lucro e do EBITDA, e quanto vale a sua parte.', 'antes de vender, receber um sócio ou comprar um negócio.'],
+  ['negsoc', 'Quotas e quanto cada sócio põe do dinheiro, o que cada um recebe e o que combinar no acordo de sócios.', 'quando o negócio tiver mais de um dono.'],
+  ['negcmp', 'Dois a quatro negócios lado a lado: investimento, lucro, payback, TIR, VPL e valor.', 'para escolher entre ideias.'],
   'Geral',
   ['config', 'As premissas: renda e projeção, a curva de juros (Focus, atualizada toda segunda) e o retorno esperado de cada classe de ativo.', 'raramente; só para ajustar uma premissa.']
 ];
