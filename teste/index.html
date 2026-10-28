@@ -1195,6 +1195,27 @@ ul.ng-plano { margin: 8px 0; padding-left: 18px; font-size: 12.5px; line-height:
 .ng-passos .hp-acs input[type="number"] { width: 84px; padding: 4px 6px; }
 p.warn { margin: 10px 0 0; padding: 8px 12px; border-radius: 8px; background: var(--bad-soft); color: var(--bad); font-size: 12.5px; }
 @media (max-width: 760px) { .ng-nat { grid-template-columns: minmax(0, 1fr); } }
+.ng-ecs { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(320px, 100%), 1fr)); gap: 12px; align-items: start; }
+.ng-ec { border: 1px solid var(--line); border-left: 4px solid var(--faint); border-radius: 10px; padding: 12px 14px; background: var(--panel); display: flex; flex-direction: column; gap: 8px; min-width: 0; }
+.ng-ec.st-cotando { border-left-color: var(--dotc); } .ng-ec.st-feito { border-left-color: var(--good); }
+.ng-ech { display: flex; gap: 8px; align-items: center; }
+.ng-ech input { font-weight: 600; flex: 1; }
+.ng-ec .ng-form { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.ng-ec .ng-form label.full { grid-column: 1 / -1; }
+.ng-ec .ng-est button[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: #fff; }
+.ng-ec.st-feito .ng-est button[aria-pressed="true"] { background: var(--good); border-color: var(--good); }
+.ng-ro { font-family: var(--f-ui); font-size: 12.5px; font-weight: 600; color: var(--ink); text-transform: none; letter-spacing: 0; padding: 6px 0; }
+.ng-ecr { margin: 0; font-size: 13px; } .ng-ecr b { font-size: 15px; color: var(--good); }
+.ng-ec .subdet { margin: 0; }
+.ng-ecn { font-size: 12px !important; }
+.ng-cat { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(230px, 100%), 1fr)); gap: 10px; }
+.ng-catc { border: 1px solid var(--line); border-radius: 10px; padding: 12px 14px; display: flex; flex-direction: column; gap: 6px; align-items: flex-start; }
+.ng-catc b { font-family: var(--f-head); font-size: 13px; }
+.ng-catc span { font-size: 12px; color: var(--muted); line-height: 1.45; }
+.ng-catc .ng-catf { font-size: 11px; color: var(--accent); font-weight: 600; }
+.ng-catc .btn { margin-top: auto; }
+#nge-base input[type="number"] { width: 70px; }
+#nge-base th:nth-child(2), #nge-base td:nth-child(2) { text-align: left; }
 </style>
 
 
@@ -1244,6 +1265,7 @@ p.warn { margin: 10px 0 0; padding: 8px 12px; border-radius: 8px; background: va
           <div class="nav-group"><button type="button" class="nav-head" data-tab="negdre"><span class="ico">02</span>Meu DRE<span class="caret" data-navtog="negdre" role="button" tabindex="0" aria-label="Abrir ou recolher submódulos">▾</span></button><div class="nav-sub" data-sub="negdre"></div></div>
           <div class="nav-group"><button type="button" class="nav-head" data-tab="negfc"><span class="ico">03</span>Fluxo de caixa<span class="caret" data-navtog="negfc" role="button" tabindex="0" aria-label="Abrir ou recolher submódulos">▾</span></button><div class="nav-sub" data-sub="negfc"></div></div>
           <div class="nav-group"><button type="button" class="nav-head" data-tab="negabr"><span class="ico">04</span>Abrir empresa<span class="caret" data-navtog="negabr" role="button" tabindex="0" aria-label="Abrir ou recolher submódulos">▾</span></button><div class="nav-sub" data-sub="negabr"></div></div>
+          <div class="nav-group"><button type="button" class="nav-head" data-tab="negeco"><span class="ico">05</span>Oportunidades de custo<span class="caret" data-navtog="negeco" role="button" tabindex="0" aria-label="Abrir ou recolher submódulos">▾</span></button><div class="nav-sub" data-sub="negeco"></div></div>
         </div></div>
         <div class="nav-pe">
         <div class="nav-group mini"><button type="button" class="nav-head" data-tab="leia"><span class="ico">?</span>Leia-me<span class="caret" data-navtog="leia" role="button" tabindex="0" aria-label="Abrir ou recolher submódulos">▾</span></button><div class="nav-sub" data-sub="leia"></div></div>
@@ -1252,7 +1274,7 @@ p.warn { margin: 10px 0 0; padding: 8px 12px; border-radius: 8px; background: va
     </div>
     <div class="nav-mobile-sub" id="navMobileSub"></div>
   </div>
-  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 214</div></div>
+  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 215</div></div>
 </nav>
 <div class="sino-pop" id="sino-pop" role="dialog" aria-label="Central de avisos" hidden></div>
 <div class="tour-pop" id="tour-pop" role="dialog" aria-labelledby="tour-tit" hidden></div>
@@ -1518,7 +1540,7 @@ p.warn { margin: 10px 0 0; padding: 8px 12px; border-radius: 8px; background: va
     </section>
     <section data-nav="Partes do módulo" class="panel">
       <h2>Partes do módulo</h2>
-      <p class="sub">Pesquisa de mercado e Oportunidades de custo chegam nas próximas etapas.</p>
+      <p class="sub">Pesquisa de mercado chega na próxima etapa.</p>
       <div class="tv-links" id="ngv-links"></div>
     </section>
   </section>
@@ -1578,6 +1600,27 @@ p.warn { margin: 10px 0 0; padding: 8px 12px; border-radius: 8px; background: va
       <h2>Passo a passo</h2>
       <p class="sub">Na ordem em que costuma acontecer em São Paulo. Marque o que já fez e ajuste os custos.</p>
       <div id="nga-passos"></div>
+    </section>
+  </section>
+  <!-- ============ NEGÓCIOS: OPORTUNIDADES DE CUSTO ============ -->
+  <section role="tabpanel" id="p-negeco" hidden>
+    <div class="block-title"><span class="num">05</span><div><h1>Oportunidades de custo</h1><p class="desc">Onde a empresa pode gastar menos: quanto economiza por mês, quanto precisa investir e em quanto tempo se paga.</p></div></div>
+    <div id="nge-sel"></div>
+    <div class="kpis" id="kpi-nge"></div>
+    <section data-nav="Minhas oportunidades" class="panel">
+      <h2>Minhas oportunidades</h2>
+      <p class="sub">Ideia, Cotando ou Feito. Só os cards em Feito entram no DRE, como uma linha de economia, e chegam ao Plano futuro pelo lucro.</p>
+      <div id="nge-lista"></div>
+    </section>
+    <section data-nav="Catálogo" class="panel">
+      <h2>Catálogo</h2>
+      <p class="sub">As economias mais comuns em pequenas empresas. Adicione as que fazem sentido para o seu negócio.</p>
+      <div id="nge-cat"></div>
+    </section>
+    <section data-nav="Tabela base" class="panel">
+      <h2>Tabela base</h2>
+      <p class="sub">As faixas de economia que o catálogo sugere. Ajuste com o que você vê nas suas cotações.</p>
+      <div id="nge-base"></div>
     </section>
   </section>
   <!-- ============ NEGÓCIOS: FLUXO DE CAIXA ============ -->
@@ -2654,7 +2697,7 @@ p.warn { margin: 10px 0 0; padding: 8px 12px; border-radius: 8px; background: va
     return new Promise(resolve => { const { data } = sb.auth.onAuthStateChange(async (ev) => { if (ev !== 'PASSWORD_RECOVERY') return; const s = prompt('Digite a nova senha (mínimo 8 caracteres):'); if (s && s.length >= 8) { const { error } = await sb.auth.updateUser({ password: s }); alert(error ? 'Não deu para trocar a senha: ' + error.message : 'Senha trocada.'); } }); resolve(data); });
   }
   // ---------- rodapé: compartilhar, administração e sair ----------
-  const SITE_V = 96;
+  const SITE_V = 97;
   const escH = v => String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const dataBR = v => v ? new Date(v).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' }) : '–';
   const css2 = `.side-foot .r{flex-wrap:wrap}.side-foot .lg-acoes{margin-left:auto;display:inline-flex;gap:10px}
@@ -3227,6 +3270,7 @@ const VG_REG = [['mundo', 'Mundo', [-180, -58, 180, 84]], ['sa', 'América do Su
      part (% seu), dist (% do lucro distribuído), uso sim|real, saida {on, mes}, linhas[], inv[], giro {receb, estoque, pagar, caixaMin},
      emp {on, valor, mes, taxa, prazo}, real {'AAAA-MM': {linhaId: valor}}, nota }
    linha = { id, g rb|ded|cmv|desp|dep|fin|ir, pai (id da linha macro ou ''), nome, modo fixo|pct|un, v, qtd (receita por unidade), base rb|rl|lair, reaj (% a.a.), ini (mês do negócio em que começa, 1 = primeiro), pl (é o seu pró-labore) }
+   econ[] = oportunidades de custo { id, cat, nome, op (opção do catálogo), lig (id da linha do DRE ou ''), atual (R$/mês sem linha), pct (economia %), inv, mes 'AAAA-MM', st ideia|cotando|feito, nota }
    Linha com desdobramentos (filhas) vale a soma delas. Valores sempre positivos; o grupo diz se soma ou subtrai. */
 const NG_TIPO = { ideia: 'Ideia', abertura: 'Em abertura', existe: 'Já existe' };
 const NG_G = [
@@ -3255,7 +3299,7 @@ function ngLinhasPadrao() {
 }
 function ngNovo(nome) {
   return { id: uid(), nome: nome || 'Novo negócio', setor: '', cidade: '', tipo: 'ideia', ini: mKey(HOJE_IDX + 6), anos: 5, rampa: 12, fatIni: 30, part: 100, dist: 80, uso: 'sim',
-    saida: { on: false, mes: '' }, linhas: ngLinhasPadrao(), inv: [], giro: { receb: 30, estoque: 0, pagar: 30, caixaMin: 0 }, emp: { on: false, valor: 0, mes: '', taxa: 18, prazo: 36 }, real: {}, nota: '', trib: {}, abr: {} };
+    saida: { on: false, mes: '' }, linhas: ngLinhasPadrao(), inv: [], giro: { receb: 30, estoque: 0, pagar: 30, caixaMin: 0 }, emp: { on: false, valor: 0, mes: '', taxa: 18, prazo: 36 }, real: {}, nota: '', trib: {}, abr: {}, econ: [] };
 }
 const ngN = (v, d, lo, hi) => { const x = +v; return v === '' || v == null || !isFinite(x) ? d : Math.min(hi ?? Infinity, Math.max(lo ?? -Infinity, x)); };
 const ngMes = (v, d) => /^\d{4}-\d{2}$/.test(String(v || '')) ? String(v) : d;
@@ -3279,6 +3323,7 @@ function ngNorm(x) {
   if (!x.trib || typeof x.trib !== 'object') x.trib = {}; const Tb = x.trib;
   if (!NG_NAT[Tb.nat]) Tb.nat = x.part < 100 ? 'ltda' : 'slu'; if (!NG_ATIV[Tb.ativ]) Tb.ativ = 'servico'; if (!['III', 'IV', 'V', 'fatorR'].includes(Tb.anexo)) Tb.anexo = 'fatorR';
   Tb.iss = ngN(Tb.iss, 5, 0, 5); Tb.icms = ngN(Tb.icms, 5, 0, 30); if (!NG_REG[Tb.regime]) Tb.regime = 'manual'; Tb.ano = Math.round(ngN(Tb.ano, 2, 1, 30));
+  if (!Array.isArray(x.econ)) x.econ = []; x.econ = x.econ.filter(c => c && c.id && NG_ECON[c.cat]); x.econ.forEach(c => ngEcNorm(x, c));
   if (!x.abr || typeof x.abr !== 'object') x.abr = {}; if (!x.abr.feito || typeof x.abr.feito !== 'object') x.abr.feito = {}; if (!x.abr.custo || typeof x.abr.custo !== 'object') x.abr.custo = {};
 }
 // o "Novo negócio" de Compras e bens vira um negócio aqui (escolha do Filipe, 27/10)
@@ -3309,10 +3354,13 @@ function ngNormalizar(s) {
     s.compras = s.compras.filter(b => !(b && b.tipo === 'negocio')); v.migrado = true;
   }
   v.negocios.forEach(ngNorm); if (typeof v.sel !== 'string') v.sel = '';
+  if (!v.ecBase || typeof v.ecBase !== 'object' || Array.isArray(v.ecBase)) v.ecBase = {};
 }
 const ngLista = () => ((state.neg || {}).negocios || []);
 const ngSel = () => { const v = state.neg; if (!v) return null; let x = v.negocios.find(y => y.id === v.sel) || v.negocios[0] || null; if (x) v.sel = x.id; return x; };
 const ngFilhas = (x, id) => x.linhas.filter(l => l.pai === id);
+// folhas (linhas sem desdobramento) debaixo de uma linha, ou ela mesma
+const ngDesc = (x, id) => { const f = ngFilhas(x, id); return f.length ? f.flatMap(c => ngDesc(x, c.id)) : [id]; };
 
 /* ---------- tributação (regras de 2026; aproximação, não substitui contador) ----------
    Simples: alíquota efetiva pela receita dos últimos 12 meses (no começo, média × 12), Anexos I a V e fator R.
@@ -3355,11 +3403,12 @@ function ngJuros(E) { const i = Math.pow(1 + E.taxa / 100, 1 / 12) - 1, n = E.pr
 const ngPlLiq = v => { if (!(v > 0)) return 0; const inss = 0.11 * Math.min(v, PJ26.teto); return v - inss - irrf26(v, inss, 0); };
 function ngCalc(x, ateI) {
   const i0 = mIndex(x.ini), T = x.anos * 12, fimI = Math.max(i0 + T - 1, ateI || 0);
-  const offs = [0, ...x.inv.filter(v => v.valor > 0).map(v => mIndex(v.mes) - i0)]; if (x.emp.on && x.emp.valor > 0) offs.push(mIndex(x.emp.mes) - i0);
+  const offs = [0, ...x.inv.filter(v => v.valor > 0).map(v => mIndex(v.mes) - i0), ...x.econ.filter(c => c.st === 'feito' && c.inv > 0).map(c => mIndex(c.mes) - i0)]; if (x.emp.on && x.emp.valor > 0) offs.push(mIndex(x.emp.mes) - i0);
   const tmin = Math.min(...offs), tmax = fimI - i0, fi = x.fatIni / 100, ramp = t => t < 0 ? 0 : x.rampa > 0 ? Math.min(1, fi + (1 - fi) * t / x.rampa) : 1;
   const emp = x.emp.on && x.emp.valor > 0 ? { t0: mIndex(x.emp.mes) - i0, s: ngJuros(x.emp) } : null;
   const folhas = x.linhas.filter(l => !x.linhas.some(c => c.pai === l.id)), porG = {}; NG_G.forEach(g => { porG[g.id] = folhas.filter(l => l.g === g.id); });
-  const inv = x.inv.filter(v => v.valor > 0).map(v => ({ v, t: mIndex(v.mes) - i0 }));
+  const ecs = x.econ.filter(c => c.st === 'feito').map(c => { const l = c.lig && x.linhas.find(y => y.id === c.lig); const g = l ? l.g : NG_ECON[c.cat].g, sob = l ? ngDesc(x, l.id) : porG[g].map(y => y.id); return { id: c.id, g, folhas: sob, lig: l ? l.id : '', macro: l ? x.linhas.some(y => y.pai === l.id) : false, atual: c.atual, pct: c.pct, t: Math.max(0, mIndex(c.mes) - i0) }; });
+  const inv = x.inv.filter(v => v.valor > 0).map(v => ({ v, t: mIndex(v.mes) - i0 })).concat(x.econ.filter(c => c.st === 'feito' && c.inv > 0).map(c => ({ v: { valor: c.inv, vida: 0, econ: true }, t: mIndex(c.mes) - i0 })));
   const meses = [], hRB = [], hFo = [], reg = x.trib.regime, auto = reg !== 'manual'; let giroAnt = 0, caixa = 0, acProj = 0, pay = null, negAntes = false;
   for (let t = tmin; t <= tmax; t++) {
     const i = i0 + t, mk = mKey(i), op = t >= 0, rj = l => Math.pow(1 + l.reaj / 100, Math.floor(Math.max(0, t - l.ini + 1) / 12)), on = l => op && t + 1 >= l.ini, rv = (x.real[mk] || {});
@@ -3369,8 +3418,12 @@ function ngCalc(x, ateI) {
     let RB = 0; porG.rb.forEach(l => { RB += leaf(l, () => (l.modo === 'un' ? l.v * l.qtd : l.v) * f * rj(l)); });
     const calc = (l, B) => l.modo === 'pct' ? l.v / 100 * (l.base === 'rl' ? B.rl : l.base === 'lair' ? Math.max(0, B.lair) : B.rb) : l.modo === 'un' ? l.v * U * rj(l) : l.v * rj(l);
     const B = { rb: RB, rl: RB, lair: 0 }, soma = g => porG[g].reduce((s, l) => s + leaf(l, () => calc(l, B)), 0);
-    const DEDm = soma('ded'); B.rl = RB - DEDm;
-    const CMV = soma('cmv');
+    // oportunidades de custo feitas: % da linha ligada (acompanha as vendas) ou % do custo informado; meses com realizado já mostram o custo de verdade
+    const ecG = { ded: 0, cmv: 0, desp: 0, fin: 0 }, ecId = {};
+    const ec = g => { if (!op) return 0; let q = 0; ecs.forEach(c => { if (c.g !== g || t < c.t) return; if (c.folhas.some(id => rv[id] != null)) return;
+      const v = c.lig ? (c.macro ? ngMacroVal(x, val, c.lig) : val[c.lig] || 0) * c.pct / 100 : c.atual * c.pct / 100; ecId[c.id] = v; q += v; }); ecG[g] = q; return q; };
+    const DEDm = soma('ded') - ec('ded'); B.rl = RB - DEDm;
+    const CMV = soma('cmv') - ec('cmv');
     // folha (salários marcados + pró-labore) para o fator R e o INSS patronal
     const fo = porG.desp.filter(l => l.folha || l.pl).map(l => [l, leaf(l, () => calc(l, B))]), sal = fo.filter(([l]) => l.folha).reduce((q, [, v]) => q + v, 0), plM = fo.filter(([l]) => l.pl).reduce((q, [, v]) => q + v, 0);
     const prev = hRB.slice(-12), rbt = !op ? 0 : prev.length >= 12 ? prev.reduce((q, v) => q + v, 0) : prev.length ? prev.reduce((q, v) => q + v, 0) / prev.length * 12 : RB * 12;
@@ -3378,11 +3431,11 @@ function ngCalc(x, ateI) {
     const impV = auto && op ? ngImpVenda(x, reg, RB, CMV, rbt, folha12) : 0, cppA = auto && op ? ngCpp(x, reg, rbt, folha12, plM, sal) : 0;
     if (op) { hRB.push(RB); hFo.push(sal * 1.08 + plM); }
     const DED = DEDm + impV; B.rl = RB - DED;
-    const DESP = soma('desp') + cppA;
+    const DESP = soma('desp') + cppA - ec('desp');
     let depA = 0; inv.forEach(({ v, t: ti }) => { if (v.vida > 0 && t > ti && t <= ti + v.vida * 12) depA += v.valor / (v.vida * 12); });
     const DEP = soma('dep') + depA;
     const ek = emp ? t - emp.t0 - 1 : -1, ps = emp && ek >= 0 && ek < emp.s.length ? emp.s[ek] : null, jur = ps ? ps.j : 0;
-    const FIN = soma('fin') + jur;
+    const FIN = soma('fin') + jur - ec('fin');
     B.lair = B.rl - CMV - DESP - DEP - FIN;
     const irA = auto && op ? ngIrpj(x, reg, RB, rbt, B.lair) : 0, IR = soma('ir') + irA, LL = B.lair - IR;
     const pl = porG.desp.filter(l => l.pl).reduce((s, l) => s + (val[l.id] || 0), 0);
@@ -3394,7 +3447,7 @@ function ngCalc(x, ateI) {
     caixa += fc; let aporte = 0, distrib = 0;
     if (caixa < x.giro.caixaMin) { aporte = x.giro.caixaMin - caixa; caixa = x.giro.caixaMin; }
     else if (fc > 0) { distrib = x.dist / 100 * Math.min(fc, caixa - x.giro.caixaMin); caixa -= distrib; }
-    meses.push({ t, i, mk, val, U, RB, rbt, impV, cppA, irA, anexo: reg === 'simples' && op ? ngAnexo(x.trib, rbt, folha12) : '', DED, RL: B.rl, CMV, LB: B.rl - CMV, DESP, EBITDA: B.rl - CMV - DESP, depA, DEP, EBIT: B.rl - CMV - DESP - DEP, jur, FIN, LAIR: B.lair, IR, LL, pl, plLiq: ngPlLiq(pl),
+    meses.push({ t, i, mk, val, ecG, ecId, ecT: ecG.ded + ecG.cmv + ecG.desp + ecG.fin, U, RB, rbt, impV, cppA, irA, anexo: reg === 'simples' && op ? ngAnexo(x.trib, rbt, folha12) : '', DED, RL: B.rl, CMV, LB: B.rl - CMV, DESP, EBITDA: B.rl - CMV - DESP, depA, DEP, EBIT: B.rl - CMV - DESP - DEP, jur, FIN, LAIR: B.lair, IR, LL, pl, plLiq: ngPlLiq(pl),
       giro, dGiro, oper, invT, empIn, amort, fc, proj, caixa, aporte, distrib, real: !!x.real[mk] && Object.keys(x.real[mk]).length > 0 });
   }
   const noH = meses.filter(m => m.t < T), op = noH.filter(m => m.t >= 0);
@@ -3464,7 +3517,7 @@ function renderNegVg() {
       <td data-l="Tipo">${NG_TIPO[x.tipo]}</td><td data-l="Início">${mLabel(R.i0)}</td><td data-l="Investimento">${fm(R.invTot)}</td><td data-l="Lucro/mês">${ngSg(R.llMad)}</td><td data-l="Para você">${ngSg(R.voceMad)}</td>
       <td data-l="Payback">${R.pay != null ? R.pay + 1 + ' meses' : '—'}</td><td data-l="Uso">${x.uso === 'real' ? '<span class="chip info">Projeção real</span>' : '<span class="subdet">Só simulação</span>'}</td></tr>`).join('')}</tbody>`;
   $('ngv-tl').innerHTML = tlHtml(itensModulos().filter(y => y.mod === 'neg'));
-  const m = MODS.find(y => y.id === 'neg'), lk = [['negcad', 'Meus negócios', 'Cadastro de cada ideia ou empresa: tipo, setor, cidade, sua parte e o que vai para o plano.'], ['negdre', 'Meu DRE', 'Receitas, custos e despesas mês a mês, com linhas suas e desdobramentos.'], ['negfc', 'Fluxo de caixa', 'Investimentos, capital de giro, empréstimo, quanto pôr e quando o caixa vira.'], ['negabr', 'Abrir empresa', 'MEI, SLU ou LTDA, Simples x Presumido x Real lado a lado e o passo a passo com custos.']];
+  const m = MODS.find(y => y.id === 'neg'), lk = [['negcad', 'Meus negócios', 'Cadastro de cada ideia ou empresa: tipo, setor, cidade, sua parte e o que vai para o plano.'], ['negdre', 'Meu DRE', 'Receitas, custos e despesas mês a mês, com linhas suas e desdobramentos.'], ['negfc', 'Fluxo de caixa', 'Investimentos, capital de giro, empréstimo, quanto pôr e quando o caixa vira.'], ['negabr', 'Abrir empresa', 'MEI, SLU ou LTDA, Simples x Presumido x Real lado a lado e o passo a passo com custos.'], ['negeco', 'Oportunidades de custo', 'Energia, maquininha, aluguel, fornecedores e mais: quanto dá para economizar e o efeito no lucro.']];
   $('ngv-links').innerHTML = lk.map(([t, n, d]) => `<button type="button" class="md-card" style="--mc:${m.cor}" data-tab="${t}"><div class="md-img">${MOD_SVG.neg}</div><h3>${esc(n)}</h3><p>${esc(d)}</p></button>`).join('');
 }
 function renderNegCad() {
@@ -3510,13 +3563,16 @@ function renderNegDre() {
       <td><div class="ng-ac">${l.g === 'desp' && !macro ? `<label class="inline" title="Marque se esta linha é o seu pró-labore: ele entra no seu Plano futuro como receita, líquido de INSS e IR"><input type="checkbox" data-ngl="${k}:pl"${l.pl ? ' checked' : ''}> <span>pró-labore</span></label>${l.pl ? '' : `<label class="inline" title="Marque se esta linha é salário de funcionários: entra no fator R do Simples e no INSS patronal"><input type="checkbox" data-ngl="${k}:folha"${l.folha ? ' checked' : ''}> <span>salário</span></label>`}` : ''}${(l.g === 'ded' || l.g === 'ir') && !macro ? `<label class="inline" title="Marque se esta linha é imposto: quando você escolhe um regime em Abrir empresa, ela sai da conta e o painel calcula o imposto"><input type="checkbox" data-ngl="${k}:imp"${l.imp ? ' checked' : ''}> <span>imposto</span></label>` : ''}${n < 2 ? `<button type="button" class="btn ghost tiny" data-ngsub="${k}" title="Abrir esta linha em linhas menores">+ Desdobrar</button>` : ''}<button type="button" class="btn danger tiny" data-ngldel="${k}" aria-label="Remover linha">×</button></div></td></tr>`;
   };
   const autoRow = (nome, v) => `<tr class="ng-l n0 auto"><td class="name">${esc(nome)} <span class="subdet">automático</span></td><td colspan="4"></td><td class="ng-num">${fm(v)}${rb ? `<small>${pct(v / rb)}</small>` : ''}</td><td></td></tr>`;
+  // economia dos cards feitos: no mês maduro, ou no primeiro mês em que vale (empresa que já existe tem o mês maduro no passado)
+  const ecRow = g => { if (!NG_ECG.includes(g)) return ''; const m = mad.ecG && mad.ecG[g] ? mad : R.meses.find(y => y.i >= mad.i && y.ecG && y.ecG[g] > 0); if (!m) return '';
+    return `<tr class="ng-l n0 auto"><td class="name">Economias de custo <span class="subdet">${m === mad ? 'oportunidades feitas' : 'a partir de ' + mLabel(m.i)}</span></td><td colspan="4"><a href="#" data-lmtab="negeco" data-lmsec="Minhas oportunidades" class="subdet">ver as oportunidades</a></td><td class="ng-num">${fm(-m.ecG[g])}${rb ? `<small>${pct(-m.ecG[g] / rb)}</small>` : ''}</td><td></td></tr>`; };
   const regMsg = ngAuto(x) ? `<div class="ng-reg"><b>Impostos pelo regime: ${esc(NG_REG[x.trib.regime])}.</b> As linhas marcadas como imposto ficam fora da conta. <a href="#" data-lmtab="negabr" data-lmsec="Regime de tributação">Trocar em Abrir empresa</a></div>` : `<div class="ng-reg off">Impostos lançados à mão. Para o painel calcular pelo regime (Simples, Presumido ou Real), escolha em <a href="#" data-lmtab="negabr" data-lmsec="Regime de tributação">Abrir empresa › Regime de tributação</a>.</div>`;
   $('ngd-linhas').innerHTML = regMsg + `<div class="tscroll"><table class="ng-dre"><thead><tr><th>Linha</th><th>Como calcula</th><th>Valor</th><th>Reajuste</th><th>A partir do mês</th><th>Mês maduro${R.mad ? ` (${mLabel(R.mad.i)})` : ''}</th><th></th></tr></thead><tbody>${NG_G.map(g => {
     const tot = mad[NG_GK[g.id]] || 0;
     return `<tr class="ng-g"><td colspan="5"><div class="ng-gh"><span class="ng-gn">${g.s > 0 ? '' : '(−) '}${esc(g.n)}</span><button type="button" class="btn ghost tiny" data-ngladd="${x.id}:${g.id}">+ Linha</button></div></td><td class="ng-num">${fm(tot)}</td><td></td></tr>
       <tr class="ng-gd"><td colspan="7">${esc(g.d)}</td></tr>` + ngArvore(x, g.id).map(linhaHtml).join('') +
       (g.id === 'ded' && ngAuto(x) ? autoRow(ngRegNome(x, mad), mad.impV || 0) : '') + (g.id === 'desp' && ngAuto(x) && mad.cppA ? autoRow('INSS patronal', mad.cppA) : '') + (g.id === 'ir' && ngAuto(x) && mad.irA ? autoRow('IRPJ e CSLL (' + NG_REG[x.trib.regime] + ')', mad.irA) : '') +
-      (g.id === 'dep' && mad.depA ? autoRow('Depreciação dos investimentos', mad.depA) : '') + (g.id === 'fin' && mad.jur ? autoRow('Juros do empréstimo', mad.jur) : '') +
+      (ecRow(g.id)) + (g.id === 'dep' && mad.depA ? autoRow('Depreciação dos investimentos', mad.depA) : '') + (g.id === 'fin' && mad.jur ? autoRow('Juros do empréstimo', mad.jur) : '') +
       (g.sub ? `<tr class="ng-sub"><td colspan="5">= ${esc(g.sub)}</td><td class="ng-num">${ngSg(mad[NG_SUBK[g.id]] || 0)}${rb ? `<small>${pct((mad[NG_SUBK[g.id]] || 0) / rb)}</small>` : ''}</td><td></td></tr>` : '');
   }).join('')}</tbody></table></div>`;
   renderNegDreMM(x, R);
@@ -3557,6 +3613,7 @@ function renderNegDreMM(x, R) {
   NG_G.forEach(g => {
     const linhas = ngArvore(x, g.id).map(({ l, n, macro }) => ({ nome: l.nome || 'Linha', n, f: m => (macro ? ngMacroVal(x, m.val, l.id) : m.val[l.id] || 0) * g.s }));
     if (g.id === 'ded') linhas.push({ nome: ngRegNome(x), f: m => -m.impV }); if (g.id === 'desp') linhas.push({ nome: 'INSS patronal (regime)', f: m => -m.cppA }); if (g.id === 'ir') linhas.push({ nome: 'IRPJ e CSLL (regime)', f: m => -m.irA });
+    if (NG_ECG.includes(g.id)) linhas.push({ nome: 'Economias de custo', f: m => m.ecG ? m.ecG[g.id] : 0 });
     if (g.id === 'dep') linhas.push({ nome: 'Depreciação dos investimentos', f: m => -m.depA }); if (g.id === 'fin') linhas.push({ nome: 'Juros do empréstimo', f: m => -m.jur });
     G.push({ id: g.id, nome: (g.s > 0 ? '' : '(−) ') + g.n, f: m => m[NG_GK[g.id]] * g.s, linhas });
     if (g.sub) G.push({ id: 's' + g.id, nome: '= ' + g.sub, f: m => m[NG_SUBK[g.id]], cls: g.id === 'ir' ? 'res' : 'saldo' });
@@ -3704,6 +3761,93 @@ document.addEventListener('change', e => {
   ngRe();
 });
 
+/* ---------- Oportunidades de custo: catálogo, cards por negócio e a linha de economia no DRE ----------
+   Faixas de economia de referência (out/2026), editáveis em Tabela base. inv = meses do custo atual como investimento sugerido. */
+const NG_ECON = {
+  energia: { n: 'Energia por assinatura ou mercado livre', g: 'desp', re: /energia|luz|eletric/i, d: 'Assinar energia de uma usina (geração distribuída) ou migrar para o mercado livre, sem obra.', ops: { ass: ['Assinatura de energia', 10, 20, 0], livre: ['Mercado livre', 15, 35, 0] } },
+  solar: { n: 'Placas solares', g: 'desp', re: /energia|luz|eletric/i, d: 'Gerar a própria energia: comprar o sistema, alugar as placas ou assinar uma usina.', ops: { compra: ['Comprar o sistema', 80, 95, 45], aluguel: ['Alugar as placas', 15, 25, 0], ass: ['Assinatura de usina', 10, 20, 0] } },
+  banco: { n: 'Tarifas bancárias', g: 'fin', re: /tarifa|banc/i, d: 'Pacote de tarifas, TED, boletos e manutenção. Contas digitais PJ cobram pouco ou nada.', ops: { conta: ['Conta PJ digital ou renegociar o pacote', 50, 100, 0] } },
+  maq: { n: 'Maquininha e antecipação', g: 'ded', re: /cart[aã]o|maquin|adquir/i, d: 'Taxas de débito, crédito e antecipação. Cotar outras adquirentes ou negociar pelo volume.', ops: { neg: ['Trocar ou negociar as taxas', 20, 40, 0] } },
+  tel: { n: 'Telefonia e internet', g: 'desp', re: /telef|internet|celular/i, d: 'Planos corporativos, linhas paradas e combos.', ops: { plano: ['Trocar ou renegociar o plano', 15, 30, 0] } },
+  aluguel: { n: 'Aluguel', g: 'desp', re: /aluguel|loca[cç][aã]o do im/i, d: 'Renegociar o contrato, mudar para um lugar menor ou ir para um coworking.', ops: { reneg: ['Renegociar', 5, 15, 0], mudar: ['Mudar de lugar', 15, 30, 2], cowork: ['Coworking', 30, 60, 0] } },
+  frota: { n: 'Frota', g: 'desp', re: /frota|ve[ií]culo|carro|combust/i, d: 'Comparar comprar, alugar ou assinar os veículos, com seguro e manutenção.', ops: { ass: ['Assinatura ou locação', 10, 25, 0], compra: ['Comprar os veículos', 20, 40, 36] } },
+  seguro: { n: 'Seguros', g: 'desp', re: /seguro/i, d: 'Cotar com outras seguradoras e rever coberturas que não fazem sentido.', ops: { cot: ['Cotar de novo', 10, 25, 0] } },
+  benef: { n: 'Benefícios', g: 'desp', re: /benef[ií]c|plano de sa[uú]de|vale/i, d: 'Plano de saúde, VR e VA: trocar de operadora, de modelo ou de faixa.', ops: { troca: ['Trocar de operadora ou modelo', 5, 15, 0] } },
+  soft: { n: 'Softwares sem uso', g: 'desp', re: /software|sistema|assinatura/i, d: 'Licenças paradas, planos acima do necessário e ferramentas repetidas.', ops: { corte: ['Cortar e trocar de plano', 20, 40, 0] } },
+  forn: { n: 'Fornecedores', g: 'cmv', re: /custo do que|mercadoria|fornec|insumo|mat[eé]ria/i, d: 'Cotar com outros fornecedores, comprar em volume ou trocar insumos.', ops: { cot: ['Cotar e negociar', 5, 15, 0] } },
+  divida: { n: 'Troca de dívida cara', g: 'fin', re: /juros|d[ií]vida|empr[eé]stimo/i, d: 'Trocar cheque especial, cartão ou capital de giro caro por uma linha mais barata. O custo atual é o juro pago por mês.', ops: { troca: ['Trocar por uma linha mais barata', 30, 60, 0] } }
+};
+const NG_EST = { ideia: 'Ideia', cotando: 'Cotando', feito: 'Feito' };
+const NG_ECG = ['ded', 'cmv', 'desp', 'fin'];
+const ngEcFaixa = (cat, op) => { const o = NG_ECON[cat].ops[op]; let b = null; try { b = state.neg.ecBase[cat + ':' + op]; } catch (er) {} return Array.isArray(b) && b.length === 2 ? b : [o[1], o[2]]; };
+function ngEcNorm(x, c) {
+  const C = NG_ECON[c.cat]; if (!C.ops[c.op]) c.op = Object.keys(C.ops)[0];
+  if (typeof c.nome !== 'string' || !c.nome) c.nome = C.n; if (typeof c.nota !== 'string') c.nota = '';
+  if (typeof c.lig !== 'string' || !x.linhas.some(l => l.id === c.lig && NG_ECG.includes(l.g))) c.lig = '';
+  const f = ngEcFaixa(c.cat, c.op); c.atual = ngN(c.atual, 0, 0); c.pct = ngN(c.pct, Math.round((f[0] + f[1]) / 2), 0, 100); c.inv = ngN(c.inv, 0, 0);
+  c.mes = ngMes(c.mes, mKey(HOJE_IDX)); if (!NG_EST[c.st]) c.st = 'ideia';
+}
+// custo de hoje (ou do 1º mês de operação) da linha ligada, ou o informado
+function ngEcBase(x, c, R) {
+  if (!c.lig) return c.atual; const R2 = R || ngCalcC(x), i = Math.max(HOJE_IDX, R2.i0, mIndex(c.mes)), m = R2.meses.find(y => y.i === i) || R2.mad; if (!m) return 0;
+  return x.linhas.some(y => y.pai === c.lig) ? ngMacroVal(x, m.val, c.lig) : m.val[c.lig] || 0;
+}
+const ngEcVal = (x, c, R) => ngEcBase(x, c, R) * c.pct / 100;
+function ngEcNovo(x, cat) {
+  const C = NG_ECON[cat], op = Object.keys(C.ops)[0], l = ngArvoreTudo(x).find(y => C.re.test(y.nome)) || null, c = { id: uid(), cat, op, nome: C.n, lig: l ? l.id : '', atual: 0, pct: '', inv: 0, mes: mKey(HOJE_IDX), st: 'ideia', nota: '' };
+  ngEcNorm(x, c); c.inv = Math.round(ngEcBase(x, c) * C.ops[op][3]); return c;
+}
+const ngArvoreTudo = x => NG_ECG.flatMap(g => ngArvore(x, g).map(o => o.l));
+function renderNegEco() {
+  const x = ngSel(), ids = ['nge-lista', 'nge-cat', 'nge-base'];
+  if (!x) { $('nge-sel').innerHTML = ngVazio(); ids.forEach(id => { $(id).innerHTML = ''; }); kpis($('kpi-nge'), []); return; }
+  const R = ngCalcC(x), b = (c, k) => `${x.id}:${c.id}:${k}`;
+  $('nge-sel').innerHTML = ngSelHtml(x, `<button type="button" class="btn ghost tiny" data-tab="negdre">Ver DRE</button>`) + (x.tipo !== 'existe' ? '<p class="hint">Estas oportunidades servem melhor quando a empresa já está rodando. Dá para usar numa ideia, mas o custo de hoje ainda é uma estimativa do DRE.</p>' : '');
+  const L = x.econ.map(c => ({ c, v: ngEcVal(x, c, R) })), sm = st => L.filter(o => o.c.st === st).reduce((q, o) => q + o.v, 0), invF = x.econ.filter(c => c.st === 'feito').reduce((q, c) => q + c.inv, 0);
+  kpis($('kpi-nge'), [
+    ['Economia feita por mês', fm(sm('feito')), L.some(o => o.c.st === 'feito') ? `${fm(sm('feito') * 12)} por ano, já no DRE` : 'marque um card como Feito'],
+    ['Cotando por mês', fm(sm('cotando')), 'se as cotações derem certo'],
+    ['Ideias por mês', fm(sm('ideia')), `${L.filter(o => o.c.st === 'ideia').length} ${L.filter(o => o.c.st === 'ideia').length === 1 ? 'card' : 'cards'} ainda sem cotação`],
+    ['Investimento', fm(invF), invF ? 'dos cards feitos, no fluxo de caixa' : 'nenhum nos cards feitos']
+  ]);
+  const linhas = ngArvoreTudo(x), gN = g => (NG_G.find(y => y.id === g) || {}).n;
+  $('nge-lista').innerHTML = !L.length ? '<p class="hint">Nenhuma oportunidade ainda. Escolha uma no catálogo abaixo.</p>' : `<div class="ng-ecs">${L.map(({ c, v }) => {
+    const C = NG_ECON[c.cat], f = ngEcFaixa(c.cat, c.op), base = ngEcBase(x, c, R), pay = c.inv > 0 && v > 0 ? Math.ceil(c.inv / v) : null, sug = Math.round(base * C.ops[c.op][3]);
+    return `<div class="ng-ec st-${c.st}"><div class="ng-ech"><input type="text" data-nge="${b(c, 'nome')}" value="${esc(c.nome)}" maxlength="60" aria-label="Nome da oportunidade"><button type="button" class="btn danger tiny" data-ngedel="${x.id}:${c.id}" aria-label="Remover oportunidade">×</button></div>
+      <div class="seg ng-est">${Object.entries(NG_EST).map(([k, n]) => `<button type="button" data-ngest="${x.id}:${c.id}:${k}" aria-pressed="${c.st === k}">${n}</button>`).join('')}</div>
+      <div class="ng-form">
+        ${Object.keys(C.ops).length > 1 ? `<label class="full">Opção<select data-nge="${b(c, 'op')}">${Object.entries(C.ops).map(([k, o]) => `<option value="${k}"${c.op === k ? ' selected' : ''}>${esc(o[0])}</option>`).join('')}</select></label>` : ''}
+        <label class="full">Linha do DRE<select data-nge="${b(c, 'lig')}"><option value="">Nenhuma: informar o custo</option>${NG_ECG.map(g => { const ls = linhas.filter(l => l.g === g); return ls.length ? `<optgroup label="${esc(gN(g))}">${ls.map(l => `<option value="${l.id}"${c.lig === l.id ? ' selected' : ''}>${esc(l.nome || 'Linha')}</option>`).join('')}</optgroup>` : ''; }).join('')}</select></label>
+        ${c.lig ? `<label>Custo de hoje<span class="ng-ro">${fm(base)}/mês</span></label>` : `<label>Custo atual (R$/mês)<input type="number" min="0" step="50" data-nge="${b(c, 'atual')}" value="${c.atual}"></label>`}
+        <label>Economia (%)<input type="number" min="0" max="100" step="1" data-nge="${b(c, 'pct')}" value="${c.pct}" title="Faixa típica: ${f[0]}% a ${f[1]}%"></label>
+        <label>Investimento (R$)<input type="number" min="0" step="100" data-nge="${b(c, 'inv')}" value="${c.inv}"${sug ? ` title="Sugestão: ${fm(sug)}"` : ''}></label>
+        <label>A partir de<input type="month" data-nge="${b(c, 'mes')}" value="${esc(c.mes)}"></label>
+      </div>
+      <p class="ng-ecr"><b>${fm(v)}/mês</b> · ${fm(v * 12)}/ano${pay ? ` · payback de ${pay} ${pay > 1 ? 'meses' : 'mês'}` : ''}</p>
+      <p class="subdet">Faixa típica de ${f[0]}% a ${f[1]}%${sug && !c.inv ? `; investimento sugerido de ${fm(sug)}` : ''}. ${c.lig ? `A economia acompanha a linha "${esc((linhas.find(l => l.id === c.lig) || {}).nome || '')}".` : `Sem linha, a economia entra em ${esc(gN(C.g))}.`}${c.st === 'feito' ? ' Está no DRE.' : ''}</p>
+      <input type="text" class="ng-ecn" data-nge="${b(c, 'nota')}" value="${esc(c.nota)}" maxlength="200" placeholder="Anotação: com quem cotou, prazo do contrato" aria-label="Anotação"></div>`; }).join('')}</div>`;
+  $('nge-cat').innerHTML = `<div class="ng-cat">${Object.entries(NG_ECON).map(([k, C]) => { const n = x.econ.filter(c => c.cat === k).length, fs = Object.keys(C.ops).map(op => ngEcFaixa(k, op)), lo = Math.min(...fs.map(q => q[0])), hi = Math.max(...fs.map(q => q[1]));
+    return `<div class="ng-catc"><b>${esc(C.n)}</b><span>${esc(C.d)}</span><span class="ng-catf">economia típica de ${lo}% a ${hi}%${n ? ` · ${n} no negócio` : ''}</span><button type="button" class="btn tiny${n ? ' ghost' : ''}" data-ngeadd="${x.id}:${k}">+ Adicionar</button></div>`; }).join('')}</div>`;
+  $('nge-base').innerHTML = `<div class="tscroll"><table class="ng-cmp"><thead><tr><th>Oportunidade</th><th>Opção</th><th>Mínimo (%)</th><th>Máximo (%)</th><th>Investimento sugerido</th></tr></thead><tbody>${Object.entries(NG_ECON).flatMap(([k, C]) => Object.entries(C.ops).map(([op, o]) => { const f = ngEcFaixa(k, op);
+    return `<tr><td class="name">${esc(C.n)}</td><td data-l="Opção">${esc(o[0])}</td><td data-l="Mínimo"><input type="number" min="0" max="100" step="1" data-ngeb="${k}:${op}:0" value="${f[0]}" aria-label="Mínimo de ${esc(o[0])}"></td><td data-l="Máximo"><input type="number" min="0" max="100" step="1" data-ngeb="${k}:${op}:1" value="${f[1]}" aria-label="Máximo de ${esc(o[0])}"></td><td data-l="Investimento">${o[3] ? o[3] + ' meses do custo' : '—'}</td></tr>`; })).join('')}</tbody></table></div>
+    <div class="row" style="margin-top:10px"><button type="button" class="btn ghost tiny" data-ngebreset>Voltar aos valores de referência</button><span class="subdet">Vale para todos os negócios. Os cards já criados mantêm o % escolhido.</span></div>`;
+}
+document.addEventListener('click', e => {
+  const t = e.target.closest('[data-ngeadd],[data-ngedel],[data-ngest],[data-ngebreset]'); if (!t || !state.neg) return; e.preventDefault(); const d = t.dataset;
+  if (d.ngeadd) { const [id, cat] = d.ngeadd.split(':'), x = ngAcha(id); if (!x || !NG_ECON[cat]) return; x.econ.push(ngEcNovo(x, cat)); ngRe(); return; }
+  if (d.ngedel) { const [id, cid] = d.ngedel.split(':'), x = ngAcha(id), c = x && x.econ.find(y => y.id === cid); if (!c || !confirmar(`Remover "${c.nome}"?`)) return; x.econ = x.econ.filter(y => y.id !== cid); ngRe(); return; }
+  if (d.ngest) { const [id, cid, st] = d.ngest.split(':'), x = ngAcha(id), c = x && x.econ.find(y => y.id === cid); if (!c || !NG_EST[st]) return; c.st = st; ngRe(); return; }
+  if (d.ngebreset != null) { if (!confirmar('Voltar a tabela base aos valores de referência?')) return; state.neg.ecBase = {}; ngRe(); return; }
+});
+document.addEventListener('change', e => {
+  const t = e.target, d = t.dataset || {}; if (!state.neg || !(d.nge || d.ngeb)) return;
+  if (d.ngeb) { const [cat, op, k] = d.ngeb.split(':'); if (!NG_ECON[cat] || !NG_ECON[cat].ops[op]) return; const f = ngEcFaixa(cat, op).slice(); f[+k] = ngN(t.value, f[+k], 0, 100); if (f[0] > f[1]) f.reverse(); state.neg.ecBase[cat + ':' + op] = f; ngRe(); return; }
+  const [id, cid, k] = d.nge.split(':'), x = ngAcha(id), c = x && x.econ.find(y => y.id === cid); if (!c) return;
+  c[k] = t.type === 'number' ? (t.value === '' ? '' : +t.value) : t.value;
+  if (k === 'op') { const f = ngEcFaixa(c.cat, c.op); c.pct = Math.round((f[0] + f[1]) / 2); ngEcNorm(x, c); c.inv = Math.round(ngEcBase(x, c) * NG_ECON[c.cat].ops[c.op][3]); }
+  ngEcNorm(x, c); ngRe();
+});
+
 /* ---------- eventos ---------- */
 const ngAcha = id => ngLista().find(y => y.id === id);
 // renderiza depois do evento: o campo que disparou o change ainda está saindo de foco
@@ -3714,7 +3858,7 @@ document.addEventListener('click', e => {
   if (d.ngadd != null) { const x = ngNovo('Negócio ' + (v.negocios.length + 1)); ngNorm(x); v.negocios.push(x); v.sel = x.id; ngRe(); if (tab !== 'negcad') showTab('negcad'); return; }
   if (d.ngdel) { const x = ngAcha(d.ngdel); if (!x || !confirmar(`Remover o negócio "${x.nome}" com o DRE e o fluxo de caixa?`)) return; v.negocios = v.negocios.filter(y => y.id !== x.id); ngRe(); return; }
   if (d.ngdup) { const x = ngAcha(d.ngdup); if (!x) return; const c = clone(x), map = {}; c.id = uid(); c.nome = x.nome + ' (cópia)'; c.uso = 'sim'; c.linhas.forEach(l => { map[l.id] = uid(); }); c.linhas.forEach(l => { l.id = map[l.id]; if (l.pai) l.pai = map[l.pai] || ''; });
-    Object.keys(c.real).forEach(mk => { const o = {}; Object.entries(c.real[mk]).forEach(([id, val]) => { if (map[id]) o[map[id]] = val; }); c.real[mk] = o; }); c.inv.forEach(i => { i.id = uid(); }); v.negocios.push(c); v.sel = c.id; ngRe(); return; }
+    Object.keys(c.real).forEach(mk => { const o = {}; Object.entries(c.real[mk]).forEach(([id, val]) => { if (map[id]) o[map[id]] = val; }); c.real[mk] = o; }); c.inv.forEach(i => { if (i.id !== 'abertura') i.id = uid(); }); c.econ.forEach(q => { q.id = uid(); if (q.lig) q.lig = map[q.lig] || ''; }); v.negocios.push(c); v.sel = c.id; ngRe(); return; }
   if (d.ngabre) { const [id, tb] = d.ngabre.split(':'); v.sel = id; save(); showTab(tb); return; }
   if (d.ngladd) { const [id, g] = d.ngladd.split(':'), x = ngAcha(id); if (!x) return; x.linhas.push({ id: uid(), g, pai: '', nome: 'Nova linha', modo: g === 'ded' || g === 'ir' ? 'pct' : 'fixo', v: 0, qtd: 0, base: g === 'ir' ? 'lair' : 'rb', reaj: 0, ini: 1, pl: false }); ngRe(); return; }
   if (d.ngsub) { const [id, lid] = d.ngsub.split(':'), x = ngAcha(id), l = x && x.linhas.find(y => y.id === lid); if (!l) return;
@@ -7076,7 +7220,7 @@ function normalizar(s) {
 try { if (quemLocal === 'dono') { const b = JSON.parse(localStorage.getItem('painel-priv')); if (b) aplicarBase(b); } } catch (e) {}
 try { const l = JSON.parse(localStorage.getItem(LSK('painel-fin-v2'))); if (l) state = normalizar(l); } catch (e) {}
 tab = 'modulos';
-const TABS = ['modulos', 'comousar', 'inicio', 'trabvg', 'viagvg', 'viagens', 'viagcmp', 'viagrot', 'viagcus', 'viagdur', 'negvg', 'negcad', 'negdre', 'negfc', 'negabr', 'leia', 'global', 'gastos', 'carteira', 'orcamento', 'compras', 'cenarios', 'patrimonio', 'comparador', 'simulador', 'pjpf', 'stock', 'config', 'familia'];
+const TABS = ['modulos', 'comousar', 'inicio', 'trabvg', 'viagvg', 'viagens', 'viagcmp', 'viagrot', 'viagcus', 'viagdur', 'negvg', 'negcad', 'negdre', 'negfc', 'negabr', 'negeco', 'leia', 'global', 'gastos', 'carteira', 'orcamento', 'compras', 'cenarios', 'patrimonio', 'comparador', 'simulador', 'pjpf', 'stock', 'config', 'familia'];
 if (TABS.includes(location.hash.slice(1))) tab = location.hash.slice(1);
 if (!TABS.includes(tab)) tab = 'modulos';
 
@@ -11125,7 +11269,7 @@ $('cpform').addEventListener('submit', async e => {
 });
 
 /* ---------- abas ---------- */
-const BUILD = { modulos: () => {}, comousar: () => {}, inicio: () => {}, trabvg: () => {}, viagvg: () => {}, viagens: () => {}, viagcmp: () => {}, viagrot: () => {}, viagcus: () => {}, viagdur: () => {}, negvg: () => {}, negcad: () => {}, negdre: () => {}, negfc: () => {}, negabr: () => {}, leia: buildLeia, global: () => {}, cenarios: buildCenarios, compras: buildCenarios, carteira: buildCarteira, comparador: buildComparador, simulador: buildSimulador, gastos: buildGastos, orcamento: buildOrcamento, config: buildConfig, pjpf: buildPj, stock: buildStock, familia: () => carregarPerfis(), patrimonio: () => {} };
+const BUILD = { modulos: () => {}, comousar: () => {}, inicio: () => {}, trabvg: () => {}, viagvg: () => {}, viagens: () => {}, viagcmp: () => {}, viagrot: () => {}, viagcus: () => {}, viagdur: () => {}, negvg: () => {}, negcad: () => {}, negdre: () => {}, negfc: () => {}, negabr: () => {}, negeco: () => {}, leia: buildLeia, global: () => {}, cenarios: buildCenarios, compras: buildCenarios, carteira: buildCarteira, comparador: buildComparador, simulador: buildSimulador, gastos: buildGastos, orcamento: buildOrcamento, config: buildConfig, pjpf: buildPj, stock: buildStock, familia: () => carregarPerfis(), patrimonio: () => {} };
 // (i) de cada seção: o que mostra e de onde vêm os números (chave: aba:data-nav)
 const INFO_SEC = {
   'comousar:Resumo': 'Para cada módulo: se já tem o mínimo para funcionar (os obrigatórios), quantos opcionais você resolveu e um botão para o próximo passo. Um opcional conta como resolvido quando você preenche ou marca que não tem.',
@@ -11142,6 +11286,9 @@ const INFO_SEC = {
   'negdre:Linhas do DRE': 'R$ por mês: valor fixo, com reajuste anual. %: percentual da receita bruta, da receita líquida ou, no IR, do lucro antes do IR. Por unidade: na receita é preço × quantidade; nos custos, R$ por unidade vendida. A partir do mês: 1 é o primeiro mês de operação (use para uma contratação no mês 6, por exemplo). Pró-labore: marque a linha que é a sua retirada; ela entra no seu Plano futuro, líquida de INSS (11%) e IR. Não substitui um contador.',
   'negdre:DRE mês a mês': 'DRE é competência: a venda entra no mês em que foi feita, mesmo que o dinheiro caia depois. O dinheiro de verdade está em Fluxo de caixa.',
   'negdre:Realizado': 'O realizado substitui o projetado só naquele mês e naquela linha. O fluxo de caixa e o Plano futuro passam a usar o real.',
+  'negeco:Minhas oportunidades': 'Com uma linha do DRE escolhida, a economia é o % daquela linha em cada mês e acompanha as vendas. Sem linha, é o % do custo que você informou, fixo. O investimento dos cards feitos sai do caixa no mês de início. Meses com realizado lançado naquela linha já mostram o custo de verdade e não descontam a economia de novo.',
+  'negeco:Catálogo': 'Pode adicionar a mesma oportunidade mais de uma vez, por exemplo um card para cada fornecedor.',
+  'negeco:Tabela base': 'Faixas de referência de out/2026 para pequenas empresas, a partir de propostas de mercado. Mudam muito com a cidade, o porte e o contrato. Investimento sugerido em meses do custo atual: placas solares perto de 45 meses (payback de 4 a 5 anos).',
   'negabr:Natureza jurídica': 'MEI: limite de R$ 81 mil por ano (média de R$ 6.750 por mês), imposto fixo de 5% do salário mínimo para o INSS mais R$ 1 de ICMS ou R$ 5 de ISS. SLU e LTDA separam o seu patrimônio das dívidas da empresa e podem escolher qualquer regime.',
   'negabr:Regime de tributação': 'Simples: um imposto só (DAS), com alíquota que sobe com a receita dos últimos 12 meses; serviços com folha de pelo menos 28% da receita (fator R) ficam no Anexo III, os demais no V. Presumido: o imposto de renda é calculado sobre um lucro presumido (32% da receita em serviços, 8% em comércio), com 10% a mais na parte da receita acima de R$ 5 milhões por ano (LC 224/2025, contestada na Justiça). Real: imposto sobre o lucro de verdade e PIS/COFINS com créditos. INSS patronal: 20% do pró-labore e 25,8% dos salários, fora do Simples (e no Anexo IV). Marque no DRE as linhas de salário. Estimativa; não substitui um contador.',
   'negabr:Passo a passo': 'Custos e prazos de referência para a cidade de São Paulo em 2026 (taxa da JUCESP perto de R$ 220, certificado A1 de R$ 150 a R$ 250). Mudam por cidade e atividade. Levar ao fluxo de caixa cria ou atualiza o investimento "Abertura da empresa".',
@@ -11260,7 +11407,7 @@ function infoSecoes() {
       if (h && !h.id) h.append(btn); else if (h) h.after(btn); else if (lg) lg.append(btn); }); });
 }
 infoSecoes();
-const RENDER = { modulos: renderModulos, comousar: renderComoUsar, inicio: renderHome, trabvg: renderTrabVg, viagvg: renderViagVg, viagens: renderViagens, viagcmp: renderViagCmp, viagrot: renderViagRot, viagcus: renderViagCus, viagdur: renderViagDur, negvg: renderNegVg, negcad: renderNegCad, negdre: renderNegDre, negfc: renderNegFc, negabr: renderNegAbr, leia: () => {}, global: renderGlobal, cenarios: renderCenarios, compras: renderCenarios, carteira: renderCarteira, comparador: renderComparador, simulador: renderSimulador, gastos: () => { renderGastos(); renderFechamento(); renderHistorico(); }, orcamento: renderOrcamento, config: renderConfig, pjpf: renderPj, stock: renderStock, familia: renderFamilia, patrimonio: renderPatr };
+const RENDER = { modulos: renderModulos, comousar: renderComoUsar, inicio: renderHome, trabvg: renderTrabVg, viagvg: renderViagVg, viagens: renderViagens, viagcmp: renderViagCmp, viagrot: renderViagRot, viagcus: renderViagCus, viagdur: renderViagDur, negvg: renderNegVg, negcad: renderNegCad, negdre: renderNegDre, negfc: renderNegFc, negabr: renderNegAbr, negeco: renderNegEco, leia: () => {}, global: renderGlobal, cenarios: renderCenarios, compras: renderCenarios, carteira: renderCarteira, comparador: renderComparador, simulador: renderSimulador, gastos: () => { renderGastos(); renderFechamento(); renderHistorico(); }, orcamento: renderOrcamento, config: renderConfig, pjpf: renderPj, stock: renderStock, familia: renderFamilia, patrimonio: renderPatr };
 function renderTab() { planCache = null; try { RENDER[tab](); } catch (err) { console.error(err); setSave('erro ao recalcular: ' + (err && err.message || err)); } }
 let navAbertos = null;
 try { navAbertos = JSON.parse(localStorage.getItem('painel-nav-abertos')); } catch (e) {}
@@ -11326,7 +11473,7 @@ const MODS = [
   { id: 'fin', corNav: '#7FA6E0', nome: 'Financeiro', cor: 'var(--s1)', fixo: true, vg: 'inicio', desc: 'Gastos, patrimônio, carteira, plano futuro e cenários. Recebe o que os outros módulos planejam.', tabs: ['inicio', 'global', 'gastos', 'patrimonio', 'carteira', 'comparador', 'simulador', 'orcamento', 'cenarios', 'familia'] },
   { id: 'trab', corNav: '#E09A63', nome: 'Trabalho e Bens', cor: 'var(--s2)', vg: 'trabvg', desc: 'Compras e bens (imóveis, carros, ...), stock options e PJ e PF. O que entra no plano vai para o Plano futuro.', tabs: ['trabvg', 'compras', 'stock', 'pjpf'] },
   { id: 'viag', corNav: '#5fc2f5', nome: 'Viagens', cor: 'var(--s8)', vg: 'viagens', desc: 'Mapa de onde já foi e de onde quer ir, sorteio, comparação de destinos nas suas datas o roteiro com a rota mais barata, os custos ligados ao Plano futuro e os gastos durante a viagem.', tabs: ['viagvg', 'viagens', 'viagcmp', 'viagrot', 'viagcus', 'viagdur'] },
-  { id: 'neg', corNav: '#a3e05a', nome: 'Negócios', cor: 'var(--s7)', vg: 'negvg', desc: 'Suas ideias e empresas: DRE com as suas linhas, fluxo de caixa, quanto pôr e quanto chega para você no Plano futuro. Abrir empresa com a comparação de regimes. Pesquisa de mercado e oportunidades de custo vêm a seguir.', tabs: ['negvg', 'negcad', 'negdre', 'negfc', 'negabr'] },
+  { id: 'neg', corNav: '#a3e05a', nome: 'Negócios', cor: 'var(--s7)', vg: 'negvg', desc: 'Suas ideias e empresas: DRE com as suas linhas, fluxo de caixa, quanto pôr e quanto chega para você no Plano futuro. Abrir empresa com a comparação de regimes e oportunidades de custo. Pesquisa de mercado vem a seguir.', tabs: ['negvg', 'negcad', 'negdre', 'negfc', 'negabr', 'negeco'] },
   { id: 'fam', corNav: '#fb7185', nome: 'Família', cor: 'var(--s6)', breve: true, desc: 'Contas conjuntas, filhos (do bebê à escola), divisão de gastos e dados compartilhados com quem mora com você.', tabs: [] },
   { id: 'indep', corNav: '#E3B848', nome: 'Independência financeira', cor: 'var(--s3)', breve: true, desc: 'Quando dá para parar de trabalhar: quanto juntar, renda passiva, INSS e previdência privada.', tabs: [] }
 ];
@@ -11396,6 +11543,7 @@ function cuPassos() {
         { id: 'ngdre', t: 'Montar o DRE', d: 'Receita, impostos, custos e despesas. Inclua as suas linhas e desdobre as que quiser.', ok: ngLista().some(x => x.linhas.some(l => l.g === 'rb' && l.v > 0)) || pul.includes('ngdre'), tab: 'negdre', sec: 'Linhas do DRE', pular: 'Depois' },
         { id: 'ngfc', t: 'Investimentos e caixa', d: 'O que precisa investir, prazos de recebimento e pagamento e, se houver, o empréstimo.', ok: ngLista().some(x => x.inv.some(i => i.valor > 0)) || pul.includes('ngfc'), tab: 'negfc', sec: 'Investimentos', pular: 'Depois' },
         { id: 'ngreg', t: 'Escolher o regime de tributação', d: 'Compare Simples, Presumido e Real com os números do seu DRE e deixe o painel calcular os impostos.', ok: ngLista().some(x => x.trib.regime !== 'manual') || pul.includes('ngreg'), tab: 'negabr', sec: 'Regime de tributação', pular: 'Depois' },
+        { id: 'ngeco', t: 'Procurar oportunidades de custo', d: 'Para a empresa que já roda: energia, maquininha, aluguel, fornecedores. As feitas viram economia no DRE.', ok: ngLista().some(x => x.econ.length) || pul.includes('ngeco'), tab: 'negeco', sec: 'Catálogo', pular: 'Depois' },
         { id: 'ngpl', t: 'Levar ao Plano futuro', d: 'Sua participação, quanto do lucro é distribuído e se você vai deixar a renda atual.', ok: ngLista().some(x => x.uso === 'real') || pul.includes('ngpl'), tab: 'negfc', sec: 'No Plano futuro', pular: 'Depois' }
       ]
     }
@@ -12284,6 +12432,7 @@ const LM_MODS = [
   ['negdre', 'O DRE do negócio: receita, deduções, custos, despesas, depreciação, resultado financeiro e IR, com as suas linhas e desdobramentos, mês a mês e ano a ano, e o realizado para quem já tem a empresa.', 'para saber se o negócio dá lucro.'],
   ['negfc', 'O fluxo de caixa: investimentos, capital de giro, empréstimo, quanto os sócios precisam pôr, quando o caixa vira e o que entra no seu Plano futuro.', 'para saber quanto dinheiro o negócio pede e devolve.'],
   ['negabr', 'Para abrir a empresa: MEI, SLU ou LTDA, a comparação de Simples, Lucro Presumido e Lucro Real com os números do seu DRE e o passo a passo com custos, prazos e links.', 'antes de formalizar o negócio ou para ver se vale trocar de regime.'],
+  ['negeco', 'As oportunidades de custo de cada negócio: energia, placas solares, tarifas, maquininha, aluguel, frota, fornecedores e dívidas, com economia por mês, investimento e payback. As feitas entram no DRE.', 'quando a empresa estiver rodando e você quiser gastar menos.'],
   'Geral',
   ['config', 'As premissas: renda e projeção, a curva de juros (Focus, atualizada toda segunda) e o retorno esperado de cada classe de ativo.', 'raramente; só para ajustar uma premissa.']
 ];
