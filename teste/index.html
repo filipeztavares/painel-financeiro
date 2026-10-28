@@ -1216,6 +1216,21 @@ p.warn { margin: 10px 0 0; padding: 8px 12px; border-radius: 8px; background: va
 .ng-catc .btn { margin-top: auto; }
 #nge-base input[type="number"] { width: 70px; }
 #nge-base th:nth-child(2), #nge-base td:nth-child(2) { text-align: left; }
+.ng-vered { display: flex; gap: 10px; align-items: flex-start; margin: 0 0 12px; }
+.ng-vered .chip { font-size: 12px; padding: 4px 12px; flex-shrink: 0; }
+.ng-vered p { margin: 0; font-size: 13.5px; line-height: 1.5; }
+.ng-tam { margin: 0 0 8px; }
+.ng-h3 { font-size: 13px; margin: 16px 0 6px; color: var(--accent-strong); }
+.ng-pcols { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0 18px; }
+ul.ng-pl { margin: 0; padding-left: 18px; font-size: 12.5px; line-height: 1.55; }
+.ng-levar { margin: 10px 0 4px; gap: 10px; align-items: center; flex-wrap: wrap; }
+.ng-rel { margin-top: 16px; border: 1px solid var(--line); border-radius: 10px; padding: 10px 14px; }
+.ng-rel summary { cursor: pointer; font-weight: 600; font-family: var(--f-head); font-size: 13px; }
+.ng-md { font-size: 13px; line-height: 1.6; max-width: 820px; }
+.ng-md h4 { font-size: 13.5px; margin: 14px 0 4px; } .ng-md p { margin: 6px 0; } .ng-md ul { margin: 6px 0; padding-left: 20px; }
+.ng-fontes { margin-top: 12px; overflow-wrap: anywhere; } .ng-fontes a { color: var(--accent); }
+@media (max-width: 760px) { .ng-pcols { grid-template-columns: minmax(0, 1fr); } }
+#ngp-res .ng-cmp th, #ngp-res .ng-cmp td { text-align: left; }
 </style>
 
 
@@ -1266,6 +1281,7 @@ p.warn { margin: 10px 0 0; padding: 8px 12px; border-radius: 8px; background: va
           <div class="nav-group"><button type="button" class="nav-head" data-tab="negfc"><span class="ico">03</span>Fluxo de caixa<span class="caret" data-navtog="negfc" role="button" tabindex="0" aria-label="Abrir ou recolher submódulos">▾</span></button><div class="nav-sub" data-sub="negfc"></div></div>
           <div class="nav-group"><button type="button" class="nav-head" data-tab="negabr"><span class="ico">04</span>Abrir empresa<span class="caret" data-navtog="negabr" role="button" tabindex="0" aria-label="Abrir ou recolher submódulos">▾</span></button><div class="nav-sub" data-sub="negabr"></div></div>
           <div class="nav-group"><button type="button" class="nav-head" data-tab="negeco"><span class="ico">05</span>Oportunidades de custo<span class="caret" data-navtog="negeco" role="button" tabindex="0" aria-label="Abrir ou recolher submódulos">▾</span></button><div class="nav-sub" data-sub="negeco"></div></div>
+          <div class="nav-group"><button type="button" class="nav-head" data-tab="negpesq"><span class="ico">06</span>Pesquisa de mercado<span class="caret" data-navtog="negpesq" role="button" tabindex="0" aria-label="Abrir ou recolher submódulos">▾</span></button><div class="nav-sub" data-sub="negpesq"></div></div>
         </div></div>
         <div class="nav-pe">
         <div class="nav-group mini"><button type="button" class="nav-head" data-tab="leia"><span class="ico">?</span>Leia-me<span class="caret" data-navtog="leia" role="button" tabindex="0" aria-label="Abrir ou recolher submódulos">▾</span></button><div class="nav-sub" data-sub="leia"></div></div>
@@ -1274,7 +1290,7 @@ p.warn { margin: 10px 0 0; padding: 8px 12px; border-radius: 8px; background: va
     </div>
     <div class="nav-mobile-sub" id="navMobileSub"></div>
   </div>
-  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 215</div></div>
+  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 216</div></div>
 </nav>
 <div class="sino-pop" id="sino-pop" role="dialog" aria-label="Central de avisos" hidden></div>
 <div class="tour-pop" id="tour-pop" role="dialog" aria-labelledby="tour-tit" hidden></div>
@@ -1540,7 +1556,7 @@ p.warn { margin: 10px 0 0; padding: 8px 12px; border-radius: 8px; background: va
     </section>
     <section data-nav="Partes do módulo" class="panel">
       <h2>Partes do módulo</h2>
-      <p class="sub">Pesquisa de mercado chega na próxima etapa.</p>
+      <p class="sub">Atalhos para cada parte do módulo.</p>
       <div class="tv-links" id="ngv-links"></div>
     </section>
   </section>
@@ -1621,6 +1637,20 @@ p.warn { margin: 10px 0 0; padding: 8px 12px; border-radius: 8px; background: va
       <h2>Tabela base</h2>
       <p class="sub">As faixas de economia que o catálogo sugere. Ajuste com o que você vê nas suas cotações.</p>
       <div id="nge-base"></div>
+    </section>
+  </section>
+  <!-- ============ NEGÓCIOS: PESQUISA DE MERCADO ============ -->
+  <section role="tabpanel" id="p-negpesq" hidden>
+    <div class="block-title"><span class="num">06</span><div><h1>Pesquisa de mercado</h1><p class="desc">Tamanho do mercado, concorrentes, preços, riscos e um veredito sobre a ideia, pesquisados com IA em fontes públicas.</p></div></div>
+    <div id="ngp-sel"></div>
+    <section data-nav="Pedido" class="panel">
+      <h2>Pedido</h2>
+      <p class="sub">Descreva a ideia. Quanto mais específico (bairro, público, preço), melhor a resposta.</p>
+      <div id="ngp-ped"></div>
+    </section>
+    <section data-nav="Resultado" class="panel">
+      <h2>Resultado</h2>
+      <div id="ngp-res"></div>
     </section>
   </section>
   <!-- ============ NEGÓCIOS: FLUXO DE CAIXA ============ -->
@@ -2697,7 +2727,7 @@ p.warn { margin: 10px 0 0; padding: 8px 12px; border-radius: 8px; background: va
     return new Promise(resolve => { const { data } = sb.auth.onAuthStateChange(async (ev) => { if (ev !== 'PASSWORD_RECOVERY') return; const s = prompt('Digite a nova senha (mínimo 8 caracteres):'); if (s && s.length >= 8) { const { error } = await sb.auth.updateUser({ password: s }); alert(error ? 'Não deu para trocar a senha: ' + error.message : 'Senha trocada.'); } }); resolve(data); });
   }
   // ---------- rodapé: compartilhar, administração e sair ----------
-  const SITE_V = 97;
+  const SITE_V = 98;
   const escH = v => String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const dataBR = v => v ? new Date(v).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' }) : '–';
   const css2 = `.side-foot .r{flex-wrap:wrap}.side-foot .lg-acoes{margin-left:auto;display:inline-flex;gap:10px}
@@ -3270,6 +3300,7 @@ const VG_REG = [['mundo', 'Mundo', [-180, -58, 180, 84]], ['sa', 'América do Su
      part (% seu), dist (% do lucro distribuído), uso sim|real, saida {on, mes}, linhas[], inv[], giro {receb, estoque, pagar, caixaMin},
      emp {on, valor, mes, taxa, prazo}, real {'AAAA-MM': {linhaId: valor}}, nota }
    linha = { id, g rb|ded|cmv|desp|dep|fin|ir, pai (id da linha macro ou ''), nome, modo fixo|pct|un, v, qtd (receita por unidade), base rb|rl|lair, reaj (% a.a.), ini (mês do negócio em que começa, 1 = primeiro), pl (é o seu pró-labore) }
+   pesq = campos do pedido de pesquisa de mercado { produto, regiao, publico, ticket, obs } (a resposta fica no documento painel/pesq-<id>)
    econ[] = oportunidades de custo { id, cat, nome, op (opção do catálogo), lig (id da linha do DRE ou ''), atual (R$/mês sem linha), pct (economia %), inv, mes 'AAAA-MM', st ideia|cotando|feito, nota }
    Linha com desdobramentos (filhas) vale a soma delas. Valores sempre positivos; o grupo diz se soma ou subtrai. */
 const NG_TIPO = { ideia: 'Ideia', abertura: 'Em abertura', existe: 'Já existe' };
@@ -3299,7 +3330,7 @@ function ngLinhasPadrao() {
 }
 function ngNovo(nome) {
   return { id: uid(), nome: nome || 'Novo negócio', setor: '', cidade: '', tipo: 'ideia', ini: mKey(HOJE_IDX + 6), anos: 5, rampa: 12, fatIni: 30, part: 100, dist: 80, uso: 'sim',
-    saida: { on: false, mes: '' }, linhas: ngLinhasPadrao(), inv: [], giro: { receb: 30, estoque: 0, pagar: 30, caixaMin: 0 }, emp: { on: false, valor: 0, mes: '', taxa: 18, prazo: 36 }, real: {}, nota: '', trib: {}, abr: {}, econ: [] };
+    saida: { on: false, mes: '' }, linhas: ngLinhasPadrao(), inv: [], giro: { receb: 30, estoque: 0, pagar: 30, caixaMin: 0 }, emp: { on: false, valor: 0, mes: '', taxa: 18, prazo: 36 }, real: {}, nota: '', trib: {}, abr: {}, econ: [], pesq: {} };
 }
 const ngN = (v, d, lo, hi) => { const x = +v; return v === '' || v == null || !isFinite(x) ? d : Math.min(hi ?? Infinity, Math.max(lo ?? -Infinity, x)); };
 const ngMes = (v, d) => /^\d{4}-\d{2}$/.test(String(v || '')) ? String(v) : d;
@@ -3323,6 +3354,7 @@ function ngNorm(x) {
   if (!x.trib || typeof x.trib !== 'object') x.trib = {}; const Tb = x.trib;
   if (!NG_NAT[Tb.nat]) Tb.nat = x.part < 100 ? 'ltda' : 'slu'; if (!NG_ATIV[Tb.ativ]) Tb.ativ = 'servico'; if (!['III', 'IV', 'V', 'fatorR'].includes(Tb.anexo)) Tb.anexo = 'fatorR';
   Tb.iss = ngN(Tb.iss, 5, 0, 5); Tb.icms = ngN(Tb.icms, 5, 0, 30); if (!NG_REG[Tb.regime]) Tb.regime = 'manual'; Tb.ano = Math.round(ngN(Tb.ano, 2, 1, 30));
+  if (!x.pesq || typeof x.pesq !== 'object' || Array.isArray(x.pesq)) x.pesq = {}; ['produto', 'regiao', 'publico', 'obs'].forEach(k => { if (typeof x.pesq[k] !== 'string') x.pesq[k] = ''; }); x.pesq.ticket = ngN(x.pesq.ticket, 0, 0);
   if (!Array.isArray(x.econ)) x.econ = []; x.econ = x.econ.filter(c => c && c.id && NG_ECON[c.cat]); x.econ.forEach(c => ngEcNorm(x, c));
   if (!x.abr || typeof x.abr !== 'object') x.abr = {}; if (!x.abr.feito || typeof x.abr.feito !== 'object') x.abr.feito = {}; if (!x.abr.custo || typeof x.abr.custo !== 'object') x.abr.custo = {};
 }
@@ -3517,7 +3549,7 @@ function renderNegVg() {
       <td data-l="Tipo">${NG_TIPO[x.tipo]}</td><td data-l="Início">${mLabel(R.i0)}</td><td data-l="Investimento">${fm(R.invTot)}</td><td data-l="Lucro/mês">${ngSg(R.llMad)}</td><td data-l="Para você">${ngSg(R.voceMad)}</td>
       <td data-l="Payback">${R.pay != null ? R.pay + 1 + ' meses' : '—'}</td><td data-l="Uso">${x.uso === 'real' ? '<span class="chip info">Projeção real</span>' : '<span class="subdet">Só simulação</span>'}</td></tr>`).join('')}</tbody>`;
   $('ngv-tl').innerHTML = tlHtml(itensModulos().filter(y => y.mod === 'neg'));
-  const m = MODS.find(y => y.id === 'neg'), lk = [['negcad', 'Meus negócios', 'Cadastro de cada ideia ou empresa: tipo, setor, cidade, sua parte e o que vai para o plano.'], ['negdre', 'Meu DRE', 'Receitas, custos e despesas mês a mês, com linhas suas e desdobramentos.'], ['negfc', 'Fluxo de caixa', 'Investimentos, capital de giro, empréstimo, quanto pôr e quando o caixa vira.'], ['negabr', 'Abrir empresa', 'MEI, SLU ou LTDA, Simples x Presumido x Real lado a lado e o passo a passo com custos.'], ['negeco', 'Oportunidades de custo', 'Energia, maquininha, aluguel, fornecedores e mais: quanto dá para economizar e o efeito no lucro.']];
+  const m = MODS.find(y => y.id === 'neg'), lk = [['negcad', 'Meus negócios', 'Cadastro de cada ideia ou empresa: tipo, setor, cidade, sua parte e o que vai para o plano.'], ['negdre', 'Meu DRE', 'Receitas, custos e despesas mês a mês, com linhas suas e desdobramentos.'], ['negfc', 'Fluxo de caixa', 'Investimentos, capital de giro, empréstimo, quanto pôr e quando o caixa vira.'], ['negabr', 'Abrir empresa', 'MEI, SLU ou LTDA, Simples x Presumido x Real lado a lado e o passo a passo com custos.'], ['negeco', 'Oportunidades de custo', 'Energia, maquininha, aluguel, fornecedores e mais: quanto dá para economizar e o efeito no lucro.'], ['negpesq', 'Pesquisa de mercado', 'Tamanho do mercado, concorrentes, preços, riscos e um veredito, pesquisados com IA.']];
   $('ngv-links').innerHTML = lk.map(([t, n, d]) => `<button type="button" class="md-card" style="--mc:${m.cor}" data-tab="${t}"><div class="md-img">${MOD_SVG.neg}</div><h3>${esc(n)}</h3><p>${esc(d)}</p></button>`).join('');
 }
 function renderNegCad() {
@@ -3848,6 +3880,98 @@ document.addEventListener('change', e => {
   ngEcNorm(x, c); ngRe();
 });
 
+/* ---------- Pesquisa de mercado: pedido na fila, a rotina diária pesquisa e grava a resposta ----------
+   Pedido e resposta ficam num documento por negócio: painel/pesq-<id> (no site, na conta de quem pediu).
+   { neg, nome, setor, cidade, campos {produto, regiao, publico, ticket, obs}, status pedido|pesquisando|pronto|erro, pedidoEm, prontoEm, msg, res }
+   res = { veredito vale|ressalvas|nao, porque, resumo, tam {tam, sam, som, nota}, preco {min, med, max, unidade}, unMes, conc [{nome, preco, obs}],
+     riscos [], regulatorio [], oportunidades [], fontes [{t, url}], relatorio (texto com ## títulos e - listas) } */
+const NG_PESQ_LIM = 2;   // pedidos por pessoa a cada 30 dias (o dono do painel não tem limite)
+const NG_VERED = { vale: ['Vale', 'best'], ressalvas: ['Vale com ressalvas', 'amber'], nao: ['Não vale', 'warn'] };
+let ngPesq = {}, ngPesqOuve = {}, ngPesqTodos = null;
+const ngTx = (v, n) => typeof v === 'string' ? v.slice(0, n) : '';
+const ngNum = v => isFinite(+v) && v !== '' && v != null ? +v : null;
+const ngLst = (v, n, m) => Array.isArray(v) ? v.filter(s => typeof s === 'string' && s.trim()).slice(0, n).map(s => s.slice(0, m)) : [];
+function ngPesqSan(d) {
+  if (!d || typeof d !== 'object') return null;
+  const o = { status: ['pedido', 'pesquisando', 'pronto', 'erro'].includes(d.status) ? d.status : '', pedidoEm: ngTx(d.pedidoEm, 30), prontoEm: ngTx(d.prontoEm, 30), msg: ngTx(d.msg, 300), campos: {}, res: null };
+  const c = d.campos && typeof d.campos === 'object' ? d.campos : {}; ['produto', 'regiao', 'publico', 'obs'].forEach(k => { o.campos[k] = ngTx(c[k], 400); }); o.campos.ticket = ngNum(c.ticket);
+  const r = d.res && typeof d.res === 'object' ? d.res : null;
+  if (r) {
+    const t = r.tam && typeof r.tam === 'object' ? r.tam : {}, p = r.preco && typeof r.preco === 'object' ? r.preco : {};
+    o.res = { veredito: NG_VERED[r.veredito] ? r.veredito : '', porque: ngTx(r.porque, 600), resumo: ngTx(r.resumo, 2000),
+      tam: { tam: ngNum(t.tam), sam: ngNum(t.sam), som: ngNum(t.som), nota: ngTx(t.nota, 400) },
+      preco: { min: ngNum(p.min), med: ngNum(p.med), max: ngNum(p.max), unidade: ngTx(p.unidade, 40) }, unMes: ngNum(r.unMes),
+      conc: Array.isArray(r.conc) ? r.conc.filter(q => q && typeof q === 'object' && typeof q.nome === 'string').slice(0, 12).map(q => ({ nome: q.nome.slice(0, 80), preco: ngTx(q.preco, 80), obs: ngTx(q.obs, 240) })) : [],
+      riscos: ngLst(r.riscos, 10, 300), regulatorio: ngLst(r.regulatorio, 10, 300), oportunidades: ngLst(r.oportunidades, 10, 300),
+      fontes: Array.isArray(r.fontes) ? r.fontes.filter(f => f && typeof f.url === 'string' && /^https:\/\//.test(f.url)).slice(0, 20).map(f => ({ t: ngTx(f.t, 120) || f.url.slice(0, 60), url: f.url.slice(0, 400) })) : [],
+      relatorio: ngTx(r.relatorio, 60000) };
+  }
+  return o;
+}
+// acompanha o documento do negócio aberto; a resposta da rotina aparece sozinha
+function ngPesqOuvir(id) {
+  if (!db || ngPesqOuve[id]) return; ngPesqOuve[id] = true;
+  try { pdoc('painel/pesq-' + id).onSnapshot(d => { ngPesq[id] = d && d.exists ? ngPesqSan(d.data()) : null; if (tab === 'negpesq' || tab === 'negvg') renderTab(); }, () => { ngPesqOuve[id] = false; }); } catch (e) { ngPesqOuve[id] = false; }
+}
+// pedidos dos últimos 30 dias, de todos os seus negócios (para o limite)
+async function ngPesqContar() {
+  if (!db) return; try { const sn = await pcol('painel').get(), lim = Date.now() - 30 * 864e5; ngPesqTodos = sn.docs.filter(d => /^pesq-/.test(d.id)).map(d => ngPesqSan(d.data())).filter(o => o && o.pedidoEm && Date.parse(o.pedidoEm) > lim).length; } catch (e) { ngPesqTodos = null; }
+}
+const ngToast = m => { toastEl.textContent = m; toastEl.hidden = false; clearTimeout(ngToast.t); ngToast.t = setTimeout(() => { toastEl.hidden = true; }, 6000); };
+const ngPesqSemLimite = () => !window.__SITE || !!window.__SITE_ADMIN;
+const ngMd = t => { const L = esc(t).replace(/\*\*(.+?)\*\*/g, '<b>$1</b>').split('\n'); let h = '', ul = false; const fecha = () => { if (ul) { h += '</ul>'; ul = false; } };
+  L.forEach(l => { const s = l.trim(); if (/^#{2,4} /.test(s)) { fecha(); h += `<h4>${s.replace(/^#+ /, '')}</h4>`; } else if (/^[-•] /.test(s)) { if (!ul) { h += '<ul>'; ul = true; } h += `<li>${s.slice(2)}</li>`; } else if (!s) fecha(); else { fecha(); h += `<p>${s}</p>`; } }); fecha(); return h; };
+const ngRs = v => v == null ? '—' : v >= 1e9 ? 'R$ ' + (v / 1e9).toLocaleString('pt-BR', { maximumFractionDigits: 1 }) + ' bi' : v >= 1e6 ? 'R$ ' + (v / 1e6).toLocaleString('pt-BR', { maximumFractionDigits: 1 }) + ' mi' : fm(v);
+function renderNegPesq() {
+  const x = ngSel(), ids = ['ngp-ped', 'ngp-res'];
+  if (!x) { $('ngp-sel').innerHTML = ngVazio(); ids.forEach(id => { $(id).innerHTML = ''; }); return; }
+  $('ngp-sel').innerHTML = ngSelHtml(x, `<button type="button" class="btn ghost tiny" data-tab="negdre">Ver DRE</button>`) + (x.tipo === 'existe' ? '<p class="hint">A pesquisa serve mais para ideias, mas também ajuda a avaliar uma expansão ou um produto novo da empresa.</p>' : '');
+  if (!db) { $('ngp-ped').innerHTML = '<p class="hint">A pesquisa precisa do painel conectado (no Claude ou no site, com login). Aqui ele está só neste navegador.</p>'; $('ngp-res').innerHTML = ''; return; }
+  ngPesqOuvir(x.id); if (ngPesqTodos == null) ngPesqContar().then(() => { if (tab === 'negpesq') renderNegPesq(); });
+  const P = ngPesq[x.id], st = P ? P.status : '', C = x.pesq, b = k => `${x.id}:pesq.${k}`, fila = st === 'pedido' || st === 'pesquisando';
+  const resta = ngPesqSemLimite() ? null : Math.max(0, NG_PESQ_LIM - (ngPesqTodos || 0)), trava = fila || resta === 0;
+  const stHtml = !st ? '' : st === 'pedido' ? `<div class="ng-reg"><b>Na fila desde ${new Date(P.pedidoEm).toLocaleString('pt-BR', { dateStyle: 'short', timeStyle: 'short' })}.</b> A pesquisa roda uma vez por dia e a resposta aparece aqui sozinha. <button type="button" class="btn ghost tiny" data-ngpcanc="${x.id}">Cancelar pedido</button></div>`
+    : st === 'pesquisando' ? '<div class="ng-reg"><b>Pesquisando agora.</b> A resposta aparece aqui quando terminar.</div>'
+    : st === 'erro' ? `<p class="warn">A pesquisa não terminou${P.msg ? ': ' + esc(P.msg) : ''}. Pode pedir de novo.</p>`
+    : `<div class="ng-reg"><b>Pesquisa pronta em ${new Date(P.prontoEm || P.pedidoEm).toLocaleDateString('pt-BR')}.</b> Mudou a ideia? Ajuste os campos e peça de novo.</div>`;
+  $('ngp-ped').innerHTML = stHtml + `<div class="ng-form">
+      <label class="full">Produto ou serviço<input type="text" data-ngf="${b('produto')}" value="${esc(C.produto)}" maxlength="200" placeholder="ex.: cafeteria de especialidade com venda de grãos"${fila ? ' disabled' : ''}></label>
+      <label>Setor<input type="text" data-ngf="${x.id}:setor" value="${esc(x.setor)}" maxlength="60" placeholder="ex.: alimentação"${fila ? ' disabled' : ''}></label>
+      <label>Região<input type="text" data-ngf="${b('regiao')}" value="${esc(C.regiao)}" maxlength="120" placeholder="ex.: Pinheiros, São Paulo"${fila ? ' disabled' : ''}></label>
+      <label>Público<input type="text" data-ngf="${b('publico')}" value="${esc(C.publico)}" maxlength="200" placeholder="ex.: quem trabalha no bairro, 25 a 45 anos"${fila ? ' disabled' : ''}></label>
+      <label>Ticket médio (R$)<input type="number" min="0" step="1" data-ngf="${b('ticket')}" value="${C.ticket || ''}" placeholder="ex.: 35"${fila ? ' disabled' : ''}></label>
+      <label class="full">O que você quer saber<input type="text" data-ngf="${b('obs')}" value="${esc(C.obs)}" maxlength="400" placeholder="ex.: se cabe mais uma cafeteria no bairro e que preço cobrar"${fila ? ' disabled' : ''}></label></div>
+    <div class="row" style="margin-top:10px"><button type="button" class="btn" data-ngpped="${x.id}"${trava ? ' disabled' : ''}>${st === 'pronto' || st === 'erro' ? 'Pedir de novo' : 'Pedir pesquisa'}</button>
+      <span class="subdet">${resta == null ? '' : resta === 0 ? `Você já fez ${NG_PESQ_LIM} pedidos nos últimos 30 dias.` : `Você pode pedir mais ${resta} ${resta > 1 ? 'pesquisas' : 'pesquisa'} nos próximos 30 dias.`} O pedido, com a descrição da ideia, é lido pela rotina de pesquisa do painel e a resposta fica só na sua conta.</span></div>`;
+  const R = P && P.res;
+  if (!R) { $('ngp-res').innerHTML = `<p class="hint">${fila ? 'Esperando a pesquisa.' : 'Nenhuma pesquisa ainda para este negócio.'}</p>`; return; }
+  const V = NG_VERED[R.veredito], T = R.tam, Pr = R.preco, li = a => a.length ? `<ul class="ng-pl">${a.map(s => `<li>${esc(s)}</li>`).join('')}</ul>` : '<p class="subdet">Nada apontado.</p>';
+  $('ngp-res').innerHTML = `<div class="ng-vered">${V ? `<span class="chip ${V[1]}">${V[0]}</span>` : ''}<p>${esc(R.porque || R.resumo)}</p></div>
+    <div class="kpis ng-tam">${[['TAM', T.tam, 'mercado total por ano'], ['SAM', T.sam, 'a parte que você alcança'], ['SOM', T.som, 'o que dá para ganhar em 3 a 5 anos']].map(([l, v, d]) => `<div class="kpi"><span class="l">${l}</span><span class="v">${ngRs(v)}</span><span class="d">${d}</span></div>`).join('')}
+      <div class="kpi"><span class="l">Preço praticado</span><span class="v">${Pr.med != null ? fm(Pr.med) : '—'}</span><span class="d">${Pr.min != null && Pr.max != null ? `de ${fm(Pr.min)} a ${fm(Pr.max)}` : ''}${Pr.unidade ? ' por ' + esc(Pr.unidade) : ''}</span></div></div>
+    ${T.nota ? `<p class="subdet">${esc(T.nota)}</p>` : ''}${R.resumo && R.porque ? `<p>${esc(R.resumo)}</p>` : ''}
+    ${Pr.med != null || R.unMes != null ? `<div class="row ng-levar"><button type="button" class="btn tiny" data-ngplevar="${x.id}">Levar ao DRE</button><span class="subdet">Põe a receita como preço × quantidade: ${Pr.med != null ? fm(Pr.med) : 'preço atual'}${R.unMes != null ? ` × ${Math.round(R.unMes).toLocaleString('pt-BR')} por mês quando maduro` : ''}.</span></div>` : ''}
+    ${R.conc.length ? `<h3 class="ng-h3">Concorrentes</h3><div class="tscroll"><table class="ng-cmp"><thead><tr><th>Concorrente</th><th>Preço</th><th>Observação</th></tr></thead><tbody>${R.conc.map(q => `<tr><td class="name">${esc(q.nome)}</td><td data-l="Preço">${esc(q.preco) || '—'}</td><td data-l="Obs.">${esc(q.obs)}</td></tr>`).join('')}</tbody></table></div>` : ''}
+    <div class="ng-pcols"><div><h3 class="ng-h3">Riscos</h3>${li(R.riscos)}</div><div><h3 class="ng-h3">Regras e licenças</h3>${li(R.regulatorio)}</div><div><h3 class="ng-h3">Oportunidades</h3>${li(R.oportunidades)}</div></div>
+    ${R.relatorio ? `<details class="ng-rel"><summary>Relatório completo</summary><div class="ng-md">${ngMd(R.relatorio)}</div></details>` : ''}
+    ${R.fontes.length ? `<p class="subdet ng-fontes">Fontes: ${R.fontes.map(f => `<a href="${esc(f.url)}" target="_blank" rel="noopener">${esc(f.t)}</a>`).join(' · ')}</p>` : ''}
+    <p class="subdet">Pesquisa feita com IA a partir de fontes públicas. Confira os números antes de investir.</p>`;
+}
+document.addEventListener('click', e => {
+  const t = e.target.closest('[data-ngpped],[data-ngpcanc],[data-ngplevar]'); if (!t || !state.neg) return; e.preventDefault(); const d = t.dataset;
+  if (d.ngpped) { const x = ngAcha(d.ngpped); if (!x || !db) return; const C = x.pesq;
+    if (!(C.produto || '').trim()) { ngToast('Descreva o produto ou serviço antes de pedir.'); return; }
+    const doc = { neg: x.id, nome: x.nome, setor: x.setor, cidade: x.cidade, tipo: x.tipo, campos: { produto: C.produto, regiao: C.regiao || x.cidade, publico: C.publico, ticket: C.ticket || null, obs: C.obs }, status: 'pedido', pedidoEm: new Date().toISOString(), prontoEm: '', msg: '' };
+    const P = ngPesq[x.id]; if (P && P.res) doc.res = P.res;   // a resposta anterior fica até chegar a nova
+    t.disabled = true; pdoc('painel/pesq-' + x.id).set(doc).then(() => { ngPesqTodos = (ngPesqTodos || 0) + 1; renderTab(); }).catch(er => { t.disabled = false; ngToast('Não consegui fazer o pedido agora' + (er && er.message ? ': ' + er.message : '.')); });
+    return; }
+  if (d.ngpcanc) { const x = ngAcha(d.ngpcanc), P = x && ngPesq[x.id]; if (!P || !confirmar('Cancelar o pedido de pesquisa?')) return;
+    const ref = pdoc('painel/pesq-' + x.id); (P.res ? ref.update({ status: 'pronto' }) : ref.delete()).then(() => { ngPesqTodos = Math.max(0, (ngPesqTodos || 1) - 1); renderTab(); }).catch(() => {}); return; }
+  if (d.ngplevar) { const x = ngAcha(d.ngplevar), P = x && ngPesq[x.id], R = P && P.res; if (!R) return; const l = x.linhas.find(y => y.g === 'rb' && !x.linhas.some(c => c.pai === y.id)); if (!l) return;
+    if (!confirmar(`Trocar a linha "${l.nome}" do DRE por preço × quantidade da pesquisa?`)) return;
+    l.modo = 'un'; if (R.preco.med != null) l.v = Math.round(R.preco.med * 100) / 100; if (R.unMes != null) l.qtd = Math.round(R.unMes); ngNorm(x); ngRe(); showTab('negdre'); return; }
+});
+
 /* ---------- eventos ---------- */
 const ngAcha = id => ngLista().find(y => y.id === id);
 // renderiza depois do evento: o campo que disparou o change ainda está saindo de foco
@@ -3856,7 +3980,7 @@ document.addEventListener('click', e => {
   const t = e.target.closest('[data-ngadd],[data-ngdel],[data-ngdup],[data-ngabre],[data-ngladd],[data-ngsub],[data-ngldel],[data-ngiadd],[data-ngidel],[data-ngper],[data-ngtog],[data-ngrlimpa]'); if (!t || !state.neg) return;
   const d = t.dataset, v = state.neg; e.preventDefault();
   if (d.ngadd != null) { const x = ngNovo('Negócio ' + (v.negocios.length + 1)); ngNorm(x); v.negocios.push(x); v.sel = x.id; ngRe(); if (tab !== 'negcad') showTab('negcad'); return; }
-  if (d.ngdel) { const x = ngAcha(d.ngdel); if (!x || !confirmar(`Remover o negócio "${x.nome}" com o DRE e o fluxo de caixa?`)) return; v.negocios = v.negocios.filter(y => y.id !== x.id); ngRe(); return; }
+  if (d.ngdel) { const x = ngAcha(d.ngdel); if (!x || !confirmar(`Remover o negócio "${x.nome}" com o DRE e o fluxo de caixa?`)) return; v.negocios = v.negocios.filter(y => y.id !== x.id); if (db) try { pdoc('painel/pesq-' + x.id).delete().catch(() => {}); } catch (er) {} ngRe(); return; }
   if (d.ngdup) { const x = ngAcha(d.ngdup); if (!x) return; const c = clone(x), map = {}; c.id = uid(); c.nome = x.nome + ' (cópia)'; c.uso = 'sim'; c.linhas.forEach(l => { map[l.id] = uid(); }); c.linhas.forEach(l => { l.id = map[l.id]; if (l.pai) l.pai = map[l.pai] || ''; });
     Object.keys(c.real).forEach(mk => { const o = {}; Object.entries(c.real[mk]).forEach(([id, val]) => { if (map[id]) o[map[id]] = val; }); c.real[mk] = o; }); c.inv.forEach(i => { if (i.id !== 'abertura') i.id = uid(); }); c.econ.forEach(q => { q.id = uid(); if (q.lig) q.lig = map[q.lig] || ''; }); v.negocios.push(c); v.sel = c.id; ngRe(); return; }
   if (d.ngabre) { const [id, tb] = d.ngabre.split(':'); v.sel = id; save(); showTab(tb); return; }
@@ -7220,7 +7344,7 @@ function normalizar(s) {
 try { if (quemLocal === 'dono') { const b = JSON.parse(localStorage.getItem('painel-priv')); if (b) aplicarBase(b); } } catch (e) {}
 try { const l = JSON.parse(localStorage.getItem(LSK('painel-fin-v2'))); if (l) state = normalizar(l); } catch (e) {}
 tab = 'modulos';
-const TABS = ['modulos', 'comousar', 'inicio', 'trabvg', 'viagvg', 'viagens', 'viagcmp', 'viagrot', 'viagcus', 'viagdur', 'negvg', 'negcad', 'negdre', 'negfc', 'negabr', 'negeco', 'leia', 'global', 'gastos', 'carteira', 'orcamento', 'compras', 'cenarios', 'patrimonio', 'comparador', 'simulador', 'pjpf', 'stock', 'config', 'familia'];
+const TABS = ['modulos', 'comousar', 'inicio', 'trabvg', 'viagvg', 'viagens', 'viagcmp', 'viagrot', 'viagcus', 'viagdur', 'negvg', 'negcad', 'negdre', 'negfc', 'negabr', 'negeco', 'negpesq', 'leia', 'global', 'gastos', 'carteira', 'orcamento', 'compras', 'cenarios', 'patrimonio', 'comparador', 'simulador', 'pjpf', 'stock', 'config', 'familia'];
 if (TABS.includes(location.hash.slice(1))) tab = location.hash.slice(1);
 if (!TABS.includes(tab)) tab = 'modulos';
 
@@ -11269,7 +11393,7 @@ $('cpform').addEventListener('submit', async e => {
 });
 
 /* ---------- abas ---------- */
-const BUILD = { modulos: () => {}, comousar: () => {}, inicio: () => {}, trabvg: () => {}, viagvg: () => {}, viagens: () => {}, viagcmp: () => {}, viagrot: () => {}, viagcus: () => {}, viagdur: () => {}, negvg: () => {}, negcad: () => {}, negdre: () => {}, negfc: () => {}, negabr: () => {}, negeco: () => {}, leia: buildLeia, global: () => {}, cenarios: buildCenarios, compras: buildCenarios, carteira: buildCarteira, comparador: buildComparador, simulador: buildSimulador, gastos: buildGastos, orcamento: buildOrcamento, config: buildConfig, pjpf: buildPj, stock: buildStock, familia: () => carregarPerfis(), patrimonio: () => {} };
+const BUILD = { modulos: () => {}, comousar: () => {}, inicio: () => {}, trabvg: () => {}, viagvg: () => {}, viagens: () => {}, viagcmp: () => {}, viagrot: () => {}, viagcus: () => {}, viagdur: () => {}, negvg: () => {}, negcad: () => {}, negdre: () => {}, negfc: () => {}, negabr: () => {}, negeco: () => {}, negpesq: () => {}, leia: buildLeia, global: () => {}, cenarios: buildCenarios, compras: buildCenarios, carteira: buildCarteira, comparador: buildComparador, simulador: buildSimulador, gastos: buildGastos, orcamento: buildOrcamento, config: buildConfig, pjpf: buildPj, stock: buildStock, familia: () => carregarPerfis(), patrimonio: () => {} };
 // (i) de cada seção: o que mostra e de onde vêm os números (chave: aba:data-nav)
 const INFO_SEC = {
   'comousar:Resumo': 'Para cada módulo: se já tem o mínimo para funcionar (os obrigatórios), quantos opcionais você resolveu e um botão para o próximo passo. Um opcional conta como resolvido quando você preenche ou marca que não tem.',
@@ -11279,13 +11403,15 @@ const INFO_SEC = {
   'comousar:Negócios': 'Os passos de Negócios. Todos são opcionais.',
   'negvg:Meus negócios': 'Lucro líquido e Para você são a média por mês do último ano do horizonte, quando o negócio já maturou. Para você = lucro distribuído × sua parte + pró-labore líquido − dinheiro que você põe.',
   'negvg:Linha do tempo': 'Cada negócio do primeiro investimento até o fim do horizonte. Tracejado: só simulação.',
-  'negvg:Partes do módulo': 'Atalhos para Meus negócios, Meu DRE e Fluxo de caixa.',
+  'negvg:Partes do módulo': 'Atalhos para cada parte do módulo.',
   'negcad:Cadastro': 'Sua parte é a sua participação no negócio: ela divide o lucro distribuído e o dinheiro que os sócios põem. Duplicar cria uma cópia para testar outra versão da mesma ideia.',
   'negcad:Anotações': 'Texto livre do negócio escolhido.',
   'negdre:Premissas': 'O DRE é mensal. A receita começa no % do 1º mês e cresce em linha reta até o mês de maturidade. O horizonte é o período das contas de payback e TIR; no Plano futuro o negócio continua depois dele.',
   'negdre:Linhas do DRE': 'R$ por mês: valor fixo, com reajuste anual. %: percentual da receita bruta, da receita líquida ou, no IR, do lucro antes do IR. Por unidade: na receita é preço × quantidade; nos custos, R$ por unidade vendida. A partir do mês: 1 é o primeiro mês de operação (use para uma contratação no mês 6, por exemplo). Pró-labore: marque a linha que é a sua retirada; ela entra no seu Plano futuro, líquida de INSS (11%) e IR. Não substitui um contador.',
   'negdre:DRE mês a mês': 'DRE é competência: a venda entra no mês em que foi feita, mesmo que o dinheiro caia depois. O dinheiro de verdade está em Fluxo de caixa.',
   'negdre:Realizado': 'O realizado substitui o projetado só naquele mês e naquela linha. O fluxo de caixa e o Plano futuro passam a usar o real.',
+  'negpesq:Pedido': 'Uma rotina do painel faz a pesquisa uma vez por dia, com IA e fontes públicas, e grava a resposta só na sua conta. No site, cada conta pode pedir 2 pesquisas a cada 30 dias. Pedir de novo troca a resposta anterior quando a nova chegar.',
+  'negpesq:Resultado': 'TAM: tudo o que o mercado movimenta por ano. SAM: a parte que o seu negócio consegue atender (região, público). SOM: o que é realista conquistar em 3 a 5 anos. Levar ao DRE troca a primeira linha de receita por preço × quantidade da pesquisa.',
   'negeco:Minhas oportunidades': 'Com uma linha do DRE escolhida, a economia é o % daquela linha em cada mês e acompanha as vendas. Sem linha, é o % do custo que você informou, fixo. O investimento dos cards feitos sai do caixa no mês de início. Meses com realizado lançado naquela linha já mostram o custo de verdade e não descontam a economia de novo.',
   'negeco:Catálogo': 'Pode adicionar a mesma oportunidade mais de uma vez, por exemplo um card para cada fornecedor.',
   'negeco:Tabela base': 'Faixas de referência de out/2026 para pequenas empresas, a partir de propostas de mercado. Mudam muito com a cidade, o porte e o contrato. Investimento sugerido em meses do custo atual: placas solares perto de 45 meses (payback de 4 a 5 anos).',
@@ -11407,7 +11533,7 @@ function infoSecoes() {
       if (h && !h.id) h.append(btn); else if (h) h.after(btn); else if (lg) lg.append(btn); }); });
 }
 infoSecoes();
-const RENDER = { modulos: renderModulos, comousar: renderComoUsar, inicio: renderHome, trabvg: renderTrabVg, viagvg: renderViagVg, viagens: renderViagens, viagcmp: renderViagCmp, viagrot: renderViagRot, viagcus: renderViagCus, viagdur: renderViagDur, negvg: renderNegVg, negcad: renderNegCad, negdre: renderNegDre, negfc: renderNegFc, negabr: renderNegAbr, negeco: renderNegEco, leia: () => {}, global: renderGlobal, cenarios: renderCenarios, compras: renderCenarios, carteira: renderCarteira, comparador: renderComparador, simulador: renderSimulador, gastos: () => { renderGastos(); renderFechamento(); renderHistorico(); }, orcamento: renderOrcamento, config: renderConfig, pjpf: renderPj, stock: renderStock, familia: renderFamilia, patrimonio: renderPatr };
+const RENDER = { modulos: renderModulos, comousar: renderComoUsar, inicio: renderHome, trabvg: renderTrabVg, viagvg: renderViagVg, viagens: renderViagens, viagcmp: renderViagCmp, viagrot: renderViagRot, viagcus: renderViagCus, viagdur: renderViagDur, negvg: renderNegVg, negcad: renderNegCad, negdre: renderNegDre, negfc: renderNegFc, negabr: renderNegAbr, negeco: renderNegEco, negpesq: renderNegPesq, leia: () => {}, global: renderGlobal, cenarios: renderCenarios, compras: renderCenarios, carteira: renderCarteira, comparador: renderComparador, simulador: renderSimulador, gastos: () => { renderGastos(); renderFechamento(); renderHistorico(); }, orcamento: renderOrcamento, config: renderConfig, pjpf: renderPj, stock: renderStock, familia: renderFamilia, patrimonio: renderPatr };
 function renderTab() { planCache = null; try { RENDER[tab](); } catch (err) { console.error(err); setSave('erro ao recalcular: ' + (err && err.message || err)); } }
 let navAbertos = null;
 try { navAbertos = JSON.parse(localStorage.getItem('painel-nav-abertos')); } catch (e) {}
@@ -11473,7 +11599,7 @@ const MODS = [
   { id: 'fin', corNav: '#7FA6E0', nome: 'Financeiro', cor: 'var(--s1)', fixo: true, vg: 'inicio', desc: 'Gastos, patrimônio, carteira, plano futuro e cenários. Recebe o que os outros módulos planejam.', tabs: ['inicio', 'global', 'gastos', 'patrimonio', 'carteira', 'comparador', 'simulador', 'orcamento', 'cenarios', 'familia'] },
   { id: 'trab', corNav: '#E09A63', nome: 'Trabalho e Bens', cor: 'var(--s2)', vg: 'trabvg', desc: 'Compras e bens (imóveis, carros, ...), stock options e PJ e PF. O que entra no plano vai para o Plano futuro.', tabs: ['trabvg', 'compras', 'stock', 'pjpf'] },
   { id: 'viag', corNav: '#5fc2f5', nome: 'Viagens', cor: 'var(--s8)', vg: 'viagens', desc: 'Mapa de onde já foi e de onde quer ir, sorteio, comparação de destinos nas suas datas o roteiro com a rota mais barata, os custos ligados ao Plano futuro e os gastos durante a viagem.', tabs: ['viagvg', 'viagens', 'viagcmp', 'viagrot', 'viagcus', 'viagdur'] },
-  { id: 'neg', corNav: '#a3e05a', nome: 'Negócios', cor: 'var(--s7)', vg: 'negvg', desc: 'Suas ideias e empresas: DRE com as suas linhas, fluxo de caixa, quanto pôr e quanto chega para você no Plano futuro. Abrir empresa com a comparação de regimes e oportunidades de custo. Pesquisa de mercado vem a seguir.', tabs: ['negvg', 'negcad', 'negdre', 'negfc', 'negabr', 'negeco'] },
+  { id: 'neg', corNav: '#a3e05a', nome: 'Negócios', cor: 'var(--s7)', vg: 'negvg', desc: 'Suas ideias e empresas: DRE com as suas linhas, fluxo de caixa, quanto pôr e quanto chega para você no Plano futuro. Abrir empresa com a comparação de regimes, oportunidades de custo e pesquisa de mercado com IA.', tabs: ['negvg', 'negcad', 'negdre', 'negfc', 'negabr', 'negeco', 'negpesq'] },
   { id: 'fam', corNav: '#fb7185', nome: 'Família', cor: 'var(--s6)', breve: true, desc: 'Contas conjuntas, filhos (do bebê à escola), divisão de gastos e dados compartilhados com quem mora com você.', tabs: [] },
   { id: 'indep', corNav: '#E3B848', nome: 'Independência financeira', cor: 'var(--s3)', breve: true, desc: 'Quando dá para parar de trabalhar: quanto juntar, renda passiva, INSS e previdência privada.', tabs: [] }
 ];
@@ -11542,6 +11668,7 @@ function cuPassos() {
         { id: 'ngcad', t: 'Cadastrar um negócio', d: 'Uma ideia, uma empresa em abertura ou uma que já existe.', ok: ngLista().length > 0 || pul.includes('ngcad'), tab: 'negcad', sec: 'Cadastro', pular: 'Depois' },
         { id: 'ngdre', t: 'Montar o DRE', d: 'Receita, impostos, custos e despesas. Inclua as suas linhas e desdobre as que quiser.', ok: ngLista().some(x => x.linhas.some(l => l.g === 'rb' && l.v > 0)) || pul.includes('ngdre'), tab: 'negdre', sec: 'Linhas do DRE', pular: 'Depois' },
         { id: 'ngfc', t: 'Investimentos e caixa', d: 'O que precisa investir, prazos de recebimento e pagamento e, se houver, o empréstimo.', ok: ngLista().some(x => x.inv.some(i => i.valor > 0)) || pul.includes('ngfc'), tab: 'negfc', sec: 'Investimentos', pular: 'Depois' },
+        { id: 'ngpesq', t: 'Pesquisar o mercado', d: 'Para uma ideia: tamanho do mercado, concorrentes, preços e um veredito. A resposta chega em até um dia.', ok: ngLista().some(x => !!ngPesq[x.id]) || pul.includes('ngpesq'), tab: 'negpesq', sec: 'Pedido', pular: 'Depois' },
         { id: 'ngreg', t: 'Escolher o regime de tributação', d: 'Compare Simples, Presumido e Real com os números do seu DRE e deixe o painel calcular os impostos.', ok: ngLista().some(x => x.trib.regime !== 'manual') || pul.includes('ngreg'), tab: 'negabr', sec: 'Regime de tributação', pular: 'Depois' },
         { id: 'ngeco', t: 'Procurar oportunidades de custo', d: 'Para a empresa que já roda: energia, maquininha, aluguel, fornecedores. As feitas viram economia no DRE.', ok: ngLista().some(x => x.econ.length) || pul.includes('ngeco'), tab: 'negeco', sec: 'Catálogo', pular: 'Depois' },
         { id: 'ngpl', t: 'Levar ao Plano futuro', d: 'Sua participação, quanto do lucro é distribuído e se você vai deixar a renda atual.', ok: ngLista().some(x => x.uso === 'real') || pul.includes('ngpl'), tab: 'negfc', sec: 'No Plano futuro', pular: 'Depois' }
@@ -12433,6 +12560,7 @@ const LM_MODS = [
   ['negfc', 'O fluxo de caixa: investimentos, capital de giro, empréstimo, quanto os sócios precisam pôr, quando o caixa vira e o que entra no seu Plano futuro.', 'para saber quanto dinheiro o negócio pede e devolve.'],
   ['negabr', 'Para abrir a empresa: MEI, SLU ou LTDA, a comparação de Simples, Lucro Presumido e Lucro Real com os números do seu DRE e o passo a passo com custos, prazos e links.', 'antes de formalizar o negócio ou para ver se vale trocar de regime.'],
   ['negeco', 'As oportunidades de custo de cada negócio: energia, placas solares, tarifas, maquininha, aluguel, frota, fornecedores e dívidas, com economia por mês, investimento e payback. As feitas entram no DRE.', 'quando a empresa estiver rodando e você quiser gastar menos.'],
+  ['negpesq', 'A pesquisa de mercado de cada ideia, feita com IA: tamanho do mercado (TAM, SAM, SOM), concorrentes com preço, faixa de preço, riscos, regras e um veredito, com o relatório completo e um botão para levar os números ao DRE.', 'antes de investir numa ideia.'],
   'Geral',
   ['config', 'As premissas: renda e projeção, a curva de juros (Focus, atualizada toda segunda) e o retorno esperado de cada classe de ativo.', 'raramente; só para ajustar uma premissa.']
 ];
