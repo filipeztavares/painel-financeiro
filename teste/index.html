@@ -1180,6 +1180,21 @@ ul.ng-plano { margin: 8px 0; padding-left: 18px; font-size: 12.5px; line-height:
 #ngc-nota textarea { width: 100%; font: inherit; padding: 8px; border: 1px solid var(--line); border-radius: 8px; background: var(--field); color: var(--ink); text-transform: none; letter-spacing: 0; }
 @media (max-width: 760px) { .ng-form { grid-template-columns: repeat(2, minmax(0, 1fr)); } .ng-top label { min-width: 0; flex: 1; } }
 @media (max-width: 480px) { .ng-form { grid-template-columns: minmax(0, 1fr); } }
+.ng-dre tr.ng-l.fora td { opacity: .45; }
+.ng-reg { margin: 0 0 10px; padding: 8px 12px; border-radius: 8px; background: var(--good-soft); font-size: 12.5px; }
+.ng-reg.off { background: var(--field); color: var(--muted); }
+.ng-nat { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+.ng-natc { text-align: left; border: 1px solid var(--line); border-radius: 10px; background: var(--panel); padding: 12px 14px; cursor: pointer; display: flex; flex-direction: column; gap: 6px; font: inherit; color: var(--ink); }
+.ng-natc b { font-family: var(--f-head); font-size: 13px; }
+.ng-natc span { font-size: 12px; color: var(--muted); line-height: 1.45; }
+.ng-natc.on { border-color: var(--s7); box-shadow: inset 0 0 0 1px var(--s7); background: var(--good-soft); }
+.ng-cmp td small { display: block; color: var(--muted); font-size: 11px; font-weight: 400; }
+.ng-cmp tr.on td { background: var(--accent-soft); }
+.ng-cmp tr.nao td { color: var(--faint); }
+.ng-passos .ng-pz { font-size: 11px; color: var(--faint); }
+.ng-passos .hp-acs input[type="number"] { width: 84px; padding: 4px 6px; }
+p.warn { margin: 10px 0 0; padding: 8px 12px; border-radius: 8px; background: var(--bad-soft); color: var(--bad); font-size: 12.5px; }
+@media (max-width: 760px) { .ng-nat { grid-template-columns: minmax(0, 1fr); } }
 </style>
 
 
@@ -1228,6 +1243,7 @@ ul.ng-plano { margin: 8px 0; padding-left: 18px; font-size: 12.5px; line-height:
           <div class="nav-group"><button type="button" class="nav-head" data-tab="negcad"><span class="ico">01</span>Meus negócios<span class="caret" data-navtog="negcad" role="button" tabindex="0" aria-label="Abrir ou recolher submódulos">▾</span></button><div class="nav-sub" data-sub="negcad"></div></div>
           <div class="nav-group"><button type="button" class="nav-head" data-tab="negdre"><span class="ico">02</span>Meu DRE<span class="caret" data-navtog="negdre" role="button" tabindex="0" aria-label="Abrir ou recolher submódulos">▾</span></button><div class="nav-sub" data-sub="negdre"></div></div>
           <div class="nav-group"><button type="button" class="nav-head" data-tab="negfc"><span class="ico">03</span>Fluxo de caixa<span class="caret" data-navtog="negfc" role="button" tabindex="0" aria-label="Abrir ou recolher submódulos">▾</span></button><div class="nav-sub" data-sub="negfc"></div></div>
+          <div class="nav-group"><button type="button" class="nav-head" data-tab="negabr"><span class="ico">04</span>Abrir empresa<span class="caret" data-navtog="negabr" role="button" tabindex="0" aria-label="Abrir ou recolher submódulos">▾</span></button><div class="nav-sub" data-sub="negabr"></div></div>
         </div></div>
         <div class="nav-pe">
         <div class="nav-group mini"><button type="button" class="nav-head" data-tab="leia"><span class="ico">?</span>Leia-me<span class="caret" data-navtog="leia" role="button" tabindex="0" aria-label="Abrir ou recolher submódulos">▾</span></button><div class="nav-sub" data-sub="leia"></div></div>
@@ -1236,7 +1252,7 @@ ul.ng-plano { margin: 8px 0; padding-left: 18px; font-size: 12.5px; line-height:
     </div>
     <div class="nav-mobile-sub" id="navMobileSub"></div>
   </div>
-  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 213</div></div>
+  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 214</div></div>
 </nav>
 <div class="sino-pop" id="sino-pop" role="dialog" aria-label="Central de avisos" hidden></div>
 <div class="tour-pop" id="tour-pop" role="dialog" aria-labelledby="tour-tit" hidden></div>
@@ -1502,7 +1518,7 @@ ul.ng-plano { margin: 8px 0; padding-left: 18px; font-size: 12.5px; line-height:
     </section>
     <section data-nav="Partes do módulo" class="panel">
       <h2>Partes do módulo</h2>
-      <p class="sub">Pesquisa de mercado, Abrir empresa (com a comparação de regimes) e Oportunidades de custo chegam nas próximas etapas.</p>
+      <p class="sub">Pesquisa de mercado e Oportunidades de custo chegam nas próximas etapas.</p>
       <div class="tv-links" id="ngv-links"></div>
     </section>
   </section>
@@ -1543,6 +1559,25 @@ ul.ng-plano { margin: 8px 0; padding-left: 18px; font-size: 12.5px; line-height:
       <h2>Realizado do mês</h2>
       <p class="sub">Lance o que aconteceu de verdade em cada mês e compare com o projetado.</p>
       <div id="ngd-real"></div>
+    </section>
+  </section>
+  <!-- ============ NEGÓCIOS: ABRIR EMPRESA ============ -->
+  <section role="tabpanel" id="p-negabr" hidden>
+    <div class="block-title"><span class="num">04</span><div><h1>Abrir empresa</h1><p class="desc">O passo a passo para formalizar o negócio, a natureza jurídica e a comparação dos regimes de tributação com os números do seu DRE.</p></div></div>
+    <div id="nga-sel"></div>
+    <section data-nav="Natureza jurídica" class="panel">
+      <h2>Natureza jurídica</h2>
+      <div id="nga-nat"></div>
+    </section>
+    <section data-nav="Regime de tributação" class="panel">
+      <h2>Regime de tributação</h2>
+      <p class="sub">Os mesmos números do DRE em cada regime. Escolha um em "Usar no DRE" e o painel passa a calcular os impostos todo mês, inclusive no fluxo de caixa e no Plano futuro.</p>
+      <div id="nga-reg"></div>
+    </section>
+    <section data-nav="Passo a passo" class="panel">
+      <h2>Passo a passo</h2>
+      <p class="sub">Na ordem em que costuma acontecer em São Paulo. Marque o que já fez e ajuste os custos.</p>
+      <div id="nga-passos"></div>
     </section>
   </section>
   <!-- ============ NEGÓCIOS: FLUXO DE CAIXA ============ -->
@@ -2619,7 +2654,7 @@ ul.ng-plano { margin: 8px 0; padding-left: 18px; font-size: 12.5px; line-height:
     return new Promise(resolve => { const { data } = sb.auth.onAuthStateChange(async (ev) => { if (ev !== 'PASSWORD_RECOVERY') return; const s = prompt('Digite a nova senha (mínimo 8 caracteres):'); if (s && s.length >= 8) { const { error } = await sb.auth.updateUser({ password: s }); alert(error ? 'Não deu para trocar a senha: ' + error.message : 'Senha trocada.'); } }); resolve(data); });
   }
   // ---------- rodapé: compartilhar, administração e sair ----------
-  const SITE_V = 95;
+  const SITE_V = 96;
   const escH = v => String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const dataBR = v => v ? new Date(v).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' }) : '–';
   const css2 = `.side-foot .r{flex-wrap:wrap}.side-foot .lg-acoes{margin-left:auto;display:inline-flex;gap:10px}
@@ -3207,20 +3242,20 @@ const NG_MODO = { fixo: 'R$ por mês', pct: '% de', un: 'R$ por unidade' };
 const ngModos = g => g === 'rb' ? [['fixo', 'R$ por mês'], ['un', 'Preço × quantidade']] : [['fixo', 'R$ por mês'], ['pct:rb', '% da receita bruta'], ['pct:rl', '% da receita líquida'], ...(g === 'ir' ? [['pct:lair', '% do lucro antes do IR']] : []), ['un', 'R$ por unidade vendida']];
 const NG_BASE = { rb: 'receita bruta', rl: 'receita líquida', lair: 'lucro antes do IR' };
 function ngLinhasPadrao() {
-  const L = [], a = (g, nome, o) => { const l = Object.assign({ id: uid(), g, pai: '', nome, modo: 'fixo', v: 0, qtd: 0, base: 'rb', reaj: 0, ini: 1, pl: false }, o || {}); L.push(l); return l; };
+  const L = [], a = (g, nome, o) => { const l = Object.assign({ id: uid(), g, pai: '', nome, modo: 'fixo', v: 0, qtd: 0, base: 'rb', reaj: 0, ini: 1, pl: false, imp: false, folha: false }, o || {}); L.push(l); return l; };
   a('rb', 'Vendas', { reaj: 4 });
-  a('ded', 'Impostos sobre a venda', { modo: 'pct', v: 6 }); a('ded', 'Taxas de cartão', { modo: 'pct', v: 0 });
+  a('ded', 'Impostos sobre a venda', { modo: 'pct', v: 6, imp: true }); a('ded', 'Taxas de cartão', { modo: 'pct', v: 0 });
   a('cmv', 'Custo do que foi vendido', { modo: 'pct', v: 0 });
-  const p = a('desp', 'Pessoal'); a('desp', 'Salários', { pai: p.id, reaj: 5 }); a('desp', 'Encargos e benefícios', { pai: p.id, reaj: 5 });
+  const p = a('desp', 'Pessoal'); a('desp', 'Salários', { pai: p.id, reaj: 5, folha: true }); a('desp', 'Encargos e benefícios', { pai: p.id, reaj: 5 });
   a('desp', 'Pró-labore', { pl: true, reaj: 5 }); a('desp', 'Aluguel', { reaj: 4 }); a('desp', 'Marketing');
   const ad = a('desp', 'Administrativas'); a('desp', 'Contabilidade', { pai: ad.id, reaj: 4 }); a('desp', 'Softwares e internet', { pai: ad.id });
   a('fin', 'Tarifas bancárias');
-  a('ir', 'IR e CSLL', { modo: 'pct', v: 0, base: 'lair' });
+  a('ir', 'IR e CSLL', { modo: 'pct', v: 0, base: 'lair', imp: true });
   return L;
 }
 function ngNovo(nome) {
   return { id: uid(), nome: nome || 'Novo negócio', setor: '', cidade: '', tipo: 'ideia', ini: mKey(HOJE_IDX + 6), anos: 5, rampa: 12, fatIni: 30, part: 100, dist: 80, uso: 'sim',
-    saida: { on: false, mes: '' }, linhas: ngLinhasPadrao(), inv: [], giro: { receb: 30, estoque: 0, pagar: 30, caixaMin: 0 }, emp: { on: false, valor: 0, mes: '', taxa: 18, prazo: 36 }, real: {}, nota: '' };
+    saida: { on: false, mes: '' }, linhas: ngLinhasPadrao(), inv: [], giro: { receb: 30, estoque: 0, pagar: 30, caixaMin: 0 }, emp: { on: false, valor: 0, mes: '', taxa: 18, prazo: 36 }, real: {}, nota: '', trib: {}, abr: {} };
 }
 const ngN = (v, d, lo, hi) => { const x = +v; return v === '' || v == null || !isFinite(x) ? d : Math.min(hi ?? Infinity, Math.max(lo ?? -Infinity, x)); };
 const ngMes = (v, d) => /^\d{4}-\d{2}$/.test(String(v || '')) ? String(v) : d;
@@ -3234,11 +3269,17 @@ function ngNorm(x) {
   x.linhas = x.linhas.filter(l => l && l.id && NG_G.some(g => g.id === l.g));
   x.linhas.forEach(l => { if (!NG_MODO[l.modo]) l.modo = 'fixo'; if (l.g === 'rb' && l.modo === 'pct') l.modo = 'fixo'; if (!NG_BASE[l.base]) l.base = 'rb'; if (l.base === 'lair' && l.g !== 'ir') l.base = 'rb';
     l.v = ngN(l.v, 0); l.qtd = ngN(l.qtd, 0, 0); l.reaj = ngN(l.reaj, 0, -50, 100); l.ini = Math.round(ngN(l.ini, 1, 1, 600)); l.pl = !!l.pl && l.g === 'desp'; if (typeof l.nome !== 'string') l.nome = '';
+    if (l.imp == null) l.imp = (l.g === 'ded' && /impost|das\b|simples/i.test(l.nome)) || (l.g === 'ir' && /ir\b|irpj|csll|imposto/i.test(l.nome)); l.imp = !!l.imp && (l.g === 'ded' || l.g === 'ir');
+    if (l.folha == null) l.folha = l.g === 'desp' && /sal[aá]rio/i.test(l.nome); l.folha = !!l.folha && l.g === 'desp' && !l.pl;
     if (l.pai && !x.linhas.some(p => p.id === l.pai && p.g === l.g)) l.pai = ''; if (typeof l.pai !== 'string') l.pai = ''; });
   if (!Array.isArray(x.inv)) x.inv = []; x.inv = x.inv.filter(i => i && i.id); x.inv.forEach(i => { i.valor = ngN(i.valor, 0, 0); i.mes = ngMes(i.mes, x.ini); i.vida = ngN(i.vida, 0, 0, 50); if (typeof i.nome !== 'string') i.nome = ''; });
   if (!x.giro || typeof x.giro !== 'object') x.giro = {}; const G = x.giro; G.receb = ngN(G.receb, 30, 0, 365); G.estoque = ngN(G.estoque, 0, 0, 365); G.pagar = ngN(G.pagar, 30, 0, 365); G.caixaMin = ngN(G.caixaMin, 0, 0);
   if (!x.emp || typeof x.emp !== 'object') x.emp = {}; const E = x.emp; E.on = !!E.on; E.valor = ngN(E.valor, 0, 0); E.mes = ngMes(E.mes, x.ini); E.taxa = ngN(E.taxa, 18, 0, 500); E.prazo = Math.round(ngN(E.prazo, 36, 1, 360));
   if (!x.real || typeof x.real !== 'object' || Array.isArray(x.real)) x.real = {};
+  if (!x.trib || typeof x.trib !== 'object') x.trib = {}; const Tb = x.trib;
+  if (!NG_NAT[Tb.nat]) Tb.nat = x.part < 100 ? 'ltda' : 'slu'; if (!NG_ATIV[Tb.ativ]) Tb.ativ = 'servico'; if (!['III', 'IV', 'V', 'fatorR'].includes(Tb.anexo)) Tb.anexo = 'fatorR';
+  Tb.iss = ngN(Tb.iss, 5, 0, 5); Tb.icms = ngN(Tb.icms, 5, 0, 30); if (!NG_REG[Tb.regime]) Tb.regime = 'manual'; Tb.ano = Math.round(ngN(Tb.ano, 2, 1, 30));
+  if (!x.abr || typeof x.abr !== 'object') x.abr = {}; if (!x.abr.feito || typeof x.abr.feito !== 'object') x.abr.feito = {}; if (!x.abr.custo || typeof x.abr.custo !== 'object') x.abr.custo = {};
 }
 // o "Novo negócio" de Compras e bens vira um negócio aqui (escolha do Filipe, 27/10)
 function ngDeCompra(b, s) {
@@ -3273,6 +3314,39 @@ const ngLista = () => ((state.neg || {}).negocios || []);
 const ngSel = () => { const v = state.neg; if (!v) return null; let x = v.negocios.find(y => y.id === v.sel) || v.negocios[0] || null; if (x) v.sel = x.id; return x; };
 const ngFilhas = (x, id) => x.linhas.filter(l => l.pai === id);
 
+/* ---------- tributação (regras de 2026; aproximação, não substitui contador) ----------
+   Simples: alíquota efetiva pela receita dos últimos 12 meses (no começo, média × 12), Anexos I a V e fator R.
+   Presumido: PIS 0,65% + COFINS 3% + ISS/ICMS; IRPJ 15% (+10% acima de R$ 20 mil/mês) e CSLL 9% sobre a presunção
+   (8%/12% comércio e indústria, 32% serviços; +10% na presunção da receita acima de R$ 5 mi/ano, LC 224/2025).
+   Real: PIS/COFINS 9,25% com crédito sobre o custo do que foi vendido + ISS/ICMS; IRPJ e CSLL sobre o lucro.
+   INSS patronal (Anexo IV, Presumido e Real): 20% do pró-labore e 25,8% dos salários (20% + RAT e terceiros). */
+const NG_NAT = { mei: 'MEI', slu: 'Sociedade Limitada Unipessoal (SLU)', ltda: 'Sociedade Limitada (LTDA)' };
+const NG_ATIV = { servico: 'Serviços', comercio: 'Comércio', industria: 'Indústria' };
+const NG_REG = { manual: 'Do jeito que está no DRE', mei: 'MEI (SIMEI)', simples: 'Simples Nacional', presumido: 'Lucro Presumido', real: 'Lucro Real' };
+const NG_SN = { I: [[180000, .04, 0], [360000, .073, 5940], [720000, .095, 13860], [1800000, .107, 22500], [3600000, .143, 87300], [4800000, .19, 378000]],
+  II: [[180000, .045, 0], [360000, .078, 5940], [720000, .10, 13860], [1800000, .112, 22500], [3600000, .147, 85500], [4800000, .30, 720000]],
+  IV: [[180000, .045, 0], [360000, .09, 8100], [720000, .102, 12420], [1800000, .14, 39780], [3600000, .22, 183780], [4800000, .33, 828000]] };
+const NG_MEI = { lim: 81000, inss: 0.05 * 1621, icms: 1, iss: 5 };
+const ngSnTab = an => NG_SN[an] || PJ26[an];
+function ngSnAliq(rbt, an) { const t = ngSnTab(an), f = t.find(q => rbt <= q[0]) || t[t.length - 1]; return rbt > 0 ? Math.max(0, (rbt * f[1] - f[2]) / rbt) : t[0][1]; }
+function ngAnexo(Tb, rbt, folha12) { if (Tb.ativ === 'comercio') return 'I'; if (Tb.ativ === 'industria') return 'II'; if (Tb.anexo !== 'fatorR') return Tb.anexo; return rbt > 0 && folha12 / rbt >= 0.28 ? 'III' : 'V'; }
+const ngAuto = x => x.trib.regime !== 'manual';
+// impostos sobre a venda do mês (DAS no Simples)
+function ngImpVenda(x, reg, RB, CMV, rbt, folha12) {
+  const Tb = x.trib, loc = (Tb.ativ === 'servico' ? Tb.iss : Tb.icms) / 100;
+  if (reg === 'mei') return NG_MEI.inss + (Tb.ativ === 'servico' ? NG_MEI.iss : NG_MEI.icms);
+  if (reg === 'simples') { const an = ngAnexo(Tb, rbt, folha12); return RB * ngSnAliq(rbt, an); }
+  if (reg === 'presumido') return RB * (0.0065 + 0.03 + loc);
+  if (reg === 'real') return Math.max(0, 0.0925 * (RB - CMV)) + RB * loc;
+  return 0;
+}
+const ngCpp = (x, reg, rbt, folha12, pl, sal) => reg === 'presumido' || reg === 'real' || (reg === 'simples' && ngAnexo(x.trib, rbt, folha12) === 'IV') ? 0.20 * pl + 0.258 * sal : 0;
+function ngIrpj(x, reg, RB, rbt, lair) {
+  if (reg === 'presumido') { const sv = x.trib.ativ === 'servico', fx = rbt > 5e6 ? 1 + 0.1 * (rbt - 5e6) / rbt : 1, b = RB * (sv ? 0.32 : 0.08) * fx, c = RB * (sv ? 0.32 : 0.12) * fx; return 0.15 * b + 0.10 * Math.max(0, b - 20000) + 0.09 * c; }
+  if (reg === 'real') return lair > 0 ? 0.15 * lair + 0.10 * Math.max(0, lair - 20000) + 0.09 * lair : 0;
+  return 0;
+}
+
 /* ---------- motor: DRE e fluxo de caixa mês a mês ----------
    t = mês do negócio (0 = mês de início da operação; negativo = antes de abrir, só investimentos). */
 const ngHorizonte = () => { const P = state.plan || {}, i0 = mIndex(P.inicio); return Math.max(i0 + Math.round((+P.anos || 10) * 12), HOJE_IDX + Math.round(((state.cfg || {}).anos || 1) * 12) + 13); };
@@ -3286,23 +3360,31 @@ function ngCalc(x, ateI) {
   const emp = x.emp.on && x.emp.valor > 0 ? { t0: mIndex(x.emp.mes) - i0, s: ngJuros(x.emp) } : null;
   const folhas = x.linhas.filter(l => !x.linhas.some(c => c.pai === l.id)), porG = {}; NG_G.forEach(g => { porG[g.id] = folhas.filter(l => l.g === g.id); });
   const inv = x.inv.filter(v => v.valor > 0).map(v => ({ v, t: mIndex(v.mes) - i0 }));
-  const meses = []; let giroAnt = 0, caixa = 0, acProj = 0, pay = null, negAntes = false;
+  const meses = [], hRB = [], hFo = [], reg = x.trib.regime, auto = reg !== 'manual'; let giroAnt = 0, caixa = 0, acProj = 0, pay = null, negAntes = false;
   for (let t = tmin; t <= tmax; t++) {
     const i = i0 + t, mk = mKey(i), op = t >= 0, rj = l => Math.pow(1 + l.reaj / 100, Math.floor(Math.max(0, t - l.ini + 1) / 12)), on = l => op && t + 1 >= l.ini, rv = (x.real[mk] || {});
     const val = {}, f = ramp(t); let U = 0;
-    const leaf = (l, fn) => { const r = rv[l.id]; val[l.id] = r != null && isFinite(+r) ? +r : on(l) ? fn() : 0; return val[l.id]; };
+    const leaf = (l, fn) => { const r = rv[l.id]; val[l.id] = auto && l.imp ? 0 : r != null && isFinite(+r) ? +r : on(l) ? fn() : 0; return val[l.id]; };
     porG.rb.forEach(l => { if (l.modo === 'un' && on(l)) U += l.qtd * f; });
     let RB = 0; porG.rb.forEach(l => { RB += leaf(l, () => (l.modo === 'un' ? l.v * l.qtd : l.v) * f * rj(l)); });
     const calc = (l, B) => l.modo === 'pct' ? l.v / 100 * (l.base === 'rl' ? B.rl : l.base === 'lair' ? Math.max(0, B.lair) : B.rb) : l.modo === 'un' ? l.v * U * rj(l) : l.v * rj(l);
     const B = { rb: RB, rl: RB, lair: 0 }, soma = g => porG[g].reduce((s, l) => s + leaf(l, () => calc(l, B)), 0);
-    const DED = soma('ded'); B.rl = RB - DED;
-    const CMV = soma('cmv'), DESP = soma('desp');
+    const DEDm = soma('ded'); B.rl = RB - DEDm;
+    const CMV = soma('cmv');
+    // folha (salários marcados + pró-labore) para o fator R e o INSS patronal
+    const fo = porG.desp.filter(l => l.folha || l.pl).map(l => [l, leaf(l, () => calc(l, B))]), sal = fo.filter(([l]) => l.folha).reduce((q, [, v]) => q + v, 0), plM = fo.filter(([l]) => l.pl).reduce((q, [, v]) => q + v, 0);
+    const prev = hRB.slice(-12), rbt = !op ? 0 : prev.length >= 12 ? prev.reduce((q, v) => q + v, 0) : prev.length ? prev.reduce((q, v) => q + v, 0) / prev.length * 12 : RB * 12;
+    const pf = hFo.slice(-12), folha12 = pf.length >= 12 ? pf.reduce((q, v) => q + v, 0) : (pf.length ? pf.reduce((q, v) => q + v, 0) / pf.length : sal * 1.08 + plM) * 12;
+    const impV = auto && op ? ngImpVenda(x, reg, RB, CMV, rbt, folha12) : 0, cppA = auto && op ? ngCpp(x, reg, rbt, folha12, plM, sal) : 0;
+    if (op) { hRB.push(RB); hFo.push(sal * 1.08 + plM); }
+    const DED = DEDm + impV; B.rl = RB - DED;
+    const DESP = soma('desp') + cppA;
     let depA = 0; inv.forEach(({ v, t: ti }) => { if (v.vida > 0 && t > ti && t <= ti + v.vida * 12) depA += v.valor / (v.vida * 12); });
     const DEP = soma('dep') + depA;
     const ek = emp ? t - emp.t0 - 1 : -1, ps = emp && ek >= 0 && ek < emp.s.length ? emp.s[ek] : null, jur = ps ? ps.j : 0;
     const FIN = soma('fin') + jur;
     B.lair = B.rl - CMV - DESP - DEP - FIN;
-    const IR = soma('ir'), LL = B.lair - IR;
+    const irA = auto && op ? ngIrpj(x, reg, RB, rbt, B.lair) : 0, IR = soma('ir') + irA, LL = B.lair - IR;
     const pl = porG.desp.filter(l => l.pl).reduce((s, l) => s + (val[l.id] || 0), 0);
     // capital de giro: o que fica a receber e em estoque menos o que ainda vai pagar aos fornecedores
     const giro = (x.giro.receb * RB + x.giro.estoque * CMV - x.giro.pagar * CMV) / 30, dGiro = giro - giroAnt; giroAnt = giro;
@@ -3312,7 +3394,7 @@ function ngCalc(x, ateI) {
     caixa += fc; let aporte = 0, distrib = 0;
     if (caixa < x.giro.caixaMin) { aporte = x.giro.caixaMin - caixa; caixa = x.giro.caixaMin; }
     else if (fc > 0) { distrib = x.dist / 100 * Math.min(fc, caixa - x.giro.caixaMin); caixa -= distrib; }
-    meses.push({ t, i, mk, val, U, RB, DED, RL: B.rl, CMV, LB: B.rl - CMV, DESP, EBITDA: B.rl - CMV - DESP, depA, DEP, EBIT: B.rl - CMV - DESP - DEP, jur, FIN, LAIR: B.lair, IR, LL, pl, plLiq: ngPlLiq(pl),
+    meses.push({ t, i, mk, val, U, RB, rbt, impV, cppA, irA, anexo: reg === 'simples' && op ? ngAnexo(x.trib, rbt, folha12) : '', DED, RL: B.rl, CMV, LB: B.rl - CMV, DESP, EBITDA: B.rl - CMV - DESP, depA, DEP, EBIT: B.rl - CMV - DESP - DEP, jur, FIN, LAIR: B.lair, IR, LL, pl, plLiq: ngPlLiq(pl),
       giro, dGiro, oper, invT, empIn, amort, fc, proj, caixa, aporte, distrib, real: !!x.real[mk] && Object.keys(x.real[mk]).length > 0 });
   }
   const noH = meses.filter(m => m.t < T), op = noH.filter(m => m.t >= 0);
@@ -3356,6 +3438,7 @@ function ngItensMod() {
 
 /* ---------- telas ---------- */
 const ngSelHtml = (x, alvo) => `<div class="ng-top"><label>Negócio<select data-ngsel aria-label="Escolher negócio">${ngLista().map(y => `<option value="${y.id}"${y.id === x.id ? ' selected' : ''}>${esc(y.nome)} · ${NG_TIPO[y.tipo]}</option>`).join('')}</select></label>${alvo || ''}</div>`;
+const ngRegNome = (x, m) => x.trib.regime === 'simples' ? 'DAS do Simples' + (m && m.anexo ? ` (Anexo ${m.anexo})` : '') : x.trib.regime === 'mei' ? 'DAS do MEI' : 'Impostos sobre a venda (' + NG_REG[x.trib.regime] + ')';
 const ngVazio = () => `<p class="hint">Nenhum negócio ainda. <button type="button" class="btn tiny" data-ngadd>+ Novo negócio</button></p>`;
 const ngSg = v => `<span class="${v < -0.5 ? 'neg' : ''}">${fm(v)}</span>`;
 function ngKpis(el, x, R) {
@@ -3381,7 +3464,7 @@ function renderNegVg() {
       <td data-l="Tipo">${NG_TIPO[x.tipo]}</td><td data-l="Início">${mLabel(R.i0)}</td><td data-l="Investimento">${fm(R.invTot)}</td><td data-l="Lucro/mês">${ngSg(R.llMad)}</td><td data-l="Para você">${ngSg(R.voceMad)}</td>
       <td data-l="Payback">${R.pay != null ? R.pay + 1 + ' meses' : '—'}</td><td data-l="Uso">${x.uso === 'real' ? '<span class="chip info">Projeção real</span>' : '<span class="subdet">Só simulação</span>'}</td></tr>`).join('')}</tbody>`;
   $('ngv-tl').innerHTML = tlHtml(itensModulos().filter(y => y.mod === 'neg'));
-  const m = MODS.find(y => y.id === 'neg'), lk = [['negcad', 'Meus negócios', 'Cadastro de cada ideia ou empresa: tipo, setor, cidade, sua parte e o que vai para o plano.'], ['negdre', 'Meu DRE', 'Receitas, custos e despesas mês a mês, com linhas suas e desdobramentos.'], ['negfc', 'Fluxo de caixa', 'Investimentos, capital de giro, empréstimo, quanto pôr e quando o caixa vira.']];
+  const m = MODS.find(y => y.id === 'neg'), lk = [['negcad', 'Meus negócios', 'Cadastro de cada ideia ou empresa: tipo, setor, cidade, sua parte e o que vai para o plano.'], ['negdre', 'Meu DRE', 'Receitas, custos e despesas mês a mês, com linhas suas e desdobramentos.'], ['negfc', 'Fluxo de caixa', 'Investimentos, capital de giro, empréstimo, quanto pôr e quando o caixa vira.'], ['negabr', 'Abrir empresa', 'MEI, SLU ou LTDA, Simples x Presumido x Real lado a lado e o passo a passo com custos.']];
   $('ngv-links').innerHTML = lk.map(([t, n, d]) => `<button type="button" class="md-card" style="--mc:${m.cor}" data-tab="${t}"><div class="md-img">${MOD_SVG.neg}</div><h3>${esc(n)}</h3><p>${esc(d)}</p></button>`).join('');
 }
 function renderNegCad() {
@@ -3417,19 +3500,22 @@ function renderNegDre() {
   const mad = R.mad || {}, rb = mad.RB || 0;
   const linhaHtml = ({ l, n, macro }) => {
     const v = macro ? ngMacroVal(x, mad.val || {}, l.id) : (mad.val || {})[l.id] || 0, k = `${x.id}:${l.id}`;
-    return `<tr class="ng-l n${n}${macro ? ' macro' : ''}"><td class="name"><input type="text" data-ngl="${k}:nome" value="${esc(l.nome)}" maxlength="60" aria-label="Nome da linha"></td>
+    const fora = ngAuto(x) && l.imp && !macro;
+    return `<tr class="ng-l n${n}${macro ? ' macro' : ''}${fora ? ' fora' : ''}"${fora ? ` title="Fora da conta: os impostos vêm do regime ${esc(NG_REG[x.trib.regime])}"` : ''}><td class="name"><input type="text" data-ngl="${k}:nome" value="${esc(l.nome)}" maxlength="60" aria-label="Nome da linha"></td>
       <td data-l="Como calcula">${macro ? '<span class="subdet">soma das linhas abaixo</span>' : `<select data-ngl="${k}:mb" aria-label="Como calcula">${ngModos(l.g).map(([m, t]) => `<option value="${m}"${(l.modo === 'pct' ? 'pct:' + l.base : l.modo) === m ? ' selected' : ''}>${t}</option>`).join('')}</select>`}</td>
       <td data-l="Valor">${macro ? '' : `<input type="number" step="${l.modo === 'pct' ? 0.5 : 100}" data-ngl="${k}:v" value="${l.v}" aria-label="${l.modo === 'pct' ? 'Percentual' : 'Valor'}">${l.modo === 'pct' ? '%' : ''}${l.modo === 'un' && l.g === 'rb' ? ` × <input type="number" min="0" step="10" data-ngl="${k}:qtd" value="${l.qtd}" aria-label="Quantidade por mês" title="Quantidade por mês, quando maduro"> /mês` : ''}`}</td>
       <td data-l="Reajuste">${macro || l.modo === 'pct' ? '' : `<input type="number" step="0.5" data-ngl="${k}:reaj" value="${l.reaj}" aria-label="Reajuste % ao ano">% a.a.`}</td>
       <td data-l="A partir do mês">${macro ? '' : `<input type="number" min="1" step="1" data-ngl="${k}:ini" value="${l.ini}" aria-label="A partir do mês do negócio" title="1 = primeiro mês de operação">`}</td>
       <td data-l="Mês maduro" class="ng-num">${fm(v)}${rb && l.g !== 'rb' ? `<small>${pct(v / rb)}</small>` : ''}</td>
-      <td><div class="ng-ac">${l.g === 'desp' && !macro ? `<label class="inline" title="Marque se esta linha é o seu pró-labore: ele entra no seu Plano futuro como receita, líquido de INSS e IR"><input type="checkbox" data-ngl="${k}:pl"${l.pl ? ' checked' : ''}> <span>pró-labore</span></label>` : ''}${n < 2 ? `<button type="button" class="btn ghost tiny" data-ngsub="${k}" title="Abrir esta linha em linhas menores">+ Desdobrar</button>` : ''}<button type="button" class="btn danger tiny" data-ngldel="${k}" aria-label="Remover linha">×</button></div></td></tr>`;
+      <td><div class="ng-ac">${l.g === 'desp' && !macro ? `<label class="inline" title="Marque se esta linha é o seu pró-labore: ele entra no seu Plano futuro como receita, líquido de INSS e IR"><input type="checkbox" data-ngl="${k}:pl"${l.pl ? ' checked' : ''}> <span>pró-labore</span></label>${l.pl ? '' : `<label class="inline" title="Marque se esta linha é salário de funcionários: entra no fator R do Simples e no INSS patronal"><input type="checkbox" data-ngl="${k}:folha"${l.folha ? ' checked' : ''}> <span>salário</span></label>`}` : ''}${(l.g === 'ded' || l.g === 'ir') && !macro ? `<label class="inline" title="Marque se esta linha é imposto: quando você escolhe um regime em Abrir empresa, ela sai da conta e o painel calcula o imposto"><input type="checkbox" data-ngl="${k}:imp"${l.imp ? ' checked' : ''}> <span>imposto</span></label>` : ''}${n < 2 ? `<button type="button" class="btn ghost tiny" data-ngsub="${k}" title="Abrir esta linha em linhas menores">+ Desdobrar</button>` : ''}<button type="button" class="btn danger tiny" data-ngldel="${k}" aria-label="Remover linha">×</button></div></td></tr>`;
   };
   const autoRow = (nome, v) => `<tr class="ng-l n0 auto"><td class="name">${esc(nome)} <span class="subdet">automático</span></td><td colspan="4"></td><td class="ng-num">${fm(v)}${rb ? `<small>${pct(v / rb)}</small>` : ''}</td><td></td></tr>`;
-  $('ngd-linhas').innerHTML = `<div class="tscroll"><table class="ng-dre"><thead><tr><th>Linha</th><th>Como calcula</th><th>Valor</th><th>Reajuste</th><th>A partir do mês</th><th>Mês maduro${R.mad ? ` (${mLabel(R.mad.i)})` : ''}</th><th></th></tr></thead><tbody>${NG_G.map(g => {
+  const regMsg = ngAuto(x) ? `<div class="ng-reg"><b>Impostos pelo regime: ${esc(NG_REG[x.trib.regime])}.</b> As linhas marcadas como imposto ficam fora da conta. <a href="#" data-lmtab="negabr" data-lmsec="Regime de tributação">Trocar em Abrir empresa</a></div>` : `<div class="ng-reg off">Impostos lançados à mão. Para o painel calcular pelo regime (Simples, Presumido ou Real), escolha em <a href="#" data-lmtab="negabr" data-lmsec="Regime de tributação">Abrir empresa › Regime de tributação</a>.</div>`;
+  $('ngd-linhas').innerHTML = regMsg + `<div class="tscroll"><table class="ng-dre"><thead><tr><th>Linha</th><th>Como calcula</th><th>Valor</th><th>Reajuste</th><th>A partir do mês</th><th>Mês maduro${R.mad ? ` (${mLabel(R.mad.i)})` : ''}</th><th></th></tr></thead><tbody>${NG_G.map(g => {
     const tot = mad[NG_GK[g.id]] || 0;
     return `<tr class="ng-g"><td colspan="5"><div class="ng-gh"><span class="ng-gn">${g.s > 0 ? '' : '(−) '}${esc(g.n)}</span><button type="button" class="btn ghost tiny" data-ngladd="${x.id}:${g.id}">+ Linha</button></div></td><td class="ng-num">${fm(tot)}</td><td></td></tr>
       <tr class="ng-gd"><td colspan="7">${esc(g.d)}</td></tr>` + ngArvore(x, g.id).map(linhaHtml).join('') +
+      (g.id === 'ded' && ngAuto(x) ? autoRow(ngRegNome(x, mad), mad.impV || 0) : '') + (g.id === 'desp' && ngAuto(x) && mad.cppA ? autoRow('INSS patronal', mad.cppA) : '') + (g.id === 'ir' && ngAuto(x) && mad.irA ? autoRow('IRPJ e CSLL (' + NG_REG[x.trib.regime] + ')', mad.irA) : '') +
       (g.id === 'dep' && mad.depA ? autoRow('Depreciação dos investimentos', mad.depA) : '') + (g.id === 'fin' && mad.jur ? autoRow('Juros do empréstimo', mad.jur) : '') +
       (g.sub ? `<tr class="ng-sub"><td colspan="5">= ${esc(g.sub)}</td><td class="ng-num">${ngSg(mad[NG_SUBK[g.id]] || 0)}${rb ? `<small>${pct((mad[NG_SUBK[g.id]] || 0) / rb)}</small>` : ''}</td><td></td></tr>` : '');
   }).join('')}</tbody></table></div>`;
@@ -3470,6 +3556,7 @@ function renderNegDreMM(x, R) {
   const { p, html } = ngPerHtml(x, R, 'negdre'), cols = ngCols(R, p, x), G = [];
   NG_G.forEach(g => {
     const linhas = ngArvore(x, g.id).map(({ l, n, macro }) => ({ nome: l.nome || 'Linha', n, f: m => (macro ? ngMacroVal(x, m.val, l.id) : m.val[l.id] || 0) * g.s }));
+    if (g.id === 'ded') linhas.push({ nome: ngRegNome(x), f: m => -m.impV }); if (g.id === 'desp') linhas.push({ nome: 'INSS patronal (regime)', f: m => -m.cppA }); if (g.id === 'ir') linhas.push({ nome: 'IRPJ e CSLL (regime)', f: m => -m.irA });
     if (g.id === 'dep') linhas.push({ nome: 'Depreciação dos investimentos', f: m => -m.depA }); if (g.id === 'fin') linhas.push({ nome: 'Juros do empréstimo', f: m => -m.jur });
     G.push({ id: g.id, nome: (g.s > 0 ? '' : '(−) ') + g.n, f: m => m[NG_GK[g.id]] * g.s, linhas });
     if (g.sub) G.push({ id: 's' + g.id, nome: '= ' + g.sub, f: m => m[NG_SUBK[g.id]], cls: g.id === 'ir' ? 'res' : 'saldo' });
@@ -3535,6 +3622,87 @@ function renderNegFc() {
       <li>Depois do horizonte de ${x.anos} ${x.anos > 1 ? 'anos' : 'ano'}, o plano segue com o negócio rodando nas mesmas premissas.</li></ul>
     <p class="subdet">${x.uso === 'real' ? 'Está na projeção real.' : 'Está só como simulação: aparece em Itens dos módulos e na linha "Com as simulações" do gráfico do Plano.'} <a href="#" data-lmtab="orcamento" data-lmsec="Itens dos módulos">Ver no Plano futuro</a></p>`;
 }
+
+/* ---------- Abrir empresa: natureza jurídica, comparador de regimes e passo a passo ---------- */
+// custos e prazos de referência para São Paulo (out/2026), editáveis por negócio
+const NG_PASSOS = [
+  { id: 'cnae', t: 'Definir a atividade e o CNAE', d: 'O código da atividade decide o anexo do Simples, se pode ser MEI e quais licenças precisa.', custo: 0, prazo: '1 dia', link: 'https://concla.ibge.gov.br/busca-online-cnae.html' },
+  { id: 'nat', t: 'Escolher a natureza jurídica', d: 'MEI, SLU (sozinho) ou LTDA (com sócios). Veja os cards acima.', custo: 0, prazo: '1 dia', sec: 'Natureza jurídica' },
+  { id: 'reg', t: 'Escolher o regime de tributação', d: 'Compare Simples, Presumido e Real no comparador acima. A opção pelo Simples é feita até o fim de janeiro ou em até 30 dias depois da inscrição municipal.', custo: 0, prazo: '1 dia', sec: 'Regime de tributação' },
+  { id: 'cont', t: 'Contratar um contador', d: 'Muitos fazem a abertura de graça com contrato de mensalidade. Lance a mensalidade no DRE, em Contabilidade.', custo: 1000, prazo: '1 a 3 dias', semMei: true },
+  { id: 'viab', t: 'Consulta de viabilidade na prefeitura', d: 'Confirma se a atividade pode funcionar no endereço. Feita pela Redesim (Via Rápida Empresa em SP).', custo: 0, prazo: '2 a 5 dias úteis', link: 'https://www.gov.br/empresas-e-negocios/pt-br/redesim', semMei: true },
+  { id: 'jun', t: 'Registro na Junta Comercial e CNPJ', d: 'Contrato social na JUCESP e CNPJ na Receita, pela Redesim. O MEI se formaliza de graça no Portal do Empreendedor.', custo: 220, custoMei: 0, prazo: '1 a 5 dias úteis', link: 'https://www.jucesp.sp.gov.br/', linkMei: 'https://www.gov.br/empresas-e-negocios/pt-br/empreendedor' },
+  { id: 'im', t: 'Inscrição municipal (CCM)', d: 'Em São Paulo sai junto com o registro pela Redesim. Necessária para emitir nota de serviço.', custo: 0, prazo: 'automática', link: 'https://ccm.prefeitura.sp.gov.br/' },
+  { id: 'ie', t: 'Inscrição estadual', d: 'Só para comércio e indústria (ICMS), na Secretaria da Fazenda de SP.', custo: 0, prazo: '1 a 5 dias úteis', link: 'https://portal.fazenda.sp.gov.br/', so: ['comercio', 'industria'] },
+  { id: 'alv', t: 'Licenças: funcionamento, vigilância sanitária e bombeiros', d: 'Atividades de baixo risco são dispensadas. Restaurantes, clínicas e locais com público pedem vistoria (AVCB ou CLCB dos bombeiros).', custo: 500, prazo: '0 a 60 dias' },
+  { id: 'cert', t: 'Certificado digital e-CNPJ (A1)', d: 'Para emitir notas, entregar declarações e acessar a Receita. Renovação anual.', custo: 200, prazo: '1 dia', semMei: true },
+  { id: 'conta', t: 'Conta bancária PJ', d: 'Separe o dinheiro da empresa do seu desde o primeiro dia.', custo: 0, prazo: '1 dia' },
+  { id: 'nf', t: 'Emissor de nota fiscal', d: 'A NFS-e da prefeitura de SP é gratuita. Comércio emite NF-e ou NFC-e por um sistema (muitos são gratuitos ou custam até R$ 100/mês).', custo: 0, prazo: '1 dia', link: 'https://nfe.prefeitura.sp.gov.br/' },
+  { id: 'folha', t: 'Pró-labore, funcionários e INSS', d: 'Defina o pró-labore e a folha com o contador. Eles já estão no DRE e entram nos impostos do regime.', custo: 0, prazo: 'todo mês', sec: '' }
+];
+const ngPassos = x => NG_PASSOS.filter(p => !(p.semMei && x.trib.nat === 'mei') && !(p.so && !p.so.includes(x.trib.ativ)));
+const ngPassoCusto = (x, p) => { const c = x.abr.custo[p.id]; return c != null && c !== '' && isFinite(+c) ? +c : x.trib.nat === 'mei' && p.custoMei != null ? p.custoMei : p.custo; };
+// um ano do negócio em cada regime: o que muda é só a tributação
+function ngComparar(x) {
+  const ano = Math.min(x.trib.ano, x.anos), out = [];
+  Object.keys(NG_REG).forEach(reg => {
+    const c = clone(x); c.trib.regime = reg; const R = ngCalc(c, 0), ms = R.meses.filter(m => m.t >= (ano - 1) * 12 && m.t < ano * 12);
+    const sm = f => ms.reduce((q, m) => q + f(m), 0), rb = sm(m => m.RB);
+    const venda = reg === 'manual' ? sm(m => R.porG.ded.filter(l => l.imp).reduce((q, l) => q + (m.val[l.id] || 0), 0)) : sm(m => m.impV);
+    const ir = reg === 'manual' ? sm(m => R.porG.ir.filter(l => l.imp).reduce((q, l) => q + (m.val[l.id] || 0), 0)) : sm(m => m.irA), cpp = sm(m => m.cppA);
+    let ok = true, nota = '';
+    if (reg === 'mei') { if (rb > NG_MEI.lim) { ok = false; nota = `faturamento acima de ${fm(NG_MEI.lim)} por ano`; } else if (x.part < 100) { ok = false; nota = 'MEI não pode ter sócio'; } else nota = 'só para atividades permitidas e até 1 funcionário'; }
+    if (reg === 'simples' && Math.max(...ms.map(m => m.rbt), 0) > 4.8e6) { ok = false; nota = 'faturamento acima de R$ 4,8 milhões por ano'; }
+    if (reg === 'simples' && ok) { const an = [...new Set(ms.map(m => m.anexo).filter(Boolean))]; nota = an.length ? 'Anexo ' + an.join(' e ') + (x.trib.ativ === 'servico' && x.trib.anexo === 'fatorR' ? ' pelo fator R' : '') : ''; }
+    if (reg === 'presumido' && rb > 5e6) nota = 'com o acréscimo de 10% na presunção (LC 224/2025) sobre o que passa de R$ 5 milhões';
+    if (reg === 'real') nota = 'crédito de PIS/COFINS só sobre o custo do que foi vendido';
+    out.push({ reg, ok, nota, rb, venda, cpp, ir, tot: venda + cpp + ir, ll: sm(m => m.LL), voce: sm(m => R.voce(m)) });
+  });
+  return { ano, linhas: out };
+}
+function renderNegAbr() {
+  const x = ngSel(), ids = ['nga-nat', 'nga-reg', 'nga-passos'];
+  if (!x) { $('nga-sel').innerHTML = ngVazio(); ids.forEach(id => { $(id).innerHTML = ''; }); return; }
+  $('nga-sel').innerHTML = ngSelHtml(x, `<button type="button" class="btn ghost tiny" data-tab="negdre">Ver DRE</button>`) + (x.tipo === 'existe' ? '<p class="hint">Este negócio já existe: use o comparador para ver se vale trocar de regime (a troca vale a partir de janeiro).</p>' : '');
+  const Tb = x.trib, b = k => `${x.id}:${k}`;
+  const NAT = [['mei', 'Até R$ 81 mil por ano, sem sócio, até 1 funcionário e só atividades da lista do MEI. Imposto fixo de cerca de R$ 82 a R$ 86 por mês. Não precisa de contador.'],
+    ['slu', 'Um dono só, sem capital mínimo, e o patrimônio pessoal fica separado das dívidas da empresa. Pode escolher Simples, Presumido ou Real.'],
+    ['ltda', 'Dois ou mais sócios, com quotas e regras no contrato social. Mesmos regimes da SLU. Use quando houver sócio.']];
+  $('nga-nat').innerHTML = `<div class="ng-nat">${NAT.map(([k, d]) => `<button type="button" class="ng-natc${Tb.nat === k ? ' on' : ''}" data-ngnat="${x.id}:${k}" aria-pressed="${Tb.nat === k}"><b>${NG_NAT[k]}</b><span>${d}</span></button>`).join('')}</div>` +
+    (Tb.nat === 'slu' && x.part < 100 ? '<p class="warn">Você informou participação menor que 100%: com sócio, a natureza é LTDA.</p>' : '') + (Tb.nat === 'mei' && x.part < 100 ? '<p class="warn">MEI não pode ter sócio.</p>' : '');
+  const C = ngComparar(x), val = C.linhas.filter(l => l.ok && l.reg !== 'manual'), melhor = val.length ? val.reduce((a, q) => q.tot < a.tot ? q : a) : null, cur = C.linhas.find(l => l.reg === Tb.regime);
+  $('nga-reg').innerHTML = `<div class="ng-form">
+      <label>Atividade<select data-ngf="${b('trib.ativ')}">${Object.entries(NG_ATIV).map(([k, n]) => `<option value="${k}"${Tb.ativ === k ? ' selected' : ''}>${n}</option>`).join('')}</select></label>
+      ${Tb.ativ === 'servico' ? `<label>Anexo do Simples<select data-ngf="${b('trib.anexo')}"><option value="fatorR"${Tb.anexo === 'fatorR' ? ' selected' : ''}>Pelo fator R (III ou V)</option><option value="III"${Tb.anexo === 'III' ? ' selected' : ''}>Anexo III</option><option value="IV"${Tb.anexo === 'IV' ? ' selected' : ''}>Anexo IV</option><option value="V"${Tb.anexo === 'V' ? ' selected' : ''}>Anexo V</option></select></label>
+      <label>ISS da cidade (%)<input type="number" min="2" max="5" step="0.5" data-ngf="${b('trib.iss')}" value="${Tb.iss}"></label>` : `<label>ICMS efetivo (% da venda)<input type="number" min="0" max="30" step="0.5" data-ngf="${b('trib.icms')}" value="${Tb.icms}" title="ICMS que sobra depois dos créditos das compras; pergunte ao contador"></label>`}
+      <label>Ano do negócio comparado<input type="number" min="1" max="${x.anos}" step="1" data-ngf="${b('trib.ano')}" value="${C.ano}"></label></div>
+    <div class="tscroll"><table class="ng-cmp"><thead><tr><th>Regime</th><th>Impostos sobre a venda</th><th>INSS patronal</th><th>IRPJ e CSLL</th><th>Total de impostos</th><th>% da receita</th><th>Lucro líquido no ano</th><th></th></tr></thead><tbody>${C.linhas.map(l => {
+      const on = l.reg === Tb.regime, mel = melhor && l.reg === melhor.reg;
+      return `<tr class="${on ? 'on' : ''}${l.ok ? '' : ' nao'}"><td class="name"><b>${esc(NG_REG[l.reg])}</b>${mel ? ' <span class="chip best">menor imposto</span>' : ''}${on ? ' <span class="chip info">no DRE</span>' : ''}${l.nota ? `<small>${esc(l.nota)}</small>` : ''}</td>
+        ${l.ok ? `<td data-l="Venda">${fm(l.venda)}</td><td data-l="INSS">${fm(l.cpp)}</td><td data-l="IRPJ/CSLL">${fm(l.ir)}</td><td data-l="Total"><b>${fm(l.tot)}</b></td><td data-l="% receita">${l.rb ? pct(l.tot / l.rb) : '—'}</td><td data-l="Lucro">${ngSg(l.ll)}</td>
+        <td>${on ? '' : `<button type="button" class="btn tiny${mel ? '' : ' ghost'}" data-ngreg="${x.id}:${l.reg}">${l.reg === 'manual' ? 'Lançar à mão' : 'Usar no DRE'}</button>`}</td>` : `<td colspan="7" class="hint">Não pode: ${esc(l.nota)}</td>`}</tr>`; }).join('')}</tbody></table></div>
+    <p class="subdet">Ano ${C.ano} do negócio, receita de ${fm(C.linhas[0].rb)}.${melhor && cur && cur.ok && melhor.reg !== Tb.regime && cur.tot > melhor.tot ? ` No ${NG_REG[melhor.reg]} você pagaria <b>${fm(cur.tot - melhor.tot)}</b> a menos no ano que no regime do DRE.` : ''} Regras de 2026. A partir de 2027 a reforma tributária troca PIS e COFINS pela CBS, e as contas mudam. É uma estimativa para decidir; confirme com um contador.</p>`;
+  const P = ngPassos(x), feitos = P.filter(p => x.abr.feito[p.id]).length, tot = P.reduce((q, p) => q + ngPassoCusto(x, p), 0), noFc = x.inv.find(i => i.id === 'abertura');
+  $('nga-passos').innerHTML = `<div class="hp-barra"><i style="width:${(feitos / P.length * 100).toFixed(0)}%"></i></div><p class="subdet">${feitos} de ${P.length} passos feitos · custo estimado de abertura ${fm(tot)} (referência para São Paulo; edite os valores).</p>
+    <ol class="hp-lista ng-passos">${P.map((p, i) => { const ok = !!x.abr.feito[p.id], ln = x.trib.nat === 'mei' && p.linkMei ? p.linkMei : p.link;
+      return `<li class="${ok ? 'ok' : ''}"><span class="hp-n">${ok ? '✓' : i + 1}</span><div class="hp-t"><b>${esc(p.t)}</b><span>${esc(p.d)}</span><span class="ng-pz">Prazo: ${esc(p.prazo)}${ln ? ` · <a href="${ln}" target="_blank" rel="noopener">abrir site</a>` : p.sec ? ` · <a href="#" data-lmtab="negabr" data-lmsec="${esc(p.sec)}">ver acima</a>` : ''}</span></div>
+        <div class="hp-acs"><label class="inline">R$ <input type="number" min="0" step="50" data-ngpc="${x.id}:${p.id}" value="${ngPassoCusto(x, p)}" aria-label="Custo de ${esc(p.t)}"></label><label class="inline"><input type="checkbox" data-ngpf="${x.id}:${p.id}"${ok ? ' checked' : ''}> feito</label></div></li>`; }).join('')}</ol>
+    <div class="row" style="margin-top:10px"><button type="button" class="btn tiny" data-ngabrfc="${x.id}">${noFc ? 'Atualizar' : 'Levar'} o custo de abertura ao fluxo de caixa</button><span class="subdet">${noFc ? `Já está em Investimentos: ${fm(noFc.valor)} em ${mLabel(mIndex(noFc.mes))}.` : 'Entra como investimento no mês antes do início da operação.'}</span></div>`;
+}
+document.addEventListener('click', e => {
+  const t = e.target.closest('[data-ngnat],[data-ngreg],[data-ngabrfc]'); if (!t || !state.neg) return; e.preventDefault(); const d = t.dataset;
+  if (d.ngnat) { const [id, k] = d.ngnat.split(':'), x = ngAcha(id); if (!x) return; x.trib.nat = k; if (k === 'mei' && x.trib.regime !== 'manual') x.trib.regime = 'mei'; if (k !== 'mei' && x.trib.regime === 'mei') x.trib.regime = 'simples'; ngRe(); return; }
+  if (d.ngreg) { const [id, k] = d.ngreg.split(':'), x = ngAcha(id); if (!x) return; x.trib.regime = k; if (k === 'mei') x.trib.nat = 'mei'; else if (x.trib.nat === 'mei' && k !== 'manual') x.trib.nat = x.part < 100 ? 'ltda' : 'slu'; ngRe(); return; }
+  if (d.ngabrfc) { const x = ngAcha(d.ngabrfc); if (!x) return; const tot = ngPassos(x).reduce((q, p) => q + ngPassoCusto(x, p), 0); let it = x.inv.find(i => i.id === 'abertura');
+    if (!it) { it = { id: 'abertura', nome: 'Abertura da empresa', valor: 0, mes: mKey(mIndex(x.ini) - 1), vida: 0 }; x.inv.push(it); } it.valor = Math.round(tot); ngRe(); return; }
+});
+document.addEventListener('change', e => {
+  const t = e.target, d = t.dataset || {}; if (!state.neg || !(d.ngpc || d.ngpf)) return;
+  const [id, pid] = (d.ngpc || d.ngpf).split(':'), x = ngAcha(id); if (!x) return;
+  if (d.ngpf) { if (t.checked) x.abr.feito[pid] = true; else delete x.abr.feito[pid]; }
+  else { if (t.value === '' || !isFinite(+t.value)) delete x.abr.custo[pid]; else x.abr.custo[pid] = Math.max(0, +t.value); }
+  ngRe();
+});
 
 /* ---------- eventos ---------- */
 const ngAcha = id => ngLista().find(y => y.id === id);
@@ -6908,7 +7076,7 @@ function normalizar(s) {
 try { if (quemLocal === 'dono') { const b = JSON.parse(localStorage.getItem('painel-priv')); if (b) aplicarBase(b); } } catch (e) {}
 try { const l = JSON.parse(localStorage.getItem(LSK('painel-fin-v2'))); if (l) state = normalizar(l); } catch (e) {}
 tab = 'modulos';
-const TABS = ['modulos', 'comousar', 'inicio', 'trabvg', 'viagvg', 'viagens', 'viagcmp', 'viagrot', 'viagcus', 'viagdur', 'negvg', 'negcad', 'negdre', 'negfc', 'leia', 'global', 'gastos', 'carteira', 'orcamento', 'compras', 'cenarios', 'patrimonio', 'comparador', 'simulador', 'pjpf', 'stock', 'config', 'familia'];
+const TABS = ['modulos', 'comousar', 'inicio', 'trabvg', 'viagvg', 'viagens', 'viagcmp', 'viagrot', 'viagcus', 'viagdur', 'negvg', 'negcad', 'negdre', 'negfc', 'negabr', 'leia', 'global', 'gastos', 'carteira', 'orcamento', 'compras', 'cenarios', 'patrimonio', 'comparador', 'simulador', 'pjpf', 'stock', 'config', 'familia'];
 if (TABS.includes(location.hash.slice(1))) tab = location.hash.slice(1);
 if (!TABS.includes(tab)) tab = 'modulos';
 
@@ -10957,7 +11125,7 @@ $('cpform').addEventListener('submit', async e => {
 });
 
 /* ---------- abas ---------- */
-const BUILD = { modulos: () => {}, comousar: () => {}, inicio: () => {}, trabvg: () => {}, viagvg: () => {}, viagens: () => {}, viagcmp: () => {}, viagrot: () => {}, viagcus: () => {}, viagdur: () => {}, negvg: () => {}, negcad: () => {}, negdre: () => {}, negfc: () => {}, leia: buildLeia, global: () => {}, cenarios: buildCenarios, compras: buildCenarios, carteira: buildCarteira, comparador: buildComparador, simulador: buildSimulador, gastos: buildGastos, orcamento: buildOrcamento, config: buildConfig, pjpf: buildPj, stock: buildStock, familia: () => carregarPerfis(), patrimonio: () => {} };
+const BUILD = { modulos: () => {}, comousar: () => {}, inicio: () => {}, trabvg: () => {}, viagvg: () => {}, viagens: () => {}, viagcmp: () => {}, viagrot: () => {}, viagcus: () => {}, viagdur: () => {}, negvg: () => {}, negcad: () => {}, negdre: () => {}, negfc: () => {}, negabr: () => {}, leia: buildLeia, global: () => {}, cenarios: buildCenarios, compras: buildCenarios, carteira: buildCarteira, comparador: buildComparador, simulador: buildSimulador, gastos: buildGastos, orcamento: buildOrcamento, config: buildConfig, pjpf: buildPj, stock: buildStock, familia: () => carregarPerfis(), patrimonio: () => {} };
 // (i) de cada seção: o que mostra e de onde vêm os números (chave: aba:data-nav)
 const INFO_SEC = {
   'comousar:Resumo': 'Para cada módulo: se já tem o mínimo para funcionar (os obrigatórios), quantos opcionais você resolveu e um botão para o próximo passo. Um opcional conta como resolvido quando você preenche ou marca que não tem.',
@@ -10974,6 +11142,9 @@ const INFO_SEC = {
   'negdre:Linhas do DRE': 'R$ por mês: valor fixo, com reajuste anual. %: percentual da receita bruta, da receita líquida ou, no IR, do lucro antes do IR. Por unidade: na receita é preço × quantidade; nos custos, R$ por unidade vendida. A partir do mês: 1 é o primeiro mês de operação (use para uma contratação no mês 6, por exemplo). Pró-labore: marque a linha que é a sua retirada; ela entra no seu Plano futuro, líquida de INSS (11%) e IR. Não substitui um contador.',
   'negdre:DRE mês a mês': 'DRE é competência: a venda entra no mês em que foi feita, mesmo que o dinheiro caia depois. O dinheiro de verdade está em Fluxo de caixa.',
   'negdre:Realizado': 'O realizado substitui o projetado só naquele mês e naquela linha. O fluxo de caixa e o Plano futuro passam a usar o real.',
+  'negabr:Natureza jurídica': 'MEI: limite de R$ 81 mil por ano (média de R$ 6.750 por mês), imposto fixo de 5% do salário mínimo para o INSS mais R$ 1 de ICMS ou R$ 5 de ISS. SLU e LTDA separam o seu patrimônio das dívidas da empresa e podem escolher qualquer regime.',
+  'negabr:Regime de tributação': 'Simples: um imposto só (DAS), com alíquota que sobe com a receita dos últimos 12 meses; serviços com folha de pelo menos 28% da receita (fator R) ficam no Anexo III, os demais no V. Presumido: o imposto de renda é calculado sobre um lucro presumido (32% da receita em serviços, 8% em comércio), com 10% a mais na parte da receita acima de R$ 5 milhões por ano (LC 224/2025, contestada na Justiça). Real: imposto sobre o lucro de verdade e PIS/COFINS com créditos. INSS patronal: 20% do pró-labore e 25,8% dos salários, fora do Simples (e no Anexo IV). Marque no DRE as linhas de salário. Estimativa; não substitui um contador.',
+  'negabr:Passo a passo': 'Custos e prazos de referência para a cidade de São Paulo em 2026 (taxa da JUCESP perto de R$ 220, certificado A1 de R$ 150 a R$ 250). Mudam por cidade e atividade. Levar ao fluxo de caixa cria ou atualiza o investimento "Abertura da empresa".',
   'negfc:Investimentos': 'Saem do caixa no mês informado. Os que têm vida útil viram depreciação no DRE, espalhada mês a mês.',
   'negfc:Capital de giro': 'Dinheiro preso na operação: vendas que você ainda vai receber mais estoque, menos o que ainda vai pagar aos fornecedores. Cresce com as vendas e sai do caixa enquanto cresce.',
   'negfc:Empréstimo': 'Price com parcela fixa, a primeira no mês seguinte à entrada. Juros entram no DRE (resultado financeiro); a amortização só no caixa.',
@@ -11089,7 +11260,7 @@ function infoSecoes() {
       if (h && !h.id) h.append(btn); else if (h) h.after(btn); else if (lg) lg.append(btn); }); });
 }
 infoSecoes();
-const RENDER = { modulos: renderModulos, comousar: renderComoUsar, inicio: renderHome, trabvg: renderTrabVg, viagvg: renderViagVg, viagens: renderViagens, viagcmp: renderViagCmp, viagrot: renderViagRot, viagcus: renderViagCus, viagdur: renderViagDur, negvg: renderNegVg, negcad: renderNegCad, negdre: renderNegDre, negfc: renderNegFc, leia: () => {}, global: renderGlobal, cenarios: renderCenarios, compras: renderCenarios, carteira: renderCarteira, comparador: renderComparador, simulador: renderSimulador, gastos: () => { renderGastos(); renderFechamento(); renderHistorico(); }, orcamento: renderOrcamento, config: renderConfig, pjpf: renderPj, stock: renderStock, familia: renderFamilia, patrimonio: renderPatr };
+const RENDER = { modulos: renderModulos, comousar: renderComoUsar, inicio: renderHome, trabvg: renderTrabVg, viagvg: renderViagVg, viagens: renderViagens, viagcmp: renderViagCmp, viagrot: renderViagRot, viagcus: renderViagCus, viagdur: renderViagDur, negvg: renderNegVg, negcad: renderNegCad, negdre: renderNegDre, negfc: renderNegFc, negabr: renderNegAbr, leia: () => {}, global: renderGlobal, cenarios: renderCenarios, compras: renderCenarios, carteira: renderCarteira, comparador: renderComparador, simulador: renderSimulador, gastos: () => { renderGastos(); renderFechamento(); renderHistorico(); }, orcamento: renderOrcamento, config: renderConfig, pjpf: renderPj, stock: renderStock, familia: renderFamilia, patrimonio: renderPatr };
 function renderTab() { planCache = null; try { RENDER[tab](); } catch (err) { console.error(err); setSave('erro ao recalcular: ' + (err && err.message || err)); } }
 let navAbertos = null;
 try { navAbertos = JSON.parse(localStorage.getItem('painel-nav-abertos')); } catch (e) {}
@@ -11155,7 +11326,7 @@ const MODS = [
   { id: 'fin', corNav: '#7FA6E0', nome: 'Financeiro', cor: 'var(--s1)', fixo: true, vg: 'inicio', desc: 'Gastos, patrimônio, carteira, plano futuro e cenários. Recebe o que os outros módulos planejam.', tabs: ['inicio', 'global', 'gastos', 'patrimonio', 'carteira', 'comparador', 'simulador', 'orcamento', 'cenarios', 'familia'] },
   { id: 'trab', corNav: '#E09A63', nome: 'Trabalho e Bens', cor: 'var(--s2)', vg: 'trabvg', desc: 'Compras e bens (imóveis, carros, ...), stock options e PJ e PF. O que entra no plano vai para o Plano futuro.', tabs: ['trabvg', 'compras', 'stock', 'pjpf'] },
   { id: 'viag', corNav: '#5fc2f5', nome: 'Viagens', cor: 'var(--s8)', vg: 'viagens', desc: 'Mapa de onde já foi e de onde quer ir, sorteio, comparação de destinos nas suas datas o roteiro com a rota mais barata, os custos ligados ao Plano futuro e os gastos durante a viagem.', tabs: ['viagvg', 'viagens', 'viagcmp', 'viagrot', 'viagcus', 'viagdur'] },
-  { id: 'neg', corNav: '#a3e05a', nome: 'Negócios', cor: 'var(--s7)', vg: 'negvg', desc: 'Suas ideias e empresas: DRE com as suas linhas, fluxo de caixa, quanto pôr e quanto chega para você no Plano futuro. Pesquisa de mercado, abrir empresa e oportunidades de custo vêm a seguir.', tabs: ['negvg', 'negcad', 'negdre', 'negfc'] },
+  { id: 'neg', corNav: '#a3e05a', nome: 'Negócios', cor: 'var(--s7)', vg: 'negvg', desc: 'Suas ideias e empresas: DRE com as suas linhas, fluxo de caixa, quanto pôr e quanto chega para você no Plano futuro. Abrir empresa com a comparação de regimes. Pesquisa de mercado e oportunidades de custo vêm a seguir.', tabs: ['negvg', 'negcad', 'negdre', 'negfc', 'negabr'] },
   { id: 'fam', corNav: '#fb7185', nome: 'Família', cor: 'var(--s6)', breve: true, desc: 'Contas conjuntas, filhos (do bebê à escola), divisão de gastos e dados compartilhados com quem mora com você.', tabs: [] },
   { id: 'indep', corNav: '#E3B848', nome: 'Independência financeira', cor: 'var(--s3)', breve: true, desc: 'Quando dá para parar de trabalhar: quanto juntar, renda passiva, INSS e previdência privada.', tabs: [] }
 ];
@@ -11224,6 +11395,7 @@ function cuPassos() {
         { id: 'ngcad', t: 'Cadastrar um negócio', d: 'Uma ideia, uma empresa em abertura ou uma que já existe.', ok: ngLista().length > 0 || pul.includes('ngcad'), tab: 'negcad', sec: 'Cadastro', pular: 'Depois' },
         { id: 'ngdre', t: 'Montar o DRE', d: 'Receita, impostos, custos e despesas. Inclua as suas linhas e desdobre as que quiser.', ok: ngLista().some(x => x.linhas.some(l => l.g === 'rb' && l.v > 0)) || pul.includes('ngdre'), tab: 'negdre', sec: 'Linhas do DRE', pular: 'Depois' },
         { id: 'ngfc', t: 'Investimentos e caixa', d: 'O que precisa investir, prazos de recebimento e pagamento e, se houver, o empréstimo.', ok: ngLista().some(x => x.inv.some(i => i.valor > 0)) || pul.includes('ngfc'), tab: 'negfc', sec: 'Investimentos', pular: 'Depois' },
+        { id: 'ngreg', t: 'Escolher o regime de tributação', d: 'Compare Simples, Presumido e Real com os números do seu DRE e deixe o painel calcular os impostos.', ok: ngLista().some(x => x.trib.regime !== 'manual') || pul.includes('ngreg'), tab: 'negabr', sec: 'Regime de tributação', pular: 'Depois' },
         { id: 'ngpl', t: 'Levar ao Plano futuro', d: 'Sua participação, quanto do lucro é distribuído e se você vai deixar a renda atual.', ok: ngLista().some(x => x.uso === 'real') || pul.includes('ngpl'), tab: 'negfc', sec: 'No Plano futuro', pular: 'Depois' }
       ]
     }
@@ -12111,6 +12283,7 @@ const LM_MODS = [
   ['negcad', 'O cadastro de cada ideia ou empresa: tipo (ideia, em abertura, já existe), setor, cidade, início da operação e a sua participação.', 'quando surgir uma ideia nova.'],
   ['negdre', 'O DRE do negócio: receita, deduções, custos, despesas, depreciação, resultado financeiro e IR, com as suas linhas e desdobramentos, mês a mês e ano a ano, e o realizado para quem já tem a empresa.', 'para saber se o negócio dá lucro.'],
   ['negfc', 'O fluxo de caixa: investimentos, capital de giro, empréstimo, quanto os sócios precisam pôr, quando o caixa vira e o que entra no seu Plano futuro.', 'para saber quanto dinheiro o negócio pede e devolve.'],
+  ['negabr', 'Para abrir a empresa: MEI, SLU ou LTDA, a comparação de Simples, Lucro Presumido e Lucro Real com os números do seu DRE e o passo a passo com custos, prazos e links.', 'antes de formalizar o negócio ou para ver se vale trocar de regime.'],
   'Geral',
   ['config', 'As premissas: renda e projeção, a curva de juros (Focus, atualizada toda segunda) e o retorno esperado de cada classe de ativo.', 'raramente; só para ajustar uma premissa.']
 ];
