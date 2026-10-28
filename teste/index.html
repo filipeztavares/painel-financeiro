@@ -1352,7 +1352,7 @@ ul.ng-acordo li { margin-bottom: 4px; }
     </div>
     <div class="nav-mobile-sub" id="navMobileSub"></div>
   </div>
-  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 221</div></div>
+  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 222</div></div>
 </nav>
 <div class="sino-pop" id="sino-pop" role="dialog" aria-label="Central de avisos" hidden></div>
 <div class="tour-pop" id="tour-pop" role="dialog" aria-labelledby="tour-tit" hidden></div>
@@ -1382,7 +1382,7 @@ ul.ng-acordo li { margin-bottom: 4px; }
       <div id="md-tl"></div>
     </section>
     <section data-nav="Patrimônio projetado" class="panel chart">
-      <h2>Patrimônio projetado</h2>
+      <div class="row"><h2>Patrimônio projetado</h2><div class="seg" id="md-anos" role="group" aria-label="Até quando projetar"><button type="button" data-mdanos="0">Até o fim do plano</button><button type="button" data-mdanos="3">3 anos</button><button type="button" data-mdanos="5">5 anos</button><button type="button" data-mdanos="10">10 anos</button></div></div>
       <p class="sub">Investido no plano atual, com as simulações que você marcou em Comparar e o esperado pela chance de cada item acontecer.</p>
       <div class="legend" id="lg-md"></div>
       <div id="ch-md"></div>
@@ -2892,7 +2892,7 @@ ul.ng-acordo li { margin-bottom: 4px; }
     return new Promise(resolve => { const { data } = sb.auth.onAuthStateChange(async (ev) => { if (ev !== 'PASSWORD_RECOVERY') return; const s = prompt('Digite a nova senha (mínimo 8 caracteres):'); if (s && s.length >= 8) { const { error } = await sb.auth.updateUser({ password: s }); alert(error ? 'Não deu para trocar a senha: ' + error.message : 'Senha trocada.'); } }); resolve(data); });
   }
   // ---------- rodapé: compartilhar, administração e sair ----------
-  const SITE_V = 103;
+  const SITE_V = 105;
   const escH = v => String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const dataBR = v => v ? new Date(v).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' }) : '–';
   const css2 = `.side-foot .r{flex-wrap:wrap}.side-foot .lg-acoes{margin-left:auto;display:inline-flex;gap:10px}
@@ -11312,9 +11312,12 @@ function taxaPlanoMes(i) {
   return Math.pow(1 + (n ?? cenNetA(cen, r)), 1 / 12) - 1;
 }
 // extra = Set de ids de itens ("compra:<id>", "so:<id>") somados ao plano só para comparar; sem extra, é o plano de verdade (com cache)
+// gráfico "Patrimônio projetado" (Como usar): 0 = até o fim do plano; 3, 5 ou 10 anos a partir de hoje
+const mdAnos = () => [3, 5, 10].includes(+(state.plan || {}).anosMd) ? +state.plan.anosMd : 0;
+const mdFimIdx = () => mdAnos() ? Math.max(mIndex((state.plan || {}).inicio), HOJE_IDX) + mdAnos() * 12 : 0;
 function calcPlano(extra) {
   if (!extra && planCache) return planCache;
-  const P = state.plan, i0 = mIndex(P.inicio), fim = Math.max(i0 + Math.round((+P.anos || 10) * 12), HOJE_IDX + Math.round(state.cfg.anos * 12) + 13);
+  const P = state.plan, i0 = mIndex(P.inicio), fim = Math.max(i0 + Math.round((+P.anos || 10) * 12), HOJE_IDX + Math.round(state.cfg.anos * 12) + 13, mdFimIdx());
   const L = linhasPlano(), cur = {}, mud = (P.mud || []).filter(m => m.key && m.mes).slice().sort((a, b) => a.mes < b.mes ? -1 : 1);
   L.forEach(l => { cur[l.key] = l.base; mud.filter(m => m.key === l.key && mIndex(m.mes) <= i0).forEach(m => { cur[l.key] = +m.valor || 0; }); });
   const buys = state.compras.filter(b => ((P.inc || []).includes(b.id) && !(extra && extra.has('-compra:' + b.id))) || (extra && extra.has('compra:' + b.id))).map(b => ({ b, m0: mIndex(b.mes), sch: schedule(b, b.modo) }));
@@ -11851,6 +11854,7 @@ document.addEventListener('click', e => {
   if (d.modo) { state.gModo = d.modo; save(); renderGlobal(); return; }
   if (d.pjdir) { state.pj.dir = d.pjdir; save(); buildPj(); renderPj(); return; }
   if (d.ganos) { state.cfg.anos = +d.ganos; save(); renderGlobal(); return; }
+  if (d.mdanos != null) { state.plan.anosMd = +d.mdanos; planCache = null; save(); renderMdChart(); return; }
   if (d.rendbase) { state.cfg.rendBase = d.rendbase; save(); renderGlobal(); return; }
   switch (t.id) {
     case 'cen-novo': { const c = { id: uid(), nome: 'Cenário ' + (state.cenarios.length + 1), preset: state.alvoPreset, alvo: Object.assign({}, state.alvoCart), proprio: false, aj: { cdi: 0, ipca: 0 }, extra: 0, manual: '', inc: state.compras.filter(b => mIndex(b.mes) <= HOJE_IDX).map(b => b.id) }; state.cenarios.push(c); state.cenAtivo = c.id; save(); buildCenarios(); renderCenarios(); break; }
@@ -12254,7 +12258,8 @@ function tlHtml(its) {
   return larga + lista;
 }
 function renderMdChart() {
-  const pl = calcPlano(), fimI = pl.i0 + Math.round((+state.plan.anos || 10) * 12), st = Math.max(pl.i0, HOJE_IDX), n = fimI - st + 1;
+  document.querySelectorAll('#md-anos button').forEach(b => b.setAttribute('aria-pressed', +b.dataset.mdanos === mdAnos()));
+  const pl = calcPlano(), fimI = mdAnos() ? mdFimIdx() : pl.i0 + Math.round((+state.plan.anos || 10) * 12), st = Math.max(pl.i0, HOJE_IDX), n = fimI - st + 1;
   if (n < 2) { $('ch-md').innerHTML = '<p class="tl-vazio">Monte o Plano futuro para ver a projeção.</p>'; $('lg-md').innerHTML = ''; $('md-cmp').textContent = ''; return; }
   const its = itensVisiveis(), cmp = cmpItens(), arr = f => Array.from({ length: n }, (_, t) => f(st + t));
   const series = [{ name: 'Plano atual', c: 'var(--s1)', v: arr(i => pl.inv[i] ?? null), w: 2.6 }];
