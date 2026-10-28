@@ -568,6 +568,10 @@ tr.totrow td { font-weight: 700; border-top: 2px solid var(--line); }
 .orc-h { font-family: var(--f-head); font-size: 13px; font-weight: 600; color: var(--accent-strong); margin: 4px 0 8px; }
 .orc-add { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 8px; }
 .orc-add input, .orc-add select { width: auto; flex: 1 1 110px; }
+.pj-bens .orc-h { display: block; margin: 4px 0 2px; }
+.pj-ben { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) auto; gap: 6px; align-items: center; padding: 6px 0; border-bottom: 1px solid var(--line); }
+.pj-ben:last-of-type { border-bottom: 0; }
+.pj-ben input[type=text] { grid-column: 1 / -1; } .pj-ben input, .pj-ben select { width: 100%; }
 #fat-prev:empty, #ext-prev:empty { display: none; }
 #ext-prev { margin-top: 14px; }
 #tbl-ext input.fatcat { min-width: 250px; }
@@ -1141,6 +1145,38 @@ a.lm-ir:hover { border-bottom-style: solid; }
 .vg-wip { display: inline-block; margin-left: 4px; padding: 1px 6px; border-radius: 999px; background: #F6E3B8; color: #7A4B00; font-size: 9.5px; font-weight: 700; letter-spacing: .02em; text-transform: none; vertical-align: middle; line-height: 1.5; }
 .vgpdf-box h3 .vg-wip { font-size: 10.5px; } .vg-wipt { margin: -4px 0 0; font-size: 12px; color: #7A4B00; }
 .vgd-imp { display: flex; flex-wrap: wrap; gap: 6px 12px; align-items: center; margin-top: 10px; } .vgd-imp button[disabled] { opacity: .75; cursor: not-allowed; }
+/* Negócios */
+.ng-top { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 10px; margin-bottom: 10px; }
+.ng-top label { min-width: 220px; }
+.ng-form { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; margin-bottom: 8px; }
+.ng-ac { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; justify-content: flex-end; }
+.ng-mod { display: flex; gap: 6px; flex-wrap: wrap; }
+.ng-num { text-align: right; white-space: nowrap; font-variant-numeric: tabular-nums; }
+.ng-num small { display: block; color: var(--faint); font-size: 10px; }
+table.ng-dre td { vertical-align: middle; }
+.ng-dre tr.ng-g td { background: var(--accent-soft); font-weight: 600; border-top: 2px solid var(--panel); }
+.ng-dre .ng-gh { display: flex; align-items: center; gap: 10px; }
+.ng-dre .ng-gn { font-family: var(--f-head); color: var(--accent-strong); }
+.ng-dre td input[type="number"] { width: 76px; }
+.ng-dre td input[data-ngl$=":reaj"], .ng-dre td input[data-ngl$=":ini"] { width: 52px; }
+.ng-dre td input[type="text"] { width: 140px; }
+.ng-dre .ng-ac label.inline { font-size: 10.5px; gap: 3px; white-space: nowrap; }
+.ng-dre tr.ng-gd td { white-space: normal; }
+.ng-dre td select { max-width: 150px; }
+.ng-dre .ng-ac { flex-wrap: nowrap; }
+.ng-dre tr.ng-gd td { color: var(--muted); font-size: 11px; padding-top: 2px; }
+.ng-dre tr.ng-sub td { background: var(--field); font-weight: 600; }
+.ng-dre tr.ng-l.n1 td.name { padding-left: 24px; }
+.ng-dre tr.ng-l.n2 td.name { padding-left: 44px; }
+.ng-dre tr.ng-l.macro td.name input { font-weight: 600; }
+.ng-dre tr.ng-l.auto td.name { color: var(--muted); }
+#tbl-ngc tr.ng-on td:first-child { box-shadow: inset 3px 0 0 var(--s7); }
+.ng-mm th.ng-real { color: var(--good); }
+.ng-per { margin-top: 4px; }
+ul.ng-plano { margin: 8px 0; padding-left: 18px; font-size: 12.5px; line-height: 1.6; }
+#ngc-nota textarea { width: 100%; font: inherit; padding: 8px; border: 1px solid var(--line); border-radius: 8px; background: var(--field); color: var(--ink); text-transform: none; letter-spacing: 0; }
+@media (max-width: 760px) { .ng-form { grid-template-columns: repeat(2, minmax(0, 1fr)); } .ng-top label { min-width: 0; flex: 1; } }
+@media (max-width: 480px) { .ng-form { grid-template-columns: minmax(0, 1fr); } }
 </style>
 
 
@@ -1184,6 +1220,12 @@ a.lm-ir:hover { border-bottom-style: solid; }
           <div class="nav-group"><button type="button" class="nav-head" data-tab="viagcus"><span class="ico">04</span>Custos<span class="caret" data-navtog="viagcus" role="button" tabindex="0" aria-label="Abrir ou recolher submódulos">▾</span></button><div class="nav-sub" data-sub="viagcus"></div></div>
           <div class="nav-group"><button type="button" class="nav-head" data-tab="viagdur"><span class="ico">05</span>Durante a viagem<span class="caret" data-navtog="viagdur" role="button" tabindex="0" aria-label="Abrir ou recolher submódulos">▾</span></button><div class="nav-sub" data-sub="viagdur"></div></div>
         </div></div>
+        <div class="nav-sec" data-sec="neg" data-mod="neg"><button type="button" class="nav-sec-h" data-sectog="neg" aria-expanded="true"><span>Negócios</span><span class="caret" aria-hidden="true">▾</span></button><div class="nav-sec-b">
+          <div class="nav-group"><button type="button" class="nav-head" data-tab="negvg"><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 11.5 12 4l9 7.5"/><path d="M5.5 10v9.5h13V10"/><path d="M10 19.5v-5h4v5"/></svg></span>Visão geral</button><div class="nav-sub" data-sub="negvg"></div></div>
+          <div class="nav-group"><button type="button" class="nav-head" data-tab="negcad"><span class="ico">01</span>Meus negócios<span class="caret" data-navtog="negcad" role="button" tabindex="0" aria-label="Abrir ou recolher submódulos">▾</span></button><div class="nav-sub" data-sub="negcad"></div></div>
+          <div class="nav-group"><button type="button" class="nav-head" data-tab="negdre"><span class="ico">02</span>Meu DRE<span class="caret" data-navtog="negdre" role="button" tabindex="0" aria-label="Abrir ou recolher submódulos">▾</span></button><div class="nav-sub" data-sub="negdre"></div></div>
+          <div class="nav-group"><button type="button" class="nav-head" data-tab="negfc"><span class="ico">03</span>Fluxo de caixa<span class="caret" data-navtog="negfc" role="button" tabindex="0" aria-label="Abrir ou recolher submódulos">▾</span></button><div class="nav-sub" data-sub="negfc"></div></div>
+        </div></div>
         <div class="nav-pe">
         <div class="nav-group mini"><button type="button" class="nav-head" data-tab="leia"><span class="ico">?</span>Leia-me<span class="caret" data-navtog="leia" role="button" tabindex="0" aria-label="Abrir ou recolher submódulos">▾</span></button><div class="nav-sub" data-sub="leia"></div></div>
         <div class="nav-group mini"><button type="button" class="nav-head" data-tab="config"><span class="ico">⚙</span>Configurações<span class="caret" data-navtog="config" role="button" tabindex="0" aria-label="Abrir ou recolher submódulos">▾</span></button><div class="nav-sub" data-sub="config"></div></div>
@@ -1191,7 +1233,7 @@ a.lm-ir:hover { border-bottom-style: solid; }
     </div>
     <div class="nav-mobile-sub" id="navMobileSub"></div>
   </div>
-  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 209</div></div>
+  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 212</div></div>
 </nav>
 <div class="sino-pop" id="sino-pop" role="dialog" aria-label="Central de avisos" hidden></div>
 <div class="tour-pop" id="tour-pop" role="dialog" aria-labelledby="tour-tit" hidden></div>
@@ -1443,6 +1485,96 @@ a.lm-ir:hover { border-bottom-style: solid; }
     </section>
   </section>
   <div class="vg-ed" id="vg-ed" role="dialog" aria-modal="true" aria-label="Editar lugar" hidden></div>
+  <!-- ============ NEGÓCIOS: VISÃO GERAL ============ -->
+  <section role="tabpanel" id="p-negvg" hidden>
+    <div class="block-title"><span class="num"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 11.5 12 4l9 7.5"/><path d="M5.5 10v9.5h13V10"/><path d="M10 19.5v-5h4v5"/></svg></span><div><h1>Visão geral de Negócios</h1><p class="desc">Suas ideias e empresas: quanto investir, quanto dão de lucro, quanto chega para você e quando.</p></div></div>
+    <div class="kpis" id="kpi-ngv"></div>
+    <section data-nav="Meus negócios" class="panel">
+      <h2>Meus negócios</h2>
+      <div class="tscroll"><table id="tbl-ngv"></table></div>
+    </section>
+    <section data-nav="Linha do tempo" class="panel">
+      <h2>Linha do tempo</h2>
+      <div id="ngv-tl"></div>
+    </section>
+    <section data-nav="Partes do módulo" class="panel">
+      <h2>Partes do módulo</h2>
+      <p class="sub">Pesquisa de mercado, Abrir empresa (com a comparação de regimes) e Oportunidades de custo chegam nas próximas etapas.</p>
+      <div class="tv-links" id="ngv-links"></div>
+    </section>
+  </section>
+  <!-- ============ NEGÓCIOS: MEUS NEGÓCIOS ============ -->
+  <section role="tabpanel" id="p-negcad" hidden>
+    <div class="block-title"><span class="num">01</span><div><h1>Meus negócios</h1><p class="desc">Cadastre cada ideia ou empresa. O DRE e o fluxo de caixa de cada uma ficam nas próximas telas.</p></div></div>
+    <section data-nav="Cadastro" class="panel">
+      <h2>Cadastro</h2>
+      <p class="sub">Ideia: ainda está no papel. Em abertura: já decidiu e está abrindo. Já existe: a empresa está rodando e você pode lançar o realizado de cada mês.</p>
+      <div class="ok" id="ngc-mig" hidden>Os negócios que estavam em Trabalho e Bens › Compras e bens vieram para cá, com o mesmo uso no Plano futuro. Confira o DRE e o fluxo de caixa de cada um.</div>
+      <div class="tscroll"><table id="tbl-ngc"></table></div>
+      <div class="row" style="margin-top:10px"><button type="button" class="btn tiny" data-ngadd>+ Novo negócio</button></div>
+    </section>
+    <section data-nav="Anotações" class="panel">
+      <h2>Anotações</h2>
+      <div id="ngc-nota"></div>
+    </section>
+  </section>
+  <!-- ============ NEGÓCIOS: MEU DRE ============ -->
+  <section role="tabpanel" id="p-negdre" hidden>
+    <div class="block-title"><span class="num">02</span><div><h1>Meu DRE</h1><p class="desc">O resultado do negócio pela competência: o que vende, o que custa e quanto sobra de lucro, mês a mês. Inclua as suas linhas em qualquer grupo e desdobre uma linha em outras menores.</p></div></div>
+    <div id="ngd-sel"></div>
+    <div class="kpis" id="kpi-ngd"></div>
+    <section data-nav="Premissas" class="panel">
+      <h2>Premissas</h2>
+      <div id="ngd-prem"></div>
+    </section>
+    <section data-nav="Linhas do DRE" class="panel">
+      <h2>Linhas do DRE</h2>
+      <p class="sub">Embaixo do nome de cada grupo está o que entra nele. + Linha cria uma linha no grupo; + Desdobrar abre uma linha em linhas menores, e ela passa a valer a soma delas.</p>
+      <div id="ngd-linhas"></div>
+    </section>
+    <section data-nav="DRE mês a mês" class="panel">
+      <h2>DRE mês a mês</h2>
+      <div id="ngd-mm"></div>
+    </section>
+    <section data-nav="Realizado" class="panel" id="ngd-realsec">
+      <h2>Realizado do mês</h2>
+      <p class="sub">Lance o que aconteceu de verdade em cada mês e compare com o projetado.</p>
+      <div id="ngd-real"></div>
+    </section>
+  </section>
+  <!-- ============ NEGÓCIOS: FLUXO DE CAIXA ============ -->
+  <section role="tabpanel" id="p-negfc" hidden>
+    <div class="block-title"><span class="num">03</span><div><h1>Fluxo de caixa</h1><p class="desc">O dinheiro entrando e saindo de verdade: investimentos, capital de giro e empréstimo. Mostra quanto você precisa pôr, quando o caixa vira e o que vai para o seu Plano futuro.</p></div></div>
+    <div id="ngf-sel"></div>
+    <div class="kpis" id="kpi-ngf"></div>
+    <section data-nav="Investimentos" class="panel">
+      <h2>Investimentos</h2>
+      <div id="ngf-inv"></div>
+    </section>
+    <section data-nav="Capital de giro" class="panel">
+      <h2>Capital de giro</h2>
+      <div id="ngf-giro"></div>
+    </section>
+    <section data-nav="Empréstimo" class="panel">
+      <h2>Empréstimo</h2>
+      <div id="ngf-emp"></div>
+    </section>
+    <section data-nav="Caixa no tempo" class="panel">
+      <h2>Caixa no tempo</h2>
+      <p class="sub">A linha do negócio abaixo de zero é o dinheiro que os sócios precisam pôr; o ponto mais baixo é a necessidade total de capital.</p>
+      <div class="legend" id="lg-ngf"></div>
+      <div id="ch-ngf"></div>
+      <div class="readout" id="ro-ngf"></div>
+    </section>
+    <section data-nav="Fluxo mês a mês" class="panel">
+      <h2>Fluxo mês a mês</h2>
+      <div id="ngf-mm"></div>
+    </section>
+    <section data-nav="No Plano futuro" class="panel">
+      <h2>No Plano futuro</h2>
+      <div id="ngf-plano"></div>
+    </section>
+  </section>
   <section role="tabpanel" id="p-leia" hidden>
     <div class="block-title"><span class="num">?</span><div><h1>Leia-me</h1><p class="desc">Como o painel funciona, a rotina de cada mês e onde achar cada resposta.</p></div></div>
       <section data-nav="Como funciona" class="panel">
@@ -1632,7 +1764,7 @@ a.lm-ir:hover { border-bottom-style: solid; }
             <button class="btn tiny" type="button" data-add="imovel">+ Imóvel</button>
             <button class="btn tiny" type="button" data-add="carro">+ Carro</button>
             <button class="btn tiny" type="button" data-add="outro">+ Outro bem</button>
-            <button class="btn tiny" type="button" data-add="negocio">+ Novo negócio</button>
+            <button class="btn tiny ghost" type="button" data-irmod="neg" title="Negócios agora têm DRE e fluxo de caixa próprios no módulo Negócios">Novo negócio › Negócios</button>
           </div>
         </div>
         <p class="sub" style="font-size:12.5px;margin:0 0 10px">Cadastre aqui imóveis, carros e outros bens, já comprados ou planejados: preço, entrada, financiamento e custos de ter. Quais entram em cada cenário você escolhe em 07. Cenários futuros; no plano, em 06. Plano futuro. Compras já feitas seguem pagando as parcelas que faltam.</p>
@@ -2092,11 +2224,11 @@ a.lm-ir:hover { border-bottom-style: solid; }
       <fieldset>
         <legend>Comparar com CLT</legend>
         <label>Salário CLT bruto (R$/mês)<input type="number" step="500" min="0" data-bind="pj::clt"></label>
-        <label>Vale-refeição e alimentação (R$/mês)<input type="number" step="50" min="0" data-bind="pj::benef"></label>
         <label>Plano de saúde (R$/mês)<input type="number" step="50" min="0" data-bind="pj::saude"></label>
         <label>Vale-transporte (R$/mês)<input type="number" step="50" min="0" data-bind="pj::vt"></label>
+        <div class="pj-bens" id="pj-bens" style="grid-column:1/-1"></div>
         <label class="check"><input type="checkbox" data-bind="pj::fgts"> Contar o FGTS como ganho</label>
-        <p class="hint">Benefícios só entram se você preencher. Plano de saúde: o que você pagaria por um plano igual. Vale-transporte: entra só o que passa do desconto de 6% do salário, e só vale a pena contar se você gastaria com transporte de qualquer jeito. Deixe o salário em branco para ver só o CLT equivalente ao seu faturamento.</p>
+        <p class="hint">Benefícios só entram se você preencher. Em "+ Benefício" entram VR, VA e outros que nem todo emprego tem (auxílio home office, seguro de vida, PLR, bônus...), com o valor que chega para você, por mês ou por ano. Plano de saúde: o que você pagaria por um plano igual. Vale-transporte: entra só o que passa do desconto de 6% do salário, e só vale a pena contar se você gastaria com transporte de qualquer jeito. Deixe o salário em branco para ver só o CLT equivalente ao seu faturamento.</p>
       </fieldset>
         </div>
       </section>
@@ -2484,7 +2616,7 @@ a.lm-ir:hover { border-bottom-style: solid; }
     return new Promise(resolve => { const { data } = sb.auth.onAuthStateChange(async (ev) => { if (ev !== 'PASSWORD_RECOVERY') return; const s = prompt('Digite a nova senha (mínimo 8 caracteres):'); if (s && s.length >= 8) { const { error } = await sb.auth.updateUser({ password: s }); alert(error ? 'Não deu para trocar a senha: ' + error.message : 'Senha trocada.'); } }); resolve(data); });
   }
   // ---------- rodapé: compartilhar, administração e sair ----------
-  const SITE_V = 90;
+  const SITE_V = 94;
   const escH = v => String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const dataBR = v => v ? new Date(v).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' }) : '–';
   const css2 = `.side-foot .r{flex-wrap:wrap}.side-foot .lg-acoes{margin-left:auto;display:inline-flex;gap:10px}
@@ -2593,10 +2725,23 @@ a.lm-ir:hover { border-bottom-style: solid; }
     const ov = modal(topo('Conta desativada', 'Esta conta foi desativada pelo administrador do site. Fale com ele para reativar.') + '<button class="bt pri" type="button" id="sv-sair">Sair</button>', true, true);
     ov.querySelector('.x').remove(); ov.querySelector('#sv-sair').onclick = () => sb.auth.signOut();
   }
+  // ---------- tempo da sessão: sai 24h depois de entrar ou depois de 6h sem uso (vale para todas as abas) ----------
+  const SESS_MAX = 24 * 3600e3, SESS_INAT = 6 * 3600e3, K_INI = 'sessao-inicio', K_USO = 'sessao-uso';
+  const lsN = k => { try { return +localStorage.getItem(k) || 0; } catch (e) { return 0; } }, lsP = (k, v) => { try { localStorage.setItem(k, String(v)); } catch (e) {} };
+  const sessVencida = () => { const t = Date.now(), i = lsN(K_INI), u = lsN(K_USO); return (i > 0 && t - i > SESS_MAX) || (u > 0 && t - u > SESS_INAT); };
+  function vigiarSessao() {
+    let ult = 0; const uso = () => { const t = Date.now(); if (t - ult > 60e3) { ult = t; lsP(K_USO, t); } };
+    ['pointerdown', 'keydown', 'wheel', 'touchstart'].forEach(ev => addEventListener(ev, uso, { passive: true, capture: true }));
+    const checa = () => { if (sessVencida()) sb.auth.signOut({ scope: 'local' }); };
+    setInterval(checa, 60e3); document.addEventListener('visibilitychange', () => { if (!document.hidden) checa(); });
+  }
   const pronto = (async () => {
     await novaSenhaSePreciso();
     let { data } = await sb.auth.getSession(); sessao = data.session;
-    if (!sessao) sessao = await telaLogin();
+    if (sessao && sessVencida()) { await sb.auth.signOut({ scope: 'local' }); sessao = null; }
+    if (!sessao) { sessao = await telaLogin(); lsP(K_INI, Date.now()); }
+    else if (!lsN(K_INI)) lsP(K_INI, Date.now());
+    lsP(K_USO, Date.now()); vigiarSessao();
     uid = sessao.user.id;
     sb.auth.onAuthStateChange((ev, s) => { if (ev === 'SIGNED_OUT') location.reload(); else if (s) sessao = s; });
     const cs = document.createElement('style'); cs.textContent = css2; document.head.appendChild(cs);
@@ -3037,6 +3182,396 @@ function vgCaixa(lon0, lat0, lon1, lat1) { const pts = []; for (let i = 0; i <= 
 const VG_REG = [['mundo', 'Mundo', [-180, -58, 180, 84]], ['sa', 'América do Sul', [-84, -56, -32, 13]], ['br', 'Brasil', [-75, -34, -33, 6]], ['na', 'América do Norte', [-170, 6, -50, 72]], ['eu', 'Europa', [-26, 34, 42, 71]], ['af', 'África', [-20, -36, 55, 38]], ['as', 'Ásia', [25, -11, 150, 60]], ['oc', 'Oceania', [110, -48, 180, 2]]];
 
 /* ---------- estado ---------- */
+
+/* ---------- Negócios (Fase 4): meus negócios, DRE, fluxo de caixa e ligação com o Plano futuro ----------
+   state.neg = { sel, migrado, negocios[] }
+   negócio = { id, nome, setor, cidade, tipo ideia|abertura|existe, ini 'AAAA-MM' (início da operação), anos, rampa, fatIni,
+     part (% seu), dist (% do lucro distribuído), uso sim|real, saida {on, mes}, linhas[], inv[], giro {receb, estoque, pagar, caixaMin},
+     emp {on, valor, mes, taxa, prazo}, real {'AAAA-MM': {linhaId: valor}}, nota }
+   linha = { id, g rb|ded|cmv|desp|dep|fin|ir, pai (id da linha macro ou ''), nome, modo fixo|pct|un, v, qtd (receita por unidade), base rb|rl|lair, reaj (% a.a.), ini (mês do negócio em que começa, 1 = primeiro), pl (é o seu pró-labore) }
+   Linha com desdobramentos (filhas) vale a soma delas. Valores sempre positivos; o grupo diz se soma ou subtrai. */
+const NG_TIPO = { ideia: 'Ideia', abertura: 'Em abertura', existe: 'Já existe' };
+const NG_G = [
+  { id: 'rb', n: 'Receita bruta', s: 1, sub: null, d: 'Tudo o que o negócio vende no mês, antes de qualquer desconto ou imposto. Pode ser um valor por mês ou preço × quantidade.' },
+  { id: 'ded', n: 'Deduções da receita', s: -1, sub: 'Receita líquida', d: 'O que sai direto da venda: impostos sobre o faturamento (DAS do Simples, ISS, ICMS, PIS e COFINS), devoluções, descontos e taxas da maquininha. Receita líquida é o que sobra da venda.' },
+  { id: 'cmv', n: 'Custos do que foi vendido', s: -1, sub: 'Lucro bruto', d: 'CMV (custo da mercadoria vendida) ou CSP (custo do serviço prestado): o que você gasta para produzir ou comprar o que vendeu. Sobe e desce com as vendas. Lucro bruto é a receita líquida menos esses custos.' },
+  { id: 'desp', n: 'Despesas operacionais', s: -1, sub: 'EBITDA', d: 'O custo de manter o negócio aberto, vendendo ou não: pessoal, pró-labore, aluguel, marketing, contabilidade, softwares. EBITDA é o lucro da operação antes de depreciação, juros e IR.' },
+  { id: 'dep', n: 'Depreciação e amortização', s: -1, sub: 'Lucro operacional', d: 'O desgaste dos investimentos (máquinas, reforma, móveis) espalhado pela vida útil. Não sai dinheiro do caixa no mês: por isso o fluxo de caixa soma de volta. A linha automática vem dos investimentos com vida útil.' },
+  { id: 'fin', n: 'Resultado financeiro', s: -1, sub: 'Lucro antes do IR', d: 'Juros pagos e tarifas, menos o que o caixa rende. Valor positivo é despesa; negativo é receita financeira. Os juros do empréstimo entram sozinhos.' },
+  { id: 'ir', n: 'IR e CSLL', s: -1, sub: 'Lucro líquido', d: 'Imposto de renda e contribuição sobre o lucro, cobrados no Lucro Presumido e no Real. No Simples já estão dentro do DAS (nas deduções), então aqui fica zero.' }
+];
+const NG_MODO = { fixo: 'R$ por mês', pct: '% de', un: 'R$ por unidade' };
+const ngModos = g => g === 'rb' ? [['fixo', 'R$ por mês'], ['un', 'Preço × quantidade']] : [['fixo', 'R$ por mês'], ['pct:rb', '% da receita bruta'], ['pct:rl', '% da receita líquida'], ...(g === 'ir' ? [['pct:lair', '% do lucro antes do IR']] : []), ['un', 'R$ por unidade vendida']];
+const NG_BASE = { rb: 'receita bruta', rl: 'receita líquida', lair: 'lucro antes do IR' };
+function ngLinhasPadrao() {
+  const L = [], a = (g, nome, o) => { const l = Object.assign({ id: uid(), g, pai: '', nome, modo: 'fixo', v: 0, qtd: 0, base: 'rb', reaj: 0, ini: 1, pl: false }, o || {}); L.push(l); return l; };
+  a('rb', 'Vendas', { reaj: 4 });
+  a('ded', 'Impostos sobre a venda', { modo: 'pct', v: 6 }); a('ded', 'Taxas de cartão', { modo: 'pct', v: 0 });
+  a('cmv', 'Custo do que foi vendido', { modo: 'pct', v: 0 });
+  const p = a('desp', 'Pessoal'); a('desp', 'Salários', { pai: p.id, reaj: 5 }); a('desp', 'Encargos e benefícios', { pai: p.id, reaj: 5 });
+  a('desp', 'Pró-labore', { pl: true, reaj: 5 }); a('desp', 'Aluguel', { reaj: 4 }); a('desp', 'Marketing');
+  const ad = a('desp', 'Administrativas'); a('desp', 'Contabilidade', { pai: ad.id, reaj: 4 }); a('desp', 'Softwares e internet', { pai: ad.id });
+  a('fin', 'Tarifas bancárias');
+  a('ir', 'IR e CSLL', { modo: 'pct', v: 0, base: 'lair' });
+  return L;
+}
+function ngNovo(nome) {
+  return { id: uid(), nome: nome || 'Novo negócio', setor: '', cidade: '', tipo: 'ideia', ini: mKey(HOJE_IDX + 6), anos: 5, rampa: 12, fatIni: 30, part: 100, dist: 80, uso: 'sim',
+    saida: { on: false, mes: '' }, linhas: ngLinhasPadrao(), inv: [], giro: { receb: 30, estoque: 0, pagar: 30, caixaMin: 0 }, emp: { on: false, valor: 0, mes: '', taxa: 18, prazo: 36 }, real: {}, nota: '' };
+}
+const ngN = (v, d, lo, hi) => { const x = +v; return v === '' || v == null || !isFinite(x) ? d : Math.min(hi ?? Infinity, Math.max(lo ?? -Infinity, x)); };
+const ngMes = (v, d) => /^\d{4}-\d{2}$/.test(String(v || '')) ? String(v) : d;
+function ngNorm(x) {
+  if (!NG_TIPO[x.tipo]) x.tipo = 'ideia';
+  ['nome', 'setor', 'cidade', 'nota'].forEach(k => { if (typeof x[k] !== 'string') x[k] = ''; }); if (!x.nome) x.nome = 'Negócio';
+  x.ini = ngMes(x.ini, mKey(HOJE_IDX + 6)); x.anos = Math.round(ngN(x.anos, 5, 1, 30)); x.rampa = Math.round(ngN(x.rampa, 12, 0, 120)); x.fatIni = ngN(x.fatIni, 30, 0, 100);
+  x.part = ngN(x.part, 100, 0, 100); x.dist = ngN(x.dist, 80, 0, 100); if (x.uso !== 'real') x.uso = 'sim';
+  if (!x.saida || typeof x.saida !== 'object') x.saida = {}; x.saida.on = !!x.saida.on; x.saida.mes = ngMes(x.saida.mes, '');
+  if (!Array.isArray(x.linhas)) x.linhas = ngLinhasPadrao();
+  x.linhas = x.linhas.filter(l => l && l.id && NG_G.some(g => g.id === l.g));
+  x.linhas.forEach(l => { if (!NG_MODO[l.modo]) l.modo = 'fixo'; if (l.g === 'rb' && l.modo === 'pct') l.modo = 'fixo'; if (!NG_BASE[l.base]) l.base = 'rb'; if (l.base === 'lair' && l.g !== 'ir') l.base = 'rb';
+    l.v = ngN(l.v, 0); l.qtd = ngN(l.qtd, 0, 0); l.reaj = ngN(l.reaj, 0, -50, 100); l.ini = Math.round(ngN(l.ini, 1, 1, 600)); l.pl = !!l.pl && l.g === 'desp'; if (typeof l.nome !== 'string') l.nome = '';
+    if (l.pai && !x.linhas.some(p => p.id === l.pai && p.g === l.g)) l.pai = ''; if (typeof l.pai !== 'string') l.pai = ''; });
+  if (!Array.isArray(x.inv)) x.inv = []; x.inv = x.inv.filter(i => i && i.id); x.inv.forEach(i => { i.valor = ngN(i.valor, 0, 0); i.mes = ngMes(i.mes, x.ini); i.vida = ngN(i.vida, 0, 0, 50); if (typeof i.nome !== 'string') i.nome = ''; });
+  if (!x.giro || typeof x.giro !== 'object') x.giro = {}; const G = x.giro; G.receb = ngN(G.receb, 30, 0, 365); G.estoque = ngN(G.estoque, 0, 0, 365); G.pagar = ngN(G.pagar, 30, 0, 365); G.caixaMin = ngN(G.caixaMin, 0, 0);
+  if (!x.emp || typeof x.emp !== 'object') x.emp = {}; const E = x.emp; E.on = !!E.on; E.valor = ngN(E.valor, 0, 0); E.mes = ngMes(E.mes, x.ini); E.taxa = ngN(E.taxa, 18, 0, 500); E.prazo = Math.round(ngN(E.prazo, 36, 1, 360));
+  if (!x.real || typeof x.real !== 'object' || Array.isArray(x.real)) x.real = {};
+}
+// o "Novo negócio" de Compras e bens vira um negócio aqui (escolha do Filipe, 27/10)
+function ngDeCompra(b, s) {
+  const x = ngNovo(b.nome || 'Negócio'), m0 = ngMes(b.mes, mKey(HOJE_IDX)), mud = Math.max(0, Math.round(+b.mudanca || 0));
+  x.ini = mKey(mIndex(m0) + mud); x.tipo = mIndex(x.ini) <= HOJE_IDX ? 'existe' : 'ideia'; x.anos = Math.round(ngN(b.anosNeg, 5, 1, 30)); x.rampa = Math.round(ngN(b.rampa, 0, 0, 120)); x.fatIni = ngN(b.fatIni, 100, 0, 100); x.dist = 100;
+  const V = +b.valor || 0, cus = V * (+b.custos || 0) / 100, avista = b.modo === 'avista' || !(V - (+b.entrada || 0) > 0);
+  x.inv = [{ id: uid(), nome: 'Investimento' + (avista ? '' : ' (entrada)'), valor: Math.round((avista ? V : Math.min(V, +b.entrada || 0)) + cus), mes: m0, vida: 0 }];
+  if (+b.giro > 0) x.inv.push({ id: uid(), nome: 'Capital de giro', valor: Math.round(+b.giro), mes: m0, vida: 0 });
+  if (!avista) x.emp = { on: true, valor: Math.round(V - (+b.entrada || 0)), mes: m0, taxa: b.taxaUn === 'am' ? (Math.pow(1 + (+b.taxa || 0) / 100, 12) - 1) * 100 : (+b.taxa || 0), prazo: Math.max(1, Math.round(+b.prazo || 36)) };
+  const L = [], a = (g, nome, o) => L.push(Object.assign({ id: uid(), g, pai: '', nome, modo: 'fixo', v: 0, qtd: 0, base: 'rb', reaj: 0, ini: 1, pl: false }, o));
+  a('rb', 'Faturamento', { v: +b.fat || 0 }); a('ded', 'Impostos', { modo: 'pct', v: +b.imp || 0 }); a('cmv', 'Custos variáveis', { modo: 'pct', v: +b.cvar || 0 });
+  a('desp', 'Royalties', { modo: 'pct', v: +b.royal || 0 }); a('desp', 'Custos fixos', { v: +b.posse || 0 }); a('ir', 'IR e CSLL', { modo: 'pct', v: 0, base: 'lair' });
+  x.linhas = L; x.giro = { receb: 0, estoque: 0, pagar: 0, caixaMin: 0 };
+  x.uso = ((s.plan || {}).inc || []).includes(b.id) ? 'real' : 'sim';
+  x.nota = 'Veio de Compras e bens. A revenda no fim do período não foi trazida.';
+  return x;
+}
+function ngNormalizar(s) {
+  if (!s.neg || typeof s.neg !== 'object' || Array.isArray(s.neg)) s.neg = {};
+  const v = s.neg; if (!Array.isArray(v.negocios)) v.negocios = []; v.negocios = v.negocios.filter(x => x && typeof x === 'object' && x.id);
+  if (Array.isArray(s.compras) && s.compras.some(b => b && b.tipo === 'negocio')) {
+    s.compras.filter(b => b && b.tipo === 'negocio').forEach(b => {
+      v.negocios.push(ngDeCompra(b, s));
+      if (s.plan && Array.isArray(s.plan.inc)) s.plan.inc = s.plan.inc.filter(id => id !== b.id);
+      (s.cenarios || []).forEach(c => { if (c && Array.isArray(c.inc)) c.inc = c.inc.filter(id => id !== b.id); });
+    });
+    s.compras = s.compras.filter(b => !(b && b.tipo === 'negocio')); v.migrado = true;
+  }
+  v.negocios.forEach(ngNorm); if (typeof v.sel !== 'string') v.sel = '';
+}
+const ngLista = () => ((state.neg || {}).negocios || []);
+const ngSel = () => { const v = state.neg; if (!v) return null; let x = v.negocios.find(y => y.id === v.sel) || v.negocios[0] || null; if (x) v.sel = x.id; return x; };
+const ngFilhas = (x, id) => x.linhas.filter(l => l.pai === id);
+
+/* ---------- motor: DRE e fluxo de caixa mês a mês ----------
+   t = mês do negócio (0 = mês de início da operação; negativo = antes de abrir, só investimentos). */
+const ngHorizonte = () => { const P = state.plan || {}, i0 = mIndex(P.inicio); return Math.max(i0 + Math.round((+P.anos || 10) * 12), HOJE_IDX + Math.round(((state.cfg || {}).anos || 1) * 12) + 13); };
+function ngJuros(E) { const i = Math.pow(1 + E.taxa / 100, 1 / 12) - 1, n = E.prazo, PV = E.valor, pmt = i > 0 ? PV * i / (1 - Math.pow(1 + i, -n)) : PV / n, out = []; let s = PV;
+  for (let k = 0; k < n; k++) { const j = s * i, am = Math.min(s, pmt - j); s = Math.max(0, s - am); out.push({ j, am, p: j + am }); } return out; }
+const ngPlLiq = v => { if (!(v > 0)) return 0; const inss = 0.11 * Math.min(v, PJ26.teto); return v - inss - irrf26(v, inss, 0); };
+function ngCalc(x, ateI) {
+  const i0 = mIndex(x.ini), T = x.anos * 12, fimI = Math.max(i0 + T - 1, ateI || 0);
+  const offs = [0, ...x.inv.filter(v => v.valor > 0).map(v => mIndex(v.mes) - i0)]; if (x.emp.on && x.emp.valor > 0) offs.push(mIndex(x.emp.mes) - i0);
+  const tmin = Math.min(...offs), tmax = fimI - i0, fi = x.fatIni / 100, ramp = t => t < 0 ? 0 : x.rampa > 0 ? Math.min(1, fi + (1 - fi) * t / x.rampa) : 1;
+  const emp = x.emp.on && x.emp.valor > 0 ? { t0: mIndex(x.emp.mes) - i0, s: ngJuros(x.emp) } : null;
+  const folhas = x.linhas.filter(l => !x.linhas.some(c => c.pai === l.id)), porG = {}; NG_G.forEach(g => { porG[g.id] = folhas.filter(l => l.g === g.id); });
+  const inv = x.inv.filter(v => v.valor > 0).map(v => ({ v, t: mIndex(v.mes) - i0 }));
+  const meses = []; let giroAnt = 0, caixa = 0, acProj = 0, pay = null, negAntes = false;
+  for (let t = tmin; t <= tmax; t++) {
+    const i = i0 + t, mk = mKey(i), op = t >= 0, rj = l => Math.pow(1 + l.reaj / 100, Math.floor(Math.max(0, t - l.ini + 1) / 12)), on = l => op && t + 1 >= l.ini, rv = (x.real[mk] || {});
+    const val = {}, f = ramp(t); let U = 0;
+    const leaf = (l, fn) => { const r = rv[l.id]; val[l.id] = r != null && isFinite(+r) ? +r : on(l) ? fn() : 0; return val[l.id]; };
+    porG.rb.forEach(l => { if (l.modo === 'un' && on(l)) U += l.qtd * f; });
+    let RB = 0; porG.rb.forEach(l => { RB += leaf(l, () => (l.modo === 'un' ? l.v * l.qtd : l.v) * f * rj(l)); });
+    const calc = (l, B) => l.modo === 'pct' ? l.v / 100 * (l.base === 'rl' ? B.rl : l.base === 'lair' ? Math.max(0, B.lair) : B.rb) : l.modo === 'un' ? l.v * U * rj(l) : l.v * rj(l);
+    const B = { rb: RB, rl: RB, lair: 0 }, soma = g => porG[g].reduce((s, l) => s + leaf(l, () => calc(l, B)), 0);
+    const DED = soma('ded'); B.rl = RB - DED;
+    const CMV = soma('cmv'), DESP = soma('desp');
+    let depA = 0; inv.forEach(({ v, t: ti }) => { if (v.vida > 0 && t > ti && t <= ti + v.vida * 12) depA += v.valor / (v.vida * 12); });
+    const DEP = soma('dep') + depA;
+    const ek = emp ? t - emp.t0 - 1 : -1, ps = emp && ek >= 0 && ek < emp.s.length ? emp.s[ek] : null, jur = ps ? ps.j : 0;
+    const FIN = soma('fin') + jur;
+    B.lair = B.rl - CMV - DESP - DEP - FIN;
+    const IR = soma('ir'), LL = B.lair - IR;
+    const pl = porG.desp.filter(l => l.pl).reduce((s, l) => s + (val[l.id] || 0), 0);
+    // capital de giro: o que fica a receber e em estoque menos o que ainda vai pagar aos fornecedores
+    const giro = (x.giro.receb * RB + x.giro.estoque * CMV - x.giro.pagar * CMV) / 30, dGiro = giro - giroAnt; giroAnt = giro;
+    const invT = inv.filter(o => o.t === t).reduce((s, o) => s + o.v.valor, 0), empIn = emp && t === emp.t0 ? x.emp.valor : 0, amort = ps ? ps.am : 0;
+    const oper = LL + DEP - dGiro, fc = oper - invT + empIn - amort, proj = oper - invT + jur;
+    acProj += proj; if (acProj < 0) negAntes = true; else if (negAntes && pay == null) pay = t;
+    caixa += fc; let aporte = 0, distrib = 0;
+    if (caixa < x.giro.caixaMin) { aporte = x.giro.caixaMin - caixa; caixa = x.giro.caixaMin; }
+    else if (fc > 0) { distrib = x.dist / 100 * Math.min(fc, caixa - x.giro.caixaMin); caixa -= distrib; }
+    meses.push({ t, i, mk, val, U, RB, DED, RL: B.rl, CMV, LB: B.rl - CMV, DESP, EBITDA: B.rl - CMV - DESP, depA, DEP, EBIT: B.rl - CMV - DESP - DEP, jur, FIN, LAIR: B.lair, IR, LL, pl, plLiq: ngPlLiq(pl),
+      giro, dGiro, oper, invT, empIn, amort, fc, proj, caixa, aporte, distrib, real: !!x.real[mk] && Object.keys(x.real[mk]).length > 0 });
+  }
+  const noH = meses.filter(m => m.t < T), op = noH.filter(m => m.t >= 0);
+  const fl = noH.map(m => m.proj), npv = r => fl.reduce((s, v, k) => s + v / Math.pow(1 + r, k), 0);
+  let tir = null; if (fl.some(v => v < 0) && fl.some(v => v > 0) && npv(-0.99) * npv(1) < 0) { let lo = -0.99, hi = 1; for (let j = 0; j < 80; j++) { const mid = (lo + hi) / 2; if (npv(lo) * npv(mid) <= 0) hi = mid; else lo = mid; } tir = Math.pow(1 + (lo + hi) / 2, 12) - 1; }
+  const tMad = Math.max(x.rampa, ...x.linhas.map(l => l.ini - 1)), mad = op.length ? op[Math.min(op.length - 1, tMad)] : null, ult12 = op.slice(-12);
+  const voce = m => m.distrib * x.part / 100 + m.plLiq - m.aporte * x.part / 100;
+  const r = { i0, T, tmin, meses, porG, folhas, pay, tir, mad,
+    invTot: x.inv.reduce((s, v) => s + v.valor, 0), aportes: noH.reduce((s, m) => s + m.aporte, 0), piorCaixa: Math.min(0, ...noH.reduce((a, m) => { a.push((a.length ? a[a.length - 1] : 0) + m.fc); return a; }, [])),
+    pos1: (op.find(m => m.fc > 0) || {}).t, llAno1: op.slice(0, 12).reduce((s, m) => s + m.LL, 0), llMad: ult12.length ? ult12.reduce((s, m) => s + m.LL, 0) / ult12.length : 0,
+    rbMad: ult12.length ? ult12.reduce((s, m) => s + m.RB, 0) / ult12.length : 0, voceMad: ult12.length ? ult12.reduce((s, m) => s + voce(m), 0) / ult12.length : 0, voce };
+  r.margem = r.rbMad ? r.llMad / r.rbMad : 0; r.temRec = x.linhas.some(l => l.g === 'rb' && (l.v > 0 || Object.keys(x.real).length));
+  return r;
+}
+let ngCache = { k: '', v: {} };
+function ngCalcC(x) { const k = JSON.stringify([x, state.plan && state.plan.inicio, state.plan && state.plan.anos]); if (ngCache.v[x.id] && ngCache.v[x.id].k === k) return ngCache.v[x.id].r; const r = ngCalc(x, ngHorizonte()); ngCache.v[x.id] = { k, r }; return r; }
+
+/* ---------- Plano futuro ---------- */
+// por mês: o que chega para você (distribuição × sua parte + pró-labore líquido) e o que você põe (aportes × sua parte)
+function ngPlanEvs(extra) {
+  const out = [], pausa = new Set(), fim = ngHorizonte();
+  ngLista().forEach(x => {
+    const on = (x.uso === 'real' && !(extra && extra.has('-neg:' + x.id))) || (extra && extra.has('neg:' + x.id)); if (!on) return;
+    const R = ngCalcC(x);
+    R.meses.forEach(m => { if (m.i < HOJE_IDX) return; const rec = m.distrib * x.part / 100 + m.plLiq, gas = m.aporte * x.part / 100;
+      if (rec > 0.5) out.push({ id: 'negr-' + x.id, nome: 'Negócio: ' + x.nome + ' (o que chega para você)', tipo: 'receita', valor: Math.round(rec), mes: m.mk, anual: false, neg: true });
+      if (gas > 0.5) out.push({ id: 'nega-' + x.id, nome: 'Negócio: ' + x.nome + ' (dinheiro que você põe)', tipo: 'gasto', valor: Math.round(gas), mes: m.mk, anual: false, neg: true }); });
+    if (x.saida.on && x.saida.mes) for (let i = Math.max(mIndex(x.saida.mes), HOJE_IDX); i <= fim; i++) pausa.add(i);
+  });
+  [...pausa].sort((a, b) => a - b).forEach(i => out.push({ id: 'negsai', nome: 'Negócios: renda atual parada (saída do emprego)', tipo: 'gasto', valor: 0, pausa: true, mes: mKey(i), anual: false, neg: true }));
+  return out;
+}
+let ngPeC = { k: null, t: 0, v: [] };
+function ngPlanEvsC(extra) { const k = extra ? [...extra].sort().join(',') : ''; if (ngPeC.k === k && Date.now() - ngPeC.t < 80) return ngPeC.v; let v = []; try { v = ngPlanEvs(extra); } catch (er) { console.error(er); } ngPeC = { k, t: Date.now(), v }; return v; }
+function ngItensMod() {
+  return ngLista().map(x => { const R = ngCalcC(x), ini = mKey(R.i0 + R.tmin);
+    const partes = [R.invTot ? fm(R.invTot) + ' de investimento' : '', R.aportes > 0.5 ? `você põe ${fm(R.aportes * x.part / 100)}` : '', R.voceMad ? `${R.voceMad < 0 ? '−' : ''}${fm(Math.abs(R.voceMad))}/mês para você quando maduro` : '', x.saida.on && x.saida.mes ? `sai do emprego em ${mLabel(mIndex(x.saida.mes))}` : ''].filter(Boolean);
+    return { id: 'neg:' + x.id, mod: 'neg', sub: 'Negócios', tab: 'negfc', sec: 'No Plano futuro', nome: 'Negócio: ' + x.nome, tipo: 'negocio', ini, unico: -(R.aportes * x.part / 100), mensal: R.voceMad, meses: R.T + Math.max(0, -R.tmin),
+      resumo: R.temRec ? partes.join(' · ') : 'preencha a receita no DRE para entrar no plano', uso: x.uso, bloq: !R.temRec }; });
+}
+
+/* ---------- telas ---------- */
+const ngSelHtml = (x, alvo) => `<div class="ng-top"><label>Negócio<select data-ngsel aria-label="Escolher negócio">${ngLista().map(y => `<option value="${y.id}"${y.id === x.id ? ' selected' : ''}>${esc(y.nome)} · ${NG_TIPO[y.tipo]}</option>`).join('')}</select></label>${alvo || ''}</div>`;
+const ngVazio = () => `<p class="hint">Nenhum negócio ainda. <button type="button" class="btn tiny" data-ngadd>+ Novo negócio</button></p>`;
+const ngSg = v => `<span class="${v < -0.5 ? 'neg' : ''}">${fm(v)}</span>`;
+function ngKpis(el, x, R) {
+  kpis(el, [
+    ['Investimento', fm(R.invTot), R.invTot ? `${x.inv.length} ${x.inv.length > 1 ? 'itens' : 'item'} em Fluxo de caixa` : 'cadastre em Fluxo de caixa'],
+    ['Lucro líquido por mês', fm(R.llMad), R.rbMad ? `margem ${pct(R.margem)} no último ano do horizonte` : 'preencha a receita', R.llMad < 0],
+    ['Dinheiro que precisa pôr', fm(R.aportes), R.aportes ? `o que os sócios põem até o caixa se pagar${x.part < 100 ? `; a sua parte é ${fm(R.aportes * x.part / 100)}` : ''}` : 'o próprio caixa cobre'],
+    ['Payback', R.pay != null ? `${R.pay + 1} ${R.pay ? 'meses' : 'mês'}` : '—', R.pay != null ? `do início da operação; TIR ${R.tir != null ? pct(R.tir) + ' a.a.' : '—'}` : `não se paga em ${x.anos} ${x.anos > 1 ? 'anos' : 'ano'}`, R.pay == null && R.invTot > 0]
+  ]);
+}
+function renderNegVg() {
+  const L = ngLista(), Rs = L.map(x => [x, ngCalcC(x)]), real = L.filter(x => x.uso === 'real');
+  kpis($('kpi-ngv'), [
+    ['Negócios', String(L.length), L.length ? [['ideia', 'ideia', 'ideias'], ['abertura', 'em abertura', 'em abertura'], ['existe', 'já existe', 'já existem']].map(([k, a, b]) => [L.filter(x => x.tipo === k).length, a, b]).filter(a => a[0]).map(a => `${a[0]} ${a[0] > 1 ? a[2] : a[1]}`).join(' · ') : 'nenhum cadastrado'],
+    ['Investimento total', fm(Rs.reduce((s, [x, R]) => s + R.invTot * x.part / 100, 0)), 'a sua parte, somando todos'],
+    ['Para você por mês', fm(Rs.reduce((s, [x, R]) => s + R.voceMad, 0)), 'quando maduros: distribuição + pró-labore líquido'],
+    ['No Plano futuro', String(real.length), real.length ? 'em Projeção real' : 'todos em Só simulação']
+  ]);
+  const tb = $('tbl-ngv');
+  tb.innerHTML = !L.length ? `<tbody><tr><td class="hint">Nenhum negócio ainda. Comece em Meus negócios. <button type="button" class="btn tiny" data-ngadd>+ Novo negócio</button></td></tr></tbody>`
+    : `<thead><tr><th>Negócio</th><th>Tipo</th><th>Início</th><th>Investimento</th><th>Lucro líquido/mês</th><th>Para você/mês</th><th>Payback</th><th>Uso</th></tr></thead><tbody>${Rs.map(([x, R]) => `<tr>
+      <td class="name"><a href="#" data-ngabre="${x.id}:negdre">${esc(x.nome)}</a> <span class="subdet">${esc([x.setor, x.cidade].filter(Boolean).join(' · '))}</span></td>
+      <td data-l="Tipo">${NG_TIPO[x.tipo]}</td><td data-l="Início">${mLabel(R.i0)}</td><td data-l="Investimento">${fm(R.invTot)}</td><td data-l="Lucro/mês">${ngSg(R.llMad)}</td><td data-l="Para você">${ngSg(R.voceMad)}</td>
+      <td data-l="Payback">${R.pay != null ? R.pay + 1 + ' meses' : '—'}</td><td data-l="Uso">${x.uso === 'real' ? '<span class="chip info">Projeção real</span>' : '<span class="subdet">Só simulação</span>'}</td></tr>`).join('')}</tbody>`;
+  $('ngv-tl').innerHTML = tlHtml(itensModulos().filter(y => y.mod === 'neg'));
+  const m = MODS.find(y => y.id === 'neg'), lk = [['negcad', 'Meus negócios', 'Cadastro de cada ideia ou empresa: tipo, setor, cidade, sua parte e o que vai para o plano.'], ['negdre', 'Meu DRE', 'Receitas, custos e despesas mês a mês, com linhas suas e desdobramentos.'], ['negfc', 'Fluxo de caixa', 'Investimentos, capital de giro, empréstimo, quanto pôr e quando o caixa vira.']];
+  $('ngv-links').innerHTML = lk.map(([t, n, d]) => `<button type="button" class="md-card" style="--mc:${m.cor}" data-tab="${t}"><div class="md-img">${MOD_SVG.neg}</div><h3>${esc(n)}</h3><p>${esc(d)}</p></button>`).join('');
+}
+function renderNegCad() {
+  const L = ngLista(), tb = $('tbl-ngc');
+  tb.innerHTML = !L.length ? '<tbody><tr><td class="hint">Nenhum negócio ainda. Toque em + Novo negócio.</td></tr></tbody>'
+    : `<thead><tr><th>Negócio</th><th>Tipo</th><th>Setor</th><th>Cidade</th><th>Início da operação</th><th>Sua parte</th><th></th></tr></thead><tbody>${L.map(x => `<tr class="${x.id === state.neg.sel ? 'ng-on' : ''}">
+      <td class="name"><input type="text" data-ngf="${x.id}:nome" value="${esc(x.nome)}" maxlength="60" aria-label="Nome do negócio"></td>
+      <td data-l="Tipo"><select data-ngf="${x.id}:tipo" aria-label="Tipo">${Object.entries(NG_TIPO).map(([k, n]) => `<option value="${k}"${x.tipo === k ? ' selected' : ''}>${n}</option>`).join('')}</select></td>
+      <td data-l="Setor"><input type="text" data-ngf="${x.id}:setor" value="${esc(x.setor)}" maxlength="60" placeholder="ex.: cafeteria" aria-label="Setor"></td>
+      <td data-l="Cidade"><input type="text" data-ngf="${x.id}:cidade" value="${esc(x.cidade)}" maxlength="60" placeholder="ex.: São Paulo, SP" aria-label="Cidade"></td>
+      <td data-l="Início"><input type="month" data-ngf="${x.id}:ini" value="${esc(x.ini)}" aria-label="Início da operação"></td>
+      <td data-l="Sua parte"><input type="number" min="0" max="100" step="5" data-ngf="${x.id}:part" value="${x.part}" aria-label="Sua participação (%)">%</td>
+      <td><div class="ng-ac"><button type="button" class="btn tiny" data-ngabre="${x.id}:negdre">DRE</button><button type="button" class="btn ghost tiny" data-ngabre="${x.id}:negfc">Fluxo</button><button type="button" class="btn ghost tiny" data-ngdup="${x.id}">Duplicar</button><button type="button" class="btn danger tiny" data-ngdel="${x.id}">Remover</button></div></td></tr>`).join('')}</tbody>`;
+  const x = ngSel();
+  $('ngc-nota').innerHTML = x ? `<label class="full">Anotações de ${esc(x.nome)}<textarea data-ngf="${x.id}:nota" rows="3" maxlength="2000" placeholder="Ideias, contatos, o que falta decidir.">${esc(x.nota)}</textarea></label>` : '';
+  $('ngc-mig').hidden = !(state.neg && state.neg.migrado);
+}
+// árvore de linhas na ordem: grupo, macro, filhas (até 3 níveis)
+function ngArvore(x, g) { const out = [], vai = (pai, n) => x.linhas.filter(l => l.g === g && l.pai === pai).forEach(l => { out.push({ l, n, macro: x.linhas.some(c => c.pai === l.id) }); if (n < 2) vai(l.id, n + 1); }); vai('', 0); return out; }
+const ngMacroVal = (x, val, id) => { const f = ngFilhas(x, id); return f.length ? f.reduce((s, c) => s + ngMacroVal(x, val, c.id), 0) : val[id] || 0; };
+const NG_SUBK = { ded: 'RL', cmv: 'LB', desp: 'EBITDA', dep: 'EBIT', fin: 'LAIR', ir: 'LL' }, NG_GK = { rb: 'RB', ded: 'DED', cmv: 'CMV', desp: 'DESP', dep: 'DEP', fin: 'FIN', ir: 'IR' };
+function renderNegDre() {
+  const x = ngSel(), ids = ['ngd-prem', 'ngd-linhas', 'ngd-mm', 'ngd-real'];
+  if (!x) { $('ngd-sel').innerHTML = ngVazio(); ids.forEach(id => { $(id).innerHTML = ''; }); kpis($('kpi-ngd'), []); return; }
+  const R = ngCalcC(x); $('ngd-sel').innerHTML = ngSelHtml(x, `<button type="button" class="btn ghost tiny" data-tab="negfc">Ver fluxo de caixa</button>`); ngKpis($('kpi-ngd'), x, R);
+  const b = k => `${x.id}:${k}`;
+  $('ngd-prem').innerHTML = `<div class="ng-form">
+    <label>Início da operação<input type="month" data-ngf="${b('ini')}" value="${esc(x.ini)}"></label>
+    <label>Horizonte (anos)<input type="number" min="1" max="30" step="1" data-ngf="${b('anos')}" value="${x.anos}"></label>
+    <label>Meses até maturar<input type="number" min="0" max="120" step="1" data-ngf="${b('rampa')}" value="${x.rampa}"></label>
+    <label>Vendas no 1º mês (% do maduro)<input type="number" min="0" max="100" step="5" data-ngf="${b('fatIni')}" value="${x.fatIni}"></label></div>
+    <p class="subdet">A receita sobe em linha reta do 1º mês até o mês de maturidade. Custos em R$ por mês não seguem a rampa; os em % e por unidade acompanham as vendas.${x.tipo === 'existe' ? ' Para uma empresa que já existe, lance o realizado de cada mês mais abaixo: ele substitui o projetado.' : ''}</p>`;
+  const mad = R.mad || {}, rb = mad.RB || 0;
+  const linhaHtml = ({ l, n, macro }) => {
+    const v = macro ? ngMacroVal(x, mad.val || {}, l.id) : (mad.val || {})[l.id] || 0, k = `${x.id}:${l.id}`;
+    return `<tr class="ng-l n${n}${macro ? ' macro' : ''}"><td class="name"><input type="text" data-ngl="${k}:nome" value="${esc(l.nome)}" maxlength="60" aria-label="Nome da linha"></td>
+      <td data-l="Como calcula">${macro ? '<span class="subdet">soma das linhas abaixo</span>' : `<select data-ngl="${k}:mb" aria-label="Como calcula">${ngModos(l.g).map(([m, t]) => `<option value="${m}"${(l.modo === 'pct' ? 'pct:' + l.base : l.modo) === m ? ' selected' : ''}>${t}</option>`).join('')}</select>`}</td>
+      <td data-l="Valor">${macro ? '' : `<input type="number" step="${l.modo === 'pct' ? 0.5 : 100}" data-ngl="${k}:v" value="${l.v}" aria-label="${l.modo === 'pct' ? 'Percentual' : 'Valor'}">${l.modo === 'pct' ? '%' : ''}${l.modo === 'un' && l.g === 'rb' ? ` × <input type="number" min="0" step="10" data-ngl="${k}:qtd" value="${l.qtd}" aria-label="Quantidade por mês" title="Quantidade por mês, quando maduro"> /mês` : ''}`}</td>
+      <td data-l="Reajuste">${macro || l.modo === 'pct' ? '' : `<input type="number" step="0.5" data-ngl="${k}:reaj" value="${l.reaj}" aria-label="Reajuste % ao ano">% a.a.`}</td>
+      <td data-l="A partir do mês">${macro ? '' : `<input type="number" min="1" step="1" data-ngl="${k}:ini" value="${l.ini}" aria-label="A partir do mês do negócio" title="1 = primeiro mês de operação">`}</td>
+      <td data-l="Mês maduro" class="ng-num">${fm(v)}${rb && l.g !== 'rb' ? `<small>${pct(v / rb)}</small>` : ''}</td>
+      <td><div class="ng-ac">${l.g === 'desp' && !macro ? `<label class="inline" title="Marque se esta linha é o seu pró-labore: ele entra no seu Plano futuro como receita, líquido de INSS e IR"><input type="checkbox" data-ngl="${k}:pl"${l.pl ? ' checked' : ''}> <span>pró-labore</span></label>` : ''}${n < 2 ? `<button type="button" class="btn ghost tiny" data-ngsub="${k}" title="Abrir esta linha em linhas menores">+ Desdobrar</button>` : ''}<button type="button" class="btn danger tiny" data-ngldel="${k}" aria-label="Remover linha">×</button></div></td></tr>`;
+  };
+  const autoRow = (nome, v) => `<tr class="ng-l n0 auto"><td class="name">${esc(nome)} <span class="subdet">automático</span></td><td colspan="4"></td><td class="ng-num">${fm(v)}${rb ? `<small>${pct(v / rb)}</small>` : ''}</td><td></td></tr>`;
+  $('ngd-linhas').innerHTML = `<div class="tscroll"><table class="ng-dre"><thead><tr><th>Linha</th><th>Como calcula</th><th>Valor</th><th>Reajuste</th><th>A partir do mês</th><th>Mês maduro${R.mad ? ` (${mLabel(R.mad.i)})` : ''}</th><th></th></tr></thead><tbody>${NG_G.map(g => {
+    const tot = mad[NG_GK[g.id]] || 0;
+    return `<tr class="ng-g"><td colspan="5"><div class="ng-gh"><span class="ng-gn">${g.s > 0 ? '' : '(−) '}${esc(g.n)}</span><button type="button" class="btn ghost tiny" data-ngladd="${x.id}:${g.id}">+ Linha</button></div></td><td class="ng-num">${fm(tot)}</td><td></td></tr>
+      <tr class="ng-gd"><td colspan="7">${esc(g.d)}</td></tr>` + ngArvore(x, g.id).map(linhaHtml).join('') +
+      (g.id === 'dep' && mad.depA ? autoRow('Depreciação dos investimentos', mad.depA) : '') + (g.id === 'fin' && mad.jur ? autoRow('Juros do empréstimo', mad.jur) : '') +
+      (g.sub ? `<tr class="ng-sub"><td colspan="5">= ${esc(g.sub)}</td><td class="ng-num">${ngSg(mad[NG_SUBK[g.id]] || 0)}${rb ? `<small>${pct((mad[NG_SUBK[g.id]] || 0) / rb)}</small>` : ''}</td><td></td></tr>` : '');
+  }).join('')}</tbody></table></div>`;
+  renderNegDreMM(x, R);
+  // realizado (empresa que já existe)
+  if (x.tipo !== 'existe') $('ngd-real').innerHTML = `<p class="hint">Para empresas que já existem. Mude o tipo para Já existe em <a href="#" data-lmtab="negcad" data-lmsec="Cadastro">Meus negócios</a> para lançar o que aconteceu em cada mês.</p>`;
+  else {
+    const ms = R.meses.filter(m => m.t >= 0 && m.i <= HOJE_IDX).map(m => m.mk).reverse(), mk = ms.includes(ngRealMes) ? ngRealMes : ms[0];
+    if (!mk) { $('ngd-real').innerHTML = '<p class="hint">O início da operação está no futuro. Mude o tipo ou a data para lançar meses já fechados.</p>'; }
+    else { ngRealMes = mk; const m = R.meses.find(y => y.mk === mk), rv = x.real[mk] || {}, xp = clone(x); xp.real = {}; const P = ngCalc(xp, 0).meses.find(y => y.mk === mk) || m;
+      $('ngd-real').innerHTML = `<div class="ng-top"><label>Mês<select data-ngrmes aria-label="Mês do realizado">${ms.map(k2 => `<option value="${k2}"${k2 === mk ? ' selected' : ''}>${mLabel(mIndex(k2))}${x.real[k2] && Object.keys(x.real[k2]).length ? ' · lançado' : ''}</option>`).join('')}</select></label>${Object.keys(rv).length ? `<button type="button" class="btn ghost tiny" data-ngrlimpa="${x.id}:${mk}">Limpar este mês</button>` : ''}</div>
+        <div class="tscroll"><table class="ng-dre"><thead><tr><th>Linha</th><th>Projetado</th><th>Real</th><th>Diferença</th></tr></thead><tbody>${NG_G.map(g => `<tr class="ng-g"><td colspan="4">${esc(g.n)}</td></tr>` +
+          R.porG[g.id].map(l => { const r = rv[l.id], d = r != null ? r - (P.val[l.id] || 0) : null; return `<tr class="ng-l n0"><td class="name">${esc(l.nome)}</td><td class="ng-num">${fm(P.val[l.id] || 0)}</td><td><input type="number" step="100" data-ngr="${x.id}:${mk}:${l.id}" value="${r != null ? r : ''}" placeholder="${Math.round(P.val[l.id] || 0)}" aria-label="Real de ${esc(l.nome)}"></td><td class="ng-num">${d == null ? '<span class="subdet">–</span>' : ngSg(d * (g.s > 0 ? 1 : -1))}</td></tr>`; }).join('') +
+          (g.sub ? `<tr class="ng-sub"><td>= ${esc(g.sub)}</td><td class="ng-num">${fm(P[NG_SUBK[g.id]])}</td><td class="ng-num">${fm(m[NG_SUBK[g.id]])}</td><td class="ng-num">${ngSg(m[NG_SUBK[g.id]] - P[NG_SUBK[g.id]])}</td></tr>` : '')).join('')}</tbody></table></div>
+        <p class="subdet">Deixe em branco o que não mudou: vale o projetado. Diferença positiva é melhor que o projetado.</p>`; }
+  }
+}
+let ngRealMes = '', ngPer = { negdre: 'a1', negfc: 'a1' }, ngFech = [];
+try { ngFech = JSON.parse(localStorage.getItem('painel-ng-fechados')) || []; } catch (e) {} if (!Array.isArray(ngFech)) ngFech = [];
+function ngPerHtml(x, R, tb) {
+  const n = Math.max(1, Math.ceil((R.meses[R.meses.length - 1].t + 1) / 12)), anos = Math.min(n, Math.max(x.anos, 1)), pre = R.tmin < 0;
+  let p = ngPer[tb]; const ok = ['anual', ...(pre ? ['a0'] : []), ...Array.from({ length: anos }, (_, j) => 'a' + (j + 1))]; if (!ok.includes(p)) p = ngPer[tb] = 'a1';
+  return { p, html: `<div class="seg ng-per">${ok.map(v => `<button type="button" data-ngper="${tb}:${v}" aria-pressed="${v === p}">${v === 'anual' ? 'Ano a ano' : v === 'a0' ? 'Antes de abrir' : 'Ano ' + v.slice(1)}</button>`).join('')}</div>` };
+}
+// colunas: meses de um ano do negócio ou os anos do horizonte (somados)
+function ngCols(R, p, x) {
+  if (p === 'anual') { const cols = []; for (let a = 0; a < x.anos; a++) { const ms = R.meses.filter(m => m.t >= a * 12 && m.t < a * 12 + 12); if (ms.length) cols.push({ l: 'Ano ' + (a + 1), ms }); } if (R.tmin < 0) cols.unshift({ l: 'Antes', ms: R.meses.filter(m => m.t < 0) }); return cols; }
+  if (p === 'a0') return R.meses.filter(m => m.t < 0).map(m => ({ l: mLabel(m.i), ms: [m] }));
+  const a = +p.slice(1) - 1; return R.meses.filter(m => m.t >= a * 12 && m.t < a * 12 + 12).map(m => ({ l: mLabel(m.i) + (m.real ? ' ✓' : ''), ms: [m], real: m.real }));
+}
+function ngMMTabela(tbId, cols, G) {
+  const cel = (v, b) => { const r = Math.round(v); return `<td class="${r < 0 ? 'neg' : ''}">${r === 0 && !b ? '<span class="z">—</span>' : fm(v)}</td>`; }, sm = (ms, f) => ms.reduce((s, m) => s + f(m), 0);
+  return `<thead><tr><th>${tbId === 'fc' ? 'Fluxo' : 'DRE'}</th>${cols.map(c => `<th${c.real ? ' class="ng-real"' : ''}>${c.l}</th>`).join('')}</tr></thead><tbody>${G.map(g => { const f = ngFech.includes(tbId + ':' + g.id), linhas = (g.linhas || []).filter(l => cols.some(c => Math.abs(sm(c.ms, l.f)) >= 0.5));
+    return `<tr class="mm-g ${g.cls || ''}"><td>${linhas.length ? `<button type="button" class="mm-t" data-ngtog="${tbId}:${g.id}" aria-expanded="${!f}">${f ? '▸' : '▾'} ${esc(g.nome)}</button>` : `<span class="mm-t">${esc(g.nome)}</span>`}</td>${cols.map(c => cel(sm(c.ms, g.f), true)).join('')}</tr>` +
+      linhas.map(l => `<tr class="mm-s" ${f ? 'hidden' : ''}><td style="padding-left:${26 + (l.n || 0) * 14}px">${esc(l.nome)}</td>${cols.map(c => cel(sm(c.ms, l.f))).join('')}</tr>`).join(''); }).join('')}</tbody>`;
+}
+function renderNegDreMM(x, R) {
+  const { p, html } = ngPerHtml(x, R, 'negdre'), cols = ngCols(R, p, x), G = [];
+  NG_G.forEach(g => {
+    const linhas = ngArvore(x, g.id).map(({ l, n, macro }) => ({ nome: l.nome || 'Linha', n, f: m => (macro ? ngMacroVal(x, m.val, l.id) : m.val[l.id] || 0) * g.s }));
+    if (g.id === 'dep') linhas.push({ nome: 'Depreciação dos investimentos', f: m => -m.depA }); if (g.id === 'fin') linhas.push({ nome: 'Juros do empréstimo', f: m => -m.jur });
+    G.push({ id: g.id, nome: (g.s > 0 ? '' : '(−) ') + g.n, f: m => m[NG_GK[g.id]] * g.s, linhas });
+    if (g.sub) G.push({ id: 's' + g.id, nome: '= ' + g.sub, f: m => m[NG_SUBK[g.id]], cls: g.id === 'ir' ? 'res' : 'saldo' });
+  });
+  $('ngd-mm').innerHTML = html + (cols.length ? `<div class="tscroll mm-wrap" style="margin-top:12px"><table class="mm ng-mm">${ngMMTabela('dre', cols, G)}</table></div>` : '<p class="hint">Nada neste período.</p>') + (cols.some(c => c.real) ? '<p class="subdet">✓ = mês com realizado lançado.</p>' : '');
+}
+function renderNegFc() {
+  const x = ngSel(), ids = ['ngf-inv', 'ngf-giro', 'ngf-emp', 'ngf-mm', 'ngf-plano'];
+  if (!x) { $('ngf-sel').innerHTML = ngVazio(); ids.forEach(id => { $(id).innerHTML = ''; }); kpis($('kpi-ngf'), []); $('ch-ngf').innerHTML = ''; $('lg-ngf').innerHTML = ''; return; }
+  const R = ngCalcC(x), b = k => `${x.id}:${k}`; $('ngf-sel').innerHTML = ngSelHtml(x, `<button type="button" class="btn ghost tiny" data-tab="negdre">Ver DRE</button>`); ngKpis($('kpi-ngf'), x, R);
+  $('ngf-inv').innerHTML = `<div class="tscroll"><table><thead><tr><th>Investimento</th><th>Valor</th><th>Mês</th><th>Vida útil</th><th></th></tr></thead><tbody>${x.inv.map(v => `<tr>
+    <td class="name"><input type="text" data-ngi="${x.id}:${v.id}:nome" value="${esc(v.nome)}" maxlength="60" placeholder="ex.: reforma, equipamentos" aria-label="Nome do investimento"></td>
+    <td data-l="Valor"><input type="number" min="0" step="1000" data-ngi="${x.id}:${v.id}:valor" value="${v.valor}" aria-label="Valor"></td>
+    <td data-l="Mês"><input type="month" data-ngi="${x.id}:${v.id}:mes" value="${esc(v.mes)}" aria-label="Mês do pagamento"></td>
+    <td data-l="Vida útil"><input type="number" min="0" max="50" step="1" data-ngi="${x.id}:${v.id}:vida" value="${v.vida}" aria-label="Vida útil em anos"> anos</td>
+    <td><button type="button" class="btn danger tiny" data-ngidel="${x.id}:${v.id}" aria-label="Remover investimento">×</button></td></tr>`).join('') || '<tr><td colspan="5" class="hint">Nenhum investimento. Inclua reforma, equipamentos, estoque inicial, franquia, despesas de abertura.</td></tr>'}</tbody></table></div>
+    <button type="button" class="btn tiny" data-ngiadd="${x.id}">+ Investimento</button> <span class="subdet">Vida útil maior que zero gera depreciação no DRE (reforma ~10 anos, equipamentos ~5 a 10, computadores ~5). Zero = não deprecia (capital de giro, estoque, taxas).</span>`;
+  const G = x.giro;
+  $('ngf-giro').innerHTML = `<div class="ng-form">
+    <label>Prazo para receber (dias)<input type="number" min="0" max="365" step="5" data-ngf="${b('giro.receb')}" value="${G.receb}" title="Cartão de crédito costuma cair em 30 dias"></label>
+    <label>Estoque (dias de custo)<input type="number" min="0" max="365" step="5" data-ngf="${b('giro.estoque')}" value="${G.estoque}"></label>
+    <label>Prazo para pagar fornecedores (dias)<input type="number" min="0" max="365" step="5" data-ngf="${b('giro.pagar')}" value="${G.pagar}"></label>
+    <label>Caixa mínimo da empresa (R$)<input type="number" min="0" step="1000" data-ngf="${b('giro.caixaMin')}" value="${G.caixaMin}"></label></div>
+    <p class="subdet">Quanto mais tempo para receber e mais estoque, mais dinheiro fica preso no negócio. Com o caixa mínimo, a empresa só distribui o que passar dele.</p>`;
+  const E = x.emp, sch = E.on && E.valor > 0 ? ngJuros(E) : [];
+  $('ngf-emp').innerHTML = `<label class="check"><input type="checkbox" data-ngf="${b('emp.on')}"${E.on ? ' checked' : ''}> Vou pegar um empréstimo para o negócio</label>${E.on ? `<div class="ng-form">
+    <label>Valor<input type="number" min="0" step="1000" data-ngf="${b('emp.valor')}" value="${E.valor}"></label>
+    <label>Mês em que entra<input type="month" data-ngf="${b('emp.mes')}" value="${esc(E.mes)}"></label>
+    <label>Juros (% a.a.)<input type="number" min="0" step="0.5" data-ngf="${b('emp.taxa')}" value="${E.taxa}"></label>
+    <label>Prazo (meses)<input type="number" min="1" max="360" step="1" data-ngf="${b('emp.prazo')}" value="${E.prazo}"></label></div>
+    ${sch.length ? `<p class="subdet">Parcela fixa (Price) de ${fm(sch[0].p)} por ${E.prazo} meses, ${fm(sch.reduce((s, q) => s + q.j, 0))} de juros no total. Os juros entram no DRE; o valor emprestado e a amortização, só no caixa.</p>` : ''}` : ''}`;
+  const { p, html } = ngPerHtml(x, R, 'negfc'), cols = ngCols(R, p, x), part = x.part / 100;
+  const GF = [
+    { id: 'op', nome: 'Caixa da operação', f: m => m.oper, linhas: [{ nome: 'Lucro líquido', f: m => m.LL }, { nome: '+ Depreciação (não sai do caixa)', f: m => m.DEP }, { nome: '− Dinheiro preso no giro', f: m => -m.dGiro }] },
+    { id: 'inv', nome: 'Investimentos', f: m => -m.invT, linhas: [] },
+    { id: 'emp', nome: 'Empréstimo', f: m => m.empIn - m.amort, linhas: [{ nome: 'Entrada do empréstimo', f: m => m.empIn }, { nome: '− Amortização', f: m => -m.amort }] },
+    { id: 'fc', nome: '= Fluxo do mês', f: m => m.fc, cls: 'saldo' },
+    { id: 'soc', nome: 'Sócios', f: m => m.aporte - m.distrib, linhas: [{ nome: 'Dinheiro que os sócios põem', f: m => m.aporte }, { nome: '− Lucro distribuído', f: m => -m.distrib }] },
+    { id: 'cx', nome: 'Caixa da empresa no fim do mês', f: () => 0, cls: 'saldo', saldo: true },
+    { id: 'voce', nome: 'Para você', f: m => R.voce(m), cls: 'res', linhas: [{ nome: `Lucro distribuído × ${num(x.part, 0)}%`, f: m => m.distrib * part }, { nome: 'Pró-labore líquido', f: m => m.plLiq }, { nome: `− Dinheiro que você põe (${num(x.part, 0)}%)`, f: m => -m.aporte * part }] }
+  ];
+  let tbl = cols.length ? ngMMTabela('fc', cols, GF) : '';
+  // caixa é saldo: mostra o do último mês de cada coluna
+  tbl = tbl.replace(/(<tr class="mm-g saldo"><td><span class="mm-t">Caixa da empresa no fim do mês<\/span><\/td>)(.*?)(<\/tr>)/, (a, h, c, e) => h + cols.map(c2 => `<td>${fm(c2.ms[c2.ms.length - 1].caixa)}</td>`).join('') + e);
+  $('ngf-mm').innerHTML = html + (cols.length ? `<div class="tscroll mm-wrap" style="margin-top:12px"><table class="mm ng-mm">${tbl}</table></div>` : '<p class="hint">Nada neste período.</p>');
+  // gráfico: caixa acumulado sem os sócios (mostra quanto precisa pôr e quando vira) e o acumulado para você
+  const H = R.meses.filter(m => m.t < R.T); let a1 = 0, a2 = 0;
+  const s1 = H.map(m => (a1 += m.fc)), s2 = H.map(m => (a2 += R.voce(m)));
+  const series = [{ name: 'Caixa acumulado do negócio, sem os sócios', c: 'var(--s7)', v: s1, w: 2.4 }, { name: 'Acumulado para você', c: 'var(--s1)', v: s2, dash: true }];
+  legend($('lg-ngf'), series); chart($('ch-ngf'), $('ro-ngf'), H.length, series, k, t => mLabel(H[t].i), 0);
+  // ligação com o plano
+  const fimPl = (state.plan || {}).inicio ? ngHorizonte() : null;
+  $('ngf-plano').innerHTML = `<div class="ng-form">
+    <label>Uso<select data-ngf="${b('uso')}"><option value="sim">Só simulação</option><option value="real"${x.uso === 'real' ? ' selected' : ''}>Projeção real</option></select></label>
+    <label>Sua participação (%)<input type="number" min="0" max="100" step="5" data-ngf="${b('part')}" value="${x.part}"></label>
+    <label>Lucro distribuído (% do que sobra no caixa)<input type="number" min="0" max="100" step="5" data-ngf="${b('dist')}" value="${x.dist}"></label>
+    <label class="check"><input type="checkbox" data-ngf="${b('saida.on')}"${x.saida.on ? ' checked' : ''}> Vou deixar minha renda atual para tocar o negócio</label>
+    ${x.saida.on ? `<label>A partir de<input type="month" data-ngf="${b('saida.mes')}" value="${esc(x.saida.mes || x.ini)}"></label>` : ''}</div>
+    <ul class="ng-plano">
+      <li>Meses em que o caixa do negócio fica negativo entram no plano como <b>gasto</b> (o dinheiro que você põe${x.part < 100 ? `, ${num(x.part, 0)}% do total` : ''}): ${R.aportes > 0.5 ? `${fm(R.aportes * part)} no total` : 'nenhum por enquanto'}.</li>
+      <li>O lucro distribuído e o pró-labore líquido entram como <b>receita</b>: ${fm(R.voceMad)}/mês quando maduro.</li>
+      ${x.saida.on ? `<li>A partir de ${mLabel(mIndex(x.saida.mes || x.ini))}, a sua receita atual do Plano futuro para${fimPl ? ` até o fim do plano (${mLabel(fimPl)})` : ''}, como no sabático.</li>` : ''}
+      <li>Depois do horizonte de ${x.anos} ${x.anos > 1 ? 'anos' : 'ano'}, o plano segue com o negócio rodando nas mesmas premissas.</li></ul>
+    <p class="subdet">${x.uso === 'real' ? 'Está na projeção real.' : 'Está só como simulação: aparece em Itens dos módulos e na linha "Com as simulações" do gráfico do Plano.'} <a href="#" data-lmtab="orcamento" data-lmsec="Itens dos módulos">Ver no Plano futuro</a></p>`;
+}
+
+/* ---------- eventos ---------- */
+const ngAcha = id => ngLista().find(y => y.id === id);
+// renderiza depois do evento: o campo que disparou o change ainda está saindo de foco
+function ngRe() { ngCache.v = {}; planCache = null; save(); setTimeout(renderTab, 0); }
+document.addEventListener('click', e => {
+  const t = e.target.closest('[data-ngadd],[data-ngdel],[data-ngdup],[data-ngabre],[data-ngladd],[data-ngsub],[data-ngldel],[data-ngiadd],[data-ngidel],[data-ngper],[data-ngtog],[data-ngrlimpa]'); if (!t || !state.neg) return;
+  const d = t.dataset, v = state.neg; e.preventDefault();
+  if (d.ngadd != null) { const x = ngNovo('Negócio ' + (v.negocios.length + 1)); ngNorm(x); v.negocios.push(x); v.sel = x.id; ngRe(); if (tab !== 'negcad') showTab('negcad'); return; }
+  if (d.ngdel) { const x = ngAcha(d.ngdel); if (!x || !confirmar(`Remover o negócio "${x.nome}" com o DRE e o fluxo de caixa?`)) return; v.negocios = v.negocios.filter(y => y.id !== x.id); ngRe(); return; }
+  if (d.ngdup) { const x = ngAcha(d.ngdup); if (!x) return; const c = clone(x), map = {}; c.id = uid(); c.nome = x.nome + ' (cópia)'; c.uso = 'sim'; c.linhas.forEach(l => { map[l.id] = uid(); }); c.linhas.forEach(l => { l.id = map[l.id]; if (l.pai) l.pai = map[l.pai] || ''; });
+    Object.keys(c.real).forEach(mk => { const o = {}; Object.entries(c.real[mk]).forEach(([id, val]) => { if (map[id]) o[map[id]] = val; }); c.real[mk] = o; }); c.inv.forEach(i => { i.id = uid(); }); v.negocios.push(c); v.sel = c.id; ngRe(); return; }
+  if (d.ngabre) { const [id, tb] = d.ngabre.split(':'); v.sel = id; save(); showTab(tb); return; }
+  if (d.ngladd) { const [id, g] = d.ngladd.split(':'), x = ngAcha(id); if (!x) return; x.linhas.push({ id: uid(), g, pai: '', nome: 'Nova linha', modo: g === 'ded' || g === 'ir' ? 'pct' : 'fixo', v: 0, qtd: 0, base: g === 'ir' ? 'lair' : 'rb', reaj: 0, ini: 1, pl: false }); ngRe(); return; }
+  if (d.ngsub) { const [id, lid] = d.ngsub.split(':'), x = ngAcha(id), l = x && x.linhas.find(y => y.id === lid); if (!l) return;
+    const nova = { id: uid(), g: l.g, pai: l.id, nome: 'Desdobramento', modo: l.modo, v: ngFilhas(x, l.id).length ? 0 : l.v, qtd: ngFilhas(x, l.id).length ? 0 : l.qtd, base: l.base, reaj: l.reaj, ini: l.ini, pl: false };
+    const pos = (() => { const ids = [l.id]; let mudou = true; while (mudou) { mudou = false; x.linhas.forEach(y => { if (ids.includes(y.pai) && !ids.includes(y.id)) { ids.push(y.id); mudou = true; } }); } return Math.max(...ids.map(i => x.linhas.findIndex(y => y.id === i))); })();
+    x.linhas.splice(pos + 1, 0, nova); ngRe(); return; }
+  if (d.ngldel) { const [id, lid] = d.ngldel.split(':'), x = ngAcha(id), l = x && x.linhas.find(y => y.id === lid); if (!l) return; const f = ngFilhas(x, lid);
+    if (f.length && !confirmar(`Remover "${l.nome}" e os ${f.length} desdobramentos?`)) return;
+    const fora = new Set([lid]); let mudou = true; while (mudou) { mudou = false; x.linhas.forEach(y => { if (fora.has(y.pai) && !fora.has(y.id)) { fora.add(y.id); mudou = true; } }); }
+    x.linhas = x.linhas.filter(y => !fora.has(y.id)); ngRe(); return; }
+  if (d.ngiadd) { const x = ngAcha(d.ngiadd); if (!x) return; x.inv.push({ id: uid(), nome: '', valor: 0, mes: mKey(mIndex(x.ini) - 1), vida: 0 }); ngRe(); return; }
+  if (d.ngidel) { const [id, iid] = d.ngidel.split(':'), x = ngAcha(id); if (!x) return; x.inv = x.inv.filter(y => y.id !== iid); ngRe(); return; }
+  if (d.ngper) { const [tb, p] = d.ngper.split(':'); ngPer[tb] = p; renderTab(); return; }
+  if (d.ngtog) { ngFech = ngFech.includes(d.ngtog) ? ngFech.filter(y => y !== d.ngtog) : ngFech.concat(d.ngtog); try { localStorage.setItem('painel-ng-fechados', JSON.stringify(ngFech)); } catch (er) {} renderTab(); return; }
+  if (d.ngrlimpa) { const [id, mk] = d.ngrlimpa.split(':'), x = ngAcha(id); if (!x) return; delete x.real[mk]; ngRe(); return; }
+});
+document.addEventListener('change', e => {
+  const t = e.target, d = t.dataset || {}; if (!state.neg) return;
+  if (d.ngsel != null) { state.neg.sel = t.value; save(); renderTab(); return; }
+  if (d.ngrmes != null) { ngRealMes = t.value; renderTab(); return; }
+  const val = () => t.type === 'checkbox' ? t.checked : t.type === 'number' ? (t.value === '' ? '' : +t.value) : t.value;
+  if (d.ngf) { const [id, path] = d.ngf.split(':'), x = ngAcha(id); if (!x) return; const ks = path.split('.'); let o = x; ks.slice(0, -1).forEach(q => { o = o[q]; }); o[ks[ks.length - 1]] = val();
+    if (path === 'saida.on' && x.saida.on && !x.saida.mes) x.saida.mes = x.ini; ngNorm(x); ngRe(); return; }
+  if (d.ngl) { const [id, lid, f] = d.ngl.split(':'), x = ngAcha(id), l = x && x.linhas.find(y => y.id === lid); if (!l) return; if (f === 'mb') { const [m, q] = t.value.split(':'); l.modo = m; if (q) l.base = q; } else l[f] = val(); ngNorm(x); ngRe(); return; }
+  if (d.ngi) { const [id, iid, f] = d.ngi.split(':'), x = ngAcha(id), i = x && x.inv.find(y => y.id === iid); if (!i) return; i[f] = val(); ngNorm(x); ngRe(); return; }
+  if (d.ngr) { const [id, mk, lid] = d.ngr.split(':'), x = ngAcha(id); if (!x) return; const r = x.real[mk] = x.real[mk] || {}; if (t.value === '' || !isFinite(+t.value)) delete r[lid]; else r[lid] = +t.value; if (!Object.keys(r).length) delete x.real[mk]; ngRe(); return; }
+});
+
 function vgDataPadrao() { const d = new Date(NOW.getFullYear(), NOW.getMonth() + 6, 1); while (d.getDay() !== 6) d.setDate(d.getDate() + 1); const v = new Date(d); v.setDate(v.getDate() + 14); const f = x => x.toISOString().slice(0, 10); return [f(d), f(v)]; }
 function vgNormalizar(s) {
   if (!s.viag || typeof s.viag !== 'object' || Array.isArray(s.viag)) s.viag = {};
@@ -6361,6 +6896,7 @@ function normalizar(s) {
   if (!Array.isArray(s.plan.inc)) s.plan.inc = [];
   soNormalizar(s);
   vgNormalizar(s);
+  ngNormalizar(s);
   if (!Array.isArray(s.comp.rows)) s.comp.rows = clone(ROWS_PADRAO);
   if (!s.cenarios.find(c => c.id === s.cenAtivo)) s.cenAtivo = s.cenarios[0].id;
   if (!s.cenarios.find(c => c.id === s.destaque)) s.destaque = s.cenarios[0].id;
@@ -6369,7 +6905,7 @@ function normalizar(s) {
 try { if (quemLocal === 'dono') { const b = JSON.parse(localStorage.getItem('painel-priv')); if (b) aplicarBase(b); } } catch (e) {}
 try { const l = JSON.parse(localStorage.getItem(LSK('painel-fin-v2'))); if (l) state = normalizar(l); } catch (e) {}
 tab = 'modulos';
-const TABS = ['modulos', 'comousar', 'inicio', 'trabvg', 'viagvg', 'viagens', 'viagcmp', 'viagrot', 'viagcus', 'viagdur', 'leia', 'global', 'gastos', 'carteira', 'orcamento', 'compras', 'cenarios', 'patrimonio', 'comparador', 'simulador', 'pjpf', 'stock', 'config', 'familia'];
+const TABS = ['modulos', 'comousar', 'inicio', 'trabvg', 'viagvg', 'viagens', 'viagcmp', 'viagrot', 'viagcus', 'viagdur', 'negvg', 'negcad', 'negdre', 'negfc', 'leia', 'global', 'gastos', 'carteira', 'orcamento', 'compras', 'cenarios', 'patrimonio', 'comparador', 'simulador', 'pjpf', 'stock', 'config', 'familia'];
 if (TABS.includes(location.hash.slice(1))) tab = location.hash.slice(1);
 if (!TABS.includes(tab)) tab = 'modulos';
 
@@ -10007,6 +10543,7 @@ function itensModulos() {
       unico: rec ? v : -v, mensal: 0, meses: 0, anual: !!e.anual, resumo: fm(v) + (e.anual ? ' todo ano, corrigido pelo IPCA' : ' uma vez'), uso: 'real', fixo: true });
   });
   try { out.push(...vgItensMod()); } catch (er) {}
+  try { out.push(...ngItensMod()); } catch (er) { console.error(er); }
   out.forEach(x => { x.chance = chanceItem(x.id); });
   return out;
 }
@@ -10014,6 +10551,7 @@ function setUsoItem(id, uso) {
   const P = state.plan, on = uso === 'real', [k, x] = [id.slice(0, id.indexOf(':')), id.slice(id.indexOf(':') + 1)];
   if (k === 'compra') { P.inc = (P.inc || []).filter(y => y !== x); if (on) P.inc.push(x); }
   else if (k === 'viag') { const v = ((state.viag || {}).viagens || []).find(y => y.id === x); if (!v) return false; vgCusNorm(v); v.cus.plano = on; }
+  else if (k === 'neg') { const n = ngLista().find(y => y.id === x); if (!n) return false; n.uso = on ? 'real' : 'sim'; ngCache.v = {}; }
   else if (k === 'so') { const e = ((state.so || {}).empresas || []).find(y => y.id === x); if (!e || !e.ev || !e.ev.definido) return false; e.ev.plano = on; }
   else return false;
   planCache = null; save(); return true;
@@ -10416,14 +10954,29 @@ $('cpform').addEventListener('submit', async e => {
 });
 
 /* ---------- abas ---------- */
-const BUILD = { modulos: () => {}, comousar: () => {}, inicio: () => {}, trabvg: () => {}, viagvg: () => {}, viagens: () => {}, viagcmp: () => {}, viagrot: () => {}, viagcus: () => {}, viagdur: () => {}, leia: buildLeia, global: () => {}, cenarios: buildCenarios, compras: buildCenarios, carteira: buildCarteira, comparador: buildComparador, simulador: buildSimulador, gastos: buildGastos, orcamento: buildOrcamento, config: buildConfig, pjpf: buildPj, stock: buildStock, familia: () => carregarPerfis(), patrimonio: () => {} };
+const BUILD = { modulos: () => {}, comousar: () => {}, inicio: () => {}, trabvg: () => {}, viagvg: () => {}, viagens: () => {}, viagcmp: () => {}, viagrot: () => {}, viagcus: () => {}, viagdur: () => {}, negvg: () => {}, negcad: () => {}, negdre: () => {}, negfc: () => {}, leia: buildLeia, global: () => {}, cenarios: buildCenarios, compras: buildCenarios, carteira: buildCarteira, comparador: buildComparador, simulador: buildSimulador, gastos: buildGastos, orcamento: buildOrcamento, config: buildConfig, pjpf: buildPj, stock: buildStock, familia: () => carregarPerfis(), patrimonio: () => {} };
 // (i) de cada seção: o que mostra e de onde vêm os números (chave: aba:data-nav)
 const INFO_SEC = {
   'comousar:Resumo': 'Para cada módulo: se já tem o mínimo para funcionar (os obrigatórios), quantos opcionais você resolveu e um botão para o próximo passo. Um opcional conta como resolvido quando você preenche ou marca que não tem.',
   'comousar:Financeiro': 'Os passos do Financeiro. Os três obrigatórios são a base de tudo: sem renda, aplicações e checkpoint, o plano não tem de onde partir.',
   'comousar:Trabalho e Bens': 'Os passos de Trabalho e Bens. Todos são opcionais: o módulo só mostra o que você cadastrar.',
   'comousar:Viagens': 'Os passos de Viagens. Todos são opcionais.',
-  'comousar:Negócios': 'Módulo em construção.',
+  'comousar:Negócios': 'Os passos de Negócios. Todos são opcionais.',
+  'negvg:Meus negócios': 'Lucro líquido e Para você são a média por mês do último ano do horizonte, quando o negócio já maturou. Para você = lucro distribuído × sua parte + pró-labore líquido − dinheiro que você põe.',
+  'negvg:Linha do tempo': 'Cada negócio do primeiro investimento até o fim do horizonte. Tracejado: só simulação.',
+  'negvg:Partes do módulo': 'Atalhos para Meus negócios, Meu DRE e Fluxo de caixa.',
+  'negcad:Cadastro': 'Sua parte é a sua participação no negócio: ela divide o lucro distribuído e o dinheiro que os sócios põem. Duplicar cria uma cópia para testar outra versão da mesma ideia.',
+  'negcad:Anotações': 'Texto livre do negócio escolhido.',
+  'negdre:Premissas': 'O DRE é mensal. A receita começa no % do 1º mês e cresce em linha reta até o mês de maturidade. O horizonte é o período das contas de payback e TIR; no Plano futuro o negócio continua depois dele.',
+  'negdre:Linhas do DRE': 'R$ por mês: valor fixo, com reajuste anual. %: percentual da receita bruta, da receita líquida ou, no IR, do lucro antes do IR. Por unidade: na receita é preço × quantidade; nos custos, R$ por unidade vendida. A partir do mês: 1 é o primeiro mês de operação (use para uma contratação no mês 6, por exemplo). Pró-labore: marque a linha que é a sua retirada; ela entra no seu Plano futuro, líquida de INSS (11%) e IR. Não substitui um contador.',
+  'negdre:DRE mês a mês': 'DRE é competência: a venda entra no mês em que foi feita, mesmo que o dinheiro caia depois. O dinheiro de verdade está em Fluxo de caixa.',
+  'negdre:Realizado': 'O realizado substitui o projetado só naquele mês e naquela linha. O fluxo de caixa e o Plano futuro passam a usar o real.',
+  'negfc:Investimentos': 'Saem do caixa no mês informado. Os que têm vida útil viram depreciação no DRE, espalhada mês a mês.',
+  'negfc:Capital de giro': 'Dinheiro preso na operação: vendas que você ainda vai receber mais estoque, menos o que ainda vai pagar aos fornecedores. Cresce com as vendas e sai do caixa enquanto cresce.',
+  'negfc:Empréstimo': 'Price com parcela fixa, a primeira no mês seguinte à entrada. Juros entram no DRE (resultado financeiro); a amortização só no caixa.',
+  'negfc:Caixa no tempo': 'Caixa acumulado do negócio = soma dos fluxos do mês sem o dinheiro dos sócios. O ponto mais baixo é quanto precisa ser posto ao todo.',
+  'negfc:Fluxo mês a mês': 'Fluxo do mês = caixa da operação − investimentos + empréstimo − amortização. Se o caixa ficaria abaixo do mínimo, os sócios põem a diferença; se sobra, a empresa distribui o % escolhido do que passou do mínimo.',
+  'negfc:No Plano futuro': 'Projeção real: o dinheiro que você põe entra como gasto e o que chega para você como receita, mês a mês. Se marcar a saída da renda atual, as receitas do plano param a partir daquele mês, como no sabático. Só simulação: fica em Itens dos módulos para comparar.',
   'modulos:Linha do tempo': 'Os itens de todos os módulos no tempo: quando começam e, se tiverem parcelas, até quando vão. Cheio é Projeção real; tracejado é Só simulação. A % ao lado do nome é a chance de acontecer, quando for menor que 100%.',
   'modulos:Patrimônio projetado': 'Linha azul: investido no plano atual (Plano futuro). Verde tracejada: o plano somando os itens em Só simulação marcados em Comparar. Amarela: o esperado, pesando cada item pela chance de acontecer.',
   'inicio:Total dos módulos': 'Para cada módulo, quanto os itens em Projeção real mudam o investido no fim do plano (já incluído no plano) e quanto mudariam as simulações marcadas em Comparar (fora do plano).',
@@ -10533,7 +11086,7 @@ function infoSecoes() {
       if (h && !h.id) h.append(btn); else if (h) h.after(btn); else if (lg) lg.append(btn); }); });
 }
 infoSecoes();
-const RENDER = { modulos: renderModulos, comousar: renderComoUsar, inicio: renderHome, trabvg: renderTrabVg, viagvg: renderViagVg, viagens: renderViagens, viagcmp: renderViagCmp, viagrot: renderViagRot, viagcus: renderViagCus, viagdur: renderViagDur, leia: () => {}, global: renderGlobal, cenarios: renderCenarios, compras: renderCenarios, carteira: renderCarteira, comparador: renderComparador, simulador: renderSimulador, gastos: () => { renderGastos(); renderFechamento(); renderHistorico(); }, orcamento: renderOrcamento, config: renderConfig, pjpf: renderPj, stock: renderStock, familia: renderFamilia, patrimonio: renderPatr };
+const RENDER = { modulos: renderModulos, comousar: renderComoUsar, inicio: renderHome, trabvg: renderTrabVg, viagvg: renderViagVg, viagens: renderViagens, viagcmp: renderViagCmp, viagrot: renderViagRot, viagcus: renderViagCus, viagdur: renderViagDur, negvg: renderNegVg, negcad: renderNegCad, negdre: renderNegDre, negfc: renderNegFc, leia: () => {}, global: renderGlobal, cenarios: renderCenarios, compras: renderCenarios, carteira: renderCarteira, comparador: renderComparador, simulador: renderSimulador, gastos: () => { renderGastos(); renderFechamento(); renderHistorico(); }, orcamento: renderOrcamento, config: renderConfig, pjpf: renderPj, stock: renderStock, familia: renderFamilia, patrimonio: renderPatr };
 function renderTab() { planCache = null; try { RENDER[tab](); } catch (err) { console.error(err); setSave('erro ao recalcular: ' + (err && err.message || err)); } }
 let navAbertos = null;
 try { navAbertos = JSON.parse(localStorage.getItem('painel-nav-abertos')); } catch (e) {}
@@ -10590,14 +11143,18 @@ const MOD_SVG = {
   fin: '<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 40h32"/><rect x="11" y="24" width="6" height="12" rx="1.5"/><rect x="21" y="17" width="6" height="19" rx="1.5"/><rect x="31" y="10" width="6" height="26" rx="1.5"/><path d="M9 19l9-6 6 3 13-9"/></svg>',
   trab: '<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="7" y="15" width="34" height="23" rx="3"/><path d="M18 15v-4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v4"/><path d="M7 25h34"/><path d="M21 25v3h6v-3"/></svg>',
   viag: '<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 27l-9 9M27 21l14-14M41 7c-3-1-6 0-8 2l-5 5-15-4-3 3 12 7-6 6-5-1-2 2 6 3 3 6 2-2-1-5 6-6 7 12 3-3-4-15 5-5c2-2 3-5 2-8z"/></svg>',
-  neg: '<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 19l3-9h26l3 9"/><path d="M8 19c0 3 2 5 5.3 5s5.4-2 5.4-5c0 3 2 5 5.3 5s5.3-2 5.3-5c0 3 2.1 5 5.4 5S40 22 40 19"/><path d="M11 24v15h26V24"/><path d="M20 39v-9h8v9"/></svg>'
+  neg: '<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 19l3-9h26l3 9"/><path d="M8 19c0 3 2 5 5.3 5s5.4-2 5.4-5c0 3 2 5 5.3 5s5.3-2 5.3-5c0 3 2.1 5 5.4 5S40 22 40 19"/><path d="M11 24v15h26V24"/><path d="M20 39v-9h8v9"/></svg>',
+  fam: '<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="16" cy="13" r="4.5"/><circle cx="32" cy="13" r="4.5"/><circle cx="24" cy="25" r="3.5"/><path d="M8 38v-6a8 8 0 0 1 8-8h0"/><path d="M40 38v-6a8 8 0 0 0-8-8h0"/><path d="M18 40v-3a6 6 0 0 1 12 0v3"/></svg>',
+  indep: '<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 36h36"/><path d="M14 36a10 10 0 0 1 20 0"/><path d="M24 14v-6M12.5 18.5l-4-4M35.5 18.5l4-4M8 27H4M44 27h-4"/><path d="M10 42h28"/></svg>'
 };
 const MODS = [
   { id: 'uso', corNav: '#D4A72C', nome: 'Como usar', cor: 'var(--accent)', fixo: true, vg: 'comousar', desc: 'O que cada módulo faz, o que é obrigatório preencher, o que é opcional e quanto você já configurou.', tabs: ['comousar'] },
   { id: 'fin', corNav: '#7FA6E0', nome: 'Financeiro', cor: 'var(--s1)', fixo: true, vg: 'inicio', desc: 'Gastos, patrimônio, carteira, plano futuro e cenários. Recebe o que os outros módulos planejam.', tabs: ['inicio', 'global', 'gastos', 'patrimonio', 'carteira', 'comparador', 'simulador', 'orcamento', 'cenarios', 'familia'] },
   { id: 'trab', corNav: '#E09A63', nome: 'Trabalho e Bens', cor: 'var(--s2)', vg: 'trabvg', desc: 'Compras e bens (imóveis, carros, ...), stock options e PJ e PF. O que entra no plano vai para o Plano futuro.', tabs: ['trabvg', 'compras', 'stock', 'pjpf'] },
   { id: 'viag', corNav: '#5fc2f5', nome: 'Viagens', cor: 'var(--s8)', vg: 'viagens', desc: 'Mapa de onde já foi e de onde quer ir, sorteio, comparação de destinos nas suas datas o roteiro com a rota mais barata, os custos ligados ao Plano futuro e os gastos durante a viagem.', tabs: ['viagvg', 'viagens', 'viagcmp', 'viagrot', 'viagcus', 'viagdur'] },
-  { id: 'neg', corNav: '#a3e05a', nome: 'Negócios', cor: 'var(--s7)', breve: true, desc: 'Pesquisa de mercado, DRE, passo a passo para abrir empresa e oportunidades de custo.', tabs: [] }
+  { id: 'neg', corNav: '#a3e05a', nome: 'Negócios', cor: 'var(--s7)', vg: 'negvg', desc: 'Suas ideias e empresas: DRE com as suas linhas, fluxo de caixa, quanto pôr e quanto chega para você no Plano futuro. Pesquisa de mercado, abrir empresa e oportunidades de custo vêm a seguir.', tabs: ['negvg', 'negcad', 'negdre', 'negfc'] },
+  { id: 'fam', corNav: '#fb7185', nome: 'Família', cor: 'var(--s6)', breve: true, desc: 'Contas conjuntas, filhos (do bebê à escola), divisão de gastos e dados compartilhados com quem mora com você.', tabs: [] },
+  { id: 'indep', corNav: '#E3B848', nome: 'Independência financeira', cor: 'var(--s3)', breve: true, desc: 'Quando dá para parar de trabalhar: quanto juntar, renda passiva, INSS e previdência privada.', tabs: [] }
 ];
 const modDe = t => (MODS.find(m => m.tabs.includes(t)) || {}).id || null;
 let modAtual = modDe(tab) || 'fin';
@@ -10655,6 +11212,16 @@ function cuPassos() {
         { id: 'vgviag', t: 'Escolher uma viagem', d: 'Quando decidir, toque em "Escolher este" no Comparar.', ok: ((state.viag || {}).viagens || []).length > 0 || pul.includes('vgviag'), tab: 'viagcmp', sec: 'Lado a lado', pular: 'Depois' },
         { id: 'vgrot', t: 'Montar o roteiro', d: 'As cidades na ordem, noites, trechos, hospedagem e passeios. O painel sugere a rota mais barata.', ok: ((state.viag || {}).viagens || []).some(x => x.rot && (x.rot.paradas || []).length >= 2) || pul.includes('vgrot'), tab: 'viagrot', sec: 'Rota', pular: 'Depois' },
         { id: 'vgcus', t: 'Planejar o pagamento', d: 'Veja o custo projetado na data, escolha caixinha, parcelado ou à vista e se a viagem entra no Plano futuro.', ok: ((state.viag || {}).viagens || []).some(x => x.cus && (x.cus.plano || (x.cus.pag || {}).guardado > 0)) || pul.includes('vgcus'), tab: 'viagcus', sec: 'Como pagar', pular: 'Depois' }
+      ]
+    },
+    neg: {
+      sobre: 'Suas ideias e empresas: o DRE com as suas linhas, o fluxo de caixa com investimentos e capital de giro, quanto você precisa pôr e quanto chega para você.',
+      precisa: 'Nada aqui é obrigatório. Cadastre um negócio, preencha a receita e os custos no DRE e os investimentos no fluxo de caixa. Depois escolha se ele entra na <b>Projeção real</b> do Plano futuro ou fica <b>Só simulação</b>.',
+      passos: [
+        { id: 'ngcad', t: 'Cadastrar um negócio', d: 'Uma ideia, uma empresa em abertura ou uma que já existe.', ok: ngLista().length > 0 || pul.includes('ngcad'), tab: 'negcad', sec: 'Cadastro', pular: 'Depois' },
+        { id: 'ngdre', t: 'Montar o DRE', d: 'Receita, impostos, custos e despesas. Inclua as suas linhas e desdobre as que quiser.', ok: ngLista().some(x => x.linhas.some(l => l.g === 'rb' && l.v > 0)) || pul.includes('ngdre'), tab: 'negdre', sec: 'Linhas do DRE', pular: 'Depois' },
+        { id: 'ngfc', t: 'Investimentos e caixa', d: 'O que precisa investir, prazos de recebimento e pagamento e, se houver, o empréstimo.', ok: ngLista().some(x => x.inv.some(i => i.valor > 0)) || pul.includes('ngfc'), tab: 'negfc', sec: 'Investimentos', pular: 'Depois' },
+        { id: 'ngpl', t: 'Levar ao Plano futuro', d: 'Sua participação, quanto do lucro é distribuído e se você vai deixar a renda atual.', ok: ngLista().some(x => x.uso === 'real') || pul.includes('ngpl'), tab: 'negfc', sec: 'No Plano futuro', pular: 'Depois' }
       ]
     }
   };
@@ -10759,7 +11326,7 @@ function renderTrabVg() {
     ['Stock options hoje', nSo ? fm(so) : '—', nSo ? 'líquido se o preço de hoje valesse, já com imposto' : 'nenhuma empresa cadastrada']
   ]);
   $('tv-tl').innerHTML = tlHtml(itensModulos().filter(x => x.mod === 'trab'));
-  const m = MODS.find(x => x.id === 'trab'), lk = [['compras', 'Compras e bens', 'Imóveis, carros, outros bens e novos negócios: preço, financiamento, custos de ter e venda.', 'trab'], ['stock', 'Stock options', 'Opções, phantom shares e RSUs: vesting, valor hoje e num evento de liquidez.', 'trab'], ['pjpf', 'PJ e PF', 'Do faturamento ao bolso, melhor pró-labore e PJ contra CLT.', 'trab']];
+  const m = MODS.find(x => x.id === 'trab'), lk = [['compras', 'Compras e bens', 'Imóveis, carros e outros bens: preço, financiamento, custos de ter e venda.', 'trab'], ['stock', 'Stock options', 'Opções, phantom shares e RSUs: vesting, valor hoje e num evento de liquidez.', 'trab'], ['pjpf', 'PJ e PF', 'Do faturamento ao bolso, melhor pró-labore e PJ contra CLT.', 'trab']];
   $('tv-links').innerHTML = lk.map(([t, n, d]) => `<button type="button" class="md-card" style="--mc:${m.cor}" data-tab="${t}"><div class="md-img">${MOD_SVG.trab}</div><h3>${esc(n)}</h3><p>${esc(d)}</p></button>`).join('');
 }
 // trocar de módulo: menu próprio (a lista do navegador não mostra ícone nem cor)
@@ -10797,6 +11364,7 @@ function modResumo(m) {
       if (ns) parts.push(`<b>${ns}</b> ${ns > 1 ? 'empresas' : 'empresa'} com stock options`);
       return parts.length ? parts.join(' · ') : 'Nada cadastrado ainda';
     }
+    if (m.id === 'neg') { const L = ngLista(); if (!L.length) return 'Cadastre uma ideia ou empresa'; const v = L.reduce((t, x) => t + ngCalcC(x).voceMad, 0); return `<b>${L.length}</b> ${L.length > 1 ? 'negócios' : 'negócio'} · ${v < 0 ? '−' : ''}${fm(Math.abs(v))}/mês para você quando maduros`; }
     if (m.id === 'viag') { const v = state.viag || {}, f = (v.fui || []).filter(c => VG_UN.includes(c)).length, q = (v.lugares || []).filter(l => l.st !== 'fui').length;
       return f || q ? [f ? `<b>${f}</b> ${f > 1 ? 'países' : 'país'} visitados (${pct(f / 195, 0)})` : '', q ? `<b>${q}</b> ${q > 1 ? 'lugares' : 'lugar'} na lista` : ''].filter(Boolean).join(' · ') : 'Marque onde já foi e para onde quer ir'; }
   } catch (e) {}
@@ -11204,7 +11772,7 @@ function soPlanEvs(extra) {
   });
   return out;
 }
-const planEvs = (P, extra) => (P.ev || []).filter(e => !(extra && extra.has('-ev:' + e.id))).concat(soPlanEvs(extra), vgPlanEvsC(extra));
+const planEvs = (P, extra) => (P.ev || []).filter(e => !(extra && extra.has('-ev:' + e.id))).concat(soPlanEvs(extra), vgPlanEvsC(extra), ngPlanEvsC(extra));
 // chance de acontecer por item (informativa nesta etapa): { 'compra:<id>' | 'so:<id>' | 'ev:<id>': 0–100 }
 function soQuebra(e, evI) {
   // menor valor de venda a partir do qual você recebe algo
@@ -11534,6 +12102,11 @@ const LM_MODS = [
   ['viagcus', 'Os custos de uma viagem: preço de hoje, já definido e projetado na data, seguro viagem, outros custos, custo de oportunidade, como pagar (caixinha, parcelado ou à vista), efeito no Plano futuro, média por estilo e checklist.', 'quando for decidir quanto guardar e como pagar.'],
   ['viagrot', 'O roteiro de uma viagem: cidades na ordem com noites, trechos com tempo e preço, rota otimizada (menor custo e menos tempo), dia a dia, hospedagem, passeios com estrelas, sugestões por tipo de viagem e links para pesquisar.', 'quando decidir para onde vai e começar a montar a viagem.'],
   ['viagcmp', 'Até 5 destinos lado a lado nas suas datas: época, passagem, hospedagem, dia a dia, seguro, total, visto, custo de oportunidade e o melhor mês para ir.', 'para decidir entre destinos.'],
+  'Negócios',
+  ['negvg', 'O resumo do módulo: seus negócios com investimento, lucro por mês, o que chega para você, payback e a linha do tempo.', 'para ver todas as ideias e empresas de uma vez.'],
+  ['negcad', 'O cadastro de cada ideia ou empresa: tipo (ideia, em abertura, já existe), setor, cidade, início da operação e a sua participação.', 'quando surgir uma ideia nova.'],
+  ['negdre', 'O DRE do negócio: receita, deduções, custos, despesas, depreciação, resultado financeiro e IR, com as suas linhas e desdobramentos, mês a mês e ano a ano, e o realizado para quem já tem a empresa.', 'para saber se o negócio dá lucro.'],
+  ['negfc', 'O fluxo de caixa: investimentos, capital de giro, empréstimo, quanto os sócios precisam pôr, quando o caixa vira e o que entra no seu Plano futuro.', 'para saber quanto dinheiro o negócio pede e devolve.'],
   'Geral',
   ['config', 'As premissas: renda e projeção, a curva de juros (Focus, atualizada toda segunda) e o retorno esperado de cada classe de ativo.', 'raramente; só para ajustar uma premissa.']
 ];
@@ -11794,6 +12367,30 @@ function pjCalc(fat, o, reg = o.reg, plModo = o.pl) {
   if (plModo !== 'otimo') return conta(plModo);
   const a = conta('minimo'), b = conta('fatorR'); return b.anual >= a.anual ? b : a;
 }
+// benefícios da CLT que nem todo emprego tem (VR, VA, PLR...): lista em state.pj.bens; o campo antigo pj.benef (VR/VA) vira o primeiro item
+function pjBens(p) { return Array.isArray(p.bens) ? p.bens.filter(b => b && +b.valor > 0) : (+p.benef > 0 ? [{ id: 'vrva', nome: 'VR/VA', valor: +p.benef, freq: 'mes' }] : []); }
+function pjBensMes(p) { return pjBens(p).reduce((t, b) => t + (b.freq === 'ano' ? +b.valor / 12 : +b.valor), 0); }
+const PJ_BEN_SUG = ['Vale-refeição (VR)', 'Vale-alimentação (VA)', 'Auxílio home office', 'Seguro de vida', 'Auxílio academia (Wellhub/Gympass)', 'Auxílio creche', 'Previdência privada (parte da empresa)', 'PLR', 'Bônus anual'];
+function pjBensMig() { const p = state.pj; if (Array.isArray(p.bens)) return; p.bens = +p.benef > 0 ? [{ id: uid(), nome: 'VR/VA', valor: +p.benef, freq: 'mes' }] : []; p.benef = 0; }
+function renderPjBens() {
+  pjBensMig(); const box = $('pj-bens'); if (!box) return;
+  const ativo = document.activeElement && box.contains(document.activeElement) && document.activeElement.dataset.pjben ? document.activeElement.dataset.pjben + '|' + document.activeElement.dataset.campo : '';
+  box.innerHTML = `<span class="orc-h">Outros benefícios</span>` + state.pj.bens.map(b => `<div class="pj-ben"><input type="text" class="name" data-pjben="${b.id}" data-campo="nome" value="${esc(b.nome || '')}" aria-label="Benefício"><input type="number" step="50" min="0" data-pjben="${b.id}" data-campo="valor" value="${+b.valor || ''}" aria-label="Valor"><select data-pjben="${b.id}" data-campo="freq" aria-label="Frequência"><option value="mes"${b.freq !== 'ano' ? ' selected' : ''}>por mês</option><option value="ano"${b.freq === 'ano' ? ' selected' : ''}>por ano</option></select><button class="btn ghost tiny" type="button" data-pjbendel="${b.id}">Remover</button></div>`).join('')
+    + `<div class="pj-ben"><input type="text" class="name" id="pj-bnome" list="pj-ben-sug" placeholder="Benefício (ex.: VR, VA, PLR)" aria-label="Nome do benefício"><input type="number" step="50" min="0" id="pj-bval" placeholder="R$ que chega" aria-label="Valor do benefício"><select id="pj-bfreq" aria-label="Frequência"><option value="mes">por mês</option><option value="ano">por ano</option></select><button class="btn tiny" type="button" id="pj-badd">+ Benefício</button></div>
+    <datalist id="pj-ben-sug">${PJ_BEN_SUG.map(n => `<option value="${esc(n)}">`).join('')}</datalist>`;
+  if (ativo) { const [id, c] = ativo.split('|'), el = box.querySelector(`[data-pjben="${id}"][data-campo="${c}"]`); if (el) el.focus(); }
+}
+function pjBenAdd() {
+  const nome = $('pj-bnome').value.trim(), valor = +$('pj-bval').value || 0, freq = $('pj-bfreq').value;
+  if (!nome) { $('pj-bnome').focus(); return; }
+  pjBensMig(); state.pj.bens.push({ id: uid(), nome, valor, freq: freq === 'ano' ? 'ano' : 'mes' }); save(); renderPjBens(); renderPj();
+  if (!valor) { const el = $('pj-bens').querySelector(`[data-pjben="${state.pj.bens[state.pj.bens.length - 1].id}"][data-campo="valor"]`); if (el) el.focus(); } else $('pj-bnome').focus();
+}
+$('pj-bens').addEventListener('click', e => { const t = e.target; if (t.id === 'pj-badd') { pjBenAdd(); return; }
+  if (t.dataset.pjbendel) { state.pj.bens = state.pj.bens.filter(b => b.id !== t.dataset.pjbendel); save(); renderPjBens(); renderPj(); } });
+$('pj-bens').addEventListener('keydown', e => { if (e.key === 'Enter' && ['pj-bnome', 'pj-bval'].includes(e.target.id)) { e.preventDefault(); pjBenAdd(); } });
+$('pj-bens').addEventListener('change', e => { const t = e.target, b = t.dataset.pjben && state.pj.bens.find(x => x.id === t.dataset.pjben); if (!b) return;
+  const c = t.dataset.campo; b[c] = c === 'valor' ? (+t.value || 0) : c === 'freq' ? (t.value === 'ano' ? 'ano' : 'mes') : t.value.trim(); save(); renderPj(); });
 // CLT: 12 salários líquidos + 13º (tributado à parte) + 1/3 de férias + FGTS (opcional) + benefícios
 function cltAnual(S, o) {
   const n = netCLT(S, o.dep), n13 = netCLT(S, o.dep), fer = netCLT(S * 4 / 3, o.dep) - n, fgts = o.fgts ? 0.08 * (13 + 1 / 3) * S : 0;
@@ -11804,7 +12401,7 @@ function cltAnual(S, o) {
 const busca = (f, alvo, hi) => { let lo = 0; while (f(hi) < alvo && hi < 1e7) hi *= 2; for (let i = 0; i < 60; i++) { const m = (lo + hi) / 2; if (f(m) < alvo) lo = m; else hi = m; } return (lo + hi) / 2; };
 function pjOpts() {
   const p = state.pj, rec = (state.orc.receitas[0] || {}).valor, cb = (state.orc.deducoes.find(d => d.id === 'contab' && d.modo === 'fixo') || {}).valor;
-  const o = { fat: p.fat != null ? +p.fat : (+rec || 0), meses: +p.meses === 11 ? 11 : 12, reg: p.reg, iss: +p.iss || 0, pl: p.pl, plValor: +p.plValor || 0, contab: p.contab != null ? +p.contab : (+cb || 0), outros: +p.outros || 0, dep: +p.dep || 0, clt: +p.clt || 0, benef: +p.benef || 0, saude: +p.saude || 0, vt: +p.vt || 0, fgts: p.fgts !== false };
+  const o = { fat: p.fat != null ? +p.fat : (+rec || 0), meses: +p.meses === 11 ? 11 : 12, reg: p.reg, iss: +p.iss || 0, pl: p.pl, plValor: +p.plValor || 0, contab: p.contab != null ? +p.contab : (+cb || 0), outros: +p.outros || 0, dep: +p.dep || 0, clt: +p.clt || 0, benef: pjBensMes(p), bens: pjBens(p), saude: +p.saude || 0, vt: +p.vt || 0, fgts: p.fgts !== false };
   // PF → PJ: parte do que a pessoa quer receber e acha o faturamento que chega lá
   o.dir = p.dir === 'pfpj' ? 'pfpj' : 'pjpf'; o.meta = p.meta === 'clt' ? 'clt' : 'bolso'; o.fatDigitado = o.fat;
   if (o.dir === 'pfpj') {
@@ -11821,6 +12418,7 @@ function buildPj() {
   $('pj-desc').textContent = pf ? 'Quanto sua empresa precisa faturar para você receber o que quer no bolso (ou empatar com um salário CLT), com o melhor regime e pró-labore. Regras de 2026.' : 'Quanto do faturamento da sua empresa chega ao seu bolso, qual regime e pró-labore rendem mais, e quanto valeria o mesmo trabalho na CLT. Regras de 2026.';
   $('pj-l-fat').hidden = pf; $('pj-l-meta').hidden = !pf; $('pj-l-alvo').hidden = !pf || state.pj.meta === 'clt'; $('pj-fatcalc').hidden = !pf;
   document.querySelectorAll('#p-pjpf [data-bind]').forEach(fillBound);
+  renderPjBens();
 }
 function renderPj() {
   if (($('pj-l-alvo').hidden) !== (state.pj.dir !== 'pfpj' || state.pj.meta === 'clt')) buildPj();
@@ -11886,7 +12484,7 @@ function renderPj() {
     + L('13º líquido', c => c.a.n13, '', 'mesmo desconto de um salário, tributado à parte')
     + L('1/3 de férias líquido', c => c.a.fer, '', 'no mês de férias recebe 4/3 do salário; conta só o que passa do salário normal')
     + L('FGTS', c => c.f ? c.a.fgts : null, '', '8% sobre 13 salários + 1/3 de férias')
-    + ((o.benef || o.saude || o.vt) ? L('Benefícios no ano', c => c.a.ben, '', `VR/VA ${fm(o.benef)}, saúde ${fm(o.saude)}, VT acima dos 6%`) : '')
+    + ((o.benef || o.saude || o.vt) ? L('Benefícios no ano', c => c.a.ben, '', [...o.bens.map(b => `${esc(b.nome)} ${fm(b.valor)}${b.freq === 'ano' ? ' por ano' : ''}`), ...(o.saude ? [`saúde ${fm(o.saude)}`] : []), ...(o.vt ? ['VT acima dos 6%'] : [])].join(', ')) : '')
     + L('Total líquido no ano', c => c.a.total, 'tot')
     + L('Seu PJ no ano', () => alvoPJ) + L('Diferença CLT − PJ', c => c.a.total - alvoPJ) + '</tbody>';
   const pf = o.dir === 'pfpj';
