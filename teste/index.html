@@ -1339,8 +1339,8 @@ ul.ng-acordo li { margin-bottom: 4px; }
           <div class="nav-group"><button type="button" class="nav-head" data-tab="negpesq"><span class="ico">06</span>Pesquisa de mercado<span class="caret" data-navtog="negpesq" role="button" tabindex="0" aria-label="Abrir ou recolher submódulos">▾</span></button><div class="nav-sub" data-sub="negpesq"></div></div>
           <div class="nav-group"><button type="button" class="nav-head" data-tab="negviab"><span class="ico">07</span>Viabilidade<span class="caret" data-navtog="negviab" role="button" tabindex="0" aria-label="Abrir ou recolher submódulos">▾</span></button><div class="nav-sub" data-sub="negviab"></div></div>
           <div class="nav-group"><button type="button" class="nav-head" data-tab="negcont"><span class="ico">08</span>Contabilidade fácil<span class="caret" data-navtog="negcont" role="button" tabindex="0" aria-label="Abrir ou recolher submódulos">▾</span></button><div class="nav-sub" data-sub="negcont"></div></div>
-          <div class="nav-group"><button type="button" class="nav-head" data-tab="negprec"><span class="ico">09</span>Precificação<span class="caret" data-navtog="negprec" role="button" tabindex="0" aria-label="Abrir ou recolher submódulos">▾</span></button><div class="nav-sub" data-sub="negprec"></div></div>
-          <div class="nav-group"><button type="button" class="nav-head" data-tab="negval"><span class="ico">10</span>Valuation<span class="caret" data-navtog="negval" role="button" tabindex="0" aria-label="Abrir ou recolher submódulos">▾</span></button><div class="nav-sub" data-sub="negval"></div></div>
+          <div class="nav-group"><button type="button" class="nav-head" data-tab="negval"><span class="ico">09</span>Valuation<span class="caret" data-navtog="negval" role="button" tabindex="0" aria-label="Abrir ou recolher submódulos">▾</span></button><div class="nav-sub" data-sub="negval"></div></div>
+          <div class="nav-group"><button type="button" class="nav-head" data-tab="negprec"><span class="ico">10</span>Precificação<span class="caret" data-navtog="negprec" role="button" tabindex="0" aria-label="Abrir ou recolher submódulos">▾</span></button><div class="nav-sub" data-sub="negprec"></div></div>
           <div class="nav-group"><button type="button" class="nav-head" data-tab="negsoc"><span class="ico">11</span>Sócios<span class="caret" data-navtog="negsoc" role="button" tabindex="0" aria-label="Abrir ou recolher submódulos">▾</span></button><div class="nav-sub" data-sub="negsoc"></div></div>
           <div class="nav-group"><button type="button" class="nav-head" data-tab="negcmp"><span class="ico">12</span>Comparar negócios<span class="caret" data-navtog="negcmp" role="button" tabindex="0" aria-label="Abrir ou recolher submódulos">▾</span></button><div class="nav-sub" data-sub="negcmp"></div></div>
         </div></div>
@@ -1351,7 +1351,7 @@ ul.ng-acordo li { margin-bottom: 4px; }
     </div>
     <div class="nav-mobile-sub" id="navMobileSub"></div>
   </div>
-  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 219</div></div>
+  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 220</div></div>
 </nav>
 <div class="sino-pop" id="sino-pop" role="dialog" aria-label="Central de avisos" hidden></div>
 <div class="tour-pop" id="tour-pop" role="dialog" aria-labelledby="tour-tit" hidden></div>
@@ -1755,7 +1755,7 @@ ul.ng-acordo li { margin-bottom: 4px; }
 
   <!-- ============ NEGÓCIOS: PRECIFICAÇÃO ============ -->
   <section role="tabpanel" id="p-negprec" hidden>
-    <div class="block-title"><span class="num">09</span><div><h1>Precificação</h1><p class="desc">Quanto cobrar para pagar os custos, os impostos e as taxas e ainda sobrar a margem que você quer.</p></div></div>
+    <div class="block-title"><span class="num">10</span><div><h1>Precificação</h1><p class="desc">Quanto cobrar para pagar os custos, os impostos e as taxas e ainda sobrar a margem que você quer.</p></div></div>
     <div id="ngpr-sel"></div>
     <div class="kpis" id="kpi-ngpr"></div>
     <section data-nav="Composição do preço" class="panel">
@@ -1770,7 +1770,7 @@ ul.ng-acordo li { margin-bottom: 4px; }
 
   <!-- ============ NEGÓCIOS: VALUATION ============ -->
   <section role="tabpanel" id="p-negval" hidden>
-    <div class="block-title"><span class="num">10</span><div><h1>Valuation</h1><p class="desc">Quanto o negócio vale, por três métodos, e quanto vale a sua parte.</p></div></div>
+    <div class="block-title"><span class="num">09</span><div><h1>Valuation</h1><p class="desc">Quanto o negócio vale, por três métodos, e quanto vale a sua parte.</p></div></div>
     <div id="ngva-sel"></div>
     <div class="kpis" id="kpi-ngva"></div>
     <section data-nav="Valor do negócio" class="panel">
@@ -2891,7 +2891,7 @@ ul.ng-acordo li { margin-bottom: 4px; }
     return new Promise(resolve => { const { data } = sb.auth.onAuthStateChange(async (ev) => { if (ev !== 'PASSWORD_RECOVERY') return; const s = prompt('Digite a nova senha (mínimo 8 caracteres):'); if (s && s.length >= 8) { const { error } = await sb.auth.updateUser({ password: s }); alert(error ? 'Não deu para trocar a senha: ' + error.message : 'Senha trocada.'); } }); resolve(data); });
   }
   // ---------- rodapé: compartilhar, administração e sair ----------
-  const SITE_V = 101;
+  const SITE_V = 102;
   const escH = v => String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const dataBR = v => v ? new Date(v).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' }) : '–';
   const css2 = `.side-foot .r{flex-wrap:wrap}.side-foot .lg-acoes{margin-left:auto;display:inline-flex;gap:10px}
@@ -3722,7 +3722,7 @@ function renderNegVg() {
       <td data-l="Tipo">${NG_TIPO[x.tipo]}</td><td data-l="Início">${mLabel(R.i0)}</td><td data-l="Investimento">${fm(R.invTot)}</td><td data-l="Lucro/mês">${ngSg(R.llMad)}</td><td data-l="Para você">${ngSg(R.voceMad)}</td>
       <td data-l="Payback">${R.pay != null ? R.pay + 1 + ' meses' : '—'}</td><td data-l="Uso">${x.uso === 'real' ? '<span class="chip info">Projeção real</span>' : '<span class="subdet">Só simulação</span>'}</td></tr>`).join('')}</tbody>`;
   $('ngv-tl').innerHTML = tlHtml(itensModulos().filter(y => y.mod === 'neg'));
-  const m = MODS.find(y => y.id === 'neg'), lk = [['negcad', 'Meus negócios', 'Cadastro de cada ideia ou empresa: tipo, setor, cidade, sua parte e o que vai para o plano.'], ['negdre', 'Meu DRE', 'Receitas, custos e despesas mês a mês, com linhas suas e desdobramentos.'], ['negfc', 'Fluxo de caixa', 'Investimentos, capital de giro, empréstimo, quanto pôr e quando o caixa vira.'], ['negabr', 'Abrir empresa', 'MEI, SLU ou LTDA, Simples x Presumido x Real lado a lado e o passo a passo com custos.'], ['negeco', 'Oportunidades de custo', 'Energia, maquininha, aluguel, fornecedores e mais: quanto dá para economizar e o efeito no lucro.'], ['negpesq', 'Pesquisa de mercado', 'Tamanho do mercado, concorrentes, preços, riscos e um veredito, pesquisados com IA.'], ['negviab', 'Viabilidade', 'Ponto de equilíbrio, payback, TIR, VPL e o que acontece se as vendas ou os custos mudarem.'], ['negcont', 'Contabilidade fácil', 'As obrigações de cada regime, os próximos vencimentos e um glossário dos termos.'], ['negprec', 'Precificação', 'O preço de venda pelo custo, impostos, taxas e a margem que você quer.'], ['negval', 'Valuation', 'Quanto o negócio vale: múltiplos do lucro e do EBITDA e fluxo de caixa descontado.'], ['negsoc', 'Sócios', 'Quotas, quem põe quanto, o que cada um recebe e o que combinar no acordo.'], ['negcmp', 'Comparar negócios', 'Dois a quatro negócios lado a lado: investimento, lucro, payback, TIR e valor.']];
+  const m = MODS.find(y => y.id === 'neg'), lk = [['negcad', 'Meus negócios', 'Cadastro de cada ideia ou empresa: tipo, setor, cidade, sua parte e o que vai para o plano.'], ['negdre', 'Meu DRE', 'Receitas, custos e despesas mês a mês, com linhas suas e desdobramentos.'], ['negfc', 'Fluxo de caixa', 'Investimentos, capital de giro, empréstimo, quanto pôr e quando o caixa vira.'], ['negabr', 'Abrir empresa', 'MEI, SLU ou LTDA, Simples x Presumido x Real lado a lado e o passo a passo com custos.'], ['negeco', 'Oportunidades de custo', 'Energia, maquininha, aluguel, fornecedores e mais: quanto dá para economizar e o efeito no lucro.'], ['negpesq', 'Pesquisa de mercado', 'Tamanho do mercado, concorrentes, preços, riscos e um veredito, pesquisados com IA.'], ['negviab', 'Viabilidade', 'Ponto de equilíbrio, payback, TIR, VPL e o que acontece se as vendas ou os custos mudarem.'], ['negcont', 'Contabilidade fácil', 'As obrigações de cada regime, os próximos vencimentos e um glossário dos termos.'], ['negval', 'Valuation', 'Quanto o negócio vale: múltiplos do lucro e do EBITDA e fluxo de caixa descontado.'], ['negprec', 'Precificação', 'O preço de venda pelo custo, impostos, taxas e a margem que você quer.'], ['negsoc', 'Sócios', 'Quotas, quem põe quanto, o que cada um recebe e o que combinar no acordo.'], ['negcmp', 'Comparar negócios', 'Dois a quatro negócios lado a lado: investimento, lucro, payback, TIR e valor.']];
   $('ngv-links').innerHTML = lk.map(([t, n, d]) => `<button type="button" class="md-card" style="--mc:${m.cor}" data-tab="${t}"><div class="md-img">${MOD_SVG.neg}</div><h3>${esc(n)}</h3><p>${esc(d)}</p></button>`).join('');
 }
 function renderNegCad() {
@@ -7844,7 +7844,7 @@ function normalizar(s) {
 try { if (quemLocal === 'dono') { const b = JSON.parse(localStorage.getItem('painel-priv')); if (b) aplicarBase(b); } } catch (e) {}
 try { const l = JSON.parse(localStorage.getItem(LSK('painel-fin-v2'))); if (l) state = normalizar(l); } catch (e) {}
 tab = 'modulos';
-const TABS = ['modulos', 'comousar', 'inicio', 'trabvg', 'viagvg', 'viagens', 'viagcmp', 'viagrot', 'viagcus', 'viagdur', 'negvg', 'negcad', 'negdre', 'negfc', 'negabr', 'negeco', 'negpesq', 'negviab', 'negcont', 'negprec', 'negval', 'negsoc', 'negcmp', 'leia', 'global', 'gastos', 'carteira', 'orcamento', 'compras', 'cenarios', 'patrimonio', 'comparador', 'simulador', 'pjpf', 'stock', 'config', 'familia'];
+const TABS = ['modulos', 'comousar', 'inicio', 'trabvg', 'viagvg', 'viagens', 'viagcmp', 'viagrot', 'viagcus', 'viagdur', 'negvg', 'negcad', 'negdre', 'negfc', 'negabr', 'negeco', 'negpesq', 'negviab', 'negcont', 'negval', 'negprec', 'negsoc', 'negcmp', 'leia', 'global', 'gastos', 'carteira', 'orcamento', 'compras', 'cenarios', 'patrimonio', 'comparador', 'simulador', 'pjpf', 'stock', 'config', 'familia'];
 if (TABS.includes(location.hash.slice(1))) tab = location.hash.slice(1);
 if (!TABS.includes(tab)) tab = 'modulos';
 
@@ -12113,7 +12113,7 @@ const MODS = [
   { id: 'fin', corNav: '#7FA6E0', nome: 'Financeiro', cor: 'var(--s1)', fixo: true, vg: 'inicio', desc: 'Gastos, patrimônio, carteira, plano futuro e cenários. Recebe o que os outros módulos planejam.', tabs: ['inicio', 'global', 'gastos', 'patrimonio', 'carteira', 'comparador', 'simulador', 'orcamento', 'cenarios', 'familia'] },
   { id: 'trab', corNav: '#E09A63', nome: 'Trabalho e Bens', cor: 'var(--s2)', vg: 'trabvg', desc: 'Compras e bens (imóveis, carros, ...), stock options e PJ e PF. O que entra no plano vai para o Plano futuro.', tabs: ['trabvg', 'compras', 'stock', 'pjpf'] },
   { id: 'viag', corNav: '#5fc2f5', nome: 'Viagens', cor: 'var(--s8)', vg: 'viagens', desc: 'Mapa de onde já foi e de onde quer ir, sorteio, comparação de destinos nas suas datas o roteiro com a rota mais barata, os custos ligados ao Plano futuro e os gastos durante a viagem.', tabs: ['viagvg', 'viagens', 'viagcmp', 'viagrot', 'viagcus', 'viagdur'] },
-  { id: 'neg', corNav: '#a3e05a', nome: 'Negócios', cor: 'var(--s7)', vg: 'negvg', desc: 'Suas ideias e empresas: DRE com as suas linhas, fluxo de caixa, quanto pôr e quanto chega para você no Plano futuro. Abrir empresa com a comparação de regimes, oportunidades de custo, pesquisa de mercado com IA, viabilidade, contabilidade fácil, preço, valuation, sócios e comparação.', tabs: ['negvg', 'negcad', 'negdre', 'negfc', 'negabr', 'negeco', 'negpesq', 'negviab', 'negcont', 'negprec', 'negval', 'negsoc', 'negcmp'] },
+  { id: 'neg', corNav: '#a3e05a', nome: 'Negócios', cor: 'var(--s7)', vg: 'negvg', desc: 'Suas ideias e empresas: DRE com as suas linhas, fluxo de caixa, quanto pôr e quanto chega para você no Plano futuro. Abrir empresa com a comparação de regimes, oportunidades de custo, pesquisa de mercado com IA, viabilidade, contabilidade fácil, preço, valuation, sócios e comparação.', tabs: ['negvg', 'negcad', 'negdre', 'negfc', 'negabr', 'negeco', 'negpesq', 'negviab', 'negcont', 'negval', 'negprec', 'negsoc', 'negcmp'] },
   { id: 'fam', corNav: '#fb7185', nome: 'Família', cor: 'var(--s6)', breve: true, desc: 'Contas conjuntas, filhos (do bebê à escola), divisão de gastos e dados compartilhados com quem mora com você.', tabs: [] },
   { id: 'indep', corNav: '#E3B848', nome: 'Independência financeira', cor: 'var(--s3)', breve: true, desc: 'Quando dá para parar de trabalhar: quanto juntar, renda passiva, INSS e previdência privada.', tabs: [] }
 ];
@@ -13079,8 +13079,8 @@ const LM_MODS = [
   ['negpesq', 'A pesquisa de mercado de cada ideia, feita com IA: tamanho do mercado (TAM, SAM, SOM), concorrentes com preço, faixa de preço, riscos, regras e um veredito, com o relatório completo e um botão para levar os números ao DRE.', 'antes de investir numa ideia.'],
   ['negviab', 'Se o negócio se paga: ponto de equilíbrio em reais e em unidades, payback, TIR e VPL contra a sua taxa mínima, e uma tabela com vendas e custos fixos para mais e para menos.', 'antes de decidir investir.'],
   ['negcont', 'As obrigações da empresa em cada regime (MEI, Simples, Presumido, Real), o que vence nos próximos 30 dias e um glossário de contabilidade em português simples.', 'quando for abrir ou já tiver a empresa.'],
-  ['negprec', 'O preço de venda pelo markup: custo da unidade, custos fixos, impostos, taxas, comissões e margem, comparado com o preço do DRE e a faixa da pesquisa de mercado.', 'para decidir quanto cobrar.'],
   ['negval', 'Quanto o negócio vale por fluxo de caixa descontado e por múltiplos do lucro e do EBITDA, e quanto vale a sua parte.', 'antes de vender, receber um sócio ou comprar um negócio.'],
+  ['negprec', 'O preço de venda pelo markup: custo da unidade, custos fixos, impostos, taxas, comissões e margem, comparado com o preço do DRE e a faixa da pesquisa de mercado.', 'para decidir quanto cobrar.'],
   ['negsoc', 'Quotas e quanto cada sócio põe do dinheiro, o que cada um recebe e o que combinar no acordo de sócios.', 'quando o negócio tiver mais de um dono.'],
   ['negcmp', 'Dois a quatro negócios lado a lado: investimento, lucro, payback, TIR, VPL e valor.', 'para escolher entre ideias.'],
   'Geral',
