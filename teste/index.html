@@ -1290,7 +1290,7 @@ ul.ng-pl { margin: 0; padding-left: 18px; font-size: 12.5px; line-height: 1.55; 
     </div>
     <div class="nav-mobile-sub" id="navMobileSub"></div>
   </div>
-  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 216</div></div>
+  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 217</div></div>
 </nav>
 <div class="sino-pop" id="sino-pop" role="dialog" aria-label="Central de avisos" hidden></div>
 <div class="tour-pop" id="tour-pop" role="dialog" aria-labelledby="tour-tit" hidden></div>
@@ -2299,6 +2299,12 @@ ul.ng-pl { margin: 0; padding-left: 18px; font-size: 12.5px; line-height: 1.55; 
         <div class="md-esc" id="cfg-mods-l"></div>
         <p class="hint" id="cfg-mods-msg"></p>
       </section>
+      <section data-nav="Pesquisa de mercado" class="panel" id="cfg-pesq" hidden>
+        <h2>Pesquisa de mercado</h2>
+        <p class="sub">Só o administrador vê esta parte. Quantas pesquisas de mercado cada conta pode pedir a cada 30 dias no site. A sua conta não tem limite. Zero pausa os pedidos das outras contas.</p>
+        <div class="ng-form"><label>Pesquisas por conta a cada 30 dias<input type="number" min="0" max="50" step="1" id="cfg-pesq-lim" value="2"></label></div>
+        <p class="hint" id="cfg-pesq-msg"></p>
+      </section>
       <section data-nav="Classes de ativo" class="panel">
         <h2>Premissas das classes de ativo</h2>
         <p class="sub">Usadas nas carteiras dos cenários. O retorno de Ações Brasil também é a referência de bolsa no comparador e nas simulações.</p>
@@ -2727,7 +2733,7 @@ ul.ng-pl { margin: 0; padding-left: 18px; font-size: 12.5px; line-height: 1.55; 
     return new Promise(resolve => { const { data } = sb.auth.onAuthStateChange(async (ev) => { if (ev !== 'PASSWORD_RECOVERY') return; const s = prompt('Digite a nova senha (mínimo 8 caracteres):'); if (s && s.length >= 8) { const { error } = await sb.auth.updateUser({ password: s }); alert(error ? 'Não deu para trocar a senha: ' + error.message : 'Senha trocada.'); } }); resolve(data); });
   }
   // ---------- rodapé: compartilhar, administração e sair ----------
-  const SITE_V = 98;
+  const SITE_V = 99;
   const escH = v => String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const dataBR = v => v ? new Date(v).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' }) : '–';
   const css2 = `.side-foot .r{flex-wrap:wrap}.side-foot .lg-acoes{margin-left:auto;display:inline-flex;gap:10px}
@@ -3885,7 +3891,25 @@ document.addEventListener('change', e => {
    { neg, nome, setor, cidade, campos {produto, regiao, publico, ticket, obs}, status pedido|pesquisando|pronto|erro, pedidoEm, prontoEm, msg, res }
    res = { veredito vale|ressalvas|nao, porque, resumo, tam {tam, sam, som, nota}, preco {min, med, max, unidade}, unMes, conc [{nome, preco, obs}],
      riscos [], regulatorio [], oportunidades [], fontes [{t, url}], relatorio (texto com ## títulos e - listas) } */
-const NG_PESQ_LIM = 2;   // pedidos por pessoa a cada 30 dias (o dono do painel não tem limite)
+// pedidos por pessoa a cada 30 dias no site (o administrador não tem limite); o administrador muda em Configurações (config/pesquisa)
+let ngPesqCfg = { lim: 2 }, ngPesqCfgOuve = false;
+const ngPesqLim = () => ngPesqCfg.lim;
+function ngPesqCfgOuvir() {
+  if (!db || ngPesqCfgOuve) return; ngPesqCfgOuve = true;
+  try { db.doc('config/pesquisa').onSnapshot(d => { const x = d && d.exists ? d.data() : null, n = x ? Math.round(+x.lim) : NaN; ngPesqCfg = { lim: isFinite(n) && n >= 0 ? Math.min(n, 50) : 2 }; if (tab === 'negpesq') renderNegPesq(); if (tab === 'config') renderCfgPesq(); }, () => { ngPesqCfgOuve = false; }); } catch (e) { ngPesqCfgOuve = false; }
+}
+function renderCfgPesq() {
+  const box = $('cfg-pesq'); if (!box) return; box.hidden = !ehAdmin(); if (box.hidden) return; ngPesqCfgOuvir();
+  const i = $('cfg-pesq-lim'); if (document.activeElement !== i) i.value = ngPesqCfg.lim;
+}
+document.addEventListener('change', async e => {
+  if (e.target.id !== 'cfg-pesq-lim' || !ehAdmin()) return; const n = Math.round(+e.target.value), msg = $('cfg-pesq-msg');
+  if (!isFinite(n) || n < 0 || n > 50) { msg.textContent = 'Use um número de 0 a 50.'; return; }
+  ngPesqCfg = { lim: n }; if (!db) { msg.textContent = 'Sem conexão com o banco: a mudança vale só nesta tela.'; return; }
+  msg.textContent = 'salvando…';
+  try { await db.doc('config/pesquisa').set({ lim: n, em: new Date().toISOString() }); msg.textContent = n ? 'Salvo. Vale para todas as contas.' : 'Salvo. Pedidos pausados para as outras contas.'; }
+  catch (er) { msg.textContent = 'Não consegui salvar: ' + (er && (er.message || er.code) || er); }
+});
 const NG_VERED = { vale: ['Vale', 'best'], ressalvas: ['Vale com ressalvas', 'amber'], nao: ['Não vale', 'warn'] };
 let ngPesq = {}, ngPesqOuve = {}, ngPesqTodos = null;
 const ngTx = (v, n) => typeof v === 'string' ? v.slice(0, n) : '';
@@ -3927,9 +3951,9 @@ function renderNegPesq() {
   if (!x) { $('ngp-sel').innerHTML = ngVazio(); ids.forEach(id => { $(id).innerHTML = ''; }); return; }
   $('ngp-sel').innerHTML = ngSelHtml(x, `<button type="button" class="btn ghost tiny" data-tab="negdre">Ver DRE</button>`) + (x.tipo === 'existe' ? '<p class="hint">A pesquisa serve mais para ideias, mas também ajuda a avaliar uma expansão ou um produto novo da empresa.</p>' : '');
   if (!db) { $('ngp-ped').innerHTML = '<p class="hint">A pesquisa precisa do painel conectado (no Claude ou no site, com login). Aqui ele está só neste navegador.</p>'; $('ngp-res').innerHTML = ''; return; }
-  ngPesqOuvir(x.id); if (ngPesqTodos == null) ngPesqContar().then(() => { if (tab === 'negpesq') renderNegPesq(); });
+  ngPesqOuvir(x.id); ngPesqCfgOuvir(); if (ngPesqTodos == null) ngPesqContar().then(() => { if (tab === 'negpesq') renderNegPesq(); });
   const P = ngPesq[x.id], st = P ? P.status : '', C = x.pesq, b = k => `${x.id}:pesq.${k}`, fila = st === 'pedido' || st === 'pesquisando';
-  const resta = ngPesqSemLimite() ? null : Math.max(0, NG_PESQ_LIM - (ngPesqTodos || 0)), trava = fila || resta === 0;
+  const resta = ngPesqSemLimite() ? null : Math.max(0, ngPesqLim() - (ngPesqTodos || 0)), trava = fila || resta === 0;
   const stHtml = !st ? '' : st === 'pedido' ? `<div class="ng-reg"><b>Na fila desde ${new Date(P.pedidoEm).toLocaleString('pt-BR', { dateStyle: 'short', timeStyle: 'short' })}.</b> A pesquisa roda uma vez por dia e a resposta aparece aqui sozinha. <button type="button" class="btn ghost tiny" data-ngpcanc="${x.id}">Cancelar pedido</button></div>`
     : st === 'pesquisando' ? '<div class="ng-reg"><b>Pesquisando agora.</b> A resposta aparece aqui quando terminar.</div>'
     : st === 'erro' ? `<p class="warn">A pesquisa não terminou${P.msg ? ': ' + esc(P.msg) : ''}. Pode pedir de novo.</p>`
@@ -3942,7 +3966,7 @@ function renderNegPesq() {
       <label>Ticket médio (R$)<input type="number" min="0" step="1" data-ngf="${b('ticket')}" value="${C.ticket || ''}" placeholder="ex.: 35"${fila ? ' disabled' : ''}></label>
       <label class="full">O que você quer saber<input type="text" data-ngf="${b('obs')}" value="${esc(C.obs)}" maxlength="400" placeholder="ex.: se cabe mais uma cafeteria no bairro e que preço cobrar"${fila ? ' disabled' : ''}></label></div>
     <div class="row" style="margin-top:10px"><button type="button" class="btn" data-ngpped="${x.id}"${trava ? ' disabled' : ''}>${st === 'pronto' || st === 'erro' ? 'Pedir de novo' : 'Pedir pesquisa'}</button>
-      <span class="subdet">${resta == null ? '' : resta === 0 ? `Você já fez ${NG_PESQ_LIM} pedidos nos últimos 30 dias.` : `Você pode pedir mais ${resta} ${resta > 1 ? 'pesquisas' : 'pesquisa'} nos próximos 30 dias.`} O pedido, com a descrição da ideia, é lido pela rotina de pesquisa do painel e a resposta fica só na sua conta.</span></div>`;
+      <span class="subdet">${resta == null ? '' : resta === 0 ? (ngPesqLim() ? `Você já fez ${ngPesqLim()} ${ngPesqLim() > 1 ? 'pedidos' : 'pedido'} nos últimos 30 dias.` : 'Os pedidos de pesquisa estão pausados no momento.') : `Você pode pedir mais ${resta} ${resta > 1 ? 'pesquisas' : 'pesquisa'} nos próximos 30 dias.`} O pedido, com a descrição da ideia, é lido pela rotina de pesquisa do painel e a resposta fica só na sua conta.</span></div>`;
   const R = P && P.res;
   if (!R) { $('ngp-res').innerHTML = `<p class="hint">${fila ? 'Esperando a pesquisa.' : 'Nenhuma pesquisa ainda para este negócio.'}</p>`; return; }
   const V = NG_VERED[R.veredito], T = R.tam, Pr = R.preco, li = a => a.length ? `<ul class="ng-pl">${a.map(s => `<li>${esc(s)}</li>`).join('')}</ul>` : '<p class="subdet">Nada apontado.</p>';
@@ -11410,7 +11434,7 @@ const INFO_SEC = {
   'negdre:Linhas do DRE': 'R$ por mês: valor fixo, com reajuste anual. %: percentual da receita bruta, da receita líquida ou, no IR, do lucro antes do IR. Por unidade: na receita é preço × quantidade; nos custos, R$ por unidade vendida. A partir do mês: 1 é o primeiro mês de operação (use para uma contratação no mês 6, por exemplo). Pró-labore: marque a linha que é a sua retirada; ela entra no seu Plano futuro, líquida de INSS (11%) e IR. Não substitui um contador.',
   'negdre:DRE mês a mês': 'DRE é competência: a venda entra no mês em que foi feita, mesmo que o dinheiro caia depois. O dinheiro de verdade está em Fluxo de caixa.',
   'negdre:Realizado': 'O realizado substitui o projetado só naquele mês e naquela linha. O fluxo de caixa e o Plano futuro passam a usar o real.',
-  'negpesq:Pedido': 'Uma rotina do painel faz a pesquisa uma vez por dia, com IA e fontes públicas, e grava a resposta só na sua conta. No site, cada conta pode pedir 2 pesquisas a cada 30 dias. Pedir de novo troca a resposta anterior quando a nova chegar.',
+  'negpesq:Pedido': 'Uma rotina do painel faz a pesquisa uma vez por dia, com IA e fontes públicas, e grava a resposta só na sua conta. No site, cada conta pode pedir um número de pesquisas a cada 30 dias, definido pelo administrador em Configurações. Pedir de novo troca a resposta anterior quando a nova chegar.',
   'negpesq:Resultado': 'TAM: tudo o que o mercado movimenta por ano. SAM: a parte que o seu negócio consegue atender (região, público). SOM: o que é realista conquistar em 3 a 5 anos. Levar ao DRE troca a primeira linha de receita por preço × quantidade da pesquisa.',
   'negeco:Minhas oportunidades': 'Com uma linha do DRE escolhida, a economia é o % daquela linha em cada mês e acompanha as vendas. Sem linha, é o % do custo que você informou, fixo. O investimento dos cards feitos sai do caixa no mês de início. Meses com realizado lançado naquela linha já mostram o custo de verdade e não descontam a economia de novo.',
   'negeco:Catálogo': 'Pode adicionar a mesma oportunidade mais de uma vez, por exemplo um card para cada fornecedor.',
@@ -11833,6 +11857,7 @@ function renderModulos() {
 }
 function renderCfgMods() {
   const box = $('cfg-mods'); if (!box) return; box.hidden = !ehAdmin(); if (box.hidden) return;
+  try { renderCfgPesq(); } catch (er) {}
   $('cfg-mods-l').innerHTML = MODS.map(m => `<label class="check"><input type="checkbox" data-modlib="${m.id}"${modLiberado(m) ? ' checked' : ''}${m.fixo ? ' disabled' : ''}> ${esc(m.nome)}${m.breve ? ' <span class="subdet">em breve</span>' : m.fixo ? ' <span class="subdet">sempre ligado</span>' : ''}</label>`).join('');
 }
 document.addEventListener('click', e => { const b = e.target.closest('[data-irmod]'); if (!b) return; const m = MODS.find(x => x.id === b.dataset.irmod); if (m) showTab(m.vg || m.tabs[0]); });
