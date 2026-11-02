@@ -559,6 +559,23 @@ tr.best td { background: var(--good-soft); }
 #tbl-fech [data-ircp] { margin-left: 8px; vertical-align: middle; }
 @keyframes cpPisca { 0%, 40% { box-shadow: 0 0 0 3px var(--accent); } 100% { box-shadow: 0 0 0 0 transparent; } }
 .cp-pisca { animation: cpPisca 2s ease-out; }
+#cp-card h2 { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.cp-badge { font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 12px; background: rgba(255,255,255,.16); color: #fff; letter-spacing: .02em; }
+.cp-badge.pend { background: var(--gold, #D4A72C); color: #0F1F3D; }
+.cp-badge:empty { display: none; }
+.cp-st { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 10px; margin: 0 0 14px; }
+.cp-st > div { border: 1px solid var(--line); border-radius: 10px; padding: 10px 12px; display: grid; gap: 2px; min-width: 0; }
+.cp-st > div.pend { border-color: var(--gold, #D4A72C); background: var(--accent-soft); }
+.cp-st .l { font-family: var(--f-head); font-size: 10.5px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
+.cp-st .v { font-family: var(--f-head); font-size: 19px; font-weight: 700; font-variant-numeric: tabular-nums; }
+.cp-st .d { font-size: 12px; color: var(--muted); }
+.cp-form { grid-template-columns: repeat(auto-fit, minmax(170px, 220px)); align-items: end; margin: 0 0 6px; }
+.cp-form .btns { grid-column: 1 / -1; display: flex; flex-wrap: wrap; gap: 8px; }
+.cp-oque summary { cursor: pointer; }
+.cp-oque p { margin: 6px 0; }
+.cp-dlg { width: min(760px, 100%); }
+.cp-dlg #cp-card { margin: 0 !important; }
+.cp-dlg #cp-card h2 { padding-right: 56px; }
 .notes { font-size: 12px; color: var(--muted); }
 .notes ul { margin: 0; padding-left: 18px; display: flex; flex-direction: column; gap: 5px; }
 .notes b { color: var(--ink); }
@@ -1268,7 +1285,7 @@ ul.ng-plano { margin: 8px 0; padding-left: 18px; font-size: 12.5px; line-height:
     </div>
     <div class="nav-mobile-sub" id="navMobileSub"></div>
   </div>
-  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 235</div></div>
+  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 237</div></div>
 </nav>
 <div class="sino-pop" id="sino-pop" role="dialog" aria-label="Central de avisos" hidden></div>
 <div class="tour-pop" id="tour-pop" role="dialog" aria-labelledby="tour-tit" hidden></div>
@@ -1631,7 +1648,7 @@ ul.ng-plano { margin: 8px 0; padding-left: 18px; font-size: 12.5px; line-height:
           <li><div><b>Importe a fatura do cartão e o extrato da conta.</b> <span>Em <a class="lm-ir" data-lmtab="gastos" data-lmsec="Lançar e importar">01. Gastos › Lançar e importar</a>. O painel classifica cada linha numa categoria e aprende quando você corrige.</span></div></li>
           <li><div><b>Confira as categorias.</b> <span>Em <a class="lm-ir" data-lmtab="gastos" data-lmsec="Lançamentos">01. Gastos › Lançamentos</a> e <a class="lm-ir" data-lmtab="gastos" data-lmsec="Por categoria">Por categoria</a>. Ajuste o que caiu errado.</span></div></li>
           <li><div><b>Atualize as aplicações.</b> <span>Em <a class="lm-ir" data-lmtab="carteira" data-lmsec="Cadastrar aplicação">03. Carteira › Cadastrar aplicação</a>, ou importe o PDF mensal da corretora. Valores brutos, antes do IR, deixam a comparação com o CDI certa.</span></div></li>
-          <li><div><b>Salve o checkpoint do mês.</b> <span>Em <a class="lm-ir" data-lmtab="global" data-lmsec="Cenário e checkpoints">Projeção › Cenário e checkpoints</a>: quanto você tem aplicado no total. É o ponto de partida de todas as projeções.</span></div></li>
+          <li><div><b>Salve o checkpoint do mês.</b> <span>Em <a class="lm-ir" data-lmtab="global" data-lmsec="Checkpoint do mês">Projeção › Checkpoint do mês</a>: quanto você tem aplicado no total. É o ponto de partida de todas as projeções.</span></div></li>
           <li><div><b>Feche o mês.</b> <span>Em <a class="lm-ir" data-lmtab="gastos" data-lmsec="Fechamento do mês">01. Gastos › Fechamento do mês</a> e <a class="lm-ir" data-lmtab="gastos" data-lmsec="Real vs. projetado">Real vs. projetado</a>: o que foi planejado contra o que aconteceu, linha a linha.</span></div></li>
           <li><div><b>Olhe o quadro geral.</b> <span>Em <a class="lm-ir" data-lmtab="global" data-lmsec="Checkpoints">Projeção › Checkpoints</a> e <a class="lm-ir" data-lmtab="carteira" data-lmsec="Oportunidades">03. Carteira › Oportunidades</a>: se está no plano e se há algo para mexer (vencimentos, FGC, aplicação rendendo pouco).</span></div></li>
           <li><div><b>Se a vida mudou, mude o plano.</b> <span>Aumento, troca de emprego ou compra nova vão em <a class="lm-ir" data-lmtab="orcamento" data-lmsec="Mudanças e eventos">06. Plano futuro › Mudanças e eventos</a> ou em <a class="lm-ir" data-lmtab="compras" data-lmsec="Compras e financiamentos">Compras e bens</a>.</span></div></li>
@@ -1664,6 +1681,21 @@ ul.ng-plano { margin: 8px 0; padding-left: 18px; font-size: 12.5px; line-height:
     <div class="block-title"><span class="num"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.6 3.8 5.6 3.8 9s-1.3 6.4-3.8 9c-2.5-2.6-3.8-5.6-3.8-9S9.5 5.6 12 3z"/></svg></span><div><h1>Projeção</h1><p class="desc">Plano, checkpoints reais e a projeção de cada cenário.</p></div></div>
       <div class="mundo" id="mundo" hidden></div>
       <div class="kpis" id="kpi-g"></div>
+      <section data-nav="Checkpoint do mês" class="panel" id="cp-card">
+        <h2><span>Checkpoint do mês</span><span class="cp-badge" id="cp-badge"></span></h2>
+        <div class="cp-st" id="cp-st"></div>
+        <form class="cpform cp-form" id="cpform">
+          <label>Mês<input type="month" id="cp-mes" required></label>
+          <label>Valor aplicado (R$)<input type="number" id="cp-valor" step="0.01" min="0" required></label>
+          <div class="btns"><button class="btn" type="submit">Salvar checkpoint</button><button class="btn ghost" type="button" id="cp-usacart" hidden></button></div>
+        </form>
+        <p class="hint" id="cp-msg"></p>
+        <details class="cp-oque" id="cp-oque"><summary><b>O que é um checkpoint e por que ele é importante</b></summary>
+          <p>É uma foto do total que você tem aplicado no fim de um mês: a soma de todas as aplicações (CDB, Tesouro, LCI/LCA, fundos, ações, previdência, caixinhas). Não entram bens (carro, imóvel) nem o dinheiro da conta corrente usado para os gastos do dia a dia.</p>
+          <ul><li><b>Fecha o mês:</b> vira o real da linha "Investimentos no fim do mês" em Gastos › Fechamento do mês e mostra a diferença não explicada.</li><li><b>Compara com o plano:</b> aparece como ponto vermelho no gráfico e na tabela Checkpoints, acima ou abaixo do plano.</li><li><b>Recalibra o futuro:</b> o último checkpoint é o ponto de partida de todas as projeções. Sem ele, as projeções partem de um valor velho.</li></ul>
+          <p>Faça um por mês, de preferência no último dia útil ou logo no começo do mês seguinte, com o saldo dos extratos. Se suas aplicações estão cadastradas em Carteira, "Usar total da Carteira" preenche o valor.</p>
+        </details>
+      </section>
       <section data-nav="Projeção" class="panel chart">
         <div class="row"><h2>Plano, realizado e projeção por cenário</h2><div class="seg" id="g-anos" role="group" aria-label="Período da projeção"><button type="button" data-ganos="1">1 ano</button><button type="button" data-ganos="2">2 anos</button><button type="button" data-ganos="3">3 anos</button><button type="button" data-ganos="5">5 anos</button><button type="button" data-ganos="10">10 anos</button><button type="button" data-ganos="20">20 anos</button><button type="button" data-ganos="30">30 anos</button></div></div>
         <p class="sub">Linha tracejada: plano de referência. Pontos: seus checkpoints. Linhas cheias: cada cenário a partir do último checkpoint, em reais correntes, com o rendimento reinvestido todo mês (juros compostos).</p>
@@ -1677,7 +1709,7 @@ ul.ng-plano { margin: 8px 0; padding-left: 18px; font-size: 12.5px; line-height:
         <div class="btns" style="margin-bottom:8px"><button class="btn ghost tiny" type="button" id="mm-abrir">Abrir tudo</button><button class="btn ghost tiny" type="button" id="mm-fechar">Recolher tudo</button></div>
         <div class="tscroll mm-wrap"><table id="tbl-mm" class="mm"></table></div>
       </section>
-      <section data-nav="Cenário e checkpoints">
+      <section data-nav="Cenário e plano">
         <div class="params">
       <fieldset>
         <legend>Cenário em destaque</legend>
@@ -1693,18 +1725,6 @@ ul.ng-plano { margin: 8px 0; padding-left: 18px; font-size: 12.5px; line-height:
         </div>
         <p class="hint" id="g-rend-hint"></p>
         <p class="hint">Investimentos = o que está aplicado (comparável aos checkpoints). Patrimônio líquido = investimentos + bens − dívidas.</p>
-      </fieldset>
-      <fieldset>
-        <legend>Checkpoints reais</legend>
-        <div class="cp-oque"><b>O que é um checkpoint?</b> É uma foto do total que você tem aplicado no fim de um mês: a soma de todas as aplicações (CDB, Tesouro, LCI/LCA, fundos, ações, previdência, caixinhas). Não entram bens (carro, imóvel) nem o dinheiro da conta corrente usado para os gastos do dia a dia.
-          <ul><li><b>Fecha o mês:</b> vira o real da linha "Investimentos no fim do mês" em Gastos › Fechamento do mês e mostra a diferença não explicada.</li><li><b>Compara com o plano:</b> aparece como ponto vermelho no gráfico e na tabela Checkpoints, acima ou abaixo do plano.</li><li><b>Recalibra o futuro:</b> o último checkpoint é o ponto de partida de todas as projeções.</li></ul>
-          Faça um por mês, de preferência no último dia útil ou logo no começo do mês seguinte, com o saldo dos extratos. Se suas aplicações estão cadastradas em Carteira, o botão "Salvar total como checkpoint" de lá faz isso sozinho.</div>
-        <form class="cpform" id="cpform">
-          <label>Mês<input type="month" id="cp-mes" required></label>
-          <label>Valor aplicado (R$)<input type="number" id="cp-valor" step="0.01" min="0" required></label>
-          <button class="btn" type="submit">Salvar checkpoint</button>
-        </form>
-        <p class="hint" id="cp-msg"></p>
       </fieldset>
       <fieldset>
         <legend>Plano de referência</legend>
@@ -2097,7 +2117,8 @@ ul.ng-plano { margin: 8px 0; padding-left: 18px; font-size: 12.5px; line-height:
         <p class="hint" id="exp-msg"></p>
       </fieldset>
         </div>
-        <div class="conf-pop" id="conf-pop" hidden><div class="conf-dlg" role="dialog" aria-modal="true" aria-label="Conferir antes de importar"><button type="button" class="conf-x" id="conf-x" aria-label="Fechar sem importar" title="Fechar sem importar">✕</button>
+        <div class="conf-pop" id="cp-pop" hidden><div class="conf-dlg cp-dlg" role="dialog" aria-modal="true" aria-label="Registrar checkpoint"><button type="button" class="conf-x" id="cp-pop-x" aria-label="Fechar" title="Fechar">✕</button><div id="cp-pop-slot"></div></div></div>
+      <div class="conf-pop" id="conf-pop" hidden><div class="conf-dlg" role="dialog" aria-modal="true" aria-label="Conferir antes de importar"><button type="button" class="conf-x" id="conf-x" aria-label="Fechar sem importar" title="Fechar sem importar">✕</button>
         <div id="fat-prev" class="panel"></div>
         <div id="ext-prev" class="panel"></div></div></div>
       </section>
@@ -2686,7 +2707,7 @@ ul.ng-plano { margin: 8px 0; padding-left: 18px; font-size: 12.5px; line-height:
     return new Promise(resolve => { const { data } = sb.auth.onAuthStateChange(async (ev) => { if (ev !== 'PASSWORD_RECOVERY') return; const s = prompt('Digite a nova senha (mínimo 8 caracteres):'); if (s && s.length >= 8) { const { error } = await sb.auth.updateUser({ password: s }); alert(error ? 'Não deu para trocar a senha: ' + error.message : 'Senha trocada.'); } }); resolve(data); });
   }
   // ---------- rodapé: compartilhar, administração e sair ----------
-  const SITE_V = 118;
+  const SITE_V = 120;
   const escH = v => String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const dataBR = v => v ? new Date(v).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' }) : '–';
   const css2 = `.side-foot .r{flex-wrap:wrap}.side-foot .lg-acoes{margin-left:auto;display:inline-flex;gap:10px}
@@ -7495,6 +7516,7 @@ function renderMundo() {
 }
 document.addEventListener('click', e => { const b = e.target.closest('[data-mktodas]'); if (!b) return; mkTodas = !mkTodas; try { localStorage.setItem(LSK('mk-todas'), mkTodas ? '1' : '0'); } catch (er) {} if (tab === 'global') renderMundo(); else renderHome(); });
 function renderGlobal() {
+  try { renderCpCard(); } catch (e) {}
   renderMundo();
   const sel = $('g-destaque');
   sel.innerHTML = state.cenarios.map(c => `<option value="${c.id}" ${c.id === state.destaque ? 'selected' : ''}>${esc(c.nome)}</option>`).join('');
@@ -11092,12 +11114,50 @@ async function apagarCps(meses) {
     $('cp-msg').textContent = meses.length > 1 ? 'Checkpoints apagados.' : `Checkpoint de ${mLabel(mIndex(meses[0]))} apagado.`;
   } catch (e) { $('cp-msg').textContent = 'Não consegui apagar. Tente de novo.'; }
 }
-function irCheckpoint(mes) {
+// cartão do checkpoint: último, contra o plano e o mês pendente
+function cpPendente() { const prev = mKey(HOJE_IDX - 1); return !cps.some(c => c.mes >= prev); }
+function renderCpCard() {
+  if (!$('cp-card')) return;
+  const sorted = cps.slice().sort((a, b) => a.mes < b.mes ? -1 : 1), ult = sorted[sorted.length - 1] || null, pend = cpPendente();
+  const pl = ult ? planoAt(mIndex(ult.mes)) : null, d = ult && pl != null ? ult.valor - pl : null;
+  const alvo = pend ? HOJE_IDX - 1 : HOJE_IDX;
+  $('cp-badge').textContent = pend ? `${mLabel(HOJE_IDX - 1)} pendente` : 'em dia'; $('cp-badge').classList.toggle('pend', pend);
+  $('cp-st').innerHTML = `<div><span class="l">Último checkpoint</span><span class="v">${ult ? fm(ult.valor) : '–'}</span><span class="d">${ult ? `${mLabel(mIndex(ult.mes))}, total aplicado` : 'nenhum ainda'}</span></div>`
+    + `<div><span class="l">Contra o plano</span><span class="v ${d == null ? '' : d < 0 ? 'neg' : 'pos'}">${d == null ? '–' : (d >= 0 ? '+' : '−') + fm(Math.abs(d))}</span><span class="d">${d == null ? 'sem plano para esse mês' : `${pct(Math.abs(d) / pl)} ${d >= 0 ? 'acima' : 'abaixo'} do previsto para ${mLabel(mIndex(ult.mes))}`}</span></div>`
+    + `<div class="${pend ? 'pend' : ''}"><span class="l">Próximo</span><span class="v">${mLabel(alvo)}</span><span class="d">${pend ? 'pendente: faça agora, com o saldo do fim do mês' : 'no último dia útil do mês ou logo no começo do seguinte'}</span></div>`;
+  if (!$('cp-mes').value || document.activeElement !== $('cp-mes')) { if (!$('cp-mes').dataset.manual) $('cp-mes').value = mKey(alvo); }
+  const tot = ativos().reduce((s, a) => s + (avaliar(a).atual || 0), 0), b = $('cp-usacart');
+  b.hidden = !(tot > 0); b.textContent = `Usar total da Carteira (${fm(tot)})`; b.dataset.tot = Math.round(tot);
+}
+$('cp-mes').addEventListener('change', () => { $('cp-mes').dataset.manual = '1'; });
+$('cp-usacart').addEventListener('click', () => { $('cp-valor').value = $('cp-usacart').dataset.tot || ''; $('cp-valor').focus(); });
+// janela do checkpoint: o mesmo cartão da Projeção, levado para um pop-up
+let cpCasa = null;
+function cpPopAbrir(mes) {
+  const card = $('cp-card'), pop = $('cp-pop'); if (!card || !pop) return;
+  if (!cpCasa) { cpCasa = document.createElement('span'); cpCasa.hidden = true; card.before(cpCasa); }
+  $('cp-pop-slot').append(card); renderCpCard();
+  if (mes) { $('cp-mes').value = mes; $('cp-mes').dataset.manual = '1'; }
+  $('cp-oque').open = true; $('cp-msg').textContent = mes ? `Digite o total aplicado no fim de ${mLabel(mIndex(mes))} e salve.` : '';
+  pop.hidden = false; document.body.style.overflow = 'hidden'; pop.querySelector('.conf-dlg').scrollTop = 0;
+  setTimeout(() => $('cp-valor').focus({ preventScroll: true }), 50);
+}
+function cpPopFechar() {
+  const pop = $('cp-pop'); if (!pop || pop.hidden) return;
+  pop.hidden = true; document.body.style.overflow = ''; $('cp-oque').open = false; delete $('cp-mes').dataset.manual;
+  if (cpCasa) cpCasa.after($('cp-card')); $('cp-msg').textContent = '';
+  try { renderTab(); } catch (e) {}
+}
+$('cp-pop-x').addEventListener('click', cpPopFechar);
+$('cp-pop').addEventListener('mousedown', e => { if (e.target.id === 'cp-pop') cpPopFechar(); });
+document.addEventListener('keydown', e => { if (e.key === 'Escape' && !$('cp-pop').hidden) cpPopFechar(); });
+function irCheckpoint(mes) { cpPopAbrir(mes); }
+function irCheckpointTela(mes) {
   showTab('global');
-  requestAnimationFrame(() => { const f = $('cpform'), sec = f.closest('[data-nav]'); abrirSecao(sec); spyLock = Date.now() + 1200;
+  requestAnimationFrame(() => { const f = $('cpform'), sec = $('cp-card'); abrirSecao(sec); spyLock = Date.now() + 1200;
     if (mes) $('cp-mes').value = mes; $('cp-msg').textContent = mes ? `Digite o total aplicado no fim de ${mLabel(mIndex(mes))} e salve.` : '';
-    f.closest('fieldset').scrollIntoView({ behavior: 'smooth', block: 'center' });
-    const fs = f.closest('fieldset'); fs.classList.remove('cp-pisca'); void fs.offsetWidth; fs.classList.add('cp-pisca');
+    sec.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    const fs = sec; fs.classList.remove('cp-pisca'); void fs.offsetWidth; fs.classList.add('cp-pisca');
     setTimeout(() => $('cp-valor').focus({ preventScroll: true }), 500); });
 }
 $('cpform').addEventListener('submit', async e => {
@@ -11105,8 +11165,8 @@ $('cpform').addEventListener('submit', async e => {
   const mes = $('cp-mes').value, valor = parseFloat($('cp-valor').value);
   if (!mes || !isFinite(valor)) return;
   if (mIndex(mes) < 0) { $('cp-msg').textContent = 'Use um mês a partir de ago/2025, quando a planilha começa.'; return; }
-  if (!db) { cps = cps.filter(c => c.mes !== mes).concat({ mes, valor }); try { localStorage.setItem(LSK('painel-fin-cps'), JSON.stringify(cps)); } catch (e2) {} $('cp-msg').textContent = 'Salvo só neste navegador.'; renderGlobal(); return; }
-  try { await pdoc('checkpoints/' + mes).set({ mes, valor, criadoEm: new Date().toISOString() }); $('cp-msg').textContent = `Checkpoint de ${mLabel(mIndex(mes))} salvo.`; $('cp-valor').value = ''; }
+  if (!db) { cps = cps.filter(c => c.mes !== mes).concat({ mes, valor }); try { localStorage.setItem(LSK('painel-fin-cps'), JSON.stringify(cps)); } catch (e2) {} $('cp-msg').textContent = 'Salvo só neste navegador.'; renderGlobal(); renderCpCard(); if (!$('cp-pop').hidden) setTimeout(cpPopFechar, 900); return; }
+  try { await pdoc('checkpoints/' + mes).set({ mes, valor, criadoEm: new Date().toISOString() }); $('cp-msg').textContent = `Checkpoint de ${mLabel(mIndex(mes))} salvo.`; $('cp-valor').value = ''; if (!$('cp-pop').hidden) setTimeout(cpPopFechar, 900); }
   catch (err) { $('cp-msg').textContent = 'Não consegui salvar o checkpoint. Tente de novo.'; }
 });
 
@@ -11168,7 +11228,8 @@ const INFO_SEC = {
   'config:Módulos': 'Só o administrador vê. Define quais módulos ficam disponíveis para todas as pessoas que usam o painel.',
   'global:Projeção': 'Quanto você terá ao longo do tempo. Tracejado: o plano do 06. Plano futuro. Linhas cheias: cada cenário do 07, partindo do último checkpoint, com renda, gastos, parcelas e rendimento reinvestido todo mês. Pontos vermelhos: checkpoints reais. Os botões mudam o período.',
   'global:Mês a mês': 'A projeção do cenário em destaque mês por mês: ganhos (receita líquida e rendimento) menos gastos e parcelas. O resultado é quanto os investimentos variam no mês. Clique nos grupos para abrir os detalhes.',
-  'global:Cenário e checkpoints': 'Escolha qual cenário fica em destaque, se o gráfico mostra investimentos ou patrimônio líquido e de onde vem o rendimento. Aqui você também salva os checkpoints: uma foto do total que você tem aplicado de fato no fim de cada mês, que fecha o mês em Gastos, compara o real com o plano e vira o ponto de partida das projeções.',
+  'global:Checkpoint do mês': 'O checkpoint é a foto do total aplicado no fim de cada mês. Ele fecha o mês, mostra se você está acima ou abaixo do plano e é o ponto de partida das projeções. Faça um por mês.',
+  'global:Cenário e plano': 'Escolha qual cenário fica em destaque, se o gráfico mostra investimentos ou patrimônio líquido e de onde vem o rendimento. Os checkpoints ficam no cartão do topo: uma foto do total que você tem aplicado de fato no fim de cada mês, que fecha o mês em Gastos, compara o real com o plano e vira o ponto de partida das projeções.',
   'global:Comparação de cenários': 'Lado a lado, como cada cenário termina o período: rendimento líquido, compras incluídas, investimentos, patrimônio e o menor saldo no caminho.',
   'global:Checkpoints': 'Cada checkpoint real contra o valor do plano no mesmo mês. Verde: acima do plano; vermelho: abaixo.',
   'global:Fluxo por ano': 'A projeção do cenário em destaque somada por ano: quanto entra, quanto sai, quanto rende e com quanto termina cada ano.',
