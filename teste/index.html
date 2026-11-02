@@ -1352,6 +1352,36 @@ ul.ng-acordo li { margin-bottom: 4px; }
 .fam-cus tr.fam-tot td small { display: block; font-weight: 400; color: var(--faint); font-size: 10px; }
 .fam-ef { margin-bottom: 6px; }
 .fam-idade { display: block; margin-top: 2px; }
+/* Independência financeira */
+.ind-hero { border: 1px solid var(--line); border-left: 4px solid var(--s3); border-radius: 10px; background: var(--panel); box-shadow: var(--shadow); padding: 16px 18px; margin-bottom: 14px; }
+.ind-hero .t { font-family: var(--f-head); font-size: 20px; font-weight: 600; color: var(--ink); line-height: 1.35; }
+.ind-hero .t b { color: var(--accent); }
+.ind-hero .d { color: var(--muted); margin-top: 6px; font-size: 13.5px; }
+.ind-hero .d b { color: var(--ink); }
+.ind-termo { margin: 4px 0 2px; }
+.ind-termo .bar { position: relative; height: 14px; border-radius: 99px; background: var(--line); overflow: hidden; }
+.ind-termo .bar i { position: absolute; inset: 0 auto 0 0; background: linear-gradient(90deg, var(--s3), var(--accent)); border-radius: 99px; }
+.ind-termo .lg { display: flex; justify-content: space-between; gap: 8px; font-size: 12px; color: var(--muted); margin-top: 6px; }
+.ind-marcos { display: grid; gap: 8px; }
+.ind-marco { display: grid; grid-template-columns: 28px minmax(0, 1fr) auto; gap: 10px; align-items: center; padding: 10px 12px; border: 1px solid var(--line); border-radius: 10px; background: var(--panel); }
+.ind-marco .ic { width: 24px; height: 24px; border-radius: 50%; border: 2px solid var(--faint); display: inline-flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; color: #fff; }
+.ind-marco.ok .ic { background: var(--good); border-color: var(--good); }
+.ind-marco.meta { border-color: var(--s3); }
+.ind-marco .nm { font-weight: 600; color: var(--ink); }
+.ind-marco .nm small { display: block; font-weight: 400; color: var(--muted); font-size: 12px; margin-top: 2px; }
+.ind-marco .qd { text-align: right; font-size: 13px; color: var(--ink); white-space: nowrap; }
+.ind-marco .qd small { display: block; color: var(--muted); font-size: 11.5px; }
+.ind-tbl td input[type="number"] { width: 110px; }
+.ind-res { margin-top: 12px; padding: 12px 14px; border-radius: 10px; background: var(--accent-soft); color: var(--ink); font-size: 13.5px; line-height: 1.5; }
+.ind-res b { color: var(--accent); }
+.ind-niv .nv { display: flex; flex-direction: column; gap: 4px; padding: 10px 12px; border: 1px solid var(--line); border-radius: 10px; background: var(--panel); }
+.ind-niv .nv[aria-current="true"] { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent) inset; }
+.ind-niv .nv b { font-family: var(--f-head); font-size: 12px; }
+.ind-niv .nv > span { font-size: 16px; font-weight: 700; }
+.ind-niv .nv small { color: var(--muted); font-size: 11.5px; }
+.ind-niv .nv .btn { align-self: flex-start; margin-top: 4px; }
+.ind-niv { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; margin-top: 10px; }
+@media (max-width: 700px) { .ind-niv { grid-template-columns: minmax(0, 1fr); } .ind-hero .t { font-size: 17px; } }
 </style>
 
 
@@ -1416,6 +1446,10 @@ ul.ng-acordo li { margin-bottom: 4px; }
           <div class="nav-group"><button type="button" class="nav-head" data-tab="famvg"><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 11.5 12 4l9 7.5"/><path d="M5.5 10v9.5h13V10"/><path d="M10 19.5v-5h4v5"/></svg></span>Visão geral</button><div class="nav-sub" data-sub="famvg"></div></div>
           <div class="nav-group"><button type="button" class="nav-head" data-tab="fampes"><span class="ico">01</span>Minha família<span class="caret" data-navtog="fampes" role="button" tabindex="0" aria-label="Abrir ou recolher submódulos">▾</span></button><div class="nav-sub" data-sub="fampes"></div></div>
         </div></div>
+        <div class="nav-sec" data-sec="indep" data-mod="indep"><button type="button" class="nav-sec-h" data-sectog="indep" aria-expanded="true"><span>Independência financeira</span><span class="caret" aria-hidden="true">▾</span></button><div class="nav-sec-b">
+          <div class="nav-group"><button type="button" class="nav-head" data-tab="indvg"><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 11.5 12 4l9 7.5"/><path d="M5.5 10v9.5h13V10"/><path d="M10 19.5v-5h4v5"/></svg></span>Visão geral</button><div class="nav-sub" data-sub="indvg"></div></div>
+          <div class="nav-group"><button type="button" class="nav-head" data-tab="indnum"><span class="ico">01</span>Meu número<span class="caret" data-navtog="indnum" role="button" tabindex="0" aria-label="Abrir ou recolher submódulos">▾</span></button><div class="nav-sub" data-sub="indnum"></div></div>
+        </div></div>
         <div class="nav-pe">
         <div class="nav-group mini"><button type="button" class="nav-head" data-tab="leia"><span class="ico">?</span>Leia-me<span class="caret" data-navtog="leia" role="button" tabindex="0" aria-label="Abrir ou recolher submódulos">▾</span></button><div class="nav-sub" data-sub="leia"></div></div>
         <div class="nav-group mini"><button type="button" class="nav-head" data-tab="config"><span class="ico">⚙</span>Configurações<span class="caret" data-navtog="config" role="button" tabindex="0" aria-label="Abrir ou recolher submódulos">▾</span></button><div class="nav-sub" data-sub="config"></div></div>
@@ -1423,7 +1457,7 @@ ul.ng-acordo li { margin-bottom: 4px; }
     </div>
     <div class="nav-mobile-sub" id="navMobileSub"></div>
   </div>
-  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 244</div></div>
+  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 245</div></div>
 </nav>
 <div class="sino-pop" id="sino-pop" role="dialog" aria-label="Central de avisos" hidden></div>
 <div class="tour-pop" id="tour-pop" role="dialog" aria-labelledby="tour-tit" hidden></div>
@@ -1960,6 +1994,64 @@ ul.ng-acordo li { margin-bottom: 4px; }
     <section data-nav="Custo por fase" class="panel">
       <h2>Custo por fase</h2>
       <div id="famp-cus"></div>
+    </section>
+  </section>
+  <!-- ============ INDEPENDÊNCIA: VISÃO GERAL ============ -->
+  <section role="tabpanel" id="p-indvg" hidden>
+    <div class="block-title"><span class="num"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 11.5 12 4l9 7.5"/><path d="M5.5 10v9.5h13V10"/><path d="M10 19.5v-5h4v5"/></svg></span><div><h1>Independência financeira</h1><p class="desc">Quando o seu patrimônio passa a pagar o seu custo de vida sozinho, pelo Plano futuro que você já montou. Tudo em reais de hoje.</p></div></div>
+    <div id="ind-hero"></div>
+    <div class="kpis" id="kpi-ind"></div>
+    <section data-nav="Termômetro" class="panel">
+      <h2>Termômetro</h2>
+      <div id="ind-termo"></div>
+    </section>
+    <section data-nav="Marcos" class="panel">
+      <h2>Marcos</h2>
+      <p class="sub">Cada marco acende quando o patrimônio projetado passa do valor dele. As datas vêm do Plano futuro.</p>
+      <div class="ind-marcos" id="ind-marcos"></div>
+    </section>
+    <section data-nav="Patrimônio x número" class="panel">
+      <h2>Patrimônio x número</h2>
+      <div class="legend" id="lg-ind"></div>
+      <div id="ch-ind"></div>
+      <div class="readout" id="ro-ind"></div>
+      <p class="sub" id="ind-ch-nota"></p>
+    </section>
+  </section>
+  <!-- ============ INDEPENDÊNCIA: MEU NÚMERO ============ -->
+  <section role="tabpanel" id="p-indnum" hidden>
+    <div class="block-title"><span class="num">01</span><div><h1>Meu número</h1><p class="desc">Quanto você precisa ter para parar de trabalhar por obrigação: o seu custo de vida e por quanto tempo o dinheiro precisa durar.</p></div></div>
+    <section data-nav="Sobre você" class="panel">
+      <h2>Sobre você</h2>
+      <div class="params"><fieldset>
+        <legend>Idade e meta</legend>
+        <label>Mês e ano de nascimento<input type="month" data-ind="nasc"></label>
+        <label>Quero chegar lá aos (anos)<input type="number" step="1" min="18" max="100" data-ind="meta"></label>
+        <label>O dinheiro precisa durar até os (anos)<input type="number" step="1" min="60" max="120" data-ind="ate"></label>
+        <label>Reserva de emergência (meses de custo)<input type="number" step="1" min="0" max="36" data-ind="reserva"></label>
+        <p class="hint" style="grid-column:1/-1">Sugestão: até os 105 anos (95 de expectativa + 10 de margem). A data de nascimento fica só no seu painel.</p>
+      </fieldset></div>
+    </section>
+    <section data-nav="Custo de vida" class="panel">
+      <h2>Custo de vida na independência</h2>
+      <div class="row"><label style="max-width:320px">Partir de<select data-ind="base"><option value="gastos">Gastos reais (média dos últimos 12 meses)</option><option value="orc">Orçamento do Plano futuro</option></select></label><span class="subdet" id="ind-fonte"></span></div>
+      <p class="sub">Ajuste o que muda quando você parar: o que some (contabilidade, transporte para o trabalho), o que aumenta (saúde, viagens). Em branco = igual a hoje. Parcelas de compras não entram: elas acabam.</p>
+      <div class="tscroll"><table class="ind-tbl" id="tbl-ind-custo"></table></div>
+      <div class="row" style="margin-top:10px"><button type="button" class="btn tiny" data-indextra>+ Linha nova</button></div>
+      <h3 style="margin-top:16px">Níveis</h3>
+      <p class="sub">Enxuto e confortável são o custo acima multiplicado pelo percentual. O nível escolhido é o da data no topo.</p>
+      <div class="ind-niv" id="ind-niv"></div>
+    </section>
+    <section data-nav="Quanto precisa durar" class="panel">
+      <h2>Quanto precisa durar</h2>
+      <div class="params"><fieldset>
+        <legend>Taxa de saque</legend>
+        <label>Como calcular<select data-ind="taxaModo"><option value="idade">Pela idade: durar até a idade escolhida</option><option value="fixa">Taxa fixa por ano</option></select></label>
+        <label>Taxa de saque % a.a.<input type="number" step="0.1" min="1" max="10" data-ind="taxa"></label>
+        <label>Rendimento real depois de parar % a.a.<input type="number" step="0.1" data-ind="rReal" id="ind-rreal"></label>
+        <p class="hint" style="grid-column:1/-1" id="ind-taxa-hint"></p>
+      </fieldset></div>
+      <div class="ind-res" id="ind-res"></div>
     </section>
   </section>
   <section role="tabpanel" id="p-leia" hidden>
@@ -3063,7 +3155,7 @@ ul.ng-acordo li { margin-bottom: 4px; }
     return new Promise(resolve => { const { data } = sb.auth.onAuthStateChange(async (ev) => { if (ev !== 'PASSWORD_RECOVERY') return; const s = prompt('Digite a nova senha (mínimo 8 caracteres):'); if (s && s.length >= 8) { const { error } = await sb.auth.updateUser({ password: s }); alert(error ? 'Não deu para trocar a senha: ' + error.message : 'Senha trocada.'); } }); resolve(data); });
   }
   // ---------- rodapé: compartilhar, administração e sair ----------
-  const SITE_V = 127;
+  const SITE_V = 128;
   const escH = v => String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const dataBR = v => v ? new Date(v).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' }) : '–';
   const css2 = `.side-foot .r{flex-wrap:wrap}.side-foot .lg-acoes{margin-left:auto;display:inline-flex;gap:10px}
@@ -4900,6 +4992,160 @@ document.addEventListener('change', e => {
   if (d.famid) { const [id, f] = d.famid.split(':'), p = famAcha(id); if (!p) return; const fz = FAM_FASES.find(y => y.id === f); if (t.value === '' || +t.value === fz.a) delete p.idades[f]; else p.idades[f] = Math.min(29, Math.max(0, Math.round(+t.value))); famRe(); return; }
   if (d.famc) { const [id, f, k] = d.famc.split(':'), p = famAcha(id); if (!p) return; p.cus[f] = p.cus[f] || {};
     if (t.value === '' || !isFinite(+t.value)) delete p.cus[f][k]; else p.cus[f][k] = Math.max(0, +t.value); if (!Object.keys(p.cus[f]).length) delete p.cus[f]; famRe(); return; }
+});
+
+/* ---------- Independência financeira (state.indep) ---------- */
+// tudo em reais de hoje: o patrimônio do Plano futuro é descontado pelo IPCA do plano
+const IND_NIV = [['enxuto', 'Enxuto', 'Lean FI'], ['atual', 'Atual', 'FI'], ['conf', 'Confortável', 'Fat FI']];
+const IND_PAD = { nasc: '', meta: 50, ate: 105, reserva: 6, base: 'gastos', nivel: 'atual', mult: { enxuto: 80, atual: 100, conf: 130 }, ajuste: {}, extras: [], taxaModo: 'idade', taxa: 4, rReal: '' };
+function indNormalizar(s) {
+  if (!s.indep || typeof s.indep !== 'object') s.indep = {};
+  const x = s.indep, n = (v, lo, hi, d) => isFinite(+v) && v !== '' && v != null && +v >= lo && +v <= hi ? +v : d;
+  x.nasc = /^\d{4}-\d{2}$/.test(x.nasc || '') ? x.nasc : '';
+  x.meta = n(x.meta, 18, 100, 50); x.ate = n(x.ate, 60, 120, 105); x.reserva = n(x.reserva, 0, 36, 6);
+  x.base = x.base === 'orc' ? 'orc' : 'gastos';
+  x.nivel = IND_NIV.some(v => v[0] === x.nivel) ? x.nivel : 'atual';
+  const m = x.mult && typeof x.mult === 'object' ? x.mult : {}; x.mult = { enxuto: n(m.enxuto, 10, 300, 80), atual: n(m.atual, 10, 300, 100), conf: n(m.conf, 10, 300, 130) };
+  if (!x.ajuste || typeof x.ajuste !== 'object' || Array.isArray(x.ajuste)) x.ajuste = {};
+  x.extras = Array.isArray(x.extras) ? x.extras.filter(e => e && typeof e === 'object').map(e => ({ id: String(e.id || uid()), nome: String(e.nome || 'Outro'), valor: +e.valor || 0 })) : [];
+  x.taxaModo = x.taxaModo === 'fixa' ? 'fixa' : 'idade'; x.taxa = n(x.taxa, 1, 10, 4);
+  x.rReal = x.rReal === '' || x.rReal == null || !isFinite(+x.rReal) ? '' : +x.rReal;
+}
+// custo de hoje por categoria: média dos meses com lançamentos (até 12, sem o mês corrente) ou o orçamento
+function indBase() {
+  const I = state.indep, ms = [];
+  for (let j = 1; j <= 12; j++) { const t = totaisMes(mKey(HOJE_IDX - j)); if (t.n) ms.push(t); }
+  const usaG = I.base === 'gastos' && ms.length > 0;
+  return { meses: usaG ? ms.length : 0, linhas: cats().map(c => ({ nome: c.nome, grupo: c.grupo, hoje: usaG ? Math.max(0, ms.reduce((t, m) => t + (m.porCat[c.nome] || 0), 0) / ms.length) : Math.max(0, +c.orc || 0) })) };
+}
+function indCusto() {
+  const I = state.indep, B = indBase();
+  B.linhas.forEach(l => { const a = I.ajuste[l.nome]; l.aj = a === '' || a == null || !isFinite(+a) ? null : Math.max(0, +a); l.ind = l.aj ?? l.hoje; });
+  const ext = I.extras.reduce((t, e) => t + Math.max(0, +e.valor || 0), 0), soma = B.linhas.reduce((t, l) => t + l.ind, 0) + ext;
+  const pl = calcPlano(), m1 = pl.meses[Math.max(HOJE_IDX, pl.i0) + 1], aluguel = Math.max(0, m1 ? m1.rendaB : 0);
+  const nivel = id => Math.max(0, soma * I.mult[id] / 100 - aluguel);
+  return { B, ext, soma, aluguel, nivel, hojeTot: B.linhas.reduce((t, l) => t + l.hoje, 0) };
+}
+// rendimento real do plano nos próximos 12 meses (o que o Plano futuro já usa)
+function indRPlano() { let s = 0; for (let i = HOJE_IDX + 1; i <= HOJE_IDX + 12; i++) s += (1 + taxaPlanoMes(i)) / (1 + ipcaPlano(i) / 12) - 1; return Math.pow(1 + s / 12, 12) - 1; }
+// depois de parar: 4% real líquido por padrão (mais prudente que o rendimento do plano para 40 a 50 anos), editável
+const IND_R_PAD = 4;
+const indRDepois = () => { const v = state.indep.rReal; return v === '' ? IND_R_PAD / 100 : v / 100; };
+const indMeses = n => { n = Math.max(0, Math.round(n)); const a = Math.floor(n / 12), m = n % 12; return [a ? `${a} ${a > 1 ? 'anos' : 'ano'}` : '', m ? `${m} ${m > 1 ? 'meses' : 'mês'}` : ''].filter(Boolean).join(' e ') || 'agora'; };
+// número para um custo mensal C, se a independência começar no mês i
+function indNumero(C, i, ctx) {
+  if (C <= 0) return 0;
+  if (ctx.modo === 'fixa' || ctx.nascI == null) return C * 12 / (state.indep.taxa / 100);
+  const n = ctx.fimI - i; if (n <= 0) return 0;
+  const r = ctx.rmD; return r > 1e-9 ? C * (1 - Math.pow(1 + r, -n)) / r : C * n;
+}
+// patrimônio que rende, em reais de hoje, de hoje até fim (depois do horizonte do plano: rendimento real do plano + sobra média real)
+function indSerie(st, fim) {
+  const pl = calcPlano(), rm = Math.pow(1 + indRPlano(), 1 / 12) - 1, P = {}, sob = [];
+  let defl = 1, ult = null;
+  for (let i = st; i <= fim; i++) {
+    if (i > st) defl *= 1 + ipcaPlano(Math.min(i, pl.fim)) / 12;
+    if (i <= pl.fim && pl.inv[i] != null) { ult = (pl.inv[i] + (pl.parado[i] || 0)) / defl; const m = pl.meses[i]; if (m) sob.push(m.sobra / defl); }
+    else { if (ult == null) ult = +state.plan.valor || 0; const s12 = sob.slice(-12), sm = s12.length ? s12.reduce((a, b) => a + b, 0) / s12.length : 0; ult = ult * (1 + rm) + sm; }
+    P[i] = ult;
+  }
+  return { P, planoFim: pl.fim };
+}
+function indCalc() {
+  const I = state.indep, st = Math.max(HOJE_IDX, calcPlano().i0), nascI = I.nasc ? mIndex(I.nasc) : null;
+  const fimI = nascI != null ? nascI + I.ate * 12 : null, metaI = nascI != null ? nascI + I.meta * 12 : null;
+  const busca = Math.min(st + 70 * 12, fimI != null ? fimI - 12 : st + 50 * 12);
+  const ctx = { modo: I.taxaModo, nascI, fimI, rmD: Math.pow(1 + indRDepois(), 1 / 12) - 1 };
+  const cu = indCusto(), S = indSerie(st, Math.max(busca, st + 12)), P = S.P;
+  const cruza = C => { for (let i = st; i <= busca; i++) if (P[i] >= indNumero(C, i, ctx)) return i; return null; };
+  const C = cu.nivel(I.nivel), cruz = C > 0 ? cruza(C) : null;
+  const niveis = IND_NIV.map(([id, nome, en]) => ({ id, nome, en, C: cu.nivel(id), i: cu.nivel(id) > 0 ? cruza(cu.nivel(id)) : null }));
+  const rmP = Math.pow(1 + indRPlano(), 1 / 12) - 1;
+  // meta: número na idade escolhida, o que o plano tem lá e o aporte extra que fecharia a diferença
+  let meta = null;
+  if (metaI != null && metaI > st && C > 0) {
+    const Nm = indNumero(C, metaI, ctx), Pm = P[metaI] ?? null, n = metaI - st;
+    let falta = Pm != null ? Nm - Pm : null, aporte = null;
+    if (falta != null && falta > 0) aporte = rmP > 1e-9 ? falta * rmP / (Math.pow(1 + rmP, n) - 1) : falta / n;
+    let coast = null; for (let i = st; i <= metaI; i++) if (P[i] * Math.pow(1 + rmP, metaI - i) >= Nm) { coast = i; break; }
+    meta = { i: metaI, N: Nm, P: Pm, falta, aporte, coast };
+  }
+  let reserva = null; if (I.reserva > 0 && C > 0) { const alvo = cu.soma * I.reserva; for (let i = st; i <= busca; i++) if (P[i] >= alvo) { reserva = { i, alvo }; break; } if (!reserva) reserva = { i: null, alvo }; }
+  const Nhoje = indNumero(C, cruz ?? metaI ?? st, ctx);
+  return { I, st, nascI, fimI, metaI, busca, ctx, cu, C, P, cruz, niveis, meta, reserva, Nref: Nhoje, planoFim: S.planoFim, rD: indRDepois(), rP: indRPlano() };
+}
+const indIdade = (r, i) => r.nascI == null ? '' : indMeses(i - r.nascI);
+function indFrase(r) {
+  if (r.C <= 0) return { t: 'Preencha o custo de vida para calcular a sua data.', d: 'Use Gastos para lançar o que você gasta ou o orçamento do Plano futuro. Depois confira em <a href="#" data-lmtab="indnum" data-lmsec="Custo de vida">Meu número</a>.' };
+  if (r.cruz == null) return { t: `Com o plano atual, você ainda não chega lá${r.nascI != null ? ` até os ${Math.floor((r.busca - r.nascI) / 12)} anos` : ' nos próximos 50 anos'}.`, d: `O custo de ${fm(r.C)} por mês pede mais patrimônio do que o plano junta. Veja abaixo quanto falta e mexa no custo ou no Plano futuro.` };
+  const quando = r.cruz <= r.st ? 'já' : `em <b>${mLabel(r.cruz)}</b>`;
+  return { t: r.cruz <= r.st ? `Você <b>já</b> tem o suficiente para parar de trabalhar por obrigação.` : `Você chega à independência ${quando}${r.nascI != null ? `, aos <b>${indIdade(r, r.cruz)}</b>` : ''}: daqui a <b>${indMeses(r.cruz - HOJE_IDX)}</b>.`,
+    d: `Custo de ${fm(r.C)} por mês (nível ${IND_NIV.find(v => v[0] === r.I.nivel)[1].toLowerCase()}), número de <b>${fm(r.Nref)}</b> em reais de hoje${r.ctx.modo === 'idade' && r.nascI != null ? `, para durar até os ${r.I.ate} anos` : `, com saque de ${num(r.I.taxa, 1)}% ao ano`}. Pelo seu <a href="#" data-lmtab="orcamento" data-lmsec="Premissas">Plano futuro</a>.` };
+}
+function renderIndVg() {
+  const r = indCalc(), f = indFrase(r);
+  $('ind-hero').innerHTML = `<div class="ind-hero"><div class="t">${f.t}</div><div class="d">${f.d}</div>${r.nascI == null ? '<div class="d">Preencha o mês e ano de nascimento em <a href="#" data-lmtab="indnum" data-lmsec="Sobre você">Meu número</a> para ver a idade e a meta.</div>' : ''}</div>`;
+  const P0 = r.P[r.st] || 0, m = r.meta;
+  kpis($('kpi-ind'), [
+    ['Meu número', r.C > 0 ? k(r.Nref) : '—', r.ctx.modo === 'idade' && r.nascI != null ? `dura até os ${r.I.ate} anos` : `saque de ${num(r.I.taxa, 1)}% a.a.`],
+    ['Patrimônio que rende', k(P0), `hoje, pelo Plano futuro`],
+    m ? ['Meta: ' + r.I.meta + ' anos', m.falta == null ? '—' : m.falta <= 0 ? 'no caminho' : '−' + k(m.falta), m.falta == null ? mLabel(m.i) : m.falta <= 0 ? `sobram ${k(-m.falta)} em ${mLabel(m.i)}` : `faltam em ${mLabel(m.i)}`, m.falta > 0]
+      : ['Meta', '—', r.nascI == null ? 'preencha o nascimento' : 'a meta já passou'],
+    m && m.aporte ? ['Para chegar na meta', '+' + fm(m.aporte), 'a mais por mês, em reais de hoje', true] : ['Custo de vida', r.C > 0 ? fm(r.C) : '—', r.cu.aluguel > 0 ? `já descontado ${fm(r.cu.aluguel)} de aluguel` : 'por mês na independência']
+  ]);
+  // termômetro
+  const N = r.Nref, p = N > 0 ? Math.min(1, P0 / N) : 0;
+  $('ind-termo').innerHTML = r.C <= 0 ? '<p class="sub">Sem custo de vida ainda.</p>' : `<div class="ind-termo"><div class="bar" role="img" aria-label="${pct(p, 0)} do número"><i style="width:${(p * 100).toFixed(1)}%"></i></div>
+    <div class="lg"><span><b>${pct(P0 / N, 0)}</b> do número (${k(P0)} de ${k(N)})</span><span>o patrimônio de hoje paga <b>${indMeses(P0 / r.C)}</b> do custo</span></div></div>`;
+  // marcos
+  const mk = (nome, sub, i, alvo, cls = '') => { const ok = i != null && i <= r.st; return `<div class="ind-marco ${ok ? 'ok' : ''} ${cls}"><span class="ic">${ok ? '✓' : ''}</span><span class="nm">${nome}<small>${sub}</small></span><span class="qd">${i == null ? 'fora do horizonte' : ok ? 'atingido' : mLabel(i)}${i != null && !ok ? `<small>${r.nascI != null ? 'aos ' + Math.floor((i - r.nascI) / 12) + ' anos · ' : ''}daqui a ${indMeses(i - HOJE_IDX)}</small>` : ''}${alvo ? `<small>${k(alvo)}</small>` : ''}</span></div>`; };
+  const L = [];
+  if (r.reserva) L.push([r.reserva.i ?? 1e9, mk('Reserva de emergência', `${r.I.reserva} meses do custo de hoje`, r.reserva.i, r.reserva.alvo)]);
+  if (m) L.push([m.coast ?? 1e9, mk('Coast FI', m.coast == null ? `ainda não: nem guardando até os ${r.I.meta} o plano chega ao número nessa idade` : `daqui em diante, só os rendimentos levam você ao número aos ${r.I.meta}, sem guardar mais nada`, m.coast, null)]);
+  r.niveis.forEach(n => L.push([n.i ?? 1e9, mk(`${n.id === r.I.nivel ? 'Parar de trabalhar por obrigação' : n.nome} <span class="subdet">${n.en}</span>`, `custo ${n.nome.toLowerCase()}${n.id === r.I.nivel ? ' (o escolhido)' : ''}: ${fm(n.C)} por mês`, n.i, n.C > 0 && n.i != null ? indNumero(n.C, n.i, r.ctx) : null, n.id === r.I.nivel ? 'meta' : '')]));
+  if (m) L.push([m.i, mk(`Sua meta: ${r.I.meta} anos`, m.falta == null ? '' : m.falta <= 0 ? 'o plano chega lá antes' : `faltam ${k(m.falta)} nessa data`, m.i, m.N)]);
+  $('ind-marcos').innerHTML = L.sort((a, b) => a[0] - b[0]).map(x => x[1]).join('') + '<p class="subdet">Aposentar de vez, com INSS e previdência, entra na etapa de renda depois de parar.</p>';
+  // gráfico
+  const fimG = Math.min(r.busca, Math.max(r.cruz ?? r.st, r.metaI ?? r.st, r.st + 60) + 36), n = fimG - r.st + 1;
+  const sP = [], sN = [], sM = []; for (let i = r.st; i <= fimG; i++) { sP.push(r.P[i]); sN.push(r.C > 0 ? indNumero(r.C, i, r.ctx) : null); }
+  const series = [{ name: 'Patrimônio que rende (reais de hoje)', c: 'var(--s1)', v: sP, w: 2.6 }, { name: 'Meu número', c: 'var(--s3)', v: sN, dash: true, w: 2.2 }];
+  legend($('lg-ind'), series);
+  chart($('ch-ind'), $('ro-ind'), n, series, k, t => mLabel(r.st + t), r.cruz != null ? r.cruz - r.st : 0);
+  $('ind-ch-nota').textContent = `Até ${mLabel(r.planoFim)} é o Plano futuro; depois, o painel continua com o rendimento real do plano (${pct(r.rP, 1)} a.a.) e a sobra média do último ano.${r.ctx.modo === 'idade' && r.nascI != null ? ' O número cai com o tempo porque, quanto mais tarde você para, menos anos o dinheiro precisa durar.' : ''}`;
+}
+function renderIndNum() {
+  const I = state.indep, r = indCalc(), cu = r.cu;
+  document.querySelectorAll('#p-indnum [data-ind]').forEach(el => { const v = I[el.dataset.ind]; el.value = v ?? ''; });
+  $('ind-rreal').placeholder = num(IND_R_PAD, 1) + ' (padrão)';
+  $('ind-fonte').textContent = I.base === 'gastos' ? (cu.B.meses ? `média de ${cu.B.meses} ${cu.B.meses > 1 ? 'meses' : 'mês'} com lançamentos` : 'sem lançamentos nos últimos 12 meses: usando o orçamento') : 'valores do orçamento de cada categoria';
+  const linhas = cu.B.linhas.filter(l => l.hoje > 0.5 || l.aj != null);
+  $('tbl-ind-custo').innerHTML = `<thead><tr><th>Categoria</th><th>Hoje (R$/mês)</th><th>Na independência</th></tr></thead><tbody>${linhas.map(l => `<tr><td class="name">${esc(l.nome)}<span class="subdet">${esc(l.grupo)}</span></td><td>${fm(l.hoje)}</td><td><input type="number" step="50" min="0" data-indaj="${esc(l.nome)}" value="${l.aj ?? ''}" placeholder="${Math.round(l.hoje)}" aria-label="${esc(l.nome)} na independência"></td></tr>`).join('')}
+    ${I.extras.map(e => `<tr><td class="name"><input type="text" class="name" data-index="${esc(e.id)}:nome" value="${esc(e.nome)}" aria-label="Nome da linha"></td><td><span class="z">nova</span></td><td><input type="number" step="50" min="0" data-index="${esc(e.id)}:valor" value="${+e.valor || 0}" aria-label="Valor por mês"> <button type="button" class="btn danger tiny" data-indexdel="${esc(e.id)}">remover</button></td></tr>`).join('')}
+    <tr class="mm-g"><td class="name"><b>Total</b></td><td><b>${fm(cu.hojeTot)}</b></td><td><b>${fm(cu.soma)}</b></td></tr>
+    ${cu.aluguel > 0 ? `<tr><td class="name">− Aluguel que você recebe<span class="subdet">dos imóveis em Bens e compromissos</span></td><td></td><td>−${fm(cu.aluguel)}</td></tr>` : ''}</tbody>`;
+  $('ind-niv').innerHTML = r.niveis.map(n => `<div class="nv" aria-current="${n.id === I.nivel}"><b>${n.nome} · ${n.en}</b><span>${fm(n.C)}/mês</span><small>${n.i == null ? 'fora do horizonte' : n.i <= r.st ? 'já atingido' : 'em ' + mLabel(n.i) + (r.nascI != null ? ', aos ' + Math.floor((n.i - r.nascI) / 12) + ' anos' : '')}</small><label>% do custo<input type="number" step="5" min="10" max="300" data-indmult="${n.id}" value="${I.mult[n.id]}"></label><button type="button" class="btn tiny${n.id === I.nivel ? '' : ' ghost'}" data-indniv="${n.id}" aria-pressed="${n.id === I.nivel}">${n.id === I.nivel ? 'Nível escolhido' : 'Usar este nível'}</button></div>`).join('');
+  const sw = r.C > 0 && r.Nref > 0 ? r.C * 12 / r.Nref : null;
+  $('ind-taxa-hint').innerHTML = I.taxaModo === 'idade'
+    ? (r.nascI == null ? 'Preencha o nascimento acima: sem a idade, o painel usa a taxa fixa.' : `O número é o que paga ${fm(r.C)} por mês, corrigido pela inflação, de quando você parar até os ${I.ate} anos, acabando em zero. Equivale a sacar ${sw ? num(sw * 100, 1) + '%' : '—'} ao ano.`)
+    : 'Taxa fixa: número = custo do ano ÷ taxa. No Brasil, 4% é a referência mais usada; para mais de 40 anos parado, 3% a 3,5% é mais seguro.';
+  $('ind-res').innerHTML = r.C <= 0 ? 'Sem custo de vida: lance seus gastos ou preencha o orçamento.' :
+    `Seu número é <b>${fm(r.Nref)}</b> em reais de hoje${r.cruz != null ? ` (se parar em ${mLabel(r.cruz)})` : ''}. Rendimento real depois de parar: ${pct(r.rD, 1)} a.a., já líquido de IR${I.rReal === '' ? ' (padrão; o seu Plano futuro usa ' + pct(r.rP, 1) + ' antes de parar)' : ''}. ${r.cruz != null ? `Pelo Plano futuro você chega lá ${r.cruz <= r.st ? 'já' : `em ${mLabel(r.cruz)}, daqui a ${indMeses(r.cruz - HOJE_IDX)}`}.` : 'Pelo plano atual, ainda fora do horizonte.'}`;
+}
+document.addEventListener('change', e => {
+  const el = e.target, d = el.dataset || {}, I = state.indep; if (!I) return;
+  if (d.ind) { const kk = d.ind; let v = el.value;
+    if (['meta', 'ate', 'reserva', 'taxa'].includes(kk)) { v = parseFloat(v); if (!isFinite(v)) return; }
+    if (kk === 'rReal') v = v === '' ? '' : parseFloat(v);
+    I[kk] = v; indNormalizar(state); save(); renderTab(); return; }
+  if (d.indaj != null) { const v = el.value; if (v === '') delete I.ajuste[d.indaj]; else if (isFinite(+v)) I.ajuste[d.indaj] = Math.max(0, +v); save(); renderTab(); return; }
+  if (d.indmult) { const v = +el.value; if (isFinite(v) && v >= 10 && v <= 300) I.mult[d.indmult] = v; save(); renderTab(); return; }
+  if (d.index) { const [id, kk] = d.index.split(':'), x = I.extras.find(y => y.id === id); if (!x) return; x[kk] = kk === 'valor' ? Math.max(0, +el.value || 0) : el.value; save(); renderTab(); return; }
+});
+document.addEventListener('click', e => {
+  const b = e.target.closest('button'); if (!b || !state.indep) return; const I = state.indep;
+  if (b.dataset.indniv) { I.nivel = b.dataset.indniv; save(); renderTab(); return; }
+  if (b.dataset.indextra != null) { I.extras.push({ id: uid(), nome: 'Saúde (plano particular)', valor: 0 }); save(); renderTab(); return; }
+  if (b.dataset.indexdel) { const x = I.extras.find(y => y.id === b.dataset.indexdel); if (x && confirmar(`Remover a linha "${x.nome}"?`)) { I.extras = I.extras.filter(y => y.id !== x.id); save(); renderTab(); } return; }
 });
 
 function vgDataPadrao() { const d = new Date(NOW.getFullYear(), NOW.getMonth() + 6, 1); while (d.getDay() !== 6) d.setDate(d.getDate() + 1); const v = new Date(d); v.setDate(v.getDate() + 14); const f = x => x.toISOString().slice(0, 10); return [f(d), f(v)]; }
@@ -8229,6 +8475,7 @@ function normalizar(s) {
   soNormalizar(s);
   vgNormalizar(s);
   ngNormalizar(s);
+  indNormalizar(s);
   famNormalizar(s);
   if (!Array.isArray(s.comp.rows)) s.comp.rows = clone(ROWS_PADRAO);
   if (!s.cenarios.find(c => c.id === s.cenAtivo)) s.cenAtivo = s.cenarios[0].id;
@@ -8238,7 +8485,7 @@ function normalizar(s) {
 try { if (quemLocal === 'dono') { const b = JSON.parse(localStorage.getItem('painel-priv')); if (b) aplicarBase(b); } } catch (e) {}
 try { const l = JSON.parse(localStorage.getItem(LSK('painel-fin-v2'))); if (l) state = normalizar(l); } catch (e) {}
 tab = 'modulos';
-const TABS = ['modulos', 'comousar', 'inicio', 'trabvg', 'viagvg', 'viagens', 'viagcmp', 'viagrot', 'viagcus', 'viagdur', 'negvg', 'negcad', 'negdre', 'negfc', 'negabr', 'negeco', 'negpesq', 'negviab', 'negcont', 'negval', 'negprec', 'negsoc', 'negcmp', 'famvg', 'fampes', 'leia', 'global', 'gastos', 'carteira', 'orcamento', 'compras', 'cenarios', 'patrimonio', 'comparador', 'simulador', 'pjpf', 'stock', 'config', 'familia'];
+const TABS = ['modulos', 'comousar', 'inicio', 'trabvg', 'viagvg', 'viagens', 'viagcmp', 'viagrot', 'viagcus', 'viagdur', 'negvg', 'negcad', 'negdre', 'negfc', 'negabr', 'negeco', 'negpesq', 'negviab', 'negcont', 'negval', 'negprec', 'negsoc', 'negcmp', 'famvg', 'fampes', 'indvg', 'indnum', 'leia', 'global', 'gastos', 'carteira', 'orcamento', 'compras', 'cenarios', 'patrimonio', 'comparador', 'simulador', 'pjpf', 'stock', 'config', 'familia'];
 if (TABS.includes(location.hash.slice(1))) tab = location.hash.slice(1);
 if (!TABS.includes(tab)) tab = 'modulos';
 
@@ -12424,7 +12671,7 @@ $('cpform').addEventListener('submit', async e => {
 });
 
 /* ---------- abas ---------- */
-const BUILD = { modulos: () => {}, comousar: () => {}, inicio: () => {}, trabvg: () => {}, viagvg: () => {}, viagens: () => {}, viagcmp: () => {}, viagrot: () => {}, viagcus: () => {}, viagdur: () => {}, negvg: () => {}, negcad: () => {}, negdre: () => {}, negfc: () => {}, negabr: () => {}, negeco: () => {}, negpesq: () => {}, negviab: () => {}, negcont: () => {}, negprec: () => {}, negval: () => {}, negsoc: () => {}, negcmp: () => {}, famvg: () => {}, fampes: () => {}, leia: buildLeia, global: () => {}, cenarios: buildCenarios, compras: buildCenarios, carteira: buildCarteira, comparador: buildComparador, simulador: buildSimulador, gastos: buildGastos, orcamento: buildOrcamento, config: buildConfig, pjpf: buildPj, stock: buildStock, familia: () => carregarPerfis(), patrimonio: () => {} };
+const BUILD = { modulos: () => {}, comousar: () => {}, inicio: () => {}, trabvg: () => {}, viagvg: () => {}, viagens: () => {}, viagcmp: () => {}, viagrot: () => {}, viagcus: () => {}, viagdur: () => {}, negvg: () => {}, negcad: () => {}, negdre: () => {}, negfc: () => {}, negabr: () => {}, negeco: () => {}, negpesq: () => {}, negviab: () => {}, negcont: () => {}, negprec: () => {}, negval: () => {}, negsoc: () => {}, negcmp: () => {}, famvg: () => {}, fampes: () => {}, indvg: () => {}, indnum: () => {}, leia: buildLeia, global: () => {}, cenarios: buildCenarios, compras: buildCenarios, carteira: buildCarteira, comparador: buildComparador, simulador: buildSimulador, gastos: buildGastos, orcamento: buildOrcamento, config: buildConfig, pjpf: buildPj, stock: buildStock, familia: () => carregarPerfis(), patrimonio: () => {} };
 // (i) de cada seção: o que mostra e de onde vêm os números (chave: aba:data-nav)
 const INFO_SEC = {
   'comousar:Resumo': 'Para cada módulo: se já tem o mínimo para funcionar (os obrigatórios), quantos opcionais você resolveu e um botão para o próximo passo. Um opcional conta como resolvido quando você preenche ou marca que não tem.',
@@ -12433,6 +12680,13 @@ const INFO_SEC = {
   'comousar:Bens e compromissos': 'Os passos de Bens e compromissos. Todos são opcionais: o módulo só mostra o que você cadastrar.',
   'comousar:Viagens': 'Os passos de Viagens. Todos são opcionais.',
   'comousar:Empreendimentos': 'Os passos de Empreendimentos. Todos são opcionais.',
+  'comousar:Independência financeira': 'Os passos de Independência financeira. Todos são opcionais.',
+  'indvg:Termômetro': 'Quanto do seu número você já tem hoje. Patrimônio que rende = investido no Plano futuro (o que ele chama de investido + parado), em reais de hoje.',
+  'indvg:Marcos': 'Reserva de emergência: meses do custo de hoje. Coast FI: a partir desse mês, mesmo sem guardar mais nada, os rendimentos levam você ao número na idade da meta. Lean, FI e Fat FI: os três níveis de custo de Meu número. O destacado é o nível escolhido.',
+  'indvg:Patrimônio x número': 'Linha cheia: o patrimônio que rende pelo Plano futuro, descontada a inflação. Tracejada: o número que você precisaria ter se parasse naquele mês. A independência é onde a cheia passa a tracejada.',
+  'indnum:Sobre você': 'A idade serve para três coisas: dizer com quantos anos você chega lá, calcular a sua meta e saber até quando o dinheiro precisa durar.',
+  'indnum:Custo de vida': 'Gastos reais: média por categoria dos meses com lançamentos nos últimos 12 (sem o mês atual). Parcelas de compras não entram. O aluguel que você recebe dos imóveis cadastrados em Bens e compromissos é descontado do custo: é o jeito de o imóvel de renda contar no número.',
+  'indnum:Quanto precisa durar': 'Pela idade: o número é o valor que, rendendo o rendimento real escolhido, paga o custo todo mês, corrigido pela inflação, até a idade escolhida, e acaba em zero. Taxa fixa: número = custo do ano ÷ taxa; o dinheiro dura para sempre se o rendimento real for maior que a taxa. O rendimento é real (acima da inflação) e líquido de IR; em branco, usa 4% ao ano, mais prudente que o do Plano futuro para um período de 40 a 50 anos.',
   'comousar:Família': 'Os passos da Família. Todos são opcionais.',
   'famvg:Filhos': 'Fase agora e custo por mês usam a idade de hoje. O total soma do próximo mês (ou do nascimento) até a idade final, em R$ de hoje, mais o parto e o enxoval dos previstos.',
   'famvg:Efeito no patrimônio': 'Patrimônio no fim do horizonte do Plano futuro com e sem os filhos. A diferença inclui o rendimento que o dinheiro gasto deixaria de ter. Para quem já nasceu e já está nos seus gastos, entra só o quanto o custo muda.',
@@ -12591,7 +12845,7 @@ function infoSecoes() {
       if (h && !h.id) h.append(btn); else if (h) h.after(btn); else if (lg) lg.append(btn); }); });
 }
 infoSecoes();
-const RENDER = { modulos: renderModulos, comousar: renderComoUsar, inicio: renderHome, trabvg: renderTrabVg, viagvg: renderViagVg, viagens: renderViagens, viagcmp: renderViagCmp, viagrot: renderViagRot, viagcus: renderViagCus, viagdur: renderViagDur, negvg: renderNegVg, negcad: renderNegCad, negdre: renderNegDre, negfc: renderNegFc, negabr: renderNegAbr, negeco: renderNegEco, negpesq: renderNegPesq, negviab: renderNegViab, negcont: renderNegCont, negprec: renderNegPrec, negval: renderNegVal, negsoc: renderNegSoc, negcmp: renderNegCmp, famvg: renderFamVg, fampes: renderFamPes, leia: () => {}, global: renderGlobal, cenarios: renderCenarios, compras: renderCenarios, carteira: renderCarteira, comparador: renderComparador, simulador: renderSimulador, gastos: () => { renderGastos(); renderFechamento(); renderHistorico(); }, orcamento: renderOrcamento, config: renderConfig, pjpf: renderPj, stock: renderStock, familia: renderFamilia, patrimonio: renderPatr };
+const RENDER = { modulos: renderModulos, comousar: renderComoUsar, inicio: renderHome, trabvg: renderTrabVg, viagvg: renderViagVg, viagens: renderViagens, viagcmp: renderViagCmp, viagrot: renderViagRot, viagcus: renderViagCus, viagdur: renderViagDur, negvg: renderNegVg, negcad: renderNegCad, negdre: renderNegDre, negfc: renderNegFc, negabr: renderNegAbr, negeco: renderNegEco, negpesq: renderNegPesq, negviab: renderNegViab, negcont: renderNegCont, negprec: renderNegPrec, negval: renderNegVal, negsoc: renderNegSoc, negcmp: renderNegCmp, famvg: renderFamVg, fampes: renderFamPes, indvg: renderIndVg, indnum: renderIndNum, leia: () => {}, global: renderGlobal, cenarios: renderCenarios, compras: renderCenarios, carteira: renderCarteira, comparador: renderComparador, simulador: renderSimulador, gastos: () => { renderGastos(); renderFechamento(); renderHistorico(); }, orcamento: renderOrcamento, config: renderConfig, pjpf: renderPj, stock: renderStock, familia: renderFamilia, patrimonio: renderPatr };
 function renderTab() { planCache = null; try { RENDER[tab](); } catch (err) { console.error(err); setSave('erro ao recalcular: ' + (err && err.message || err)); } }
 let navAbertos = null;
 try { navAbertos = JSON.parse(localStorage.getItem('painel-nav-abertos')); } catch (e) {}
@@ -12664,7 +12918,7 @@ const MODS = [
   { id: 'viag', corNav: '#5fc2f5', nome: 'Viagens', cor: 'var(--s8)', vg: 'viagens', desc: 'Mapa de onde já foi e de onde quer ir, sorteio, comparação de destinos nas suas datas o roteiro com a rota mais barata, os custos ligados ao Plano futuro e os gastos durante a viagem.', tabs: ['viagvg', 'viagens', 'viagcmp', 'viagrot', 'viagcus', 'viagdur'] },
   { id: 'neg', corNav: '#a3e05a', nome: 'Empreendimentos', cor: 'var(--s7)', vg: 'negvg', desc: 'Suas ideias e empresas: DRE com as suas linhas, fluxo de caixa, quanto pôr e quanto chega para você no Plano futuro. Abrir empresa com a comparação de regimes, oportunidades de custo, pesquisa de mercado com IA, viabilidade, contabilidade fácil, preço, valuation, sócios e comparação.', tabs: ['negvg', 'negcad', 'negdre', 'negfc', 'negabr', 'negeco', 'negpesq', 'negviab', 'negcont', 'negval', 'negprec', 'negsoc', 'negcmp'] },
   { id: 'fam', corNav: '#fb7185', nome: 'Família', cor: 'var(--s6)', vg: 'famvg', desc: 'Quem mora com você e os filhos, já nascidos ou previstos (gêmeos também): quanto cada um custa em cada fase, a chegada, a licença e o efeito no Plano futuro. Orçamento da casa e divisão de contas vêm a seguir.', tabs: ['famvg', 'fampes'] },
-  { id: 'indep', corNav: '#E3B848', nome: 'Independência financeira', cor: 'var(--s3)', breve: true, desc: 'Quando dá para parar de trabalhar: quanto juntar, renda passiva, INSS e previdência privada.', tabs: [] },
+  { id: 'indep', corNav: '#E3B848', nome: 'Independência financeira', cor: 'var(--s3)', vg: 'indvg', desc: 'Quando dá para parar de trabalhar: o seu número, a data pelo Plano futuro, quanto falta para a sua meta e os marcos no caminho. Renda passiva, INSS e previdência vêm a seguir.', tabs: ['indvg', 'indnum'] },
   { id: 'preco', corNav: '#f59e0b', nome: 'Radar de preços', cor: 'var(--s2)', breve: true, desc: 'Escolha o que quer comprar e o preço que aceita pagar. O painel pesquisa o preço online todo dia, mostra o histórico e avisa quando cair até o seu alvo.', tabs: [] },
   { id: 'edu', corNav: '#60a5fa', nome: 'Educação', cor: 'var(--s4)', breve: true, desc: 'Cursos, faculdade, pós e a escola dos filhos: quanto custam ao longo dos anos, como pagar e o retorno esperado na carreira.', tabs: [] }
 ];
@@ -12753,6 +13007,15 @@ function cuPassos() {
         { id: 'fampes', t: 'Cadastrar a família', d: 'Quem mora com você, com o mês de nascimento, a renda e quem é dependente no IR.', ok: famL().length > 1 || pul.includes('fampes'), tab: 'fampes', sec: 'Pessoas da casa', pular: 'Depois' },
         { id: 'famfil', t: 'Ver o custo dos filhos', d: 'Os valores de cada fase vêm sugeridos pelo padrão de gastos da casa. Ajuste o que quiser.', ok: famFilhos().length > 0 || pul.includes('famfil'), tab: 'fampes', sec: 'Custo por fase', pular: 'Não tenho filhos' },
         { id: 'fampl', t: 'Levar ao Plano futuro', d: 'Escolha Projeção real para o filho entrar no plano, com a chegada, a licença e o custo de cada fase.', ok: famFilhos().some(p => p.uso === 'real') || pul.includes('fampl'), tab: 'fampes', sec: 'Filhos', pular: 'Depois' }
+      ]
+    },
+    indep: {
+      sobre: 'Quando o seu patrimônio passa a pagar o seu custo de vida sozinho, pelo Plano futuro que você já montou.',
+      precisa: 'Nada aqui é obrigatório: o módulo usa os seus Gastos e o Plano futuro. Com a data de nascimento ele mostra a idade e a sua meta.',
+      passos: [
+        { id: 'indnasc', t: 'Informar o nascimento e a meta', d: 'Mês e ano de nascimento e com quantos anos quer chegar lá.', ok: !!(state.indep && state.indep.nasc) || pul.includes('indnasc'), tab: 'indnum', sec: 'Sobre você', pular: 'Depois' },
+        { id: 'indcusto', t: 'Conferir o custo de vida', d: 'O que some e o que aumenta quando você parar de trabalhar.', ok: !!(state.indep && (Object.keys(state.indep.ajuste).length || state.indep.extras.length)) || pul.includes('indcusto'), tab: 'indnum', sec: 'Custo de vida', pular: 'Já conferi' },
+        { id: 'indtaxa', t: 'Escolher quanto o dinheiro precisa durar', d: 'Pela idade (até os 105, por exemplo) ou por uma taxa fixa de saque.', ok: pul.includes('indtaxa'), tab: 'indnum', sec: 'Quanto precisa durar', pular: 'Já escolhi' }
       ]
     }
   };
@@ -12902,6 +13165,7 @@ function modResumo(m) {
       return ns ? `<b>${ns}</b> ${ns > 1 ? 'empresas' : 'empresa'} com stock options` : 'PJ e PF e stock options'; }
     if (m.id === 'neg') { const L = ngLista(); if (!L.length) return 'Cadastre uma ideia ou empresa'; const v = L.reduce((t, x) => t + ngCalcC(x).voceMad, 0); return `<b>${L.length}</b> ${L.length > 1 ? 'negócios' : 'negócio'} · ${v < 0 ? '−' : ''}${fm(Math.abs(v))}/mês para você quando maduros`; }
     if (m.id === 'fam') { const F = famFilhos(), n = famL().filter(p => p.tipo !== 'pet').length; if (!famL().length) return 'Cadastre quem mora com você'; const pv = F.filter(famPrevisto).length; return `<b>${n}</b> ${n > 1 ? 'pessoas' : 'pessoa'}${F.length ? ` · <b>${F.length}</b> ${F.length > 1 ? 'filhos' : 'filho'}${pv ? ` (${pv} ${pv > 1 ? 'previstos' : 'previsto'})` : ''}` : ''}`; }
+    if (m.id === 'indep') { const r = indCalc(); if (r.C <= 0) return 'Confira o custo de vida'; return r.cruz == null ? 'Fora do horizonte com o plano atual' : r.cruz <= r.st ? '<b>Já</b> chegou lá' : `Independência em <b>${mLabel(r.cruz)}</b>${r.nascI != null ? ', aos ' + Math.floor((r.cruz - r.nascI) / 12) + ' anos' : ''}`; }
     if (m.id === 'viag') { const v = state.viag || {}, f = (v.fui || []).filter(c => VG_UN.includes(c)).length, q = (v.lugares || []).filter(l => l.st !== 'fui').length;
       return f || q ? [f ? `<b>${f}</b> ${f > 1 ? 'países' : 'país'} visitados (${pct(f / 195, 0)})` : '', q ? `<b>${q}</b> ${q > 1 ? 'lugares' : 'lugar'} na lista` : ''].filter(Boolean).join(' · ') : 'Marque onde já foi e para onde quer ir'; }
   } catch (e) {}
@@ -13100,6 +13364,13 @@ function hmCards() {
     for (let i = i0; i <= s0; i++) { plano.push(planoAt(i)); real.push(cm[i] ?? null); }
     card('global', 'Plano x real', `${hmKv([['Último checkpoint', fm(cp.valor), mLabel(s0)], ['Contra o plano', diff == null ? '—' : hmSinal(diff), pn != null ? `plano: ${fm(pn)}${pn ? ` (${diff >= 0 ? '+' : ''}${pct(diff / pn)})` : ''}` : temCmp ? 'plano não cobre este mês' : 'compara a partir do próximo checkpoint', diff == null ? '' : diff < 0 ? 'neg' : 'pos']])}
       ${hmSpark([{ name: 'Plano (meta)', v: plano, c: 'var(--plan)', dash: true }, { name: 'Checkpoints', v: real, c: 'var(--s2)', dots: true }], { label: 'plano e checkpoints', ini: mLabel(i0), fim: mLabel(s0), lg: true })}`);
+  });
+  // independência financeira
+  tenta(() => {
+    if (!modVisivel(MODS.find(m => m.id === 'indep'))) return;
+    const r = indCalc(); if (r.C <= 0) return; const P0 = r.P[r.st] || 0, m = r.meta;
+    card('indvg', 'Independência financeira', `<div class="hm-big">${r.cruz == null ? 'fora do horizonte' : r.cruz <= r.st ? 'já' : mLabel(r.cruz)}</div><div class="hm-sub">${r.cruz != null && r.cruz > r.st ? `${r.nascI != null ? 'aos ' + Math.floor((r.cruz - r.nascI) / 12) + ' anos, ' : ''}daqui a ${indMeses(r.cruz - HOJE_IDX)}` : 'com o Plano futuro de hoje'}</div>
+      ${hmKv([['Meu número', k(r.Nref), 'em reais de hoje'], ['Já tem', r.Nref > 0 ? pct(P0 / r.Nref, 0) : '—', k(P0)], ...(m ? [['Meta: ' + r.I.meta + ' anos', m.falta == null ? '—' : m.falta <= 0 ? 'no caminho' : '+' + fm(m.aporte || 0) + '/mês', m.falta > 0 ? 'a mais para chegar lá' : '', m.falta > 0 ? 'neg' : 'pos']] : [])])}`);
   });
   // gastos
   tenta(() => {
@@ -13752,6 +14023,9 @@ const LM_MODS = [
   'Família',
   ['famvg', 'O resumo da família: quantas pessoas, o custo dos filhos hoje, a próxima chegada, o IR com dependentes, o efeito no patrimônio e a linha do tempo.', 'para ver quanto os filhos pesam no plano.'],
   ['fampes', 'Quem mora com você e os filhos, já nascidos ou previstos (gêmeos também), com o custo de cada fase, a chegada e a licença.', 'quando a família mudar ou para planejar um filho.'],
+  'Independência financeira',
+  ['indvg', 'A data em que você chega à independência pelo Plano futuro, o termômetro de quanto do número já tem, os marcos (reserva, Coast FI, Lean, FI, Fat FI e a sua meta) e o gráfico do patrimônio contra o número.', 'para saber quando pode parar de trabalhar por obrigação.'],
+  ['indnum', 'O seu número: idade e meta, custo de vida na independência a partir dos Gastos ou do orçamento, os três níveis de custo e por quanto tempo o dinheiro precisa durar.', 'para ajustar a conta.'],
   'Geral',
   ['config', 'As premissas: renda e projeção, a curva de juros (Focus, atualizada toda segunda) e o retorno esperado de cada classe de ativo.', 'raramente; só para ajustar uma premissa.']
 ];
