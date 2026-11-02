@@ -345,7 +345,7 @@ input:hover, select:hover { border-color: var(--s1); }
 #tbl-so-res tr.sel td, #tbl-so-sens tr.sel td { background: var(--accent-soft); font-weight: 600; }
 .pj-avisos p { margin: 8px 0 0; font-size: 12.5px; padding: 8px 10px; border-radius: 8px; background: var(--field); }
 .pj-avisos p.warn { background: rgba(214,137,16,.12); }
-#tbl-pj tr.tot td, #tbl-pj-clt tr.tot td, #tbl-pj-cltc tr.tot td { font-weight: 700; }
+#tbl-pj tr.tot td, #tbl-pj-lado tr.tot td, #tbl-pj-cltc tr.tot td { font-weight: 700; }
 #tbl-pj-cltc tr.sub td:first-child { padding-left: 24px; color: var(--muted); }
 #tbl-pj tr.sub td:first-child { padding-left: 24px; color: var(--muted); }
 #tbl-pj-reg tr.sel td { background: var(--accent-soft); font-weight: 600; }
@@ -354,6 +354,16 @@ input:hover, select:hover { border-color: var(--s1); }
 .pj-dir { margin: 0 0 16px; flex-wrap: wrap; }
 .pj-fatcalc { grid-column: 1 / -1; margin: 4px 0 10px; padding: 10px 12px; border-radius: 8px; background: var(--accent-soft); font-size: 12.5px; }
 .pj-fatcalc b { font-size: 16px; color: var(--accent); }
+.pj-pedir { margin: 0 0 12px; flex-wrap: wrap; }
+.pj-resumo { display: grid; gap: 6px; margin-top: 12px; padding: 12px 14px; border-radius: 8px; background: var(--accent-soft); font-size: 13px; }
+.pj-resumo b.big { font-size: 18px; color: var(--accent); }
+.pj-resumo .parts { display: flex; flex-wrap: wrap; gap: 4px 14px; color: var(--muted); font-size: 12px; }
+.pj-barras { display: grid; gap: 6px; margin-top: 12px; }
+.pj-barras div { display: grid; grid-template-columns: 44px minmax(0, 1fr) auto; align-items: center; gap: 10px; font-size: 12.5px; }
+.pj-barras i { display: block; height: 14px; border-radius: 4px; background: var(--muted); opacity: .55; }
+.pj-barras i.prop { background: var(--accent); opacity: 1; }
+.pj-barras b { font-variant-numeric: tabular-nums; }
+#kpi-pj { margin: 4px 0 16px; }
 .fam-perfis { display: flex; flex-wrap: wrap; gap: 8px; }
 .fam-perfis .fam-chip { display: inline-flex; flex-direction: row; align-items: center; gap: 8px; width: auto; min-width: 0; margin: 0; padding: 6px 12px; border: 1px solid var(--line); border-radius: 99px; background: var(--panel); color: var(--ink); font-family: var(--f-ui); font-size: 12.5px; font-weight: 600; text-transform: none; letter-spacing: 0; line-height: 1.3; white-space: nowrap; cursor: pointer; }
 .fam-perfis .fam-chip input { width: auto; height: auto; margin: 0; padding: 0; flex: none; }
@@ -1375,7 +1385,7 @@ ul.ng-acordo li { margin-bottom: 4px; }
     </div>
     <div class="nav-mobile-sub" id="navMobileSub"></div>
   </div>
-  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 230</div></div>
+  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 231</div></div>
 </nav>
 <div class="sino-pop" id="sino-pop" role="dialog" aria-label="Central de avisos" hidden></div>
 <div class="tour-pop" id="tour-pop" role="dialog" aria-labelledby="tour-tit" hidden></div>
@@ -2504,17 +2514,43 @@ ul.ng-acordo li { margin-bottom: 4px; }
   <!-- ============ PJ PARA PF ============ -->
   <section role="tabpanel" id="p-pjpf" hidden>
     <div class="block-title"><span class="num">03</span><div><h1>PJ e PF</h1><p class="desc" id="pj-desc"></p></div></div>
-      <div class="seg pj-dir" id="pj-dir" role="group" aria-label="Sentido da conta"><button type="button" data-pjdir="pjpf">PJ → PF: quanto sobra do faturamento</button><button type="button" data-pjdir="pfpj">PF → PJ: quanto faturar para ter o que quero</button></div>
-      <div class="kpis" id="kpi-pj"></div>
-      <section data-nav="Parâmetros">
+      <div class="seg pj-dir" id="pj-dir" role="group" aria-label="Sentido da conta"><button type="button" data-pjdir="cltpj">Tenho CLT: vale ir para PJ?</button><button type="button" data-pjdir="pjclt">Sou PJ: vale ir para CLT?</button></div>
+      <div class="pj-passos" id="pj-passos">
+      <section data-nav="CLT" class="panel" id="pj-s-clt">
+        <h2><span id="pj-h-clt">1. Seu CLT hoje</span></h2>
+        <p class="sub" id="pj-d-clt"></p>
+        <div class="seg pj-pedir" id="pj-pedir-clt" role="group" aria-label="Como calcular o salário"><button type="button" data-pjpedir="0">Tenho uma proposta</button><button type="button" data-pjpedir="1">Quanto devo pedir?</button></div>
         <div class="params">
       <fieldset>
-        <legend>Sua PJ</legend>
-        <label id="pj-l-fat">Faturamento mensal (R$)<input type="number" step="500" min="0" data-bind="pj::fat"></label>
-        <label id="pj-l-meta">Quero chegar a<select data-bind="pj::meta"><option value="bolso">Um valor líquido no bolso</option><option value="clt">O mesmo que o salário CLT ao lado</option></select></label>
-        <label id="pj-l-alvo">No bolso por mês (R$)<input type="number" step="500" min="0" data-bind="pj::alvo"></label>
-        <p class="pj-fatcalc" id="pj-fatcalc"></p>
-        <label>Meses faturados no ano<select data-bind="pj::meses"><option value="12">12 (sem pausa)</option><option value="11">11 (1 mês de descanso)</option></select></label>
+        <legend>Salário</legend>
+        <label id="pj-l-clt">Salário bruto (R$/mês)<input type="number" step="500" min="0" data-bind="pj::clt"></label>
+        <label id="pj-l-margem-clt">Quero ganhar a mais que na PJ (%)<input type="number" step="5" min="0" max="200" data-bind="pj::margem"></label>
+        <p class="pj-fatcalc" id="pj-calc-clt"></p>
+        <label>Dependentes no IR<input type="number" step="1" min="0" max="10" data-bind="pj::dep"></label>
+        <label class="check"><input type="checkbox" data-bind="pj::fgts"> Contar o FGTS como ganho</label>
+        <p class="hint">Os dependentes valem para os dois lados (IR do salário e do pró-labore). O FGTS é seu, mas fica preso até a demissão ou a compra de imóvel.</p>
+      </fieldset>
+      <fieldset>
+        <legend>Benefícios</legend>
+        <label>Plano de saúde pago pela empresa (R$/mês)<input type="number" step="50" min="0" data-bind="pj::saude"></label>
+        <label>Vale-transporte (R$/mês)<input type="number" step="50" min="0" data-bind="pj::vt"></label>
+        <div class="pj-bens" id="pj-bens" style="grid-column:1/-1"></div>
+        <p class="hint">Benefícios só entram se você preencher. Em "+ Benefício" entram VR, VA e outros que nem todo emprego tem (auxílio home office, seguro de vida, PLR, bônus...), com o valor que chega para você, por mês ou por ano. Plano de saúde: o que você pagaria por um plano igual se fosse PJ (por isso ele entra só aqui, e não como custo da PJ). Vale-transporte: entra só o que passa do desconto de 6% do salário.</p>
+      </fieldset>
+        </div>
+        <div class="pj-resumo" id="pj-sum-clt"></div>
+      </section>
+      <section data-nav="PJ" class="panel" id="pj-s-pj">
+        <h2><span id="pj-h-pj">2. A proposta PJ</span></h2>
+        <p class="sub" id="pj-d-pj"></p>
+        <div class="seg pj-pedir" id="pj-pedir-pj" role="group" aria-label="Como calcular o contrato"><button type="button" data-pjpedir="0">Tenho uma proposta</button><button type="button" data-pjpedir="1">Quanto devo pedir?</button></div>
+        <div class="params">
+      <fieldset>
+        <legend>Contrato</legend>
+        <label id="pj-l-fat">Valor do contrato (R$/mês)<input type="number" step="500" min="0" data-bind="pj::fat"></label>
+        <label id="pj-l-margem-pj">Quero ganhar a mais que no CLT (%)<input type="number" step="5" min="0" max="200" data-bind="pj::margem"></label>
+        <p class="pj-fatcalc" id="pj-calc-pj"></p>
+        <label>Meses faturados no ano<select data-bind="pj::meses"><option value="12">12 (sem pausa)</option><option value="11">11 (1 mês de descanso sem receber)</option></select></label>
         <label>Regime<select data-bind="pj::reg"><option value="fatorR">Simples com fator R (III ou V)</option><option value="III">Simples Anexo III</option><option value="V">Simples Anexo V</option><option value="presumido">Lucro Presumido</option></select></label>
         <label>ISS no Presumido (%)<input type="number" step="0.5" min="2" max="5" data-bind="pj::iss"></label>
         <p class="hint">No Simples o ISS já está no DAS. O fator R vale para atividades como TI, consultoria, engenharia e saúde: com folha (pró-labore) de pelo menos 28% do faturamento, a empresa paga pelo Anexo III em vez do V.</p>
@@ -2525,19 +2561,19 @@ ul.ng-acordo li { margin-bottom: 4px; }
         <label>Valor fixo (R$)<input type="number" step="100" min="0" data-bind="pj::plValor"></label>
         <label>Contabilidade (R$/mês)<input type="number" step="10" min="0" data-bind="pj::contab"></label>
         <label>Outros custos da PJ (R$/mês)<input type="number" step="50" min="0" data-bind="pj::outros"></label>
-        <label>Dependentes no IR<input type="number" step="1" min="0" max="10" data-bind="pj::dep"></label>
-        <p class="hint">"O que rende mais" testa o pró-labore no mínimo e no fator R (com folga de 1% sobre os 28%) e fica com o maior líquido.</p>
-      </fieldset>
-      <fieldset>
-        <legend>Comparar com CLT</legend>
-        <label>Salário CLT bruto (R$/mês)<input type="number" step="500" min="0" data-bind="pj::clt"></label>
-        <label>Plano de saúde (R$/mês)<input type="number" step="50" min="0" data-bind="pj::saude"></label>
-        <label>Vale-transporte (R$/mês)<input type="number" step="50" min="0" data-bind="pj::vt"></label>
-        <div class="pj-bens" id="pj-bens" style="grid-column:1/-1"></div>
-        <label class="check"><input type="checkbox" data-bind="pj::fgts"> Contar o FGTS como ganho</label>
-        <p class="hint">Benefícios só entram se você preencher. Em "+ Benefício" entram VR, VA e outros que nem todo emprego tem (auxílio home office, seguro de vida, PLR, bônus...), com o valor que chega para você, por mês ou por ano. Plano de saúde: o que você pagaria por um plano igual. Vale-transporte: entra só o que passa do desconto de 6% do salário, e só vale a pena contar se você gastaria com transporte de qualquer jeito. Deixe o salário em branco para ver só o CLT equivalente ao seu faturamento.</p>
+        <label>Benefícios que o contratante paga (R$/mês)<input type="number" step="50" min="0" data-bind="pj::benPJ"></label>
+        <p class="hint">Na PJ não há 13º, férias pagas, FGTS nem PLR. Se o contrato pagar algo assim (bônus, auxílio, plano de saúde), coloque a média por mês em "Benefícios que o contratante paga". "O que rende mais" testa o pró-labore no mínimo e no fator R e fica com o maior líquido.</p>
       </fieldset>
         </div>
+        <div class="pj-resumo" id="pj-sum-pj"></div>
+      </section>
+      </div>
+      <div class="kpis" id="kpi-pj"></div>
+      <section data-nav="Lado a lado" class="panel">
+        <h2><span>3. Lado a lado, por ano</span></h2>
+        <p class="sub" id="pj-lado-sub"></p>
+        <div class="tscroll"><table id="tbl-pj-lado"></table></div>
+        <div class="pj-barras" id="pj-barras"></div>
       </section>
       <section data-nav="Do faturamento ao bolso" class="panel">
         <h2>Do faturamento ao bolso</h2>
@@ -2550,12 +2586,9 @@ ul.ng-acordo li { margin-bottom: 4px; }
         <p class="sub">Mesmo faturamento em cada combinação. A linha destacada é a escolhida acima.</p>
         <div class="tscroll"><table id="tbl-pj-reg"></table></div>
       </section>
-      <section data-nav="PJ x CLT" class="panel">
-        <h2>PJ x CLT</h2>
-        <p class="sub" id="pj-clt-sub"></p>
-        <div class="tscroll"><table id="tbl-pj-clt"></table></div>
-        <h3 class="orc-h" style="margin-top:18px">A conta da CLT</h3>
-        <p class="sub">Como cada salário CLT chega ao líquido do ano, para comparar com o seu PJ.</p>
+      <section data-nav="A conta da CLT" class="panel">
+        <h2>A conta da CLT</h2>
+        <p class="sub">Como cada salário CLT chega ao líquido do ano: o seu e os que empatam com a PJ.</p>
         <div class="tscroll"><table id="tbl-pj-cltc"></table></div>
       </section>
       <section data-nav="Regras usadas" class="panel">
@@ -2923,7 +2956,7 @@ ul.ng-acordo li { margin-bottom: 4px; }
     return new Promise(resolve => { const { data } = sb.auth.onAuthStateChange(async (ev) => { if (ev !== 'PASSWORD_RECOVERY') return; const s = prompt('Digite a nova senha (mínimo 8 caracteres):'); if (s && s.length >= 8) { const { error } = await sb.auth.updateUser({ password: s }); alert(error ? 'Não deu para trocar a senha: ' + error.message : 'Senha trocada.'); } }); resolve(data); });
   }
   // ---------- rodapé: compartilhar, administração e sair ----------
-  const SITE_V = 113;
+  const SITE_V = 114;
   const escH = v => String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const dataBR = v => v ? new Date(v).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' }) : '–';
   const css2 = `.side-foot .r{flex-wrap:wrap}.side-foot .lg-acoes{margin-left:auto;display:inline-flex;gap:10px}
@@ -3230,7 +3263,7 @@ const DEFAULTS = {
   orc: null,
   fech: {},
   plan: null,
-  pj: { dir: 'pjpf', meta: 'bolso', alvo: null, fat: null, meses: '12', reg: 'fatorR', iss: 5, pl: 'otimo', plValor: 5000, contab: null, outros: 0, dep: 0, clt: null, benef: 0, saude: 0, vt: 0, fgts: true },
+  pj: { dir: 'cltpj', pedir: false, margem: 20, benPJ: 0, fat: null, meses: '12', reg: 'fatorR', iss: 5, pl: 'otimo', plValor: 5000, contab: null, outros: 0, dep: 0, clt: null, benef: 0, saude: 0, vt: 0, fgts: true },
   so: { sel: '', simSaida: '', empresas: [] }
 };
 
@@ -11962,6 +11995,7 @@ document.addEventListener('click', e => {
   if (d.delcps != null) { if (confirmar(`Apagar todos os ${cps.length} checkpoints? As projeções ficam sem ponto de partida até você salvar um novo.`)) apagarCps(cps.map(c => c.mes)); return; }
   if (d.modo) { state.gModo = d.modo; save(); renderGlobal(); return; }
   if (d.pjdir) { state.pj.dir = d.pjdir; save(); buildPj(); renderPj(); return; }
+  if (d.pjpedir != null) { state.pj.pedir = d.pjpedir === '1'; save(); buildPj(); renderPj(); return; }
   if (d.ganos) { state.cfg.anos = +d.ganos; save(); renderGlobal(); return; }
   if (d.mdanos != null) { state.plan.anosMd = +d.mdanos; planCache = null; save(); renderMdChart(); return; }
   if (d.rendbase) { state.cfg.rendBase = d.rendbase; save(); renderGlobal(); return; }
@@ -12152,10 +12186,12 @@ const INFO_SEC = {
   'stock:Se eu sair': 'O que fica liberado e quanto custa exercer se você sair numa data.',
   'stock:Todas as empresas': 'Soma de todas as empresas em que você tem opções.',
   'stock:Como funciona': 'As contas, as regras de imposto e o que muda para empresa no exterior.',
-  'pjpf:Parâmetros': 'O sentido da conta (do faturamento ao bolso, ou do que você quer receber ao faturamento necessário), faturamento ou meta, regime tributário, pró-labore, contabilidade, dependentes e o salário CLT para comparar.',
+  'pjpf:CLT': 'O emprego CLT (o seu de hoje ou a proposta): salário bruto, dependentes, FGTS e benefícios. Em "Quanto devo pedir?", o salário sai da conta para empatar com a PJ mais a margem que você quer.',
+  'pjpf:PJ': 'A PJ (a sua de hoje ou a proposta): valor do contrato ou faturamento, meses faturados, regime, pró-labore, custos e o que o contratante paga além do contrato. Em "Quanto devo pedir?", o contrato sai da conta.',
   'pjpf:Do faturamento ao bolso': 'Do faturamento da empresa ao dinheiro na sua conta: DAS, contabilidade, INSS e IR do pró-labore e o lucro distribuído sem imposto.',
   'pjpf:Regimes e pró-labore': 'O mesmo faturamento em cada regime (Anexo III com fator R, Anexo V, Lucro Presumido) e com cada pró-labore, para achar a combinação que deixa mais no bolso.',
-  'pjpf:PJ x CLT': 'Quanto um salário CLT precisaria ser para empatar com o PJ, e o contrário, contando 13º, férias, FGTS e benefícios.',
+  'pjpf:Lado a lado': 'Os dois lados no mesmo ano, linha a linha: salário ou faturamento, impostos, 13º e férias, FGTS, benefícios e custos da PJ. A diferença é a proposta menos o que você tem hoje.',
+  'pjpf:A conta da CLT': 'Como cada salário CLT chega ao líquido do ano, e quanto um salário CLT precisaria ser para empatar com a PJ.',
   'pjpf:Regras usadas': 'As tabelas e regras de 2026 usadas nas contas, com as fontes.',
   'familia:Perfis': 'As pessoas com quem você compartilhou o painel. Marque quem entra na soma da visão consolidada.',
   'familia:Ganhos e gastos': 'Receita, gastos e sobra de cada pessoa no mês e a parte dela no total.',
@@ -12237,7 +12273,7 @@ const MODS = [
   { id: 'uso', corNav: '#D4A72C', nome: 'Primeiros passos', cor: 'var(--accent)', fixo: true, vg: 'comousar', desc: 'O que cada módulo faz, o que é obrigatório preencher, o que é opcional e quanto você já configurou.', tabs: ['comousar'] },
   { id: 'fin', corNav: '#7FA6E0', nome: 'Finanças', cor: 'var(--s1)', fixo: true, vg: 'inicio', desc: 'Gastos, patrimônio, carteira, plano futuro e cenários. Recebe o que os outros módulos planejam.', tabs: ['inicio', 'global', 'gastos', 'patrimonio', 'carteira', 'comparador', 'simulador', 'orcamento', 'cenarios', 'familia'] },
   { id: 'trab', corNav: '#E09A63', nome: 'Bens e compromissos', cor: 'var(--s2)', vg: 'trabvg', desc: 'Imóveis, carros e outros bens, eventos como casamento e reforma, e dívidas a receber e a pagar. O que entra no plano vai para o Plano futuro.', tabs: ['trabvg', 'compras'] },
-  { id: 'carr', corNav: '#B39DDB', nome: 'Carreira', cor: 'var(--s5)', vg: 'pjpf', desc: 'PJ e PF: do faturamento ao bolso, melhor pró-labore e PJ contra CLT. Stock options: vesting, valor hoje e num evento de liquidez.', tabs: ['pjpf', 'stock'] },
+  { id: 'carr', corNav: '#B39DDB', nome: 'Carreira', cor: 'var(--s5)', vg: 'pjpf', desc: 'PJ e PF: CLT contra PJ nos dois sentidos, quanto pedir e o melhor pró-labore. Stock options: vesting, valor hoje e num evento de liquidez.', tabs: ['pjpf', 'stock'] },
   { id: 'viag', corNav: '#5fc2f5', nome: 'Viagens', cor: 'var(--s8)', vg: 'viagens', desc: 'Mapa de onde já foi e de onde quer ir, sorteio, comparação de destinos nas suas datas o roteiro com a rota mais barata, os custos ligados ao Plano futuro e os gastos durante a viagem.', tabs: ['viagvg', 'viagens', 'viagcmp', 'viagrot', 'viagcus', 'viagdur'] },
   { id: 'neg', corNav: '#a3e05a', nome: 'Empreendimentos', cor: 'var(--s7)', vg: 'negvg', desc: 'Suas ideias e empresas: DRE com as suas linhas, fluxo de caixa, quanto pôr e quanto chega para você no Plano futuro. Abrir empresa com a comparação de regimes, oportunidades de custo, pesquisa de mercado com IA, viabilidade, contabilidade fácil, preço, valuation, sócios e comparação.', tabs: ['negvg', 'negcad', 'negdre', 'negfc', 'negabr', 'negeco', 'negpesq', 'negviab', 'negcont', 'negval', 'negprec', 'negsoc', 'negcmp'] },
   { id: 'fam', corNav: '#fb7185', nome: 'Família', cor: 'var(--s6)', breve: true, desc: 'Contas conjuntas, filhos (do bebê à escola), divisão de gastos e dados compartilhados com quem mora com você.', tabs: [] },
@@ -12288,11 +12324,11 @@ function cuPassos() {
       ]
     },
     carr: {
-      sobre: 'O que vem do trabalho: a conta de PJ para PF, o melhor pró-labore, PJ contra CLT e as stock options.',
+      sobre: 'O que vem do trabalho: CLT contra PJ nos dois sentidos, quanto pedir, o melhor pró-labore e as stock options.',
       precisa: 'Nada aqui é obrigatório: preencha só o que fizer parte da sua vida. Eventos de stock options podem ficar como <b>Só simulação</b> ou entrar na <b>Projeção real</b> do Plano futuro.',
       passos: [
         { id: 'so', t: 'Stock options', d: 'Se você tem opções, phantom shares ou RSUs: concessões, vesting e o evento de liquidez.', ok: ((state.so || {}).empresas || []).length > 0 || pul.includes('so'), tab: 'stock', sec: 'Empresa', pular: 'Não tenho' },
-        { id: 'pj', t: 'PJ e PF', d: 'Se você recebe como PJ: do faturamento ao bolso e o melhor pró-labore. Já vem preenchido a partir da sua renda.', ok: vis.includes('pjpf') || pul.includes('pj'), tab: 'pjpf', sec: 'Parâmetros', pular: 'Não sou PJ' }
+        { id: 'pj', t: 'PJ e PF', d: 'Se você é PJ ou recebeu uma proposta PJ ou CLT: compare os dois lados no bolso e veja quanto pedir. Já vem preenchido a partir da sua renda.', ok: vis.includes('pjpf') || pul.includes('pj'), tab: 'pjpf', sec: 'CLT', pular: 'Não preciso' }
       ]
     },
     viag: {
@@ -13201,7 +13237,7 @@ const LM_MODS = [
   ['trabvg', 'O resumo do módulo: valor dos bens, dívidas, valores a receber, parcelas do mês e o que vem pela frente na linha do tempo.', 'para ver tudo do trabalho e dos bens de uma vez.'],
   ['compras', 'O cadastro de bens: imóveis, carros e outros, já comprados ou planejados, com preço, entrada, financiamento, custos de ter e valorização. Compara à vista, SAC, Price e consórcio.', 'quando comprar, planejar ou financiar um bem.'],
   'Carreira',
-  ['pjpf', 'Converte faturamento PJ em dinheiro no bolso, ou o contrário: DAS, contabilidade, pró-labore, melhor regime e comparação com CLT, nas regras de 2026.', 'ao negociar um contrato PJ ou comparar com uma proposta CLT.'],
+  ['pjpf', 'Compara CLT e PJ no bolso, nos dois sentidos: seu CLT contra uma proposta PJ, ou sua PJ contra uma proposta CLT, com quanto pedir para valer a troca. Também mostra DAS, pró-labore e o melhor regime, nas regras de 2026.', 'ao negociar um contrato PJ ou comparar com uma proposta CLT.'],
   ['stock', 'Simula stock options, phantom shares e RSUs de uma ou mais empresas: vesting com cliff, quanto vale hoje e num evento de liquidez, preferências dos investidores, diluição das próximas rodadas, imposto e o que você perde se sair.', 'quando receber uma concessão, negociar uma proposta ou pensar em sair.'],
   'Viagens',
   ['viagvg', 'O resumo do módulo: países que você já conhece, lugares na lista e as viagens escolhidas, com datas, total estimado e status.', 'para ver as próximas viagens.'],
@@ -13516,101 +13552,131 @@ function cltAnual(S, o) {
   return { n, n13, fer, fgts, ben, vtLiq, total: 12 * n + n13 + fer + fgts + ben };
 }
 const busca = (f, alvo, hi) => { let lo = 0; while (f(hi) < alvo && hi < 1e7) hi *= 2; for (let i = 0; i < 60; i++) { const m = (lo + hi) / 2; if (f(m) < alvo) lo = m; else hi = m; } return (lo + hi) / 2; };
+// total da PJ no ano, com o que o contratante paga além do contrato
+const pjTotal = (F, o) => pjCalc(F, o).anual + 12 * (o.benPJ || 0);
+// valores iniciais tirados do Plano futuro: renda da linha 1 vira salário (se CLT) ou faturamento (se PJ)
+function pjPadrao() {
+  const rec = +(state.orc.receitas[0] || {}).valor || 0, clt = orcModelo() === 'clt', cb = (state.orc.deducoes.find(d => d.id === 'contab' && d.modo === 'fixo') || {}).valor;
+  const bruto = clt && state.orc.cltModo !== 'bruto' && rec ? Math.round(busca(x => netCLT(x, +state.pj.dep || 0), rec, rec * 2) / 100) * 100 : rec;
+  return { fat: clt ? null : rec || null, clt: clt ? bruto || null : null, contab: +cb || 0 };
+}
 function pjOpts() {
-  const p = state.pj, rec = (state.orc.receitas[0] || {}).valor, cb = (state.orc.deducoes.find(d => d.id === 'contab' && d.modo === 'fixo') || {}).valor;
-  const o = { fat: p.fat != null ? +p.fat : (+rec || 0), meses: +p.meses === 11 ? 11 : 12, reg: p.reg, iss: +p.iss || 0, pl: p.pl, plValor: +p.plValor || 0, contab: p.contab != null ? +p.contab : (+cb || 0), outros: +p.outros || 0, dep: +p.dep || 0, clt: +p.clt || 0, benef: pjBensMes(p), bens: pjBens(p), saude: +p.saude || 0, vt: +p.vt || 0, fgts: p.fgts !== false };
-  // PF → PJ: parte do que a pessoa quer receber e acha o faturamento que chega lá
-  o.dir = p.dir === 'pfpj' ? 'pfpj' : 'pjpf'; o.meta = p.meta === 'clt' ? 'clt' : 'bolso'; o.fatDigitado = o.fat;
-  if (o.dir === 'pfpj') {
-    o.alvoAnual = o.meta === 'clt' ? (o.clt ? cltAnual(o.clt, o).total : 0) : 12 * (+p.alvo || 0);
-    o.fat = o.alvoAnual > 0 ? Math.ceil(busca(F => pjCalc(F, o).anual, o.alvoAnual, Math.max(1000, o.alvoAnual / 12))) : 0;
+  const p = state.pj; if (p.dir !== 'cltpj' && p.dir !== 'pjclt') p.dir = 'cltpj';
+  const d = pjPadrao();
+  const o = { fat: p.fat != null ? +p.fat : (d.fat || 0), meses: +p.meses === 11 ? 11 : 12, reg: p.reg, iss: +p.iss || 0, pl: p.pl, plValor: +p.plValor || 0, contab: p.contab != null ? +p.contab : d.contab, outros: +p.outros || 0, dep: +p.dep || 0, clt: p.clt != null ? +p.clt : (d.clt || 0), benef: pjBensMes(p), bens: pjBens(p), saude: +p.saude || 0, vt: +p.vt || 0, fgts: p.fgts !== false, benPJ: +p.benPJ || 0, margem: p.margem != null && isFinite(+p.margem) ? Math.max(0, +p.margem) : 20, pedir: !!p.pedir, dir: p.dir };
+  o.cl = o.dir === 'cltpj';
+  // "Quanto devo pedir?": o lado da proposta sai da conta (empate com a base + margem no bolso)
+  if (o.pedir) {
+    if (o.cl) { const alvo = o.clt ? cltAnual(o.clt, o).total * (1 + o.margem / 100) : 0; o.fat = alvo > 0 ? Math.ceil(busca(F => pjTotal(F, o), alvo, Math.max(1000, alvo / 12)) / 100) * 100 : 0; }
+    else { const alvo = o.fat ? pjTotal(o.fat, o) * (1 + o.margem / 100) : 0; o.clt = alvo > 0 ? Math.ceil(busca(S => cltAnual(S, o).total, alvo, Math.max(1000, alvo / 12)) / 100) * 100 : 0; }
   }
   return o;
 }
 function buildPj() {
-  const o = pjOpts(); if (state.pj.fat == null && o.fat) state.pj.fat = o.fat; if (state.pj.contab == null) state.pj.contab = o.contab;
-  if (state.pj.alvo == null && o.fat) state.pj.alvo = Math.round(pjCalc(o.fat, o).anual / 12 / 100) * 100;
-  const pf = state.pj.dir === 'pfpj';
-  document.querySelectorAll('#pj-dir button').forEach(b => b.setAttribute('aria-pressed', b.dataset.pjdir === (pf ? 'pfpj' : 'pjpf')));
-  $('pj-desc').textContent = pf ? 'Quanto sua empresa precisa faturar para você receber o que quer no bolso (ou empatar com um salário CLT), com o melhor regime e pró-labore. Regras de 2026.' : 'Quanto do faturamento da sua empresa chega ao seu bolso, qual regime e pró-labore rendem mais, e quanto valeria o mesmo trabalho na CLT. Regras de 2026.';
-  $('pj-l-fat').hidden = pf; $('pj-l-meta').hidden = !pf; $('pj-l-alvo').hidden = !pf || state.pj.meta === 'clt'; $('pj-fatcalc').hidden = !pf;
+  const p = state.pj, d = pjPadrao(); pjOpts();
+  if (p.fat == null && d.fat) p.fat = d.fat; if (p.clt == null && d.clt) p.clt = d.clt; if (p.contab == null) p.contab = d.contab;
+  const cl = p.dir === 'cltpj', ped = !!p.pedir;
+  document.querySelectorAll('#pj-dir button').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.pjdir === p.dir)));
+  document.querySelectorAll('#p-pjpf [data-pjpedir]').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.pjpedir === (ped ? '1' : '0'))));
+  $('pj-desc').textContent = cl ? 'Comece pelo seu emprego CLT de hoje. Depois coloque as condições da proposta PJ e veja, lado a lado, quanto sobra no bolso em cada um. Regras de 2026.' : 'Comece pela sua PJ de hoje. Depois coloque a proposta CLT e veja, lado a lado, quanto sobra no bolso em cada um. Regras de 2026.';
+  $('pj-h-clt').textContent = cl ? '1. Seu CLT hoje' : '2. A proposta CLT';
+  $('pj-h-pj').textContent = cl ? '2. A proposta PJ' : '1. Sua PJ hoje';
+  $('pj-d-clt').textContent = cl ? 'O emprego de carteira assinada que você tem hoje: salário e benefícios.' : 'O emprego CLT oferecido. Em "Quanto devo pedir?", o painel calcula o salário que vale a troca.';
+  $('pj-d-pj').textContent = cl ? 'O que muda quando você vira PJ. Em "Quanto devo pedir?", o painel calcula o valor do contrato que vale a troca.' : 'Sua empresa hoje: quanto fatura, regime, pró-labore e custos.';
+  $('pj-pedir-clt').hidden = cl; $('pj-pedir-pj').hidden = !cl;
+  const pc = !cl && ped, pp = cl && ped;
+  $('pj-l-clt').hidden = pc; $('pj-l-margem-clt').hidden = !pc; $('pj-calc-clt').hidden = !pc;
+  $('pj-l-fat').hidden = pp; $('pj-l-margem-pj').hidden = !pp; $('pj-calc-pj').hidden = !pp;
+  $('pj-l-fat').firstChild.textContent = cl ? 'Valor do contrato (R$/mês)' : 'Faturamento mensal (R$)';
+  $('pj-passos').append(cl ? $('pj-s-pj') : $('pj-s-clt'));
   document.querySelectorAll('#p-pjpf [data-bind]').forEach(fillBound);
   renderPjBens();
 }
 function renderPj() {
-  if (($('pj-l-alvo').hidden) !== (state.pj.dir !== 'pfpj' || state.pj.meta === 'clt')) buildPj();
-  const o = pjOpts();
-  if (o.dir === 'pfpj' && !o.fat) {
-    $('pj-fatcalc').innerHTML = o.meta === 'clt' ? 'Preencha o salário CLT bruto ao lado para calcular.' : 'Diga quanto quer no bolso por mês.';
-    kpis($('kpi-pj'), [['Faturamento necessário', '–', 'falta a meta'], ['No bolso por mês', '–', ''], ['Impostos e INSS', '–', ''], ['CLT equivalente', '–', '']]);
-    ['tbl-pj', 'tbl-pj-reg', 'tbl-pj-clt', 'tbl-pj-cltc'].forEach(id => $(id).innerHTML = ''); $('pj-avisos').innerHTML = ''; $('pj-sub').textContent = $('pj-clt-sub').textContent = '';
-    return;
-  }
-  const r = pjCalc(o.fat, o), REG = { III: 'Simples Anexo III', V: 'Simples Anexo V', presumido: 'Lucro Presumido' };
-  const PLN = { minimo: 'salário mínimo', fatorR: '28% do faturamento', fixo: 'valor fixo' };
-  const pc = v => o.fat ? pct(v / o.fat) : '–';
-  const linha = (n, m, cls, nota) => `<tr${cls ? ` class="${cls}"` : ''}><td class="name">${n}${nota ? ` <span class="subdet">${nota}</span>` : ''}</td><td>${fm(m)}</td><td>${fm(m * o.meses)}</td><td>${pc(m)}</td></tr>`;
-  $('pj-sub').textContent = `${REG[r.an || 'presumido']}, alíquota efetiva de ${pct(r.ef)}, pró-labore de ${fm(r.pl)} (${PLN[r.plModo]}), ${o.meses} meses faturados. Fator R: ${pct(r.fr)}.`;
-  $('tbl-pj').innerHTML = `<thead><tr><th>Linha</th><th>Por mês faturado</th><th>No ano (${o.meses} meses)</th><th>% do faturamento</th></tr></thead><tbody>`
-    + linha('Faturamento', r.fat, 'tot')
-    + linha('(−) ' + (r.an ? 'DAS do Simples' : 'Impostos do Presumido'), -r.imp, 'sub', r.an ? 'Anexo ' + r.an : 'PIS, COFINS, IRPJ, CSLL e ISS')
-    + (r.cpp ? linha('(−) INSS patronal (20% do pró-labore)', -r.cpp, 'sub') : '')
-    + linha('(−) Contabilidade', -o.contab, 'sub') + (o.outros ? linha('(−) Outros custos', -o.outros, 'sub') : '')
-    + linha('Pró-labore bruto', r.pl) + linha('(−) INSS do pró-labore (11%)', -r.inss, 'sub') + linha('(−) IR do pró-labore', -r.ir, 'sub') + linha('= Pró-labore líquido', r.plLiq)
-    + linha('Lucro distribuído', Math.max(0, r.lucro), '', 'isento de IR') + (r.ret ? linha('(−) Retenção de 10% sobre lucros', -r.ret, 'sub', 'compensável na declaração') : '')
-    + linha('No seu bolso', r.liq, 'tot') + '</tbody>';
-  const av = [];
-  if (r.rbt > 4800000) av.push(['warn', 'Faturamento acima de R$ 4,8 milhões por ano não cabe no Simples Nacional.']);
-  if (r.lucro < 0) av.push(['warn', 'Os custos e o pró-labore passam do faturamento: não sobra lucro para distribuir.']);
-  if (r.limIsento != null && r.lucro > r.limIsento) av.push(['', `O lucro distribuído (${fm(r.lucro)}) passa do limite sem contabilidade completa (${fm(r.limIsento)} por mês). Tudo bem se sua contabilidade faz a escrituração, que é o normal; confirme com ela.`]);
-  if (r.ret) av.push(['warn', 'Lucros acima de R$ 50 mil no mês da mesma empresa têm retenção de 10% (Lei 15.270/2025). Distribuir em meses diferentes pode evitar a retenção.']);
-  if (r.anual > 600000) av.push(['warn', 'Renda acima de R$ 600 mil por ano entra no IR mínimo da Lei 15.270/2025 (até 10%), descontado o IR já pago. Não está no cálculo.']);
-  if (r.an === 'V' && o.reg === 'fatorR') av.push(['', 'Com esse pró-labore o fator R fica abaixo de 28% e a empresa paga pelo Anexo V. Veja na comparação abaixo se subir o pró-labore compensa.']);
-  av.push(['', `Para ter o equivalente a férias e 13º como na CLT, guarde cerca de ${fm(r.liq * (1 / 12 + 1 / 36))} por mês (1/12 de 13º e 1/12 de férias com 1/3).`]);
-  $('pj-avisos').innerHTML = av.map(([c, t]) => `<p class="${c}">${esc(t)}</p>`).join('');
-  // comparação de regimes
-  const rs0 = o.reg === 'III' || o.reg === 'V' ? o.reg : 'fatorR', combos = [[rs0, 'fatorR'], [rs0, 'minimo'], ['presumido', 'minimo'], ['presumido', 'fatorR']];
-  if (o.pl === 'fixo') combos.unshift([o.reg, 'fixo']);
-  const vistos = new Set(), rs = combos.map(([rg, pm]) => pjCalc(o.fat, o, rg, pm)).filter(x => { const k = (x.an || 'P') + x.pl; if (vistos.has(k)) return false; vistos.add(k); return true; });
-  const melhor = Math.max(...rs.map(x => x.anual));
-  $('tbl-pj-reg').innerHTML = `<thead><tr><th>Combinação</th><th>Imposto da empresa</th><th>INSS e IR do pró-labore</th><th>No bolso por mês</th><th>No ano</th><th>Diferença para a melhor</th></tr></thead><tbody>${rs.map(x => `<tr class="${x.an === r.an && Math.round(x.pl) === Math.round(r.pl) ? 'sel' : ''}"><td class="name">${x.an ? 'Simples Anexo ' + x.an : 'Lucro Presumido'} <span class="subdet">pró-labore ${fm(x.pl)} · ${PLN[x.plModo]}</span></td><td>${fm(x.imp + x.cpp)} <span class="subdet">${pct((x.imp + x.cpp) / (o.fat || 1))}</span></td><td>${fm(x.inss + x.ir)}</td><td>${fm(x.liq)}</td><td>${fm(x.anual)}</td><td class="${x.anual < melhor - 1 ? 'neg' : ''}">${x.anual >= melhor - 1 ? 'melhor' : fm(x.anual - melhor)}</td></tr>`).join('')}</tbody>`;
-  // PJ x CLT
-  const alvoPJ = r.anual, eqCom = busca(S => cltAnual(S, Object.assign({}, o, { fgts: true })).total, alvoPJ, o.fat || 10000), eqSem = busca(S => cltAnual(S, Object.assign({}, o, { fgts: false })).total, alvoPJ, o.fat || 10000);
-  const S = o.clt, c = S ? cltAnual(S, o) : null, fatEq = c ? busca(F => pjCalc(F, o).anual, c.total, S) : null;
-  $('pj-clt-sub').textContent = `Tudo em valores líquidos por ano. ${o.fgts ? 'O FGTS conta como ganho (é seu, mas fica preso).' : 'O FGTS não conta (fica preso até a demissão ou a compra de imóvel).'}`;
-  $('tbl-pj-clt').innerHTML = `<thead><tr><th>Linha</th><th>Valor</th></tr></thead><tbody>
-    <tr class="tot"><td class="name">Seu PJ no ano (${fm(o.fat)} por mês)</td><td>${fm(alvoPJ)}</td></tr>
-    <tr><td class="name">Salário CLT bruto que dá o mesmo líquido <span class="subdet">contando o FGTS${o.benef || o.saude || o.vt ? ' e os benefícios' : ''}</span></td><td><b>${fm(eqCom)}</b></td></tr>
-    <tr><td class="name">Salário CLT bruto que dá o mesmo líquido <span class="subdet">sem contar o FGTS${o.benef || o.saude || o.vt ? ', com os benefícios' : ''}</span></td><td><b>${fm(eqSem)}</b></td></tr>
-    ${c ? `<tr class="tot"><td class="name">CLT de ${fm(S)} no ano</td><td>${fm(c.total)}</td></tr>
-    <tr><td class="name">12 salários líquidos <span class="subdet">${fm(c.n)} por mês</span></td><td>${fm(12 * c.n)}</td></tr>
-    <tr><td class="name">13º líquido</td><td>${fm(c.n13)}</td></tr><tr><td class="name">1/3 de férias líquido</td><td>${fm(c.fer)}</td></tr>
-    ${c.fgts ? `<tr><td class="name">FGTS</td><td>${fm(c.fgts)}</td></tr>` : ''}${c.ben ? `<tr><td class="name">Benefícios</td><td>${fm(c.ben)}</td></tr>` : ''}
-    <tr class="tot"><td class="name">Diferença PJ − CLT</td><td class="${alvoPJ - c.total < 0 ? 'neg' : ''}">${fm(alvoPJ - c.total)} <span class="subdet">${pct((alvoPJ - c.total) / c.total)}</span></td></tr>
-    <tr><td class="name">Faturamento PJ que empata com essa CLT</td><td><b>${fm(fatEq)}</b> <span class="subdet">${pct(fatEq / S - 1)} acima do salário</span></td></tr>` : ''}</tbody>`;
-  // a conta da CLT, coluna por salário
-  const cols = [['Equivalente com FGTS', eqCom, true], ['Equivalente sem FGTS', eqSem, false]].concat(S ? [['Sua proposta CLT', S, o.fgts]] : []);
-  const cc = cols.map(([t, x, f]) => { const oo = Object.assign({}, o, { fgts: f }), a = cltAnual(x, oo), i = inssCLT(x), ir = irrf26(x, i, o.dep), i43 = inssCLT(x * 4 / 3), ir43 = irrf26(x * 4 / 3, i43, o.dep);
-    return { t, x, f, a, i, ir, fer43: x * 4 / 3, i43, ir43 }; });
-  const L = (n, fn, cls, nota) => `<tr${cls ? ` class="${cls}"` : ''}><td class="name">${n}${nota ? ` <span class="subdet">${nota}</span>` : ''}</td>${cc.map(c => { const v = fn(c); return `<td>${v == null ? '<span class="subdet">não conta</span>' : fm(v)}</td>`; }).join('')}</tr>`;
-  $('tbl-pj-cltc').innerHTML = `<thead><tr><th>Linha</th>${cc.map(c => `<th>${c.t}</th>`).join('')}</tr></thead><tbody>`
-    + L('Salário bruto por mês', c => c.x, 'tot')
-    + L('(−) INSS', c => -c.i, 'sub', 'progressivo, até R$ 988,09') + L('(−) IR', c => -c.ir, 'sub', 'tabela 2026 com a redução da Lei 15.270')
-    + L('= Líquido por mês', c => c.a.n, 'tot')
-    + L('12 salários líquidos', c => 12 * c.a.n)
-    + L('13º líquido', c => c.a.n13, '', 'mesmo desconto de um salário, tributado à parte')
-    + L('1/3 de férias líquido', c => c.a.fer, '', 'no mês de férias recebe 4/3 do salário; conta só o que passa do salário normal')
-    + L('FGTS', c => c.f ? c.a.fgts : null, '', '8% sobre 13 salários + 1/3 de férias')
-    + ((o.benef || o.saude || o.vt) ? L('Benefícios no ano', c => c.a.ben, '', [...o.bens.map(b => `${esc(b.nome)} ${fm(b.valor)}${b.freq === 'ano' ? ' por ano' : ''}`), ...(o.saude ? [`saúde ${fm(o.saude)}`] : []), ...(o.vt ? ['VT acima dos 6%'] : [])].join(', ')) : '')
-    + L('Total líquido no ano', c => c.a.total, 'tot')
-    + L('Seu PJ no ano', () => alvoPJ) + L('Diferença CLT − PJ', c => c.a.total - alvoPJ) + '</tbody>';
-  const pf = o.dir === 'pfpj';
-  if (pf) $('pj-fatcalc').innerHTML = o.meta === 'clt' && !o.clt ? 'Preencha o salário CLT bruto ao lado para calcular.' : o.fat ? `Faturamento necessário: <b>${fm(o.fat)}</b> por mês <span class="subdet">(${fm(o.fat * o.meses)} no ano), para ${fm(o.alvoAnual / 12)} por mês no bolso na média do ano</span>` : 'Diga quanto quer no bolso por mês.';
+  const o = pjOpts(), cl = o.cl, sg = v => (v >= 0 ? '+' : '−') + fm(Math.abs(v));
+  const c = o.clt ? cltAnual(o.clt, o) : null, r = o.fat ? pjCalc(o.fat, o) : null, tP = r ? r.anual + 12 * o.benPJ : null;
+  const REG = { III: 'Simples Anexo III', V: 'Simples Anexo V', presumido: 'Lucro Presumido' }, PLN = { minimo: 'salário mínimo', fatorR: '28% do faturamento', fixo: 'valor fixo' };
+  // resumos de cada passo
+  $('pj-sum-clt').innerHTML = c ? `<div>${cl ? 'Seu pacote CLT' : 'O pacote CLT'} vale <b class="big">${fm(c.total / 12)}</b> por mês no bolso, ou <b>${fm(c.total)}</b> por ano.</div><div class="parts"><span>Líquido do salário ${fm(c.n)}</span><span>13º e 1/3 de férias ${fm((c.n13 + c.fer) / 12)}</span>${c.fgts ? `<span>FGTS ${fm(c.fgts / 12)}</span>` : ''}${c.ben ? `<span>Benefícios ${fm(c.ben / 12)}</span>` : ''}</div>`
+    : `<div class="subdet">${!cl && o.pedir ? 'Preencha a sua PJ para calcular o salário.' : 'Preencha o salário bruto para ver quanto o pacote CLT vale no bolso.'}</div>`;
+  $('pj-sum-pj').innerHTML = r ? `<div>${cl ? 'A PJ' : 'Sua PJ'} deixa <b class="big">${fm(tP / 12)}</b> por mês no bolso na média do ano, ou <b>${fm(tP)}</b> por ano.</div><div class="parts"><span>No mês faturado ${fm(r.liq)}</span><span>Impostos e INSS ${fm(r.imp + r.cpp + r.inss + r.ir)} por mês</span><span>${o.meses} meses faturados</span>${o.benPJ ? `<span>Benefícios ${fm(o.benPJ)} por mês</span>` : ''}</div>`
+    : `<div class="subdet">${cl && o.pedir ? 'Preencha o seu CLT para calcular o contrato.' : cl ? 'Preencha o valor do contrato para ver quanto sobra no bolso.' : 'Preencha o faturamento para ver quanto sobra no bolso.'}</div>`;
+  $('pj-calc-pj').innerHTML = o.fat ? `Peça pelo menos <b>${fm(o.fat)}</b> por mês <span class="subdet">(${o.meses} meses faturados) para ganhar ${o.margem}% a mais no bolso que no CLT</span>` : 'Preencha o seu CLT para calcular.';
+  $('pj-calc-clt').innerHTML = o.clt ? `Peça um salário bruto de pelo menos <b>${fm(o.clt)}</b> <span class="subdet">para ganhar ${o.margem}% a mais no bolso que na PJ</span>` : 'Preencha a sua PJ para calcular.';
+  // base, proposta, empate e quanto pedir
+  const tB = cl ? (c ? c.total : null) : tP, tX = cl ? tP : (c ? c.total : null);
+  const prop = cl ? (x => pjTotal(x, o)) : (x => cltAnual(x, o).total), acha = alvo => busca(prop, alvo, Math.max(1000, alvo / 12));
+  const emp = tB ? acha(tB) : null, faixa = tB ? [1.2, 1.3].map(k => Math.ceil(acha(tB * k) / 100) * 100) : null, dif = tB != null && tX != null ? tX - tB : null;
+  const nX = cl ? 'a PJ' : 'o CLT', nB = cl ? 'o CLT' : 'a PJ';
   kpis($('kpi-pj'), [
-    pf ? ['Faturamento necessário', fm(o.fat), `por mês faturado; ${fm(o.fat * o.meses)} no ano`] : ['No bolso por mês', fm(r.liq), `${pc(r.liq)} do faturamento`],
-    pf ? ['No bolso por mês', fm(r.liq), `${pc(r.liq)} do faturamento; ${fm(alvoPJ)} no ano`] : ['No bolso no ano', fm(alvoPJ), `${o.meses} meses faturados`],
-    ['Impostos e INSS', fm(r.imp + r.cpp + r.inss + r.ir), `${pc(r.imp + r.cpp + r.inss + r.ir)} do faturamento por mês`],
-    ['CLT equivalente', fm(eqCom), `bruto mensal; ${fm(eqSem)} sem contar o FGTS`]]);
+    ['Diferença no bolso', dif == null ? '–' : sg(dif / 12), dif == null ? 'preencha os dois passos' : `por mês; ${sg(dif)} por ano: ${nX} deixa ${pct(Math.abs(dif) / tB)} a ${dif >= 0 ? 'mais' : 'menos'} que ${nB}`, dif != null && dif < 0],
+    [`Empate com ${nB}`, emp ? fm(emp) : '–', !emp ? 'preencha o passo 1' : cl ? `de contrato por mês, faturando ${o.meses} meses; abaixo disso o CLT ganha` : 'de salário bruto CLT por mês; abaixo disso a PJ ganha'],
+    ['Quanto pedir', o.pedir ? (cl ? (o.fat ? fm(o.fat) : '–') : (o.clt ? fm(o.clt) : '–')) : faixa ? `${fm(faixa[0])} a ${fm(faixa[1])}` : '–', o.pedir ? `empate + ${o.margem}% a mais no bolso` : `${cl ? 'de contrato' : 'de salário'} para ganhar 20% a 30% a mais no bolso`]]);
+  // lado a lado
+  if (c && r) {
+    const i = inssCLT(o.clt), ir = irrf26(o.clt, i, o.dep);
+    const V = { clt: { sal: 12 * o.clt, trib: -12 * (i + ir), emp: null, fer: c.n13 + c.fer, fgts: o.fgts ? c.fgts : 'nc', ben: c.ben || null, cus: null, tot: c.total },
+      pj: { sal: o.meses * o.fat, trib: -12 * (r.inss + r.ir), emp: -o.meses * (r.imp + r.cpp + r.ret), fer: null, fgts: null, ben: 12 * o.benPJ || null, cus: -12 * (o.contab + o.outros) || null, tot: tP } };
+    const ks = cl ? ['clt', 'pj'] : ['pj', 'clt'], NOME = { clt: 'CLT', pj: 'PJ' }, num = v => typeof v === 'number' ? v : 0;
+    const cel = v => v == null ? '<td class="subdet">—</td>' : v === 'nc' ? '<td><span class="subdet">não conta</span></td>' : `<td class="${v < 0 ? 'neg' : ''}">${fm(v)}</td>`;
+    const LIN = [['sal', 'Salário ou faturamento', `CLT: 12 salários · PJ: ${o.meses} meses`], ['trib', 'INSS e IR do salário ou do pró-labore'], ['emp', 'Impostos da empresa', (r.an ? 'DAS do Simples' : 'Lucro Presumido') + (r.ret ? ' e retenção sobre lucros' : '')], ['fer', '13º e 1/3 de férias (líquido)'], ['fgts', 'FGTS'], ['ben', 'Benefícios', 'CLT: VR, VA, saúde, PLR... · PJ: pagos pelo contratante'], ['cus', 'Custos da PJ', 'contabilidade e outros']];
+    const linha = ([k, n, nota], cls) => { const a = V[ks[0]][k], b = V[ks[1]][k]; if (a == null && b == null) return ''; const df = num(b) - num(a);
+      return `<tr${cls ? ` class="${cls}"` : ''}><td class="name">${n}${nota ? ` <span class="subdet">${nota}</span>` : ''}</td>${cel(a)}${cel(b)}<td class="${df < 0 ? 'neg' : ''}">${Math.abs(df) < 1 ? '—' : sg(df)}</td></tr>`; };
+    $('tbl-pj-lado').innerHTML = `<thead><tr><th>Linha</th><th>${NOME[ks[0]]} <span class="subdet">hoje</span></th><th>${NOME[ks[1]]} <span class="subdet">proposta</span></th><th>Diferença</th></tr></thead><tbody>${LIN.map(l => linha(l)).join('')}`
+      + `<tr class="tot"><td class="name">No bolso por ano</td><td>${fm(V[ks[0]].tot)}</td><td>${fm(V[ks[1]].tot)}</td><td class="${dif < 0 ? 'neg' : ''}">${sg(dif)}</td></tr>`
+      + `<tr class="tot"><td class="name">Média por mês</td><td>${fm(V[ks[0]].tot / 12)}</td><td>${fm(V[ks[1]].tot / 12)}</td><td class="${dif < 0 ? 'neg' : ''}">${sg(dif / 12)}</td></tr></tbody>`;
+    $('pj-lado-sub').textContent = `Tudo em valores líquidos por ano. A diferença é a proposta menos ${cl ? 'o CLT de hoje' : 'a PJ de hoje'}. ${o.fgts ? 'O FGTS conta como ganho.' : 'O FGTS não conta.'}`;
+    const mx = Math.max(V.clt.tot, V.pj.tot, 1);
+    $('pj-barras').innerHTML = ks.map((k, j) => `<div><span>${NOME[k]}</span><i class="${j ? 'prop' : ''}" style="width:${Math.max(0, V[k].tot / mx * 100).toFixed(1)}%"></i><b>${fm(V[k].tot / 12)}/mês</b></div>`).join('');
+  } else { $('tbl-pj-lado').innerHTML = ''; $('pj-barras').innerHTML = ''; $('pj-lado-sub').textContent = 'Preencha os dois passos acima para ver a comparação.'; }
+  // do faturamento ao bolso e regimes (precisam do faturamento)
+  if (!r) { ['tbl-pj', 'tbl-pj-reg'].forEach(id => $(id).innerHTML = ''); $('pj-avisos').innerHTML = ''; $('pj-sub').textContent = 'Preencha o lado PJ para ver a conta.'; }
+  else {
+    const pc = v => o.fat ? pct(v / o.fat) : '–';
+    const linha = (n, m, cls, nota) => `<tr${cls ? ` class="${cls}"` : ''}><td class="name">${n}${nota ? ` <span class="subdet">${nota}</span>` : ''}</td><td>${fm(m)}</td><td>${fm(m * o.meses)}</td><td>${pc(m)}</td></tr>`;
+    $('pj-sub').textContent = `${REG[r.an || 'presumido']}, alíquota efetiva de ${pct(r.ef)}, pró-labore de ${fm(r.pl)} (${PLN[r.plModo]}), ${o.meses} meses faturados. Fator R: ${pct(r.fr)}.`;
+    $('tbl-pj').innerHTML = `<thead><tr><th>Linha</th><th>Por mês faturado</th><th>No ano (${o.meses} meses)</th><th>% do faturamento</th></tr></thead><tbody>`
+      + linha('Faturamento', r.fat, 'tot')
+      + linha('(−) ' + (r.an ? 'DAS do Simples' : 'Impostos do Presumido'), -r.imp, 'sub', r.an ? 'Anexo ' + r.an : 'PIS, COFINS, IRPJ, CSLL e ISS')
+      + (r.cpp ? linha('(−) INSS patronal (20% do pró-labore)', -r.cpp, 'sub') : '')
+      + linha('(−) Contabilidade', -o.contab, 'sub') + (o.outros ? linha('(−) Outros custos', -o.outros, 'sub') : '')
+      + linha('Pró-labore bruto', r.pl) + linha('(−) INSS do pró-labore (11%)', -r.inss, 'sub') + linha('(−) IR do pró-labore', -r.ir, 'sub') + linha('= Pró-labore líquido', r.plLiq)
+      + linha('Lucro distribuído', Math.max(0, r.lucro), '', 'isento de IR') + (r.ret ? linha('(−) Retenção de 10% sobre lucros', -r.ret, 'sub', 'compensável na declaração') : '')
+      + linha('No seu bolso', r.liq, 'tot') + '</tbody>';
+    const av = [];
+    if (r.rbt > 4800000) av.push(['warn', 'Faturamento acima de R$ 4,8 milhões por ano não cabe no Simples Nacional.']);
+    if (r.lucro < 0) av.push(['warn', 'Os custos e o pró-labore passam do faturamento: não sobra lucro para distribuir.']);
+    if (r.limIsento != null && r.lucro > r.limIsento) av.push(['', `O lucro distribuído (${fm(r.lucro)}) passa do limite sem contabilidade completa (${fm(r.limIsento)} por mês). Tudo bem se sua contabilidade faz a escrituração, que é o normal; confirme com ela.`]);
+    if (r.ret) av.push(['warn', 'Lucros acima de R$ 50 mil no mês da mesma empresa têm retenção de 10% (Lei 15.270/2025). Distribuir em meses diferentes pode evitar a retenção.']);
+    if (r.anual > 600000) av.push(['warn', 'Renda acima de R$ 600 mil por ano entra no IR mínimo da Lei 15.270/2025 (até 10%), descontado o IR já pago. Não está no cálculo.']);
+    if (r.an === 'V' && o.reg === 'fatorR') av.push(['', 'Com esse pró-labore o fator R fica abaixo de 28% e a empresa paga pelo Anexo V. Veja na comparação abaixo se subir o pró-labore compensa.']);
+    av.push(['', `Para ter o equivalente a férias e 13º como na CLT, guarde cerca de ${fm(r.liq * (1 / 12 + 1 / 36))} por mês (1/12 de 13º e 1/12 de férias com 1/3).`]);
+    $('pj-avisos').innerHTML = av.map(([k, t]) => `<p class="${k}">${esc(t)}</p>`).join('');
+    const rs0 = o.reg === 'III' || o.reg === 'V' ? o.reg : 'fatorR', combos = [[rs0, 'fatorR'], [rs0, 'minimo'], ['presumido', 'minimo'], ['presumido', 'fatorR']];
+    if (o.pl === 'fixo') combos.unshift([o.reg, 'fixo']);
+    const vistos = new Set(), rs = combos.map(([rg, pm]) => pjCalc(o.fat, o, rg, pm)).filter(x => { const k = (x.an || 'P') + x.pl; if (vistos.has(k)) return false; vistos.add(k); return true; });
+    const melhor = Math.max(...rs.map(x => x.anual));
+    $('tbl-pj-reg').innerHTML = `<thead><tr><th>Combinação</th><th>Imposto da empresa</th><th>INSS e IR do pró-labore</th><th>No bolso por mês</th><th>No ano</th><th>Diferença para a melhor</th></tr></thead><tbody>${rs.map(x => `<tr class="${x.an === r.an && Math.round(x.pl) === Math.round(r.pl) ? 'sel' : ''}"><td class="name">${x.an ? 'Simples Anexo ' + x.an : 'Lucro Presumido'} <span class="subdet">pró-labore ${fm(x.pl)} · ${PLN[x.plModo]}</span></td><td>${fm(x.imp + x.cpp)} <span class="subdet">${pct((x.imp + x.cpp) / (o.fat || 1))}</span></td><td>${fm(x.inss + x.ir)}</td><td>${fm(x.liq)}</td><td>${fm(x.anual)}</td><td class="${x.anual < melhor - 1 ? 'neg' : ''}">${x.anual >= melhor - 1 ? 'melhor' : fm(x.anual - melhor)}</td></tr>`).join('')}</tbody>`;
+  }
+  // a conta da CLT, coluna por salário: o seu e os que empatam com a PJ
+  const cols = (tP ? [['Empata com a PJ, com FGTS', busca(S => cltAnual(S, Object.assign({}, o, { fgts: true })).total, tP, o.fat || 10000), true], ['Empata com a PJ, sem FGTS', busca(S => cltAnual(S, Object.assign({}, o, { fgts: false })).total, tP, o.fat || 10000), false]] : [])
+    .concat(o.clt ? [[cl ? 'Seu CLT' : 'Proposta CLT', o.clt, o.fgts]] : []);
+  if (!cols.length) $('tbl-pj-cltc').innerHTML = '';
+  else {
+    const cc = cols.map(([t, x, f]) => { const a = cltAnual(x, Object.assign({}, o, { fgts: f })), ii = inssCLT(x); return { t, x, f, a, i: ii, ir: irrf26(x, ii, o.dep) }; });
+    const L = (n, fn, cls, nota) => `<tr${cls ? ` class="${cls}"` : ''}><td class="name">${n}${nota ? ` <span class="subdet">${nota}</span>` : ''}</td>${cc.map(k => { const v = fn(k); return `<td>${v == null ? '<span class="subdet">não conta</span>' : fm(v)}</td>`; }).join('')}</tr>`;
+    $('tbl-pj-cltc').innerHTML = `<thead><tr><th>Linha</th>${cc.map(k => `<th>${k.t}</th>`).join('')}</tr></thead><tbody>`
+      + L('Salário bruto por mês', k => k.x, 'tot')
+      + L('(−) INSS', k => -k.i, 'sub', 'progressivo, até R$ 988,09') + L('(−) IR', k => -k.ir, 'sub', 'tabela 2026 com a redução da Lei 15.270')
+      + L('= Líquido por mês', k => k.a.n, 'tot')
+      + L('12 salários líquidos', k => 12 * k.a.n)
+      + L('13º líquido', k => k.a.n13, '', 'mesmo desconto de um salário, tributado à parte')
+      + L('1/3 de férias líquido', k => k.a.fer, '', 'no mês de férias recebe 4/3 do salário; conta só o que passa do salário normal')
+      + L('FGTS', k => k.f ? k.a.fgts : null, '', '8% sobre 13 salários + 1/3 de férias')
+      + ((o.benef || o.saude || o.vt) ? L('Benefícios no ano', k => k.a.ben, '', [...o.bens.map(b => `${esc(b.nome)} ${fm(b.valor)}${b.freq === 'ano' ? ' por ano' : ''}`), ...(o.saude ? [`saúde ${fm(o.saude)}`] : []), ...(o.vt ? ['VT acima dos 6%'] : [])].join(', ')) : '')
+      + L('Total líquido no ano', k => k.a.total, 'tot')
+      + (tP ? L('PJ no ano', () => tP) + L('Diferença CLT − PJ', k => k.a.total - tP) : '') + '</tbody>';
+  }
 }
 
 /* ---------- visão consolidada: soma os perfis (dono + perfis/<id>) ---------- */
