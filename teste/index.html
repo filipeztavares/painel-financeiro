@@ -1540,6 +1540,52 @@ tr.rd-hit td { background: color-mix(in srgb, var(--good) 9%, transparent); }
 .ck-acoes{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:14px}
 .ck-seq{font-size:13px;color:var(--muted)} .ck-seq b{color:var(--accent)}
 @media (max-width:720px){.ck-kp{grid-template-columns:repeat(2,minmax(0,1fr))}.ck-c{grid-template-columns:minmax(0,1fr) auto}.ck-c .ck-t{grid-column:1/-1;grid-row:2}.ck-c .st{grid-column:1/-1}}
+
+/* ---------- Jogo: tabuleiro em roleta, pontos, missões ---------- */
+.jg-hud{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:2px 0 10px}
+.jg-pill{display:inline-flex;align-items:center;gap:7px;border:1px solid var(--line);border-radius:999px;padding:5px 12px;font-size:12.5px;font-weight:600;white-space:nowrap;background:var(--panel)}
+.jg-pill i{width:8px;height:8px;border-radius:50%;display:inline-block;background:var(--c,var(--accent))}
+.jg-pill .jg-lv{width:20px;height:20px;border-radius:50%;background:var(--accent);color:#fff;display:inline-grid;place-items:center;font-size:11px;font-weight:800}
+.jg-tema{margin-left:auto;display:inline-flex;align-items:center;gap:6px;font-size:12px;color:var(--muted)}
+.jg-tema .seg button{font-size:11px;padding:3px 10px}
+.jg-tema .seg button[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:#fff}
+.jg-home{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);gap:28px;align-items:center}
+.jg-roda{position:relative;width:100%;max-width:520px;margin-inline:auto;aspect-ratio:1}
+.jg-roda svg{width:100%;height:100%;display:block;overflow:visible}
+#jg-rot{transform-origin:250px 250px;transition:transform 1.4s cubic-bezier(.2,.8,.15,1)}
+.jg-sl{cursor:pointer;outline:none}
+.jg-sl .jg-f{transform-origin:250px 250px;transition:transform .22s ease,filter .22s ease}
+.jg-sl:hover .jg-f,.jg-sl:focus-visible .jg-f,.jg-sl.on .jg-f{filter:drop-shadow(0 6px 12px rgba(15,31,61,.28))}
+.jg-sl:focus-visible .jg-shape{stroke:var(--ink);stroke-width:2.5}
+.jg-sl .jg-ic{transform-box:fill-box;transform-origin:center;transition:transform 1.4s cubic-bezier(.2,.8,.15,1)}
+.jg-hub{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:28%;aspect-ratio:1;border-radius:50%;display:grid;place-items:center;text-align:center;pointer-events:none;padding:6px}
+.jg-hub small{display:block;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);font-weight:700}
+.jg-hub b{display:block;font-family:var(--f-head);font-size:clamp(11px,1.6vw,16px);line-height:1.15;color:var(--ink)}
+.jg-info{display:grid;gap:12px;min-width:0}
+.jg-info .jg-casa{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:700}
+.jg-info h3{margin:0;font-family:var(--f-head);font-size:clamp(22px,2.6vw,30px);line-height:1.1;color:var(--ink)}
+.jg-info p{margin:0;color:var(--muted);font-size:13.5px;line-height:1.5}
+.jg-info .jg-res{font-size:13px;color:var(--ink)}
+.jg-bar{height:8px;border-radius:999px;background:var(--line);overflow:hidden}.jg-bar span{display:block;height:100%;border-radius:inherit}
+.jg-pl{display:flex;justify-content:space-between;font-size:12px;color:var(--muted);margin-bottom:5px}
+.jg-prox{display:flex;gap:10px;align-items:center;border:1px dashed var(--line);border-radius:10px;padding:10px 12px;font-size:13px}
+a.jg-prox{color:inherit;text-decoration:none}a.jg-prox:hover{border-color:var(--accent)}a.jg-prox:hover b{text-decoration:underline}
+.jg-prox b{display:block}.jg-prox small{color:var(--muted)}
+.jg-prox .jg-pt{margin-left:auto;font-weight:800;color:var(--accent);white-space:nowrap}
+.jg-bts{display:flex;flex-wrap:wrap;gap:8px}
+.jg-vista{display:flex;justify-content:flex-end;margin-top:8px}
+#p-modulos.jg-roleta .md-grid{display:none}
+.jg-mis{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.jg-mis h3{margin:0 0 6px;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.jg-mi{display:grid;grid-template-columns:22px minmax(0,1fr) auto;gap:10px;align-items:center;border:1px solid var(--line);border-radius:10px;padding:9px 11px;margin-bottom:8px;font-size:13px}
+.jg-mi .ck{width:20px;height:20px;border-radius:6px;border:2px solid var(--line);display:grid;place-items:center;color:#fff;font-size:12px;font-weight:800}
+.jg-mi.ok .ck{background:var(--good);border-color:var(--good)}
+.jg-mi.ok b{text-decoration:line-through;color:var(--muted)}
+.jg-mi small{display:block;color:var(--muted);font-size:11.5px}
+.jg-mi .pt{font-weight:800;color:var(--accent);white-space:nowrap}
+.jg-mi a{color:inherit}
+@media (max-width:900px){.jg-home{grid-template-columns:minmax(0,1fr)}.jg-mis{grid-template-columns:minmax(0,1fr)}.jg-tema{margin-left:0}}
+@media (prefers-reduced-motion:reduce){#jg-rot,.jg-sl .jg-ic,.jg-sl .jg-f{transition:none}}
 </style>
 
 
@@ -1627,7 +1673,7 @@ tr.rd-hit td { background: color-mix(in srgb, var(--good) 9%, transparent); }
     </div>
     <div class="nav-mobile-sub" id="navMobileSub"></div>
   </div>
-  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 255</div></div>
+  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 256</div></div>
 </nav>
 <div class="sino-pop" id="sino-pop" role="dialog" aria-label="Atualizações das bases" hidden></div>
 <div class="sino-pop" id="pess-pop" role="dialog" aria-label="Seus avisos" hidden></div>
@@ -1651,9 +1697,22 @@ tr.rd-hit td { background: color-mix(in srgb, var(--good) 9%, transparent); }
   <!-- ============ MÓDULOS (tela de entrada) ============ -->
   <section role="tabpanel" id="p-modulos" hidden>
     <div class="block-title"><span class="num"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="3.5" width="7" height="7" rx="1.5"/><rect x="13.5" y="3.5" width="7" height="7" rx="1.5"/><rect x="3.5" y="13.5" width="7" height="7" rx="1.5"/><rect x="13.5" y="13.5" width="7" height="7" rx="1.5"/></svg></span><div><h1>Módulos</h1><p class="desc">Escolha uma área da sua vida. Cada módulo funciona sozinho, e o que ele planeja entra nas Finanças.</p></div></div>
+    <section data-nav="Seu tabuleiro" class="panel" id="jg-sec">
+      <div class="row"><h2>Seu tabuleiro</h2></div>
+      <div class="jg-hud" id="jg-hud"></div>
+      <div class="jg-home" id="jg-home">
+        <div class="jg-roda"><svg viewBox="-20 -20 540 540" id="jg-svg" role="group" aria-label="Roleta de módulos"><g id="jg-rot"></g><path d="M250 -2 L236 -22 L264 -22 Z" fill="var(--accent)"/></svg><div class="jg-hub" aria-hidden="true"><div><small id="jg-hn"></small><b id="jg-ht"></b></div></div></div>
+        <div class="jg-info" id="jg-info" aria-live="polite"></div>
+      </div>
+      <div class="jg-vista"><button type="button" class="btn ghost tiny" id="jg-vista"></button></div>
+    </section>
     <section data-nav="Checkpoint da semana" class="panel" id="ck-sem">
       <div class="row"><h2>Checkpoint da semana</h2><span class="ck-sem-q" id="ck-q"></span></div>
       <div id="ck-body"></div>
+    </section>
+    <section data-nav="Missões" class="panel" id="jg-mis-sec">
+      <div class="row"><h2>Missões</h2><span class="ck-sem-q">pontos por cuidar do seu dinheiro</span></div>
+      <div id="jg-mis"></div>
     </section>
     <div class="md-grid" id="md-grid"></div>
     <section data-nav="Linha do tempo" class="panel">
@@ -3491,7 +3550,7 @@ tr.rd-hit td { background: color-mix(in srgb, var(--good) 9%, transparent); }
     return new Promise(resolve => { const { data } = sb.auth.onAuthStateChange(async (ev) => { if (ev !== 'PASSWORD_RECOVERY') return; const s = prompt('Digite a nova senha (mínimo 8 caracteres):'); if (s && s.length >= 8) { const { error } = await sb.auth.updateUser({ password: s }); alert(error ? 'Não deu para trocar a senha: ' + error.message : 'Senha trocada.'); } }); resolve(data); });
   }
   // ---------- rodapé: compartilhar, administração e sair ----------
-  const SITE_V = 139;
+  const SITE_V = 140;
   const escH = v => String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const dataBR = v => v ? new Date(v).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' }) : '–';
   const css2 = `.side-foot .r{flex-wrap:wrap}.side-foot .lg-acoes{margin-left:auto;display:inline-flex;gap:10px}
@@ -14681,7 +14740,7 @@ document.addEventListener('click', e => {
   const fx = e.target.closest('[data-ckfx]');
   if (fx) { const n = fx.dataset.ckfx; ckSt().fixas[n] = !ckFixa(n); save(); renderCkSem(); try { renderPess(); } catch (er) {} return; }
   if (e.target.closest('#ck-todas')) { ckTodas = !ckTodas; renderCkSem(); return; }
-  if (e.target.closest('#ck-feito')) { const c = ckSt(), w = ckSemana(new Date()); c.feitos = c.feitos.includes(w) ? c.feitos.filter(x => x !== w) : c.feitos.concat(w).slice(-60); save(); renderCkSem(); try { renderPess(); } catch (er) {} }
+  if (e.target.closest('#ck-feito')) { const c = ckSt(), w = ckSemana(new Date()); c.feitos = c.feitos.includes(w) ? c.feitos.filter(x => x !== w) : c.feitos.concat(w).slice(-60); save(); renderCkSem(); try { renderJogo(); renderMissoes(); } catch (er) {} try { renderPess(); } catch (er) {} }
 });
 AVISOS_PESSOAIS.push(() => {
   const sem = ckSemana(new Date()), out = [];
@@ -14689,8 +14748,105 @@ AVISOS_PESSOAIS.push(() => {
   const D = ckDados(); D.linhas.filter(x => x.st === 'al' || x.st === 'lv').sort((a, b) => (b.g - b.p * D.fr) - (a.g - a.p * D.fr)).slice(0, 3).forEach(x => out.push({ id: 'ckc:' + sem + ':' + x.nome, mod: 'fin', quando: '', msg: x.st === 'al' ? `${x.nome} está acima do ritmo do mês: ${fm(x.g)} de ${fm(x.p)}.` : `${x.nome} (conta fixa) passou do previsto: ${fm(x.g)} de ${fm(x.p)}. Vale conferir.`, tab: 'modulos', sec: 'Checkpoint da semana' }));
   return out;
 });
+
+/* ---------- Jogo: pontos, níveis e casas (derivados do que já está no painel) ---------- */
+const JG_NIVEIS = [[0, 'Começando'], [400, 'Organizado'], [1000, 'Planejador'], [2000, 'Estrategista'], [4000, 'Independente']];
+const JG_PTS = { casa: 20, ck: 40, fech: 100, cp: 80, dentro: 150, modulo: 300 };
+function jgMods() { return MODS.filter(m => modLiberado(m) && (m.breve || modEscolhido(m))); }
+function jgProg(m) {
+  if (m.breve) return null;
+  if (m.id === 'uso') { const t = cuTotais(); return t.n ? { f: t.f, n: t.n } : null; }
+  const x = cuPassos()[m.id]; if (!x || !x.passos.length) return null;
+  return { f: x.passos.filter(p => p.ok).length, n: x.passos.length, prox: x.passos.find(p => !p.ok) };
+}
+function jgPontos() {
+  const P = cuPassos(), d = { casas: 0, casasN: 0, mods: 0, ck: 0, fech: 0, cp: 0, dentro: 0 };
+  MODS.forEach(m => { const x = P[m.id]; if (!x || m.id === 'uso' || !modLiberado(m) || !modEscolhido(m)) return; const f = x.passos.filter(p => p.ok).length; d.casas += f; d.casasN += x.passos.length; if (x.passos.length && f === x.passos.length) d.mods++; });
+  d.ck = ((state.ckSem || {}).feitos || []).length;
+  const fe = Object.keys(state.fech || {}).filter(k => state.fech[k] && state.fech[k].fechado);
+  d.fech = fe.length;
+  fe.forEach(k => { try { const F = fechamento(k); if (F.tp.custos != null && F.tr.custos != null && F.tr.custos <= F.tp.custos) d.dentro++; } catch (e) {} });
+  d.cp = (cps || []).length;
+  d.total = d.casas * JG_PTS.casa + d.mods * JG_PTS.modulo + d.ck * JG_PTS.ck + d.fech * JG_PTS.fech + d.cp * JG_PTS.cp + d.dentro * JG_PTS.dentro;
+  let k = 0; JG_NIVEIS.forEach((n, j) => { if (d.total >= n[0]) k = j; });
+  d.nivel = k + 1; d.nome = JG_NIVEIS[k][1]; d.prox = JG_NIVEIS[k + 1] || null;
+  return d;
+}
+function jgSugestao(vis) {
+  const ob = vis.find(m => { const x = cuPassos()[m.id]; return x && x.passos.some(p => p.ob && !p.ok); });
+  if (ob) return ob;
+  const cand = vis.filter(m => !m.breve && m.id !== 'uso').map(m => [m, jgProg(m)]).filter(([, g]) => g && g.f < g.n).sort((a, b) => a[1].f / a[1].n - b[1].f / b[1].n);
+  return cand.length ? cand[0][0] : vis.find(m => m.id === 'fin') || vis[0];
+}
+let jgSel = 0, jgRot = null, jgHov = null;
+const jgVista = () => { try { return localStorage.getItem('painel-md-vista') || 'roleta'; } catch (e) { return 'roleta'; } };
+function jgTemaAtual() { try { return localStorage.getItem('painel-tema') || 'auto'; } catch (e) { return 'auto'; } }
+function jgAplicaTema() { const t = jgTemaAtual(), el = document.documentElement; if (t === 'auto') { if (el.dataset.jgTema) { el.removeAttribute('data-theme'); delete el.dataset.jgTema; } } else { el.setAttribute('data-theme', t === 'claro' ? 'light' : 'dark'); el.dataset.jgTema = t; } }
+try { jgAplicaTema(); new MutationObserver(() => { const t = jgTemaAtual(); if (t !== 'auto') { const w = t === 'claro' ? 'light' : 'dark'; if (document.documentElement.getAttribute('data-theme') !== w) document.documentElement.setAttribute('data-theme', w); } }).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] }); } catch (e) {}
+function renderJogo() {
+  const sec = $('jg-sec'); if (!sec || !state) return;
+  const vis = jgMods(), N = vis.length, d = jgPontos(), seq = (() => { try { return ckSeq(); } catch (e) { return 0; } })();
+  $('p-modulos').classList.toggle('jg-roleta', jgVista() === 'roleta');
+  $('jg-home').hidden = jgVista() !== 'roleta';
+  $('jg-vista').textContent = jgVista() === 'roleta' ? 'Ver os módulos em cards' : 'Ver como roleta';
+  const tm = jgTemaAtual();
+  $('jg-hud').innerHTML = `<span class="jg-pill" title="Pontos vêm de casas configuradas, checkpoints, meses fechados e meses dentro do projetado"><span class="jg-lv">${d.nivel}</span>${esc(d.nome)}</span><span class="jg-pill" style="--c:var(--s3)"><i></i>${d.total.toLocaleString('pt-BR')} pontos${d.prox ? ` <span class="subdet">· faltam ${(d.prox[0] - d.total).toLocaleString('pt-BR')} para ${esc(d.prox[1])}</span>` : ''}</span><span class="jg-pill" style="--c:var(--good)"><i></i>${seq} semana${seq === 1 ? '' : 's'} seguida${seq === 1 ? '' : 's'}</span><span class="jg-pill" style="--c:var(--s1)"><i></i>${d.casas} de ${d.casasN} casas</span>
+    <span class="jg-tema">Aparência <span class="seg" role="group" aria-label="Aparência">${[['auto', 'Automática'], ['claro', 'Clara'], ['escuro', 'Escura']].map(([k, n]) => `<button type="button" data-jgtema="${k}" aria-pressed="${tm === k}">${n}</button>`).join('')}</span></span>`;
+  if (jgVista() !== 'roleta' || !N) return;
+  const CX = 250, CY = 250, R1 = 220, R0 = 74, ST = 360 / N, GAP = 1.1, f2 = n => n.toFixed(2);
+  const pt = (a, rr) => { const t = (a - 90) * Math.PI / 180; return [CX + rr * Math.cos(t), CY + rr * Math.sin(t)]; };
+  const ann = (a0, a1, r0, r1) => { const [x0, y0] = pt(a0, r1), [x1, y1] = pt(a1, r1), [x2, y2] = pt(a1, r0), [x3, y3] = pt(a0, r0); return `M${f2(x0)} ${f2(y0)} A${r1} ${r1} 0 0 1 ${f2(x1)} ${f2(y1)} L${f2(x2)} ${f2(y2)} A${r0} ${r0} 0 0 0 ${f2(x3)} ${f2(y3)} Z`; };
+  const arc = (a0, a1, rr) => { const [x0, y0] = pt(a0, rr), [x1, y1] = pt(a1, rr); return `M${f2(x0)} ${f2(y0)} A${rr} ${rr} 0 0 1 ${f2(x1)} ${f2(y1)}`; };
+  if (jgRot == null) jgRot = -ST / 2;
+  if (jgSel >= N) jgSel = 0;
+  let h = '';
+  vis.forEach((m, i) => { const a0 = i * ST + GAP, a1 = (i + 1) * ST - GAP, mid = (a0 + a1) / 2, [ix, iy] = pt(mid, R0 + (R1 - R0) * .6), [nx, ny] = pt(mid, R0 + (R1 - R0) * .26), g = jgProg(m), cor = m.breve ? 'var(--line)' : m.corNav;
+    const ic = String(MOD_SVG[m.id] || '').replace('<svg ', `<svg x="${f2(ix - 17)}" y="${f2(iy - 17)}" width="34" height="34" `).replace(/stroke="currentColor"/, `stroke="${m.breve ? 'var(--muted)' : '#0F1F3D'}"`);
+    h += `<g class="jg-sl${i === jgSel ? ' on' : ''}" data-jgi="${i}" tabindex="0" role="button" aria-label="Casa ${i + 1}: ${esc(m.nome)}"><g class="jg-f"><path class="jg-shape" d="${ann(a0, a1, R0, R1)}" fill="${cor}"/><path d="${arc(a0 + 1, a1 - 1, R1 + 11)}" stroke="var(--line)" stroke-width="5" stroke-linecap="round" fill="none"/>${g && g.f ? `<path d="${arc(a0 + 1, a0 + 1 + (a1 - a0 - 2) * Math.min(1, g.f / g.n), R1 + 11)}" stroke="${cor}" stroke-width="5" stroke-linecap="round" fill="none"/>` : ''}<g class="jg-ic">${ic}</g><g class="jg-ic"><text x="${f2(nx)}" y="${f2(ny + 5)}" text-anchor="middle" font-family="Poppins, sans-serif" font-weight="700" font-size="15" fill="${m.breve ? 'var(--muted)' : '#0F1F3D'}" opacity=".7">${i + 1}</text></g></g></g>`; });
+  h += `<circle cx="${CX}" cy="${CY}" r="${R0 - 6}" fill="var(--panel)" stroke="var(--line)"/>`;
+  const g0 = $('jg-rot'); g0.innerHTML = h; g0.style.transform = `rotate(${jgRot}deg)`; g0.querySelectorAll('.jg-ic').forEach(x => x.style.transform = `rotate(${-jgRot}deg)`);
+  jgGrow(jgSel, true); jgMostra(jgSel);
+}
+function jgGrow(i, on) { const el = document.querySelector(`#jg-rot .jg-sl[data-jgi="${i}"] .jg-f`); if (!el) return; const N = jgMods().length, t = ((i + .5) * 360 / N - 90) * Math.PI / 180; el.style.transform = on ? `translate(${(15 * Math.cos(t)).toFixed(1)}px,${(15 * Math.sin(t)).toFixed(1)}px) scale(1.06)` : ''; }
+function jgMostra(i) {
+  const vis = jgMods(), m = vis[i]; if (!m) return; const g = jgProg(m), sug = jgSugestao(vis);
+  $('jg-hn').textContent = 'Casa ' + (i + 1); $('jg-ht').textContent = m.nome;
+  const prox = g && g.prox ? g.prox : null, pct = g ? Math.round(g.f / g.n * 100) : null;
+  $('jg-info').innerHTML = `<span class="jg-casa">Casa ${i + 1} de ${vis.length}${m.breve ? ' · em breve' : ''}${m === sug ? ' · próxima jogada sugerida' : ''}</span><h3>${esc(m.nome)}</h3><p>${esc(m.desc)}</p>
+    ${m.breve ? '' : `<div class="jg-res">${modResumo(m)}</div>`}
+    ${g ? `<div><div class="jg-pl"><span>${g.f} de ${g.n} casas deste módulo</span><span>${pct}% completo</span></div><div class="jg-bar"><span style="width:${pct}%;background:${m.corNav}"></span></div></div>` : ''}
+    ${prox ? `<a href="#" class="jg-prox" data-jgir="${esc(prox.tab || '')}" data-jgsec="${esc(prox.sec || '')}"><span><b>Próxima casa: ${esc(prox.t)}</b><small>${esc(prox.d || '')}</small></span><span class="jg-pt">+${JG_PTS.casa}</span></a>` : g && g.f === g.n ? `<div class="jg-prox"><span><b>Módulo completo</b><small>Valeu +${JG_PTS.modulo} pontos.</small></span></div>` : ''}
+    <div class="jg-bts">${m.breve ? '<button type="button" class="btn" disabled>Em breve</button>' : `<button type="button" class="btn" data-irmod="${m.id}">Entrar nesta casa</button>`}<button type="button" class="btn ghost" id="jg-girar">Próxima jogada</button></div>`;
+}
+function jgGira(i) { const vis = jgMods(), N = vis.length, mid = (i + .5) * 360 / N; let t = -mid; while (t > jgRot - 360) t -= 360; jgRot = t;
+  const g0 = $('jg-rot'); g0.style.transform = `rotate(${jgRot}deg)`; g0.querySelectorAll('.jg-ic').forEach(x => x.style.transform = `rotate(${-jgRot}deg)`);
+  g0.querySelectorAll('.jg-sl').forEach(x => x.classList.remove('on')); jgGrow(jgSel, false); jgSel = i; const el = g0.querySelector(`.jg-sl[data-jgi="${i}"]`); if (el) el.classList.add('on'); jgGrow(i, true); jgMostra(i); }
+function jgPick(i) { if (i === jgSel) { const m = jgMods()[i]; if (m && !m.breve) showTab(m.vg || m.tabs[0]); return; } const g0 = $('jg-rot'); g0.querySelectorAll('.jg-sl').forEach(x => x.classList.remove('on')); jgGrow(jgSel, false); jgSel = i; g0.querySelector(`.jg-sl[data-jgi="${i}"]`).classList.add('on'); jgGrow(i, true); jgMostra(i); }
+document.addEventListener('mouseover', e => { const s = e.target.closest && e.target.closest('#jg-rot .jg-sl'); if (!s) return; const i = +s.dataset.jgi; if (jgHov === i) return; if (jgHov != null && jgHov !== jgSel) jgGrow(jgHov, false); jgHov = i; jgGrow(i, true); jgMostra(i); });
+document.addEventListener('mouseout', e => { const s = e.target.closest && e.target.closest('#jg-rot .jg-sl'); if (!s || (e.relatedTarget && s.contains(e.relatedTarget))) return; const i = +s.dataset.jgi; if (i !== jgSel) jgGrow(i, false); jgHov = null; jgMostra(jgSel); });
+document.addEventListener('focusin', e => { const s = e.target.closest && e.target.closest('#jg-rot .jg-sl'); if (s) { jgGrow(+s.dataset.jgi, true); jgMostra(+s.dataset.jgi); } });
+document.addEventListener('keydown', e => { const s = e.target.closest && e.target.closest('#jg-rot .jg-sl'); if (s && (e.key === 'Enter' || e.key === ' ')) { e.preventDefault(); jgPick(+s.dataset.jgi); } });
+document.addEventListener('click', e => {
+  const s = e.target.closest('#jg-rot .jg-sl'); if (s) { jgPick(+s.dataset.jgi); return; }
+  if (e.target.closest('#jg-girar')) { const vis = jgMods(); jgGira(vis.indexOf(jgSugestao(vis))); return; }
+  if (e.target.closest('#jg-vista')) { try { localStorage.setItem('painel-md-vista', jgVista() === 'roleta' ? 'cards' : 'roleta'); } catch (er) {} renderJogo(); return; }
+  const t = e.target.closest('[data-jgtema]'); if (t) { try { localStorage.setItem('painel-tema', t.dataset.jgtema); } catch (er) {} jgAplicaTema(); renderJogo(); return; }
+  const a = e.target.closest('[data-jgir]'); if (a) { e.preventDefault(); const tb = a.dataset.jgir, sc = a.dataset.jgsec; if (!tb) return; showTab(tb); setTimeout(() => { const x = [...document.querySelectorAll(`#p-${tb} [data-nav]`)].find(y => y.dataset.nav === sc); if (x) { try { abrirSecao(x); } catch (er) {} x.scrollIntoView({ block: 'start' }); } }, 60); }
+});
+function renderMissoes() {
+  const box = $('jg-mis'); if (!box || !state) return;
+  const sem = ckSemana(new Date()), ckOk = ckSt().feitos.includes(sem), ant = mKey(HOJE_IDX - 1), atu = mKey(HOJE_IDX);
+  const fechOk = !!(state.fech[ant] && state.fech[ant].fechado), cpOk = (cps || []).some(c => c.mes === ant || c.mes === atu);
+  let dentro = null; if (fechOk) { try { const F = fechamento(ant); dentro = F.tr.custos != null && F.tp.custos != null && F.tr.custos <= F.tp.custos; } catch (e) {} }
+  const vis = jgMods(), sug = jgSugestao(vis), gs = sug ? jgProg(sug) : null;
+  const mi = (ok, t, d, pts, ir) => `<div class="jg-mi${ok ? ' ok' : ''}"><span class="ck">${ok ? '✓' : ''}</span><span>${ir && !ok ? `<a href="#" data-jgir="${ir[0]}" data-jgsec="${esc(ir[1])}"><b>${t}</b></a>` : `<b>${t}</b>`}<small>${d}</small></span><span class="pt">+${pts}</span></div>`;
+  box.innerHTML = `<div class="jg-mis"><div><h3>Esta semana</h3>${mi(ckOk, 'Checkpoint da fatura ou do extrato', ckOk ? 'Feito. Volte na próxima semana.' : 'Importe e marque o checkpoint da semana.', JG_PTS.ck, ['modulos', 'Checkpoint da semana'])}</div>
+    <div><h3>Este mês</h3>${mi(fechOk, `Fechar ${mLabel(HOJE_IDX - 1)}`, 'Projetado contra real em Gastos e fechamento.', JG_PTS.fech, ['gastos', 'Fechamento do mês'])}${mi(cpOk, 'Checkpoint de patrimônio', 'Salve o total da carteira do mês.', JG_PTS.cp, ['carteira', 'Cadastrar aplicação'])}${mi(dentro === true, 'Fechar o mês dentro do projetado', dentro === false ? 'Este mês passou do projetado. Fica para o próximo.' : 'Custos reais menores ou iguais aos projetados.', JG_PTS.dentro)}</div>
+    <div><h3>Temporada</h3>${sug && gs ? mi(false, `Completar ${esc(sug.nome)}`, `${gs.f} de ${gs.n} casas feitas.`, JG_PTS.modulo, [sug.vg || sug.tabs[0], '']) : mi(true, 'Todos os módulos completos', 'Parabéns.', JG_PTS.modulo)}<p class="hint">Cada casa configurada vale +${JG_PTS.casa}. Os pontos vêm do que já está no painel, então nada se perde.</p></div></div>`;
+}
 function renderModulos() {
   try { renderCkSem(); } catch (er) { console.error(er); }
+  try { renderJogo(); renderMissoes(); } catch (er) { console.error(er); }
   setTimeout(() => { if (tab !== 'modulos') return; try { $('md-tl').innerHTML = tlHtml(itensVisiveis()); renderMdChart(); } catch (er) { console.error(er); } }, 0);
   const vis = MODS.filter(m => modLiberado(m) && (m.breve || modEscolhido(m)));
   $('md-grid').innerHTML = vis.map(m => m.breve
