@@ -74,6 +74,15 @@ h1, h2, h3 { font-family: var(--f-head); }
 .sino-f { padding: 10px 14px 12px; font-size: 12px; }
 .imp-pop { position: fixed; inset: 0; z-index: 1000; display: flex; align-items: center; justify-content: center; background: rgba(15,31,61,.45); padding: 16px; }
 .imp-pop[hidden] { display: none; }
+.conf-pop { position: fixed; inset: 0; z-index: 900; display: flex; align-items: center; justify-content: center; background: rgba(15,31,61,.45); padding: 16px; }
+.conf-pop[hidden] { display: none; }
+.conf-dlg { position: relative; width: min(1200px, 100%); max-height: calc(100vh - 32px); overflow: auto; border-radius: 12px; box-shadow: 0 18px 50px rgba(0,0,0,.3); }
+.conf-dlg > .panel { margin: 0 !important; }
+.conf-x { position: absolute; top: 10px; right: 12px; z-index: 2; width: 30px; height: 30px; border-radius: 50%; border: 1px solid rgba(255,255,255,.5); background: rgba(255,255,255,.1); color: #fff; font-size: 14px; line-height: 1; cursor: pointer; }
+.conf-x:hover { background: rgba(255,255,255,.25); }
+.conf-x.armado { width: auto; padding: 0 12px; border-radius: 15px; background: var(--accent); border-color: var(--accent); font-size: 12px; font-weight: 700; }
+.conf-dlg .panel > h2:first-child { padding-right: 56px; }
+.conf-dlg .sec-tog { display: none !important; }
 .imp-box { background: var(--panel); color: var(--ink); border-radius: 12px; max-width: 480px; width: 100%; max-height: calc(100vh - 32px); overflow: auto; padding: 18px 20px 16px; box-shadow: 0 12px 40px rgba(0,0,0,.28); border-top: 6px solid var(--good); }
 .imp-box.erro { border-top-color: var(--bad); } .imp-box.aviso { border-top-color: var(--dotc); }
 .imp-box h3 { margin: 0 0 8px; font-size: 17px; line-height: 1.3; }
@@ -1358,7 +1367,7 @@ ul.ng-acordo li { margin-bottom: 4px; }
     </div>
     <div class="nav-mobile-sub" id="navMobileSub"></div>
   </div>
-  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 226</div></div>
+  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 227</div></div>
 </nav>
 <div class="sino-pop" id="sino-pop" role="dialog" aria-label="Central de avisos" hidden></div>
 <div class="tour-pop" id="tour-pop" role="dialog" aria-labelledby="tour-tit" hidden></div>
@@ -2333,8 +2342,9 @@ ul.ng-acordo li { margin-bottom: 4px; }
         <p class="hint" id="exp-msg"></p>
       </fieldset>
         </div>
+        <div class="conf-pop" id="conf-pop" hidden><div class="conf-dlg" role="dialog" aria-modal="true" aria-label="Conferir antes de importar"><button type="button" class="conf-x" id="conf-x" aria-label="Fechar sem importar" title="Fechar sem importar">✕</button>
         <div id="fat-prev" class="panel"></div>
-        <div id="ext-prev" class="panel"></div>
+        <div id="ext-prev" class="panel"></div></div></div>
       </section>
       <section data-nav="Por categoria" class="panel">
         <h2>Por categoria</h2>
@@ -2900,7 +2910,7 @@ ul.ng-acordo li { margin-bottom: 4px; }
     return new Promise(resolve => { const { data } = sb.auth.onAuthStateChange(async (ev) => { if (ev !== 'PASSWORD_RECOVERY') return; const s = prompt('Digite a nova senha (mínimo 8 caracteres):'); if (s && s.length >= 8) { const { error } = await sb.auth.updateUser({ password: s }); alert(error ? 'Não deu para trocar a senha: ' + error.message : 'Senha trocada.'); } }); resolve(data); });
   }
   // ---------- rodapé: compartilhar, administração e sair ----------
-  const SITE_V = 109;
+  const SITE_V = 110;
   const escH = v => String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const dataBR = v => v ? new Date(v).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' }) : '–';
   const css2 = `.side-foot .r{flex-wrap:wrap}.side-foot .lg-acoes{margin-left:auto;display:inline-flex;gap:10px}
@@ -8969,8 +8979,21 @@ function impPop(tipo, nivel, titulo, linhas, acao, alvo) {
   box.innerHTML = `<h3 id="imp-tit"><span class="imp-ic" aria-hidden="true">${nivel === 'erro' ? '✕' : nivel === 'aviso' ? '!' : '✓'}</span>${esc(titulo)}</h3>${(linhas || []).length ? `<ul>${linhas.map(l => `<li>${esc(l)}</li>`).join('')}</ul>` : ''}${nivel !== 'ok' && fmt ? `<div class="imp-fmt"><b>Formatos que este importador lê</b><br>${esc(fmt)}</div>` : ''}<div class="btns" style="justify-content:flex-end"><button class="btn" type="button" id="imp-ok">${esc(acao || 'Entendi')}</button></div>`;
   $('imp-pop').hidden = false; $('imp-ok').focus();
 }
+function confSync() {
+  const tem = !!($('fat-prev').innerHTML.trim() || $('ext-prev').innerHTML.trim()), pop = $('conf-pop');
+  const abrir = tem && $('imp-pop').hidden;
+  if (abrir && pop.hidden) { pop.hidden = false; document.body.style.overflow = 'hidden'; pop.querySelector('.conf-dlg').scrollTop = 0; }
+  else if (!tem && !pop.hidden) { pop.hidden = true; document.body.style.overflow = ''; }
+}
+$('conf-pop').addEventListener('click', e => { if (!e.target.closest('button, input, select, a, label, textarea')) e.stopPropagation(); });
+['fat-prev', 'ext-prev'].forEach(id => new MutationObserver(confSync).observe($(id), { childList: true }));
+$('conf-x').addEventListener('click', () => {
+  if (!confirmar('Fechar sem importar? O que você ajustou nesta conferência será descartado.')) return;
+  ['fat-cancel', 'ext-cancel'].forEach(id => { const b = $(id); if (b) b.click(); });
+});
+document.addEventListener('keydown', e => { if (e.key === 'Escape' && !$('conf-pop').hidden && $('imp-pop').hidden) { e.preventDefault(); $('conf-x').click(); } });
 function impFecha() {
-  $('imp-pop').hidden = true; const el = impAlvo && $(impAlvo); impAlvo = null;
+  $('imp-pop').hidden = true; if (impAlvo === 'fat-prev' || impAlvo === 'ext-prev') { impAlvo = null; confSync(); return; } const el = impAlvo && $(impAlvo); impAlvo = null;
   if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' }); else if (impFoco && impFoco.focus) try { impFoco.focus(); } catch (e) {}
 }
 $('imp-pop').addEventListener('click', e => { if (e.target.id === 'imp-ok' || e.target.id === 'imp-pop') impFecha(); });
@@ -10900,7 +10923,7 @@ async function abrirGastos(files) {
   const nRF = itens.filter(i => i.rep).length, nRE = linhas.filter(l => l.rep).length, res = [];
   if (itens.length) res.push(`Fatura do cartão${bF.size ? ` (${[...bF].join(', ')})` : ''}: ${plural(itens.length, 'gasto', 'gastos')}${lotes.length > 1 ? ` em ${lotes.length} faturas` : ` de ${mLabel(mIndex(lotes[0].comp))}`}${nRF ? `, ${nRF} já no painel` : ''}.`);
   if (linhas.length) res.push(`Extrato da conta${bE.size ? ` (${[...bE].join(', ')})` : ''}: ${plural(linhas.length, 'movimentação', 'movimentações')}${nRE ? `, ${nRE} já no painel` : ''}.`);
-  if (res.length) impPop('gas', msgs.length ? 'aviso' : 'ok', 'Arquivos lidos', [...res, ...msgs, 'Nada foi salvo ainda: confira abaixo e clique em importar.'], 'Conferir', itens.length ? 'fat-prev' : 'ext-prev');
+  if (res.length) impPop('gas', msgs.length ? 'aviso' : 'ok', 'Arquivos lidos', [...res, ...msgs, 'Nada foi salvo ainda: clique em Conferir para revisar e importar.'], 'Conferir', itens.length ? 'fat-prev' : 'ext-prev');
   else if (gen) impPop('gas', 'aviso', 'Não identifiquei as colunas sozinho', [...msgs, 'Diga qual coluna é a data, a descrição e o valor no quadro que abriu logo abaixo.'], 'Mapear colunas', 'csv-map');
   else impPop('gas', 'erro', 'Não consegui ler os arquivos', msgs.length ? msgs : ['Nenhum lançamento encontrado nos arquivos.']);
 }
