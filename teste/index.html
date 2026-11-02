@@ -578,6 +578,7 @@ tr.best td { background: var(--good-soft); }
 .cp-form { grid-template-columns: repeat(auto-fit, minmax(170px, 220px)); align-items: end; margin: 0 0 6px; }
 .cp-form .btns { grid-column: 1 / -1; display: flex; flex-wrap: wrap; gap: 8px; }
 .cp-oque summary { cursor: pointer; }
+.g-oque { margin: 12px 0 0; }
 .cp-oque p { margin: 6px 0; }
 .cp-dlg { width: min(760px, 100%); }
 .cp-dlg #cp-card { margin: 0 !important; }
@@ -1406,7 +1407,7 @@ ul.ng-acordo li { margin-bottom: 4px; }
     </div>
     <div class="nav-mobile-sub" id="navMobileSub"></div>
   </div>
-  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 240</div></div>
+  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 241</div></div>
 </nav>
 <div class="sino-pop" id="sino-pop" role="dialog" aria-label="Central de avisos" hidden></div>
 <div class="tour-pop" id="tour-pop" role="dialog" aria-labelledby="tour-tit" hidden></div>
@@ -1970,10 +1971,20 @@ ul.ng-acordo li { margin-bottom: 4px; }
       </section>
       <section data-nav="Projeção" class="panel chart">
         <div class="row"><h2>Plano, realizado e projeção por cenário</h2><div class="seg" id="g-anos" role="group" aria-label="Período da projeção"><button type="button" data-ganos="1">1 ano</button><button type="button" data-ganos="2">2 anos</button><button type="button" data-ganos="3">3 anos</button><button type="button" data-ganos="5">5 anos</button><button type="button" data-ganos="10">10 anos</button><button type="button" data-ganos="20">20 anos</button><button type="button" data-ganos="30">30 anos</button></div></div>
-        <p class="sub">Linha tracejada: plano de referência. Pontos: seus checkpoints. Linhas cheias: cada cenário a partir do último checkpoint, em reais correntes, com o rendimento reinvestido todo mês (juros compostos).</p>
+        <p class="sub">Tracejado: o plano (sua meta). Linha cheia: a projeção atualizada a partir do último checkpoint. Pontos vermelhos: seus checkpoints. Veja abaixo do gráfico o que é cada linha.</p>
         <div class="legend" id="lg-g"></div>
         <div id="ch-g"></div>
         <div class="readout" id="ro-g"></div>
+        <details class="cp-oque g-oque"><summary><b>O que é cada linha do gráfico</b></summary>
+          <ul>
+            <li><b>Plano (meta), tracejado:</b> onde você quer chegar. É o plano montado em Finanças › Plano futuro, com as premissas que você escolheu (rendimento, IPCA, quanto reinveste, mudanças programadas, eventos e as compras marcadas como "Projeção real"). Parte de um ponto fixo, o início do plano, e não muda sozinho: serve de régua.</li>
+            <li><b>Projeção atualizada, linha cheia:</b> para onde você está indo agora. Recomeça do último checkpoint, usa as mesmas receitas e gastos do orçamento e o rendimento escolhido em "Rendimento da projeção" (as premissas do cenário ou as taxas da sua carteira de hoje, que acompanham a curva do CDI e do IPCA). Cada checkpoint novo atualiza o ponto de partida.</li>
+            <li><b>Outros cenários, linhas cheias de outras cores:</b> simulações de "e se" criadas em Cenários futuros (comprar ou não um imóvel, mudar a carteira...). Partem do mesmo último checkpoint, cada um com suas compras e premissas.</li>
+            <li><b>Checkpoints reais, pontos vermelhos:</b> o que você tinha de fato no fim de cada mês, salvo no cartão "Checkpoint do mês". Ponto acima da linha do plano: você está à frente da meta; abaixo: atrás.</li>
+          </ul>
+          <p><b>Investimentos ou Patrimônio líquido</b> (em Cenário e plano): em Investimentos, tudo mostra só o dinheiro aplicado. Em Patrimônio líquido, todas as linhas e pontos somam os bens (carro, imóvel) e descontam o que falta pagar dos financiamentos.</p>
+          <p>Os valores estão em reais correntes, com o rendimento reinvestido todo mês. Passe o mouse ou o dedo sobre o gráfico para ver os valores de cada linha no mês.</p>
+        </details>
       </section>
       <section data-nav="Mês a mês" class="panel">
         <div class="row"><h2>Mês a mês do cenário em destaque</h2><div class="seg" id="mm-per" role="group" aria-label="Período"></div></div>
@@ -2985,7 +2996,7 @@ ul.ng-acordo li { margin-bottom: 4px; }
     return new Promise(resolve => { const { data } = sb.auth.onAuthStateChange(async (ev) => { if (ev !== 'PASSWORD_RECOVERY') return; const s = prompt('Digite a nova senha (mínimo 8 caracteres):'); if (s && s.length >= 8) { const { error } = await sb.auth.updateUser({ password: s }); alert(error ? 'Não deu para trocar a senha: ' + error.message : 'Senha trocada.'); } }); resolve(data); });
   }
   // ---------- rodapé: compartilhar, administração e sair ----------
-  const SITE_V = 123;
+  const SITE_V = 124;
   const escH = v => String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const dataBR = v => v ? new Date(v).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' }) : '–';
   const css2 = `.side-foot .r{flex-wrap:wrap}.side-foot .lg-acoes{margin-left:auto;display:inline-flex;gap:10px}
