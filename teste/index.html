@@ -1382,6 +1382,40 @@ ul.ng-acordo li { margin-bottom: 4px; }
 .ind-niv .nv .btn { align-self: flex-start; margin-top: 4px; }
 .ind-niv { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; margin-top: 10px; }
 @media (max-width: 700px) { .ind-niv { grid-template-columns: minmax(0, 1fr); } .ind-hero .t { font-size: 17px; } }
+/* Radar de preços */
+.rd-graf { width: 100%; height: auto; max-height: 260px; display: block; margin: 8px 0 4px; }
+.rd-gl { stroke: var(--line); stroke-width: 1; }
+.rd-gt { fill: var(--muted); font-size: 10.5px; font-variant-numeric: tabular-nums; }
+.rd-ln { fill: none; stroke: var(--s2); stroke-width: 2.4; stroke-linejoin: round; stroke-linecap: round; }
+.rd-pt { fill: var(--s2); stroke: var(--panel); stroke-width: 1.5; }
+.rd-pt.min { fill: var(--good); }
+.rd-alvo { stroke: var(--good); stroke-width: 1.6; stroke-dasharray: 6 4; }
+.rd-at { fill: var(--good); font-size: 11px; font-weight: 700; }
+tr.rd-hit td { background: color-mix(in srgb, var(--good) 9%, transparent); }
+.rd-dep { display: block; }
+.rd-h3 { font-size: 13px; margin: 14px 0 6px; }
+.rd-termo { display: block; margin: 4px 0 6px; }
+.rd-termo textarea { width: 100%; box-sizing: border-box; margin-top: 4px; font: inherit; }
+.rd-perto { align-self: end; padding-bottom: 6px; }
+.rd-fotos { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.rd-foto { position: relative; margin: 0; width: 96px; height: 96px; border: 1px solid var(--line); border-radius: 8px; overflow: hidden; background: #fff; }
+.rd-foto img { width: 100%; height: 100%; object-fit: contain; }
+.rd-foto button { position: absolute; top: 3px; right: 3px; padding: 0 6px; line-height: 18px; }
+.rd-fotoadd { width: 96px; height: 96px; border: 1.5px dashed var(--line); border-radius: 8px; display: flex; align-items: center; justify-content: center; cursor: pointer; color: var(--muted); font-weight: 600; }
+.rd-fotoadd:hover { border-color: var(--accent); color: var(--accent); }
+.rd-links { margin: 0 0 8px; padding-left: 18px; }
+.rd-links li { margin: 3px 0; word-break: break-all; }
+.rd-wide { flex: 1 1 320px; }
+.rd-wide2 { grid-column: span 2; }
+.rd-lojas { display: flex; flex-wrap: wrap; gap: 6px 14px; margin: 8px 0; }
+.rd-ver { font-size: 15px; margin: 2px 0 8px; }
+.rd-promos { margin: 0 0 6px; padding-left: 18px; }
+.rd-promos li { margin: 3px 0; }
+.rd-k { margin: 6px 0 8px; }
+.rd-nota { flex-basis: 100%; margin-top: 8px; }
+.rd-selbar { margin: 0 0 12px; }
+@media (max-width: 760px) { .rd-wide2 { grid-column: span 1; } .rd-foto, .rd-fotoadd { width: 80px; height: 80px; } }
+.rd-termo textarea { font-size: 13px; text-transform: none; letter-spacing: 0; padding: 8px 10px; border: 1px solid var(--line); border-radius: 8px; background: var(--field); color: var(--ink); }
 </style>
 
 
@@ -1450,6 +1484,11 @@ ul.ng-acordo li { margin-bottom: 4px; }
           <div class="nav-group"><button type="button" class="nav-head" data-tab="indvg"><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 11.5 12 4l9 7.5"/><path d="M5.5 10v9.5h13V10"/><path d="M10 19.5v-5h4v5"/></svg></span>Visão geral</button><div class="nav-sub" data-sub="indvg"></div></div>
           <div class="nav-group"><button type="button" class="nav-head" data-tab="indnum"><span class="ico">01</span>Meu número<span class="caret" data-navtog="indnum" role="button" tabindex="0" aria-label="Abrir ou recolher submódulos">▾</span></button><div class="nav-sub" data-sub="indnum"></div></div>
         </div></div>
+        <div class="nav-sec" data-sec="preco" data-mod="preco"><button type="button" class="nav-sec-h" data-sectog="preco" aria-expanded="true"><span>Radar de preços</span><span class="caret" aria-hidden="true">▾</span></button><div class="nav-sec-b">
+          <div class="nav-group"><button type="button" class="nav-head" data-tab="rdvg"><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 11.5 12 4l9 7.5"/><path d="M5.5 10v9.5h13V10"/><path d="M10 19.5v-5h4v5"/></svg></span>Visão geral</button><div class="nav-sub" data-sub="rdvg"></div></div>
+          <div class="nav-group"><button type="button" class="nav-head" data-tab="rdprod"><span class="ico">01</span>Meus produtos<span class="caret" data-navtog="rdprod" role="button" tabindex="0" aria-label="Abrir ou recolher submódulos">▾</span></button><div class="nav-sub" data-sub="rdprod"></div></div>
+          <div class="nav-group"><button type="button" class="nav-head" data-tab="rdcomp"><span class="ico">02</span>Comprar ou esperar<span class="caret" data-navtog="rdcomp" role="button" tabindex="0" aria-label="Abrir ou recolher submódulos">▾</span></button><div class="nav-sub" data-sub="rdcomp"></div></div>
+        </div></div>
         <div class="nav-pe">
         <div class="nav-group mini"><button type="button" class="nav-head" data-tab="leia"><span class="ico">?</span>Leia-me<span class="caret" data-navtog="leia" role="button" tabindex="0" aria-label="Abrir ou recolher submódulos">▾</span></button><div class="nav-sub" data-sub="leia"></div></div>
         <div class="nav-group mini"><button type="button" class="nav-head" data-tab="config"><span class="ico">⚙</span>Configurações<span class="caret" data-navtog="config" role="button" tabindex="0" aria-label="Abrir ou recolher submódulos">▾</span></button><div class="nav-sub" data-sub="config"></div></div>
@@ -1457,7 +1496,7 @@ ul.ng-acordo li { margin-bottom: 4px; }
     </div>
     <div class="nav-mobile-sub" id="navMobileSub"></div>
   </div>
-  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 245</div></div>
+  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 246</div></div>
 </nav>
 <div class="sino-pop" id="sino-pop" role="dialog" aria-label="Central de avisos" hidden></div>
 <div class="tour-pop" id="tour-pop" role="dialog" aria-labelledby="tour-tit" hidden></div>
@@ -2052,6 +2091,63 @@ ul.ng-acordo li { margin-bottom: 4px; }
         <p class="hint" style="grid-column:1/-1" id="ind-taxa-hint"></p>
       </fieldset></div>
       <div class="ind-res" id="ind-res"></div>
+    </section>
+  </section>
+  <!-- ============ RADAR DE PREÇOS: VISÃO GERAL ============ -->
+  <section role="tabpanel" id="p-rdvg" hidden>
+    <div class="block-title"><span class="num"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 11.5 12 4l9 7.5"/><path d="M5.5 10v9.5h13V10"/><path d="M10 19.5v-5h4v5"/></svg></span><div><h1>Visão geral do Radar de preços</h1><p class="desc">O que você quer comprar, o melhor preço que já apareceu, o seu alvo e quanto falta para chegar lá.</p></div></div>
+    <div class="kpis" id="kpi-rdv"></div>
+    <section data-nav="Minha lista" class="panel">
+      <h2>Minha lista</h2>
+      <div class="tscroll"><table id="tbl-rdv"></table></div>
+      <div class="row" style="margin-top:10px;gap:6px;flex-wrap:wrap"><button type="button" class="btn tiny" data-rdadd="1">+ Produto</button></div>
+    </section>
+    <section data-nav="Partes do módulo" class="panel">
+      <h2>Partes do módulo</h2>
+      <p class="sub">Atalhos para cada parte do módulo.</p>
+      <div class="tv-links" id="rdv-links"></div>
+      <p class="subdet rd-nota">A pesquisa automática todo dia, o aviso no sino de presentes e os preços de várias lojas lado a lado chegam na próxima etapa. Por enquanto, lance os preços que encontrar.</p>
+    </section>
+  </section>
+  <!-- ============ RADAR DE PREÇOS: MEUS PRODUTOS ============ -->
+  <section role="tabpanel" id="p-rdprod" hidden>
+    <div class="block-title"><span class="num">01</span><div><h1>Meus produtos</h1><p class="desc">Cadastre o que quer comprar, o preço que aceita pagar e onde procurar. Lance os preços que encontrar e veja o histórico.</p></div></div>
+    <section data-nav="Produto" class="panel">
+      <h2>Produto</h2>
+      <div id="rdp-cad"></div>
+    </section>
+    <section data-nav="Onde procurar" class="panel">
+      <h2>Onde procurar</h2>
+      <div id="rdp-onde"></div>
+    </section>
+    <section data-nav="Preços" class="panel">
+      <h2>Preços</h2>
+      <div id="rdp-precos"></div>
+    </section>
+    <section data-nav="Histórico" class="panel">
+      <h2>Histórico</h2>
+      <div id="rdp-hist"></div>
+    </section>
+  </section>
+  <!-- ============ RADAR DE PREÇOS: COMPRAR OU ESPERAR ============ -->
+  <section role="tabpanel" id="p-rdcomp" hidden>
+    <div class="block-title"><span class="num">02</span><div><h1>Comprar ou esperar</h1><p class="desc">Se o preço de hoje é bom, se vale mais pagar à vista ou parcelado, quando o dinheiro fica pronto e, ao comprar, levar o produto para o Plano futuro.</p></div></div>
+    <div id="rdc-sel"></div>
+    <section data-nav="Preço de hoje" class="panel">
+      <h2>Preço de hoje</h2>
+      <div id="rdc-hoje"></div>
+    </section>
+    <section data-nav="À vista ou parcelado" class="panel">
+      <h2>À vista ou parcelado</h2>
+      <div id="rdc-pz"></div>
+    </section>
+    <section data-nav="Quando consigo comprar" class="panel">
+      <h2>Quando consigo comprar</h2>
+      <div id="rdc-qdo"></div>
+    </section>
+    <section data-nav="Comprei" class="panel">
+      <h2>Comprei</h2>
+      <div id="rdc-comprei"></div>
     </section>
   </section>
   <section role="tabpanel" id="p-leia" hidden>
@@ -3155,7 +3251,7 @@ ul.ng-acordo li { margin-bottom: 4px; }
     return new Promise(resolve => { const { data } = sb.auth.onAuthStateChange(async (ev) => { if (ev !== 'PASSWORD_RECOVERY') return; const s = prompt('Digite a nova senha (mínimo 8 caracteres):'); if (s && s.length >= 8) { const { error } = await sb.auth.updateUser({ password: s }); alert(error ? 'Não deu para trocar a senha: ' + error.message : 'Senha trocada.'); } }); resolve(data); });
   }
   // ---------- rodapé: compartilhar, administração e sair ----------
-  const SITE_V = 128;
+  const SITE_V = 129;
   const escH = v => String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const dataBR = v => v ? new Date(v).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' }) : '–';
   const css2 = `.side-foot .r{flex-wrap:wrap}.side-foot .lg-acoes{margin-left:auto;display:inline-flex;gap:10px}
@@ -5146,6 +5242,383 @@ document.addEventListener('click', e => {
   if (b.dataset.indniv) { I.nivel = b.dataset.indniv; save(); renderTab(); return; }
   if (b.dataset.indextra != null) { I.extras.push({ id: uid(), nome: 'Saúde (plano particular)', valor: 0 }); save(); renderTab(); return; }
   if (b.dataset.indexdel) { const x = I.extras.find(y => y.id === b.dataset.indexdel); if (x && confirmar(`Remover a linha "${x.nome}"?`)) { I.extras = I.extras.filter(y => y.id !== x.id); save(); renderTab(); } return; }
+});
+
+/* ---------- Radar de preços (state.radar) ---------- */
+// etapa 1: lista, alvo, preços lançados à mão, histórico, comprar ou esperar. A rotina diária (etapa 2) vai gravar em x.precos com fonte 'rotina'.
+const rdTx = (v, n) => String(v ?? '').replace(/\s+/g, ' ').trim().slice(0, n);
+const RD_SEMPRE = ['Amazon', 'Mercado Livre', 'Shopee'];
+const RD_DEPT = [
+  ['eletr', 'Eletrônicos e celulares', ['Magalu', 'Casas Bahia', 'Kabum', 'Fast Shop', 'Americanas', 'Carrefour', 'Samsung', 'Apple']],
+  ['games', 'Games', ['Kabum', 'Magalu', 'Casas Bahia', 'Nuuvem', 'Fast Shop', 'Americanas']],
+  ['info', 'Informática', ['Kabum', 'Pichau', 'Terabyte', 'Magalu', 'Dell', 'Lenovo']],
+  ['eletro', 'Eletrodomésticos', ['Magalu', 'Casas Bahia', 'Fast Shop', 'Carrefour', 'Brastemp', 'Electrolux']],
+  ['casa', 'Casa e móveis', ['Tok&Stok', 'Mobly', 'MadeiraMadeira', 'Leroy Merlin', 'Camicado', 'Magalu']],
+  ['moda', 'Roupas e calçados', ['Renner', 'C&A', 'Riachuelo', 'Zara', 'Dafiti', 'Netshoes']],
+  ['esporte', 'Esporte', ['Centauro', 'Decathlon', 'Netshoes', 'Nike', 'Adidas']],
+  ['beleza', 'Beleza e saúde', ['Sephora', 'Beleza na Web', 'Época Cosméticos', 'Drogasil', 'Drogaria São Paulo']],
+  ['bebe', 'Bebês e crianças', ['Ri Happy', 'PBKids', 'Magalu', 'Casas Bahia']],
+  ['pet', 'Pet', ['Petz', 'Cobasi', 'Petlove']],
+  ['livros', 'Livros e papelaria', ['Estante Virtual', 'Livraria da Travessa', 'Kalunga']],
+  ['mercado', 'Mercado e bebidas', ['Carrefour', 'Pão de Açúcar', 'Assaí', 'Evino', 'Wine']],
+  ['auto', 'Carros e motos', ['Webmotors', 'OLX', 'iCarros', 'Mobiauto']],
+  ['imovel', 'Imóveis', ['Zap Imóveis', 'Viva Real', 'QuintoAndar', 'OLX']],
+  ['viagem', 'Viagens e passagens', ['Google Voos', 'Decolar', 'LATAM', 'GOL', 'Azul', 'Booking']],
+  ['outro', 'Outros', ['Magalu', 'Casas Bahia', 'Americanas', 'Carrefour']]
+];
+const RD_DEPTO = Object.fromEntries(RD_DEPT.map(d => [d[0], d]));
+const RD_PRIO = { alta: 'Alta', media: 'Média', baixa: 'Baixa' };
+const RD_ST = { vig: 'Vigiando', comp: 'Comprado', desist: 'Desisti' };
+const RD_PERTO_MAX = 3; // quantos produtos podem ser vigiados de perto (a cada ~3 horas, na etapa 2)
+const RD_FOTO_MAX = 3;
+const rdLojasDept = k => RD_SEMPRE.concat((RD_DEPTO[k] || RD_DEPTO.outro)[2]);
+const rdDia = d => String(d || '').slice(0, 10);
+const rdBrd = d => { const s = rdDia(d); return /^\d{4}-\d{2}-\d{2}$/.test(s) ? `${s.slice(8, 10)}/${s.slice(5, 7)}/${s.slice(0, 4)}` : '—'; };
+const rdHoje = () => { const d = new Date(); return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`; };
+const rdNum = v => v === '' || v == null || !isFinite(+v) ? null : Math.max(0, +v);
+const rdUrl = u => { const s = String(u || '').trim().slice(0, 600); return /^https?:\/\/[^\s]+$/i.test(s) ? s : ''; };
+function rdNormItem(x) {
+  x.id = String(x.id || uid()); x.nome = rdTx(x.nome, 80) || 'Produto'; x.termo = rdTx(x.termo, 200);
+  if (!RD_DEPTO[x.dept]) x.dept = 'outro';
+  x.links = Array.isArray(x.links) ? x.links.map(l => ({ id: String((l && l.id) || uid()), url: rdUrl(l && l.url) })).filter(l => l.url).slice(0, 6) : [];
+  x.lojasModo = x.lojasModo === 'esp' ? 'esp' : 'todas';
+  x.lojas = Array.isArray(x.lojas) ? x.lojas.map(l => rdTx(l, 40)).filter(Boolean).slice(0, 20) : [];
+  x.cond = ['novo', 'usado', 'ambos'].includes(x.cond) ? x.cond : 'novo';
+  x.alvo = rdNum(x.alvo); x.ate = /^\d{4}-\d{2}$/.test(x.ate || '') ? x.ate : '';
+  x.prio = RD_PRIO[x.prio] ? x.prio : 'media'; x.st = RD_ST[x.st] ? x.st : 'vig'; x.perto = !!x.perto;
+  x.local = rdTx(x.local, 80);
+  x.precos = Array.isArray(x.precos) ? x.precos.filter(p => p && typeof p === 'object' && /^\d{4}-\d{2}-\d{2}/.test(p.d || '') && rdNum(p.v) != null).map(p => ({
+    id: String(p.id || uid()), d: String(p.d).slice(0, 16), loja: rdTx(p.loja, 40) || 'Loja', v: rdNum(p.v), pz: rdNum(p.pz), n: Math.min(48, Math.max(0, Math.round(+p.n || 0))),
+    frete: rdNum(p.frete), url: rdUrl(p.url), fonte: p.fonte === 'rotina' ? 'rotina' : 'manual', est: p.est === false ? false : true })).slice(-400) : [];
+  x.guardado = rdNum(x.guardado); x.porMes = rdNum(x.porMes);
+  x.pz = x.pz && typeof x.pz === 'object' ? { vista: rdNum(x.pz.vista), prazo: rdNum(x.pz.prazo), n: x.pz.n ? Math.min(48, Math.max(1, Math.round(+x.pz.n))) : null } : { vista: null, prazo: null, n: null };
+  x.pago = x.pago && typeof x.pago === 'object' && rdNum(x.pago.v) != null ? { v: rdNum(x.pago.v), d: /^\d{4}-\d{2}/.test(x.pago.d || '') ? String(x.pago.d).slice(0, 7) : mKey(HOJE_IDX), forma: x.pago.forma === 'parc' ? 'parc' : 'vista', n: Math.min(48, Math.max(1, Math.round(+x.pago.n || 1))), loja: rdTx(x.pago.loja, 40), compraId: String(x.pago.compraId || '') } : null;
+  x.nFotos = Math.min(RD_FOTO_MAX, Math.max(0, Math.round(+x.nFotos || 0)));
+  x.criado = /^\d{4}-\d{2}-\d{2}/.test(x.criado || '') ? String(x.criado).slice(0, 10) : rdHoje();
+  return x;
+}
+function rdNormalizar(s) {
+  if (!s.radar || typeof s.radar !== 'object' || Array.isArray(s.radar)) s.radar = {};
+  const v = s.radar; if (!Array.isArray(v.itens)) v.itens = []; v.itens = v.itens.filter(x => x && typeof x === 'object'); v.itens.forEach(rdNormItem);
+  if (typeof v.sel !== 'string') v.sel = '';
+  const L = v.local && typeof v.local === 'object' ? v.local : {};
+  v.local = { modo: L.modo === 'cidade' ? 'cidade' : 'geo', cidade: rdTx(L.cidade, 80), lat: isFinite(+L.lat) && L.lat != null && L.lat !== '' ? Math.round(+L.lat * 100) / 100 : null, lon: isFinite(+L.lon) && L.lon != null && L.lon !== '' ? Math.round(+L.lon * 100) / 100 : null, em: typeof L.em === 'string' ? L.em.slice(0, 25) : '' };
+}
+const rdL = () => ((state.radar || {}).itens || []);
+const rdAcha = id => rdL().find(x => x.id === id);
+const rdSel = () => { const L = rdL(); return L.find(x => x.id === state.radar.sel) || L.find(x => x.st === 'vig') || L[0] || null; };
+const rdEf = p => p.v + (p.frete || 0);
+// melhor preço "de agora": o último preço de cada loja nos 30 dias antes do preço mais recente; o menor deles
+function rdAtual(x) {
+  const P = x.precos.filter(p => p.est !== false); if (!P.length) return null;
+  const ult = P.reduce((m, p) => p.d > m ? p.d : m, ''), lim = new Date(Date.parse(rdDia(ult)) - 30 * 864e5).toISOString().slice(0, 10), por = {};
+  P.filter(p => rdDia(p.d) >= lim).forEach(p => { const k = p.loja.toLowerCase(); if (!por[k] || p.d > por[k].d) por[k] = p; });
+  const best = Object.values(por).sort((a, b) => rdEf(a) - rdEf(b))[0];
+  return best ? { p: best, v: rdEf(best), lojas: Object.keys(por).length } : null;
+}
+// menor preço de cada dia
+function rdSerie(x) {
+  const m = {}; x.precos.forEach(p => { const d = rdDia(p.d), v = rdEf(p); if (m[d] == null || v < m[d]) m[d] = v; });
+  return Object.keys(m).sort().map(d => ({ d, v: m[d] }));
+}
+function rdStats(x) {
+  const S = rdSerie(x); if (!S.length) return null;
+  const vs = S.map(s => s.v), mn = Math.min(...vs), mx = Math.max(...vs), med = vs.reduce((t, v) => t + v, 0) / vs.length, srt = vs.slice().sort((a, b) => a - b);
+  const q = f => srt[Math.min(srt.length - 1, Math.floor(f * (srt.length - 1)))];
+  return { S, mn, mx, med, p25: q(0.25), p75: q(0.75), n: S.length, ini: S[0], minD: S.find(s => s.v === mn).d };
+}
+// selo do dia contra o próprio histórico, como o "preço baixo / normal / alto" do Google Voos
+function rdSelo(x) {
+  const A = rdAtual(x), E = rdStats(x);
+  if (!A) return { k: 'sem', t: 'sem preço', c: '' };
+  if (!E || E.n < 3) return { k: 'pouco', t: 'poucos dados', c: '', d: 'Com 3 dias ou mais de preço o selo diz se está baixo, normal ou alto.' };
+  if (A.v <= E.mn * 1.005) return { k: 'menor', t: 'menor preço visto', c: 'best', d: `o menor desde ${rdBrd(E.ini.d)}` };
+  if (A.v <= E.p25) return { k: 'baixo', t: 'preço baixo', c: 'best', d: 'entre os 25% mais baratos do histórico' };
+  if (A.v >= E.p75 && E.p75 > E.p25) return { k: 'alto', t: 'preço alto', c: 'amber', d: 'entre os 25% mais caros do histórico' };
+  return { k: 'normal', t: 'preço normal', c: 'info', d: 'dentro da faixa comum do histórico' };
+}
+const rdNoAlvo = x => { const A = rdAtual(x); return !!(A && x.alvo != null && x.alvo > 0 && A.v <= x.alvo); };
+const rdFalta = x => { const A = rdAtual(x); return A && x.alvo > 0 ? (A.v - x.alvo) / x.alvo : null; };
+const rdEconomia = x => { if (!x.pago) return 0; const E = rdStats(x); return E ? E.ini.v - x.pago.v : 0; };
+// IR da renda fixa pelo prazo (meses)
+const rdIR = m => m <= 6 ? 0.225 : m <= 12 ? 0.2 : m <= 24 ? 0.175 : 0.15;
+function rdCdiAA() { try { return rates(HOJE_IDX).cdi; } catch (e) { return 0.13; } }
+// à vista x parcelado: valor de hoje das parcelas, descontadas pelo CDI líquido de IR (1ª parcela em 30 dias)
+function rdPz(vista, prazo, n) {
+  if (!(vista > 0) || !(prazo > 0) || !(n >= 1)) return null;
+  const aa = rdCdiAA() * (1 - rdIR(n)), i = Math.pow(1 + aa, 1 / 12) - 1, parc = prazo / n;
+  let vp = 0; for (let k = 1; k <= n; k++) vp += parc / Math.pow(1 + i, k);
+  const juros = prazo > vista ? Math.pow(prazo / vista, 1 / Math.max(1, n)) - 1 : 0; // aproximado
+  return { aa, i, parc, vp, ganho: vp - vista, rende: prazo - vp, juros };
+}
+// sobra típica do mês, pelo orçamento do Plano futuro
+function rdSobra() { try { const pm = projMes(mKey(HOJE_IDX)); return Math.max(0, pm.liq - pm.custos); } catch (e) { return 0; } }
+function rdQdo(x) {
+  const A = rdAtual(x), alvo = x.alvo > 0 ? x.alvo : A ? A.v : null; if (!alvo) return null;
+  const g = x.guardado || 0, sob = rdSobra(), pm = x.porMes != null ? x.porMes : Math.round(sob * 0.2 / 50) * 50, falta = Math.max(0, alvo - g);
+  const meses = falta <= 0 ? 0 : pm > 0 ? Math.ceil(falta / pm) : null;
+  return { alvo, g, sob, pm, falta, meses, mes: meses == null ? null : HOJE_IDX + meses, porMesAuto: x.porMes == null };
+}
+// datas de promoção dos próximos 12 meses (aproximadas)
+function rdPromos() {
+  const d0 = new Date(), out = [], add = (dt, n, t) => { if (dt >= new Date(d0.getFullYear(), d0.getMonth(), d0.getDate()) && dt - d0 < 366 * 864e5) out.push({ dt, n, t }); };
+  [d0.getFullYear(), d0.getFullYear() + 1].forEach(y => {
+    const bf = new Date(y, 10, 30); while (bf.getDay() !== 5) bf.setDate(bf.getDate() - 1);
+    add(bf, 'Black Friday', 'a maior do ano; confira o histórico para não cair em desconto de mentira');
+    add(new Date(y, 2, 15), 'Dia do Consumidor', 'semana de ofertas em março');
+    add(new Date(y, 6, 10), 'Prime Day (Amazon)', 'por volta de julho, só para assinantes Prime');
+    add(new Date(y, 11, 26), 'Queima de Natal e virada do ano', 'liquidações de fim de ano');
+    add(new Date(y, 5, 12), 'Dia dos Namorados', 'eletrônicos, perfumes e moda');
+    add(new Date(y, 8, 15), 'Dia do Cliente', 'por volta de 15 de setembro');
+  });
+  return out.sort((a, b) => a.dt - b.dt).slice(0, 4);
+}
+function rdResumoMod() {
+  const L = rdL(), V = L.filter(x => x.st === 'vig'); if (!L.length) return 'Cadastre o que quer comprar';
+  const n = V.filter(rdNoAlvo).length; return `<b>${V.length}</b> ${V.length === 1 ? 'produto' : 'produtos'} no radar${n ? ` · <b>${n}</b> no alvo` : ''}`;
+}
+
+/* ---------- fotos (documento próprio, fora do estado) ---------- */
+const rdFotos = {}, rdFotoLendo = {};
+function rdFotoCarregar(id) {
+  if (!db || rdFotos[id] || rdFotoLendo[id]) return; rdFotoLendo[id] = true;
+  pdoc('painel/radar-foto-' + id).get().then(d => { rdFotos[id] = d && d.exists && Array.isArray(d.data().fotos) ? d.data().fotos.filter(f => typeof f === 'string' && f.startsWith('data:image/')).slice(0, RD_FOTO_MAX) : []; rdFotoLendo[id] = false; if (tab === 'rdprod') renderRdProd(); }).catch(() => { rdFotos[id] = []; rdFotoLendo[id] = false; });
+}
+function rdFotoSalvar(x) {
+  const F = rdFotos[x.id] || []; x.nFotos = F.length; save();
+  if (!db) return Promise.resolve();
+  return pdoc('painel/radar-foto-' + x.id).set({ fotos: F, em: new Date().toISOString() }).catch(er => ngToast('Não consegui guardar a foto' + (er && er.message ? ': ' + er.message : '.')));
+}
+function rdFotoReduzir(file) {
+  return new Promise((ok, erro) => {
+    const r = new FileReader(); r.onerror = () => erro(new Error('não consegui ler o arquivo'));
+    r.onload = () => { const im = new Image(); im.onerror = () => erro(new Error('formato de imagem não suportado'));
+      im.onload = () => { const M = 640, k = Math.min(1, M / Math.max(im.width, im.height)), c = document.createElement('canvas'); c.width = Math.round(im.width * k); c.height = Math.round(im.height * k);
+        const g = c.getContext('2d'); g.fillStyle = '#fff'; g.fillRect(0, 0, c.width, c.height); g.drawImage(im, 0, 0, c.width, c.height); ok(c.toDataURL('image/jpeg', 0.72)); };
+      im.src = r.result; };
+    r.readAsDataURL(file);
+  });
+}
+
+/* ---------- gráfico do histórico ---------- */
+function rdGrafico(x) {
+  const E = rdStats(x); if (!E || E.n < 2) return '<p class="hint">O gráfico aparece com preços de dois dias diferentes ou mais.</p>';
+  const W = 640, H = 210, pl = 64, pr = 14, pt = 14, pb = 26, S = E.S, t0 = Date.parse(S[0].d), t1 = Date.parse(S[S.length - 1].d), dt = Math.max(1, t1 - t0);
+  let lo = Math.min(E.mn, x.alvo > 0 ? x.alvo : E.mn), hi = Math.max(E.mx, x.alvo > 0 ? x.alvo : E.mx); const pad = (hi - lo) * 0.12 || hi * 0.05 || 1; lo = Math.max(0, lo - pad); hi += pad;
+  const X = d => pl + (Date.parse(d) - t0) / dt * (W - pl - pr), Y = v => pt + (1 - (v - lo) / (hi - lo)) * (H - pt - pb);
+  const pts = S.map(s => `${X(s.d).toFixed(1)},${Y(s.v).toFixed(1)}`).join(' ');
+  const ticks = [lo + (hi - lo) * 0.1, (lo + hi) / 2, hi - (hi - lo) * 0.1];
+  return `<svg class="rd-graf" viewBox="0 0 ${W} ${H}" role="img" aria-label="Histórico do menor preço por dia de ${esc(x.nome)}">
+    ${ticks.map(v => `<line x1="${pl}" x2="${W - pr}" y1="${Y(v).toFixed(1)}" y2="${Y(v).toFixed(1)}" class="rd-gl"/><text x="${pl - 6}" y="${(Y(v) + 4).toFixed(1)}" text-anchor="end" class="rd-gt">${fm(v)}</text>`).join('')}
+    ${x.alvo > 0 ? `<line x1="${pl}" x2="${W - pr}" y1="${Y(x.alvo).toFixed(1)}" y2="${Y(x.alvo).toFixed(1)}" class="rd-alvo"/><text x="${W - pr}" y="${(Y(x.alvo) - 5).toFixed(1)}" text-anchor="end" class="rd-at">alvo ${fm(x.alvo)}</text>` : ''}
+    <polyline points="${pts}" class="rd-ln"/>
+    ${S.map(s => `<circle cx="${X(s.d).toFixed(1)}" cy="${Y(s.v).toFixed(1)}" r="${s.v === E.mn ? 4.5 : 3}" class="rd-pt${s.v === E.mn ? ' min' : ''}"><title>${rdBrd(s.d)}: ${fm2(s.v)}</title></circle>`).join('')}
+    <text x="${pl}" y="${H - 6}" class="rd-gt">${rdBrd(S[0].d)}</text><text x="${W - pr}" y="${H - 6}" text-anchor="end" class="rd-gt">${rdBrd(S[S.length - 1].d)}</text>
+  </svg>`;
+}
+
+/* ---------- telas ---------- */
+const rdSeloHtml = x => { const s = rdSelo(x); return s.k === 'sem' ? '<span class="subdet">sem preço</span>' : `<span class="chip ${s.c}"${s.d ? ` title="${esc(s.d)}"` : ''}>${s.t}</span>`; };
+const rdSelHtml = (cls = '') => { const L = rdL(), x = rdSel(); return L.length ? `<div class="ng-top ${cls}"><label>Produto<select data-rdsel aria-label="Escolher produto">${L.map(y => `<option value="${y.id}"${x && y.id === x.id ? ' selected' : ''}>${esc(y.nome)}${y.st !== 'vig' ? ' · ' + RD_ST[y.st].toLowerCase() : ''}</option>`).join('')}</select></label><button type="button" class="btn tiny" data-rdadd="1">+ Produto</button></div>` : ''; };
+const rdVazio = () => `<p class="hint">Nenhum produto ainda. Cadastre o que você quer comprar e o preço que aceita pagar. <button type="button" class="btn tiny" data-rdadd="1">+ Produto</button></p>`;
+function renderRdVg() {
+  const L = rdL(), V = L.filter(x => x.st === 'vig'), noAlvo = V.filter(rdNoAlvo), ano = String(new Date().getFullYear());
+  const econ = L.filter(x => x.st === 'comp' && x.pago && String(x.pago.d).startsWith(ano)).reduce((t, x) => t + rdEconomia(x), 0);
+  const tot = V.reduce((t, x) => { const A = rdAtual(x); return t + (A ? A.v : 0); }, 0);
+  kpis($('kpi-rdv'), [
+    ['No radar', String(V.length), V.length ? `${V.filter(x => x.perto).length ? V.filter(x => x.perto).length + ' de perto · ' : ''}${L.filter(x => x.st === 'comp').length} já ${L.filter(x => x.st === 'comp').length === 1 ? 'comprado' : 'comprados'}` : 'nenhum produto vigiado'],
+    ['No alvo agora', String(noAlvo.length), noAlvo.length ? noAlvo.map(x => esc(x.nome)).slice(0, 3).join(', ') : 'nenhum chegou no preço que você quer'],
+    ['A lista custa hoje', fm(tot), 'soma do melhor preço de cada produto vigiado'],
+    ['Economizei em ' + ano, fm(Math.max(0, econ)), 'primeiro preço visto menos o que você pagou']
+  ]);
+  const ord = V.slice().sort((a, b) => (rdNoAlvo(b) - rdNoAlvo(a)) || ((rdFalta(a) ?? 9) - (rdFalta(b) ?? 9))).concat(L.filter(x => x.st !== 'vig'));
+  $('tbl-rdv').innerHTML = !L.length ? `<tbody><tr><td>${rdVazio()}</td></tr></tbody>` : `<thead><tr><th>Produto</th><th>Melhor preço agora</th><th>Alvo</th><th>Falta</th><th>Selo</th><th>Situação</th></tr></thead><tbody>${ord.map(x => { const vig = x.st === 'vig', A = rdAtual(x), f = vig ? rdFalta(x) : null;
+    return `<tr${rdNoAlvo(x) && x.st === 'vig' ? ' class="rd-hit"' : ''}><td class="name"><a href="#" data-rdabre="${x.id}">${esc(x.nome)}</a>${x.perto ? ' <span class="chip amber" title="Vigiado de perto: a rotina olha a cada 3 horas">de perto</span>' : ''}<small class="subdet rd-dep">${esc((RD_DEPTO[x.dept] || RD_DEPTO.outro)[1])}</small></td>
+      <td data-l="Melhor preço" class="ng-num">${A ? fm2(A.v) : '—'}<small>${A ? esc(A.p.loja) + ' · ' + rdBrd(A.p.d) : 'lance um preço'}</small></td>
+      <td data-l="Alvo" class="ng-num">${x.alvo > 0 ? fm(x.alvo) : '—'}</td>
+      <td data-l="Falta" class="ng-num ${f != null && f <= 0 ? 'pos' : ''}">${f == null ? '—' : f <= 0 ? 'no alvo' : pct(f, 0) + '<small>' + fm(A.v - x.alvo) + '</small>'}</td>
+      <td data-l="Selo">${vig ? rdSeloHtml(x) : '—'}</td>
+      <td data-l="Situação">${x.st === 'comp' && x.pago ? `Comprado por ${fm(x.pago.v)}` : RD_ST[x.st]}${x.ate && x.st === 'vig' ? `<small class="subdet rd-dep">até ${mLabel(mIndex(x.ate))}</small>` : ''}</td></tr>`; }).join('')}</tbody>`;
+  const m = MODS.find(y => y.id === 'preco'), lk = [['rdprod', 'Meus produtos', 'O cadastro, onde procurar, os preços encontrados e o histórico com o seu alvo.'], ['rdcomp', 'Comprar ou esperar', 'Se o preço de hoje é bom, à vista ou parcelado, quando o dinheiro fica pronto e levar a compra ao Plano futuro.']];
+  $('rdv-links').innerHTML = lk.map(([t, n, d]) => `<button type="button" class="md-card" style="--mc:${m.cor}" data-tab="${t}"><div class="md-img">${MOD_SVG.preco}</div><h3>${esc(n)}</h3><p>${esc(d)}</p></button>`).join('');
+}
+function renderRdProd() {
+  const x = rdSel();
+  if (!x) { $('rdp-cad').innerHTML = rdVazio(); ['rdp-onde', 'rdp-precos', 'rdp-hist'].forEach(i => { $(i).innerHTML = ''; }); return; }
+  const b = k => `${x.id}:${k}`, nPerto = rdL().filter(y => y.perto && y.st === 'vig' && y.id !== x.id).length;
+  if (rdFotos[x.id] == null) rdFotoCarregar(x.id);
+  const F = rdFotos[x.id] || [];
+  $('rdp-cad').innerHTML = rdSelHtml() + `<div class="ng-form">
+      <label>Nome<input type="text" data-rdf="${b('nome')}" value="${esc(x.nome)}" maxlength="80"></label>
+      <label>Departamento<select data-rdf="${b('dept')}">${RD_DEPT.map(d => `<option value="${d[0]}"${x.dept === d[0] ? ' selected' : ''}>${esc(d[1])}</option>`).join('')}</select></label>
+      <label>Preço que aceito pagar (alvo)<input type="number" min="0" step="10" data-rdf="${b('alvo')}" value="${x.alvo ?? ''}" placeholder="R$"></label>
+      <label>Quero comprar até<input type="month" data-rdf="${b('ate')}" value="${esc(x.ate)}"></label>
+      <label>Prioridade<select data-rdf="${b('prio')}">${Object.entries(RD_PRIO).map(([k, n]) => `<option value="${k}"${x.prio === k ? ' selected' : ''}>${n}</option>`).join('')}</select></label>
+      <label>Situação<select data-rdf="${b('st')}">${Object.entries(RD_ST).map(([k, n]) => `<option value="${k}"${x.st === k ? ' selected' : ''}>${n}</option>`).join('')}</select></label>
+      <label>Novo ou usado<select data-rdf="${b('cond')}">${[['novo', 'Só novo'], ['usado', 'Só usado'], ['ambos', 'Novo ou usado']].map(([k, n]) => `<option value="${k}"${x.cond === k ? ' selected' : ''}>${n}</option>`).join('')}</select></label>
+      <label class="inline rd-perto"><input type="checkbox" data-rdf="${b('perto')}"${x.perto ? ' checked' : ''}${!x.perto && nPerto >= RD_PERTO_MAX ? ' disabled' : ''}> <span>Vigiar de perto</span></label>
+    </div>
+    <label class="rd-termo">Descrição para a busca<textarea rows="2" maxlength="200" data-rdf="${b('termo')}" placeholder="Ex.: Nintendo Switch 2, console, versão brasileira, com Mario Kart World">${esc(x.termo)}</textarea></label>
+    <p class="subdet">Modelo, capacidade, cor, versão: quanto mais exato, menos chance de a pesquisa achar o produto errado. Vigiar de perto: na etapa 2 a rotina olha este produto a cada 3 horas, para pegar promoções relâmpago. Até ${RD_PERTO_MAX} produtos.${!x.perto && nPerto >= RD_PERTO_MAX ? ' Você já tem ' + RD_PERTO_MAX + '; desmarque um para marcar este.' : ''}</p>
+    <h3 class="rd-h3">Fotos</h3>
+    <div class="rd-fotos">${F.map((f, k) => `<figure class="rd-foto"><img src="${f}" alt="Foto ${k + 1} de ${esc(x.nome)}"><button type="button" class="btn danger tiny" data-rdfotodel="${x.id}:${k}" aria-label="Apagar foto ${k + 1}">×</button></figure>`).join('')}
+      ${F.length < RD_FOTO_MAX ? `<label class="rd-fotoadd"><input type="file" accept="image/*" data-rdfoto="${x.id}" hidden><span>+ Foto</span></label>` : ''}</div>
+    <p class="subdet">Uma foto da caixa, da etiqueta ou do anúncio ajuda a pesquisa a achar o modelo certo. Até ${RD_FOTO_MAX}, reduzidas para ocupar pouco espaço.</p>
+    <div class="row" style="margin-top:8px;gap:6px"><button type="button" class="btn ghost tiny" data-rddup="${x.id}">Duplicar</button><button type="button" class="btn danger tiny" data-rddel="${x.id}">Remover produto</button></div>`;
+  // onde procurar
+  const R = state.radar.local, lojas = rdLojasDept(x.dept), esp = x.lojasModo === 'esp';
+  const locTxt = R.modo === 'cidade' ? (R.cidade ? esc(R.cidade) : 'escolha a cidade ou o CEP') : R.lat != null ? `localização do aparelho (${num(R.lat, 2)}, ${num(R.lon, 2)})${R.em ? ', de ' + rdBrd(R.em) : ''}` : 'localização do aparelho, ainda não lida';
+  $('rdp-onde').innerHTML = `<h3 class="rd-h3">Links do produto</h3>
+    ${x.links.length ? `<ul class="rd-links">${x.links.map(l => `<li><a href="${esc(l.url)}" target="_blank" rel="noopener noreferrer">${esc(l.url.replace(/^https?:\/\/(www\.)?/, '').slice(0, 70))}</a> <button type="button" class="btn ghost tiny" data-rdlinkdel="${x.id}:${l.id}">tirar</button></li>`).join('')}</ul>` : '<p class="subdet">Nenhum link. Sem link, a pesquisa procura pelo nome e pela descrição.</p>'}
+    ${x.links.length < 6 ? `<div class="ng-top"><label class="rd-wide">Colar o link de uma loja<input type="url" id="rd-link-in" placeholder="https://www.amazon.com.br/..." maxlength="600"></label><button type="button" class="btn tiny" data-rdlinkadd="${x.id}">Adicionar link</button></div>` : ''}
+    <h3 class="rd-h3">Lojas</h3>
+    <div class="seg" role="group" aria-label="Em quais lojas procurar"><button type="button" data-rdlojas="${x.id}:todas" aria-pressed="${!esp}">Todas as principais</button><button type="button" data-rdlojas="${x.id}:esp" aria-pressed="${esp}">Só as que eu escolher</button></div>
+    ${esp ? `<div class="rd-lojas">${lojas.concat(x.lojas.filter(l => !lojas.includes(l))).map(l => `<label class="inline"><input type="checkbox" data-rdloja="${x.id}" value="${esc(l)}"${x.lojas.includes(l) ? ' checked' : ''}> <span>${esc(l)}</span></label>`).join('')}</div>
+      <div class="ng-top"><label>Outra loja<input type="text" id="rd-loja-in" maxlength="40" placeholder="Nome da loja"></label><button type="button" class="btn tiny ghost" data-rdlojaadd="${x.id}">Incluir</button></div>`
+      : `<p class="subdet">Procura em ${lojas.map(esc).join(', ')} e no que mais aparecer na pesquisa.</p>`}
+    <h3 class="rd-h3">Local</h3>
+    <div class="ng-form">
+      <label>Local padrão (todos os produtos)<select data-rdlocmodo><option value="geo"${R.modo === 'geo' ? ' selected' : ''}>Localização do aparelho</option><option value="cidade"${R.modo === 'cidade' ? ' selected' : ''}>Escolher cidade ou CEP</option></select></label>
+      ${R.modo === 'cidade' ? `<label>Cidade ou CEP<input type="text" data-rdloccid maxlength="80" value="${esc(R.cidade)}" placeholder="Ex.: São Paulo, SP"></label>` : `<label>&nbsp;<button type="button" class="btn tiny" data-rdgeo="1">Ler a localização agora</button></label>`}
+      <label>Só para este produto<input type="text" data-rdf="${b('local')}" maxlength="80" value="${esc(x.local)}" placeholder="vazio = local padrão"></label>
+    </div>
+    <p class="subdet">Agora: ${locTxt}. O local muda frete e prazo, e às vezes o preço. Sem local, a pesquisa usa São Paulo.</p><div id="rd-geo-msg"></div>`;
+  // preços
+  const ls = rdLojasDept(x.dept), P = x.precos.slice().sort((a, c) => c.d.localeCompare(a.d)), A = rdAtual(x);
+  $('rdp-precos').innerHTML = `<div class="ng-form rd-novo">
+      <label>Data<input type="date" id="rd-p-d" value="${rdHoje()}"></label>
+      <label>Loja<input type="text" id="rd-p-loja" list="rd-lojas-dl" maxlength="40" placeholder="Ex.: Amazon"></label>
+      <label>À vista (Pix ou boleto)<input type="number" id="rd-p-v" min="0" step="0.01" placeholder="R$"></label>
+      <label>Frete<input type="number" id="rd-p-frete" min="0" step="0.01" placeholder="0 = grátis"></label>
+      <label>A prazo, total<input type="number" id="rd-p-pz" min="0" step="0.01" placeholder="R$ (opcional)"></label>
+      <label>Em quantas vezes<input type="number" id="rd-p-n" min="1" max="48" step="1" placeholder="Ex.: 10"></label>
+      <label class="rd-wide2">Link do anúncio<input type="url" id="rd-p-url" maxlength="600" placeholder="https://… (opcional)"></label>
+      <label>&nbsp;<button type="button" class="btn tiny" data-rdpadd="${x.id}">Lançar preço</button></label>
+    </div><datalist id="rd-lojas-dl">${ls.map(l => `<option value="${esc(l)}"></option>`).join('')}</datalist>
+    ${P.length ? `<div class="tscroll"><table class="rd-ptbl"><thead><tr><th>Data</th><th>Loja</th><th>À vista + frete</th><th>A prazo</th><th>De onde</th><th></th></tr></thead><tbody>${P.map(p => `<tr${A && A.p.id === p.id ? ' class="rd-hit"' : ''}><td data-l="Data">${rdBrd(p.d)}</td><td class="name" data-l="Loja">${p.url ? `<a href="${esc(p.url)}" target="_blank" rel="noopener noreferrer">${esc(p.loja)}</a>` : esc(p.loja)}${p.est === false ? ' <span class="subdet">sem estoque</span>' : ''}</td>
+      <td class="ng-num" data-l="À vista">${fm2(rdEf(p))}<small>${p.frete ? fm2(p.v) + ' + ' + fm2(p.frete) + ' de frete' : 'frete grátis ou não informado'}</small></td>
+      <td class="ng-num" data-l="A prazo">${p.pz ? fm2(p.pz) + `<small>${p.n ? p.n + 'x de ' + fm2(p.pz / p.n) : ''}</small>` : '—'}</td>
+      <td data-l="De onde">${p.fonte === 'rotina' ? '<span class="chip info">rotina</span>' : '<span class="subdet">você</span>'}</td>
+      <td><button type="button" class="btn ghost tiny" data-rdpdel="${x.id}:${p.id}">apagar</button></td></tr>`).join('')}</tbody></table></div>`
+      : '<p class="hint">Nenhum preço ainda. Lance o primeiro acima.</p>'}`;
+  // histórico
+  const E = rdStats(x), s = rdSelo(x);
+  $('rdp-hist').innerHTML = !E ? '<p class="hint">O histórico aparece depois do primeiro preço.</p>' : `<div class="kpis rd-k">${[
+      ['Agora', A ? fm2(A.v) : '—', A ? `${esc(A.p.loja)} · ${rdBrd(A.p.d)}` : ''], ['Menor visto', fm2(E.mn), rdBrd(E.minD)], ['Média', fm2(E.med), `${E.n} ${E.n > 1 ? 'dias' : 'dia'} com preço`], ['Maior visto', fm2(E.mx), 'desde ' + rdBrd(E.ini.d)]
+    ].map(([l, v, d]) => `<div class="kpi"><span class="l">${l}</span><span class="v">${v}</span><span class="d">${d}</span></div>`).join('')}</div>
+    <p>${rdSeloHtml(x)} ${s.d ? `<span class="subdet">${esc(s.d)}</span>` : ''}${x.alvo > 0 && A ? ` · ${A.v <= x.alvo ? '<b class="pos">chegou no seu alvo</b>' : `faltam ${fm(A.v - x.alvo)} (${pct((A.v - x.alvo) / x.alvo, 0)}) para o alvo`}` : ''}</p>
+    ${rdGrafico(x)}
+    <p class="subdet">Um ponto por dia: o menor preço à vista com frete entre as lojas. A linha tracejada é o seu alvo.</p>`;
+}
+function renderRdComp() {
+  const x = rdSel(); $('rdc-sel').innerHTML = rdSelHtml('rd-selbar');
+  if (!x) { $('rdc-sel').innerHTML = rdVazio(); ['rdc-hoje', 'rdc-pz', 'rdc-qdo', 'rdc-comprei'].forEach(i => { $(i).innerHTML = ''; }); return; }
+  const A = rdAtual(x), E = rdStats(x), s = rdSelo(x), PR = rdPromos(), b = k => `${x.id}:${k}`;
+  // preço de hoje
+  let ver; if (!A) ver = 'Lance um preço em Meus produtos para ter a primeira leitura.';
+  else if (rdNoAlvo(x)) ver = `<b class="pos">Está no seu alvo.</b> ${fm2(A.v)} em ${esc(A.p.loja)}, ${fm(x.alvo - A.v)} abaixo do que você aceitava pagar.`;
+  else if (s.k === 'menor' || s.k === 'baixo') ver = `<b>Bom momento, mas acima do alvo.</b> ${fm2(A.v)} é ${s.t}; o seu alvo de ${fm(x.alvo || 0)} ainda não apareceu${E && E.mn > (x.alvo || 0) && E.mn < A.v - 0.5 ? ` (o menor visto foi ${fm2(E.mn)})` : ''}.`;
+  else if (s.k === 'alto') ver = `<b>Melhor esperar.</b> ${fm2(A.v)} está entre os mais caros do histórico.`;
+  else ver = `${fm2(A.v)} em ${esc(A.p.loja)}. ${s.k === 'pouco' ? 'Ainda há poucos preços para comparar.' : 'Preço comum para este produto.'}`;
+  const prazo = x.ate ? mIndex(x.ate) - HOJE_IDX : null;
+  $('rdc-hoje').innerHTML = `<p class="rd-ver">${ver}</p>
+    ${prazo != null ? `<p class="subdet">${prazo < 0 ? 'A data que você marcou para comprar já passou.' : prazo === 0 ? 'Você marcou comprar ainda este mês.' : `Você quer comprar até ${mLabel(mIndex(x.ate))}: faltam ${prazo} ${prazo > 1 ? 'meses' : 'mês'}.`}</p>` : ''}
+    <h3 class="rd-h3">Próximas datas de promoção</h3><ul class="rd-promos">${PR.map(p => `<li><b>${p.dt.toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit', year: 'numeric' })}</b> ${esc(p.n)} <span class="subdet">${esc(p.t)}</span></li>`).join('')}</ul>
+    <p class="subdet">Datas aproximadas. Na Black Friday, compare com o histórico: se o preço subiu nas semanas anteriores, o desconto é de mentira.</p>`;
+  // à vista x parcelado
+  const ultPz = x.precos.filter(p => p.pz && p.n).sort((a, c) => c.d.localeCompare(a.d))[0];
+  const vista = x.pz.vista ?? (A ? A.v : null), przT = x.pz.prazo ?? (ultPz ? ultPz.pz + (ultPz.frete || 0) : vista), n = x.pz.n ?? (ultPz ? ultPz.n : 10), Z = rdPz(vista, przT, n);
+  $('rdc-pz').innerHTML = `<div class="ng-form">
+      <label>Preço à vista<input type="number" min="0" step="0.01" data-rdpz="${b('vista')}" value="${x.pz.vista ?? ''}" placeholder="${vista ? num(vista, 2) : 'R$'}"></label>
+      <label>Total a prazo<input type="number" min="0" step="0.01" data-rdpz="${b('prazo')}" value="${x.pz.prazo ?? ''}" placeholder="${przT ? num(przT, 2) : 'R$'}"></label>
+      <label>Parcelas<input type="number" min="1" max="48" step="1" data-rdpz="${b('n')}" value="${x.pz.n ?? ''}" placeholder="${n}"></label>
+    </div>
+    ${!Z ? '<p class="hint">Preencha o preço à vista e o total a prazo.</p>' : `<div class="kpis rd-k">${[
+      ['Parcela', fm2(Z.parc), `${n}x, a primeira em 30 dias`],
+      ['Parcelas em dinheiro de hoje', fm2(Z.vp), `descontadas pelo CDI líquido de ${pct(Z.aa, 1)} ao ano`],
+      [Z.ganho > 0 ? 'À vista economiza' : 'Parcelar economiza', fm2(Math.abs(Z.ganho)), Z.ganho > 0 ? 'comparado a parcelar e deixar o dinheiro rendendo' : 'deixando o dinheiro rendendo até cada parcela']
+    ].map(([l, v, d]) => `<div class="kpi"><span class="l">${l}</span><span class="v">${v}</span><span class="d">${d}</span></div>`).join('')}</div>
+    <p>${Z.ganho > 0.5 ? `<b>Pague à vista.</b> O desconto de ${fm2(przT - vista)} (${pct((przT - vista) / przT, 1)}) vale mais do que o rendimento de deixar o dinheiro aplicado até as parcelas.` : Z.ganho < -0.5 ? `<b>Parcele sem juros e deixe o dinheiro rendendo.</b> As ${n} parcelas valem ${fm2(Z.vp)} hoje, menos que os ${fm2(vista)} à vista.` : 'Dá praticamente no mesmo.'}${przT > vista && Z.juros > 0 ? ` <span class="subdet">O parcelado embute cerca de ${pct(Z.juros, 2)} ao mês.</span>` : ''}</p>`}
+    <p class="subdet">CDI do Focus de hoje, menos o IR de renda fixa pelo prazo das parcelas. Vale se o dinheiro estiver mesmo aplicado e se você não for usar o limite do cartão para outra coisa. Os campos em branco usam o último preço lançado.</p>`;
+  // quando consigo
+  const Q = rdQdo(x);
+  $('rdc-qdo').innerHTML = !Q ? '<p class="hint">Marque o alvo ou lance um preço para calcular.</p>' : `<div class="ng-form">
+      <label>Já guardei para isso<input type="number" min="0" step="50" data-rdf="${b('guardado')}" value="${x.guardado ?? ''}" placeholder="0"></label>
+      <label>Consigo guardar por mês<input type="number" min="0" step="50" data-rdf="${b('porMes')}" value="${x.porMes ?? ''}" placeholder="${Q.pm}"></label>
+    </div>
+    <p>${Q.meses === 0 ? `<b class="pos">Você já tem o dinheiro.</b> ${fm(Q.g)} guardados para ${fm(Q.alvo)}.` : Q.meses == null ? 'Informe quanto consegue guardar por mês.' : `Guardando <b>${fm(Q.pm)}</b> por mês, você junta os ${fm(Q.falta)} que faltam em <b>${Q.meses} ${Q.meses > 1 ? 'meses' : 'mês'}</b>, em <b>${mLabel(Q.mes)}</b>.${x.ate && Q.mes > mIndex(x.ate) ? ` <span class="neg">Depois da data que você marcou (${mLabel(mIndex(x.ate))}).</span>` : ''}`}</p>
+    <p class="subdet">Conta feita sobre ${x.alvo > 0 ? 'o seu alvo' : 'o melhor preço de agora'} (${fm(Q.alvo)}). ${Q.sob > 0 ? `A sobra típica do seu mês pelo Plano futuro é ${fm(Q.sob)}${Q.porMesAuto ? '; em branco, a sugestão é guardar 20% dela' : ''}.` : 'Monte o orçamento do Plano futuro para a sugestão usar a sua sobra do mês.'} Em vez de esperar, você também pode comprar e levar as parcelas ao plano em Comprei.</p>`;
+  // comprei
+  const C = x.pago, bem = C && C.compraId ? (state.compras || []).find(y => y.id === C.compraId) : null;
+  if (C) { const ec = rdEconomia(x);
+    $('rdc-comprei').innerHTML = `<p><b>Comprado</b> por ${fm2(C.v)}${C.loja ? ' em ' + esc(C.loja) : ''}, ${C.forma === 'parc' ? `em ${C.n}x de ${fm2(C.v / C.n)}` : 'à vista'}, em ${mLabel(mIndex(C.d))}.${ec > 0.5 ? ` <span class="pos">Economia de ${fm(ec)}</span> contra o primeiro preço visto.` : ''}</p>
+      <p class="subdet">${bem ? `Está em Bens e compromissos como "${esc(bem.nome)}" (${(state.plan.inc || []).includes(bem.id) ? 'Projeção real' : 'Só simulação'}). <a href="#" data-irtab="compras">Abrir</a>` : 'Não está em Bens e compromissos.'}</p>
+      <div class="row" style="gap:6px"><button type="button" class="btn ghost tiny" data-rddesfaz="${x.id}">Desfazer a compra</button></div>`; }
+  else { const v0 = A ? A.v : x.alvo || '';
+    $('rdc-comprei').innerHTML = `<p class="subdet">Registre aqui quando comprar: o produto sai do radar, a economia entra na conta e a compra pode ir para o Plano futuro.</p>
+      <div class="ng-form">
+        <label>Paguei<input type="number" min="0" step="0.01" id="rd-c-v" value="${v0 === '' ? '' : Math.round(v0 * 100) / 100}"></label>
+        <label>Loja<input type="text" id="rd-c-loja" maxlength="40" value="${A ? esc(A.p.loja) : ''}" list="rd-lojas-dl2"></label>
+        <label>Como<select id="rd-c-forma"><option value="vista">À vista</option><option value="parc">Parcelado sem juros</option></select></label>
+        <label>Parcelas<input type="number" id="rd-c-n" min="1" max="48" step="1" value="${n || 10}"></label>
+        <label>Mês da compra<input type="month" id="rd-c-mes" value="${mKey(HOJE_IDX)}"></label>
+        <label>No Plano futuro<select id="rd-c-uso"><option value="real">Projeção real</option><option value="sim">Só simulação</option><option value="nao">Não levar</option></select></label>
+      </div><datalist id="rd-lojas-dl2">${rdLojasDept(x.dept).map(l => `<option value="${esc(l)}"></option>`).join('')}</datalist>
+      <div class="row" style="gap:6px"><button type="button" class="btn tiny" data-rdcomprei="${x.id}">Registrar compra</button></div>
+      <p class="subdet">Projeção real cria o bem em Bens e compromissos e o pagamento entra no Plano futuro e no fechamento do mês. Se a compra já está nos seus Gastos (fatura do cartão), escolha Não levar para não contar duas vezes.</p>`; }
+}
+
+/* ---------- eventos ---------- */
+function rdRe() { planCache = null; save(); setTimeout(renderTab, 0); }
+function rdNovo() { const v = state.radar, x = rdNormItem({ id: uid(), nome: 'Produto ' + (rdL().length + 1), criado: rdHoje() }); v.itens.push(x); v.sel = x.id; return x; }
+function rdGeo() {
+  const msg = t => { const el = $('rd-geo-msg'); if (el) el.innerHTML = t ? `<p class="warn">${t}</p>` : ''; };
+  if (!navigator.geolocation) { msg('Este navegador não informa a localização. Escolha a cidade ou o CEP.'); return; }
+  msg(''); try { navigator.geolocation.getCurrentPosition(p => { const L = state.radar.local; L.modo = 'geo'; L.lat = Math.round(p.coords.latitude * 100) / 100; L.lon = Math.round(p.coords.longitude * 100) / 100; L.em = new Date().toISOString().slice(0, 19); rdRe(); },
+    () => msg('Não consegui ler a localização (permissão negada ou não liberada aqui). Escolha a cidade ou o CEP.'), { enableHighAccuracy: false, timeout: 10000, maximumAge: 6 * 3600e3 }); } catch (e) { msg('A localização não está liberada aqui. Escolha a cidade ou o CEP.'); }
+}
+document.addEventListener('click', e => {
+  const t = e.target.closest('[data-rdadd],[data-rdabre],[data-rddel],[data-rddup],[data-rdpadd],[data-rdpdel],[data-rdlinkadd],[data-rdlinkdel],[data-rdlojas],[data-rdlojaadd],[data-rdgeo],[data-rdfotodel],[data-rdcomprei],[data-rddesfaz]'); if (!t || !state.radar) return;
+  const d = t.dataset, v = state.radar; e.preventDefault();
+  if (d.rdadd) { rdNovo(); rdRe(); if (tab !== 'rdprod') showTab('rdprod'); setTimeout(() => { const el = document.querySelector('#rdp-cad [data-rdf$=":nome"]'); if (el) { el.focus(); el.select(); } }, 80); return; }
+  if (d.rdabre) { v.sel = d.rdabre; save(); if (tab === 'rdprod') renderTab(); else showTab('rdprod'); return; }
+  if (d.rddel) { const x = rdAcha(d.rddel); if (!x || !confirmar(`Remover "${x.nome}" do radar, com os preços e as fotos?`)) return; v.itens = v.itens.filter(y => y.id !== x.id); if (db) try { pdoc('painel/radar-foto-' + x.id).delete().catch(() => {}); } catch (er) {} delete rdFotos[x.id]; rdRe(); return; }
+  if (d.rddup) { const x = rdAcha(d.rddup); if (!x) return; const c = rdNormItem(clone(x)); c.id = uid(); c.nome = (x.nome + ' (cópia)').slice(0, 80); c.precos = []; c.pago = null; c.st = 'vig'; c.perto = false; c.nFotos = 0; c.criado = rdHoje(); v.itens.push(c); v.sel = c.id; rdRe(); return; }
+  if (d.rdpadd) { const x = rdAcha(d.rdpadd); if (!x) return; const val = id => ($(id) || {}).value, vv = rdNum(val('rd-p-v')), dt = val('rd-p-d') || rdHoje();
+    if (vv == null || !(vv > 0)) { ngToast('Informe o preço à vista.'); return; }
+    x.precos.push({ id: uid(), d: dt, loja: rdTx(val('rd-p-loja'), 40) || 'Loja', v: vv, frete: rdNum(val('rd-p-frete')), pz: rdNum(val('rd-p-pz')), n: Math.round(+val('rd-p-n') || 0), url: rdUrl(val('rd-p-url')), fonte: 'manual', est: true });
+    rdNormItem(x); rdRe(); return; }
+  if (d.rdpdel) { const [id, pid] = d.rdpdel.split(':'), x = rdAcha(id); if (!x) return; x.precos = x.precos.filter(p => p.id !== pid); rdRe(); return; }
+  if (d.rdlinkadd) { const x = rdAcha(d.rdlinkadd), u = rdUrl(($('rd-link-in') || {}).value); if (!x) return; if (!u) { ngToast('Cole um link que comece com https://'); return; } if (!x.links.some(l => l.url === u)) x.links.push({ id: uid(), url: u }); rdRe(); return; }
+  if (d.rdlinkdel) { const [id, lid] = d.rdlinkdel.split(':'), x = rdAcha(id); if (!x) return; x.links = x.links.filter(l => l.id !== lid); rdRe(); return; }
+  if (d.rdlojas) { const [id, m] = d.rdlojas.split(':'), x = rdAcha(id); if (!x) return; x.lojasModo = m; if (m === 'esp' && !x.lojas.length) x.lojas = RD_SEMPRE.slice(); rdRe(); return; }
+  if (d.rdlojaadd) { const x = rdAcha(d.rdlojaadd), n = rdTx(($('rd-loja-in') || {}).value, 40); if (!x || !n) return; if (!x.lojas.includes(n)) x.lojas.push(n); rdRe(); return; }
+  if (d.rdgeo) { rdGeo(); return; }
+  if (d.rdfotodel) { const [id, k] = d.rdfotodel.split(':'), x = rdAcha(id); if (!x || !rdFotos[id]) return; rdFotos[id].splice(+k, 1); rdFotoSalvar(x); renderTab(); return; }
+  if (d.rdcomprei) { const x = rdAcha(d.rdcomprei); if (!x) return; const val = id => ($(id) || {}).value, pago = rdNum(val('rd-c-v')); if (!(pago > 0)) { ngToast('Informe quanto pagou.'); return; }
+    const forma = val('rd-c-forma') === 'parc' ? 'parc' : 'vista', n = forma === 'parc' ? Math.min(48, Math.max(1, Math.round(+val('rd-c-n') || 1))) : 1, mes = /^\d{4}-\d{2}$/.test(val('rd-c-mes') || '') ? val('rd-c-mes') : mKey(HOJE_IDX), uso = val('rd-c-uso');
+    x.pago = { v: pago, d: mes, forma, n, loja: rdTx(val('rd-c-loja'), 40), compraId: '' }; x.st = 'comp'; x.perto = false;
+    if (uso !== 'nao') { const bm = novaCompra('outro'); Object.assign(bm, { nome: x.nome.slice(0, 60), valor: pago, entrada: forma === 'parc' ? 0 : pago, mes, modo: forma === 'parc' ? 'price' : 'avista', taxa: 0, prazo: n, valoriz: -15, radar: x.id });
+      state.compras.push(bm); try { cenAtual().inc.push(bm.id); } catch (er) {} if (uso === 'real') { state.plan.inc = state.plan.inc || []; state.plan.inc.push(bm.id); } x.pago.compraId = bm.id; }
+    rdRe(); return; }
+  if (d.rddesfaz) { const x = rdAcha(d.rddesfaz); if (!x || !x.pago) return; const bm = x.pago.compraId ? (state.compras || []).find(y => y.id === x.pago.compraId) : null;
+    if (!confirmar(`Desfazer a compra de "${x.nome}"? Ele volta para o radar${bm ? ' e sai de Bens e compromissos e do Plano futuro' : ''}.`)) return;
+    if (bm) { state.compras = state.compras.filter(y => y.id !== bm.id); state.cenarios.forEach(c => { c.inc = (c.inc || []).filter(id => id !== bm.id); }); state.plan.inc = (state.plan.inc || []).filter(id => id !== bm.id); }
+    x.pago = null; x.st = 'vig'; rdRe(); return; }
+});
+document.addEventListener('change', e => {
+  const t = e.target, d = t.dataset || {}; if (!state.radar) return;
+  if (d.rdsel != null) { state.radar.sel = t.value; save(); renderTab(); return; }
+  if (d.rdf) { const [id, k] = d.rdf.split(':'), x = rdAcha(id); if (!x) return;
+    if (k === 'perto') { if (t.checked && rdL().filter(y => y.perto && y.st === 'vig' && y.id !== x.id).length >= RD_PERTO_MAX) { t.checked = false; ngToast(`Até ${RD_PERTO_MAX} produtos de perto.`); return; } x.perto = t.checked; }
+    else if (['alvo', 'guardado', 'porMes'].includes(k)) x[k] = rdNum(t.value); else x[k] = t.value;
+    rdNormItem(x); rdRe(); return; }
+  if (d.rdpz) { const [id, k] = d.rdpz.split(':'), x = rdAcha(id); if (!x) return; x.pz[k] = k === 'n' ? (t.value === '' ? null : Math.min(48, Math.max(1, Math.round(+t.value)))) : rdNum(t.value); rdRe(); return; }
+  if (d.rdloja) { const x = rdAcha(d.rdloja); if (!x) return; const n = t.value; x.lojas = t.checked ? Array.from(new Set(x.lojas.concat(n))) : x.lojas.filter(l => l !== n); rdRe(); return; }
+  if (d.rdlocmodo != null) { state.radar.local.modo = t.value === 'cidade' ? 'cidade' : 'geo'; rdRe(); if (t.value === 'geo' && state.radar.local.lat == null) setTimeout(rdGeo, 100); return; }
+  if (d.rdloccid != null) { state.radar.local.cidade = rdTx(t.value, 80); rdRe(); return; }
+  if (d.rdfoto) { const x = rdAcha(d.rdfoto), f = t.files && t.files[0]; if (!x || !f) return; if (!/^image\//.test(f.type)) { ngToast('Escolha uma imagem.'); return; }
+    rdFotoReduzir(f).then(u => { rdFotos[x.id] = (rdFotos[x.id] || []).concat(u).slice(0, RD_FOTO_MAX); return rdFotoSalvar(x); }).then(() => renderTab()).catch(er => ngToast('Não consegui usar a foto: ' + (er && er.message || er))); return; }
 });
 
 function vgDataPadrao() { const d = new Date(NOW.getFullYear(), NOW.getMonth() + 6, 1); while (d.getDay() !== 6) d.setDate(d.getDate() + 1); const v = new Date(d); v.setDate(v.getDate() + 14); const f = x => x.toISOString().slice(0, 10); return [f(d), f(v)]; }
@@ -8477,6 +8950,7 @@ function normalizar(s) {
   ngNormalizar(s);
   indNormalizar(s);
   famNormalizar(s);
+  rdNormalizar(s);
   if (!Array.isArray(s.comp.rows)) s.comp.rows = clone(ROWS_PADRAO);
   if (!s.cenarios.find(c => c.id === s.cenAtivo)) s.cenAtivo = s.cenarios[0].id;
   if (!s.cenarios.find(c => c.id === s.destaque)) s.destaque = s.cenarios[0].id;
@@ -8485,7 +8959,7 @@ function normalizar(s) {
 try { if (quemLocal === 'dono') { const b = JSON.parse(localStorage.getItem('painel-priv')); if (b) aplicarBase(b); } } catch (e) {}
 try { const l = JSON.parse(localStorage.getItem(LSK('painel-fin-v2'))); if (l) state = normalizar(l); } catch (e) {}
 tab = 'modulos';
-const TABS = ['modulos', 'comousar', 'inicio', 'trabvg', 'viagvg', 'viagens', 'viagcmp', 'viagrot', 'viagcus', 'viagdur', 'negvg', 'negcad', 'negdre', 'negfc', 'negabr', 'negeco', 'negpesq', 'negviab', 'negcont', 'negval', 'negprec', 'negsoc', 'negcmp', 'famvg', 'fampes', 'indvg', 'indnum', 'leia', 'global', 'gastos', 'carteira', 'orcamento', 'compras', 'cenarios', 'patrimonio', 'comparador', 'simulador', 'pjpf', 'stock', 'config', 'familia'];
+const TABS = ['modulos', 'comousar', 'inicio', 'trabvg', 'viagvg', 'viagens', 'viagcmp', 'viagrot', 'viagcus', 'viagdur', 'negvg', 'negcad', 'negdre', 'negfc', 'negabr', 'negeco', 'negpesq', 'negviab', 'negcont', 'negval', 'negprec', 'negsoc', 'negcmp', 'famvg', 'fampes', 'indvg', 'indnum', 'rdvg', 'rdprod', 'rdcomp', 'leia', 'global', 'gastos', 'carteira', 'orcamento', 'compras', 'cenarios', 'patrimonio', 'comparador', 'simulador', 'pjpf', 'stock', 'config', 'familia'];
 if (TABS.includes(location.hash.slice(1))) tab = location.hash.slice(1);
 if (!TABS.includes(tab)) tab = 'modulos';
 
@@ -12671,7 +13145,7 @@ $('cpform').addEventListener('submit', async e => {
 });
 
 /* ---------- abas ---------- */
-const BUILD = { modulos: () => {}, comousar: () => {}, inicio: () => {}, trabvg: () => {}, viagvg: () => {}, viagens: () => {}, viagcmp: () => {}, viagrot: () => {}, viagcus: () => {}, viagdur: () => {}, negvg: () => {}, negcad: () => {}, negdre: () => {}, negfc: () => {}, negabr: () => {}, negeco: () => {}, negpesq: () => {}, negviab: () => {}, negcont: () => {}, negprec: () => {}, negval: () => {}, negsoc: () => {}, negcmp: () => {}, famvg: () => {}, fampes: () => {}, indvg: () => {}, indnum: () => {}, leia: buildLeia, global: () => {}, cenarios: buildCenarios, compras: buildCenarios, carteira: buildCarteira, comparador: buildComparador, simulador: buildSimulador, gastos: buildGastos, orcamento: buildOrcamento, config: buildConfig, pjpf: buildPj, stock: buildStock, familia: () => carregarPerfis(), patrimonio: () => {} };
+const BUILD = { modulos: () => {}, comousar: () => {}, inicio: () => {}, trabvg: () => {}, viagvg: () => {}, viagens: () => {}, viagcmp: () => {}, viagrot: () => {}, viagcus: () => {}, viagdur: () => {}, negvg: () => {}, negcad: () => {}, negdre: () => {}, negfc: () => {}, negabr: () => {}, negeco: () => {}, negpesq: () => {}, negviab: () => {}, negcont: () => {}, negprec: () => {}, negval: () => {}, negsoc: () => {}, negcmp: () => {}, famvg: () => {}, fampes: () => {}, indvg: () => {}, indnum: () => {}, rdvg: () => {}, rdprod: () => {}, rdcomp: () => {}, leia: buildLeia, global: () => {}, cenarios: buildCenarios, compras: buildCenarios, carteira: buildCarteira, comparador: buildComparador, simulador: buildSimulador, gastos: buildGastos, orcamento: buildOrcamento, config: buildConfig, pjpf: buildPj, stock: buildStock, familia: () => carregarPerfis(), patrimonio: () => {} };
 // (i) de cada seção: o que mostra e de onde vêm os números (chave: aba:data-nav)
 const INFO_SEC = {
   'comousar:Resumo': 'Para cada módulo: se já tem o mínimo para funcionar (os obrigatórios), quantos opcionais você resolveu e um botão para o próximo passo. Um opcional conta como resolvido quando você preenche ou marca que não tem.',
@@ -12684,6 +13158,16 @@ const INFO_SEC = {
   'indvg:Termômetro': 'Quanto do seu número você já tem hoje. Patrimônio que rende = investido no Plano futuro (o que ele chama de investido + parado), em reais de hoje.',
   'indvg:Marcos': 'Reserva de emergência: meses do custo de hoje. Coast FI: a partir desse mês, mesmo sem guardar mais nada, os rendimentos levam você ao número na idade da meta. Lean, FI e Fat FI: os três níveis de custo de Meu número. O destacado é o nível escolhido.',
   'indvg:Patrimônio x número': 'Linha cheia: o patrimônio que rende pelo Plano futuro, descontada a inflação. Tracejada: o número que você precisaria ter se parasse naquele mês. A independência é onde a cheia passa a tracejada.',
+  'rdvg:Minha lista': 'Melhor preço agora: o último preço de cada loja nos 30 dias antes do preço mais recente, à vista com frete; vale o menor. Falta: quanto esse preço está acima do seu alvo.',
+  'rdvg:Partes do módulo': 'Atalhos para as partes do módulo.',
+  'rdprod:Produto': 'A descrição ajuda a pesquisa a achar o modelo certo. Vigiar de perto vale para a rotina automática (próxima etapa): ela olha o produto a cada 3 horas em vez de uma vez por dia.',
+  'rdprod:Onde procurar': 'Com link, a pesquisa abre a página da loja; sem link ou se a página falhar, procura na web pelo nome e pela descrição. Só as que eu escolher limita a busca às lojas marcadas.',
+  'rdprod:Preços': 'À vista é o preço no Pix ou boleto. O total a prazo e o número de parcelas servem para a conta de à vista ou parcelado.',
+  'rdprod:Histórico': 'Um ponto por dia com o menor preço. O selo compara o preço de agora com o histórico: menor preço visto, baixo (25% mais baratos), normal ou alto (25% mais caros). Precisa de 3 dias com preço.',
+  'rdcomp:Preço de hoje': 'A leitura junta o selo do histórico com o seu alvo. As datas de promoção são aproximadas.',
+  'rdcomp:À vista ou parcelado': 'As parcelas são trazidas para o valor de hoje pelo CDI do Focus menos o IR de renda fixa do prazo. Se esse valor for menor que o preço à vista, parcelar sem juros e deixar o dinheiro rendendo sai mais barato.',
+  'rdcomp:Quando consigo comprar': 'Meses = (alvo − já guardado) ÷ quanto guarda por mês. Em branco, a sugestão é 20% da sobra típica do mês pelo Plano futuro.',
+  'rdcomp:Comprei': 'Projeção real cria um bem em Bens e compromissos (à vista ou parcelado sem juros) que entra no Plano futuro. Desfazer tira o bem e devolve o produto ao radar.',
   'indnum:Sobre você': 'A idade serve para três coisas: dizer com quantos anos você chega lá, calcular a sua meta e saber até quando o dinheiro precisa durar.',
   'indnum:Custo de vida': 'Gastos reais: média por categoria dos meses com lançamentos nos últimos 12 (sem o mês atual). Parcelas de compras não entram. O aluguel que você recebe dos imóveis cadastrados em Bens e compromissos é descontado do custo: é o jeito de o imóvel de renda contar no número.',
   'indnum:Quanto precisa durar': 'Pela idade: o número é o valor que, rendendo o rendimento real escolhido, paga o custo todo mês, corrigido pela inflação, até a idade escolhida, e acaba em zero. Taxa fixa: número = custo do ano ÷ taxa; o dinheiro dura para sempre se o rendimento real for maior que a taxa. O rendimento é real (acima da inflação) e líquido de IR; em branco, usa 4% ao ano, mais prudente que o do Plano futuro para um período de 40 a 50 anos.',
@@ -12845,7 +13329,7 @@ function infoSecoes() {
       if (h && !h.id) h.append(btn); else if (h) h.after(btn); else if (lg) lg.append(btn); }); });
 }
 infoSecoes();
-const RENDER = { modulos: renderModulos, comousar: renderComoUsar, inicio: renderHome, trabvg: renderTrabVg, viagvg: renderViagVg, viagens: renderViagens, viagcmp: renderViagCmp, viagrot: renderViagRot, viagcus: renderViagCus, viagdur: renderViagDur, negvg: renderNegVg, negcad: renderNegCad, negdre: renderNegDre, negfc: renderNegFc, negabr: renderNegAbr, negeco: renderNegEco, negpesq: renderNegPesq, negviab: renderNegViab, negcont: renderNegCont, negprec: renderNegPrec, negval: renderNegVal, negsoc: renderNegSoc, negcmp: renderNegCmp, famvg: renderFamVg, fampes: renderFamPes, indvg: renderIndVg, indnum: renderIndNum, leia: () => {}, global: renderGlobal, cenarios: renderCenarios, compras: renderCenarios, carteira: renderCarteira, comparador: renderComparador, simulador: renderSimulador, gastos: () => { renderGastos(); renderFechamento(); renderHistorico(); }, orcamento: renderOrcamento, config: renderConfig, pjpf: renderPj, stock: renderStock, familia: renderFamilia, patrimonio: renderPatr };
+const RENDER = { modulos: renderModulos, comousar: renderComoUsar, inicio: renderHome, trabvg: renderTrabVg, viagvg: renderViagVg, viagens: renderViagens, viagcmp: renderViagCmp, viagrot: renderViagRot, viagcus: renderViagCus, viagdur: renderViagDur, negvg: renderNegVg, negcad: renderNegCad, negdre: renderNegDre, negfc: renderNegFc, negabr: renderNegAbr, negeco: renderNegEco, negpesq: renderNegPesq, negviab: renderNegViab, negcont: renderNegCont, negprec: renderNegPrec, negval: renderNegVal, negsoc: renderNegSoc, negcmp: renderNegCmp, famvg: renderFamVg, fampes: renderFamPes, indvg: renderIndVg, indnum: renderIndNum, rdvg: renderRdVg, rdprod: renderRdProd, rdcomp: renderRdComp, leia: () => {}, global: renderGlobal, cenarios: renderCenarios, compras: renderCenarios, carteira: renderCarteira, comparador: renderComparador, simulador: renderSimulador, gastos: () => { renderGastos(); renderFechamento(); renderHistorico(); }, orcamento: renderOrcamento, config: renderConfig, pjpf: renderPj, stock: renderStock, familia: renderFamilia, patrimonio: renderPatr };
 function renderTab() { planCache = null; try { RENDER[tab](); } catch (err) { console.error(err); setSave('erro ao recalcular: ' + (err && err.message || err)); } }
 let navAbertos = null;
 try { navAbertos = JSON.parse(localStorage.getItem('painel-nav-abertos')); } catch (e) {}
@@ -12919,7 +13403,7 @@ const MODS = [
   { id: 'neg', corNav: '#a3e05a', nome: 'Empreendimentos', cor: 'var(--s7)', vg: 'negvg', desc: 'Suas ideias e empresas: DRE com as suas linhas, fluxo de caixa, quanto pôr e quanto chega para você no Plano futuro. Abrir empresa com a comparação de regimes, oportunidades de custo, pesquisa de mercado com IA, viabilidade, contabilidade fácil, preço, valuation, sócios e comparação.', tabs: ['negvg', 'negcad', 'negdre', 'negfc', 'negabr', 'negeco', 'negpesq', 'negviab', 'negcont', 'negval', 'negprec', 'negsoc', 'negcmp'] },
   { id: 'fam', corNav: '#fb7185', nome: 'Família', cor: 'var(--s6)', vg: 'famvg', desc: 'Quem mora com você e os filhos, já nascidos ou previstos (gêmeos também): quanto cada um custa em cada fase, a chegada, a licença e o efeito no Plano futuro. Orçamento da casa e divisão de contas vêm a seguir.', tabs: ['famvg', 'fampes'] },
   { id: 'indep', corNav: '#E3B848', nome: 'Independência financeira', cor: 'var(--s3)', vg: 'indvg', desc: 'Quando dá para parar de trabalhar: o seu número, a data pelo Plano futuro, quanto falta para a sua meta e os marcos no caminho. Renda passiva, INSS e previdência vêm a seguir.', tabs: ['indvg', 'indnum'] },
-  { id: 'preco', corNav: '#f59e0b', nome: 'Radar de preços', cor: 'var(--s2)', breve: true, desc: 'Escolha o que quer comprar e o preço que aceita pagar. O painel pesquisa o preço online todo dia, mostra o histórico e avisa quando cair até o seu alvo.', tabs: [] },
+  { id: 'preco', corNav: '#f59e0b', nome: 'Radar de preços', cor: 'var(--s2)', vg: 'rdvg', desc: 'O que você quer comprar e o preço que aceita pagar: histórico, selo de preço baixo ou alto, à vista ou parcelado, quando o dinheiro fica pronto e a compra no Plano futuro. A pesquisa automática todo dia e o aviso no sino vêm a seguir.', tabs: ['rdvg', 'rdprod', 'rdcomp'] },
   { id: 'edu', corNav: '#60a5fa', nome: 'Educação', cor: 'var(--s4)', breve: true, desc: 'Cursos, faculdade, pós e a escola dos filhos: quanto custam ao longo dos anos, como pagar e o retorno esperado na carreira.', tabs: [] }
 ];
 const modDe = t => (MODS.find(m => m.tabs.includes(t)) || {}).id || null;
@@ -13016,6 +13500,15 @@ function cuPassos() {
         { id: 'indnasc', t: 'Informar o nascimento e a meta', d: 'Mês e ano de nascimento e com quantos anos quer chegar lá.', ok: !!(state.indep && state.indep.nasc) || pul.includes('indnasc'), tab: 'indnum', sec: 'Sobre você', pular: 'Depois' },
         { id: 'indcusto', t: 'Conferir o custo de vida', d: 'O que some e o que aumenta quando você parar de trabalhar.', ok: !!(state.indep && (Object.keys(state.indep.ajuste).length || state.indep.extras.length)) || pul.includes('indcusto'), tab: 'indnum', sec: 'Custo de vida', pular: 'Já conferi' },
         { id: 'indtaxa', t: 'Escolher quanto o dinheiro precisa durar', d: 'Pela idade (até os 105, por exemplo) ou por uma taxa fixa de saque.', ok: pul.includes('indtaxa'), tab: 'indnum', sec: 'Quanto precisa durar', pular: 'Já escolhi' }
+      ]
+    },
+    preco: {
+      sobre: 'O que você quer comprar, o preço que aceita pagar e o histórico do preço, com a decisão de comprar ou esperar.',
+      precisa: 'Nada aqui é obrigatório. Cadastre um produto com o alvo e lance os preços que encontrar. Na próxima etapa uma rotina pesquisa sozinha todo dia.',
+      passos: [
+        { id: 'rdprod', t: 'Cadastrar um produto', d: 'Nome, descrição para a busca e, se tiver, o link ou uma foto.', ok: rdL().length > 0 || pul.includes('rdprod'), tab: 'rdprod', sec: 'Produto', pular: 'Depois' },
+        { id: 'rdalvo', t: 'Marcar o preço que aceita pagar', d: 'O alvo: quando o preço chegar nele, o radar avisa.', ok: rdL().some(x => x.alvo > 0) || pul.includes('rdalvo'), tab: 'rdprod', sec: 'Produto', pular: 'Depois' },
+        { id: 'rdpreco', t: 'Lançar um preço', d: 'O preço que você encontrou, com a loja e o frete.', ok: rdL().some(x => x.precos.length) || pul.includes('rdpreco'), tab: 'rdprod', sec: 'Preços', pular: 'Depois' }
       ]
     }
   };
@@ -13164,6 +13657,7 @@ function modResumo(m) {
     if (m.id === 'carr') { const ns = ((state.so || {}).empresas || []).length;
       return ns ? `<b>${ns}</b> ${ns > 1 ? 'empresas' : 'empresa'} com stock options` : 'PJ e PF e stock options'; }
     if (m.id === 'neg') { const L = ngLista(); if (!L.length) return 'Cadastre uma ideia ou empresa'; const v = L.reduce((t, x) => t + ngCalcC(x).voceMad, 0); return `<b>${L.length}</b> ${L.length > 1 ? 'negócios' : 'negócio'} · ${v < 0 ? '−' : ''}${fm(Math.abs(v))}/mês para você quando maduros`; }
+    if (m.id === 'preco') return rdResumoMod();
     if (m.id === 'fam') { const F = famFilhos(), n = famL().filter(p => p.tipo !== 'pet').length; if (!famL().length) return 'Cadastre quem mora com você'; const pv = F.filter(famPrevisto).length; return `<b>${n}</b> ${n > 1 ? 'pessoas' : 'pessoa'}${F.length ? ` · <b>${F.length}</b> ${F.length > 1 ? 'filhos' : 'filho'}${pv ? ` (${pv} ${pv > 1 ? 'previstos' : 'previsto'})` : ''}` : ''}`; }
     if (m.id === 'indep') { const r = indCalc(); if (r.C <= 0) return 'Confira o custo de vida'; return r.cruz == null ? 'Fora do horizonte com o plano atual' : r.cruz <= r.st ? '<b>Já</b> chegou lá' : `Independência em <b>${mLabel(r.cruz)}</b>${r.nascI != null ? ', aos ' + Math.floor((r.cruz - r.nascI) / 12) + ' anos' : ''}`; }
     if (m.id === 'viag') { const v = state.viag || {}, f = (v.fui || []).filter(c => VG_UN.includes(c)).length, q = (v.lugares || []).filter(l => l.st !== 'fui').length;
@@ -14026,6 +14520,10 @@ const LM_MODS = [
   'Independência financeira',
   ['indvg', 'A data em que você chega à independência pelo Plano futuro, o termômetro de quanto do número já tem, os marcos (reserva, Coast FI, Lean, FI, Fat FI e a sua meta) e o gráfico do patrimônio contra o número.', 'para saber quando pode parar de trabalhar por obrigação.'],
   ['indnum', 'O seu número: idade e meta, custo de vida na independência a partir dos Gastos ou do orçamento, os três níveis de custo e por quanto tempo o dinheiro precisa durar.', 'para ajustar a conta.'],
+  'Radar de preços',
+  ['rdvg', 'A sua lista de compras com o melhor preço de agora, o alvo, quanto falta e o selo de preço baixo ou alto.', 'para ver de uma vez o que já chegou no preço.'],
+  ['rdprod', 'O cadastro de cada produto, os links, as lojas, o local e as fotos, os preços encontrados e o gráfico do histórico.', 'quando quiser vigiar um produto novo ou lançar um preço.'],
+  ['rdcomp', 'Comprar ou esperar: leitura do preço de hoje, à vista ou parcelado contra o CDI, quando o dinheiro fica pronto e registrar a compra no Plano futuro.', 'na hora de decidir.'],
   'Geral',
   ['config', 'As premissas: renda e projeção, a curva de juros (Focus, atualizada toda segunda) e o retorno esperado de cada classe de ativo.', 'raramente; só para ajustar uma premissa.']
 ];
