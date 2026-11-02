@@ -1406,7 +1406,7 @@ ul.ng-acordo li { margin-bottom: 4px; }
     </div>
     <div class="nav-mobile-sub" id="navMobileSub"></div>
   </div>
-  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 238</div></div>
+  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 239</div></div>
 </nav>
 <div class="sino-pop" id="sino-pop" role="dialog" aria-label="Central de avisos" hidden></div>
 <div class="tour-pop" id="tour-pop" role="dialog" aria-labelledby="tour-tit" hidden></div>
@@ -2985,7 +2985,7 @@ ul.ng-acordo li { margin-bottom: 4px; }
     return new Promise(resolve => { const { data } = sb.auth.onAuthStateChange(async (ev) => { if (ev !== 'PASSWORD_RECOVERY') return; const s = prompt('Digite a nova senha (mínimo 8 caracteres):'); if (s && s.length >= 8) { const { error } = await sb.auth.updateUser({ password: s }); alert(error ? 'Não deu para trocar a senha: ' + error.message : 'Senha trocada.'); } }); resolve(data); });
   }
   // ---------- rodapé: compartilhar, administração e sair ----------
-  const SITE_V = 121;
+  const SITE_V = 122;
   const escH = v => String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const dataBR = v => v ? new Date(v).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' }) : '–';
   const css2 = `.side-foot .r{flex-wrap:wrap}.side-foot .lg-acoes{margin-left:auto;display:inline-flex;gap:10px}
@@ -3280,7 +3280,7 @@ const DEFAULTS = {
   ret: Object.fromEntries(CLASSES.map(c => [c.id, c.p])),
   hoje: {},
   cenarios: [
-    { id: 'base', nome: 'Cenário base', preset: 'cons', alvo: Object.assign({}, PRESETS[1].a), aj: { cdi: 0, ipca: 0 }, extra: 0, manual: '', inc: [] }
+    { id: 'base', nome: 'Projeção atualizada', preset: 'cons', alvo: Object.assign({}, PRESETS[1].a), aj: { cdi: 0, ipca: 0 }, extra: 0, manual: '', inc: [] }
   ],
   compras: [],
   cenAtivo: 'base', destaque: 'base', gModo: 'inv', pgCompra: '',
@@ -7898,11 +7898,13 @@ function normalizar(s) {
   if (!Array.isArray(s.compras)) s.compras = [];
   if (!s.patr || typeof s.patr !== 'object') s.patr = { fgts: true, anos: 10 };
   if (!Array.isArray(s.cenarios) || !s.cenarios.length) s.cenarios = clone(DEFAULTS.cenarios);
+  // nome antigo do primeiro cenário (Filipe trocou em 02/11)
+  s.cenarios.forEach(c => { if (c && c.nome === 'Cenário base') c.nome = 'Projeção atualizada'; });
   // modelo antigo: cada compra tinha escopo (todos ou um cenário) e "na projeção"; agora cada cenário escolhe seus bens em inc
   if (s.compras.some(b => 'escopo' in b || 'ativo' in b)) {
     s.cenarios.forEach(c => { if (!Array.isArray(c.inc)) c.inc = s.compras.filter(b => b.ativo !== false && (b.escopo === 'todos' || b.escopo === c.id)).map(b => b.id); });
     const ids = s.cenarios.map(c => c.id).join(',');
-    if (ids === 'sem,com' && s.cenarios[0].nome === 'Sem apto' && s.cenarios[1].nome === 'Com apto') { s.cenarios = [Object.assign(s.cenarios[0], { id: 'base', nome: 'Cenário base' })]; if (s.plano && /Sem apto/.test(s.plano.nome || '')) s.plano.nome = s.plano.nome.replace('Sem apto', 'Cenário base'); }
+    if (ids === 'sem,com' && s.cenarios[0].nome === 'Sem apto' && s.cenarios[1].nome === 'Com apto') { s.cenarios = [Object.assign(s.cenarios[0], { id: 'base', nome: 'Projeção atualizada' })]; if (s.plano && /Sem apto/.test(s.plano.nome || '')) s.plano.nome = s.plano.nome.replace('Sem apto', 'Cenário base'); }
     s.compras.forEach(b => { delete b.escopo; delete b.ativo; });
   }
   s.cenarios.forEach(c => { c.aj = Object.assign({ cdi: 0, ipca: 0 }, c.aj || {}); c.alvo = c.alvo || {}; if (c.extra == null) c.extra = 0; if (c.manual == null) c.manual = ''; if (!Array.isArray(c.inc)) c.inc = []; c.inc = c.inc.filter(id => s.compras.some(b => b.id === id)); });
