@@ -530,6 +530,11 @@ tr.best td { background: var(--good-soft); }
 .btn.danger { background: var(--panel); color: var(--bad); border-color: var(--bad-soft); }
 .cpform { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; grid-column: 1 / -1; }
 .cpform .btn { grid-column: 1 / -1; justify-self: start; }
+.cp-oque { grid-column: 1 / -1; font-size: 13px; line-height: 1.5; background: var(--accent-soft); border-radius: 8px; padding: 10px 12px; margin: 0 0 10px; }
+.cp-oque ul { margin: 6px 0; padding-left: 18px; } .cp-oque li { margin: 2px 0; }
+#tbl-fech [data-ircp] { margin-left: 8px; vertical-align: middle; }
+@keyframes cpPisca { 0%, 40% { box-shadow: 0 0 0 3px var(--accent); } 100% { box-shadow: 0 0 0 0 transparent; } }
+.cp-pisca { animation: cpPisca 2s ease-out; }
 .notes { font-size: 12px; color: var(--muted); }
 .notes ul { margin: 0; padding-left: 18px; display: flex; flex-direction: column; gap: 5px; }
 .notes b { color: var(--ink); }
@@ -1352,7 +1357,7 @@ ul.ng-acordo li { margin-bottom: 4px; }
     </div>
     <div class="nav-mobile-sub" id="navMobileSub"></div>
   </div>
-  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 222</div></div>
+  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 223</div></div>
 </nav>
 <div class="sino-pop" id="sino-pop" role="dialog" aria-label="Central de avisos" hidden></div>
 <div class="tour-pop" id="tour-pop" role="dialog" aria-labelledby="tour-tit" hidden></div>
@@ -1930,7 +1935,9 @@ ul.ng-acordo li { margin-bottom: 4px; }
       </fieldset>
       <fieldset>
         <legend>Checkpoints reais</legend>
-        <p class="hint">Quanto você de fato tem aplicado em cada data. O último checkpoint é o ponto de partida de todas as projeções.</p>
+        <div class="cp-oque"><b>O que é um checkpoint?</b> É uma foto do total que você tem aplicado no fim de um mês: a soma de todas as aplicações (CDB, Tesouro, LCI/LCA, fundos, ações, previdência, caixinhas). Não entram bens (carro, imóvel) nem o dinheiro da conta corrente usado para os gastos do dia a dia.
+          <ul><li><b>Fecha o mês:</b> vira o real da linha "Investimentos no fim do mês" em Gastos › Fechamento do mês e mostra a diferença não explicada.</li><li><b>Compara com o plano:</b> aparece como ponto vermelho no gráfico e na tabela Checkpoints, acima ou abaixo do plano.</li><li><b>Recalibra o futuro:</b> o último checkpoint é o ponto de partida de todas as projeções.</li></ul>
+          Faça um por mês, de preferência no último dia útil ou logo no começo do mês seguinte, com o saldo dos extratos. Se suas aplicações estão cadastradas em Carteira, o botão "Salvar total como checkpoint" de lá faz isso sozinho.</div>
         <form class="cpform" id="cpform">
           <label>Mês<input type="month" id="cp-mes" required></label>
           <label>Valor aplicado (R$)<input type="number" id="cp-valor" step="100" required></label>
@@ -2892,7 +2899,7 @@ ul.ng-acordo li { margin-bottom: 4px; }
     return new Promise(resolve => { const { data } = sb.auth.onAuthStateChange(async (ev) => { if (ev !== 'PASSWORD_RECOVERY') return; const s = prompt('Digite a nova senha (mínimo 8 caracteres):'); if (s && s.length >= 8) { const { error } = await sb.auth.updateUser({ password: s }); alert(error ? 'Não deu para trocar a senha: ' + error.message : 'Senha trocada.'); } }); resolve(data); });
   }
   // ---------- rodapé: compartilhar, administração e sair ----------
-  const SITE_V = 105;
+  const SITE_V = 106;
   const escH = v => String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const dataBR = v => v ? new Date(v).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' }) : '–';
   const css2 = `.side-foot .r{flex-wrap:wrap}.side-foot .lg-acoes{margin-left:auto;display:inline-flex;gap:10px}
@@ -11670,7 +11677,7 @@ function renderFechamento() {
     ${F.P.evr || F.R.evr != null ? linha('Eventos do plano: receitas (bônus…)', 'evr', 1) : ''}
     ${tot('Sobra do mês', F.tp.sobra, F.tr.sobra, 1, 'mm-g saldo')}
     ${linha('Rendimento dos investimentos', 'rend', 1)}
-    ${tot('Investimentos no fim do mês', F.tp.fim, F.tr.fim, 1, 'mm-g saldo', null, `aguardando checkpoint de ${mLabel(F.i)}`)}
+    ${tot('Investimentos no fim do mês', F.tp.fim, F.tr.fim, 1, 'mm-g saldo', null, `aguardando checkpoint de ${mLabel(F.i)} <button type="button" class="btn tiny" data-ircp="${mk}">Registrar checkpoint</button>`)}
     ${F.tr.naoExp == null ? '' : `<tr class="mm-s fe-nexp"><td class="name">Diferença não explicada <span class="subdet">checkpoint − (início + sobra + rendimento)</span></td><td><span class="z">—</span></td><td class="${Math.abs(F.tr.naoExp) < 0.5 ? '' : F.tr.naoExp > 0 ? 'pos' : 'neg'}">${(F.tr.naoExp > 0 ? '+' : F.tr.naoExp < 0 ? '−' : '') + fm(Math.abs(F.tr.naoExp))}</td><td colspan="2" class="name"><span class="subdet">${F.cpPrev ? pct(F.tr.naoExp / F.cpPrev, 2) + ' do saldo inicial' : ''}</span></td></tr>`}
   </tbody>`;
   $('fe-hint').textContent = `${F.temLanc ? `Custos reais vêm dos ${totaisMes(mk).n} lançamentos de Gastos deste mês; digite um valor para substituir.` : 'Ainda não há lançamentos de Gastos neste mês: os custos reais aparecem quando houver, ou digite direto.'} ${F.cpPrev == null ? 'Sem checkpoint do mês anterior, o rendimento projetado não é calculado.' : ''} ${F.cpNow == null ? `O real do fim do mês vem do checkpoint de ${mLabel(F.i)}.` : ''} ${F.assumido.rend === 'est' ? 'O rendimento real é estimado pelas taxas de cada aplicação da Carteira (CDI e IPCA do ano, antes do IR); digite o valor do extrato da corretora, se tiver. A diferença não explicada mostra o que sobra: entradas e saídas fora dos lançamentos, variação de ações e fundos ou erro do checkpoint.' : ''}`.trim();
@@ -11750,6 +11757,7 @@ $('orc-addcat').addEventListener('submit', e => { e.preventDefault();
   catsEditaveis().push({ nome, grupo: $('orc-catgrupo').value, orc: +$('orc-catval').value || 0 });
   $('orc-catnome').value = ''; $('orc-catval').value = ''; $('orc-catmsg').textContent = `"${nome}" criada. Ela também aparece em Gastos.`; save(); renderOrcamento(); });
 document.addEventListener('click', e => {
+  const ircp = e.target.closest('[data-ircp]'); if (ircp) { e.preventDefault(); irCheckpoint(ircp.dataset.ircp); return; }
   const ir = e.target.closest('[data-irtab]'); if (ir) { e.preventDefault(); showTab(ir.dataset.irtab); return; }
   const a = e.target.closest('[data-addorc]'), d = e.target.closest('[data-delorc]');
   if (a) { const id = uid(); if (a.dataset.addorc === 'rec') state.orc.receitas.push({ id, nome: 'Nova receita', valor: 0 }); else state.orc.deducoes.push({ id, nome: 'Nova dedução', modo: 'fixo', valor: 0 });
@@ -11887,6 +11895,14 @@ async function apagarCps(meses) {
     $('cp-msg').textContent = meses.length > 1 ? 'Checkpoints apagados.' : `Checkpoint de ${mLabel(mIndex(meses[0]))} apagado.`;
   } catch (e) { $('cp-msg').textContent = 'Não consegui apagar. Tente de novo.'; }
 }
+function irCheckpoint(mes) {
+  showTab('global');
+  requestAnimationFrame(() => { const f = $('cpform'), sec = f.closest('[data-nav]'); abrirSecao(sec); spyLock = Date.now() + 1200;
+    if (mes) $('cp-mes').value = mes; $('cp-msg').textContent = mes ? `Digite o total aplicado no fim de ${mLabel(mIndex(mes))} e salve.` : '';
+    f.closest('fieldset').scrollIntoView({ behavior: 'smooth', block: 'center' });
+    const fs = f.closest('fieldset'); fs.classList.remove('cp-pisca'); void fs.offsetWidth; fs.classList.add('cp-pisca');
+    setTimeout(() => $('cp-valor').focus({ preventScroll: true }), 500); });
+}
 $('cpform').addEventListener('submit', async e => {
   e.preventDefault();
   const mes = $('cp-mes').value, valor = parseFloat($('cp-valor').value);
@@ -11976,7 +11992,7 @@ const INFO_SEC = {
   'config:Módulos': 'Só o administrador vê. Define quais módulos ficam disponíveis para todas as pessoas que usam o painel.',
   'global:Projeção': 'Quanto você terá ao longo do tempo. Tracejado: o plano do 06. Plano futuro. Linhas cheias: cada cenário do 07, partindo do último checkpoint, com renda, gastos, parcelas e rendimento reinvestido todo mês. Pontos vermelhos: checkpoints reais. Os botões mudam o período.',
   'global:Mês a mês': 'A projeção do cenário em destaque mês por mês: ganhos (receita líquida e rendimento) menos gastos e parcelas. O resultado é quanto os investimentos variam no mês. Clique nos grupos para abrir os detalhes.',
-  'global:Cenário e checkpoints': 'Escolha qual cenário fica em destaque, se o gráfico mostra investimentos ou patrimônio líquido e de onde vem o rendimento. Aqui você também salva os checkpoints: quanto tem aplicado de fato em cada mês.',
+  'global:Cenário e checkpoints': 'Escolha qual cenário fica em destaque, se o gráfico mostra investimentos ou patrimônio líquido e de onde vem o rendimento. Aqui você também salva os checkpoints: uma foto do total que você tem aplicado de fato no fim de cada mês, que fecha o mês em Gastos, compara o real com o plano e vira o ponto de partida das projeções.',
   'global:Comparação de cenários': 'Lado a lado, como cada cenário termina o período: rendimento líquido, compras incluídas, investimentos, patrimônio e o menor saldo no caminho.',
   'global:Checkpoints': 'Cada checkpoint real contra o valor do plano no mesmo mês. Verde: acima do plano; vermelho: abaixo.',
   'global:Fluxo por ano': 'A projeção do cenário em destaque somada por ano: quanto entra, quanto sai, quanto rende e com quanto termina cada ano.',
