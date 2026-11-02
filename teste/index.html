@@ -1386,7 +1386,7 @@ ul.ng-acordo li { margin-bottom: 4px; }
     </div>
     <div class="nav-mobile-sub" id="navMobileSub"></div>
   </div>
-  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 232</div></div>
+  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 233</div></div>
 </nav>
 <div class="sino-pop" id="sino-pop" role="dialog" aria-label="Central de avisos" hidden></div>
 <div class="tour-pop" id="tour-pop" role="dialog" aria-labelledby="tour-tit" hidden></div>
@@ -2536,7 +2536,7 @@ ul.ng-acordo li { margin-bottom: 4px; }
         <label>Plano de saúde pago pela empresa (R$/mês)<input type="number" step="50" min="0" data-bind="pj::saude"></label>
         <label>Vale-transporte (R$/mês)<input type="number" step="50" min="0" data-bind="pj::vt"></label>
         <div class="pj-bens" id="pj-bens" style="grid-column:1/-1"></div>
-        <p class="hint">Benefícios só entram se você preencher. Em "+ Benefício" entram VR, VA e outros que nem todo emprego tem (auxílio home office, seguro de vida, PLR, bônus...), com o valor que chega para você, por mês ou por ano. Plano de saúde: o que você pagaria por um plano igual se fosse PJ (por isso ele entra só aqui, e não como custo da PJ). Vale-transporte: entra só o que passa do desconto de 6% do salário.</p>
+        <p class="hint">Benefícios só entram se você preencher. Em "+ Benefício" entram VR, VA e outros que nem todo emprego tem (auxílio home office, seguro de vida, PLR, bônus...), com o valor que chega para você, por mês ou por ano. Plano de saúde: o que você pagaria por um plano igual se tivesse que pagar sozinho. Vale-transporte: entra só o que passa do desconto de 6% do salário.</p>
       </fieldset>
         </div>
         <div class="pj-resumo" id="pj-sum-clt"></div>
@@ -2562,8 +2562,12 @@ ul.ng-acordo li { margin-bottom: 4px; }
         <label>Valor fixo (R$)<input type="number" step="100" min="0" data-bind="pj::plValor"></label>
         <label>Contabilidade (R$/mês)<input type="number" step="10" min="0" data-bind="pj::contab"></label>
         <label>Outros custos da PJ (R$/mês)<input type="number" step="50" min="0" data-bind="pj::outros"></label>
-        <label>Benefícios que o contratante paga (R$/mês)<input type="number" step="50" min="0" data-bind="pj::benPJ"></label>
-        <p class="hint">Na PJ não há 13º, férias pagas, FGTS nem PLR. Se o contrato pagar algo assim (bônus, auxílio, plano de saúde), coloque a média por mês em "Benefícios que o contratante paga". "O que rende mais" testa o pró-labore no mínimo e no fator R e fica com o maior líquido.</p>
+        <p class="hint">"O que rende mais" testa o pró-labore no mínimo e no fator R e fica com o maior líquido.</p>
+      </fieldset>
+      <fieldset>
+        <legend>Benefícios do contrato</legend>
+        <div class="pj-bens" id="pj-bens-pj" style="grid-column:1/-1"></div>
+        <p class="hint">Algumas empresas pagam ao PJ benefícios parecidos com os da CLT: plano de saúde, VR, VA, bônus, auxílio home office, até um "13º" ou férias remuneradas. Coloque o que a empresa paga além do contrato, por mês ou por ano. Plano de saúde: o que você pagaria por um plano igual. Se não houver nada, deixe vazio: na PJ não há 13º, férias pagas, FGTS nem PLR.</p>
       </fieldset>
         </div>
         <div class="pj-resumo" id="pj-sum-pj"></div>
@@ -2957,7 +2961,7 @@ ul.ng-acordo li { margin-bottom: 4px; }
     return new Promise(resolve => { const { data } = sb.auth.onAuthStateChange(async (ev) => { if (ev !== 'PASSWORD_RECOVERY') return; const s = prompt('Digite a nova senha (mínimo 8 caracteres):'); if (s && s.length >= 8) { const { error } = await sb.auth.updateUser({ password: s }); alert(error ? 'Não deu para trocar a senha: ' + error.message : 'Senha trocada.'); } }); resolve(data); });
   }
   // ---------- rodapé: compartilhar, administração e sair ----------
-  const SITE_V = 115;
+  const SITE_V = 116;
   const escH = v => String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const dataBR = v => v ? new Date(v).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' }) : '–';
   const css2 = `.side-foot .r{flex-wrap:wrap}.side-foot .lg-acoes{margin-left:auto;display:inline-flex;gap:10px}
@@ -3264,7 +3268,7 @@ const DEFAULTS = {
   orc: null,
   fech: {},
   plan: null,
-  pj: { dir: 'cltpj', pedir: false, margem: 20, benPJ: 0, fat: null, meses: '12', reg: 'fatorR', iss: 5, pl: 'otimo', plValor: 5000, contab: null, outros: 0, dep: 0, clt: null, benef: 0, saude: 0, vt: 0, fgts: true },
+  pj: { dir: 'cltpj', pedir: false, margem: 20, bensPJ: [], fat: null, meses: '12', reg: 'fatorR', iss: 5, pl: 'otimo', plValor: 5000, contab: null, outros: 0, dep: 0, clt: null, benef: 0, saude: 0, vt: 0, fgts: true },
   so: { sel: '', simSaida: '', empresas: [] }
 };
 
@@ -13525,26 +13529,33 @@ function pjCalc(fat, o, reg = o.reg, plModo = o.pl) {
 function pjBens(p) { return Array.isArray(p.bens) ? p.bens.filter(b => b && +b.valor > 0) : (+p.benef > 0 ? [{ id: 'vrva', nome: 'VR/VA', valor: +p.benef, freq: 'mes' }] : []); }
 function pjBensMes(p) { return pjBens(p).reduce((t, b) => t + (b.freq === 'ano' ? +b.valor / 12 : +b.valor), 0); }
 const PJ_BEN_SUG = ['Vale-refeição (VR)', 'Vale-alimentação (VA)', 'Auxílio home office', 'Seguro de vida', 'Auxílio academia (Wellhub/Gympass)', 'Auxílio creche', 'Previdência privada (parte da empresa)', 'PLR', 'Bônus anual'];
-function pjBensMig() { const p = state.pj; if (Array.isArray(p.bens)) return; p.bens = +p.benef > 0 ? [{ id: uid(), nome: 'VR/VA', valor: +p.benef, freq: 'mes' }] : []; p.benef = 0; }
+function pjBensMig() { const p = state.pj;
+  if (!Array.isArray(p.bens)) { p.bens = +p.benef > 0 ? [{ id: uid(), nome: 'VR/VA', valor: +p.benef, freq: 'mes' }] : []; p.benef = 0; }
+  if (!Array.isArray(p.bensPJ)) { p.bensPJ = +p.benPJ > 0 ? [{ id: uid(), nome: 'Benefícios do contrato', valor: +p.benPJ, freq: 'mes' }] : []; p.benPJ = 0; } }
+const pjBensPJMes = p => (Array.isArray(p.bensPJ) ? p.bensPJ : []).filter(b => b && +b.valor > 0).reduce((t, b) => t + (b.freq === 'ano' ? +b.valor / 12 : +b.valor), 0) + (+p.benPJ || 0);
+// as duas listas de benefícios: CLT (state.pj.bens) e o que o contratante PJ paga (state.pj.bensPJ)
+const PJ_BOX = { 'pj-bens': { key: 'bens', tit: 'Outros benefícios', sug: PJ_BEN_SUG }, 'pj-bens-pj': { key: 'bensPJ', tit: '', sug: ['Plano de saúde'].concat(PJ_BEN_SUG, ['13º salário', 'Férias remuneradas']) } };
 function renderPjBens() {
-  pjBensMig(); const box = $('pj-bens'); if (!box) return;
-  const ativo = document.activeElement && box.contains(document.activeElement) && document.activeElement.dataset.pjben ? document.activeElement.dataset.pjben + '|' + document.activeElement.dataset.campo : '';
-  box.innerHTML = `<span class="orc-h">Outros benefícios</span>` + state.pj.bens.map(b => `<div class="pj-ben"><input type="text" class="name" data-pjben="${b.id}" data-campo="nome" value="${esc(b.nome || '')}" aria-label="Benefício"><input type="number" step="50" min="0" data-pjben="${b.id}" data-campo="valor" value="${+b.valor || ''}" aria-label="Valor"><select data-pjben="${b.id}" data-campo="freq" aria-label="Frequência"><option value="mes"${b.freq !== 'ano' ? ' selected' : ''}>por mês</option><option value="ano"${b.freq === 'ano' ? ' selected' : ''}>por ano</option></select><button class="btn ghost tiny" type="button" data-pjbendel="${b.id}">Remover</button></div>`).join('')
-    + `<div class="pj-ben"><input type="text" class="name" id="pj-bnome" list="pj-ben-sug" placeholder="Benefício (ex.: VR, VA, PLR)" aria-label="Nome do benefício"><input type="number" step="50" min="0" id="pj-bval" placeholder="R$ que chega" aria-label="Valor do benefício"><select id="pj-bfreq" aria-label="Frequência"><option value="mes">por mês</option><option value="ano">por ano</option></select><button class="btn tiny" type="button" id="pj-badd">+ Benefício</button></div>
-    <datalist id="pj-ben-sug">${PJ_BEN_SUG.map(n => `<option value="${esc(n)}">`).join('')}</datalist>`;
-  if (ativo) { const [id, c] = ativo.split('|'), el = box.querySelector(`[data-pjben="${id}"][data-campo="${c}"]`); if (el) el.focus(); }
+  pjBensMig();
+  Object.entries(PJ_BOX).forEach(([bid, cfg]) => { const box = $(bid); if (!box) return; const lista = state.pj[cfg.key];
+    const ae = document.activeElement, ativo = ae && box.contains(ae) && ae.dataset.pjben ? ae.dataset.pjben + '|' + ae.dataset.campo : '';
+    box.innerHTML = (cfg.tit ? `<span class="orc-h">${cfg.tit}</span>` : '') + lista.map(b => `<div class="pj-ben"><input type="text" class="name" data-pjben="${b.id}" data-campo="nome" value="${esc(b.nome || '')}" aria-label="Benefício"><input type="number" step="50" min="0" data-pjben="${b.id}" data-campo="valor" value="${+b.valor || ''}" aria-label="Valor"><select data-pjben="${b.id}" data-campo="freq" aria-label="Frequência"><option value="mes"${b.freq !== 'ano' ? ' selected' : ''}>por mês</option><option value="ano"${b.freq === 'ano' ? ' selected' : ''}>por ano</option></select><button class="btn ghost tiny" type="button" data-pjbendel="${b.id}">Remover</button></div>`).join('')
+      + `<div class="pj-ben"><input type="text" class="name pjb-nome" list="${bid}-sug" placeholder="Benefício (ex.: ${bid === 'pj-bens' ? 'VR, VA, PLR' : 'plano de saúde, VR, bônus'})" aria-label="Nome do benefício"><input type="number" step="50" min="0" class="pjb-val" placeholder="R$ que chega" aria-label="Valor do benefício"><select class="pjb-freq" aria-label="Frequência"><option value="mes">por mês</option><option value="ano">por ano</option></select><button class="btn tiny pjb-add" type="button">+ Benefício</button></div>
+      <datalist id="${bid}-sug">${cfg.sug.map(n => `<option value="${esc(n)}">`).join('')}</datalist>`;
+    if (ativo) { const [id, c] = ativo.split('|'), el = box.querySelector(`[data-pjben="${id}"][data-campo="${c}"]`); if (el) el.focus(); } });
 }
-function pjBenAdd() {
-  const nome = $('pj-bnome').value.trim(), valor = +$('pj-bval').value || 0, freq = $('pj-bfreq').value;
-  if (!nome) { $('pj-bnome').focus(); return; }
-  pjBensMig(); state.pj.bens.push({ id: uid(), nome, valor, freq: freq === 'ano' ? 'ano' : 'mes' }); save(); renderPjBens(); renderPj();
-  if (!valor) { const el = $('pj-bens').querySelector(`[data-pjben="${state.pj.bens[state.pj.bens.length - 1].id}"][data-campo="valor"]`); if (el) el.focus(); } else $('pj-bnome').focus();
+function pjBenAdd(box) {
+  const lista = state.pj[PJ_BOX[box.id].key], q = c => box.querySelector(c), nome = q('.pjb-nome').value.trim(), valor = +q('.pjb-val').value || 0, freq = q('.pjb-freq').value;
+  if (!nome) { q('.pjb-nome').focus(); return; }
+  const id = uid(); lista.push({ id, nome, valor, freq: freq === 'ano' ? 'ano' : 'mes' }); save(); renderPjBens(); renderPj();
+  if (!valor) { const el = box.querySelector(`[data-pjben="${id}"][data-campo="valor"]`); if (el) el.focus(); } else box.querySelector('.pjb-nome').focus();
 }
-$('pj-bens').addEventListener('click', e => { const t = e.target; if (t.id === 'pj-badd') { pjBenAdd(); return; }
-  if (t.dataset.pjbendel) { state.pj.bens = state.pj.bens.filter(b => b.id !== t.dataset.pjbendel); save(); renderPjBens(); renderPj(); } });
-$('pj-bens').addEventListener('keydown', e => { if (e.key === 'Enter' && ['pj-bnome', 'pj-bval'].includes(e.target.id)) { e.preventDefault(); pjBenAdd(); } });
-$('pj-bens').addEventListener('change', e => { const t = e.target, b = t.dataset.pjben && state.pj.bens.find(x => x.id === t.dataset.pjben); if (!b) return;
-  const c = t.dataset.campo; b[c] = c === 'valor' ? (+t.value || 0) : c === 'freq' ? (t.value === 'ano' ? 'ano' : 'mes') : t.value.trim(); save(); renderPj(); });
+Object.keys(PJ_BOX).forEach(bid => { const box = $(bid); if (!box) return; const lista = () => { pjBensMig(); return state.pj[PJ_BOX[bid].key]; };
+  box.addEventListener('click', e => { const t = e.target; if (t.classList.contains('pjb-add')) { pjBensMig(); pjBenAdd(box); return; }
+    if (t.dataset.pjbendel) { state.pj[PJ_BOX[bid].key] = lista().filter(b => b.id !== t.dataset.pjbendel); save(); renderPjBens(); renderPj(); } });
+  box.addEventListener('keydown', e => { if (e.key === 'Enter' && (e.target.classList.contains('pjb-nome') || e.target.classList.contains('pjb-val'))) { e.preventDefault(); pjBensMig(); pjBenAdd(box); } });
+  box.addEventListener('change', e => { const t = e.target, b = t.dataset.pjben && lista().find(x => x.id === t.dataset.pjben); if (!b) return;
+    const c = t.dataset.campo; b[c] = c === 'valor' ? (+t.value || 0) : c === 'freq' ? (t.value === 'ano' ? 'ano' : 'mes') : t.value.trim(); save(); renderPj(); }); });
 // CLT: 12 salários líquidos + 13º (tributado à parte) + 1/3 de férias + FGTS (opcional) + benefícios
 function cltAnual(S, o) {
   const n = netCLT(S, o.dep), n13 = netCLT(S, o.dep), fer = netCLT(S * 4 / 3, o.dep) - n, fgts = o.fgts ? 0.08 * (13 + 1 / 3) * S : 0;
@@ -13562,9 +13573,9 @@ function pjPadrao() {
   return { fat: clt ? null : rec || null, clt: clt ? bruto || null : null, contab: +cb || 0 };
 }
 function pjOpts() {
-  const p = state.pj; if (p.dir !== 'cltpj' && p.dir !== 'pjclt') p.dir = 'cltpj';
+  const p = state.pj; if (p.dir !== 'cltpj' && p.dir !== 'pjclt') p.dir = 'cltpj'; pjBensMig();
   const d = pjPadrao();
-  const o = { fat: p.fat != null ? +p.fat : (d.fat || 0), meses: +p.meses === 11 ? 11 : 12, reg: p.reg, iss: +p.iss || 0, pl: p.pl, plValor: +p.plValor || 0, contab: p.contab != null ? +p.contab : d.contab, outros: +p.outros || 0, dep: +p.dep || 0, clt: p.clt != null ? +p.clt : (d.clt || 0), benef: pjBensMes(p), bens: pjBens(p), saude: +p.saude || 0, vt: +p.vt || 0, fgts: p.fgts !== false, benPJ: +p.benPJ || 0, margem: p.margem != null && isFinite(+p.margem) ? Math.max(0, +p.margem) : 20, pedir: !!p.pedir, dir: p.dir };
+  const o = { fat: p.fat != null ? +p.fat : (d.fat || 0), meses: +p.meses === 11 ? 11 : 12, reg: p.reg, iss: +p.iss || 0, pl: p.pl, plValor: +p.plValor || 0, contab: p.contab != null ? +p.contab : d.contab, outros: +p.outros || 0, dep: +p.dep || 0, clt: p.clt != null ? +p.clt : (d.clt || 0), benef: pjBensMes(p), bens: pjBens(p), saude: +p.saude || 0, vt: +p.vt || 0, fgts: p.fgts !== false, benPJ: pjBensPJMes(p), bensPJ: (p.bensPJ || []).filter(b => b && +b.valor > 0), margem: p.margem != null && isFinite(+p.margem) ? Math.max(0, +p.margem) : 20, pedir: !!p.pedir, dir: p.dir };
   o.cl = o.dir === 'cltpj';
   // "Quanto devo pedir?": o lado da proposta sai da conta (empate com a base + margem no bolso)
   if (o.pedir) {
@@ -13620,7 +13631,7 @@ function renderPj() {
       pj: { sal: o.meses * o.fat, trib: -12 * (r.inss + r.ir), emp: -o.meses * (r.imp + r.cpp + r.ret), fer: null, fgts: null, ben: 12 * o.benPJ || null, cus: -12 * (o.contab + o.outros) || null, tot: tP } };
     const ks = cl ? ['clt', 'pj'] : ['pj', 'clt'], NOME = { clt: 'CLT', pj: 'PJ' }, num = v => typeof v === 'number' ? v : 0;
     const cel = v => v == null ? '<td class="subdet">—</td>' : v === 'nc' ? '<td><span class="subdet">não conta</span></td>' : `<td class="${v < 0 ? 'neg' : ''}">${fm(v)}</td>`;
-    const LIN = [['sal', 'Salário ou faturamento', `CLT: 12 salários · PJ: ${o.meses} meses`], ['trib', 'INSS e IR do salário ou do pró-labore'], ['emp', 'Impostos da empresa', (r.an ? 'DAS do Simples' : 'Lucro Presumido') + (r.ret ? ' e retenção sobre lucros' : '')], ['fer', '13º e 1/3 de férias (líquido)'], ['fgts', 'FGTS'], ['ben', 'Benefícios', 'CLT: VR, VA, saúde, PLR... · PJ: pagos pelo contratante'], ['cus', 'Custos da PJ', 'contabilidade e outros']];
+    const LIN = [['sal', 'Salário ou faturamento', `CLT: 12 salários · PJ: ${o.meses} meses`], ['trib', 'INSS e IR do salário ou do pró-labore'], ['emp', 'Impostos da empresa', (r.an ? 'DAS do Simples' : 'Lucro Presumido') + (r.ret ? ' e retenção sobre lucros' : '')], ['fer', '13º e 1/3 de férias (líquido)'], ['fgts', 'FGTS'], ['ben', 'Benefícios', 'CLT: VR, VA, saúde, PLR... · PJ: o que o contratante paga além do contrato'], ['cus', 'Custos da PJ', 'contabilidade e outros']];
     const linha = ([k, n, nota], cls) => { const a = V[ks[0]][k], b = V[ks[1]][k]; if (a == null && b == null) return ''; const df = num(b) - num(a);
       return `<tr${cls ? ` class="${cls}"` : ''}><td class="name">${n}${nota ? ` <span class="subdet">${nota}</span>` : ''}</td>${cel(a)}${cel(b)}<td class="${df < 0 ? 'neg' : ''}">${Math.abs(df) < 1 ? '—' : sg(df)}</td></tr>`; };
     $('tbl-pj-lado').innerHTML = `<thead><tr><th>Linha</th><th>${NOME[ks[0]]} <span class="subdet">hoje</span></th><th>${NOME[ks[1]]} <span class="subdet">proposta</span></th><th>Diferença</th></tr></thead><tbody>${LIN.map(l => linha(l)).join('')}`
