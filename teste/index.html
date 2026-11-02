@@ -1560,7 +1560,12 @@ tr.rd-hit td { background: color-mix(in srgb, var(--good) 9%, transparent); }
 .jg-sl .jg-ic{transform-box:fill-box;transform-origin:center;transition:transform 1.4s cubic-bezier(.2,.8,.15,1)}
 .jg-hub{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:28%;aspect-ratio:1;border-radius:50%;display:grid;place-items:center;text-align:center;pointer-events:none;padding:6px}
 .jg-hub small{display:block;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);font-weight:700}
+.jg-hub>div{width:100%;min-width:0;padding:0 6%;box-sizing:border-box}
 .jg-hub b{display:block;font-family:var(--f-head);font-size:clamp(11px,1.6vw,16px);line-height:1.15;color:var(--ink)}
+.jg-hub{container-type:inline-size}
+.jg-hub b{font-size:12cqi}
+.jg-hub b.longo{font-size:9cqi}
+.jg-hub small{font-size:max(8px,7cqi)}
 .jg-info{display:grid;gap:12px;min-width:0}
 .jg-info .jg-casa{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:700}
 .jg-info h3{margin:0;font-family:var(--f-head);font-size:clamp(22px,2.6vw,30px);line-height:1.1;color:var(--ink)}
@@ -1673,7 +1678,7 @@ a.jg-prox{color:inherit;text-decoration:none}a.jg-prox:hover{border-color:var(--
     </div>
     <div class="nav-mobile-sub" id="navMobileSub"></div>
   </div>
-  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 256</div></div>
+  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 257</div></div>
 </nav>
 <div class="sino-pop" id="sino-pop" role="dialog" aria-label="Atualizações das bases" hidden></div>
 <div class="sino-pop" id="pess-pop" role="dialog" aria-label="Seus avisos" hidden></div>
@@ -3550,7 +3555,7 @@ a.jg-prox{color:inherit;text-decoration:none}a.jg-prox:hover{border-color:var(--
     return new Promise(resolve => { const { data } = sb.auth.onAuthStateChange(async (ev) => { if (ev !== 'PASSWORD_RECOVERY') return; const s = prompt('Digite a nova senha (mínimo 8 caracteres):'); if (s && s.length >= 8) { const { error } = await sb.auth.updateUser({ password: s }); alert(error ? 'Não deu para trocar a senha: ' + error.message : 'Senha trocada.'); } }); resolve(data); });
   }
   // ---------- rodapé: compartilhar, administração e sair ----------
-  const SITE_V = 140;
+  const SITE_V = 141;
   const escH = v => String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const dataBR = v => v ? new Date(v).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' }) : '–';
   const css2 = `.side-foot .r{flex-wrap:wrap}.side-foot .lg-acoes{margin-left:auto;display:inline-flex;gap:10px}
@@ -14810,7 +14815,7 @@ function renderJogo() {
 function jgGrow(i, on) { const el = document.querySelector(`#jg-rot .jg-sl[data-jgi="${i}"] .jg-f`); if (!el) return; const N = jgMods().length, t = ((i + .5) * 360 / N - 90) * Math.PI / 180; el.style.transform = on ? `translate(${(15 * Math.cos(t)).toFixed(1)}px,${(15 * Math.sin(t)).toFixed(1)}px) scale(1.06)` : ''; }
 function jgMostra(i) {
   const vis = jgMods(), m = vis[i]; if (!m) return; const g = jgProg(m), sug = jgSugestao(vis);
-  $('jg-hn').textContent = 'Casa ' + (i + 1); $('jg-ht').textContent = m.nome;
+  $('jg-hn').textContent = 'Casa ' + (i + 1); $('jg-ht').textContent = m.nome; $('jg-ht').classList.toggle('longo', m.nome.length > 11);
   const prox = g && g.prox ? g.prox : null, pct = g ? Math.round(g.f / g.n * 100) : null;
   $('jg-info').innerHTML = `<span class="jg-casa">Casa ${i + 1} de ${vis.length}${m.breve ? ' · em breve' : ''}${m === sug ? ' · próxima jogada sugerida' : ''}</span><h3>${esc(m.nome)}</h3><p>${esc(m.desc)}</p>
     ${m.breve ? '' : `<div class="jg-res">${modResumo(m)}</div>`}
