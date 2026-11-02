@@ -607,7 +607,7 @@ tr.totrow td { font-weight: 700; border-top: 2px solid var(--line); }
 .pj-bens .orc-h { display: block; margin: 4px 0 2px; }
 .pj-ben { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) auto; gap: 6px; align-items: center; padding: 6px 0; border-bottom: 1px solid var(--line); }
 .pj-ben:last-of-type { border-bottom: 0; }
-.pj-ben input[type=text] { grid-column: 1 / -1; } .pj-ben input, .pj-ben select { width: 100%; }
+.pj-ben input[type=text], .pj-ben select.pjb-sel { grid-column: 1 / -1; } .pj-ben input, .pj-ben select { width: 100%; }
 #fat-prev:empty, #ext-prev:empty { display: none; }
 #ext-prev { margin-top: 14px; }
 #tbl-ext input.fatcat { min-width: 250px; }
@@ -1386,7 +1386,7 @@ ul.ng-acordo li { margin-bottom: 4px; }
     </div>
     <div class="nav-mobile-sub" id="navMobileSub"></div>
   </div>
-  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 234</div></div>
+  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 235</div></div>
 </nav>
 <div class="sino-pop" id="sino-pop" role="dialog" aria-label="Central de avisos" hidden></div>
 <div class="tour-pop" id="tour-pop" role="dialog" aria-labelledby="tour-tit" hidden></div>
@@ -2961,7 +2961,7 @@ ul.ng-acordo li { margin-bottom: 4px; }
     return new Promise(resolve => { const { data } = sb.auth.onAuthStateChange(async (ev) => { if (ev !== 'PASSWORD_RECOVERY') return; const s = prompt('Digite a nova senha (mínimo 8 caracteres):'); if (s && s.length >= 8) { const { error } = await sb.auth.updateUser({ password: s }); alert(error ? 'Não deu para trocar a senha: ' + error.message : 'Senha trocada.'); } }); resolve(data); });
   }
   // ---------- rodapé: compartilhar, administração e sair ----------
-  const SITE_V = 117;
+  const SITE_V = 118;
   const escH = v => String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const dataBR = v => v ? new Date(v).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' }) : '–';
   const css2 = `.side-foot .r{flex-wrap:wrap}.side-foot .lg-acoes{margin-left:auto;display:inline-flex;gap:10px}
@@ -13543,20 +13543,21 @@ function renderPjBens() {
   Object.entries(PJ_BOX).forEach(([bid, cfg]) => { const box = $(bid); if (!box) return; const lista = state.pj[cfg.key];
     const ae = document.activeElement, ativo = ae && box.contains(ae) && ae.dataset.pjben ? ae.dataset.pjben + '|' + ae.dataset.campo : '';
     box.innerHTML = (cfg.tit ? `<span class="orc-h">${cfg.tit}</span>` : '') + lista.map(b => `<div class="pj-ben"><input type="text" class="name" data-pjben="${b.id}" data-campo="nome" value="${esc(b.nome || '')}" aria-label="Benefício"><input type="number" step="50" min="0" data-pjben="${b.id}" data-campo="valor" value="${+b.valor || ''}" aria-label="Valor"><select data-pjben="${b.id}" data-campo="freq" aria-label="Frequência"><option value="mes"${b.freq !== 'ano' ? ' selected' : ''}>por mês</option><option value="ano"${b.freq === 'ano' ? ' selected' : ''}>por ano</option></select><button class="btn ghost tiny" type="button" data-pjbendel="${b.id}">Remover</button></div>`).join('')
-      + `<div class="pj-ben"><input type="text" class="name pjb-nome fatcat" data-opts="pjben" data-box="${bid}" autocomplete="off" placeholder="Benefício (ex.: ${bid === 'pj-bens' ? 'VR, VA, PLR' : 'plano de saúde, VR, bônus'})" aria-label="Nome do benefício"><input type="number" step="50" min="0" class="pjb-val" placeholder="R$ que chega" aria-label="Valor do benefício"><select class="pjb-freq" aria-label="Frequência"><option value="mes">por mês</option><option value="ano">por ano</option></select><button class="btn tiny pjb-add" type="button">+ Benefício</button></div>`;
+      + `<div class="pj-ben pj-ben-novo"><select class="pjb-sel" aria-label="Benefício"><option value="">Escolha o benefício</option>${cfg.grp.map(g => `<optgroup label="${esc(g.g)}">${g.itens.map(n => `<option>${esc(n)}</option>`).join('')}</optgroup>`).join('')}<option value="__outro">Outro (digitar o nome)</option></select><input type="text" class="name pjb-nome" placeholder="Nome do benefício" aria-label="Nome do benefício" hidden><input type="number" step="50" min="0" class="pjb-val" placeholder="R$ que chega" aria-label="Valor do benefício"><select class="pjb-freq" aria-label="Frequência"><option value="mes">por mês</option><option value="ano">por ano</option></select><button class="btn tiny pjb-add" type="button">+ Benefício</button></div>`;
     if (ativo) { const [id, c] = ativo.split('|'), el = box.querySelector(`[data-pjben="${id}"][data-campo="${c}"]`); if (el) el.focus(); } });
 }
 function pjBenAdd(box) {
-  const lista = state.pj[PJ_BOX[box.id].key], q = c => box.querySelector(c), nome = q('.pjb-nome').value.trim(), valor = +q('.pjb-val').value || 0, freq = q('.pjb-freq').value;
-  if (!nome) { q('.pjb-nome').focus(); return; }
+  const lista = state.pj[PJ_BOX[box.id].key], q = c => box.querySelector(c), sv = q('.pjb-sel').value, nome = sv === '__outro' ? q('.pjb-nome').value.trim() : sv, valor = +q('.pjb-val').value || 0, freq = q('.pjb-freq').value;
+  if (!nome) { (sv === '__outro' ? q('.pjb-nome') : q('.pjb-sel')).focus(); return; }
   const id = uid(); lista.push({ id, nome, valor, freq: freq === 'ano' ? 'ano' : 'mes' }); save(); renderPjBens(); renderPj();
-  if (!valor) { const el = box.querySelector(`[data-pjben="${id}"][data-campo="valor"]`); if (el) el.focus(); } else box.querySelector('.pjb-nome').focus();
+  if (!valor) { const el = box.querySelector(`[data-pjben="${id}"][data-campo="valor"]`); if (el) el.focus(); } else box.querySelector('.pjb-sel').focus();
 }
 Object.keys(PJ_BOX).forEach(bid => { const box = $(bid); if (!box) return; const lista = () => { pjBensMig(); return state.pj[PJ_BOX[bid].key]; };
   box.addEventListener('click', e => { const t = e.target; if (t.classList.contains('pjb-add')) { pjBensMig(); pjBenAdd(box); return; }
     if (t.dataset.pjbendel) { state.pj[PJ_BOX[bid].key] = lista().filter(b => b.id !== t.dataset.pjbendel); save(); renderPjBens(); renderPj(); } });
   box.addEventListener('keydown', e => { if (e.key !== 'Enter') return; if (e.target.classList.contains('pjb-nome')) { e.preventDefault(); box.querySelector('.pjb-val').focus(); } else if (e.target.classList.contains('pjb-val')) { e.preventDefault(); pjBensMig(); pjBenAdd(box); } });
-  box.addEventListener('change', e => { const t = e.target, b = t.dataset.pjben && lista().find(x => x.id === t.dataset.pjben); if (!b) return;
+  box.addEventListener('change', e => { if (e.target.classList.contains('pjb-sel')) { const o = e.target.value === '__outro', n = box.querySelector('.pjb-nome'); n.hidden = !o; (o ? n : box.querySelector('.pjb-val')).focus(); return; }
+    const t = e.target, b = t.dataset.pjben && lista().find(x => x.id === t.dataset.pjben); if (!b) return;
     const c = t.dataset.campo; b[c] = c === 'valor' ? (+t.value || 0) : c === 'freq' ? (t.value === 'ano' ? 'ano' : 'mes') : t.value.trim(); save(); renderPj(); }); });
 // CLT: 12 salários líquidos + 13º (tributado à parte) + 1/3 de férias + FGTS (opcional) + benefícios
 function cltAnual(S, o) {
