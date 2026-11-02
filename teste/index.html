@@ -1497,6 +1497,18 @@ tr.rd-hit td { background: color-mix(in srgb, var(--good) 9%, transparent); }
   .fam-tbl td:last-child .ng-ac { justify-content: flex-start; }
   .fam-tbl tfoot tr td:empty { display: none; }
 }
+#ag-pop .sec-tog { display: none; }
+.ag-ch.rec { box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--agc) 45%, transparent); }
+.ag-ch.rec.pend { background: transparent; box-shadow: inset 0 0 0 1px var(--agc); border-style: dashed; opacity: .85; }
+.ag-com-t { font-size: 13px; margin: 14px 0 6px; color: var(--muted); text-transform: uppercase; letter-spacing: .04em; }
+.ag-com { list-style: none; margin: 0 0 6px; padding: 0; display: flex; flex-direction: column; gap: 4px; }
+.ag-com li { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.ag-com li span { font-weight: 600; word-break: break-all; }
+.ag-com .ag-st-aceito { color: var(--good); } .ag-com .ag-st-recusado { color: var(--bad); }
+.ag-rec-de { margin: 0 0 8px; }
+.ag-rec { display: grid; grid-template-columns: max-content 1fr; gap: 4px 14px; margin: 0 0 10px; }
+.ag-rec dt { color: var(--muted); font-size: 12px; } .ag-rec dd { margin: 0; white-space: pre-wrap; }
+#agc-email.ag-erro { border-color: var(--bad); }
 </style>
 
 
@@ -1583,7 +1595,7 @@ tr.rd-hit td { background: color-mix(in srgb, var(--good) 9%, transparent); }
     </div>
     <div class="nav-mobile-sub" id="navMobileSub"></div>
   </div>
-  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 250</div></div>
+  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 251</div></div>
 </nav>
 <div class="sino-pop" id="sino-pop" role="dialog" aria-label="Central de avisos" hidden></div>
 <div class="sino-pop" id="pess-pop" role="dialog" aria-label="Seus avisos" hidden></div>
@@ -3420,7 +3432,7 @@ tr.rd-hit td { background: color-mix(in srgb, var(--good) 9%, transparent); }
     return new Promise(resolve => { const { data } = sb.auth.onAuthStateChange(async (ev) => { if (ev !== 'PASSWORD_RECOVERY') return; const s = prompt('Digite a nova senha (mínimo 8 caracteres):'); if (s && s.length >= 8) { const { error } = await sb.auth.updateUser({ password: s }); alert(error ? 'Não deu para trocar a senha: ' + error.message : 'Senha trocada.'); } }); resolve(data); });
   }
   // ---------- rodapé: compartilhar, administração e sair ----------
-  const SITE_V = 133;
+  const SITE_V = 134;
   const escH = v => String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const dataBR = v => v ? new Date(v).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' }) : '–';
   const css2 = `.side-foot .r{flex-wrap:wrap}.side-foot .lg-acoes{margin-left:auto;display:inline-flex;gap:10px}
@@ -3568,6 +3580,15 @@ tr.rd-hit td { background: color-mix(in srgb, var(--good) 9%, transparent); }
     // cada conta tem o próprio cache local: se outra pessoa entrou neste navegador, limpa e recarrega uma vez
     try { const ant = localStorage.getItem('painel-site-uid'); if (ant !== uid) { Object.keys(localStorage).filter(k => /^painel-/.test(k)).forEach(k => localStorage.removeItem(k)); localStorage.setItem('painel-site-uid', uid); if (ant) { location.reload(); await new Promise(() => {}); } } } catch (e) {}
   })();
+  // Agenda: compromissos compartilhados com outras pessoas do site (tabela agenda_conv, supabase-agenda.sql)
+  window.__siteAgenda = {
+    async listar() { await pronto; const { data, error } = await sb.from('agenda_conv').select('id,dono,para,para_email,dono_nome,ev_id,ev,resposta,criado_em,atualizado_em'); if (error) throw error;
+      const R = data || []; return { meus: R.filter(r => r.dono === uid), rec: R.filter(r => r.para === uid) }; },
+    async convidar(email, evId, ev) { await pronto; const { data, error } = await sb.rpc('agenda_convidar', { email_para: email, id_ev: evId, dados: ev }); if (error) throw error; return data; },
+    async remover(evId, email) { await pronto; let q = sb.from('agenda_conv').delete().eq('dono', uid).eq('ev_id', evId); if (email) q = q.eq('para_email', String(email).toLowerCase()); const { error } = await q; if (error) throw error; },
+    async responder(id, resp) { await pronto; const { error } = await sb.rpc('agenda_responder', { id_conv: id, resp }); if (error) throw error; },
+    ouvir(cb) { pronto.then(() => { try { sb.channel('agenda').on('postgres_changes', { event: '*', schema: 'public', table: 'agenda_conv' }, () => cb()).subscribe(); } catch (e) {} }); }
+  };
   window.claude = { use: async n => { await pronto; return n === 'db' ? db : n === 'user' ? user : null; } };
 })();
 
@@ -6027,7 +6048,7 @@ document.addEventListener('change', e => {
 
 /* ---------- Agenda: calendário com compromissos e listas de compras ----------
    state.agenda = { evs:[{id,titulo,data 'AAAA-MM-DD',hora,rep nao|semana|mes|ano,cat,quem,aviso dias|-1,nota,com:[]}], listas:[{id,nome,itens:[{id,nome,qtd,preco,ok,rd}]}], sel, ocultos:[] }
-   com = com quem compartilhar (reservado para o site, ainda não usado). Datas do resto do painel entram sozinhas (não ficam salvas aqui). */
+   com = e-mails de quem recebe o compromisso (só no site: tabela agenda_conv, supabase-agenda.sql). Datas do resto do painel entram sozinhas (não ficam salvas aqui). */
 const AG_CAT = { comp: ['Compromisso', 'var(--s1)'], conta: ['Conta a pagar', 'var(--s2)'], saude: ['Saúde', 'var(--s6)'], escola: ['Escola e filhos', 'var(--s4)'], casa: ['Casa', 'var(--s7)'], trab: ['Trabalho', 'var(--s5)'], outro: ['Outro', 'var(--muted)'] };
 const AG_REP = { nao: 'Não repete', semana: 'Toda semana', mes: 'Todo mês', ano: 'Todo ano' };
 const AG_AVISO = [[-1, 'Sem aviso'], [0, 'No dia'], [1, '1 dia antes'], [3, '3 dias antes'], [7, '1 semana antes']];
@@ -6042,11 +6063,12 @@ const agDiaN = s => Date.UTC(+s.slice(0, 4), +s.slice(5, 7) - 1, +s.slice(8, 10)
 const agBr = s => { const [y, m, d] = s.split('-'); return `${d}/${m}${y !== agHoje().slice(0, 4) ? '/' + y : ''}`; };
 const agMesNome = mk => new Date(+mk.slice(0, 4), +mk.slice(5, 7) - 1, 1).toLocaleDateString('pt-BR', { month: 'long', year: 'numeric' });
 const agL = () => ((state.agenda || {}).evs || []);
+const AG_EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 function agNormEv(x) {
   x.id = String(x.id || uid()); x.titulo = TXT(x.titulo, 80) || 'Compromisso'; if (!/^\d{4}-\d{2}-\d{2}$/.test(x.data || '')) x.data = agHoje();
   x.hora = /^\d{2}:\d{2}$/.test(x.hora || '') ? x.hora : ''; if (!AG_REP[x.rep]) x.rep = 'nao'; if (!AG_CAT[x.cat]) x.cat = 'comp';
   x.quem = typeof x.quem === 'string' ? x.quem : ''; x.aviso = AG_AVISO.some(a => a[0] === +x.aviso) ? +x.aviso : 1; x.nota = String(x.nota || '').slice(0, 1000);
-  x.com = Array.isArray(x.com) ? x.com.filter(c => typeof c === 'string').slice(0, 20) : []; return x;
+  x.com = Array.isArray(x.com) ? [...new Set(x.com.filter(c => typeof c === 'string' && AG_EMAIL.test(c.trim())).map(c => c.trim().toLowerCase()))].slice(0, 20) : []; return x;
 }
 function agNormLista(l) {
   l.id = String(l.id || uid()); l.nome = TXT(l.nome, 60) || 'Lista'; l.itens = Array.isArray(l.itens) ? l.itens.filter(i => i && typeof i === 'object') : [];
@@ -6085,14 +6107,61 @@ function agAutoMes(mk) {
 }
 function agDoDia(de, ate) {
   const out = []; agL().forEach(x => agOcorr(x, de, ate).forEach(d => out.push({ ...x, data: d, ev: x })));
+  agRecEvs().forEach(x => agOcorr(x, de, ate).forEach(d => out.push({ ...x, data: d, ev: x })));
   return out.concat(agAutoDia(de, ate)).sort((p, q) => p.data < q.data ? -1 : p.data > q.data ? 1 : (p.hora || '99') < (q.hora || '99') ? -1 : 1);
 }
 const agCor = o => o.auto ? 'var(--s8)' : (AG_CAT[o.cat] || AG_CAT.outro)[1];
 const agQuem = id => { try { const p = famAcha(id); return p ? p.nome : ''; } catch (e) { return ''; } };
+/* ---------- compartilhar compromissos (só no site, cada pessoa com o próprio login) ---------- */
+const agSite = () => (typeof window !== 'undefined' && window.__siteAgenda) || null;
+let agConv = { meus: [], rec: [], lido: false, erro: '', lendo: false };
+async function agConvLer() {
+  const S = agSite(); if (!S || agConv.lendo) return; agConv.lendo = true;
+  try { const r = await S.listar(); agConv = { meus: r.meus || [], rec: r.rec || [], lido: true, erro: '', lendo: false }; }
+  catch (e) { agConv = { meus: [], rec: [], lido: true, erro: (e && e.message) || 'erro', lendo: false }; }
+  try { if (tab === 'agcal') renderTab(); renderPess(); } catch (e) {}
+}
+function agConvIni() { const S = agSite(); if (!S) return; agConvLer(); let t = null; S.ouvir(() => { clearTimeout(t); t = setTimeout(agConvLer, 400); }); }
+setTimeout(agConvIni, 1200);
+// compromissos que outras pessoas compartilharam comigo (os recusados não aparecem)
+function agRecEvs() { return agConv.rec.filter(r => r.resposta !== 'recusado' && r.ev && typeof r.ev === 'object').map(r => Object.assign(agNormEv({ ...r.ev, id: 'conv:' + r.id, com: [] }), { quem: '', rec: r })); }
+const agConvDe = id => agConv.rec.find(r => 'conv:' + r.id === id);
+const agEvPub = x => ({ titulo: x.titulo, data: x.data, hora: x.hora, rep: x.rep, cat: x.cat, aviso: x.aviso, nota: x.nota });
+const agConvSt = (x, em) => { const r = agConv.meus.find(c => c.ev_id === x.id && c.para_email === em); return r ? r.resposta : (agL().some(y => y.id === x.id && y.com.includes(em)) ? 'enviando' : 'novo'); };
+const AG_CST = { pendente: 'aguardando resposta', aceito: 'aceitou', recusado: 'recusou', enviando: 'enviando…', novo: 'vai ao salvar' };
+async function agConvSync(x, antes) {
+  const S = agSite(); if (!S) return; const fora = [];
+  for (const em of x.com) { try { const r = await S.convidar(em, x.id, agEvPub(x)); if (r === 'sem_conta' || r === 'voce_mesmo') fora.push([em, r]); } catch (e) { console.error(e); fora.push([em, 'erro']); } }
+  for (const em of (antes || [])) if (!x.com.includes(em)) { try { await S.remover(x.id, em); } catch (e) { console.error(e); } }
+  if (fora.length) { const y = agL().find(z => z.id === x.id); if (y) { y.com = y.com.filter(em => !fora.some(f => f[0] === em && f[1] !== 'erro')); save(); }
+    try { ngToast(fora.map(([em, r]) => r === 'sem_conta' ? `${em} ainda não tem conta no site: peça para a pessoa criar uma e compartilhe de novo.` : r === 'voce_mesmo' ? 'Esse e-mail é o seu.' : `Não consegui compartilhar com ${em} agora.`).join(' ')); } catch (e) {} }
+  agConvLer();
+}
+function agComHtml(x) {
+  if (x.rec) return '';
+  if (!agSite()) return '<p class="subdet">Compartilhar com outras pessoas funciona no painel do site, onde cada uma entra com o próprio login.</p>';
+  if (agConv.erro) return '<p class="subdet">O compartilhamento ainda não está ligado neste site (falta criar a tabela da Agenda no banco).</p>';
+  return `<h3 class="ag-com-t">Compartilhar</h3>
+    ${x.com.length ? `<ul class="ag-com">${x.com.map(em => { const st = agConvSt(x, em); return `<li><span>${esc(em)}</span><small class="subdet ag-st-${st}">${AG_CST[st]}</small><button type="button" class="btn ghost tiny" data-agcdel="${esc(em)}" aria-label="Parar de compartilhar com ${esc(em)}">×</button></li>`; }).join('')}</ul>` : ''}
+    <div class="ag-add"><input type="email" id="agc-email" maxlength="120" placeholder="E-mail de quem tem conta no site" aria-label="E-mail para compartilhar"><button type="button" class="btn ghost tiny" data-agcadd>Adicionar</button></div>
+    <p class="subdet">A pessoa vê o compromisso na Agenda dela e recebe o aviso em Seus avisos, podendo aceitar ou recusar. Vão só os dados deste compromisso, nada do resto do painel. Mudanças que você salvar chegam para ela.</p>`;
+}
+function agRecHtml(x) {
+  const r = x.rec, st = r.resposta;
+  return `<p class="ag-rec-de">Compartilhado por <b>${esc(r.dono_nome || 'outra pessoa')}</b>${st === 'aceito' ? ' · você aceitou' : ''}</p>
+    <dl class="ag-rec">${[['Data', agBr(x.data) + (x.hora ? ' às ' + x.hora : '')], ['Repete', AG_REP[x.rep]], ['Tipo', (AG_CAT[x.cat] || AG_CAT.outro)[0]], ['Lembrete', (AG_AVISO.find(a => a[0] === x.aviso) || [0, ''])[1]]].map(([k, v]) => `<dt>${k}</dt><dd>${esc(v)}</dd>`).join('')}${x.nota ? `<dt>Anotações</dt><dd>${esc(x.nota)}</dd>` : ''}</dl>
+    <p class="subdet">Só quem criou pode mudar este compromisso. Se recusar, ele sai da sua Agenda.</p>
+    <div class="ag-pop-ac"><button type="button" class="btn danger tiny" data-agcresp="${r.id}:recusado">${st === 'aceito' ? 'Tirar da minha agenda' : 'Recusar'}</button><span class="ag-sp"></span><button type="button" class="btn ghost" data-agfecha>Fechar</button>${st === 'aceito' ? '' : `<button type="button" class="btn" data-agcresp="${r.id}:aceito">Aceitar</button>`}</div>`;
+}
+// avisos de compartilhamento: convites novos e mudanças em compromissos aceitos
+function agConvAvisos() {
+  return agConv.rec.filter(r => r.resposta === 'pendente' || (r.resposta === 'aceito' && r.atualizado_em && r.atualizado_em !== r.criado_em)).map(r => { const e = r.ev || {};
+    return { id: 'agconv:' + r.id + ':' + (r.resposta === 'pendente' ? 'c' : r.atualizado_em), mod: 'agen', quando: e.data || '', msg: `${r.dono_nome || 'Alguém'} ${r.resposta === 'pendente' ? 'compartilhou com você' : 'mudou'}: ${e.titulo || 'compromisso'}${e.data ? ' em ' + agBr(e.data) : ''}${e.hora ? ' às ' + e.hora : ''}.`, tab: 'agcal', sec: 'Mês', ev: 'conv:' + r.id }; });
+}
 // avisos para o sino: compromissos dentro do prazo de aviso
 function agAvisos() {
   try { if (!state.agenda) return []; const h = agHoje(), fim = new Date((agDiaN(h) + 7) * 864e5).toISOString().slice(0, 10);
-    return agDoDia(h, fim).filter(o => !o.auto && o.aviso >= 0 && agDiaN(o.data) - agDiaN(h) <= o.aviso).map(o => { const n = agDiaN(o.data) - agDiaN(h);
+    return agDoDia(h, fim).filter(o => !o.auto && !(o.rec && o.rec.resposta !== 'aceito') && o.aviso >= 0 && agDiaN(o.data) - agDiaN(h) <= o.aviso).map(o => { const n = agDiaN(o.data) - agDiaN(h);
       return { id: `agenda:${o.id}:${o.data}`, quando: o.data, fonte: 'Agenda', nivel: 'aviso', auto: true, msg: `${n === 0 ? 'Hoje' : n === 1 ? 'Amanhã' : 'Em ' + n + ' dias (' + agBr(o.data) + ')'}: ${o.titulo}${o.hora ? ' às ' + o.hora : ''}${o.quem && agQuem(o.quem) ? ' · ' + agQuem(o.quem) : ''}.` }; }); }
   catch (e) { return []; }
 }
@@ -6103,7 +6172,7 @@ function renderAgCal() {
   $('agc-top').innerHTML = `<div class="ag-top"><button type="button" class="btn ghost tiny" data-agmes="-1" aria-label="Mês anterior">‹</button><h3 class="ag-mes">${agMesNome(mk)}</h3><button type="button" class="btn ghost tiny" data-agmes="1" aria-label="Próximo mês">›</button><button type="button" class="btn ghost tiny" data-agmes="0">Hoje</button><span class="ag-sp"></span><button type="button" class="btn tiny" data-agadd>+ Compromisso</button></div>`;
   let cel = ''; for (let k = 0; k < w0; k++) cel += '<div class="ag-c vaz"></div>';
   for (let d = 1; d <= n; d++) { const s = agDt(mk, d), os = occ.filter(o => o.data === s);
-    cel += `<div class="ag-c${s === h ? ' hoje' : ''}${s === agDia ? ' sel' : ''}" data-agdia="${s}" role="button" tabindex="0" aria-label="${d} de ${agMesNome(mk)}${os.length ? ', ' + os.length + ' compromisso' + (os.length > 1 ? 's' : '') : ''}"><span class="ag-n">${d}</span>${os.slice(0, 3).map(o => `<span class="ag-ch${o.auto ? ' auto' : ''}" style="--agc:${agCor(o)}"${o.auto ? '' : ` data-agev="${o.id}"`} title="${esc((o.hora ? o.hora + ' ' : '') + o.titulo)}"><i></i><b>${o.hora ? o.hora + ' ' : ''}${esc(o.titulo)}</b></span>`).join('')}${os.length > 3 ? `<span class="ag-mais">+${os.length - 3}</span>` : ''}</div>`; }
+    cel += `<div class="ag-c${s === h ? ' hoje' : ''}${s === agDia ? ' sel' : ''}" data-agdia="${s}" role="button" tabindex="0" aria-label="${d} de ${agMesNome(mk)}${os.length ? ', ' + os.length + ' compromisso' + (os.length > 1 ? 's' : '') : ''}"><span class="ag-n">${d}</span>${os.slice(0, 3).map(o => `<span class="ag-ch${o.auto ? ' auto' : ''}${o.rec ? ' rec' + (o.rec.resposta === 'pendente' ? ' pend' : '') : ''}" style="--agc:${agCor(o)}"${o.auto ? '' : ` data-agev="${o.id}"`} title="${esc((o.hora ? o.hora + ' ' : '') + o.titulo)}"><i></i><b>${o.hora ? o.hora + ' ' : ''}${esc(o.titulo)}</b></span>`).join('')}${os.length > 3 ? `<span class="ag-mais">+${os.length - 3}</span>` : ''}</div>`; }
   $('agc-grid').innerHTML = `<div class="ag-grid">${AG_SEM.map(s => `<div class="ag-h">${s}</div>`).join('')}${cel}</div>`;
   // dia escolhido
   const os = agDoDia(agDia, agDia);
@@ -6112,6 +6181,7 @@ function renderAgCal() {
   // pop-up do compromisso (rascunho)
   const x = agRasc, pop = $('ag-pop'), fb = $('agc-ev'); pop.hidden = !x;
   if (!x) fb.innerHTML = '';
+  else if (x.rec) { fb.dataset.de = x.id; $('ag-pop-t').textContent = x.titulo; fb.innerHTML = agRecHtml(x); }
   else if (!fb.dataset.de || fb.dataset.de !== x.id) { fb.dataset.de = x.id; const b = k => `${x.id}:${k}`, novo = !agL().some(y => y.id === x.id); let pes = []; try { pes = famL(); } catch (e) {}
     $('ag-pop-t').textContent = novo ? 'Novo compromisso' : 'Editar compromisso';
     fb.innerHTML = `<div class="ng-form">
@@ -6123,8 +6193,10 @@ function renderAgCal() {
       <label>De quem é<select data-agf="${b('quem')}"><option value="">Da casa</option>${pes.filter(p => p.tipo !== 'pet').map(p => `<option value="${p.id}"${x.quem === p.id ? ' selected' : ''}>${esc(p.nome)}</option>`).join('')}</select></label>
       <label>Lembrete<select data-agf="${b('aviso')}">${AG_AVISO.map(([v, t]) => `<option value="${v}"${x.aviso === v ? ' selected' : ''}>${t}</option>`).join('')}</select></label>
       <label class="ag-wide">Anotações<textarea data-agf="${b('nota')}" rows="2" maxlength="1000">${esc(x.nota)}</textarea></label></div>
-      <p class="subdet">O lembrete aparece em Seus avisos (o ícone ao lado do logo).${pes.length ? '' : ' Cadastre as pessoas da casa em Família › Minha família para escolher de quem é cada compromisso.'} Compartilhar com outras pessoas vai funcionar no site, quando cada uma tiver o próprio login.</p>
+      <p class="subdet">O lembrete aparece em Seus avisos (o ícone ao lado do logo).${pes.length ? '' : ' Cadastre as pessoas da casa em Família › Minha família para escolher de quem é cada compromisso.'}</p>
+      <div id="agc-com"></div>
       <div class="ag-pop-ac">${novo ? '' : `<button type="button" class="btn danger tiny" data-agdel="${x.id}">Remover</button>`}<span class="ag-sp"></span><button type="button" class="btn ghost" data-agfecha>Cancelar</button><button type="button" class="btn" data-agsalva>${novo ? 'Adicionar' : 'Salvar'}</button></div>`; }
+  if (x && !x.rec && $('agc-com')) $('agc-com').innerHTML = agComHtml(x);
   // mês e próximos
   const mm = agAutoMes(mk);
   $('agc-mesl').innerHTML = mm.length ? `<ul class="ag-lst">${mm.map(o => `<li><i style="--agc:var(--s8)"></i><span class="q">${esc(o.d)}</span><span><a href="#" data-lmtab="${o.tab}" data-lmsec="${esc(o.sec || '')}">${esc(o.t)}</a>${o.sim ? ' <small class="subdet">só simulação</small>' : ''}</span></li>`).join('')}</ul>` : '<p class="hint">Nada do resto do painel neste mês.</p>';
@@ -6132,7 +6204,7 @@ function renderAgCal() {
   $('agc-prox').innerHTML = prox.length ? `<ul class="ag-lst">${prox.map(agLi).join('')}</ul>` : '<p class="hint">Nada nos próximos 30 dias. Toque em + Compromisso.</p>';
   $('agc-auto').innerHTML = Object.entries(AG_AUTO).map(([k, t]) => `<label class="inline"><input type="checkbox" data-agauto="${k}"${state.agenda.ocultos.includes(k) ? '' : ' checked'}> <span>${t}</span></label>`).join('');
 }
-const agLi = o => `<li><i style="--agc:${agCor(o)}"></i><span class="q">${agBr(o.data)}${o.hora ? ' ' + o.hora : ''}</span><span>${o.auto ? `<a href="#" data-tab="${o.tab}">${esc(o.titulo)}</a>` : `<a href="#" data-agev="${o.id}">${esc(o.titulo)}</a>`}<small class="subdet">${o.auto ? 'do painel' : esc([(AG_CAT[o.cat] || [''])[0], o.rep !== 'nao' ? AG_REP[o.rep].toLowerCase() : '', agQuem(o.quem)].filter(Boolean).join(' · '))}</small></span></li>`;
+const agLi = o => `<li><i style="--agc:${agCor(o)}"></i><span class="q">${agBr(o.data)}${o.hora ? ' ' + o.hora : ''}</span><span>${o.auto ? `<a href="#" data-tab="${o.tab}">${esc(o.titulo)}</a>` : `<a href="#" data-agev="${o.id}">${esc(o.titulo)}</a>`}<small class="subdet">${o.auto ? 'do painel' : o.rec ? `de ${esc(o.rec.dono_nome || 'outra pessoa')}${o.rec.resposta === 'pendente' ? ' · aguardando você aceitar' : ''}` : (o.com && o.com.length ? `compartilhado com ${o.com.length} · ` : '') + esc([(AG_CAT[o.cat] || [''])[0], o.rep !== 'nao' ? AG_REP[o.rep].toLowerCase() : '', agQuem(o.quem)].filter(Boolean).join(' · '))}</small></span></li>`;
 const agLista = () => { const L = state.agenda.listas; return L.find(l => l.id === state.agenda.sel) || L[0] || null; };
 function renderAgLis() {
   const L = state.agenda.listas, l = agLista();
@@ -6156,15 +6228,21 @@ function agRe() { save(); setTimeout(() => { renderTab(); try { renderPess(); } 
 function agNovoItem(lid) { const l = state.agenda.listas.find(y => y.id === lid), inp = $('agl-novo'); if (!l) return; const n = TXT(inp && inp.value, 80); if (!n) { if (inp) inp.focus(); return; }
   l.itens.push(agNormLista({ itens: [{ nome: n, qtd: 1 }] }).itens[0]); agRe(); setTimeout(() => { const el = $('agl-novo'); if (el) el.focus(); }, 30); }
 document.addEventListener('click', e => {
-  const t = e.target.closest('[data-agmes],[data-agadd],[data-agev],[data-agdia],[data-agdel],[data-agfecha],[data-agsalva],[data-agladd],[data-agldel],[data-agiadd],[data-agidel],[data-aglimpa],[data-agdesm],[data-agrd],[data-agrdabre]'); if (!t || !state.agenda) return;
+  const t = e.target.closest('[data-agcadd],[data-agcdel],[data-agcresp],[data-agmes],[data-agadd],[data-agev],[data-agdia],[data-agdel],[data-agfecha],[data-agsalva],[data-agladd],[data-agldel],[data-agiadd],[data-agidel],[data-aglimpa],[data-agdesm],[data-agrd],[data-agrdabre]'); if (!t || !state.agenda) return;
   const d = t.dataset, A = state.agenda; e.preventDefault();
-  if (d.agev) { e.stopPropagation(); const x = agL().find(y => y.id === d.agev); if (!x) return; agAbre(clone(x)); return; }
+  if (d.agev) { e.stopPropagation(); const rc = agRecEvs().find(y => y.id === d.agev); if (rc) { agAbre(rc); return; } const x = agL().find(y => y.id === d.agev); if (!x) return; agAbre(clone(x)); return; }
+  if (d.agcadd != null) { const inp = $('agc-email'), em = String(inp && inp.value || '').trim().toLowerCase(); if (!agRasc) return;
+    if (!AG_EMAIL.test(em)) { if (inp) { inp.classList.add('ag-erro'); inp.focus(); } return; }
+    if (!agRasc.com.includes(em)) agRasc.com.push(em); $('agc-com').innerHTML = agComHtml(agRasc); setTimeout(() => { const el = $('agc-email'); if (el) el.focus(); }, 20); return; }
+  if (d.agcdel) { if (!agRasc) return; agRasc.com = agRasc.com.filter(em => em !== d.agcdel); $('agc-com').innerHTML = agComHtml(agRasc); return; }
+  if (d.agcresp) { const [id, resp] = d.agcresp.split(':'), S = agSite(); if (!S) return; const r = agConv.rec.find(y => y.id === id); if (r) r.resposta = resp;
+    agFecha(); try { renderPess(); } catch (er) {} S.responder(id, resp).then(agConvLer, er => { console.error(er); try { ngToast('Não consegui responder agora. Tente de novo.'); } catch (e2) {} agConvLer(); }); return; }
   if (d.agmes != null) { agMes = +d.agmes ? agMk(agMes, +d.agmes) : agHoje().slice(0, 7); if (!+d.agmes) agDia = agHoje(); renderTab(); return; }
   if (d.agdia) { agDia = d.agdia; renderTab(); return; }
   if (d.agadd != null) { agAbre(agNormEv({ titulo: '', data: /^\d{4}-\d{2}-\d{2}$/.test(d.agadd) ? d.agadd : agDia || agHoje() })); return; }
   if (d.agfecha != null) { agFecha(); return; }
   if (d.agsalva != null) { agSalva(); return; }
-  if (d.agdel) { const x = agL().find(y => y.id === d.agdel); if (!x || !confirmar(`Remover "${x.titulo}"${x.rep !== 'nao' ? ' e todas as repetições' : ''}?`)) return; A.evs = A.evs.filter(y => y !== x); agFecha(true); agRe(); return; }
+  if (d.agdel) { const x = agL().find(y => y.id === d.agdel); if (!x || !confirmar(`Remover "${x.titulo}"${x.rep !== 'nao' ? ' e todas as repetições' : ''}?`)) return; A.evs = A.evs.filter(y => y !== x); agFecha(true); agRe(); if (x.com.length && agSite()) agSite().remover(x.id).then(agConvLer, er => console.error(er)); return; }
   if (d.agladd != null) { const l = agNormLista({ nome: A.listas.length ? 'Lista ' + (A.listas.length + 1) : 'Mercado' }); A.listas.push(l); A.sel = l.id; agRe(); return; }
   if (d.agldel) { const l = A.listas.find(y => y.id === d.agldel); if (!l || !confirmar(`Remover a lista "${l.nome}"${l.itens.length ? ` com ${l.itens.length} itens` : ''}?`)) return; A.listas = A.listas.filter(y => y !== l); A.sel = ''; agRe(); return; }
   if (d.agiadd) { agNovoItem(d.agiadd); return; }
@@ -6181,12 +6259,13 @@ function agFecha(semRender) { agRasc = null; const fb = $('agc-ev'); if (fb) del
 function agSalva() {
   const x = agRasc; if (!x) return; const ti = document.querySelector('#ag-pop [data-agf$=":titulo"]');
   if (ti) x.titulo = ti.value; if (!TXT(x.titulo, 80)) { if (ti) { ti.classList.add('ag-erro'); ti.focus(); } return; }
-  agNormEv(x); const A = state.agenda, i = A.evs.findIndex(y => y.id === x.id); if (i >= 0) A.evs[i] = x; else A.evs.push(x);
-  agDia = x.data; agMes = x.data.slice(0, 7); agFecha(true); agRe();
+  const em = $('agc-email'); if (em && AG_EMAIL.test(em.value.trim())) x.com.push(em.value.trim());
+  agNormEv(x); const A = state.agenda, i = A.evs.findIndex(y => y.id === x.id), antes = i >= 0 ? A.evs[i].com.slice() : []; if (i >= 0) A.evs[i] = x; else A.evs.push(x);
+  agDia = x.data; agMes = x.data.slice(0, 7); agFecha(true); agRe(); if (agSite() && (x.com.length || antes.length)) agConvSync(x, antes);
 }
 document.addEventListener('mousedown', e => { if (e.target.id === 'ag-pop') agFecha(); });
 document.addEventListener('keydown', e => {
-  if (agRasc && $('ag-pop') && !$('ag-pop').hidden) { if (e.key === 'Escape') { e.preventDefault(); agFecha(); return; } if (e.key === 'Enter' && e.target.matches('#ag-pop input')) { e.preventDefault(); agSalva(); return; } }
+  if (agRasc && $('ag-pop') && !$('ag-pop').hidden) { if (e.key === 'Escape') { e.preventDefault(); agFecha(); return; } if (e.key === 'Enter' && e.target.id === 'agc-email') { e.preventDefault(); const b = document.querySelector('[data-agcadd]'); if (b) b.click(); return; } if (e.key === 'Enter' && e.target.matches('#ag-pop input')) { e.preventDefault(); agSalva(); return; } }
   if (e.target.id === 'agl-novo' && e.key === 'Enter') { e.preventDefault(); const l = agLista(); if (l) agNovoItem(l.id); return; }
   const c = e.target.closest && e.target.closest('[data-agdia]'); if (c && (e.key === 'Enter' || e.key === ' ') && e.target === c) { e.preventDefault(); agDia = c.dataset.agdia; renderTab(); }
 });
@@ -6201,12 +6280,12 @@ document.addEventListener('change', e => {
 });
 // o cabeçalho do pop-up não recolhe a seção (como as faixas das outras seções)
 document.addEventListener('click', e => { if (e.target.closest && e.target.closest('#ag-pop .panel > h2')) e.stopPropagation(); }, true);
-
 /* ---------- Seus avisos: ícone comum de avisos pessoais (Agenda, Radar de preços e outros módulos) ----------
    Cada módulo registra uma função em AVISOS_PESSOAIS que devolve [{id, mod, quando 'AAAA-MM-DD', msg, tab, sec}].
    Lidos ficam neste navegador (localStorage painel-pess-lidos). Separado do sino das rotinas, que é só do dono. */
 const AVISOS_PESSOAIS = [];
 AVISOS_PESSOAIS.push(() => agAvisos().map(a => ({ id: a.id, mod: 'agen', quando: a.quando, msg: a.msg, tab: 'agcal', sec: 'Próximos 30 dias' })));
+AVISOS_PESSOAIS.push(() => agConvAvisos());
 function pessTodos() { const out = []; AVISOS_PESSOAIS.forEach(f => { try { (f() || []).forEach(a => { if (a && a.id && a.msg) out.push(a); }); } catch (e) { console.error(e); } }); return out.sort((a, b) => (a.quando || '') < (b.quando || '') ? -1 : 1); }
 function pessLidos() { try { return JSON.parse(localStorage.getItem('painel-pess-lidos')) || []; } catch (e) { return []; } }
 function renderPess() {
@@ -6217,7 +6296,7 @@ function renderPess() {
   const pop = $('pess-pop'); if (pop.hidden) return;
   const grupos = MODS.filter(m => T.some(a => a.mod === m.id));
   pop.innerHTML = `<div class="sino-h"><b>Seus avisos</b>${novos ? '<button type="button" class="btn ghost tiny" id="pess-lidos">Marcar como lidos</button>' : ''}<button type="button" class="sino-x" id="pess-x" aria-label="Fechar">×</button></div>` +
-    (T.length ? grupos.map(m => `<div class="pess-g" style="--mc:${m.cor}"><i></i>${esc(m.nome)}</div>` + T.filter(a => a.mod === m.id).map(a => `<div class="sino-i${lid.includes(a.id) ? ' lido' : ''}"><p><a href="#" data-pessir="${esc(a.tab || '')}" data-pesssec="${esc(a.sec || '')}">${esc(a.msg)}</a></p></div>`).join('')).join('')
+    (T.length ? grupos.map(m => `<div class="pess-g" style="--mc:${m.cor}"><i></i>${esc(m.nome)}</div>` + T.filter(a => a.mod === m.id).map(a => `<div class="sino-i${lid.includes(a.id) ? ' lido' : ''}"><p><a href="#" data-pessir="${esc(a.tab || '')}" data-pesssec="${esc(a.sec || '')}"${a.ev ? ` data-pessev="${esc(a.ev)}"` : ''}>${esc(a.msg)}</a></p></div>`).join('')).join('')
       : '<p class="sino-vazio">Nenhum aviso agora. Aqui aparecem os lembretes dos seus compromissos da Agenda e, em breve, os alertas de preço do Radar.</p>');
 }
 function pessAbre(abrir) {
@@ -6228,7 +6307,7 @@ document.addEventListener('click', e => {
   if (e.target.closest('#pess-sino')) { pessAbre($('pess-pop').hidden); return; }
   if (e.target.closest('#pess-x')) { pessAbre(false); return; }
   if (e.target.closest('#pess-lidos')) { try { localStorage.setItem('painel-pess-lidos', JSON.stringify(pessTodos().map(a => a.id).concat(pessLidos()).slice(0, 400))); } catch (er) {} renderPess(); return; }
-  const a = e.target.closest('[data-pessir]'); if (a) { e.preventDefault(); pessAbre(false); if (a.dataset.pessir) { showTab(a.dataset.pessir); setTimeout(() => { const s = [...document.querySelectorAll(`#p-${a.dataset.pessir} [data-nav]`)].find(x => x.dataset.nav === a.dataset.pesssec); if (s) s.scrollIntoView({ block: 'start' }); }, 60); } return; }
+  const a = e.target.closest('[data-pessir]'); if (a) { e.preventDefault(); pessAbre(false); if (a.dataset.pessev) { try { const x = agRecEvs().find(y => y.id === a.dataset.pessev); if (x) { agAbre(x); return; } } catch (er) {} } if (a.dataset.pessir) { showTab(a.dataset.pessir); setTimeout(() => { const s = [...document.querySelectorAll(`#p-${a.dataset.pessir} [data-nav]`)].find(x => x.dataset.nav === a.dataset.pesssec); if (s) s.scrollIntoView({ block: 'start' }); }, 60); } return; }
   const pop = $('pess-pop'); if (pop && !pop.hidden && !e.target.closest('#pess-pop')) pessAbre(false);
 });
 document.addEventListener('keydown', e => { if (e.key === 'Escape' && $('pess-pop') && !$('pess-pop').hidden) pessAbre(false); });
