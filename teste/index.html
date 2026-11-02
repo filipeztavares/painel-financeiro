@@ -1406,7 +1406,7 @@ ul.ng-acordo li { margin-bottom: 4px; }
     </div>
     <div class="nav-mobile-sub" id="navMobileSub"></div>
   </div>
-  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 239</div></div>
+  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 240</div></div>
 </nav>
 <div class="sino-pop" id="sino-pop" role="dialog" aria-label="Central de avisos" hidden></div>
 <div class="tour-pop" id="tour-pop" role="dialog" aria-labelledby="tour-tit" hidden></div>
@@ -2985,7 +2985,7 @@ ul.ng-acordo li { margin-bottom: 4px; }
     return new Promise(resolve => { const { data } = sb.auth.onAuthStateChange(async (ev) => { if (ev !== 'PASSWORD_RECOVERY') return; const s = prompt('Digite a nova senha (mínimo 8 caracteres):'); if (s && s.length >= 8) { const { error } = await sb.auth.updateUser({ password: s }); alert(error ? 'Não deu para trocar a senha: ' + error.message : 'Senha trocada.'); } }); resolve(data); });
   }
   // ---------- rodapé: compartilhar, administração e sair ----------
-  const SITE_V = 122;
+  const SITE_V = 123;
   const escH = v => String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const dataBR = v => v ? new Date(v).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' }) : '–';
   const css2 = `.side-foot .r{flex-wrap:wrap}.side-foot .lg-acoes{margin-left:auto;display:inline-flex;gap:10px}
@@ -8495,7 +8495,7 @@ function renderGlobal() {
     const liq = i => bl.reduce((t, x) => t + valorBemEm(x.b, i) - dividaBemEm(x.b, x.sch, i), 0);
     for (let i = 0; i < n; i++) { if (plan[i] != null || dots[i] != null) { const v = liq(i); if (plan[i] != null) plan[i] += v; if (dots[i] != null) dots[i] += v; } } }
   const st = Math.min(s0, Math.max(0, mIndex(INICIO_TELAS), Math.min(pi0, ...dots.map((v, i) => v == null ? Infinity : i))));
-  const series = [{ name: 'Plano', c: 'var(--plan)', v: plan, dash: true }];
+  const series = [{ name: 'Plano (meta)', c: 'var(--plan)', v: plan, dash: true }];
   projs.forEach(x => { const v = Array(n).fill(null); x.p[key].forEach((y, j) => v[s0 + j] = y); series.push({ name: x.c.nome, c: cenCor(x.c), v, w: x.c.id === state.destaque ? 2.8 : 1.8 }); });
   series.push({ name: 'Checkpoints reais', c: 'var(--bad)', v: dots, dots: true });
   legend($('lg-g'), series);
@@ -12775,7 +12775,7 @@ function hmCards() {
     const i0 = s0 - 11, plano = [], real = []; const cm = {}; cps.forEach(c => { cm[mIndex(c.mes)] = c.valor; });
     for (let i = i0; i <= s0; i++) { plano.push(planoAt(i)); real.push(cm[i] ?? null); }
     card('global', 'Plano x real', `${hmKv([['Último checkpoint', fm(cp.valor), mLabel(s0)], ['Contra o plano', diff == null ? '—' : hmSinal(diff), pn != null ? `plano: ${fm(pn)}${pn ? ` (${diff >= 0 ? '+' : ''}${pct(diff / pn)})` : ''}` : temCmp ? 'plano não cobre este mês' : 'compara a partir do próximo checkpoint', diff == null ? '' : diff < 0 ? 'neg' : 'pos']])}
-      ${hmSpark([{ name: 'Plano', v: plano, c: 'var(--plan)', dash: true }, { name: 'Checkpoints', v: real, c: 'var(--s2)', dots: true }], { label: 'plano e checkpoints', ini: mLabel(i0), fim: mLabel(s0), lg: true })}`);
+      ${hmSpark([{ name: 'Plano (meta)', v: plano, c: 'var(--plan)', dash: true }, { name: 'Checkpoints', v: real, c: 'var(--s2)', dots: true }], { label: 'plano e checkpoints', ini: mLabel(i0), fim: mLabel(s0), lg: true })}`);
   });
   // gastos
   tenta(() => {
