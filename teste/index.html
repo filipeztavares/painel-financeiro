@@ -8,7 +8,7 @@
 <title>Painel financeiro</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700&family=Mulish:wght@400;500;600;700&display=swap">
 <style>
 /* Layout: menu lateral fixo com módulos e submódulos; cada módulo mostra suas seções empilhadas. No celular o menu vira faixa rolável no topo. */
 :root {
@@ -21,7 +21,7 @@
   --side: #0F1F3D; --side-ink: #ffffff; --tint: 15,31,61; --side-hl: 255,255,255;
   --shadow: 0 2px 8px rgba(var(--tint),.08), 0 1px 2px rgba(var(--tint),.06);
   --side-w: 236px;
-  --f-ui: "Trebuchet MS", "Lucida Grande", "Lucida Sans Unicode", "Segoe UI", system-ui, sans-serif;
+  --f-ui: "Mulish", "Segoe UI", system-ui, sans-serif;
   --f-head: "Poppins", "Segoe UI", system-ui, sans-serif;
   --f-num: var(--f-ui);
 }
@@ -227,6 +227,7 @@ label.full { grid-column: 1 / -1; }
 label.check { flex-direction: row; align-items: center; gap: 8px; grid-column: 1 / -1; color: var(--ink); text-transform: none; letter-spacing: 0; font-family: var(--f-ui); font-size: 12px; font-weight: 400; }
 label.inline { flex-direction: row; align-items: center; gap: 6px; color: var(--ink); text-transform: none; letter-spacing: 0; font-family: var(--f-ui); font-size: 12px; font-weight: 400; }
 input[type="checkbox"] { accent-color: var(--accent); }
+input, select, textarea, button { font-family: var(--f-ui); }
 input[type="number"], input[type="month"], input[type="text"], input[type="date"], input[type="file"], select {
   font-family: var(--f-ui); font-size: 12.5px; font-variant-numeric: tabular-nums; color: var(--ink); background: var(--field);
   border: 1px solid var(--line); border-radius: 7px; padding: 6px 9px; width: 100%; min-width: 0; text-transform: none; letter-spacing: 0; font-weight: 400;
@@ -1385,7 +1386,7 @@ ul.ng-acordo li { margin-bottom: 4px; }
     </div>
     <div class="nav-mobile-sub" id="navMobileSub"></div>
   </div>
-  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 231</div></div>
+  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 232</div></div>
 </nav>
 <div class="sino-pop" id="sino-pop" role="dialog" aria-label="Central de avisos" hidden></div>
 <div class="tour-pop" id="tour-pop" role="dialog" aria-labelledby="tour-tit" hidden></div>
@@ -2956,7 +2957,7 @@ ul.ng-acordo li { margin-bottom: 4px; }
     return new Promise(resolve => { const { data } = sb.auth.onAuthStateChange(async (ev) => { if (ev !== 'PASSWORD_RECOVERY') return; const s = prompt('Digite a nova senha (mínimo 8 caracteres):'); if (s && s.length >= 8) { const { error } = await sb.auth.updateUser({ password: s }); alert(error ? 'Não deu para trocar a senha: ' + error.message : 'Senha trocada.'); } }); resolve(data); });
   }
   // ---------- rodapé: compartilhar, administração e sair ----------
-  const SITE_V = 114;
+  const SITE_V = 115;
   const escH = v => String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const dataBR = v => v ? new Date(v).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' }) : '–';
   const css2 = `.side-foot .r{flex-wrap:wrap}.side-foot .lg-acoes{margin-left:auto;display:inline-flex;gap:10px}
