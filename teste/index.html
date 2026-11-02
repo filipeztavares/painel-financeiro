@@ -485,6 +485,7 @@ td.fam-bar { min-width: 150px; }
 .kv .big { font-family: var(--f-head); font-size: 14px; font-weight: 600; }
 .panel { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; box-shadow: var(--shadow); padding: 16px 18px; min-width: 0; }
 .panel > .sub { font-size: 11.5px; margin: 0 0 12px 16px; }
+#cfg-rot-t th, #cfg-rot-t td { vertical-align: top; text-align: left; } #cfg-rot-t select { max-width: 190px; } .rot-m { color: var(--muted); font-size: 11.5px; display: block; } .rot-ate { display: block; margin-top: 6px; font-size: 12px; } .rot-ate input { margin-left: 4px; }
 /* faixa do cabeçalho da seção (v133) */
 .panel > h2:first-child, .panel > .row:first-child:has(h2) { position: relative; padding-right: 54px !important; }
 .sec-tog { position: absolute; right: 16px; top: 50%; margin-top: -12px; flex-shrink: 0; width: 24px; height: 24px; border-radius: 50%; border: 1px solid rgba(255,255,255,.4); background: transparent; color: #fff; font-size: 11px; line-height: 1; cursor: pointer; display: inline-grid; place-items: center; padding: 0; transition: transform .15s; }
@@ -1407,7 +1408,7 @@ ul.ng-acordo li { margin-bottom: 4px; }
     </div>
     <div class="nav-mobile-sub" id="navMobileSub"></div>
   </div>
-  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 242</div></div>
+  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 243</div></div>
 </nav>
 <div class="sino-pop" id="sino-pop" role="dialog" aria-label="Central de avisos" hidden></div>
 <div class="tour-pop" id="tour-pop" role="dialog" aria-labelledby="tour-tit" hidden></div>
@@ -2541,6 +2542,12 @@ ul.ng-acordo li { margin-bottom: 4px; }
         <div class="ng-form"><label>Pesquisas por conta a cada 30 dias<input type="number" min="0" max="50" step="1" id="cfg-pesq-lim" value="2"></label></div>
         <p class="hint" id="cfg-pesq-msg"></p>
       </section>
+      <section data-nav="Rotinas automáticas" class="panel" id="cfg-rot" hidden>
+        <h2>Rotinas automáticas</h2>
+        <p class="sub">Só o administrador vê esta parte. Escolha com que frequência cada rotina busca dados: rodar menos vezes gasta menos uso do Claude. A rotina continua no horário dela e, quando não é o dia, para logo no começo. Pausada com data volta sozinha no dia seguinte; pausada sem data fica parada até você mudar. O botão "Atualizar agora" do sino roda mesmo assim.</p>
+        <div class="tscroll"><table id="cfg-rot-t"></table></div>
+        <p class="hint" id="cfg-rot-msg"></p>
+      </section>
       <section data-nav="Classes de ativo" class="panel">
         <h2>Premissas das classes de ativo</h2>
         <p class="sub">Usadas nas carteiras dos cenários. O retorno de Ações Brasil também é a referência de bolsa no comparador e nas simulações.</p>
@@ -2996,7 +3003,7 @@ ul.ng-acordo li { margin-bottom: 4px; }
     return new Promise(resolve => { const { data } = sb.auth.onAuthStateChange(async (ev) => { if (ev !== 'PASSWORD_RECOVERY') return; const s = prompt('Digite a nova senha (mínimo 8 caracteres):'); if (s && s.length >= 8) { const { error } = await sb.auth.updateUser({ password: s }); alert(error ? 'Não deu para trocar a senha: ' + error.message : 'Senha trocada.'); } }); resolve(data); });
   }
   // ---------- rodapé: compartilhar, administração e sair ----------
-  const SITE_V = 125;
+  const SITE_V = 126;
   const escH = v => String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const dataBR = v => v ? new Date(v).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' }) : '–';
   const css2 = `.side-foot .r{flex-wrap:wrap}.side-foot .lg-acoes{margin-left:auto;display:inline-flex;gap:10px}
@@ -10285,15 +10292,17 @@ $('acoes6m').addEventListener('click', e => {
 });
 $('acoes6m').addEventListener('change', e => { if (!e.target.matches || !e.target.matches('[data-a6cdi]')) return; a6Cdi = e.target.checked; try { localStorage.setItem('a6cdi', a6Cdi ? '1' : '0'); } catch (err) {} renderA6(); });
 // dispara na hora a tarefa agendada que pesquisa na web (conector Claude Code Remote, fire_trigger)
-const TRIG_ACOES = 'trig_01VNotdgCpSwkKZpVn1L1Va6', CCR = 'Claude Code Remote';
+const TRIG_ACOES = 'trig_0195WZ14hoEdqSESnAAuNfwv', CCR = 'Claude Code Remote';
 let acaoDisparo = 0;
 function acaoNowVis() { const pend = Object.values(acoesDb).some(x => x.status === 'pendente' || x.status === 'previa'); $('acao-now').hidden = !pend || !mcp || !souDono; }
 async function pesquisarAgora() {
   const msg = t => { $('acao-msg').textContent = t; };
   if (!mcp) { msg('A pesquisa na hora não está disponível nesta visualização; ela roda sozinha todo dia ao meio-dia.'); return; }
   if (Date.now() - acaoDisparo < 15 * 60000) { msg('A pesquisa já está rodando; os cartões se atualizam sozinhos quando ela terminar.'); return; }
+  if (rotDesligada('pesquisa')) { msg('A rotina de pesquisa está pausada em Configurações › Rotinas automáticas. Mude a frequência para pesquisar agora.'); return; }
   $('acao-now').disabled = true; msg('Iniciando a pesquisa…');
   try {
+    await rotForcar(['pesquisa']);
     await mcp.callTool(CCR, 'fire_trigger', { trigger_id: TRIG_ACOES });
     acaoDisparo = Date.now();
     msg('Pesquisa iniciada. Leva alguns minutos; os cartões mudam para "Pesquisado" sozinhos.');
@@ -12613,6 +12622,7 @@ function renderModulos() {
 function renderCfgMods() {
   const box = $('cfg-mods'); if (!box) return; box.hidden = !ehAdmin(); if (box.hidden) return;
   try { renderCfgPesq(); } catch (er) {}
+  try { renderCfgRot(); } catch (er) {}
   $('cfg-mods-l').innerHTML = MODS.map(m => `<label class="check"><input type="checkbox" data-modlib="${m.id}"${modLiberado(m) ? ' checked' : ''}${m.fixo ? ' disabled' : ''}> ${esc(m.nome)}${m.breve ? ' <span class="subdet">em breve</span>' : m.fixo ? ' <span class="subdet">sempre ligado</span>' : ''}</label>`).join('');
 }
 document.addEventListener('click', e => { const b = e.target.closest('[data-irmod]'); if (!b) return; const m = MODS.find(x => x.id === b.dataset.irmod); if (m) showTab(m.vg || m.tabs[0]); });
@@ -13183,10 +13193,10 @@ document.addEventListener('click', ev => {
 /* ---------- avisos: central de notificações do dono (fontes de dados com problema) ---------- */
 let avisosDb = [], sinoT = null, rodandoDb = {};
 // privado/rodando: cada rotina grava {inicio, fim, status rodando|ok|erro} ao começar e ao terminar
-const ROTINAS = { mundo: 'Câmbio e bolsas do mundo', minhas: 'Minhas ações', b3: 'Ações da B3', global: 'Internacionais, ETFs, FIIs e fundos', focus: 'Boletim Focus', casas: 'Projeção das casas', pesquisa: 'Pesquisa de ações', quedas: 'Explicação das quedas', copia: 'Cópia para o site' };
+const ROTINAS = { mundo: 'Câmbio e bolsas do mundo', minhas: 'Minhas ações', b3: 'Ações da B3', global: 'Internacionais, ETFs, FIIs e fundos', focus: 'Boletim Focus', casas: 'Projeção das casas', pesquisa: 'Pesquisa de ações', quedas: 'Explicação das quedas', pmerc: 'Pesquisa de mercado (Negócios)', copia: 'Cópia para o site' };
 function sanitizeRodando(d) {
   const it = d && d.itens && typeof d.itens === 'object' ? d.itens : {}, out = {}, iso = v => /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}/.test(String(v || '')) ? String(v).slice(0, 30) : '';
-  Object.keys(ROTINAS).forEach(k => { const x = it[k]; if (!x || typeof x !== 'object') return; out[k] = { inicio: iso(x.inicio), fim: iso(x.fim), status: ['rodando', 'ok', 'erro'].includes(x.status) ? x.status : '' }; });
+  Object.keys(ROTINAS).forEach(k => { const x = it[k]; if (!x || typeof x !== 'object') return; out[k] = { inicio: iso(x.inicio), fim: iso(x.fim), status: ['rodando', 'ok', 'erro'].includes(x.status) ? x.status : '', pulou: iso(x.pulou), motivo: String(x.motivo || '').slice(0, 160) }; });
   return out;
 }
 const rodHora = q => { const t = Date.parse(q); if (!isFinite(t)) return ''; const d = new Date(t), hj = new Date(); const h = d.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' }); return d.toDateString() === hj.toDateString() ? 'hoje ' + h : d.toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit' }) + ' ' + h; };
@@ -13194,8 +13204,9 @@ const rodHora = q => { const t = Date.parse(q); if (!isFinite(t)) return ''; con
 function rodEstado(k) { const x = rodandoDb[k]; if (!x) return null; const ini = Date.parse(x.inicio); const vivo = x.status === 'rodando' && isFinite(ini) && Date.now() - ini < 3 * 3600e3; return Object.assign({ vivo, caiu: x.status === 'rodando' && !vivo }, x); }
 const rodAgora = () => Object.keys(ROTINAS).filter(k => { const e = rodEstado(k); return e && e.vivo; });
 // resultado da última rodada: status gravado pela rotina + avisos dela dentro da janela da rodada
-const AV_PFX = { mundo: 'mundo-', minhas: 'minhas-acoes-', b3: 'b3-', global: 'global-', focus: 'focus-', casas: 'casas-', pesquisa: 'pesquisa-', quedas: 'quedas-', copia: 'copia-' };
-function rodRes(k) {
+const AV_PFX = { mundo: 'mundo-', minhas: 'minhas-acoes-', b3: 'b3-', global: 'global-', focus: 'focus-', casas: 'casas-', pesquisa: 'pesquisa-', quedas: 'quedas-', pmerc: 'pmerc-', copia: 'copia-' };
+function rodRes(k) { const r = rodRes0(k), e = rodandoDb[k]; if (!r || !e || !e.pulou) return r; const p = Date.parse(e.pulou), f = Date.parse(e.fim || e.inicio); if (!isFinite(p) || (isFinite(f) && p < f)) return r; return Object.assign({}, r, { sub: 'pulou ' + rodHora(e.pulou) + (e.motivo ? ' (' + e.motivo + ')' : '') + (r.sub ? ' · ' + r.sub : '') }); }
+function rodRes0(k) {
   const e = rodEstado(k); if (!e) return null;
   if (e.vivo) return { cls: 'rod-on', txt: 'Atualizando agora', sub: 'desde ' + rodHora(e.inicio) };
   if (e.caiu) return { cls: 'neg', txt: 'Não terminou', sub: 'começou ' + rodHora(e.inicio) };
@@ -13234,6 +13245,7 @@ function avFontes() {
 const ROT_EXTRA = [
   { id: 'pesquisa', nome: 'Pesquisa de ações (+ Ação)', qdo: 'todo dia às 12:17', fx: 'Busca na web; histórico de preços pelo Status Invest' },
   { id: 'quedas', nome: 'Explicação das quedas', qdo: 'dias úteis às 13:43', fx: 'Busca na web (notícias)' },
+  { id: 'pmerc', nome: 'Pesquisa de mercado (Negócios)', qdo: 'todo dia às 11:17', fx: 'Busca na web' },
   { id: 'copia', nome: 'Cópia para o site', qdo: 'dias úteis às 14:07 e 19:07', fx: 'Supabase (site)' }
 ];
 function avisosAuto() {
@@ -13270,16 +13282,90 @@ function renderSino() {
     ${atuHtml()}${ag.length ? `<div class="sino-rod"><i></i><span><b>Atualizando agora</b>${ag.map(k => `${esc(ROTINAS[k])}, desde ${esc(rodHora(rodandoDb[k].inicio))}`).join('<br>')}</span></div>` : ''}
     <div class="sino-l">${todos.map(x => `<div class="sino-i${lid.includes(x.id) ? ' lido' : ''}"><div class="t"><span class="chip ${NV[x.nivel][0]}">${NV[x.nivel][1]}</span><b>${esc(x.fonte || 'Rotina')}</b><span class="q">${x.auto ? 'verificação do painel' : esc(hora(x.quando))}</span></div><p>${esc(x.msg)}</p></div>`).join('') || (() => { const ap = avTodos0().filter(x => avApagados().includes(x.id)).length; return ap ? `<p class="sino-vazio">Nenhum aviso novo. Você apagou ${ap} aviso${ap > 1 ? 's' : ''} já lido${ap > 1 ? 's' : ''}. <button type="button" class="btn ghost tiny" id="sino-voltar">Mostrar de novo</button></p>` : '<p class="sino-vazio">Tudo certo: nenhuma fonte de dados com problema.</p>'; })()}</div>
     <div class="sino-f"><b>Fontes · última atualização</b>${avFontes().map(f => { const n = avDias(f.d); const r = rodRes(f.id), dd = `<span class="${n != null && n > f.lim ? 'neg' : ''}">${f.d ? avBr(f.d) : '—'}</span>`;
-      return `<div><span>${esc(f.nome)}<small>Atualiza ${esc(f.qdo || f.freq)}</small>${sinoFx(f, r)}</span><span class="sino-r">${r ? `<span class="${r.cls}">${r.cls === 'rod-on' ? '<i></i>' : ''}${esc(r.txt)}</span>${r.det ? ` <button type="button" class="ibtn" data-tip="${esc(r.det)}" aria-label="O que aconteceu">i</button>` : ''}<small>${r.sub ? esc(r.sub) + ' · ' : ''}dado de ${dd}</small>` : `<small>dado de</small>${dd}`}</span></div>`; }).join('')}${ROT_EXTRA.map(f => { const r = rodRes(f.id); return `<div><span>${esc(f.nome)}<small>Roda ${esc(f.qdo)}</small>${sinoFx(f, r)}</span><span class="sino-r">${r ? `<span class="${r.cls}">${r.cls === 'rod-on' ? '<i></i>' : ''}${esc(r.txt)}</span>${r.det ? ` <button type="button" class="ibtn" data-tip="${esc(r.det)}" aria-label="O que aconteceu">i</button>` : ''}${r.sub ? `<small>${esc(r.sub)}</small>` : ''}` : '<small>sem registro</small>'}</span></div>`; }).join('')}<p class="sino-nota">Horário de Brasília. ${window.__SITE ? 'No site, os dados chegam na cópia seguinte, às 14:07 ou 19:07 dos dias úteis.' : ''}</p></div>`;
+      return `<div><span>${esc(f.nome)}<small>Atualiza ${esc(f.qdo || f.freq)}${rotFreqTxt(f.id)}</small>${sinoFx(f, r)}</span><span class="sino-r">${r ? `<span class="${r.cls}">${r.cls === 'rod-on' ? '<i></i>' : ''}${esc(r.txt)}</span>${r.det ? ` <button type="button" class="ibtn" data-tip="${esc(r.det)}" aria-label="O que aconteceu">i</button>` : ''}<small>${r.sub ? esc(r.sub) + ' · ' : ''}dado de ${dd}</small>` : `<small>dado de</small>${dd}`}</span></div>`; }).join('')}${ROT_EXTRA.map(f => { const r = rodRes(f.id); return `<div><span>${esc(f.nome)}<small>Roda ${esc(f.qdo)}${rotFreqTxt(f.id)}</small>${sinoFx(f, r)}</span><span class="sino-r">${r ? `<span class="${r.cls}">${r.cls === 'rod-on' ? '<i></i>' : ''}${esc(r.txt)}</span>${r.det ? ` <button type="button" class="ibtn" data-tip="${esc(r.det)}" aria-label="O que aconteceu">i</button>` : ''}${r.sub ? `<small>${esc(r.sub)}</small>` : ''}` : '<small>sem registro</small>'}</span></div>`; }).join('')}<p class="sino-nota">Horário de Brasília. ${window.__SITE ? 'No site, os dados chegam na cópia seguinte, às 14:07 ou 19:07 dos dias úteis.' : ''}</p></div>`;
 }
 // "Atualizar agora" (só o dono): dispara a rotina de preços (minhas, brapi) e, quando ela termina, a cópia para o site
-const TRIG_MINHAS = 'trig_011MAHr4E7D9wfbPPgeqcWUm', TRIG_COPIA = 'trig_015H4mLxeho4GNKz7gN4ZoUZ', ART_URL = 'https://claude.ai/artifact/9sw23mALkCSuQsHpejAWxx';
-const ATU_TXT = { precos: 'Disparo manual pelo botão "Atualizar agora" do painel. Se o pregão da B3 ainda estiver aberto, use a barra de hoje da brapi como preço intradiário (p1/d1 de hoje, "fonte_p1":"brapi"); a rodada das 18:43 troca pelo fechamento.', site: 'Disparo manual pelo botão "Atualizar agora" do painel, logo depois da atualização dos preços.' };
+const TRIG_MINHAS = 'trig_018mULtvHEiw5cMBHFdNufWr', TRIG_COPIA = 'trig_01DsvZ8GxEVB5SAschZzebF5', ART_URL = 'https://claude.ai/artifact/9sw23mALkCSuQsHpejAWxx';
 let atuMsg = '', atuIndo = false;
 function atuLe() { try { const a = JSON.parse(localStorage.getItem('painel-atualizar')); return a && (a.fase === 'precos' || a.fase === 'site') && a.t > 0 ? a : null; } catch (e) { return null; } }
 function atuGrava(a) { try { if (a) localStorage.setItem('painel-atualizar', JSON.stringify(a)); else localStorage.removeItem('painel-atualizar'); } catch (e) {} }
 const atuErro = e => { const c = e && e.code; return c === 'consent_required' || c === 'approval_required' || c === 'not_in_manifest' ? 'O painel precisa da sua permissão para iniciar a atualização. Clique de novo e permita quando o claude.ai perguntar.' : c === 'server_not_connected' || c === 'selection_required' ? 'O conector Claude Code Remote não está ligado para você. Ligue em claude.ai, Configurações > Conectores.' : 'Não consegui iniciar a atualização agora. Tente de novo em instantes.'; };
-async function atuDispara(fase) { await mcp.callTool(CCR, 'fire_trigger', { trigger_id: fase === 'precos' ? TRIG_MINHAS : TRIG_COPIA, text: ATU_TXT[fase] }); atuGrava({ fase, t: Date.now() }); }
+// sem texto extra: a rotina sabe que é disparo manual pela marca forcar em config/rotinas (o portão deixa rodar por 2 horas)
+async function atuDispara(fase) { await rotForcar([fase === 'precos' ? 'minhas' : 'copia']); await mcp.callTool(CCR, 'fire_trigger', { trigger_id: fase === 'precos' ? TRIG_MINHAS : TRIG_COPIA }); atuGrava({ fase, t: Date.now() }); }
+/* ---------- frequência das rotinas (Configurações › Rotinas automáticas, só o administrador) ----------
+   config/rotinas = { itens: { <chave>: { freq normal|2d|7d|14d|pausada, ate AAAA-MM-DD (só pausada), em ISO, desligada } }, forcar: { <chave>: ISO }, em }
+   Cada rotina roda o portão (painel/rotinas/portao.py) no começo e para se não for o dia. No site o documento fica na tabela shared;
+   a cópia para o site sincroniza os dois lados (vale o item com "em" mais novo). No painel do Claude, pausada sem data também
+   desliga a tarefa agendada (update_trigger), para nem começar; "desligada" registra isso. */
+const ROT_TRIG = { mundo: 'trig_016NCsbRB4PS7iduWLtsPdYL', minhas: TRIG_MINHAS, b3: 'trig_01UerNEpCwvtgFjd5TSHEDV2', global: 'trig_012tZQWaj3X9j5nkYBrgC6PE', focus: 'trig_01CuwXmNQ5RKqAuQNd88UQA7', casas: 'trig_013LxaEVyoDN3uXsMfo5dow1', pesquisa: TRIG_ACOES, quedas: 'trig_01Ya9gaPLuLwLfGRUFf2nuve', pmerc: 'trig_01TPw7iXTacozrnhKPhK2xtU', copia: TRIG_COPIA };
+const ROT_CFG = [
+  { k: 'mundo', qdo: 'dias úteis às 18:37' }, { k: 'minhas', qdo: 'dias úteis às 18:43' }, { k: 'casas', qdo: 'dias úteis às 10:47' },
+  { k: 'quedas', qdo: 'dias úteis às 13:43' }, { k: 'pesquisa', qdo: 'todo dia às 12:17' }, { k: 'pmerc', qdo: 'todo dia às 11:17' },
+  { k: 'b3', qdo: 'segundas às 9:23', sem: true }, { k: 'global', qdo: 'segundas às 9:41', sem: true }, { k: 'focus', qdo: 'segundas às 17:03', sem: true },
+  { k: 'copia', qdo: 'dias úteis às 14:07 e 19:07', nota: 'Sem ela o site não recebe dados novos.' }
+];
+const ROT_OPC = { d: [['normal', 'No horário de sempre'], ['2d', 'A cada 2 dias'], ['7d', '1 vez por semana'], ['pausada', 'Pausada']], s: [['normal', 'Toda semana'], ['14d', 'A cada 2 semanas'], ['pausada', 'Pausada']] };
+const ROT_CURTO = { '2d': 'a cada 2 dias', '7d': '1 vez por semana', '14d': 'a cada 2 semanas' };
+let rotCfg = { itens: {}, forcar: {} }, rotOuve = false, rotRec = false;
+function rotSan(d) {
+  const it = d && d.itens && typeof d.itens === 'object' ? d.itens : {}, itens = {}, fz = d && d.forcar && typeof d.forcar === 'object' ? d.forcar : {}, forcar = {};
+  Object.keys(ROTINAS).forEach(k => { const x = it[k]; if (x && typeof x === 'object' && ['normal', '2d', '7d', '14d', 'pausada'].includes(x.freq)) itens[k] = { freq: x.freq, ate: /^\d{4}-\d{2}-\d{2}$/.test(x.ate || '') ? x.ate : '', em: String(x.em || '').slice(0, 30), desligada: !!x.desligada }; if (typeof fz[k] === 'string') forcar[k] = fz[k].slice(0, 30); });
+  return { itens, forcar };
+}
+function rotOuvir() {
+  if (!db || rotOuve) return; rotOuve = true;
+  try { db.doc('config/rotinas').onSnapshot(d => { rotCfg = rotSan(d && d.exists ? d.data() : null); if (tab === 'config') renderCfgRot(); sinoLater(); }, () => { rotOuve = false; }); } catch (e) { rotOuve = false; }
+}
+// pausa com data já vencida conta como normal
+const rotItem = k => { const x = rotCfg.itens[k]; if (!x) return null; if (x.freq === 'pausada' && x.ate && x.ate < hojeISO()) return null; return x; };
+const rotDesligada = k => { const x = rotCfg.itens[k]; return !!(x && x.desligada) && !window.__SITE; };
+function rotFreqTxt(k) { const x = rotItem(k); if (!x || x.freq === 'normal') return ''; return x.freq === 'pausada' ? ' · pausada' + (x.ate ? ' até ' + avBr(x.ate) : '') : ' · ' + ROT_CURTO[x.freq]; }
+async function rotGrava(muda) {
+  let atual = rotCfg;
+  try { const d = await db.doc('config/rotinas').get(); atual = rotSan(d && d.exists ? d.data() : null); } catch (e) {}
+  const novo = { itens: Object.assign({}, atual.itens), forcar: Object.assign({}, atual.forcar), em: new Date().toISOString() };
+  muda(novo); await db.doc('config/rotinas').set(novo); rotCfg = rotSan(novo);
+}
+// marca de disparo manual: o portão deixa a rotina rodar mesmo pausada ou fora do dia
+async function rotForcar(ks) { if (!db) return; try { await rotGrava(n => { const t = new Date().toISOString(); ks.forEach(k => { n.forcar[k] = t; }); }); } catch (e) {} }
+async function rotLigar(k, on) { await mcp.callTool(CCR, 'update_trigger', { trigger_id: ROT_TRIG[k], enabled: on }); }
+const rotQuerDesligada = x => !!x && x.freq === 'pausada' && !x.ate;
+// no painel do Claude: acerta a tarefa agendada com a escolha (inclusive a feita no site, que só usa o portão)
+async function rotAcerta(ks) {
+  if (window.__SITE || !mcp || !souDono) return '';
+  const muda = {}; let erro = '';
+  for (const k of ks) { const x = rotCfg.itens[k], quer = rotQuerDesligada(x), tem = !!(x && x.desligada); if (quer === tem) continue;
+    try { await rotLigar(k, !quer); muda[k] = quer; } catch (e) { erro = atuErro(e).replace('a atualização', 'a mudança'); } }
+  if (Object.keys(muda).length) await rotGrava(n => { Object.keys(muda).forEach(k => { if (n.itens[k]) { if (muda[k]) n.itens[k].desligada = true; else delete n.itens[k].desligada; } }); });
+  return erro;
+}
+function renderCfgRot() {
+  const box = $('cfg-rot'); if (!box) return; box.hidden = !ehAdmin(); if (box.hidden) return; rotOuvir();
+  if (!rotRec && !window.__SITE && mcp && souDono && Object.keys(rotCfg.itens).length) { rotRec = true; rotAcerta(Object.keys(rotCfg.itens)).then(er => { if (er) $('cfg-rot-msg').textContent = er; }); }
+  const t = $('cfg-rot-t'); if (t.contains(document.activeElement)) return;
+  t.innerHTML = '<thead><tr><th>Rotina</th><th>Horário</th><th>Frequência</th><th>Última rodada</th></tr></thead><tbody>' + ROT_CFG.map(c => {
+    const x = rotCfg.itens[c.k] || { freq: 'normal' }, r = rodRes(c.k), ven = x.freq === 'pausada' && x.ate && x.ate < hojeISO();
+    return `<tr><td><b>${esc(ROTINAS[c.k])}</b>${c.nota ? `<br><small class="rot-m">${esc(c.nota)}</small>` : ''}</td><td>${esc(c.qdo)}</td>
+      <td><select data-rotf="${c.k}" aria-label="Frequência de ${esc(ROTINAS[c.k])}">${ROT_OPC[c.sem ? 's' : 'd'].map(([v, n]) => `<option value="${v}"${v === x.freq ? ' selected' : ''}>${n}</option>`).join('')}</select>
+      ${x.freq === 'pausada' ? `<label class="rot-ate">até <input type="date" data-rota="${c.k}" value="${esc(x.ate || '')}" min="${hojeISO()}"></label><small class="rot-m">${ven ? 'A pausa terminou; a rotina voltou ao normal.' : x.ate ? 'Volta a rodar no dia seguinte.' : 'Sem data: fica parada até você mudar.'}</small>` : ''}</td>
+      <td>${r ? `<span class="${r.cls}">${esc(r.txt)}</span>${r.sub ? `<br><small class="rot-m">${esc(r.sub)}</small>` : ''}` : '<small class="rot-m">sem registro</small>'}</td></tr>`;
+  }).join('') + '</tbody>';
+}
+document.addEventListener('change', async e => {
+  const f = e.target.closest && e.target.closest('[data-rotf],[data-rota]'); if (!f || !ehAdmin()) return;
+  const k = f.dataset.rotf || f.dataset.rota, msg = $('cfg-rot-msg'), sel = document.querySelector(`[data-rotf="${k}"]`), dt = document.querySelector(`[data-rota="${k}"]`);
+  const freq = sel.value, ate = freq === 'pausada' && f.dataset.rota ? (dt.value || '') : '';
+  if (ate && ate < hojeISO()) { msg.textContent = 'Use uma data de hoje em diante.'; return; }
+  if (!db) { msg.textContent = 'Sem conexão com o banco: não deu para salvar.'; return; }
+  msg.textContent = 'salvando…';
+  try {
+    await rotGrava(n => { const ant = n.itens[k] || {}; n.itens[k] = Object.assign({ freq, em: new Date().toISOString() }, ate ? { ate } : {}, ant.desligada ? { desligada: true } : {}); });
+    const er = await rotAcerta([k]);
+    msg.textContent = er ? 'Salvo, e a rotina já obedece pelo portão. Só não consegui ' + (rotQuerDesligada(rotCfg.itens[k]) ? 'desligar' : 'religar') + ' a tarefa agendada: ' + er
+      : `Salvo: ${ROTINAS[k]} ${freq === 'normal' ? 'volta ao horário de sempre' : freq === 'pausada' ? 'pausada' + (ate ? ' até ' + avBr(ate) : '') : 'passa a rodar ' + ROT_CURTO[freq]}.` + (window.__SITE && freq === 'pausada' && !ate ? ' No painel do Claude a tarefa também é desligada quando você abrir as Configurações lá.' : '');
+  } catch (er) { msg.textContent = 'Não consegui salvar: ' + (er && (er.message || er.code) || er); }
+  renderCfgRot(); sinoLater();
+});
 // acompanha a sequência pelo privado/rodando: a rodada conta se começou depois do clique e já terminou
 function atuEstado() {
   const a = atuLe(); if (!a) return null;
@@ -13566,6 +13652,7 @@ async function entrarPerfil() {
     try { const b = await db.doc('privado/base').get(); if (b.exists) { const x = clone(b.data()); aplicarBase(x); try { localStorage.setItem('painel-priv', JSON.stringify(x)); } catch (e) {} } } catch (e) {}
   }
   const quem = souDono ? 'dono' : meuId;
+  if (souDono) rotOuvir();
   if (souDono) try { db.doc('privado/rodando').onSnapshot(d => { rodandoDb = sanitizeRodando(d && d.exists ? d.data() : null); sinoLater(); }, () => {}); } catch (e) {}
   if (souDono) try { db.doc('privado/avisos').onSnapshot(d => { avisosDb = sanitizeAvisos(d && d.exists ? d.data() : null); sinoLater(); }, () => {}); } catch (e) {}
   if (souDono) try { db.doc('privado/acoes').onSnapshot(d => { minhasDb = sanitizeMinhas(d && d.exists ? d.data() : null); sinoLater(); if (tab === 'global') renderMundo(); if (tab === 'inicio') renderHome(); }, () => {}); } catch (e) {}
