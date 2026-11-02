@@ -126,6 +126,9 @@ h1, h2, h3 { font-family: var(--f-head); }
 .sino-f .amb { color: var(--warn, #b7791f); font-weight: 600; }
 .sino-f em { display: block; font-style: normal; font-size: 11px; color: var(--muted); }
 .sino-f em.neg { color: var(--bad); }
+.sino-f small.sino-fx { color: var(--ink-2, var(--muted)); font-style: italic; }
+.sino-f small.sino-fx.neg { color: var(--bad); font-style: normal; font-weight: 600; }
+.sino-f small.sino-fx.amb { color: var(--warn, #b7791f); font-style: normal; font-weight: 600; }
 .rod-on { color: var(--accent) !important; font-weight: 600; }
 .rod-on i, .sino-rod i { display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: var(--accent); margin-right: 5px; vertical-align: 1px; animation: rodPulse 1.2s ease-in-out infinite; }
 .sino-rod { display: flex; gap: 8px; align-items: baseline; padding: 10px 14px; border-bottom: 1px solid var(--line); font-size: 12.5px; line-height: 1.5; background: color-mix(in srgb, var(--accent) 8%, transparent); }
@@ -1386,7 +1389,7 @@ ul.ng-acordo li { margin-bottom: 4px; }
     </div>
     <div class="nav-mobile-sub" id="navMobileSub"></div>
   </div>
-  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 235</div></div>
+  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 236</div></div>
 </nav>
 <div class="sino-pop" id="sino-pop" role="dialog" aria-label="Central de avisos" hidden></div>
 <div class="tour-pop" id="tour-pop" role="dialog" aria-labelledby="tour-tit" hidden></div>
@@ -2961,7 +2964,7 @@ ul.ng-acordo li { margin-bottom: 4px; }
     return new Promise(resolve => { const { data } = sb.auth.onAuthStateChange(async (ev) => { if (ev !== 'PASSWORD_RECOVERY') return; const s = prompt('Digite a nova senha (mínimo 8 caracteres):'); if (s && s.length >= 8) { const { error } = await sb.auth.updateUser({ password: s }); alert(error ? 'Não deu para trocar a senha: ' + error.message : 'Senha trocada.'); } }); resolve(data); });
   }
   // ---------- rodapé: compartilhar, administração e sair ----------
-  const SITE_V = 118;
+  const SITE_V = 119;
   const escH = v => String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const dataBR = v => v ? new Date(v).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' }) : '–';
   const css2 = `.side-foot .r{flex-wrap:wrap}.side-foot .lg-acoes{margin-left:auto;display:inline-flex;gap:10px}
@@ -8375,7 +8378,7 @@ function sanitizeMundo(d) {
   const itens = d.itens.map(x => { x = x || {}; const h = {}; ['1d', '1m', '12m'].forEach(k => { const p = par(x.h && x.h[k]); if (p) h[k] = p; });
     return { id: String(x.id || '').slice(0, 12), nome: String(x.nome || '').slice(0, 30), sub: String(x.sub || '').slice(0, 30), grupo: x.grupo === 'cambio' ? 'cambio' : 'bolsa', moeda: x.moeda === 'USD' ? 'USD' : 'BRL', p1: +x.p1, d1: String(x.d1 || '').slice(0, 10), h }; })
     .filter(x => x.nome && isFinite(x.p1) && x.p1 > 0);
-  return itens.length ? { data: String(d.data || '').slice(0, 10), itens } : null;
+  return itens.length ? { data: String(d.data || '').slice(0, 10), itens, fonte: String(d.fonte || '').slice(0, 160) } : null;
 }
 
 /* ---------- minhas ações: preço diário (privado/acoes, só o dono), 1 mês e desde a aplicação ---------- */
@@ -9729,7 +9732,8 @@ function sanitizeA6(d, global) {
     const h = {};
     if (x.h && typeof x.h === 'object') for (const k of Object.keys(x.h)) { const p = par(x.h[k]); if (p && /^\d[ma]$/.test(k)) h[k] = p; }
     if (!h['6m'] && isFinite(+x.p0) && +x.p0 > 0) h['6m'] = [String(x.d0 || '').slice(0, 10), +x.p0];   // formato antigo (só 6 meses)
-    const o = { tk: String(x.tk || '').toUpperCase(), p1: +x.p1, d1: String(x.d1 || '').slice(0, 10), h, ini: par(x.ini), max: par(x.max), min: par(x.min) };
+    const fx = v => /^[a-z][a-z0-9]{1,11}$/.test(String(v || '')) ? String(v) : '';
+    const o = { tk: String(x.tk || '').toUpperCase(), p1: +x.p1, d1: String(x.d1 || '').slice(0, 10), h, ini: par(x.ini), max: par(x.max), min: par(x.min), fonte: fx(x.fonte), fonte_p1: fx(x.fonte_p1 || x.fonteP1) };
     if (global) { o.mk = A6_MK[x.mk] ? x.mk : 'us'; o.moeda = o.mk === 'us' || o.mk === 'etfus' ? 'USD' : 'BRL'; o.nome = String(x.nome || '').slice(0, 60); if (o.mk === 'fundo') o.cnpj = String(x.cnpj || '').replace(/\D/g, '').slice(0, 14); }
     return o;
   });
@@ -13118,7 +13122,8 @@ function rodRes(k) {
   const av = avisosDb.filter(x => x.id.startsWith(AV_PFX[k]) && x.nivel !== 'ok' && (t => isFinite(t) && t >= de && t <= ate)(Date.parse(x.quando)));
   const erro = e.status === 'erro' || av.some(x => x.nivel === 'erro'), aviso = av.some(x => x.nivel === 'aviso');
   const det = !(erro || aviso) ? '' : av.length ? av.map(x => (av.length > 1 ? new Date(Date.parse(x.quando)).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' }) + ': ' : '') + x.msg).join(' ') : 'A rotina marcou a rodada como erro, mas não deixou mensagem.';
-  return { det, cls: erro ? 'neg' : aviso ? 'amb' : 'okc', txt: 'Rodou ' + new Date(fim).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' }).replace(',', '') + (erro ? ' · com erros' : aviso ? ' · com avisos' : ' · ok') };
+  const falhas = [...new Set(av.map(x => x.fonte).filter(Boolean))];
+  return { det, falhas, cls: erro ? 'neg' : aviso ? 'amb' : 'okc', txt: 'Rodou ' + new Date(fim).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' }).replace(',', '') + (erro ? ' · com erros' : aviso ? ' · com avisos' : ' · ok') };
 }
 function rodTxt(k) { const e = rodEstado(k); if (!e) return ''; if (e.vivo) return `<em class="rod-on"><i></i>Atualizando agora, desde ${esc(rodHora(e.inicio))}</em>`; if (e.caiu) return `<em class="neg">Começou ${esc(rodHora(e.inicio))} e não terminou</em>`; return e.fim ? `<em>Última rodada ${esc(rodHora(e.fim))}${e.status === 'erro' ? ' · com erro' : ''}</em>` : ''; }
 function sanitizeAvisos(d) {
@@ -13128,17 +13133,27 @@ function sanitizeAvisos(d) {
 const avBr = s => s ? s.slice(0, 10).split('-').reverse().join('/') : '';
 const avDias = iso => /^\d{4}-\d{2}-\d{2}/.test(iso || '') ? Math.floor((new Date(hojeISO() + 'T12:00') - new Date(iso.slice(0, 10) + 'T12:00')) / 864e5) : null;
 const avMax = l => (l || []).reduce((m, x) => x.d1 > m ? x.d1 : m, '');
+// de onde vem cada dado: contagem por fonte gravada pelas rotinas em cada item (fonte = histórico, fonte_p1 = preço do dia)
+const FONTE_N = { si: 'Status Invest', b3: 'B3 oficial', brapi: 'brapi', tiingo: 'Tiingo', yahoo: 'Yahoo', cvm: 'CVM', sintetico: 'estimado' };
+function fonteConta(l, k, padrao) { const c = {}; (l || []).forEach(x => { const f = x[k] || padrao; if (f) c[f] = (c[f] || 0) + 1; }); return Object.entries(c).sort((a, b) => b[1] - a[1]).map(([f, n]) => (FONTE_N[f] || f) + ' ' + n).join(', '); }
+function fonteA6(l) { const h = fonteConta(l, 'fonte', 'si'), p = fonteConta(l, 'fonte_p1', ''); return 'Histórico: ' + (h || '—') + (p ? ' · Preço do dia: ' + p : ''); }
 // fontes que o painel lê: data da informação mais recente e o limite de dias antes de avisar
 function avFontes() {
   const f = [];
-  if (mundoDb) f.push({ id: 'mundo', nome: 'Câmbio e bolsas do mundo', d: avMax(mundoDb.itens), lim: 4, freq: 'diária', qdo: 'dias úteis às 18:37' });
-  if (acoes6m && acoes6m.itens) f.push({ id: 'b3', nome: 'Ações da B3', d: avMax(acoes6m.itens), lim: 10, freq: 'semanal', qdo: 'segundas às 9:23' });
-  if (globalA6 && globalA6.itens && globalA6.itens.length) f.push({ id: 'global', nome: 'Internacionais, ETFs, FIIs e fundos', d: avMax(globalA6.itens), lim: 10, freq: 'semanal', qdo: 'segundas às 9:41' });
-  if (minhasDb && minhasDb.itens) f.push({ id: 'minhas', nome: 'Minhas ações', d: avMax(minhasDb.itens), lim: 4, freq: 'diária', qdo: 'dias úteis às 18:43' });
-  if (casasDb && casasDb.data) f.push({ id: 'casas', nome: 'Projeção das casas', d: casasDb.data, lim: 4, freq: 'diária', qdo: 'dias úteis às 10:47' });
-  if (focus && focus.data) f.push({ id: 'focus', nome: 'Boletim Focus', d: focus.data, lim: 9, freq: 'semanal', qdo: 'segundas às 17:03' });
+  if (mundoDb) f.push({ id: 'mundo', nome: 'Câmbio e bolsas do mundo', d: avMax(mundoDb.itens), lim: 4, freq: 'diária', qdo: 'dias úteis às 18:37', fx: 'Frankfurter/BCE (câmbio), Tiingo (EUA), brapi (BOVA11), Status Invest (BOVA11 12 meses)' });
+  if (acoes6m && acoes6m.itens) f.push({ id: 'b3', nome: 'Ações da B3', d: avMax(acoes6m.itens), lim: 10, freq: 'semanal', qdo: 'segundas às 9:23', fx: fonteA6(acoes6m.itens) });
+  if (globalA6 && globalA6.itens && globalA6.itens.length) f.push({ id: 'global', nome: 'Internacionais, ETFs, FIIs e fundos', d: avMax(globalA6.itens), lim: 10, freq: 'semanal', qdo: 'segundas às 9:41', fx: fonteA6(globalA6.itens) });
+  if (minhasDb && minhasDb.itens) f.push({ id: 'minhas', nome: 'Minhas ações', d: avMax(minhasDb.itens), lim: 4, freq: 'diária', qdo: 'dias úteis às 18:43', fx: 'brapi (fechamento do dia); Status Invest de reserva. Também atualiza o preço do dia das tabelas (brapi na B3, Tiingo nos EUA)' });
+  if (casasDb && casasDb.data) f.push({ id: 'casas', nome: 'Projeção das casas', d: casasDb.data, lim: 4, freq: 'diária', qdo: 'dias úteis às 10:47', fx: 'Busca na web (Investidor10, InfoMoney, relatórios das casas)' });
+  if (focus && focus.data) f.push({ id: 'focus', nome: 'Boletim Focus', d: focus.data, lim: 9, freq: 'semanal', qdo: 'segundas às 17:03', fx: 'Banco Central, pela busca na web' });
   return f;
 }
+// rotinas que não têm um dado próprio com data: aparecem no sino só pelo resultado da última rodada
+const ROT_EXTRA = [
+  { id: 'pesquisa', nome: 'Pesquisa de ações (+ Ação)', qdo: 'todo dia às 12:17', fx: 'Busca na web; histórico de preços pelo Status Invest' },
+  { id: 'quedas', nome: 'Explicação das quedas', qdo: 'dias úteis às 13:43', fx: 'Busca na web (notícias)' },
+  { id: 'copia', nome: 'Cópia para o site', qdo: 'dias úteis às 14:07 e 19:07', fx: 'Supabase (site)' }
+];
 function avisosAuto() {
   const out = []; if (!db) return out;
   avFontes().forEach(f => { const n = avDias(f.d); if (n != null && n > f.lim) out.push({ id: `auto:${f.id}:${f.d}`, fonte: f.nome, nivel: 'aviso', auto: true, msg: `Sem dados novos desde ${avBr(f.d)} (${n} dias). A rotina ${f.freq} pode estar falhando.` }); });
@@ -13157,6 +13172,8 @@ function avTodos0() {
   const rot = avisosDb.filter(x => !x.resolvido && (avDias(x.quando) ?? 0) <= 30).sort((a, b) => a.quando < b.quando ? 1 : -1);
   return avisosAuto().concat(rot);
 }
+// fonte usada pela rotina e, se a última rodada teve problema, quais fontes falharam
+const sinoFx = (f, r) => (f.fx ? `<small class="sino-fx">Fonte: ${esc(f.fx)}</small>` : '') + (r && r.falhas && r.falhas.length && r.cls !== 'okc' ? `<small class="sino-fx ${r.cls}">Falhou: ${esc(r.falhas.join(', '))}</small>` : '');
 function renderSino() {
   const bt = $('sino'); if (!bt || !souDono) return;
   const lid = avLidos(), todos = avTodos(), novos = todos.filter(x => x.nivel !== 'ok' && !lid.includes(x.id)).length, ag = rodAgora();
@@ -13171,7 +13188,7 @@ function renderSino() {
     ${atuHtml()}${ag.length ? `<div class="sino-rod"><i></i><span><b>Atualizando agora</b>${ag.map(k => `${esc(ROTINAS[k])}, desde ${esc(rodHora(rodandoDb[k].inicio))}`).join('<br>')}</span></div>` : ''}
     <div class="sino-l">${todos.map(x => `<div class="sino-i${lid.includes(x.id) ? ' lido' : ''}"><div class="t"><span class="chip ${NV[x.nivel][0]}">${NV[x.nivel][1]}</span><b>${esc(x.fonte || 'Rotina')}</b><span class="q">${x.auto ? 'verificação do painel' : esc(hora(x.quando))}</span></div><p>${esc(x.msg)}</p></div>`).join('') || (() => { const ap = avTodos0().filter(x => avApagados().includes(x.id)).length; return ap ? `<p class="sino-vazio">Nenhum aviso novo. Você apagou ${ap} aviso${ap > 1 ? 's' : ''} já lido${ap > 1 ? 's' : ''}. <button type="button" class="btn ghost tiny" id="sino-voltar">Mostrar de novo</button></p>` : '<p class="sino-vazio">Tudo certo: nenhuma fonte de dados com problema.</p>'; })()}</div>
     <div class="sino-f"><b>Fontes · última atualização</b>${avFontes().map(f => { const n = avDias(f.d); const r = rodRes(f.id), dd = `<span class="${n != null && n > f.lim ? 'neg' : ''}">${f.d ? avBr(f.d) : '—'}</span>`;
-      return `<div><span>${esc(f.nome)}<small>Atualiza ${esc(f.qdo || f.freq)}</small></span><span class="sino-r">${r ? `<span class="${r.cls}">${r.cls === 'rod-on' ? '<i></i>' : ''}${esc(r.txt)}</span>${r.det ? ` <button type="button" class="ibtn" data-tip="${esc(r.det)}" aria-label="O que aconteceu">i</button>` : ''}<small>${r.sub ? esc(r.sub) + ' · ' : ''}dado de ${dd}</small>` : `<small>dado de</small>${dd}`}</span></div>`; }).join('')}<p class="sino-nota">Horário de Brasília. ${window.__SITE ? 'No site, os dados chegam na cópia seguinte, às 14:07 ou 19:07 dos dias úteis.' : ''}</p></div>`;
+      return `<div><span>${esc(f.nome)}<small>Atualiza ${esc(f.qdo || f.freq)}</small>${sinoFx(f, r)}</span><span class="sino-r">${r ? `<span class="${r.cls}">${r.cls === 'rod-on' ? '<i></i>' : ''}${esc(r.txt)}</span>${r.det ? ` <button type="button" class="ibtn" data-tip="${esc(r.det)}" aria-label="O que aconteceu">i</button>` : ''}<small>${r.sub ? esc(r.sub) + ' · ' : ''}dado de ${dd}</small>` : `<small>dado de</small>${dd}`}</span></div>`; }).join('')}${ROT_EXTRA.map(f => { const r = rodRes(f.id); return `<div><span>${esc(f.nome)}<small>Roda ${esc(f.qdo)}</small>${sinoFx(f, r)}</span><span class="sino-r">${r ? `<span class="${r.cls}">${r.cls === 'rod-on' ? '<i></i>' : ''}${esc(r.txt)}</span>${r.det ? ` <button type="button" class="ibtn" data-tip="${esc(r.det)}" aria-label="O que aconteceu">i</button>` : ''}${r.sub ? `<small>${esc(r.sub)}</small>` : ''}` : '<small>sem registro</small>'}</span></div>`; }).join('')}<p class="sino-nota">Horário de Brasília. ${window.__SITE ? 'No site, os dados chegam na cópia seguinte, às 14:07 ou 19:07 dos dias úteis.' : ''}</p></div>`;
 }
 // "Atualizar agora" (só o dono): dispara a rotina de preços (minhas, brapi) e, quando ela termina, a cópia para o site
 const TRIG_MINHAS = 'trig_011MAHr4E7D9wfbPPgeqcWUm', TRIG_COPIA = 'trig_015H4mLxeho4GNKz7gN4ZoUZ', ART_URL = 'https://claude.ai/artifact/9sw23mALkCSuQsHpejAWxx';
