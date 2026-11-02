@@ -1510,6 +1510,12 @@ tr.rd-hit td { background: color-mix(in srgb, var(--good) 9%, transparent); }
 .ag-rec dt { color: var(--muted); font-size: 12px; } .ag-rec dd { margin: 0; white-space: pre-wrap; }
 #agc-email.ag-erro { border-color: var(--bad); }
 .ag-ir { font-size: 11px; margin-left: 4px; }
+.fam-mo { margin: 6px 0; padding-left: 18px; display: flex; flex-direction: column; gap: 4px; }
+.fam-parte { display: flex; gap: 2px; margin: 10px 0 4px; border-radius: 6px; overflow: hidden; }
+.fam-parte span { min-width: 0; padding: 4px 8px; font-size: 11px; font-weight: 600; color: #fff; background: var(--s6); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.fam-parte span:nth-child(2) { background: var(--s1); } .fam-parte span:nth-child(3) { background: var(--s4); } .fam-parte span:nth-child(4) { background: var(--s5); }
+.fam-tbl td .fam-bar { height: 6px; margin: 6px 0 0; }
+.fam-sh { margin: 0 0 10px; padding: 8px 12px; border-left: 3px solid var(--s6); background: color-mix(in srgb, var(--s6) 8%, transparent); border-radius: 6px; font-size: 13px; }
 </style>
 
 
@@ -1574,6 +1580,7 @@ tr.rd-hit td { background: color-mix(in srgb, var(--good) 9%, transparent); }
           <div class="nav-group"><button type="button" class="nav-head" data-tab="famvg"><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 11.5 12 4l9 7.5"/><path d="M5.5 10v9.5h13V10"/><path d="M10 19.5v-5h4v5"/></svg></span>Visão geral</button><div class="nav-sub" data-sub="famvg"></div></div>
           <div class="nav-group"><button type="button" class="nav-head" data-tab="fampes"><span class="ico">01</span>Minha família<span class="caret" data-navtog="fampes" role="button" tabindex="0" aria-label="Abrir ou recolher submódulos">▾</span></button><div class="nav-sub" data-sub="fampes"></div></div>
           <div class="nav-group"><button type="button" class="nav-head" data-tab="famcasa"><span class="ico">02</span>Orçamento da casa<span class="caret" data-navtog="famcasa" role="button" tabindex="0" aria-label="Abrir ou recolher submódulos">▾</span></button><div class="nav-sub" data-sub="famcasa"></div></div>
+          <div class="nav-group"><button type="button" class="nav-head" data-tab="famcomp"><span class="ico">03</span>Compartilhar<span class="caret" data-navtog="famcomp" role="button" tabindex="0" aria-label="Abrir ou recolher submódulos">▾</span></button><div class="nav-sub" data-sub="famcomp"></div></div>
         </div></div>
         <div class="nav-sec" data-sec="indep" data-mod="indep"><button type="button" class="nav-sec-h" data-sectog="indep" aria-expanded="true"><span>Independência financeira</span><span class="caret" aria-hidden="true">▾</span></button><div class="nav-sec-b">
           <div class="nav-group"><button type="button" class="nav-head" data-tab="indvg"><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 11.5 12 4l9 7.5"/><path d="M5.5 10v9.5h13V10"/><path d="M10 19.5v-5h4v5"/></svg></span>Visão geral</button><div class="nav-sub" data-sub="indvg"></div></div>
@@ -1596,7 +1603,7 @@ tr.rd-hit td { background: color-mix(in srgb, var(--good) 9%, transparent); }
     </div>
     <div class="nav-mobile-sub" id="navMobileSub"></div>
   </div>
-  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 252</div></div>
+  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 253</div></div>
 </nav>
 <div class="sino-pop" id="sino-pop" role="dialog" aria-label="Central de avisos" hidden></div>
 <div class="sino-pop" id="pess-pop" role="dialog" aria-label="Seus avisos" hidden></div>
@@ -2164,6 +2171,29 @@ tr.rd-hit td { background: color-mix(in srgb, var(--good) 9%, transparent); }
       <h2>Reserva da família</h2>
       <p class="sub">Meses de gastos da casa, não só os seus, contra o que já está guardado com liquidez diária.</p>
       <div id="famc-res"></div>
+    </section>
+  </section>
+  <!-- ============ FAMÍLIA: COMPARTILHAR ============ -->
+  <section role="tabpanel" id="p-famcomp" hidden>
+    <div class="block-title"><span class="num">03</span><div><h1>Compartilhar</h1><p class="desc">A família no site: quem faz parte, o Orçamento da casa e as metas que todos editam, o que cada um mostra e o patrimônio de vocês somado.</p></div></div>
+    <section data-nav="Família no site" class="panel">
+      <h2>Família no site</h2>
+      <div id="famk-site"></div>
+    </section>
+    <section data-nav="O que eu mostro" class="panel">
+      <h2>O que eu mostro</h2>
+      <p class="sub">Escolha, por área, o que as outras pessoas da família veem do seu painel.</p>
+      <div id="famk-mostra"></div>
+    </section>
+    <section data-nav="Nós" class="panel">
+      <h2>Nós</h2>
+      <p class="sub">Renda, gastos e patrimônio de cada um, do jeito que cada pessoa escolheu mostrar, e o total de vocês.</p>
+      <div id="famk-nos"></div>
+    </section>
+    <section data-nav="Metas da família" class="panel">
+      <h2>Metas da família</h2>
+      <p class="sub">Objetivos em comum, quanto falta e quanto cada um põe por mês para chegar lá.</p>
+      <div id="famk-metas"></div>
     </section>
   </section>
   <!-- ============ INDEPENDÊNCIA: VISÃO GERAL ============ -->
@@ -3433,7 +3463,7 @@ tr.rd-hit td { background: color-mix(in srgb, var(--good) 9%, transparent); }
     return new Promise(resolve => { const { data } = sb.auth.onAuthStateChange(async (ev) => { if (ev !== 'PASSWORD_RECOVERY') return; const s = prompt('Digite a nova senha (mínimo 8 caracteres):'); if (s && s.length >= 8) { const { error } = await sb.auth.updateUser({ password: s }); alert(error ? 'Não deu para trocar a senha: ' + error.message : 'Senha trocada.'); } }); resolve(data); });
   }
   // ---------- rodapé: compartilhar, administração e sair ----------
-  const SITE_V = 135;
+  const SITE_V = 136;
   const escH = v => String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const dataBR = v => v ? new Date(v).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' }) : '–';
   const css2 = `.side-foot .r{flex-wrap:wrap}.side-foot .lg-acoes{margin-left:auto;display:inline-flex;gap:10px}
@@ -3589,6 +3619,26 @@ tr.rd-hit td { background: color-mix(in srgb, var(--good) 9%, transparent); }
     async remover(evId, email) { await pronto; let q = sb.from('agenda_conv').delete().eq('dono', uid).eq('ev_id', evId); if (email) q = q.eq('para_email', String(email).toLowerCase()); const { error } = await q; if (error) throw error; },
     async responder(id, resp) { await pronto; const { error } = await sb.rpc('agenda_responder', { id_conv: id, resp }); if (error) throw error; },
     ouvir(cb) { pronto.then(() => { try { sb.channel('agenda').on('postgres_changes', { event: '*', schema: 'public', table: 'agenda_conv' }, () => cb()).subscribe(); } catch (e) {} }); }
+  };
+  // Família: área comum da casa editada por todos (tabelas familias e familia_membros, supabase-familia.sql)
+  const meuEmail = () => String((sessao && sessao.user && sessao.user.email) || '').toLowerCase();
+  const rpcOk = async (n, a) => { const { data, error } = await sb.rpc(n, a); if (error) throw error; return data; };
+  window.__siteFamilia = {
+    async estado() { await pronto;
+      const { data: M, error } = await sb.from('familia_membros').select('familia_id,email,user_id,nome,situacao,familia_nome,convidado_por_nome,mostra,resumo,entrou_em,atualizado_em'); if (error) throw error;
+      const L = M || [], eu = L.find(m => m.user_id === uid && m.situacao === 'membro'), fid = eu ? eu.familia_id : null; let fam = null;
+      if (fid) { const r = await sb.from('familias').select('id,nome,dados,atualizado_em,atualizado_por,criada_por').eq('id', fid).maybeSingle(); if (r.error) throw r.error; fam = r.data; }
+      return { eu: uid, email: meuEmail(), fam, membros: L.filter(m => fid && m.familia_id === fid), convites: L.filter(m => m.situacao === 'convidado' && m.email === meuEmail() && m.familia_id !== fid) }; },
+    async criar(nome) { await pronto; return rpcOk('familia_criar', { nome_familia: nome }); },
+    async convidar(email) { await pronto; return rpcOk('familia_convidar', { email_conv: email }); },
+    async aceitar(fid) { await pronto; return rpcOk('familia_aceitar', { fam: fid }); },
+    async recusar(fid) { await pronto; const { error } = await sb.from('familia_membros').delete().eq('familia_id', fid).eq('email', meuEmail()).eq('situacao', 'convidado'); if (error) throw error; },
+    async cancelar(fid, email) { await pronto; const { error } = await sb.from('familia_membros').delete().eq('familia_id', fid).eq('email', String(email).toLowerCase()).eq('situacao', 'convidado'); if (error) throw error; },
+    async sair() { await pronto; return rpcOk('familia_sair', {}); },
+    async salvarDados(fid, dados) { await pronto; const { error } = await sb.from('familias').update({ dados, atualizado_em: new Date().toISOString(), atualizado_por: uid }).eq('id', fid); if (error) throw error; },
+    async renomear(fid, nome) { await pronto; const { error } = await sb.from('familias').update({ nome }).eq('id', fid); if (error) throw error; },
+    async salvarMeu(fid, campos) { await pronto; const { error } = await sb.from('familia_membros').update(Object.assign({}, campos, { atualizado_em: new Date().toISOString() })).eq('familia_id', fid).eq('user_id', uid); if (error) throw error; },
+    ouvir(cb) { pronto.then(() => { try { sb.channel('familia').on('postgres_changes', { event: '*', schema: 'public', table: 'familias' }, p => cb('familias', p)).on('postgres_changes', { event: '*', schema: 'public', table: 'familia_membros' }, p => cb('membros', p)).subscribe(); } catch (e) {} }); }
   };
   window.claude = { use: async n => { await pronto; return n === 'db' ? db : n === 'user' ? user : null; } };
 })();
@@ -5184,7 +5234,7 @@ function famCasaNormalizar(s) {
   if (!/^\d{4}-\d{2}$/.test(c.mes || '')) c.mes = ''; c.resMeses = Math.min(36, Math.max(1, Math.round(+c.resMeses || 6))); c.resOutra = Math.max(0, +c.resOutra || 0);
   c.resFil = !!c.resFil; c.resPrazo = Math.min(120, Math.max(1, Math.round(+c.resPrazo || 12)));
 }
-const famCasa = () => state.fam.casa;
+const famCasa = () => (famSh.fam && famSh.comum ? famSh.comum.casa : state.fam.casa);
 // a sua renda líquida por mês (Receitas e custos do plano, sem os overrides do mês)
 function famRendaEu() {
   let bruto = 0, ded = 0; try { const L = linhasPlano(); L.filter(l => l.tipo === 'rec').forEach(l => { bruto += l.base; });
@@ -5192,12 +5242,14 @@ function famRendaEu() {
   return Math.max(0, bruto - ded);
 }
 // quem divide as contas: você, cônjuge e outros dependentes com renda
-const famAdultos = () => famL().filter(p => p.tipo === 'eu' || p.tipo === 'conjuge' || (p.tipo === 'dependente' && p.renda > 0));
+const famAdultosLocal = () => famL().filter(p => p.tipo === 'eu' || p.tipo === 'conjuge' || (p.tipo === 'dependente' && p.renda > 0));
+const famAdultos = () => famSh.fam && famSh.comum ? famShAdultos() : famAdultosLocal();
 const famRendaDe = p => p.tipo === 'eu' ? famRendaEu() : p.renda;
-const famNomeDe = id => { const p = famAcha(id); return p ? p.nome : '—'; };
+const famNomeDe = id => { const p = famAdultos().find(y => y.id === id) || famAcha(id); return p ? p.nome : '—'; };
 function famPartes(valor, div, fixo) {
   const A = famAdultos(), out = {}; if (!A.length) return out;
-  if (div === 'renda') { const R = A.map(famRendaDe), t = R.reduce((a, b) => a + b, 0); A.forEach((p, k) => { out[p.id] = t > 0 ? valor * R[k] / t : valor / A.length; }); }
+  const R0 = A.map(famRendaDe); if (div === 'renda' && R0.some(v => v == null)) div = 'igual';
+  if (div === 'renda') { const R = R0, t = R.reduce((a, b) => a + b, 0); A.forEach((p, k) => { out[p.id] = t > 0 ? valor * R[k] / t : valor / A.length; }); }
   else if (div === 'fixo') { let soma = 0; A.forEach(p => { const f = Math.max(0, +(fixo || {})[p.id] || 0); out[p.id] = f; soma += f; }); const r = (valor - soma) / A.length; A.forEach(p => { out[p.id] += r; }); }
   else A.forEach(p => { out[p.id] = valor / A.length; });
   return out;
@@ -5231,7 +5283,8 @@ function famCustoPlanoHoje() { try { const pm = (calcPlano().meses || {})[HOJE_I
 const famFilHoje = () => famFilhos().filter(p => !famPrevisto(p)).reduce((t, p) => t + famCustoIdade(p, famIdade(p, HOJE_IDX)), 0);
 function famReserva() {
   const C = famCasa(), D = famDivisao(), semContas = !C.contas.length, base = semContas ? famCustoPlanoHoje() : D.tot, fil = C.resFil ? famFilHoje() : 0;
-  const mes = base + fil, alvo = mes * C.resMeses, cart = famReservaCart(), tem = cart + C.resOutra;
+  const outros = famSh.fam && famSh.comum ? famSh.membros.filter(m => m.situacao === 'membro' && m.user_id !== famSh.eu).reduce((t, m) => t + (+(m.resumo || {}).liq || 0), 0) : 0;
+  const mes = base + fil, alvo = mes * C.resMeses, cart = famReservaCart() + outros, tem = cart + C.resOutra;
   return { semContas, base, fil, mes, alvo, cart, tem, falta: Math.max(0, alvo - tem), cobre: mes > 0 ? tem / mes : 0 };
 }
 function famCasaResumo() { const C = famCasa(); if (!C.contas.length) return ''; const D = famDivisao(); return `${fm(D.tot)}/mês na casa`; }
@@ -5245,11 +5298,12 @@ function renderFamCasa() {
     ['Só de cada um', fm(D.ind), A.filter(p => D.R[p.id].meu > 0).map(p => `${esc(p.nome)} ${fm(D.R[p.id].meu)}`).join(' · ') || 'contas que só uma pessoa paga'],
     ['Quem deve a quem', T.length ? fm(T.reduce((t, x) => t + x.valor, 0)) : 'Tudo certo', T.length ? T.map(x => `${esc(famNomeDe(x.de))} → ${esc(famNomeDe(x.para))}`).join(' · ') : 'até ' + mLabel(mI)]
   ]);
-  const aviso = A.length < 2 ? `<p class="hint">Para dividir as contas, cadastre quem mora com você em <a href="#" data-tab="fampes">Minha família</a> (cônjuge, ou outro dependente com renda). <button type="button" class="btn tiny" data-famadd="conjuge">+ Cônjuge</button></p>` : '';
+  const aviso = A.length < 2 && famShared() ? `<p class="hint">Só você está na família por enquanto. Convide quem mora com você em <a href="#" data-tab="famcomp">Compartilhar</a>.</p>` : A.length < 2 ? `<p class="hint">Para dividir as contas, cadastre quem mora com você em <a href="#" data-tab="fampes">Minha família</a> (cônjuge, ou outro dependente com renda). <button type="button" class="btn tiny" data-famadd="conjuge">+ Cônjuge</button></p>` : '';
+  const banner = famShared() ? `<p class="fam-sh">Orçamento compartilhado da família <b>${esc(famSh.fam.nome)}</b>: todos da família veem e editam.</p>` : '';
   // contas
   const opDono = c => `<option value="nosso"${famEhNosso(c) ? ' selected' : ''}>Nosso</option>` + A.map(p => `<option value="${p.id}"${!famEhNosso(c) && c.dono === p.id ? ' selected' : ''}>Só ${esc(p.nome)}</option>`).join('');
   const opP = (sel, vazio) => (vazio ? `<option value="">${vazio}</option>` : '') + A.map(p => `<option value="${p.id}"${sel === p.id ? ' selected' : ''}>${esc(p.nome)}</option>`).join('');
-  $('famc-contas').innerHTML = aviso + (!C.contas.length ? '<p class="hint">Nenhuma conta da casa ainda. Use <b>+ Conta</b> ou traga os custos fixos e essenciais do seu orçamento.</p>'
+  $('famc-contas').innerHTML = banner + aviso + (!C.contas.length ? '<p class="hint">Nenhuma conta da casa ainda. Use <b>+ Conta</b> ou traga os custos fixos e essenciais do seu orçamento.</p>'
     : `<div class="tscroll"><table class="fam-tbl"><thead><tr><th>Conta</th><th class="ng-num">Valor/mês</th><th>De quem</th><th>Divisão</th><th>Quem costuma pagar</th><th></th></tr></thead><tbody>${C.contas.map(c => { const n = famEhNosso(c), P = famContaPartes(c);
       const fx = n && c.div === 'fixo' ? `<div class="fam-fx">${A.map(p => `<label>${esc(p.nome)}<input type="number" min="0" step="10" data-famkfx="${c.id}:${p.id}" value="${c.fixo[p.id] ?? ''}" placeholder="0"></label>`).join('')}</div>${Math.abs(A.reduce((t, p) => t + (+c.fixo[p.id] || 0), 0) - c.valor) >= 1 ? `<small class="subdet">A diferença para o valor da conta é dividida igualmente.</small>` : ''}` : '';
       return `<tr><td class="name" data-l="Conta"><input type="text" data-famkc="${c.id}:nome" value="${esc(c.nome)}" maxlength="60" aria-label="Nome da conta"></td>
@@ -5264,7 +5318,7 @@ function renderFamCasa() {
     : `<table class="fam-tbl"><thead><tr><th>Pessoa</th><th class="ng-num">Renda líquida</th><th class="ng-num">Parte do nosso</th><th class="ng-num">Contas só suas</th><th class="ng-num">Total na casa</th><th class="ng-num">Sobra</th></tr></thead><tbody>${A.map(p => { const r = D.R[p.id], t = r.nosso + r.meu, so = r.renda - t;
       return `<tr><td class="name" data-l="Pessoa">${esc(p.nome)}</td><td data-l="Renda" class="ng-num">${r.renda ? fm(r.renda) : '—'}<small>${D.A.length > 1 && r.renda ? Math.round(r.renda / D.A.reduce((x, y) => x + D.R[y.id].renda, 0) * 100) + '% da renda da casa' : ''}</small></td>
       <td data-l="Parte do nosso" class="ng-num">${fm(r.nosso)}<small>${D.nosso ? Math.round(r.nosso / D.nosso * 100) + '% do nosso' : ''}</small></td><td data-l="Só suas" class="ng-num">${fm(r.meu)}</td>
-      <td data-l="Total na casa" class="ng-num"><b>${fm(t)}</b><small>${r.renda ? Math.round(t / r.renda * 100) + '% da renda' : ''}</small></td><td data-l="Sobra" class="ng-num${so < 0 ? ' neg' : ''}">${r.renda ? fm(so) : '—'}<small>${r.renda ? 'antes dos gastos pessoais' : 'informe a renda em Minha família'}</small></td></tr>`; }).join('')}</tbody></table>
+      <td data-l="Total na casa" class="ng-num"><b>${fm(t)}</b><small>${r.renda ? Math.round(t / r.renda * 100) + '% da renda' : ''}</small></td><td data-l="Sobra" class="ng-num${so < 0 ? ' neg' : ''}">${r.renda ? fm(so) : '—'}<small>${r.renda ? 'antes dos gastos pessoais' : r.p.membro ? 'não mostra a renda' : 'informe a renda em Minha família'}</small></td></tr>`; }).join('')}</tbody></table>
     <p class="subdet">A sua renda vem de Receitas e custos do Plano futuro; a das outras pessoas, de Minha família. A sobra é antes dos gastos pessoais de cada um. Este orçamento não muda o Plano futuro: os seus custos lá continuam sendo os de Receitas e custos, para não contar duas vezes.</p>`;
   // quem deve a quem
   const doMes = C.pags.filter(g => g.mes === mes), fixas = C.contas.filter(c => famEhNosso(c) && c.valor > 0), faltam = fixas.filter(c => !doMes.some(g => g.contaId === c.id)), acs = C.acertos.filter(a => a.mes === mes);
@@ -5327,7 +5381,7 @@ document.addEventListener('change', e => {
   if (d.famkfx) { const [id, pid] = d.famkfx.split(':'), c = C.contas.find(x => x.id === id); if (!c) return; if (t.value === '' || !isFinite(+t.value)) delete c.fixo[pid]; else c.fixo[pid] = Math.max(0, +t.value); famRe(); return; }
   if (d.famkp) { const [id, k] = d.famkp.split(':'), g = C.pags.find(x => x.id === id); if (!g) return; g[k] = k === 'valor' ? Math.max(0, +t.value || 0) : k === 'desc' ? (TXT(t.value, 80) || 'Gasto da casa') : t.value; famRe(); return; }
   if (d.famkmes != null) { C.mes = /^\d{4}-\d{2}$/.test(t.value) ? t.value : ''; save(); renderTab(); return; }
-  if (d.famkr) { const k = d.famkr; C[k] = k === 'resFil' ? t.checked : +t.value || 0; famCasaNormalizar(state); famRe(); return; }
+  if (d.famkr) { const k = d.famkr; C[k] = k === 'resFil' ? t.checked : +t.value || 0; famCasaNorm(C); famRe(); return; }
 });
 // resumo na Visão geral da Família
 function famVgCasa() {
@@ -5340,6 +5394,163 @@ function famVgCasa() {
     ['Reserva da família', R.alvo > 0 ? Math.round(Math.min(1, R.tem / R.alvo) * 100) + '%' : '—', R.alvo > 0 ? (R.falta > 0 ? `faltam ${fm(R.falta)} para ${C.resMeses} meses` : `cobre ${num(R.cobre, 1)} meses`) : '']
   ].map(([l, x, s]) => `<div class="kpi"><span class="l">${l}</span><span class="v">${x}</span><span class="d">${s}</span></div>`).join('')}</div>`;
 }
+
+/* ---------- Família (etapa 3): compartilhar no site. Área comum (orçamento da casa e metas) editada por todos,
+   cada um escolhe o que mostra (renda, gastos, patrimônio) e o patrimônio "Nós".
+   Local: state.fam.mostra {renda,gastos,patrimonio: tudo|totais|nada}, state.fam.metas [{id,nome,valor,ate,guardado,div}].
+   No site, com família: famSh.comum = { casa, metas } vem da tabela familias (supabase-familia.sql). */
+const FAM_MOSTRA = { tudo: 'Tudo', totais: 'Só totais', nada: 'Nada' };
+const FAM_AREAS = [['renda', 'Renda', 'a sua renda líquida por mês (Tudo: também a renda bruta e os descontos)'], ['gastos', 'Gastos', 'os seus custos por mês do Plano futuro (Tudo: também por grupo: fixos, essenciais e estilo de vida)'], ['patrimonio', 'Patrimônio', 'o total da sua Carteira e quanto tem com liquidez diária (Tudo: também por classe)']];
+function famCompNormalizar(s) {
+  const v = s.fam; if (!v.mostra || typeof v.mostra !== 'object' || Array.isArray(v.mostra)) v.mostra = {};
+  FAM_AREAS.forEach(([k]) => { if (!FAM_MOSTRA[v.mostra[k]]) v.mostra[k] = 'totais'; });
+  if (!Array.isArray(v.metas)) v.metas = []; v.metas = v.metas.filter(x => x && typeof x === 'object' && x.id).map(famMetaNorm);
+}
+function famMetaNorm(x) { x.nome = String(x.nome || 'Meta').slice(0, 60); x.valor = Math.max(0, +x.valor || 0); x.guardado = Math.max(0, +x.guardado || 0); x.ate = /^\d{4}-\d{2}$/.test(x.ate || '') ? x.ate : ''; x.div = x.div === 'renda' ? 'renda' : 'igual'; return x; }
+// estado do site
+const famSiteF = () => (typeof window !== 'undefined' && window.__siteFamilia) || null;
+let famSh = { lido: false, erro: '', fam: null, membros: [], convites: [], eu: '', email: '', comum: null, lendo: false, salvaT: null, salvoEm: 0, pubJ: '' };
+const famShared = () => !!(famSh.fam && famSh.comum);
+const famMetas = () => famShared() ? famSh.comum.metas : state.fam.metas;
+function famComumNorm(d) {
+  d = d && typeof d === 'object' && !Array.isArray(d) ? d : {}; d.casa = famCasaNorm(d.casa && typeof d.casa === 'object' && !Array.isArray(d.casa) ? d.casa : {});
+  d.metas = Array.isArray(d.metas) ? d.metas.filter(x => x && typeof x === 'object' && x.id).map(famMetaNorm) : []; return d;
+}
+function famCasaNorm(c) { const s = { fam: { casa: c } }; famCasaNormalizar(s); return s.fam.casa; }
+function famShAdultos() {
+  return famSh.membros.filter(m => m.situacao === 'membro' && m.user_id).map(m => { const eu = m.user_id === famSh.eu, r = m.resumo || {};
+    return { id: 'u:' + m.user_id, nome: eu ? (m.nome || 'Você') + ' (você)' : (m.nome || m.email), tipo: eu ? 'eu' : 'conjuge', renda: eu ? null : (r.renda != null ? +r.renda : null), membro: m }; });
+}
+async function famShLer() {
+  const S = famSiteF(); if (!S || famSh.lendo) return; famSh.lendo = true;
+  try { const r = await S.estado(); const loc = famSh.salvaT && famSh.fam && r.fam && r.fam.id === famSh.fam.id ? famSh.comum : null;
+    Object.assign(famSh, { lido: true, erro: '', fam: r.fam, membros: r.membros || [], convites: r.convites || [], eu: r.eu, email: r.email, comum: r.fam ? (loc || famComumNorm(clone(r.fam.dados || {}))) : null }); }
+  catch (e) { Object.assign(famSh, { lido: true, erro: (e && e.message) || 'erro', fam: null, membros: [], convites: [], comum: null }); }
+  famSh.lendo = false; famPeC.k = null; famPublicaMeu();
+  try { if (/^fam/.test(tab)) renderTab(); renderPess(); } catch (e) {}
+}
+function famShIni() {
+  const S = famSiteF(); if (!S) return;
+  try { AVISOS_PESSOAIS.push(() => famSh.convites.map(c => ({ id: 'famconv:' + c.familia_id, mod: 'fam', quando: '', msg: `${c.convidado_por_nome || 'Alguém'} convidou você para a família "${c.familia_nome || 'Família'}". Abra Família › Compartilhar para aceitar.`, tab: 'famcomp', sec: 'Família no site' }))); } catch (e) {}
+  famShLer(); let t = null;
+  S.ouvir(() => { clearTimeout(t); t = setTimeout(() => { if (famSh.salvaT || Date.now() - famSh.salvoEm < 1500) return; famShLer(); }, 500); });
+  setInterval(famPublicaMeu, 120000);
+}
+setTimeout(famShIni, 1300);
+// grava a área comum (com pausa para juntar várias mudanças)
+function famComumAgendar() {
+  const S = famSiteF(); if (!S || !famShared()) return; clearTimeout(famSh.salvaT);
+  famSh.salvaT = setTimeout(async () => { const fid = famSh.fam.id; try { await S.salvarDados(fid, famSh.comum); famSh.salvoEm = Date.now(); } catch (e) { console.error(e); try { ngToast('Não consegui salvar o orçamento da família agora. Tente de novo.'); } catch (e2) {} } famSh.salvaT = null; }, 800);
+}
+// o que eu publico para a família, conforme o que escolhi mostrar
+function famMeuResumo() {
+  const m = state.fam.mostra, out = {};
+  if (m.renda !== 'nada') { out.renda = Math.round(famRendaEu());
+    if (m.renda === 'tudo') { let bruto = 0; try { linhasPlano().filter(l => l.tipo === 'rec').forEach(l => { bruto += l.base; }); } catch (e) {} out.bruto = Math.round(bruto); out.desc = Math.max(0, Math.round(bruto - out.renda)); } }
+  if (m.gastos !== 'nada') { out.gastos = Math.round(famCustoPlanoHoje());
+    if (m.gastos === 'tudo') { const g = {}; try { cats().forEach(c => { g[c.grupo] = (g[c.grupo] || 0) + (+c.orc || 0); }); } catch (e) {} out.gastosG = Object.entries(g).filter(x => x[1] > 0).map(([k, v]) => [k, Math.round(v)]); } }
+  if (m.patrimonio !== 'nada') { let tot = 0, cl = {}; try { ativos().forEach(a => { const v = avaliar(a); tot += v.atual || 0; cl[v.classe] = (cl[v.classe] || 0) + (v.atual || 0); }); } catch (e) {}
+    if (!tot) { try { const u = cps.slice().sort((a, b) => a.mes < b.mes ? -1 : 1).pop(); if (u) tot = +u.valor || 0; } catch (e) {} }
+    out.patr = Math.round(tot); out.liq = Math.round(famReservaCart());
+    if (m.patrimonio === 'tudo') out.patrC = Object.entries(cl).filter(x => x[1] > 0).map(([k, v]) => [((CLASSES.find(c => c.id === k) || {}).nome) || k, Math.round(v)]); }
+  return out;
+}
+function famPublicaMeu() {
+  const S = famSiteF(); if (!S || !famSh.fam || !state || !state.fam) return; let r = {}; try { r = famMeuResumo(); } catch (e) { return; }
+  const j = JSON.stringify([state.fam.mostra, r]); if (j === famSh.pubJ) return; famSh.pubJ = j;
+  const eu = famSh.membros.find(m => m.user_id === famSh.eu); if (eu) { eu.mostra = clone(state.fam.mostra); eu.resumo = r; }
+  S.salvarMeu(famSh.fam.id, { mostra: state.fam.mostra, resumo: r }).catch(e => { console.error(e); famSh.pubJ = ''; });
+}
+// pessoas do "Nós": no site, os membros; fora dele, só você
+function famNos() {
+  const meu = famMeuResumo();
+  if (!famShared()) return [{ nome: 'Você', eu: true, r: meu, mostra: state.fam.mostra }];
+  return famSh.membros.filter(m => m.situacao === 'membro').map(m => { const eu = m.user_id === famSh.eu; return { nome: eu ? (m.nome || 'Você') + ' (você)' : (m.nome || m.email), eu, r: eu ? meu : (m.resumo || {}), mostra: eu ? state.fam.mostra : (m.mostra || {}) }; });
+}
+const famMetaMeses = x => x.ate ? Math.max(1, mIndex(x.ate) - HOJE_IDX) : null;
+
+/* ---------- tela ---------- */
+function renderFamComp() {
+  const S = famSiteF(), box = $('famk-site');
+  if (!S) box.innerHTML = `<p>Compartilhar a família funciona no <b>painel do site</b>, onde cada pessoa entra com o próprio login. Lá você cria a família, convida quem mora com você pelo e-mail e os dois passam a editar o mesmo Orçamento da casa e as mesmas metas.</p>
+      <p class="subdet">Aqui no artefato o Orçamento da casa e as metas ficam só no seu painel. O que você escolher em "O que eu mostro" vale quando entrar no site.</p>`;
+  else if (!famSh.lido) box.innerHTML = '<p class="hint">Carregando a família…</p>';
+  else if (famSh.erro && !famSh.fam) box.innerHTML = `<p class="hint">O compartilhamento da família ainda não está ligado neste site (falta criar as tabelas da Família no banco).</p>`;
+  else if (!famSh.fam) box.innerHTML = (famSh.convites.length ? `<h3 class="fam-h3">Convites para você</h3><div class="fam-acertos">${famSh.convites.map(c => `<div class="fam-acerto"><span><b>${esc(c.convidado_por_nome || 'Alguém')}</b> convidou você para a família <b>${esc(c.familia_nome || 'Família')}</b></span><span class="ng-ac"><button type="button" class="btn ghost tiny" data-famsrec="${c.familia_id}">Recusar</button><button type="button" class="btn tiny" data-famsace="${c.familia_id}">Aceitar</button></span></div>`).join('')}</div>` : '') +
+      `<h3 class="fam-h3">Criar a família</h3><div class="ag-add"><input type="text" id="famk-nome" maxlength="60" placeholder="Nome da família (ex.: Casa Tavares)" aria-label="Nome da família"><button type="button" class="btn tiny" data-famscria>Criar família</button></div>
+      <p class="subdet">Ao criar, o seu Orçamento da casa${state.fam.casa.contas.length ? ` (${state.fam.casa.contas.length} contas)` : ''} e as suas metas viram a área comum da família. Depois convide as outras pessoas pelo e-mail. Cada conta participa de uma família.</p>`;
+  else { const F = famSh.fam, M = famSh.membros;
+    box.innerHTML = `<div class="ng-top"><label>Nome da família<input type="text" data-famsnome value="${esc(F.nome)}" maxlength="60"></label></div>
+      <table class="fam-tbl"><thead><tr><th>Pessoa</th><th>E-mail</th><th>Situação</th><th></th></tr></thead><tbody>${M.map(m => `<tr><td class="name" data-l="Pessoa">${esc(m.nome || '—')}${m.user_id === famSh.eu ? ' <span class="subdet">(você)</span>' : ''}</td><td data-l="E-mail">${esc(m.email)}</td>
+        <td data-l="Situação">${m.situacao === 'membro' ? '<span class="chip info">Na família</span>' : '<span class="subdet">Convite enviado</span>'}</td><td><div class="ng-ac">${m.situacao === 'convidado' ? `<button type="button" class="btn ghost tiny" data-famscanc="${esc(m.email)}">Cancelar convite</button>` : ''}</div></td></tr>`).join('')}</tbody></table>
+      <h3 class="fam-h3">Convidar</h3><div class="ag-add"><input type="text" inputmode="email" autocomplete="email" id="famk-email" maxlength="120" placeholder="E-mail da pessoa" aria-label="E-mail para convidar"><button type="button" class="btn tiny" data-famsconv>Convidar</button></div>
+      <p class="subdet">A pessoa vê o convite em Seus avisos quando entrar no site com esse e-mail. Se ainda não tiver conta, peça para ela criar uma com o mesmo e-mail. Todos da família editam o Orçamento da casa e as metas; o resto do painel de cada um continua privado.</p>
+      <div class="row" style="margin-top:8px"><button type="button" class="btn danger tiny" data-famssai>Sair da família</button></div>`; }
+  // o que eu mostro
+  const mo = state.fam.mostra, meu = famMeuResumo();
+  $('famk-mostra').innerHTML = `<div class="ng-form">${FAM_AREAS.map(([k, n]) => `<label>${n}<select data-famsmo="${k}">${Object.entries(FAM_MOSTRA).map(([v, t]) => `<option value="${v}"${mo[k] === v ? ' selected' : ''}>${t}</option>`).join('')}</select></label>`).join('')}</div>
+    <ul class="fam-mo">${FAM_AREAS.map(([k, n, d]) => `<li><b>${n}:</b> ${mo[k] === 'nada' ? 'ninguém vê.' : `${d.replace(/ \(Tudo:.*\)$/, '')}${mo[k] === 'tudo' ? ', com o detalhe' : ''}. Hoje: <b>${famMoTxt(k, meu)}</b>.`}</li>`).join('')}</ul>
+    <p class="subdet">Só vão esses números, nunca os lançamentos, a carteira item a item ou o plano. Proporcional à renda usa a renda que cada um mostra; se alguém escolher Nada em Renda, essa divisão vira igual.</p>`;
+  // nós
+  const N = famNos(), soma = k => N.reduce((t, p) => t + (p.r[k] != null ? +p.r[k] : 0), 0), algum = k => N.some(p => p.r[k] != null);
+  const cel = (p, k, det) => p.r[k] == null ? '<span class="subdet">não mostra</span>' : `${fm(p.r[k])}${det ? `<small>${det}</small>` : ''}`;
+  $('famk-nos').innerHTML = `<div class="tscroll"><table class="fam-tbl"><thead><tr><th>Pessoa</th><th class="ng-num">Renda/mês</th><th class="ng-num">Gastos/mês</th><th class="ng-num">Patrimônio</th></tr></thead><tbody>${N.map(p => `<tr><td class="name" data-l="Pessoa">${esc(p.nome)}</td>
+      <td data-l="Renda" class="ng-num">${cel(p, 'renda', p.r.bruto != null ? `bruta ${fm(p.r.bruto)} · descontos ${fm(p.r.desc || 0)}` : '')}</td>
+      <td data-l="Gastos" class="ng-num">${cel(p, 'gastos', (p.r.gastosG || []).map(([g, v]) => `${esc(g)} ${fm(v)}`).join(' · '))}</td>
+      <td data-l="Patrimônio" class="ng-num">${cel(p, 'patr', [p.r.liq != null ? `${fm(p.r.liq)} com liquidez diária` : ''].concat((p.r.patrC || []).map(([c, v]) => `${esc(c)} ${fm(v)}`)).filter(Boolean).join(' · '))}</td></tr>`).join('')}</tbody>
+    <tfoot><tr class="fam-tot"><td class="name">Nós</td><td class="ng-num">${algum('renda') ? fm(soma('renda')) : '—'}</td><td class="ng-num">${algum('gastos') ? fm(soma('gastos')) : '—'}</td><td class="ng-num">${algum('patr') ? fm(soma('patr')) : '—'}</td></tr></tfoot></table></div>
+    ${algum('patr') && N.length > 1 ? `<div class="fam-parte">${N.filter(p => p.r.patr).map(p => `<span style="flex:${p.r.patr}" title="${esc(p.nome)} ${fm(p.r.patr)}">${esc(p.nome.replace(' (você)', ''))} ${Math.round(p.r.patr / soma('patr') * 100)}%</span>`).join('')}</div>` : ''}
+    <p class="subdet">${famShared() ? 'O total soma só o que cada pessoa escolheu mostrar.' : 'Quando você estiver numa família no site, aparecem aqui as outras pessoas e o total de vocês.'} Renda e gastos são por mês; o patrimônio é o total da Carteira de cada um.</p>`;
+  // metas
+  const MT = famMetas(), A = famAdultos();
+  $('famk-metas').innerHTML = (!MT.length ? '<p class="hint">Nenhuma meta da família ainda. Ex.: trocar de carro, entrada do apartamento, viagem de férias, escola.</p>'
+    : `<table class="fam-tbl"><thead><tr><th>Meta</th><th class="ng-num">Valor</th><th>Até</th><th class="ng-num">Já guardado</th><th class="ng-num">Por mês</th><th>Divisão</th><th></th></tr></thead><tbody>${MT.map(x => { const falta = Math.max(0, x.valor - x.guardado), n = famMetaMeses(x), pm = n ? falta / n : null, P = pm != null ? famPartes(pm, x.div) : {}, pc = x.valor ? Math.min(100, x.guardado / x.valor * 100) : 0;
+      return `<tr><td class="name" data-l="Meta"><input type="text" data-famsm="${x.id}:nome" value="${esc(x.nome)}" maxlength="60" aria-label="Nome da meta"><div class="fam-bar"><span style="width:${pc}%"></span></div></td>
+      <td data-l="Valor" class="ng-num"><input type="number" min="0" step="500" data-famsm="${x.id}:valor" value="${x.valor || ''}" placeholder="0" aria-label="Valor da meta"></td>
+      <td data-l="Até"><input type="month" data-famsm="${x.id}:ate" value="${x.ate}" aria-label="Até quando"></td>
+      <td data-l="Já guardado" class="ng-num"><input type="number" min="0" step="500" data-famsm="${x.id}:guardado" value="${x.guardado || ''}" placeholder="0" aria-label="Já guardado"><small>${Math.round(pc)}% · falta ${fm(falta)}</small></td>
+      <td data-l="Por mês" class="ng-num">${pm != null ? fm(pm) : '—'}<small>${n ? `${n} ${n > 1 ? 'meses' : 'mês'}` : 'escolha até quando'}</small></td>
+      <td data-l="Divisão"><select data-famsm="${x.id}:div" aria-label="Como dividir"><option value="igual"${x.div === 'igual' ? ' selected' : ''}>Igual</option><option value="renda"${x.div === 'renda' ? ' selected' : ''}>Proporcional à renda</option></select>${pm != null && A.length ? `<small class="subdet fam-partes">${A.map(p => `${esc(p.nome)} ${fm(P[p.id] || 0)}`).join(' · ')}</small>` : ''}</td>
+      <td><div class="ng-ac"><button type="button" class="btn danger tiny" data-famsmdel="${x.id}">Remover</button></div></td></tr>`; }).join('')}</tbody></table>`) +
+    `<div class="row" style="margin-top:10px"><button type="button" class="btn tiny" data-famsmadd>+ Meta</button></div>
+    <p class="subdet">Por mês: quanto falta dividido pelos meses até a data, sem contar rendimento. ${famShared() ? 'Todos da família veem e editam as metas.' : 'No site, numa família, as metas passam a ser de todos.'} Para a meta entrar no seu Plano futuro, cadastre a sua parte em Bens e compromissos › Compras.</p>`;
+}
+function famMoTxt(k, r) {
+  if (k === 'renda') return r.renda != null ? fm(r.renda) + '/mês' : '—';
+  if (k === 'gastos') return r.gastos != null ? fm(r.gastos) + '/mês' : '—';
+  return r.patr != null ? fm(r.patr) : '—';
+}
+/* ---------- eventos ---------- */
+document.addEventListener('click', async e => {
+  const t = e.target.closest('[data-famscria],[data-famsconv],[data-famscanc],[data-famsace],[data-famsrec],[data-famssai],[data-famsmadd],[data-famsmdel]'); if (!t || !state.fam) return;
+  const d = t.dataset, S = famSiteF(); e.preventDefault();
+  const falha = er => { console.error(er); try { ngToast((er && er.message) || 'Não deu certo agora. Tente de novo.'); } catch (e2) {} };
+  if (d.famsmadd != null) { famMetas().push(famMetaNorm({ id: uid(), nome: 'Nova meta', div: 'igual' })); famRe(); setTimeout(() => { const L = document.querySelectorAll('[data-famsm$=":nome"]'); const el = L[L.length - 1]; if (el) { el.focus(); el.select(); } }, 30); return; }
+  if (d.famsmdel) { const M = famMetas(), x = M.find(y => y.id === d.famsmdel); if (!x || !confirmar(`Remover a meta ${x.nome}?`)) return; M.splice(M.indexOf(x), 1); famRe(); return; }
+  if (!S) return;
+  if (d.famscria != null) { const nome = ($('famk-nome') || {}).value || ''; t.disabled = true;
+    try { await S.criar(nome.trim() || 'Nossa família'); await famShLer();
+      if (famSh.fam) { const loc = clone(state.fam.casa), eu = famL().find(p => p.tipo === 'eu'), novo = 'u:' + famSh.eu, mp = v => eu && v === eu.id ? novo : v;
+        loc.contas.forEach(c => { c.dono = mp(c.dono); c.paga = mp(c.paga); const f = {}; Object.entries(c.fixo || {}).forEach(([k, v]) => { f[mp(k)] = v; }); c.fixo = f; });
+        loc.pags.forEach(g => { g.quem = mp(g.quem); }); loc.acertos.forEach(a => { a.de = mp(a.de); a.para = mp(a.para); });
+        famSh.comum = famComumNorm({ casa: loc, metas: clone(state.fam.metas) }); await S.salvarDados(famSh.fam.id, famSh.comum); famSh.salvoEm = Date.now(); famRe(); } }
+    catch (er) { falha(er); } t.disabled = false; return; }
+  if (d.famsconv != null) { const inp = $('famk-email'), em = String(inp && inp.value || '').trim().toLowerCase(); if (!AG_EMAIL.test(em)) { if (inp) { inp.classList.add('ag-erro'); inp.focus(); } return; }
+    try { const r = await S.convidar(em); ngToast(r === 'voce_mesmo' ? 'Esse e-mail é o seu.' : r === 'ok_sem_conta' ? `Convite guardado. ${em} ainda não tem conta no site: peça para criar uma com esse e-mail.` : r === 'email_invalido' ? 'E-mail inválido.' : `Convite enviado para ${em}.`); await famShLer(); } catch (er) { falha(er); } return; }
+  if (d.famscanc) { try { await S.cancelar(famSh.fam.id, d.famscanc); await famShLer(); } catch (er) { falha(er); } return; }
+  if (d.famsace) { try { await S.aceitar(d.famsace); await famShLer(); ngToast('Você entrou na família. O Orçamento da casa e as metas agora são de todos.'); } catch (er) { falha(er); } return; }
+  if (d.famsrec) { if (!confirmar('Recusar o convite?')) return; try { await S.recusar(d.famsrec); await famShLer(); } catch (er) { falha(er); } return; }
+  if (d.famssai != null) { if (!confirmar('Sair da família? Você volta a usar o seu Orçamento da casa e as suas metas de antes. Se for a última pessoa, a área comum é apagada.')) return; try { await S.sair(); famSh.pubJ = ''; await famShLer(); famRe(); } catch (er) { falha(er); } return; }
+});
+document.addEventListener('change', e => {
+  const t = e.target, d = t.dataset || {}; if (!state.fam) return;
+  if (d.famsmo) { state.fam.mostra[d.famsmo] = FAM_MOSTRA[t.value] ? t.value : 'totais'; save(); famPublicaMeu(); renderTab(); return; }
+  if (d.famsnome != null) { const S = famSiteF(), n = String(t.value || '').trim().slice(0, 60) || 'Nossa família'; if (S && famSh.fam) { famSh.fam.nome = n; S.renomear(famSh.fam.id, n).catch(er => console.error(er)); } return; }
+  if (d.famsm) { const [id, k] = d.famsm.split(':'), x = famMetas().find(y => y.id === id); if (!x) return; x[k] = t.value; famMetaNorm(x); famRe(); return; }
+});
+document.addEventListener('keydown', e => {
+  if (e.key !== 'Enter') return; const b = e.target.id === 'famk-email' ? '[data-famsconv]' : e.target.id === 'famk-nome' ? '[data-famscria]' : null; if (!b) return; e.preventDefault(); const el = document.querySelector(b); if (el) el.click();
+});
 
 /* ---------- telas ---------- */
 const famSel = () => { const F = famFilhos(); return F.find(p => p.id === state.fam.sel) || F[0] || null; };
@@ -5369,7 +5580,7 @@ function renderFamVg() {
     catch (e) { console.error(e); ef.innerHTML = '<p class="hint">Monte o Plano futuro para ver o efeito no patrimônio.</p>'; } }
   try { famVgCasa(); } catch (er) { console.error(er); }
   $('famv-tl').innerHTML = tlHtml(itensModulos().filter(y => y.mod === 'fam'));
-  const m = MODS.find(y => y.id === 'fam'), lk = [['fampes', 'Minha família', 'Quem mora com você, os filhos (inclusive os previstos, gêmeos ou trigêmeos), o custo de cada fase e a licença.'], ['famcasa', 'Orçamento da casa', 'Meu, seu e nosso, como dividir cada conta, quem deve a quem no mês e a reserva da família.']];
+  const m = MODS.find(y => y.id === 'fam'), lk = [['fampes', 'Minha família', 'Quem mora com você, os filhos (inclusive os previstos, gêmeos ou trigêmeos), o custo de cada fase e a licença.'], ['famcasa', 'Orçamento da casa', 'Meu, seu e nosso, como dividir cada conta, quem deve a quem no mês e a reserva da família.'], ['famcomp', 'Compartilhar', 'A família no site: orçamento e metas em comum, o que cada um mostra e o patrimônio de vocês somado.']];
   $('famv-links').innerHTML = lk.map(([t, n, d]) => `<button type="button" class="md-card" style="--mc:${m.cor}" data-tab="${t}"><div class="md-img">${MOD_SVG.fam}</div><h3>${esc(n)}</h3><p>${esc(d)}</p></button>`).join('');
 }
 function renderFamPes() {
@@ -5417,7 +5628,7 @@ function renderFamPes() {
 }
 
 /* ---------- eventos ---------- */
-function famRe() { famPeC.k = null; planCache = null; save(); setTimeout(renderTab, 0); }
+function famRe() { famPeC.k = null; planCache = null; save(); if (famShared()) famComumAgendar(); setTimeout(renderTab, 0); }
 function famNovo(tipo) {
   const v = state.fam, F = famFilhos(), d = new Date();
   if (!v.pessoas.some(p => p.tipo === 'eu')) v.pessoas.unshift(famNorm({ id: uid(), tipo: 'eu', nome: 'Você' }));
@@ -6147,7 +6358,7 @@ function agComHtml(x) {
   if (agConv.erro) return '<p class="subdet">O compartilhamento ainda não está ligado neste site (falta criar a tabela da Agenda no banco).</p>';
   return `<h3 class="ag-com-t">Compartilhar</h3>
     ${x.com.length ? `<ul class="ag-com">${x.com.map(em => { const st = agConvSt(x, em); return `<li><span>${esc(em)}</span><small class="subdet ag-st-${st}">${AG_CST[st]}</small><button type="button" class="btn ghost tiny" data-agcdel="${esc(em)}" aria-label="Parar de compartilhar com ${esc(em)}">×</button></li>`; }).join('')}</ul>` : ''}
-    <div class="ag-add"><input type="email" id="agc-email" maxlength="120" placeholder="E-mail de quem tem conta no site" aria-label="E-mail para compartilhar"><button type="button" class="btn ghost tiny" data-agcadd>Adicionar</button></div>
+    <div class="ag-add"><input type="text" inputmode="email" autocomplete="email" id="agc-email" maxlength="120" placeholder="E-mail de quem tem conta no site" aria-label="E-mail para compartilhar"><button type="button" class="btn ghost tiny" data-agcadd>Adicionar</button></div>
     <p class="subdet">A pessoa vê o compromisso na Agenda dela e recebe o aviso em Seus avisos, podendo aceitar ou recusar. Vão só os dados deste compromisso, nada do resto do painel. Mudanças que você salvar chegam para ela.</p>`;
 }
 function agRecHtml(x) {
@@ -9649,6 +9860,7 @@ function normalizar(s) {
   indNormalizar(s);
   famNormalizar(s);
   famCasaNormalizar(s);
+  famCompNormalizar(s);
   agNormalizar(s);
   rdNormalizar(s);
   if (!Array.isArray(s.comp.rows)) s.comp.rows = clone(ROWS_PADRAO);
@@ -9659,7 +9871,7 @@ function normalizar(s) {
 try { if (quemLocal === 'dono') { const b = JSON.parse(localStorage.getItem('painel-priv')); if (b) aplicarBase(b); } } catch (e) {}
 try { const l = JSON.parse(localStorage.getItem(LSK('painel-fin-v2'))); if (l) state = normalizar(l); } catch (e) {}
 tab = 'modulos';
-const TABS = ['modulos', 'agcal', 'aglis', 'comousar', 'inicio', 'trabvg', 'viagvg', 'viagens', 'viagcmp', 'viagrot', 'viagcus', 'viagdur', 'negvg', 'negcad', 'negdre', 'negfc', 'negabr', 'negeco', 'negpesq', 'negviab', 'negcont', 'negval', 'negprec', 'negsoc', 'negcmp', 'famvg', 'fampes', 'famcasa', 'indvg', 'indnum', 'indalv', 'rdvg', 'rdprod', 'rdcomp', 'leia', 'global', 'gastos', 'carteira', 'orcamento', 'compras', 'cenarios', 'patrimonio', 'comparador', 'simulador', 'pjpf', 'stock', 'config', 'familia'];
+const TABS = ['modulos', 'agcal', 'aglis', 'comousar', 'inicio', 'trabvg', 'viagvg', 'viagens', 'viagcmp', 'viagrot', 'viagcus', 'viagdur', 'negvg', 'negcad', 'negdre', 'negfc', 'negabr', 'negeco', 'negpesq', 'negviab', 'negcont', 'negval', 'negprec', 'negsoc', 'negcmp', 'famvg', 'fampes', 'famcasa', 'famcomp', 'indvg', 'indnum', 'indalv', 'rdvg', 'rdprod', 'rdcomp', 'leia', 'global', 'gastos', 'carteira', 'orcamento', 'compras', 'cenarios', 'patrimonio', 'comparador', 'simulador', 'pjpf', 'stock', 'config', 'familia'];
 if (TABS.includes(location.hash.slice(1))) tab = location.hash.slice(1);
 if (!TABS.includes(tab)) tab = 'modulos';
 
@@ -13845,7 +14057,7 @@ $('cpform').addEventListener('submit', async e => {
 });
 
 /* ---------- abas ---------- */
-const BUILD = { modulos: () => {}, agcal: () => {}, aglis: () => {}, comousar: () => {}, inicio: () => {}, trabvg: () => {}, viagvg: () => {}, viagens: () => {}, viagcmp: () => {}, viagrot: () => {}, viagcus: () => {}, viagdur: () => {}, negvg: () => {}, negcad: () => {}, negdre: () => {}, negfc: () => {}, negabr: () => {}, negeco: () => {}, negpesq: () => {}, negviab: () => {}, negcont: () => {}, negprec: () => {}, negval: () => {}, negsoc: () => {}, negcmp: () => {}, famvg: () => {}, fampes: () => {}, famcasa: () => {}, indvg: () => {}, indnum: () => {}, indalv: () => {}, rdvg: () => {}, rdprod: () => {}, rdcomp: () => {}, leia: buildLeia, global: () => {}, cenarios: buildCenarios, compras: buildCenarios, carteira: buildCarteira, comparador: buildComparador, simulador: buildSimulador, gastos: buildGastos, orcamento: buildOrcamento, config: buildConfig, pjpf: buildPj, stock: buildStock, familia: () => carregarPerfis(), patrimonio: () => {} };
+const BUILD = { modulos: () => {}, agcal: () => {}, aglis: () => {}, comousar: () => {}, inicio: () => {}, trabvg: () => {}, viagvg: () => {}, viagens: () => {}, viagcmp: () => {}, viagrot: () => {}, viagcus: () => {}, viagdur: () => {}, negvg: () => {}, negcad: () => {}, negdre: () => {}, negfc: () => {}, negabr: () => {}, negeco: () => {}, negpesq: () => {}, negviab: () => {}, negcont: () => {}, negprec: () => {}, negval: () => {}, negsoc: () => {}, negcmp: () => {}, famvg: () => {}, fampes: () => {}, famcasa: () => {}, famcomp: () => {}, indvg: () => {}, indnum: () => {}, indalv: () => {}, rdvg: () => {}, rdprod: () => {}, rdcomp: () => {}, leia: buildLeia, global: () => {}, cenarios: buildCenarios, compras: buildCenarios, carteira: buildCarteira, comparador: buildComparador, simulador: buildSimulador, gastos: buildGastos, orcamento: buildOrcamento, config: buildConfig, pjpf: buildPj, stock: buildStock, familia: () => carregarPerfis(), patrimonio: () => {} };
 // (i) de cada seção: o que mostra e de onde vêm os números (chave: aba:data-nav)
 const INFO_SEC = {
   'comousar:Resumo': 'Para cada módulo: se já tem o mínimo para funcionar (os obrigatórios), quantos opcionais você resolveu e um botão para o próximo passo. Um opcional conta como resolvido quando você preenche ou marca que não tem.',
@@ -13893,6 +14105,10 @@ const INFO_SEC = {
   'famcasa:Quanto cada um põe': 'Por mês: a parte de cada um nas contas nossas mais as contas só dele. A sobra é a renda líquida menos esse total, antes dos gastos pessoais.',
   'famcasa:Quem deve a quem': 'Lançar as contas do mês cria um pagamento para cada conta nossa ainda não lançada, com quem costuma pagar. Troque quem pagou se foi outra pessoa. O saldo soma todos os meses até o escolhido; Acertar registra o Pix ou a transferência que zera a diferença.',
   'famcasa:Reserva da família': 'Gastos da casa: a soma das contas da casa (se não houver, os custos de hoje do seu Plano futuro). Reserva de hoje: aplicações com liquidez diária na Carteira (inclusive Tesouro Selic e poupança) mais a outra reserva digitada.',
+  'famcomp:Família no site': 'A família existe só no site (Supabase), com o login de cada pessoa. Todos da família editam o Orçamento da casa e as Metas da família; a última gravação vale. Sair da família devolve o seu orçamento de antes, que fica guardado no seu painel.',
+  'famcomp:O que eu mostro': 'Tudo: o total e o detalhe (renda bruta e descontos, gastos por grupo, patrimônio por classe). Só totais: um número por área. Nada: a área não aparece para ninguém. O seu painel atualiza esses números sozinho quando você está no site.',
+  'famcomp:Nós': 'Soma do que cada pessoa mostra. Gastos: os custos por mês do Plano futuro de cada um. Patrimônio: o total da Carteira (ou o último checkpoint, se não houver aplicações cadastradas).',
+  'famcomp:Metas da família': 'Por mês = (valor − já guardado) ÷ meses até a data, sem rendimento. Proporcional à renda usa a renda que cada um mostra; se alguém não mostra, a divisão fica igual.',
   'fampes:Custo por fase': 'R$ por mês em cada fase, em valores de hoje; no Plano futuro sobem com o IPCA. Mude a idade em que cada fase começa no cabeçalho. A fase de hoje fica destacada.',
   'negvg:Meus negócios': 'Lucro líquido e Para você são a média por mês do último ano do horizonte, quando o negócio já maturou. Para você = lucro distribuído × sua parte + pró-labore líquido − dinheiro que você põe.',
   'negvg:Linha do tempo': 'Cada negócio do primeiro investimento até o fim do horizonte. Tracejado: só simulação.',
@@ -14043,7 +14259,7 @@ function infoSecoes() {
       if (h && !h.id) h.append(btn); else if (h) h.after(btn); else if (lg) lg.append(btn); }); });
 }
 infoSecoes();
-const RENDER = { modulos: renderModulos, agcal: renderAgCal, aglis: renderAgLis, comousar: renderComoUsar, inicio: renderHome, trabvg: renderTrabVg, viagvg: renderViagVg, viagens: renderViagens, viagcmp: renderViagCmp, viagrot: renderViagRot, viagcus: renderViagCus, viagdur: renderViagDur, negvg: renderNegVg, negcad: renderNegCad, negdre: renderNegDre, negfc: renderNegFc, negabr: renderNegAbr, negeco: renderNegEco, negpesq: renderNegPesq, negviab: renderNegViab, negcont: renderNegCont, negprec: renderNegPrec, negval: renderNegVal, negsoc: renderNegSoc, negcmp: renderNegCmp, famvg: renderFamVg, fampes: renderFamPes, famcasa: renderFamCasa, indvg: renderIndVg, indnum: renderIndNum, indalv: renderIndAlv, rdvg: renderRdVg, rdprod: renderRdProd, rdcomp: renderRdComp, leia: () => {}, global: renderGlobal, cenarios: renderCenarios, compras: renderCenarios, carteira: renderCarteira, comparador: renderComparador, simulador: renderSimulador, gastos: () => { renderGastos(); renderFechamento(); renderHistorico(); }, orcamento: renderOrcamento, config: renderConfig, pjpf: renderPj, stock: renderStock, familia: renderFamilia, patrimonio: renderPatr };
+const RENDER = { modulos: renderModulos, agcal: renderAgCal, aglis: renderAgLis, comousar: renderComoUsar, inicio: renderHome, trabvg: renderTrabVg, viagvg: renderViagVg, viagens: renderViagens, viagcmp: renderViagCmp, viagrot: renderViagRot, viagcus: renderViagCus, viagdur: renderViagDur, negvg: renderNegVg, negcad: renderNegCad, negdre: renderNegDre, negfc: renderNegFc, negabr: renderNegAbr, negeco: renderNegEco, negpesq: renderNegPesq, negviab: renderNegViab, negcont: renderNegCont, negprec: renderNegPrec, negval: renderNegVal, negsoc: renderNegSoc, negcmp: renderNegCmp, famvg: renderFamVg, fampes: renderFamPes, famcasa: renderFamCasa, famcomp: renderFamComp, indvg: renderIndVg, indnum: renderIndNum, indalv: renderIndAlv, rdvg: renderRdVg, rdprod: renderRdProd, rdcomp: renderRdComp, leia: () => {}, global: renderGlobal, cenarios: renderCenarios, compras: renderCenarios, carteira: renderCarteira, comparador: renderComparador, simulador: renderSimulador, gastos: () => { renderGastos(); renderFechamento(); renderHistorico(); }, orcamento: renderOrcamento, config: renderConfig, pjpf: renderPj, stock: renderStock, familia: renderFamilia, patrimonio: renderPatr };
 function renderTab() { planCache = null; try { RENDER[tab](); } catch (err) { console.error(err); setSave('erro ao recalcular: ' + (err && err.message || err)); } }
 let navAbertos = null;
 try { navAbertos = JSON.parse(localStorage.getItem('painel-nav-abertos')); } catch (e) {}
@@ -14116,7 +14332,7 @@ const MODS = [
   { id: 'carr', corNav: '#B39DDB', nome: 'Carreira', cor: 'var(--s5)', vg: 'pjpf', desc: 'PJ e PF: CLT contra PJ nos dois sentidos, quanto pedir e o melhor pró-labore. Stock options: vesting, valor hoje e num evento de liquidez.', tabs: ['pjpf', 'stock'] },
   { id: 'viag', corNav: '#5fc2f5', nome: 'Viagens', cor: 'var(--s8)', vg: 'viagens', desc: 'Mapa de onde já foi e de onde quer ir, sorteio, comparação de destinos nas suas datas o roteiro com a rota mais barata, os custos ligados ao Plano futuro e os gastos durante a viagem.', tabs: ['viagvg', 'viagens', 'viagcmp', 'viagrot', 'viagcus', 'viagdur'] },
   { id: 'neg', corNav: '#a3e05a', nome: 'Empreendimentos', cor: 'var(--s7)', vg: 'negvg', desc: 'Suas ideias e empresas: DRE com as suas linhas, fluxo de caixa, quanto pôr e quanto chega para você no Plano futuro. Abrir empresa com a comparação de regimes, oportunidades de custo, pesquisa de mercado com IA, viabilidade, contabilidade fácil, preço, valuation, sócios e comparação.', tabs: ['negvg', 'negcad', 'negdre', 'negfc', 'negabr', 'negeco', 'negpesq', 'negviab', 'negcont', 'negval', 'negprec', 'negsoc', 'negcmp'] },
-  { id: 'fam', corNav: '#fb7185', nome: 'Família', cor: 'var(--s6)', vg: 'famvg', desc: 'Quem mora com você e os filhos, já nascidos ou previstos (gêmeos também): quanto cada um custa em cada fase, a chegada, a licença e o efeito no Plano futuro. E o orçamento da casa: meu, seu e nosso, divisão das contas, quem deve a quem e a reserva da família.', tabs: ['famvg', 'fampes', 'famcasa'] },
+  { id: 'fam', corNav: '#fb7185', nome: 'Família', cor: 'var(--s6)', vg: 'famvg', desc: 'Quem mora com você e os filhos, já nascidos ou previstos (gêmeos também): quanto cada um custa em cada fase, a chegada, a licença e o efeito no Plano futuro. E o orçamento da casa: meu, seu e nosso, divisão das contas, quem deve a quem e a reserva da família. No site, a família compartilha o orçamento e as metas, e cada um escolhe o que mostra.', tabs: ['famvg', 'fampes', 'famcasa', 'famcomp'] },
   { id: 'agen', corNav: '#34d399', nome: 'Agenda', cor: 'var(--s7)', vg: 'agcal', desc: 'Calendário com seus compromissos e contas, lembretes, as datas que o painel já conhece (viagens, aniversários, compras) e listas de compras.', tabs: ['agcal', 'aglis'] },
   { id: 'indep', corNav: '#E3B848', nome: 'Independência financeira', cor: 'var(--s3)', vg: 'indvg', desc: 'Quando dá para parar de trabalhar: o seu número, a data pelo Plano futuro, quanto falta para a sua meta e os marcos no caminho. Alavancas mostram o que adianta a data. Renda passiva, INSS e previdência vêm a seguir.', tabs: ['indvg', 'indnum', 'indalv'] },
   { id: 'preco', corNav: '#f59e0b', nome: 'Radar de preços', cor: 'var(--s2)', vg: 'rdvg', desc: 'O que você quer comprar e o preço que aceita pagar: histórico, selo de preço baixo ou alto, à vista ou parcelado, quando o dinheiro fica pronto e a compra no Plano futuro. A pesquisa automática todo dia e o aviso no sino vêm a seguir.', tabs: ['rdvg', 'rdprod', 'rdcomp'] },
@@ -14216,7 +14432,8 @@ function cuPassos() {
         { id: 'famfil', t: 'Ver o custo dos filhos', d: 'Os valores de cada fase vêm sugeridos pelo padrão de gastos da casa. Ajuste o que quiser.', ok: famFilhos().length > 0 || pul.includes('famfil'), tab: 'fampes', sec: 'Custo por fase', pular: 'Não tenho filhos' },
         { id: 'fampl', t: 'Levar ao Plano futuro', d: 'Escolha Projeção real para o filho entrar no plano, com a chegada, a licença e o custo de cada fase.', ok: famFilhos().some(p => p.uso === 'real') || pul.includes('fampl'), tab: 'fampes', sec: 'Filhos', pular: 'Depois' },
         { id: 'famcasa', t: 'Montar o orçamento da casa', d: 'As contas da casa, de quem é cada uma e como dividir: igual, proporcional à renda ou valor fixo.', ok: famCasa().contas.length > 0 || pul.includes('famcasa'), tab: 'famcasa', sec: 'Contas da casa', pular: 'Moro sozinho' },
-        { id: 'famres', t: 'Ver a reserva da família', d: 'Quantos meses de gastos da casa a sua reserva cobre e quanto falta.', ok: (famCasa().contas.length > 0 && famReserva().falta <= 0) || pul.includes('famres'), tab: 'famcasa', sec: 'Reserva da família', pular: 'Depois' }
+        { id: 'famres', t: 'Ver a reserva da família', d: 'Quantos meses de gastos da casa a sua reserva cobre e quanto falta.', ok: (famCasa().contas.length > 0 && famReserva().falta <= 0) || pul.includes('famres'), tab: 'famcasa', sec: 'Reserva da família', pular: 'Depois' },
+        { id: 'famcomp', t: 'Compartilhar com a família', d: 'No site, crie a família e convide quem mora com você: o orçamento e as metas passam a ser de todos, e cada um escolhe o que mostra.', ok: !!(famSh.fam) || pul.includes('famcomp'), tab: 'famcomp', sec: 'Família no site', pular: 'Agora não' }
       ]
     },
     indep: {
@@ -15250,6 +15467,7 @@ const LM_MODS = [
   ['famvg', 'O resumo da família: quantas pessoas, o custo dos filhos hoje, a próxima chegada, o IR com dependentes, o efeito no patrimônio e a linha do tempo.', 'para ver quanto os filhos pesam no plano.'],
   ['fampes', 'Quem mora com você e os filhos, já nascidos ou previstos (gêmeos também), com o custo de cada fase, a chegada e a licença.', 'quando a família mudar ou para planejar um filho.'],
   ['famcasa', 'As contas da casa: o que é meu, seu e nosso, a divisão de cada conta (igual, proporcional à renda ou fixo), quem deve a quem no mês com o botão Acertar e a reserva de emergência da família.', 'todo mês, para lançar quem pagou e acertar as contas.'],
+  ['famcomp', 'A família no site: criar, convidar e sair; o que cada um mostra (renda, gastos, patrimônio); o patrimônio de vocês somado e as metas da família.', 'para dividir o painel com quem mora com você.'],
   'Independência financeira',
   ['indvg', 'A data em que você chega à independência pelo Plano futuro, o termômetro de quanto do número já tem, os marcos (reserva, Coast FI, Lean, FI, Fat FI e a sua meta) e o gráfico do patrimônio contra o número.', 'para saber quando pode parar de trabalhar por obrigação.'],
   ['indnum', 'O seu número: idade e meta, custo de vida na independência a partir dos Gastos ou do orçamento, os três níveis de custo e por quanto tempo o dinheiro precisa durar.', 'para ajustar a conta.'],
