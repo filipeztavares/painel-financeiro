@@ -1367,7 +1367,7 @@ ul.ng-acordo li { margin-bottom: 4px; }
     </div>
     <div class="nav-mobile-sub" id="navMobileSub"></div>
   </div>
-  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 227</div></div>
+  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 228</div></div>
 </nav>
 <div class="sino-pop" id="sino-pop" role="dialog" aria-label="Central de avisos" hidden></div>
 <div class="tour-pop" id="tour-pop" role="dialog" aria-labelledby="tour-tit" hidden></div>
@@ -2051,6 +2051,9 @@ ul.ng-acordo li { margin-bottom: 4px; }
             <button class="btn tiny" type="button" data-add="imovel">+ Imóvel</button>
             <button class="btn tiny" type="button" data-add="carro">+ Carro</button>
             <button class="btn tiny" type="button" data-add="outro">+ Outro bem</button>
+            <button class="btn tiny" type="button" data-add="evento">+ Evento</button>
+            <button class="btn tiny" type="button" data-add="receber">+ A receber</button>
+            <button class="btn tiny" type="button" data-add="pagar">+ A pagar</button>
             <button class="btn tiny ghost" type="button" data-irmod="neg" title="Negócios agora têm DRE e fluxo de caixa próprios no módulo Negócios">Novo negócio › Negócios</button>
           </div>
         </div>
@@ -2910,7 +2913,7 @@ ul.ng-acordo li { margin-bottom: 4px; }
     return new Promise(resolve => { const { data } = sb.auth.onAuthStateChange(async (ev) => { if (ev !== 'PASSWORD_RECOVERY') return; const s = prompt('Digite a nova senha (mínimo 8 caracteres):'); if (s && s.length >= 8) { const { error } = await sb.auth.updateUser({ password: s }); alert(error ? 'Não deu para trocar a senha: ' + error.message : 'Senha trocada.'); } }); resolve(data); });
   }
   // ---------- rodapé: compartilhar, administração e sair ----------
-  const SITE_V = 110;
+  const SITE_V = 111;
   const escH = v => String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const dataBR = v => v ? new Date(v).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' }) : '–';
   const css2 = `.side-foot .r{flex-wrap:wrap}.side-foot .lg-acoes{margin-left:auto;display:inline-flex;gap:10px}
@@ -3193,6 +3196,8 @@ function novaCompra(tipo) {
   if (tipo === 'imovel') return Object.assign(base, { nome: 'Apartamento', valor: 1200000, entrada: 300000, mes: m, mudanca: 12, custos: 4, valoriz: 5, modo: 'sac', taxa: 11, prazo: 180, posse: 1200, economia: 3557, cPrazo: 180, cAdm: 17, cFR: 1, cCorr: 5, cContempl: 60 });
   if (tipo === 'carro') return Object.assign(base, { nome: 'Carro', valor: 150000, entrada: 45000, mes: m, mudanca: 0, custos: 0, valoriz: -10, modo: 'price', taxa: 22, prazo: 48, posse: 900, economia: 350 });
   if (tipo === 'negocio') return Object.assign(base, { nome: 'Novo negócio', valor: 300000, entrada: 300000, mes: m, mudanca: 3, custos: 0, valoriz: -10, modo: 'avista', taxa: 0, prazo: 36, posse: 15000, economia: 0, giro: 50000, fat: 60000, fatIni: 40, rampa: 12, cvar: 35, royal: 8, imp: 8, anosNeg: 5 });
+  if (tipo === 'evento') return Object.assign(base, { nome: 'Casamento', evTipo: 'casamento', valor: 80000, entrada: 80000, mes: mKey(Math.max(HOJE_IDX + 12, 0)), mudanca: 0, custos: 0, valoriz: 0, modo: 'avista', taxa: 0, prazo: 12, posse: 0, economia: 0 });
+  if (tipo === 'receber' || tipo === 'pagar') return Object.assign(base, { nome: tipo === 'receber' ? 'Empréstimo a receber' : 'Dívida a pagar', quem: '', valor: 0, entrada: 0, mes: mKey(Math.max(HOJE_IDX + 1, 0)), mudanca: 0, custos: 0, valoriz: 0, modo: 'fixa', taxa: 0, prazo: 10, parcela: 1000, chance: 100, posse: 0, economia: 0 });
   return Object.assign(base, { nome: 'Outro bem', valor: 30000, entrada: 30000, mes: m, mudanca: 0, custos: 0, valoriz: 0, modo: 'avista', taxa: 0, prazo: 12, posse: 0, economia: 0 });
 }
 
@@ -7944,8 +7949,10 @@ function serieBem(b) {
   const out = { chave, m0, v, N }; bemCache.set(b.id, out); return out;
 }
 // valor do bem no mês i (sem considerar a venda quando semVenda)
-function valorBemEm(b, i, semVenda) { const S = serieBem(b), k = i - S.m0; if (k < 0) return 0; if (!semVenda && i >= vendaIdx(b)) return 0; return S.v[Math.min(k, S.N)]; }
-function dividaBemEm(b, sch, i, semVenda) { const k = i - mIndex(b.mes); if (k < 0 || (!semVenda && i >= vendaIdx(b))) return 0; return k === 0 ? sch.PV : (sch.saldo[k - 1] ?? 0); }
+const ehFin = b => b.tipo === 'receber' || b.tipo === 'pagar', ehBem = b => !ehFin(b) && b.tipo !== 'evento';
+function saldoFin(b, sch, i) { const k = i - mIndex(b.mes); if (k < 0) return 0; return k === 0 ? sch.rest0 : (sch.saldo[k - 1] ?? 0); }
+function valorBemEm(b, i, semVenda) { if (!ehBem(b)) return b.tipo === 'receber' ? saldoFin(b, scheduleFin(b), i) : 0; const S = serieBem(b), k = i - S.m0; if (k < 0) return 0; if (!semVenda && i >= vendaIdx(b)) return 0; return S.v[Math.min(k, S.N)]; }
+function dividaBemEm(b, sch, i, semVenda) { if (b.tipo === 'receber') return 0; if (b.tipo === 'pagar') return saldoFin(b, sch, i); const k = i - mIndex(b.mes); if (k < 0 || (!semVenda && i >= vendaIdx(b))) return 0; return k === 0 ? sch.PV : (sch.saldo[k - 1] ?? 0); }
 // venda: quanto entra (valor informado ou o valor do bem no mês), a dívida quitada e o que sobra para investir
 function vendaBem(b, sch) {
   const vi = vendaIdx(b); if (!isFinite(vi)) return null;
@@ -7957,7 +7964,17 @@ function vendaBem(b, sch) {
 // negócio: capital de giro sai junto com o investimento; lucro mensal sobe do 1º mês até maturar
 // juros de compras: guardados na unidade que a pessoa digitou (taxaUn 'am' = % ao mês)
 const taxaAA = b => { const t = +b.taxa || 0; return b.taxaUn === 'am' ? (Math.pow(1 + t / 100, 12) - 1) * 100 : t; };
-function schedule(b, mode) { const s = schedule0(b, mode); if (b.tipo === 'negocio') s.lump += Math.max(0, +b.giro || 0); return s; }
+function schedule(b, mode) {
+  if (ehFin(b)) return scheduleFin(b);
+  const s = schedule0(b, b.tipo === 'evento' && mode === 'sac' ? 'price' : mode); if (b.tipo === 'negocio') s.lump += Math.max(0, +b.giro || 0); return s;
+}
+// dívidas a pagar e a receber: 1ª parcela no próprio mês cadastrado; a receber entra como recebimento (parcela negativa) e o saldo é um ativo
+function scheduleFin(b) {
+  const n = Math.max(1, Math.round(+b.prazo || 1)), p = Math.max(0, +b.parcela || 0), ia = Math.pow(1 + taxaAA(b) / 100, 1 / 12) - 1;
+  const vp = r => ia > 0 ? p * (1 - Math.pow(1 + ia, -r)) / ia : p * r, f = b.tipo === 'receber' ? Math.min(100, Math.max(0, b.chance == null || b.chance === '' ? 100 : +b.chance)) / 100 : 1;
+  const sg = b.tipo === 'receber' ? -1 : 1, saldo = Array.from({ length: n - 1 }, (_, t) => vp(n - t - 2) * f);
+  return { lump: sg * p * f, parc: Array(n - 1).fill(sg * p * f), saldo, PV: vp(n) * f, rest0: vp(n - 1) * f, fin: true };
+}
 function negLucro(b, j) {
   if (j < 1) return 0; const rampa = Math.max(0, +b.rampa || 0), ini = Math.min(100, Math.max(0, b.fatIni == null || b.fatIni === '' ? 100 : +b.fatIni)) / 100;
   const f = rampa > 0 ? Math.min(1, ini + (1 - ini) * (j - 1) / rampa) : 1, fat = (+b.fat || 0) * f;
@@ -7965,6 +7982,7 @@ function negLucro(b, j) {
 }
 // o que um bem gera por mês k meses depois da compra (em reais da data da compra × fIpca)
 function bemMes(b, kk, fIpca) {
+  if (!ehBem(b)) return { posse: 0, econ: 0, renda: 0 };
   if (kk <= (+b.mudanca || 0)) return { posse: 0, econ: 0, renda: 0 };
   if (b.tipo === 'negocio') return { posse: 0, econ: 0, renda: negLucro(b, kk - (+b.mudanca || 0)) * fIpca };
   return { posse: (+b.posse || 0) * fIpca, econ: (+b.economia || 0) * fIpca, renda: (+b.renda || 0) * fIpca };
@@ -8499,7 +8517,17 @@ document.addEventListener('click', e => {
 });
 
 /* ========== CENÁRIOS E COMPRAS ========== */
-const TIPO_COMPRA = { imovel: 'Imóvel', carro: 'Carro', outro: 'Outro bem', negocio: 'Negócio' };
+const TIPO_COMPRA = { imovel: 'Imóvel', carro: 'Carro', outro: 'Outro bem', negocio: 'Negócio', evento: 'Evento', receber: 'A receber', pagar: 'A pagar' };
+// eventos: valores sugeridos (ordem de grandeza, para ajustar)
+const EV_TIPOS = [['casamento', 'Casamento', 80000], ['lua', 'Lua de mel', 25000], ['festa15', 'Festa de 15 anos', 40000], ['reforma', 'Reforma da casa', 60000], ['mudanca', 'Mudança', 8000], ['estudo', 'Faculdade ou pós', 60000], ['intercambio', 'Intercâmbio', 50000], ['filho', 'Chegada de filho (parto e enxoval)', 25000], ['saude', 'Tratamento de saúde', 20000], ['outro', 'Outro', 10000]];
+function finHtml(b) {
+  const rec = b.tipo === 'receber', f = (key, label, step, extra) => `<label>${label}<input type="number" step="${step}" data-bind="compra:${b.id}:${key}" ${extra || ''}></label>`;
+  return `<label>${rec ? 'Quem deve' : 'Para quem'}<input type="text" data-bind="compra:${b.id}:quem" placeholder="${rec ? 'ex.: irmão, cliente' : 'ex.: banco, parente'}"></label>
+      <label>Mês da 1ª parcela<input type="month" data-bind="compra:${b.id}:mes"></label>
+      ${f('parcela', 'Parcela (R$/mês)', 0.01, 'min="0"')}${f('prazo', 'Nº de parcelas', 1, 'min="1" title="Pagamento único: 1 parcela"')}
+      ${f('taxa', `Juros (% ${b.taxaUn === 'am' ? 'a.m.' : 'a.a.'})`, 0.01, 'placeholder="opcional"')}<label>Juros em<select data-bind="compra:${b.id}:taxaUn"><option value="aa">% ao ano</option><option value="am">% ao mês</option></select></label>
+      ${rec ? f('chance', 'Chance de receber (%)', 5, 'min="0" max="100" title="O plano conta o valor esperado: parcela × chance"') : ''}`;
+}
 const COMPRA_COPY = {
   imovel: { posse: 'Condomínio + IPTU (R$/mês)', eco: 'Aluguel que deixa de pagar', mud: 'Meses até mudar' },
   carro: { posse: 'Seguro, IPVA, manutenção', eco: 'Transporte que deixa de pagar', mud: 'Meses até usar' },
@@ -8530,8 +8558,9 @@ function compraHtml(b, cen) {
   const cp = COMPRA_COPY[b.tipo] || COMPRA_COPY.outro;
   const f = (key, label, step, extra) => `<label>${label}<input type="number" step="${step}" data-bind="compra:${b.id}:${key}" ${extra || ''}></label>`;
   const cor = b.tipo === 'imovel' ? 'var(--s5)' : b.tipo === 'carro' ? 'var(--s2)' : b.tipo === 'negocio' ? 'var(--s3)' : 'var(--s4)', neg = b.tipo === 'negocio';
-  const em = state.cenarios.filter(c => incluida(c, b)).map(c => c.nome);
-  return `<div class="compra" style="--c:${cor}" data-compra="${b.id}">
+  const em = state.cenarios.filter(c => incluida(c, b)).map(c => c.nome), fin = ehFin(b), evt = b.tipo === 'evento';
+  const corX = b.tipo === 'receber' ? 'var(--good, #2E7D32)' : b.tipo === 'pagar' ? 'var(--bad)' : evt ? 'var(--accent)' : cor;
+  return `<div class="compra" style="--c:${corX}" data-compra="${b.id}">
     <div class="top">
       <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;min-width:0">
         <span class="chip info">${TIPO_COMPRA[b.tipo] || 'Bem'}</span>
@@ -8543,7 +8572,13 @@ function compraHtml(b, cen) {
         <button class="btn danger tiny" type="button" data-delcompra="${b.id}">Remover</button>
       </div>
     </div>
-    <div class="ed">
+    ${fin ? `<div class="ed">${finHtml(b)}</div><div class="res" id="cres-${b.id}"></div>` : evt ? `<div class="ed">
+      <label>Tipo de evento<select data-bind="compra:${b.id}:evTipo">${EV_TIPOS.map(([v, n]) => `<option value="${v}">${esc(n)}</option>`).join('')}</select></label>
+      <label>Mês<input type="month" data-bind="compra:${b.id}:mes"></label>
+      ${f('valor', 'Valor total (R$)', 1000)}
+      <label>Pagamento<select data-bind="compra:${b.id}:modo"><option value="avista">À vista</option><option value="fixa">Parcelado</option><option value="price">Financiado (com juros)</option></select></label>
+      ${b.modo === 'avista' ? '' : f('entrada', 'Entrada (R$)', 1000) + (b.modo === 'fixa' ? f('parcela', 'Parcela (R$/mês)', 100) : '') + f('taxa', `Juros (% ${b.taxaUn === 'am' ? 'a.m.' : 'a.a.'})`, 0.01, b.modo === 'fixa' ? 'placeholder="opcional"' : '') + `<label>Juros em<select data-bind="compra:${b.id}:taxaUn"><option value="aa">% ao ano</option><option value="am">% ao mês</option></select></label>` + f('prazo', 'Nº de parcelas', 1)}
+    </div><div class="res" id="cres-${b.id}"></div>` : `<div class="ed">
       <label>${neg ? 'Mês do investimento' : 'Mês da compra'}<input type="month" data-bind="compra:${b.id}:mes"></label>
       ${f('valor', neg ? 'Investimento inicial (R$)' : 'Preço (R$)', 1000, neg ? 'title="Taxa de franquia, obras, equipamentos e estoque inicial"' : '')}${f('entrada', neg ? 'Capital próprio (R$)' : 'Entrada (R$)', 1000)}
       <label>Pagamento<select data-bind="compra:${b.id}:modo"><option value="avista">À vista</option><option value="sac">Financiado SAC</option><option value="price">Financiado Price</option><option value="fixa">Parcela fixa</option></select></label>
@@ -8557,22 +8592,22 @@ function compraHtml(b, cen) {
     <div class="res" id="cres-${b.id}"></div>
     ${neg ? '' : `<details><summary>Dados de consórcio (para a comparação de pagamento)</summary><div class="ed">
       ${f('cPrazo', 'Prazo (meses)', 12)}${f('cAdm', 'Taxa de adm. total (%)', 0.5)}${f('cFR', 'Fundo de reserva (%)', 0.5)}${f('cCorr', 'Correção da carta (% a.a.)', 0.1)}${f('cContempl', 'Mês da contemplação', 1)}${f('cLance', 'Lance (% da carta)', 5)}
-    </div></details>`}
+    </div></details>`}`}
   </div>`;
 }
 let compraNova = null;
 function buildCompras() {
   const cen = cenAtual(), list = comprasDe(cen), todas = state.compras;
-  $('comprasEd').innerHTML = todas.length ? todas.map(b => compraHtml(b, cen)).join('') : '<p class="hint">Nenhum bem cadastrado. Use os botões acima para cadastrar imóveis, carros e outros bens.</p>';
+  $('comprasEd').innerHTML = todas.length ? todas.map(b => compraHtml(b, cen)).join('') : '<p class="hint">Nada cadastrado ainda. Use os botões acima para cadastrar imóveis, carros, outros bens, eventos (casamento, reforma…) e valores a receber ou a pagar.</p>';
   $('comprasEd').querySelectorAll('[data-bind]').forEach(fillBound);
-  const nomeTipo = { imovel: 'imóvel', carro: 'carro', outro: 'outro bem', negocio: 'negócio' };
+  const nomeTipo = { imovel: 'imóvel', carro: 'carro', outro: 'outro bem', negocio: 'negócio', evento: 'evento', receber: 'a receber', pagar: 'a pagar' };
   $('comprasResumo').innerHTML = (todas.length ? `<div><b>${todas.length} ${todas.length === 1 ? 'bem cadastrado' : 'bens cadastrados'}.</b> O cenário aberto agora tem ${list.length}.</div>
     <div class="tscroll"><table class="incm"><thead><tr><th>Bem</th><th>Tipo</th><th>Mês</th><th>Uso</th>${state.cenarios.map(c => `<th${c.id === cen.id ? ' class="cur"' : ''}>${esc(c.nome)}</th>`).join('')}</tr></thead><tbody>
     ${todas.map(b => `<tr><td class="name">${esc(b.nome)}</td><td class="name">${nomeTipo[b.tipo] || 'bem'}</td><td>${mLabel(mIndex(b.mes))}</td><td class="name">${(state.plan.inc || []).includes(b.id) ? 'Projeção real' : 'Simulação'}</td>${state.cenarios.map(c => `<td${c.id === cen.id ? ' class="cur"' : ''}><input type="checkbox" data-inc="${c.id}:${b.id}" ${incluida(c, b) ? 'checked' : ''} aria-label="${esc(b.nome)} em ${esc(c.nome)}"></td>`).join('')}</tr>`).join('')}
     </tbody></table></div>` : '<p class="hint">Nenhum bem cadastrado ainda. Cadastre em Compras e bens.</p>');
   $('compraMsg').innerHTML = (compraNova ? `<div class="ok">${esc(compraNova.nome)} cadastrado como só simulação, no cenário "${esc(cen.nome)}". Para entrar na projeção real, troque "Uso" no card para "Projeção real". O card está no fim da lista, destacado.</div>` : '');
   if ($('pg-cen')) $('pg-cen').textContent = '"' + cen.nome + '"';
-  const pg = $('pg-compra'), s0 = mIndex(lastCp().mes), fut = todas.filter(b => mIndex(b.mes) > s0);
+  const pg = $('pg-compra'), s0 = mIndex(lastCp().mes), fut = todas.filter(b => mIndex(b.mes) > s0 && !ehFin(b));
   if (!fut.find(b => b.id === state.pgCompra)) state.pgCompra = fut[0] ? fut[0].id : '';
   pg.innerHTML = fut.map(b => `<option value="${b.id}" ${b.id === state.pgCompra ? 'selected' : ''}>${esc(b.nome)}</option>`).join('');
 }
@@ -8594,6 +8629,9 @@ function renderCenarios() {
   ]);
   // resumo de cada compra
   state.compras.forEach(b => { const el = $('cres-' + b.id); if (!el) return; const sch = schedule(b, b.modo); const m0 = mIndex(b.mes);
+    if (ehFin(b)) { const rec = b.tipo === 'receber', n = sch.parc.length + 1, p = Math.abs(sch.lump), tot = p * n, hoje = s0 >= m0 ? saldoFin(b, sch, s0) : sch.PV;
+      el.textContent = (b.parcela > 0 ? `${n === 1 ? 'Pagamento único' : `${n} parcelas`} de ${fm(p)}${rec && sch.PV && +b.chance < 100 ? ' (já com a chance de receber)' : ''} a partir de ${mLabel(m0)}, total ${fm(tot)}. ${rec ? 'Entra no plano como receita e o saldo a receber soma no patrimônio' : 'Sai do plano todo mês e o saldo devedor desconta do patrimônio'}: ${fm(hoje)} ${s0 >= m0 ? 'hoje' : 'no início'}.` : 'Preencha a parcela e o número de parcelas.'); return; }
+    if (b.tipo === 'evento') { el.textContent = b.modo === 'avista' ? `Sai dos investimentos em ${mLabel(m0)}: ${fm(sch.lump)}. Não vira bem: é só uma saída do plano.` : `Entrada em ${mLabel(m0)}: ${fm(sch.lump)} · ${sch.parc.length} parcelas de ${fm(sch.parc[0] || 0)}, total ${fm(sch.lump + sch.parc.reduce((t, v) => t + v, 0))}. Não vira bem: é só uma saída do plano.`; return; }
     if (b.tipo === 'negocio') { const a = negAnalise(b, cen), mud = +b.mudanca || 0;
       el.innerHTML = `Sai do seu bolso em ${mLabel(m0)}: <b>${fm(sch.lump)}</b>${sch.PV ? ` (+ ${fm(sch.PV)} financiados)` : ''}. Abre em ${mLabel(m0 + mud)}. Lucro maduro <b class="${a.mad < 0 ? 'neg' : ''}">${fm(a.mad)}/mês</b> (${num(a.marg * 100, 0)}% do faturamento), sem pró-labore. `
         + (a.pay ? `Payback em <b>${a.pay} meses</b> (${mLabel(m0 + a.pay)}). ` : `<span class="neg">Não se paga em ${num(a.T / 12, 0)} anos.</span> `)
@@ -11500,8 +11538,11 @@ function itensModulos() {
   const P = state.plan, out = [];
   (state.compras || []).forEach(b => {
     const sch = schedule(b, b.modo), n = sch.parc.length, p1 = sch.parc[0] || 0, vd = b.venda && b.venda.ativa && b.venda.mes;
-    const partes = [sch.lump > 0 ? fm(sch.lump) + (n ? ' de entrada e custos' : ' à vista') : '', n ? `${n}× ${fm(p1)}` : '', b.tipo === 'negocio' ? 'lucro mensal conforme o cadastro' : 'custos de ter todo mês'].filter(Boolean);
-    out.push({ id: 'compra:' + b.id, mod: 'trab', sub: 'Compras e bens', tab: 'compras', sec: 'Compras e financiamentos', nome: b.nome || 'Bem', tipo: b.tipo === 'negocio' ? 'negocio' : 'bem',
+    const partes = [sch.lump > 0 ? fm(sch.lump) + (n ? ' de entrada e custos' : ' à vista') : '', n ? `${n}× ${fm(p1)}` : '', b.tipo === 'negocio' ? 'lucro mensal conforme o cadastro' : b.tipo === 'evento' ? '' : 'custos de ter todo mês'].filter(Boolean);
+    if (ehFin(b)) { const rec = b.tipo === 'receber', q = Math.abs(sch.lump);
+      out.push({ id: 'compra:' + b.id, mod: 'trab', sub: 'Compras e bens', tab: 'compras', sec: 'Compras e financiamentos', nome: b.nome || TIPO_COMPRA[b.tipo], tipo: rec ? 'receita' : 'gasto',
+        ini: b.mes, unico: 0, mensal: rec ? q : -q, meses: n + 1, resumo: `${n + 1}× ${fm(q)} ${rec ? 'a receber' : 'a pagar'}${b.quem ? ' · ' + b.quem : ''}`, uso: (P.inc || []).includes(b.id) ? 'real' : 'sim' }); return; }
+    out.push({ id: 'compra:' + b.id, mod: 'trab', sub: 'Compras e bens', tab: 'compras', sec: 'Compras e financiamentos', nome: b.nome || 'Bem', tipo: b.tipo === 'negocio' ? 'negocio' : b.tipo === 'evento' ? 'gasto' : 'bem',
       ini: b.mes, unico: -(sch.lump || 0), mensal: -p1, meses: n, resumo: partes.join(' + ') + (vd ? ` · venda em ${mLabel(mIndex(b.venda.mes))}` : ''), uso: (P.inc || []).includes(b.id) ? 'real' : 'sim' });
   });
   ((state.so || {}).empresas || []).forEach(e => {
@@ -11689,8 +11730,9 @@ function renderFechamento() {
     ${F.semOrc && aberto('cus') ? `<tr class="mm-s"><td class="name">${togNome('fora', 'Lançado fora das categorias do orçamento', fora.length)}</td><td>${fm(0)}</td><td>${fm(F.semOrc)}</td>${dif(0, F.semOrc, -1)}</tr>` + detalhe('fora', fora) : ''}
     ${(() => { const cs = comprasDoMes(F.i).slice().sort((a, b) => String(a.b.tipo).localeCompare(String(b.b.tipo)));
       const det = !feAbertos.has('parc') ? '' : cs.map(c => { const partes = [];
-        if (c.lump) partes.push(['entrada e custos de compra', fm(c.lump)]);
-        if (c.parc) partes.push([`parcela ${c.n} de ${c.nParc}`, fm(c.parc)]);
+        const fin = ehFin(c.b), rec = c.b.tipo === 'receber';
+        if (c.lump) partes.push(fin ? [`${rec ? 'recebimento' : 'parcela'} 1 de ${c.nParc + 1}`, fm(Math.abs(c.lump))] : [c.b.tipo === 'evento' ? (c.nParc ? 'entrada' : 'pagamento') : 'entrada e custos de compra', fm(c.lump)]);
+        if (c.parc) partes.push(fin ? [`${rec ? 'recebimento' : 'parcela'} ${c.n + 1} de ${c.nParc + 1}`, fm(Math.abs(c.parc))] : [`parcela ${c.n} de ${c.nParc}`, fm(c.parc)]);
         if (c.posse) partes.push(['custo de ter', fm(c.posse)]);
         if (c.renda) partes.push(c.b.tipo === 'negocio' ? (c.renda > 0 ? ['lucro do negócio', '−' + fm(c.renda)] : ['prejuízo do negócio', fm(-c.renda)]) : ['aluguel recebido', '−' + fm(c.renda)]);
         const tot = c.lump + c.parc + c.posse - c.renda;
@@ -11845,7 +11887,8 @@ function onBound(el) {
   if (scope === 'alvoc') { state.alvoOk = true; state.alvoPreset = 'custom'; document.querySelectorAll('#presetCart button').forEach(b => b.setAttribute('aria-pressed', 'false')); }
   save();
   // mudanças de estrutura reconstroem os editores
-  if (scope === 'compra' && (key === 'modo' || key === 'taxaUn')) { buildCompras(); }
+  if (scope === 'compra' && key === 'evTipo') { const ex = EV_TIPOS.find(x => x[0] === v), velho = EV_TIPOS.some(x => x[1] === o.nome || o.nome === 'Evento'); if (ex) { if (velho || !o.nome) o.nome = ex[0] === 'outro' ? 'Evento' : ex[1]; o.valor = ex[2]; if (o.modo === 'avista') o.entrada = ex[2]; } save(); buildCompras(); renderTab(); }
+  else if (scope === 'compra' && (key === 'modo' || key === 'taxaUn')) { if (o.tipo === 'evento' && o.modo === 'avista') o.entrada = o.valor; buildCompras(); }
   else if (scope === 'compra' && key === 'nome') { const pg = $('pg-compra').querySelector(`option[value="${id}"]`); if (pg) pg.textContent = v; const td = [...document.querySelectorAll('.incm tbody tr')][state.compras.findIndex(b => b.id === id)]; if (td) td.cells[0].textContent = v; }
   else if (scope === 'row' && key === 'tipo') { const tp = TIPOS[v]; o.idx = tp.idxs[0]; if (tp.fundo) { o.adm = o.adm ?? 0.3; o.cc = o.cc || 'lp'; } if (v === 'bolsa') o.taxa = +state.ret.acoes || 14; buildComparador(); }
   else if (scope === 'row' && key === 'idx') { buildComparador(); }
@@ -12021,7 +12064,7 @@ const INFO_SEC = {
   'global:Checkpoints': 'Cada checkpoint real contra o valor do plano no mesmo mês. Verde: acima do plano; vermelho: abaixo.',
   'global:Fluxo por ano': 'A projeção do cenário em destaque somada por ano: quanto entra, quanto sai, quanto rende e com quanto termina cada ano.',
   'cenarios:Cenário e carteira': 'Monte cada cenário: ajustes de CDI e IPCA, renda extra e quais compras ele inclui. A carteira usa a sua carteira-alvo (03. Carteira), a não ser que você marque uma divisão própria para o cenário.',
-  'compras:Compras e financiamentos': 'O cadastro único de compras (carro, imóvel e outros): preço, entrada, forma de pagamento, juros, custos de ter e valorização. Cada cenário escolhe quais delas entram.',
+  'compras:Compras e financiamentos': 'O cadastro único do que sai ou entra de uma vez ou em parcelas, fora do dia a dia. Imóvel, Carro e Outro bem: preço, entrada, forma de pagamento, juros, custos de ter e valorização; o bem soma no patrimônio. Evento: um custo alto planejado que não vira bem, como casamento, lua de mel, festa de 15 anos, reforma, mudança, faculdade ou pós, intercâmbio, chegada de filho, tratamento de saúde ou Outro; sai do plano à vista ou parcelado. A receber: dinheiro que alguém te deve, em parcelas ou de uma vez, com a chance de receber; as parcelas somam no plano e o saldo soma no patrimônio. A pagar: uma dívida sua fora dos financiamentos de bens, como empréstimo de parente ou acordo; as parcelas saem do plano e o saldo desconta do patrimônio. Em cada card, "Uso" decide se entra na projeção real ou é só simulação, e cada cenário escolhe quais entram.',
   'cenarios:Bens do cenário': 'Quais bens do cadastro (Compras e bens) entram em cada cenário. Um bem pode estar em vários cenários; o cenário aberto aparece destacado.',
   'cenarios:Carteira por classe': 'A divisão por classe que o cenário usa (a carteira-alvo ou a divisão própria dele) e quanto cada uma rende líquido com a curva de juros atual. A média ponderada é o rendimento do cenário.',
   'cenarios:Patrimônio': 'Patrimônio líquido = investimentos + bens − dívidas. Investimentos: o que está aplicado. Bens: valor dos bens comprados, com a valorização ou depreciação cadastrada. Dívidas: saldo devedor dos financiamentos, que cai a cada parcela.',
@@ -12327,17 +12370,19 @@ function renderHmTot() {
   $('tbl-hm-tot').innerHTML = `<thead><tr><th>Módulo</th><th>Itens no plano</th><th>Efeito em ${mLabel(fimI)}</th><th>Simulações marcadas</th><th>Efeito se entrassem</th></tr></thead><tbody>${linhas.join('')}<tr class="tot"><td>Total</td><td></td><td>${sg(tR)}</td><td></td><td>${tS ? sg(tS) : '–'}</td></tr></tbody>`;
 }
 function renderTrabVg() {
-  const B = bensHoje(), meus = B.filter(x => x.tenho), bens = meus.reduce((t, x) => t + x.valor, 0), div = meus.reduce((t, x) => t + x.divida, 0);
-  const parc = meus.reduce((t, x) => { const kk = HOJE_IDX - x.m0; return t + (kk >= 1 && kk <= x.sch.parc.length ? x.sch.parc[kk - 1] : 0); }, 0);
+  const B = bensHoje(), meus = B.filter(x => x.tenho), bensL = meus.filter(x => ehBem(x.b)), bens = bensL.reduce((t, x) => t + x.valor, 0), div = meus.reduce((t, x) => t + x.divida, 0);
+  const aRec = meus.filter(x => x.b.tipo === 'receber').reduce((t, x) => t + x.valor, 0);
+  const parc = meus.filter(x => x.b.tipo !== 'receber').reduce((t, x) => { const kk = HOJE_IDX - x.m0; return t + (kk >= 1 && kk <= x.sch.parc.length ? x.sch.parc[kk - 1] : kk === 0 && x.sch.fin ? x.sch.lump : 0); }, 0);
   let so = 0, nSo = 0; ((state.so || {}).empresas || []).forEach(e => { try { const v = soHoje(e).liq; if (isFinite(v)) { so += v; nSo++; } } catch (er) {} });
   kpis($('kpi-tv'), [
-    ['Bens hoje', fm(bens), meus.length ? `${meus.length} ${meus.length > 1 ? 'bens' : 'bem'} no valor estimado de hoje` : 'nenhum bem cadastrado'],
-    ['Dívidas', fm(div), div ? 'saldo dos financiamentos' : 'nenhuma', div > 0],
-    ['Parcelas este mês', fm(parc), parc ? 'financiamentos em andamento' : 'nenhuma parcela'],
+    ['Bens hoje', fm(bens), bensL.length ? `${bensL.length} ${bensL.length > 1 ? 'bens' : 'bem'} no valor estimado de hoje` : 'nenhum bem cadastrado'],
+    ['Dívidas', fm(div), div ? 'financiamentos e dívidas a pagar' : 'nenhuma', div > 0],
+    ...(aRec ? [['A receber', fm(aRec), 'saldo que te devem, já com a chance']] : []),
+    ['Parcelas este mês', fm(parc), parc ? 'financiamentos e dívidas em andamento' : 'nenhuma parcela'],
     ['Stock options hoje', nSo ? fm(so) : '—', nSo ? 'líquido se o preço de hoje valesse, já com imposto' : 'nenhuma empresa cadastrada']
   ]);
   $('tv-tl').innerHTML = tlHtml(itensModulos().filter(x => x.mod === 'trab'));
-  const m = MODS.find(x => x.id === 'trab'), lk = [['compras', 'Compras e bens', 'Imóveis, carros e outros bens: preço, financiamento, custos de ter e venda.', 'trab'], ['stock', 'Stock options', 'Opções, phantom shares e RSUs: vesting, valor hoje e num evento de liquidez.', 'trab'], ['pjpf', 'PJ e PF', 'Do faturamento ao bolso, melhor pró-labore e PJ contra CLT.', 'trab']];
+  const m = MODS.find(x => x.id === 'trab'), lk = [['compras', 'Compras e bens', 'Imóveis, carros e outros bens, eventos como casamento e reforma, e dívidas a receber e a pagar.', 'trab'], ['stock', 'Stock options', 'Opções, phantom shares e RSUs: vesting, valor hoje e num evento de liquidez.', 'trab'], ['pjpf', 'PJ e PF', 'Do faturamento ao bolso, melhor pró-labore e PJ contra CLT.', 'trab']];
   $('tv-links').innerHTML = lk.map(([t, n, d]) => `<button type="button" class="md-card" style="--mc:${m.cor}" data-tab="${t}"><div class="md-img">${MOD_SVG.trab}</div><h3>${esc(n)}</h3><p>${esc(d)}</p></button>`).join('');
 }
 // trocar de módulo: menu próprio (a lista do navegador não mostra ícone nem cor)
@@ -12449,16 +12494,17 @@ function renderPatr() {
   document.querySelectorAll('#p-patrimonio [data-bind]').forEach(fillBound);
   document.querySelectorAll('#pt-anos button').forEach(b => b.setAttribute('aria-pressed', +b.dataset.ptanos === ptAnos));
   const ev = ativos().map(a => ({ a, v: avaliar(a).atual })), prev = ev.filter(x => ehPrevFgts(x.a)).reduce((t, x) => t + x.v, 0), inv = ev.filter(x => !ehPrevFgts(x.a)).reduce((t, x) => t + x.v, 0);
-  const B = bensHoje(), meus = B.filter(x => x.tenho), bens = meus.reduce((t, x) => t + x.valor, 0), div = meus.reduce((t, x) => t + x.divida, 0);
-  const pl = inv + (P.fgts ? prev : 0) + bens - div;
+  const B = bensHoje(), meusT = B.filter(x => x.tenho), meus = meusT.filter(x => ehBem(x.b)), bens = meus.reduce((t, x) => t + x.valor, 0), div = meusT.reduce((t, x) => t + x.divida, 0);
+  const aRec = meusT.filter(x => x.b.tipo === 'receber').reduce((t, x) => t + x.valor, 0);
+  const pl = inv + (P.fgts ? prev : 0) + bens + aRec - div;
   const pagos = meus.reduce((t, x) => t + (+x.b.valor || 0), 0);
   kpis($('kpi-pt'), [
     ['Patrimônio líquido hoje', fm(pl), P.fgts ? 'com FGTS e previdência' : 'sem FGTS e previdência'],
     ['Investimentos', fm(inv), ev.length ? 'carteira do 03. Carteira' : 'cadastre a carteira no 04'],
     ['Bens', fm(bens), meus.length ? `${meus.length} ${meus.length > 1 ? 'bens' : 'bem'}; ${bens >= pagos ? 'valorizaram' : 'depreciaram'} ${fm(Math.abs(bens - pagos))} desde a compra` : 'nenhum bem cadastrado'],
-    ['Dívidas', fm(div), div ? 'saldo dos financiamentos' : 'nenhuma', div > 0]
+    ['Dívidas', fm(div), div ? 'financiamentos e dívidas a pagar' : 'nenhuma', div > 0]
   ]);
-  const partes = [['Investimentos', inv, 'var(--s1)'], ...(P.fgts ? [['FGTS e previdência', prev, 'var(--s4)']] : []), ['Bens', bens, 'var(--s2)'], ['Dívidas', -div, 'var(--bad)']];
+  const partes = [['Investimentos', inv, 'var(--s1)'], ...(P.fgts ? [['FGTS e previdência', prev, 'var(--s4)']] : []), ['Bens', bens, 'var(--s2)'], ...(aRec ? [['A receber', aRec, 'var(--s3)']] : []), ['Dívidas', -div, 'var(--bad)']];
   const tot = partes.filter(x => x[1] > 0).reduce((t, x) => t + x[1], 0) || 1;
   $('pt-comp').innerHTML = `<div class="pt-bar">${partes.filter(x => x[1] > 0).map(([n, v, c]) => `<i style="width:${(v / tot * 100).toFixed(2)}%;background:${c}" title="${n}: ${fm(v)}"></i>`).join('')}</div>
     <div class="pt-comp">${partes.map(([n, v, c]) => `<div class="pt-cel" style="--c:${c}"><span class="l"><i></i>${n}</span><div class="v${v < 0 ? ' neg' : ''}">${v < 0 ? '−' + fm(-v) : fm(v)}</div><div class="d">${v > 0 ? pct(v / tot, 0) + ' do que você tem' : n === 'Dívidas' ? (div ? 'a pagar' : '–') : '–'}</div></div>`).join('')}</div>
@@ -12475,7 +12521,7 @@ function renderPatr() {
   legend($('lg-pt'), series);
   chart($('ch-pt'), $('ro-pt'), H + 1, series.map(x => Object.assign({}, x)), v => k(v), t => t === 0 ? 'hoje' : mLabel(i0 + t), H);
   // cartões dos bens
-  const lista = B.slice().sort((a, b2) => (a.vendido - b2.vendido) || (b2.tenho - a.tenho) || (a.m0 - b2.m0));
+  const lista = B.filter(x => ehBem(x.b)).sort((a, b2) => (a.vendido - b2.vendido) || (b2.tenho - a.tenho) || (a.m0 - b2.m0));
   $('pt-bens').innerHTML = lista.length ? lista.map(x => cardBem(x)).join('') : '<p class="hint">Nenhum bem cadastrado. Use os botões acima ou o cadastro de Compras e bens.</p>';
   document.querySelectorAll('#pt-bens [data-bind]').forEach(fillBound);
 }
@@ -12613,7 +12659,7 @@ function hmCards() {
   });
   // compras e bens
   tenta(() => {
-    const B = bensHoje(); if (!B.length) return; const s0 = HOJE_IDX;
+    const B = bensHoje().filter(x => ehBem(x.b)); if (!B.length) return; const s0 = HOJE_IDX;
     const parcHoje = B.reduce((t, x) => { const kk = s0 - x.m0; return t + (x.vendido || kk < 1 || kk > x.sch.parc.length ? 0 : x.sch.parc[kk - 1]); }, 0);
     const fut = B.filter(x => x.m0 > s0).sort((a, b) => a.m0 - b.m0)[0];
     card('compras', 'Compras e bens', `${hmKv([['Parcelas este mês', fm(parcHoje), 'financiamentos em andamento'], ['Próxima compra', fut ? mLabel(fut.m0) : '—', fut ? `${esc(fut.b.nome)} · ${k(+fut.b.valor || 0)}` : 'nenhuma planejada']])}
