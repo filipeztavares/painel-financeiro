@@ -1627,7 +1627,7 @@ tr.rd-hit td { background: color-mix(in srgb, var(--good) 9%, transparent); }
     </div>
     <div class="nav-mobile-sub" id="navMobileSub"></div>
   </div>
-  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 254</div></div>
+  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 255</div></div>
 </nav>
 <div class="sino-pop" id="sino-pop" role="dialog" aria-label="Atualizações das bases" hidden></div>
 <div class="sino-pop" id="pess-pop" role="dialog" aria-label="Seus avisos" hidden></div>
@@ -3491,7 +3491,7 @@ tr.rd-hit td { background: color-mix(in srgb, var(--good) 9%, transparent); }
     return new Promise(resolve => { const { data } = sb.auth.onAuthStateChange(async (ev) => { if (ev !== 'PASSWORD_RECOVERY') return; const s = prompt('Digite a nova senha (mínimo 8 caracteres):'); if (s && s.length >= 8) { const { error } = await sb.auth.updateUser({ password: s }); alert(error ? 'Não deu para trocar a senha: ' + error.message : 'Senha trocada.'); } }); resolve(data); });
   }
   // ---------- rodapé: compartilhar, administração e sair ----------
-  const SITE_V = 138;
+  const SITE_V = 139;
   const escH = v => String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const dataBR = v => v ? new Date(v).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' }) : '–';
   const css2 = `.side-foot .r{flex-wrap:wrap}.side-foot .lg-acoes{margin-left:auto;display:inline-flex;gap:10px}
@@ -14662,7 +14662,7 @@ function renderCkSem() {
   const box = $('ck-body'); if (!box || !state) return;
   const D = ckDados(), sem = ckSemana(new Date()), feito = ckSt().feitos.includes(sem), seq = ckSeq();
   $('ck-q').textContent = `${mLabel(HOJE_IDX)} · dia ${D.dia} de ${D.dm} (${Math.round(D.fr * 100)}% do mês)`;
-  if (!D.linhas.length) { box.innerHTML = `<p class="hint">Ainda não há custos projetados por categoria. Monte o orçamento em Finanças › Plano futuro e importe a fatura em Gastos para ver quanto já foi do projetado.</p><div class="ck-acoes"><button type="button" class="btn" data-irtab="gastos">Importar fatura</button></div>`; return; }
+  if (!D.linhas.length) { box.innerHTML = `<p class="hint">Ainda não há custos projetados por categoria. Monte o orçamento em Finanças › Plano futuro e importe a fatura ou o extrato em Gastos para ver quanto já foi do projetado.</p><div class="ck-acoes"><button type="button" class="btn" data-irtab="gastos">Importar fatura ou extrato</button></div>`; return; }
   const ord = { al: 0, lv: 1, ok: 2, fx: 3 }, L = D.linhas.slice().sort((a, b) => ord[a.st] - ord[b.st] || b.g - a.g);
   const txt = x => x.st === 'al' ? (x.g > x.p ? `Já passou do projetado em ${fm(x.g - x.p)}.` : `${pct(x.u, 0)} usado em ${pct(D.fr, 0)} do mês. Se o resto do mês seguir o projetado, fecha em ${fm(x.prev)}.`)
     : x.st === 'lv' ? `Conta fixa acima do previsto (+${fm(x.g - x.p)}). Vale ver se entrou um gasto novo.`
@@ -14671,10 +14671,10 @@ function renderCkSem() {
   const CH = { al: ['warn', 'atenção'], lv: ['amber', 'fixa: conferir'], ok: ['ok', 'no ritmo'], fx: ['neu', 'fixa'] };
   const nAl = L.filter(x => x.st === 'al').length;
   box.innerHTML = `<div class="ck-kp"><div><small>Gasto no mês</small><b>${fm(D.tg)}</b></div><div><small>Projetado no mês</small><b>${fm(D.tp)}</b></div><div><small>Se o resto seguir o projetado</small><b class="${D.tprev > D.tp * 1.02 ? 'neg' : 'pos'}">${fm(D.tprev)}</b></div><div><small>Categorias em atenção</small><b class="${nAl ? 'neg' : 'pos'}">${nAl}</b></div></div>
-    ${D.temLanc ? '' : '<p class="hint">Nenhum gasto lançado neste mês ainda. Importe a fatura do cartão para começar.</p>'}
+    ${D.temLanc ? '' : '<p class="hint">Nenhum gasto lançado neste mês ainda. Importe a fatura do cartão ou o extrato da conta para começar.</p>'}
     <div class="ck-l">${L.filter(x => ckTodas || x.g > 0 || x.st !== 'ok').map(x => `<div class="ck-c"><span class="n" title="${esc(x.nome)}">${esc(x.nome)}</span><div class="ck-t" role="img" aria-label="${esc(x.nome)}: ${pct(Math.min(x.u, 9), 0)} do projetado"><span class="${x.st}" style="width:${Math.min(100, x.u * 100).toFixed(1)}%"></span>${x.fixa ? '' : `<i style="left:${(D.fr * 100).toFixed(1)}%"></i>`}</div><span class="v">${fm(x.g)} / ${fm(x.p)}</span><div class="st"><span class="chip ${CH[x.st][0]}">${CH[x.st][1]}</span>${txt(x)}<button type="button" class="ck-fx" data-ckfx="${esc(x.nome)}" aria-pressed="${x.fixa}" title="Conta fixa não segue o ritmo do mês e só ganha um alerta leve quando passa do previsto">${x.fixa ? 'conta fixa' : 'marcar como fixa'}</button></div></div>`).join('')}</div>
     ${(() => { const z = L.filter(x => x.g === 0 && x.st === 'ok').length; return z ? `<button type="button" class="btn ghost tiny" id="ck-todas" style="margin-top:10px">${ckTodas ? 'Esconder as categorias sem gasto' : `Mostrar mais ${z} categoria${z > 1 ? 's' : ''} ainda sem gasto`}</button>` : ''; })()}
-    <div class="ck-acoes"><button type="button" class="btn" data-irtab="gastos">Importar fatura</button><button type="button" class="btn ${feito ? 'ghost' : ''}" id="ck-feito">${feito ? 'Checkpoint desta semana feito ✓' : 'Marcar checkpoint da semana'}</button><span class="ck-seq">${seq ? `<b>${seq} semana${seq > 1 ? 's' : ''} seguida${seq > 1 ? 's' : ''}</b> com checkpoint` : 'Faça o checkpoint toda semana para começar uma sequência.'}</span></div>
+    <div class="ck-acoes"><button type="button" class="btn" data-irtab="gastos">Importar fatura ou extrato</button><button type="button" class="btn ${feito ? 'ghost' : ''}" id="ck-feito">${feito ? 'Checkpoint desta semana feito ✓' : 'Marcar checkpoint da semana'}</button><span class="ck-seq">${seq ? `<b>${seq} semana${seq > 1 ? 's' : ''} seguida${seq > 1 ? 's' : ''}</b> com checkpoint` : 'Faça o checkpoint toda semana para começar uma sequência.'}</span></div>
     <p class="hint">A linha vertical mostra onde o gasto estaria se seguisse o ritmo do mês. Conta fixa não segue esse ritmo: ela só ganha um alerta leve quando passa do previsto, que costuma ser sinal de gasto novo.</p>`;
 }
 document.addEventListener('click', e => {
@@ -14685,7 +14685,7 @@ document.addEventListener('click', e => {
 });
 AVISOS_PESSOAIS.push(() => {
   const sem = ckSemana(new Date()), out = [];
-  if (!ckSt().feitos.includes(sem)) out.push({ id: 'ck:' + sem, mod: 'fin', quando: '', msg: 'Checkpoint da semana: importe a fatura do cartão e veja quanto já foi do projetado em cada categoria.', tab: 'modulos', sec: 'Checkpoint da semana' });
+  if (!ckSt().feitos.includes(sem)) out.push({ id: 'ck:' + sem, mod: 'fin', quando: '', msg: 'Checkpoint da semana: importe a fatura do cartão ou o extrato da conta e veja quanto já foi do projetado em cada categoria.', tab: 'modulos', sec: 'Checkpoint da semana' });
   const D = ckDados(); D.linhas.filter(x => x.st === 'al' || x.st === 'lv').sort((a, b) => (b.g - b.p * D.fr) - (a.g - a.p * D.fr)).slice(0, 3).forEach(x => out.push({ id: 'ckc:' + sem + ':' + x.nome, mod: 'fin', quando: '', msg: x.st === 'al' ? `${x.nome} está acima do ritmo do mês: ${fm(x.g)} de ${fm(x.p)}.` : `${x.nome} (conta fixa) passou do previsto: ${fm(x.g)} de ${fm(x.p)}. Vale conferir.`, tab: 'modulos', sec: 'Checkpoint da semana' }));
   return out;
 });
