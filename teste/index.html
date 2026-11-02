@@ -540,6 +540,12 @@ tr.best td { background: var(--good-soft); }
 .btn.danger { background: var(--panel); color: var(--bad); border-color: var(--bad-soft); }
 .cpform { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; grid-column: 1 / -1; }
 .cpform .btn { grid-column: 1 / -1; justify-self: start; }
+.pg-ent { margin-top: 18px; border-top: 1px solid var(--line, rgba(0,0,0,.1)); padding-top: 14px; }
+.pg-ent h3 { margin: 0 0 4px; font-size: 15px; }
+.pg-ent .pe-chips { display: flex; flex-wrap: wrap; gap: 6px; margin: 8px 0 10px; }
+.pg-ent .pe-chips button { all: unset; cursor: pointer; font-size: 12px; padding: 4px 10px; border-radius: 14px; border: 1px solid var(--line, rgba(0,0,0,.18)); }
+.pg-ent .pe-chips button[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: #fff; }
+.pg-ent tr.pe-best td { background: var(--accent-soft); font-weight: 600; }
 .cp-oque { grid-column: 1 / -1; font-size: 13px; line-height: 1.5; background: var(--accent-soft); border-radius: 8px; padding: 10px 12px; margin: 0 0 10px; }
 .cp-oque ul { margin: 6px 0; padding-left: 18px; } .cp-oque li { margin: 2px 0; }
 #tbl-fech [data-ircp] { margin-left: 8px; vertical-align: middle; }
@@ -1367,7 +1373,7 @@ ul.ng-acordo li { margin-bottom: 4px; }
     </div>
     <div class="nav-mobile-sub" id="navMobileSub"></div>
   </div>
-  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 228</div></div>
+  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 229</div></div>
 </nav>
 <div class="sino-pop" id="sino-pop" role="dialog" aria-label="Central de avisos" hidden></div>
 <div class="tour-pop" id="tour-pop" role="dialog" aria-labelledby="tour-tit" hidden></div>
@@ -2066,6 +2072,7 @@ ul.ng-acordo li { margin-bottom: 4px; }
         <p class="sub" style="font-size:12.5px;margin:0 0 10px">À vista, SAC, Price e consórcio para a compra escolhida, no mesmo mês, com a renda e a carteira do cenário <b id="pg-cen"></b> (07. Cenários futuros). Patrimônio em reais de hoje.</p>
         <div class="cards" id="cards-pg"></div>
         <div class="chart" style="margin-top:12px"><div class="legend" id="lg-pg"></div><div id="ch-pg"></div><div class="readout" id="ro-pg"></div></div>
+        <div id="pg-ent" class="pg-ent"></div>
       </section>
   </section>
   <!-- ============ CARTEIRA ============ -->
@@ -2913,7 +2920,7 @@ ul.ng-acordo li { margin-bottom: 4px; }
     return new Promise(resolve => { const { data } = sb.auth.onAuthStateChange(async (ev) => { if (ev !== 'PASSWORD_RECOVERY') return; const s = prompt('Digite a nova senha (mínimo 8 caracteres):'); if (s && s.length >= 8) { const { error } = await sb.auth.updateUser({ password: s }); alert(error ? 'Não deu para trocar a senha: ' + error.message : 'Senha trocada.'); } }); resolve(data); });
   }
   // ---------- rodapé: compartilhar, administração e sair ----------
-  const SITE_V = 111;
+  const SITE_V = 112;
   const escH = v => String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const dataBR = v => v ? new Date(v).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' }) : '–';
   const css2 = `.side-foot .r{flex-wrap:wrap}.side-foot .lg-acoes{margin-left:auto;display:inline-flex;gap:10px}
@@ -8661,7 +8668,7 @@ function renderCenarios() {
 const SC = [{ id: 'avista', name: 'À vista', c: 'var(--s3)' }, { id: 'sac', name: 'Financ. SAC', c: 'var(--s5)' }, { id: 'price', name: 'Financ. Price', c: 'var(--s2)' }, { id: 'cons', name: 'Consórcio', c: 'var(--s4)' }];
 function renderPagamento(cen, p, r1) {
   const b = state.compras.find(x => x.id === state.pgCompra);
-  if (!b || mIndex(b.mes) <= p.s0) { $('cards-pg').innerHTML = '<p class="hint">Adicione uma compra futura para comparar as formas de pagamento.</p>'; $('ch-pg').innerHTML = ''; $('lg-pg').innerHTML = ''; $('ro-pg').innerHTML = ''; return; }
+  if (!b || mIndex(b.mes) <= p.s0) { $('cards-pg').innerHTML = '<p class="hint">Adicione uma compra futura para comparar as formas de pagamento.</p>'; $('ch-pg').innerHTML = ''; $('lg-pg').innerHTML = ''; $('ro-pg').innerHTML = ''; if ($('pg-ent')) $('pg-ent').innerHTML = ''; return; }
   const cfg = state.cfg;
   const c = { patrimonio: p.cp.valor, rend: cenNetA(cen, r1) * 100, salario: projMes(mKey(HOJE_IDX)).liq, contas: projMes(mKey(HOJE_IDX)).custos - (+b.economia || 0), ipca: r1.ipca * 100, ajSal: cfg.ajSal };
   const bb = Object.assign({}, b, { horiz: Math.max(12, Math.round(cfg.anos * 12)) });
@@ -8682,7 +8689,31 @@ function renderPagamento(cen, p, r1) {
   legend($('lg-pg'), SC);
   const H = res[0].H;
   chart($('ch-pg'), $('ro-pg'), H, SC.map((s, j) => ({ name: s.name, c: s.c, v: res[j].patReal.slice(0, H) })), k, t => lab(t + 1));
+  renderEntradas(cen, c, bb, r1, lab);
 }
+// quanto dar de entrada: o que não vai na entrada fica na carteira rendendo e ajuda a pagar as parcelas
+const PE_OPC = [10, 20, 30, 40, 50, 60, 70, 80, 100];
+let peSel; try { peSel = JSON.parse(localStorage.getItem('painel-pg-ent') || 'null'); } catch (e) {} if (!Array.isArray(peSel)) peSel = PE_OPC.slice();
+function renderEntradas(cen, c, bb, r1, lab) {
+  const box = $('pg-ent'); if (!box) return;
+  if (ehFin(bb)) { box.innerHTML = ''; return; }
+  const pc = pesosCarteira(), nCart = pc.length ? carteiraNetA(pc, r1) : null, taxa = nCart != null && isFinite(nCart) ? nCart : cenNetA(cen, r1);
+  const fonte = nCart != null && isFinite(nCart) ? 'taxa líquida atual da sua carteira (depois do IR)' : `taxa do cenário "${esc(cen.nome)}" (a carteira ainda está vazia)`;
+  const modo = bb.modo === 'sac' ? 'sac' : 'price', V = +bb.valor || 0, rm = Math.pow(1 + taxa, 1 / 12) - 1;
+  const cc = Object.assign({}, c, { rend: taxa * 100 });
+  const linhas = PE_OPC.filter(x => peSel.includes(x)).map(pct => { const E = V * pct / 100, m = pct >= 100 ? 'avista' : modo;
+    const r = simulate(cc, Object.assign({}, bb, { entrada: E }), m), fica = V - E, rendMes = fica * rm, parc = m === 'avista' ? 0 : r.primeira;
+    return { pct, E, fica, rendMes, parc, cobre: parc ? rendMes / parc : null, juros: m === 'avista' ? 0 : r.custoCredito, pat: r.patRealH, minInv: r.minInv }; });
+  const best = linhas.length ? linhas.reduce((a, x) => x.pat > a.pat ? x : a) : null;
+  box.innerHTML = `<h3>Quanto dar de entrada</h3>
+    <p class="sub" style="font-size:12.5px;margin:0">${modo === 'sac' ? 'Financiamento SAC' : 'Financiamento Price'} com os juros e o prazo do card. O que não vai para a entrada fica na carteira rendendo ${pct(taxa, 2)} a.a., a ${fonte}, e esse rendimento ajuda a pagar as parcelas. Patrimônio em reais de hoje.${+bb.taxa > 0 ? '' : ' <b>Informe os juros do financiamento no card para a comparação valer.</b>'}</p>
+    <div class="pe-chips" role="group" aria-label="Entradas para comparar">${PE_OPC.map(x => `<button type="button" data-pent="${x}" aria-pressed="${peSel.includes(x)}">${x >= 100 ? 'À vista' : x + '%'}</button>`).join('')}</div>
+    ${linhas.length ? `<div class="tscroll"><table><thead><tr><th>Entrada</th><th>Valor da entrada</th><th>Fica na carteira</th><th>1ª parcela</th><th>Rendimento do que ficou</th><th>Rendimento cobre</th><th>Juros pagos</th><th>Patrimônio em ${lab(linhas[0] && simulate(cc, bb, 'avista').H)}</th></tr></thead><tbody>
+    ${linhas.map(x => `<tr${x === best ? ' class="pe-best"' : ''}><td class="name">${x.pct >= 100 ? 'À vista' : x.pct + '%'}${x === best ? ' <span class="chip best">maior patrimônio</span>' : ''}${x.minInv < 0 ? ' <span class="chip warn">caixa negativo</span>' : ''}</td><td>${fm(x.E)}</td><td>${fm(x.fica)}</td><td>${x.parc ? fm(x.parc) : '—'}</td><td>${x.fica ? fm(x.rendMes) + '/mês' : '—'}</td><td class="${x.cobre == null ? '' : x.cobre >= 1 ? 'pos' : ''}">${x.cobre == null ? '—' : x.cobre >= 1 ? 'toda a parcela' : pct(x.cobre, 0) + ' da parcela'}</td><td>${x.juros ? fm(x.juros) : '—'}</td><td>${k(x.pat)}</td></tr>`).join('')}
+    </tbody></table></div>` : '<p class="hint">Escolha ao menos uma entrada acima.</p>'}`;
+}
+document.addEventListener('click', e => { const b = e.target.closest('[data-pent]'); if (!b) return; const v = +b.dataset.pent;
+  peSel = peSel.includes(v) ? peSel.filter(x => x !== v) : peSel.concat(v); try { localStorage.setItem('painel-pg-ent', JSON.stringify(peSel)); } catch (er) {} renderCenarios(); });
 function renderReb(cen) {
   const H0 = hojeAtual(), hojeTot = CLASSES.reduce((s, c) => s + (+H0[c.id] || 0), 0);
   const ap = +state.cfg.aporteReb || 0, novoTot = hojeTot + ap;
@@ -12069,7 +12100,7 @@ const INFO_SEC = {
   'cenarios:Carteira por classe': 'A divisão por classe que o cenário usa (a carteira-alvo ou a divisão própria dele) e quanto cada uma rende líquido com a curva de juros atual. A média ponderada é o rendimento do cenário.',
   'cenarios:Patrimônio': 'Patrimônio líquido = investimentos + bens − dívidas. Investimentos: o que está aplicado. Bens: valor dos bens comprados, com a valorização ou depreciação cadastrada. Dívidas: saldo devedor dos financiamentos, que cai a cada parcela.',
   'cenarios:Sobra mensal': 'Quanto sobra em cada mês: receita líquida menos custos e parcelas das compras. É o que vai para os investimentos; abaixo de zero, o mês é pago com eles. Degraus aparecem quando um reajuste entra (custos com IPCA 1 vez por ano sobem em janeiro, por exemplo) ou quando uma parcela começa ou termina.',
-  'compras:Formas de pagamento': 'Para a compra escolhida, compara pagar à vista, financiar (SAC ou Price) ou consórcio, considerando o que o dinheiro renderia se ficasse investido.',
+  'compras:Formas de pagamento': 'Quanto dar de entrada: compara entradas de 10% a 80% e à vista no financiamento do card, com o dinheiro que não foi para a entrada rendendo na carteira pela taxa líquida atual dela (ou a do cenário, se a carteira estiver vazia), e mostra quanto desse rendimento cobre a parcela. Para a compra escolhida, compara pagar à vista, financiar (SAC ou Price) ou consórcio, considerando o que o dinheiro renderia se ficasse investido.',
   'cenarios:Rebalanceamento': 'Como dividir o próximo aporte entre as classes para aproximar a carteira de hoje do alvo do cenário, sem vender nada.',
   'carteira:Saúde da carteira': 'Nota de 0 a 1.000 em cinco eixos (diversificação, liquidez, retorno, eficiência e proteção), cada um até 200 pontos, calculada com as aplicações cadastradas. O (i) de cada eixo mostra a conta.',
   'carteira:Rentabilidade x CDI': 'Quanto a carteira rendeu contra o CDI e contra o Ibovespa (escolha em "Comparar com"). O Ibovespa já inclui dividendos reinvestidos; a comparação com ele vem em pontos percentuais de diferença no período. Usa a data, o valor aplicado e o valor atual de cada aplicação (cupons, dividendos, JCP e rendimentos já recebidos contam) e o CDI mensal do Banco Central. "Desde cada aplicação" compara cada uma com o CDI do próprio período.',
