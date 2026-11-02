@@ -102,6 +102,15 @@ h1, h2, h3 { font-family: var(--f-head); }
 .tour-pop .tour-porq { color: var(--muted); font-size: 13px; }
 .tour-pop .tour-st { font-size: 12.5px; margin: 6px 0 0; }
 .tour-pop .btns { margin-top: 10px; justify-content: space-between; }
+.guia-btn { position: absolute; right: 48px; top: 50%; margin-top: -12px; width: 24px; height: 24px; border-radius: 50%; border: 1px solid rgba(255,255,255,.55); background: rgba(255,255,255,.08); color: #fff; font-weight: 700; font-size: 12.5px; line-height: 1; cursor: pointer; display: inline-grid; place-items: center; padding: 0; }
+.guia-btn:hover, .guia-btn:focus-visible { background: var(--accent); border-color: var(--accent); color: #fff; }
+.panel > h2.tem-guia:first-child, .panel > .row.tem-guia:first-child:has(h2) { padding-right: 86px !important; }
+.sec-band.tem-guia, .cad-div.tem-guia { position: relative; padding-right: 54px; }
+.sec-band .guia-btn { right: 16px; }
+.cad-div .guia-btn { right: 14px; top: 14px; margin-top: 0; border-color: var(--accent); color: var(--accent); background: transparent; }
+.cad-div .guia-btn:hover, .cad-div .guia-btn:focus-visible { color: #fff; }
+.conf-dlg .guia-btn { display: none !important; }
+@media (max-width: 760px) { .panel .guia-btn { top: 12px; margin-top: 0; } }
 .tour-alvo { outline: 3px solid var(--accent) !important; outline-offset: 3px; border-radius: 6px; }
 @media (max-width: 640px) { .tour-pop { left: 16px !important; right: 16px; bottom: 16px; top: auto !important; width: auto; } }
 .sobra-box { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 14px; border: 1px solid var(--line); border-left: 6px solid var(--good); border-radius: 10px; padding: 12px 16px; margin: 4px 0 14px; background: var(--panel); }
@@ -499,7 +508,7 @@ td.fam-bar { min-width: 150px; }
 .panel.recolhida { padding-bottom: 0; }
 .panel.recolhida > :not(:first-child) { display: none !important; }
 .panel.recolhida > h2:first-child, .panel.recolhida > .row:first-child:has(h2) { margin-bottom: -1px !important; border-radius: 9px; }
-.panel.recolhida > .row:first-child > :not(h2):not(.sec-tog) { display: none !important; }
+.panel.recolhida > .row:first-child > :not(h2):not(.sec-tog):not(.guia-btn) { display: none !important; }
 .panel > .row:first-child:has(h2) { margin-bottom: 12px !important; }
 .sec-band { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 14px; background: var(--band); border-bottom: 2px solid var(--band-line); border-radius: 10px; padding: 11px 18px; margin: 4px 0 14px; box-shadow: var(--shadow); }
 .sec-band h2 { display: flex; align-items: center; gap: 9px; margin: 0; font-size: 14.5px; font-weight: 600; color: #fff; letter-spacing: .2px; }
@@ -1717,7 +1726,7 @@ a.jg-prox{color:inherit;text-decoration:none}a.jg-prox:hover{border-color:var(--
     </div>
     <div class="nav-mobile-sub" id="navMobileSub"></div>
   </div>
-  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 259</div></div>
+  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 260</div></div>
 </nav>
 <div class="sino-pop" id="sino-pop" role="dialog" aria-label="Atualizações das bases" hidden></div>
 <div class="sino-pop" id="pess-pop" role="dialog" aria-label="Seus avisos" hidden></div>
@@ -3120,6 +3129,12 @@ a.jg-prox{color:inherit;text-decoration:none}a.jg-prox:hover{border-color:var(--
       </fieldset>
         </div>
       </section>
+      <section data-nav="Guias" class="panel">
+        <h2>Guias passo a passo</h2>
+        <p class="sub">As seções com o botão <b>?</b> na faixa têm um guia que acende um campo por vez e explica o que preencher. Ele abre sozinho na primeira visita de cada tela; depois, é só clicar no <b>?</b> da seção.</p>
+        <div class="btns"><button class="btn ghost" type="button" id="guia-reset">Reiniciar todos os guias</button></div>
+        <p class="hint" id="guia-msg" role="status"></p>
+      </section>
       <section data-nav="Curva de juros" class="panel">
         <div class="row"><h2>Curva de juros e inflação</h2>
           <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap"><span class="chip info" id="curva-modo"></span><button class="btn ghost tiny" type="button" id="curva-focus">Voltar ao Focus</button></div>
@@ -3601,7 +3616,7 @@ a.jg-prox{color:inherit;text-decoration:none}a.jg-prox:hover{border-color:var(--
     return new Promise(resolve => { const { data } = sb.auth.onAuthStateChange(async (ev) => { if (ev !== 'PASSWORD_RECOVERY') return; const s = prompt('Digite a nova senha (mínimo 8 caracteres):'); if (s && s.length >= 8) { const { error } = await sb.auth.updateUser({ password: s }); alert(error ? 'Não deu para trocar a senha: ' + error.message : 'Senha trocada.'); } }); resolve(data); });
   }
   // ---------- rodapé: compartilhar, administração e sair ----------
-  const SITE_V = 143;
+  const SITE_V = 144;
   const escH = v => String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const dataBR = v => v ? new Date(v).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' }) : '–';
   const css2 = `.side-foot .r{flex-wrap:wrap}.side-foot .lg-acoes{margin-left:auto;display:inline-flex;gap:10px}
@@ -13794,9 +13809,9 @@ let tourI = -1, tourEl = null;
 function tourPassos() { return TOUR_PL.filter(x => !x.so || x.so()); }
 function tourAlvo(st) { return document.querySelector(st.sel) || (st.alt && document.querySelector(st.alt)); }
 function tourPos() {
-  const pop = $('tour-pop'); if (pop.hidden || !tourEl) return;
+  const pop = $('tour-pop'), alvo = tourEl || gEl; if (pop.hidden || !alvo) return;
   if (innerWidth <= 640) { pop.style.top = ''; pop.style.left = ''; return; }
-  const r = tourEl.getBoundingClientRect(), h = pop.offsetHeight, w = pop.offsetWidth;
+  const r = alvo.getBoundingClientRect(), h = pop.offsetHeight, w = pop.offsetWidth;
   let top = r.bottom + 12; if (top + h > innerHeight - 8) top = Math.max(8, r.top - h - 12);
   pop.style.top = top + 'px'; pop.style.left = Math.min(Math.max(8, r.left), innerWidth - w - 8) + 'px';
 }
@@ -13819,17 +13834,135 @@ function tourAtualiza() {
   if (b) b.disabled = !ok; if (t) { t.textContent = ok ? '✓ Preenchido' : 'Preencha o campo destacado para seguir, ou pule.'; t.classList.toggle('pos', ok); }
   tourPos();
 }
-function tourAbre() { tourI = 0; tourMostra(); }
+function tourAbre() { if (gK) guiaFecha(false); tourI = 0; tourMostra(); }
 function tourFecha(fim) {
   if (tourEl) tourEl.classList.remove('tour-alvo'); tourEl = null; tourI = -1; $('tour-pop').hidden = true;
   if (!state.tourPlano) { state.tourPlano = fim ? 'feito' : 'fechado'; save(); }
+  guiaMarca(GUIA_PLANO, fim);
 }
 $('tour-abrir').addEventListener('click', tourAbre);
 $('tour-pop').addEventListener('click', e => { const b = e.target.closest('[data-tour]'); if (!b) return; const a = b.dataset.tour;
   if (a === 'fecha') return tourFecha(false); if (a === 'volta') tourI = Math.max(0, tourI - 1); else tourI++; tourMostra(); });
 ['input', 'change'].forEach(ev => document.addEventListener(ev, () => setTimeout(tourAtualiza, 30)));
 addEventListener('resize', tourPos); addEventListener('scroll', tourPos, true);
-document.addEventListener('keydown', e => { if (e.key === 'Escape' && !$('tour-pop').hidden) tourFecha(false); });
+document.addEventListener('keydown', e => { if (e.key === 'Escape' && !$('tour-pop').hidden) { if (gK) guiaFecha(false); else if (tourI >= 0) tourFecha(false); } });
+/* ---------- guias por seção: balão "passo N de M" que acende um campo por vez; botão ? na faixa de cada seção ---------- */
+// chave = id do tabpanel | data-nav da seção. up = destacar o bloco em volta do campo. auto = abre sozinho na primeira visita da tela.
+const GUIA_PLANO = 'p-orcamento|Receitas e custos';
+const GUIAS = {
+  'p-gastos|Lançar e importar': { auto: true, passos: [
+    { sel: '#gas-file', up: 'fieldset', t: 'Importar fatura ou extrato', o: 'O jeito mais rápido de lançar o mês: suba o arquivo do banco (CSV, OFX, PDF ou o ZIP com senha). O painel reconhece o banco, sugere a categoria de cada gasto e mostra uma prévia antes de salvar.' },
+    { sel: '#gform', up: 'fieldset', t: 'Lançar à mão', o: 'Para o que não aparece na fatura nem no extrato: dinheiro vivo, Pix de outra conta, uma conta paga em outro banco. Valor positivo é gasto; estorno entra negativo.' },
+    { sel: '#ext-conta', up: 'label', t: 'Nome do cartão e da conta', o: 'Só para identificar de onde veio cada gasto. O painel preenche sozinho quando reconhece o banco do arquivo.' }
+  ] },
+  'p-gastos|Por categoria': { passos: [
+    { sel: '#dn-cat', t: 'Para onde foi o dinheiro', o: 'A divisão do mês por categoria. As maiores fatias são onde um ajuste faz mais diferença.' },
+    { sel: '#tbl-cat', up: '.tscroll', t: 'Gasto contra o planejado', o: 'Cada categoria com o que você gastou e o que planejou no Plano futuro. Clique numa categoria para ver os lançamentos dela.' }
+  ] },
+  'p-gastos|Lançamentos': { passos: [
+    { sel: '#g-busca', t: 'Buscar', o: 'Ache um gasto pela descrição, pela categoria ou pelo valor.' },
+    { sel: '#tbl-lanc', up: '.tscroll', t: 'Corrigir a categoria', o: 'Se um gasto caiu na categoria errada, troque aqui. O painel aprende e acerta os próximos parecidos.' }
+  ] },
+  'p-gastos|Fechamento do mês': { passos: [
+    { sel: '#fe-sel', t: 'Escolha o mês', o: 'O fechamento compara o mês real com o que o plano previa, linha por linha.' },
+    { sel: '#fe-fechar', t: 'Feche o mês', o: 'Quando os gastos e o checkpoint do mês estiverem lançados, clique aqui. Cada mês fechado vale +100 no tabuleiro, e +150 se ficou dentro do planejado.' }
+  ] },
+  'p-carteira|Cadastrar aplicação': { auto: true, passos: [
+    { sel: '#cor-file', up: 'fieldset', t: 'Importe da corretora', o: 'Se você tem o extrato de custódia ou a posição da corretora (PDF ou CSV), suba aqui: o painel cadastra as aplicações e atualiza os valores de uma vez.' },
+    { sel: '#aform', up: 'fieldset', t: 'Ou cadastre à mão', o: 'Uma aplicação por vez: nome, tipo, taxa, quanto aplicou e quando. Se souber o valor atual, informe; senão o painel estima pela taxa.' },
+    { sel: '#cart-cp', up: 'fieldset', t: 'Salve o checkpoint', o: 'Com tudo cadastrado, salve o total como checkpoint. É a foto do mês que o painel compara com o plano.' }
+  ] },
+  'p-carteira|Carteira-alvo': { passos: [
+    { sel: '#presetCart', t: 'Escolha um ponto de partida', o: 'Conservador, moderado ou arrojado. Depois você ajusta cada classe.' },
+    { sel: '#tbl-alvoc', up: '.tscroll', t: 'Ajuste a divisão', o: 'Quanto da carteira você quer em cada classe. Os cenários e as Oportunidades usam essa divisão para dizer o que comprar.' },
+    { sel: '#alvoCartSum', t: 'Feche em 100%', o: 'A soma precisa dar 100%. Aqui aparece quanto falta ou sobra.' }
+  ] },
+  'p-carteira|Aplicações': { passos: [
+    { sel: '#tbl-ativos', up: '.tscroll', t: 'Suas aplicações', o: 'Tudo o que você cadastrou, com valor atual, rendimento e vencimento. Clique numa linha para editar ou atualizar o valor com o extrato.' }
+  ] },
+  'p-carteira|Saúde da carteira': { passos: [
+    { sel: '#sd-wrap', t: 'A nota da carteira', o: 'Uma nota de 0 a 1.000 em cinco eixos. Clique no (i) de cada eixo para ver a conta e o que fazer para subir.' }
+  ] },
+  'p-global|Checkpoint do mês': { auto: true, passos: [
+    { sel: '#cp-st', t: 'Como você está', o: 'O último checkpoint contra o que o plano previa para o mesmo mês: à frente ou atrás, e quanto.' },
+    { sel: '#cp-valor', up: 'label', t: 'O total aplicado do mês', o: 'Some o saldo de todas as aplicações no fim do mês. Se a Carteira estiver cadastrada, o botão ao lado preenche sozinho.' },
+    { sel: '#cpform .btn[type="submit"]', t: 'Salve uma vez por mês', o: 'Cada checkpoint vale +80 no tabuleiro e vira um ponto no gráfico da Projeção.' }
+  ] },
+  'p-global|Projeção': { passos: [
+    { sel: '#g-anos', t: 'Quantos anos ver', o: 'Escolha até onde o gráfico vai.' },
+    { sel: '#lg-g', t: 'As linhas', o: 'Plano é a sua meta; os pontos são os checkpoints reais; as outras linhas são os cenários. Clique numa legenda para esconder ou mostrar a linha.' },
+    { sel: '#ch-g', t: 'Passe o mouse', o: 'Em cada mês o gráfico mostra o valor de cada linha e a diferença para o plano.' }
+  ] },
+  'p-global|Checkpoints': { passos: [
+    { sel: '#tbl-cp', up: '.tscroll', t: 'Real contra o plano', o: 'Cada checkpoint salvo, o que o plano previa para aquele mês e a diferença. Dá para corrigir ou apagar um checkpoint aqui.' }
+  ] },
+  'p-orcamento|Mudanças e eventos': { passos: [
+    { sel: '#tbl-mud', up: '.tscroll', t: 'Mudanças programadas', o: 'Um novo valor a partir de um mês: aumento de salário, aluguel novo, uma assinatura que acaba. Use + Mudança.' },
+    { sel: '#tbl-ev', up: '.tscroll', t: 'Eventos', o: 'Um gasto ou receita pontual, que pode repetir todo ano: 13º, férias, bônus, IPVA, matrícula. Use + Evento.' }
+  ] },
+  'p-orcamento|Itens dos módulos': { passos: [
+    { sel: '#pl-itens-res', t: 'O que os módulos mandam', o: 'Compras, viagens, stock options e outros itens que você planejou nos módulos aparecem aqui.' },
+    { sel: '#pl-inc', t: 'Projeção real ou simulação', o: 'Em Projeção real o item entra no plano e muda a sobra dos meses em que acontece. Em Só simulação fica de fora, só para comparar.' }
+  ] },
+  'p-orcamento|Plano mês a mês': { passos: [
+    { sel: '#pl-per', t: 'Período', o: 'Escolha quantos meses ver no gráfico e na tabela.' },
+    { sel: '#tbl-plano', up: '.tscroll', t: 'Mês a mês', o: 'Receita, custos, parcelas, rendimento e patrimônio projetados de cada mês. É daqui que sai a linha Plano da Projeção.' }
+  ] }
+};
+GUIAS[GUIA_PLANO] = { plano: true, passos: [] };
+let gK = null, gI = 0, gL = [], gEl = null;
+function guiaSt() { const g = state.guias = state.guias && typeof state.guias === 'object' ? state.guias : {}; g.vistos = Array.isArray(g.vistos) ? g.vistos : []; g.feitos = Array.isArray(g.feitos) ? g.feitos : []; return g; }
+function guiaSec(k) { const i = k.indexOf('|'), tp = $(k.slice(0, i)); return tp ? tp.querySelector(`section[data-nav="${CSS.escape(k.slice(i + 1))}"]`) : null; }
+function guiaVisivel(el) { return el && el.getClientRects().length > 0; }
+function guiaMarca(k, fim) { if (!state) return; const g = guiaSt(); let m = false;
+  if (!g.vistos.includes(k)) { g.vistos.push(k); m = true; }
+  if (fim && !g.feitos.includes(k)) { g.feitos.push(k); m = true; setSave(`+${JG_PTS.guia} no tabuleiro: guia concluído`); }
+  if (m) { save(); try { if ($('jg-sec') && tab === 'modulos') renderJogo(); } catch (e) {} } }
+function guiaBotoes() {
+  Object.keys(GUIAS).forEach(k => { const sec = guiaSec(k); if (!sec) return;
+    let hd = null; const f = sec.firstElementChild;
+    if (sec.matches('.panel') && f && (f.matches('h2') || (f.matches('.row') && f.querySelector('h2')))) hd = f;
+    else hd = sec.querySelector(':scope > .sec-band, :scope > .cad-div');
+    if (!hd || hd.querySelector(':scope > .guia-btn')) return;
+    const b = document.createElement('button'); b.type = 'button'; b.className = 'guia-btn'; b.dataset.guia = k; b.textContent = '?'; b.title = 'Me guia nesta seção'; b.setAttribute('aria-label', b.title);
+    hd.classList.add('tem-guia'); hd.appendChild(b); });
+}
+function guiaAbre(k) {
+  const G = GUIAS[k]; if (!G) return; if (G.plano) return tourAbre();
+  if (tourI >= 0) tourFecha(false); if (gK) guiaFecha(false);
+  const sec = guiaSec(k); if (sec && sec.matches('.panel')) abrirSecao(sec);
+  gL = G.passos.filter(p => guiaVisivel(document.querySelector(p.sel)));
+  if (!gL.length) { guiaMarca(k, false); return; }
+  gK = k; gI = 0; guiaMostra();
+}
+function guiaMostra() {
+  if (gEl) gEl.classList.remove('tour-alvo');
+  const st = gL[gI], el = document.querySelector(st.sel); if (!guiaVisivel(el)) { if (gI < gL.length - 1) { gI++; return guiaMostra(); } return guiaFecha(true); }
+  gEl = (st.up && el.closest(st.up)) || el; gEl.classList.add('tour-alvo');
+  const ult = gI === gL.length - 1, ganha = !guiaSt().feitos.includes(gK), nome = gK.slice(gK.indexOf('|') + 1), pop = $('tour-pop');
+  pop.innerHTML = `<div class="tour-n">Passo ${gI + 1} de ${gL.length} · ${esc(nome)}</div><h3 id="tour-tit">${esc(st.t)}</h3><p>${esc(st.o)}</p><div class="btns"><span><button class="btn ghost tiny" type="button" data-guiab="volta" ${gI ? '' : 'disabled'}>Voltar</button> <button class="btn ghost tiny" type="button" data-guiab="fecha">${gI ? 'Fechar' : 'Pular guia'}</button></span><span><button class="btn tiny" type="button" data-guiab="prox">${ult ? (ganha ? `Concluir (+${JG_PTS.guia})` : 'Concluir') : 'Próximo'}</button></span></div>`;
+  pop.hidden = false;
+  gEl.scrollIntoView({ block: 'center', behavior: 'smooth' });
+  setTimeout(tourPos, 350); tourPos();
+}
+function guiaFecha(fim) {
+  if (gEl) gEl.classList.remove('tour-alvo'); const k = gK; gEl = null; gK = null; gL = [];
+  if (tourI < 0) $('tour-pop').hidden = true;
+  if (k) guiaMarca(k, fim);
+}
+function guiaAuto() {
+  if (!state || gK || tourI >= 0 || document.querySelector('.conf-pop:not([hidden])')) return;
+  const vis = guiaSt().vistos, k = Object.keys(GUIAS).find(x => GUIAS[x].auto && x.startsWith('p-' + tab + '|') && !vis.includes(x));
+  if (k) guiaAbre(k);
+}
+document.addEventListener('click', e => {
+  const b = e.target.closest && e.target.closest('.guia-btn'); if (b) { e.stopPropagation(); return guiaAbre(b.dataset.guia); }
+  const a = e.target.closest && e.target.closest('[data-guiab]'); if (!a || !gK) return;
+  const v = a.dataset.guiab; if (v === 'fecha') return guiaFecha(false);
+  if (v === 'volta') { gI = Math.max(0, gI - 1); return guiaMostra(); }
+  if (gI >= gL.length - 1) return guiaFecha(true); gI++; guiaMostra();
+}, true);
+$('guia-reset').addEventListener('click', () => { const g = guiaSt(); g.vistos = []; delete state.tourPlano; save(); $('guia-msg').textContent = 'Pronto: os guias vão abrir de novo na primeira visita de cada tela. Os pontos que você já ganhou continuam.'; });
 function renderOrcamento() {
   const foco = guardarFoco();
   const pm = projMes(mKey(HOJE_IDX)), sobraT = pm.liq - pm.custos;
@@ -14413,6 +14546,7 @@ function prepSecoes() {
     const fechada = secRecolhidas.includes(chaveSec(pn)); pn.classList.toggle('recolhida', fechada);
     const b = hd.querySelector(':scope > .sec-tog'); b.setAttribute('aria-expanded', String(!fechada)); b.title = fechada ? 'Abrir seção' : 'Recolher seção'; b.setAttribute('aria-label', b.title);
   });
+  try { guiaBotoes(); } catch (e) { console.error(e); }
 }
 function abrirSecao(el) { if (!el) return; const ps = el.matches('.panel') ? [el] : [...el.querySelectorAll('.panel.recolhida')]; let mudou = false;
   ps.forEach(pn => { const k = chaveSec(pn); if (secRecolhidas.includes(k)) { secRecolhidas = secRecolhidas.filter(x => x !== k); mudou = true; } });
@@ -14834,7 +14968,7 @@ AVISOS_PESSOAIS.push(() => {
 
 /* ---------- Jogo: pontos, níveis e casas (derivados do que já está no painel) ---------- */
 const JG_NIVEIS = [[0, 'Começando'], [400, 'Organizado'], [1000, 'Planejador'], [2000, 'Estrategista'], [4000, 'Independente']];
-const JG_PTS = { casa: 20, ck: 40, fech: 100, cp: 80, dentro: 150, modulo: 300 };
+const JG_PTS = { casa: 20, ck: 40, fech: 100, cp: 80, dentro: 150, modulo: 300, guia: 10 };
 function jgMods() { return MODS.filter(m => modLiberado(m) && (m.breve || modEscolhido(m))); }
 function jgProg(m) {
   if (m.breve) return null;
@@ -14850,7 +14984,8 @@ function jgPontos() {
   d.fech = fe.length;
   fe.forEach(k => { try { const F = fechamento(k); if (F.tp.custos != null && F.tr.custos != null && F.tr.custos <= F.tp.custos) d.dentro++; } catch (e) {} });
   d.cp = (cps || []).length;
-  d.total = d.casas * JG_PTS.casa + d.mods * JG_PTS.modulo + d.ck * JG_PTS.ck + d.fech * JG_PTS.fech + d.cp * JG_PTS.cp + d.dentro * JG_PTS.dentro;
+  d.guias = ((state.guias || {}).feitos || []).length;
+  d.total = d.guias * JG_PTS.guia + d.casas * JG_PTS.casa + d.mods * JG_PTS.modulo + d.ck * JG_PTS.ck + d.fech * JG_PTS.fech + d.cp * JG_PTS.cp + d.dentro * JG_PTS.dentro;
   let k = 0; JG_NIVEIS.forEach((n, j) => { if (d.total >= n[0]) k = j; });
   d.nivel = k + 1; d.nome = JG_NIVEIS[k][1]; d.prox = JG_NIVEIS[k + 1] || null;
   return d;
@@ -15005,6 +15140,7 @@ document.addEventListener('click', e => { if (e.target.closest('.side-logo [data
 document.addEventListener('keydown', e => { if ((e.key === 'Enter' || e.key === ' ') && e.target.closest && e.target.closest('.side-logo [data-home]')) { e.preventDefault(); showTab('modulos'); } });
 function showTab(t, keepScroll) {
   if (t !== 'orcamento' && tourI >= 0) tourFecha(false);
+  if (gK) guiaFecha(false);
   const mudou = tab !== t;
   tab = t;
   const md = modDe(t); if (md) modAtual = md; aplicarMod();
@@ -15016,6 +15152,7 @@ function showTab(t, keepScroll) {
   BUILD[t](); renderTab();
   if (navAbertos && !navAbertos.includes(t)) { navAbertos.push(t); guardarNav(); } else aplicarNav();
   if (mudou && !keepScroll) window.scrollTo(0, 0);
+  if (mudou) setTimeout(guiaAuto, 700);
   if (window.innerWidth <= 900) { const h = document.querySelector('.nav-head[aria-current]'), box = h.closest('.nav-heads'); box.scrollLeft = h.offsetLeft - (box.clientWidth - h.offsetWidth) / 2; }
   pintaVoltar();
   spy();
