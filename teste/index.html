@@ -1469,6 +1469,34 @@ tr.rd-hit td { background: color-mix(in srgb, var(--good) 9%, transparent); }
 .pess-g i { width: 8px; height: 8px; border-radius: 99px; background: var(--mc); }
 #pess-pop .sino-i a { color: var(--ink); text-decoration: none; }
 #pess-pop .sino-i a:hover { text-decoration: underline; }
+.fam-tbl { width: 100%; }
+.fam-tbl td { text-align: left; vertical-align: top; }
+.fam-tbl td.ng-num, .fam-tbl th.ng-num { text-align: right; }
+.fam-tbl td input[type=text] { width: 100%; min-width: 110px; }
+.fam-tbl td input[type=number] { width: 86px; text-align: right; }
+.fam-tbl td select { width: 100%; min-width: 0; max-width: 170px; }
+.fam-tbl .fam-partes { display: block; margin-top: 3px; font-size: 10.5px; }
+.fam-tbl tfoot td, .fam-tbl tr.fam-tot td { font-weight: 700; border-top: 1px solid var(--line); }
+.fam-fx { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 4px; }
+.fam-fx label { font-size: 10.5px; text-transform: none; letter-spacing: 0; display: flex; flex-direction: column; gap: 2px; }
+.fam-fx input[type=number] { width: 84px; }
+.fam-sal .neg, .fam-tbl .neg { color: var(--bad); }
+.fam-acertos { display: flex; flex-direction: column; gap: 6px; margin: 10px 0 6px; }
+.fam-acerto { display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; padding: 8px 12px; border: 1px solid var(--line); border-left: 3px solid var(--s6); border-radius: 8px; }
+.fam-bar { height: 10px; border-radius: 6px; background: var(--line); overflow: hidden; margin: 8px 0 4px; }
+.fam-bar span { display: block; height: 100%; background: var(--good); border-radius: 6px; }
+@media (max-width: 640px) {
+  .fam-tbl thead { display: none; }
+  .fam-tbl { min-width: 0 !important; }
+  .fam-tbl tr { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 6px 10px; padding: 10px 0; border-bottom: 1px solid var(--line); }
+  .fam-tbl td { border: 0 !important; padding: 0 !important; }
+  .fam-tbl td.name { grid-column: 1 / -1; }
+  .fam-tbl td[data-l]::before { content: attr(data-l); display: block; font-size: 9.5px; text-transform: uppercase; letter-spacing: .5px; color: var(--faint); font-family: var(--f-head); }
+  .fam-tbl td.ng-num { text-align: left; }
+  .fam-tbl td input, .fam-tbl td select { width: 100% !important; max-width: none; min-width: 0 !important; }
+  .fam-tbl td:last-child .ng-ac { justify-content: flex-start; }
+  .fam-tbl tfoot tr td:empty { display: none; }
+}
 </style>
 
 
@@ -1532,6 +1560,7 @@ tr.rd-hit td { background: color-mix(in srgb, var(--good) 9%, transparent); }
         <div class="nav-sec" data-sec="fam" data-mod="fam"><button type="button" class="nav-sec-h" data-sectog="fam" aria-expanded="true"><span>Família</span><span class="caret" aria-hidden="true">▾</span></button><div class="nav-sec-b">
           <div class="nav-group"><button type="button" class="nav-head" data-tab="famvg"><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 11.5 12 4l9 7.5"/><path d="M5.5 10v9.5h13V10"/><path d="M10 19.5v-5h4v5"/></svg></span>Visão geral</button><div class="nav-sub" data-sub="famvg"></div></div>
           <div class="nav-group"><button type="button" class="nav-head" data-tab="fampes"><span class="ico">01</span>Minha família<span class="caret" data-navtog="fampes" role="button" tabindex="0" aria-label="Abrir ou recolher submódulos">▾</span></button><div class="nav-sub" data-sub="fampes"></div></div>
+          <div class="nav-group"><button type="button" class="nav-head" data-tab="famcasa"><span class="ico">02</span>Orçamento da casa<span class="caret" data-navtog="famcasa" role="button" tabindex="0" aria-label="Abrir ou recolher submódulos">▾</span></button><div class="nav-sub" data-sub="famcasa"></div></div>
         </div></div>
         <div class="nav-sec" data-sec="indep" data-mod="indep"><button type="button" class="nav-sec-h" data-sectog="indep" aria-expanded="true"><span>Independência financeira</span><span class="caret" aria-hidden="true">▾</span></button><div class="nav-sec-b">
           <div class="nav-group"><button type="button" class="nav-head" data-tab="indvg"><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 11.5 12 4l9 7.5"/><path d="M5.5 10v9.5h13V10"/><path d="M10 19.5v-5h4v5"/></svg></span>Visão geral</button><div class="nav-sub" data-sub="indvg"></div></div>
@@ -1554,7 +1583,7 @@ tr.rd-hit td { background: color-mix(in srgb, var(--good) 9%, transparent); }
     </div>
     <div class="nav-mobile-sub" id="navMobileSub"></div>
   </div>
-  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 249</div></div>
+  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 250</div></div>
 </nav>
 <div class="sino-pop" id="sino-pop" role="dialog" aria-label="Central de avisos" hidden></div>
 <div class="sino-pop" id="pess-pop" role="dialog" aria-label="Seus avisos" hidden></div>
@@ -2063,6 +2092,10 @@ tr.rd-hit td { background: color-mix(in srgb, var(--good) 9%, transparent); }
       <h2>Efeito no patrimônio</h2>
       <div id="famv-ef"></div>
     </section>
+    <section data-nav="Orçamento da casa" class="panel">
+      <h2>Orçamento da casa</h2>
+      <div id="famv-casa"></div>
+    </section>
     <section data-nav="Linha do tempo" class="panel">
       <h2>Linha do tempo</h2>
       <div id="famv-tl"></div>
@@ -2093,6 +2126,31 @@ tr.rd-hit td { background: color-mix(in srgb, var(--good) 9%, transparent); }
     <section data-nav="Custo por fase" class="panel">
       <h2>Custo por fase</h2>
       <div id="famp-cus"></div>
+    </section>
+  </section>
+  <!-- ============ FAMÍLIA: ORÇAMENTO DA CASA ============ -->
+  <section role="tabpanel" id="p-famcasa" hidden>
+    <div class="block-title"><span class="num">02</span><div><h1>Orçamento da casa</h1><p class="desc">O que é meu, seu e nosso, como dividir cada conta da casa, quem deve a quem no mês e a reserva de emergência da família.</p></div></div>
+    <div class="kpis" id="kpi-famc"></div>
+    <section data-nav="Contas da casa" class="panel">
+      <h2>Contas da casa</h2>
+      <p class="sub">Cada conta pode ser nossa (dividida) ou só de uma pessoa. Nas nossas, escolha a divisão: igual, proporcional à renda ou um valor fixo por pessoa.</p>
+      <div id="famc-contas"></div>
+      <div class="row" style="margin-top:10px;gap:6px;flex-wrap:wrap"><button type="button" class="btn tiny" data-famkadd>+ Conta</button><button type="button" class="btn ghost tiny" data-famkimp>Trazer do meu orçamento</button></div>
+    </section>
+    <section data-nav="Quanto cada um põe" class="panel">
+      <h2>Quanto cada um põe</h2>
+      <div id="famc-div"></div>
+    </section>
+    <section data-nav="Quem deve a quem" class="panel">
+      <h2>Quem deve a quem</h2>
+      <p class="sub">Lance quem pagou cada conta no mês. O painel mostra o saldo de cada um e quanto acertar.</p>
+      <div id="famc-deve"></div>
+    </section>
+    <section data-nav="Reserva da família" class="panel">
+      <h2>Reserva da família</h2>
+      <p class="sub">Meses de gastos da casa, não só os seus, contra o que já está guardado com liquidez diária.</p>
+      <div id="famc-res"></div>
     </section>
   </section>
   <!-- ============ INDEPENDÊNCIA: VISÃO GERAL ============ -->
@@ -3362,7 +3420,7 @@ tr.rd-hit td { background: color-mix(in srgb, var(--good) 9%, transparent); }
     return new Promise(resolve => { const { data } = sb.auth.onAuthStateChange(async (ev) => { if (ev !== 'PASSWORD_RECOVERY') return; const s = prompt('Digite a nova senha (mínimo 8 caracteres):'); if (s && s.length >= 8) { const { error } = await sb.auth.updateUser({ password: s }); alert(error ? 'Não deu para trocar a senha: ' + error.message : 'Senha trocada.'); } }); resolve(data); });
   }
   // ---------- rodapé: compartilhar, administração e sair ----------
-  const SITE_V = 132;
+  const SITE_V = 133;
   const escH = v => String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const dataBR = v => v ? new Date(v).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' }) : '–';
   const css2 = `.side-foot .r{flex-wrap:wrap}.side-foot .lg-acoes{margin-left:auto;display:inline-flex;gap:10px}
@@ -5090,6 +5148,177 @@ function famItensMod() {
       mensal: M.length ? -famDelta(p, M[0]) : 0, meses: M.length, resumo: famResumo(p), uso: p.uso, bloq: !M.length }; });
 }
 
+/* ---------- Família (etapa 2): orçamento da casa (meu, seu e nosso; divisão das contas; quem deve a quem; reserva da família) ----------
+   state.fam.casa = { contas:[{id,nome,valor,dono 'nosso'|pessoaId,div igual|renda|fixo,fixo{pessoaId:v},paga pessoaId}],
+     pags:[{id,mes,desc,valor,quem,contaId,div igual|renda}], acertos:[{id,mes,de,para,valor}], mes, resMeses, resOutra, resFil, resPrazo } */
+const FAM_DIV = { igual: 'Igual', renda: 'Proporcional à renda', fixo: 'Valor fixo' };
+function famCasaNormalizar(s) {
+  const v = s.fam; if (!v.casa || typeof v.casa !== 'object' || Array.isArray(v.casa)) v.casa = {};
+  const c = v.casa; ['contas', 'pags', 'acertos'].forEach(k => { if (!Array.isArray(c[k])) c[k] = []; c[k] = c[k].filter(x => x && typeof x === 'object' && x.id); });
+  c.contas.forEach(x => { x.nome = TXT(x.nome, 60) || 'Conta'; x.valor = Math.max(0, +x.valor || 0); if (typeof x.dono !== 'string' || !x.dono) x.dono = 'nosso'; if (!FAM_DIV[x.div]) x.div = 'igual';
+    if (!x.fixo || typeof x.fixo !== 'object' || Array.isArray(x.fixo)) x.fixo = {}; if (typeof x.paga !== 'string') x.paga = ''; });
+  c.pags.forEach(x => { x.desc = TXT(x.desc, 80) || 'Gasto da casa'; x.valor = Math.max(0, +x.valor || 0); if (!/^\d{4}-\d{2}$/.test(x.mes || '')) x.mes = mKey(HOJE_IDX); if (typeof x.quem !== 'string') x.quem = ''; x.div = x.div === 'renda' ? 'renda' : 'igual'; });
+  c.acertos.forEach(x => { x.valor = Math.max(0, +x.valor || 0); if (!/^\d{4}-\d{2}$/.test(x.mes || '')) x.mes = mKey(HOJE_IDX); });
+  if (!/^\d{4}-\d{2}$/.test(c.mes || '')) c.mes = ''; c.resMeses = Math.min(36, Math.max(1, Math.round(+c.resMeses || 6))); c.resOutra = Math.max(0, +c.resOutra || 0);
+  c.resFil = !!c.resFil; c.resPrazo = Math.min(120, Math.max(1, Math.round(+c.resPrazo || 12)));
+}
+const famCasa = () => state.fam.casa;
+// a sua renda líquida por mês (Receitas e custos do plano, sem os overrides do mês)
+function famRendaEu() {
+  let bruto = 0, ded = 0; try { const L = linhasPlano(); L.filter(l => l.tipo === 'rec').forEach(l => { bruto += l.base; });
+    L.filter(l => l.tipo === 'ded').forEach(l => { ded += l.calc ? dedCLT(l.calc, bruto) : l.pct ? bruto * l.base / 100 : l.base; }); } catch (e) {}
+  return Math.max(0, bruto - ded);
+}
+// quem divide as contas: você, cônjuge e outros dependentes com renda
+const famAdultos = () => famL().filter(p => p.tipo === 'eu' || p.tipo === 'conjuge' || (p.tipo === 'dependente' && p.renda > 0));
+const famRendaDe = p => p.tipo === 'eu' ? famRendaEu() : p.renda;
+const famNomeDe = id => { const p = famAcha(id); return p ? p.nome : '—'; };
+function famPartes(valor, div, fixo) {
+  const A = famAdultos(), out = {}; if (!A.length) return out;
+  if (div === 'renda') { const R = A.map(famRendaDe), t = R.reduce((a, b) => a + b, 0); A.forEach((p, k) => { out[p.id] = t > 0 ? valor * R[k] / t : valor / A.length; }); }
+  else if (div === 'fixo') { let soma = 0; A.forEach(p => { const f = Math.max(0, +(fixo || {})[p.id] || 0); out[p.id] = f; soma += f; }); const r = (valor - soma) / A.length; A.forEach(p => { out[p.id] += r; }); }
+  else A.forEach(p => { out[p.id] = valor / A.length; });
+  return out;
+}
+const famEhNosso = c => c.dono === 'nosso' || !famAdultos().some(p => p.id === c.dono);
+const famContaPartes = c => famEhNosso(c) ? famPartes(c.valor, c.div, c.fixo) : { [c.dono]: c.valor };
+function famDivisao() {
+  const A = famAdultos(), R = {}; A.forEach(p => { R[p.id] = { p, renda: famRendaDe(p), nosso: 0, meu: 0 }; });
+  let nosso = 0, ind = 0;
+  famCasa().contas.forEach(c => { if (famEhNosso(c)) { nosso += c.valor; Object.entries(famPartes(c.valor, c.div, c.fixo)).forEach(([id, v]) => { if (R[id]) R[id].nosso += v; }); } else { ind += c.valor; if (R[c.dono]) R[c.dono].meu += c.valor; } });
+  return { A, R, nosso, ind, tot: nosso + ind };
+}
+function famPagPartes(g) { const c = g.contaId && famCasa().contas.find(x => x.id === g.contaId); return c && famEhNosso(c) ? famPartes(g.valor, c.div, c.fixo) : famPartes(g.valor, g.div); }
+// saldos acumulados até o mês (inclusive): positivo = os outros devem a essa pessoa
+function famSaldos(ate) {
+  const S = {}, C = famCasa(); famAdultos().forEach(p => { S[p.id] = { pagou: 0, parte: 0, acerto: 0, saldo: 0 }; });
+  C.pags.filter(g => mIndex(g.mes) <= ate).forEach(g => { if (S[g.quem]) S[g.quem].pagou += g.valor; Object.entries(famPagPartes(g)).forEach(([id, v]) => { if (S[id]) S[id].parte += v; }); });
+  C.acertos.filter(a => mIndex(a.mes) <= ate).forEach(a => { if (S[a.de]) S[a.de].acerto += a.valor; if (S[a.para]) S[a.para].acerto -= a.valor; });
+  Object.values(S).forEach(x => { x.saldo = x.pagou - x.parte + x.acerto; }); return S;
+}
+// menor lista de transferências para zerar os saldos
+function famTransf(S) {
+  const d = [], c = [], out = []; Object.entries(S).forEach(([id, x]) => { if (x.saldo < -0.5) d.push({ id, v: -x.saldo }); else if (x.saldo > 0.5) c.push({ id, v: x.saldo }); });
+  d.sort((a, b) => b.v - a.v); c.sort((a, b) => b.v - a.v);
+  let i = 0, j = 0; while (i < d.length && j < c.length) { const v = Math.min(d[i].v, c[j].v); if (v >= 0.5) out.push({ de: d[i].id, para: c[j].id, valor: Math.round(v * 100) / 100 }); d[i].v -= v; c[j].v -= v; if (d[i].v < 0.5) i++; if (c[j].v < 0.5) j++; }
+  return out;
+}
+const famCasaMes = () => famCasa().mes || mKey(HOJE_IDX);
+function famReservaCart() { try { return ativos().map(a => ({ a, v: avaliar(a) })).filter(({ a }) => /di[aá]ria/i.test(a.liq || '') || a.tipo === 'tsel' || a.tipo === 'poup').reduce((s, x) => s + (x.v.atual || 0), 0); } catch (e) { return 0; } }
+function famCustoPlanoHoje() { try { const pm = (calcPlano().meses || {})[HOJE_IDX]; return pm ? pm.custos : 0; } catch (e) { return 0; } }
+const famFilHoje = () => famFilhos().filter(p => !famPrevisto(p)).reduce((t, p) => t + famCustoIdade(p, famIdade(p, HOJE_IDX)), 0);
+function famReserva() {
+  const C = famCasa(), D = famDivisao(), semContas = !C.contas.length, base = semContas ? famCustoPlanoHoje() : D.tot, fil = C.resFil ? famFilHoje() : 0;
+  const mes = base + fil, alvo = mes * C.resMeses, cart = famReservaCart(), tem = cart + C.resOutra;
+  return { semContas, base, fil, mes, alvo, cart, tem, falta: Math.max(0, alvo - tem), cobre: mes > 0 ? tem / mes : 0 };
+}
+function famCasaResumo() { const C = famCasa(); if (!C.contas.length) return ''; const D = famDivisao(); return `${fm(D.tot)}/mês na casa`; }
+
+/* ---------- tela ---------- */
+function renderFamCasa() {
+  const C = famCasa(), A = famAdultos(), D = famDivisao(), mes = famCasaMes(), mI = mIndex(mes), S = famSaldos(mI), T = famTransf(S), Rs = famReserva();
+  kpis($('kpi-famc'), [
+    ['Contas da casa por mês', fm(D.tot), C.contas.length ? `${C.contas.length} ${C.contas.length > 1 ? 'contas' : 'conta'}` : 'nenhuma conta cadastrada'],
+    ['Nosso (dividido)', fm(D.nosso), D.tot ? Math.round(D.nosso / D.tot * 100) + '% das contas da casa' : 'contas que todos dividem'],
+    ['Só de cada um', fm(D.ind), A.filter(p => D.R[p.id].meu > 0).map(p => `${esc(p.nome)} ${fm(D.R[p.id].meu)}`).join(' · ') || 'contas que só uma pessoa paga'],
+    ['Quem deve a quem', T.length ? fm(T.reduce((t, x) => t + x.valor, 0)) : 'Tudo certo', T.length ? T.map(x => `${esc(famNomeDe(x.de))} → ${esc(famNomeDe(x.para))}`).join(' · ') : 'até ' + mLabel(mI)]
+  ]);
+  const aviso = A.length < 2 ? `<p class="hint">Para dividir as contas, cadastre quem mora com você em <a href="#" data-tab="fampes">Minha família</a> (cônjuge, ou outro dependente com renda). <button type="button" class="btn tiny" data-famadd="conjuge">+ Cônjuge</button></p>` : '';
+  // contas
+  const opDono = c => `<option value="nosso"${famEhNosso(c) ? ' selected' : ''}>Nosso</option>` + A.map(p => `<option value="${p.id}"${!famEhNosso(c) && c.dono === p.id ? ' selected' : ''}>Só ${esc(p.nome)}</option>`).join('');
+  const opP = (sel, vazio) => (vazio ? `<option value="">${vazio}</option>` : '') + A.map(p => `<option value="${p.id}"${sel === p.id ? ' selected' : ''}>${esc(p.nome)}</option>`).join('');
+  $('famc-contas').innerHTML = aviso + (!C.contas.length ? '<p class="hint">Nenhuma conta da casa ainda. Use <b>+ Conta</b> ou traga os custos fixos e essenciais do seu orçamento.</p>'
+    : `<div class="tscroll"><table class="fam-tbl"><thead><tr><th>Conta</th><th class="ng-num">Valor/mês</th><th>De quem</th><th>Divisão</th><th>Quem costuma pagar</th><th></th></tr></thead><tbody>${C.contas.map(c => { const n = famEhNosso(c), P = famContaPartes(c);
+      const fx = n && c.div === 'fixo' ? `<div class="fam-fx">${A.map(p => `<label>${esc(p.nome)}<input type="number" min="0" step="10" data-famkfx="${c.id}:${p.id}" value="${c.fixo[p.id] ?? ''}" placeholder="0"></label>`).join('')}</div>${Math.abs(A.reduce((t, p) => t + (+c.fixo[p.id] || 0), 0) - c.valor) >= 1 ? `<small class="subdet">A diferença para o valor da conta é dividida igualmente.</small>` : ''}` : '';
+      return `<tr><td class="name" data-l="Conta"><input type="text" data-famkc="${c.id}:nome" value="${esc(c.nome)}" maxlength="60" aria-label="Nome da conta"></td>
+      <td data-l="Valor/mês" class="ng-num"><input type="number" min="0" step="10" data-famkc="${c.id}:valor" value="${c.valor || ''}" placeholder="0" aria-label="Valor por mês"></td>
+      <td data-l="De quem"><select data-famkc="${c.id}:dono" aria-label="De quem é a conta">${opDono(c)}</select></td>
+      <td data-l="Divisão">${n ? `<select data-famkc="${c.id}:div" aria-label="Como dividir">${Object.entries(FAM_DIV).map(([k, t]) => `<option value="${k}"${c.div === k ? ' selected' : ''}>${t}</option>`).join('')}</select>${fx}<small class="subdet fam-partes">${A.map(p => `${esc(p.nome)} ${fm(P[p.id] || 0)}`).join(' · ')}</small>` : '<span class="subdet">não divide</span>'}</td>
+      <td data-l="Quem paga">${n ? `<select data-famkc="${c.id}:paga" aria-label="Quem costuma pagar">${opP(c.paga || (A[0] || {}).id, '')}</select>` : `<span class="subdet">${esc(famNomeDe(c.dono))}</span>`}</td>
+      <td><div class="ng-ac"><button type="button" class="btn danger tiny" data-famkdel="${c.id}">Remover</button></div></td></tr>`; }).join('')}</tbody>
+      <tfoot><tr class="fam-tot"><td class="name">Total</td><td class="ng-num">${fm(D.tot)}</td><td colspan="4"></td></tr></tfoot></table></div>`);
+  // quanto cada um põe
+  $('famc-div').innerHTML = !A.length || !C.contas.length ? '<p class="hint">Cadastre as contas da casa para ver quanto cada um põe por mês.</p>'
+    : `<table class="fam-tbl"><thead><tr><th>Pessoa</th><th class="ng-num">Renda líquida</th><th class="ng-num">Parte do nosso</th><th class="ng-num">Contas só suas</th><th class="ng-num">Total na casa</th><th class="ng-num">Sobra</th></tr></thead><tbody>${A.map(p => { const r = D.R[p.id], t = r.nosso + r.meu, so = r.renda - t;
+      return `<tr><td class="name" data-l="Pessoa">${esc(p.nome)}</td><td data-l="Renda" class="ng-num">${r.renda ? fm(r.renda) : '—'}<small>${D.A.length > 1 && r.renda ? Math.round(r.renda / D.A.reduce((x, y) => x + D.R[y.id].renda, 0) * 100) + '% da renda da casa' : ''}</small></td>
+      <td data-l="Parte do nosso" class="ng-num">${fm(r.nosso)}<small>${D.nosso ? Math.round(r.nosso / D.nosso * 100) + '% do nosso' : ''}</small></td><td data-l="Só suas" class="ng-num">${fm(r.meu)}</td>
+      <td data-l="Total na casa" class="ng-num"><b>${fm(t)}</b><small>${r.renda ? Math.round(t / r.renda * 100) + '% da renda' : ''}</small></td><td data-l="Sobra" class="ng-num${so < 0 ? ' neg' : ''}">${r.renda ? fm(so) : '—'}<small>${r.renda ? 'antes dos gastos pessoais' : 'informe a renda em Minha família'}</small></td></tr>`; }).join('')}</tbody></table>
+    <p class="subdet">A sua renda vem de Receitas e custos do Plano futuro; a das outras pessoas, de Minha família. A sobra é antes dos gastos pessoais de cada um. Este orçamento não muda o Plano futuro: os seus custos lá continuam sendo os de Receitas e custos, para não contar duas vezes.</p>`;
+  // quem deve a quem
+  const doMes = C.pags.filter(g => g.mes === mes), fixas = C.contas.filter(c => famEhNosso(c) && c.valor > 0), faltam = fixas.filter(c => !doMes.some(g => g.contaId === c.id)), acs = C.acertos.filter(a => a.mes === mes);
+  $('famc-deve').innerHTML = A.length < 2 ? '<p class="hint">Quem deve a quem aparece quando houver pelo menos duas pessoas dividindo as contas.</p>' : `<div class="ng-top"><label>Mês<input type="month" data-famkmes value="${mes}" aria-label="Mês"></label>
+      <div class="ng-ac">${faltam.length ? `<button type="button" class="btn tiny" data-famklanca>Lançar as contas do mês (${faltam.length})</button>` : ''}<button type="button" class="btn ghost tiny" data-famkgasto>+ Gasto da casa</button></div></div>
+    ${!doMes.length ? `<p class="hint">Nada lançado em ${mLabel(mI)}. ${fixas.length ? 'Lance as contas do mês com quem costuma pagar cada uma e ajuste quem pagou de verdade.' : 'Cadastre as contas nossas acima ou lance um gasto da casa.'}</p>`
+    : `<table class="fam-tbl"><thead><tr><th>O que foi pago</th><th class="ng-num">Valor</th><th>Quem pagou</th><th>Divisão</th><th></th></tr></thead><tbody>${doMes.map(g => { const c = g.contaId && C.contas.find(x => x.id === g.contaId), P = famPagPartes(g);
+      return `<tr><td class="name" data-l="O que"><input type="text" data-famkp="${g.id}:desc" value="${esc(g.desc)}" maxlength="80" aria-label="O que foi pago"></td>
+      <td data-l="Valor" class="ng-num"><input type="number" min="0" step="10" data-famkp="${g.id}:valor" value="${g.valor || ''}" placeholder="0" aria-label="Valor"></td>
+      <td data-l="Quem pagou"><select data-famkp="${g.id}:quem" aria-label="Quem pagou">${opP(g.quem, g.quem && A.some(p => p.id === g.quem) ? '' : 'Escolha')}</select></td>
+      <td data-l="Divisão">${c && famEhNosso(c) ? `<span class="subdet">${FAM_DIV[c.div]} (da conta)</span>` : `<select data-famkp="${g.id}:div" aria-label="Como dividir"><option value="igual"${g.div === 'igual' ? ' selected' : ''}>Igual</option><option value="renda"${g.div === 'renda' ? ' selected' : ''}>Proporcional à renda</option></select>`}<small class="subdet fam-partes">${A.map(p => `${esc(p.nome)} ${fm(P[p.id] || 0)}`).join(' · ')}</small></td>
+      <td><div class="ng-ac"><button type="button" class="btn danger tiny" data-famkpdel="${g.id}">Remover</button></div></td></tr>`; }).join('')}</tbody>
+      <tfoot><tr class="fam-tot"><td class="name">Total do mês</td><td class="ng-num">${fm(doMes.reduce((t, g) => t + g.valor, 0))}</td><td colspan="3"></td></tr></tfoot></table>`}
+    <h3 class="fam-h3">Saldo até ${mLabel(mI)}</h3>
+    <div class="tscroll"><table class="fam-sal"><thead><tr><th>Pessoa</th><th class="ng-num">Pagou</th><th class="ng-num">Parte dela</th><th class="ng-num">Acertos</th><th class="ng-num">Saldo</th></tr></thead><tbody>${A.map(p => { const x = S[p.id];
+      return `<tr><td class="name">${esc(p.nome)}</td><td class="ng-num">${fm(x.pagou)}</td><td class="ng-num">${fm(x.parte)}</td><td class="ng-num">${x.acerto ? fm(x.acerto) : '—'}</td><td class="ng-num${x.saldo < -0.5 ? ' neg' : ''}"><b>${Math.abs(x.saldo) < 0.5 ? 'zerado' : (x.saldo > 0 ? 'recebe ' : 'deve ') + fm(Math.abs(x.saldo))}</b></td></tr>`; }).join('')}</tbody></table></div>
+    ${T.length ? `<div class="fam-acertos">${T.map(x => `<div class="fam-acerto"><span><b>${esc(famNomeDe(x.de))}</b> deve <b>${fm(x.valor)}</b> a <b>${esc(famNomeDe(x.para))}</b></span><button type="button" class="btn tiny" data-famkacerta="${x.de}:${x.para}:${x.valor}">Acertar</button></div>`).join('')}</div>`
+      : `<p class="subdet">Tudo certo até ${mLabel(mI)}: ninguém deve nada.</p>`}
+    ${acs.length ? `<p class="subdet">Acertos em ${mLabel(mI)}: ${acs.map(a => `${esc(famNomeDe(a.de))} pagou ${fm(a.valor)} a ${esc(famNomeDe(a.para))} <button type="button" class="btn ghost tiny" data-famkadel="${a.id}">Desfazer</button>`).join(' · ')}</p>` : ''}
+    <p class="subdet">O saldo soma todos os meses até o escolhido. Acertar registra que a pessoa pagou a diferença (por Pix, por exemplo) e zera o saldo.</p>`;
+  // reserva da família
+  const pc = Rs.alvo > 0 ? Math.min(100, Rs.tem / Rs.alvo * 100) : 0;
+  $('famc-res').innerHTML = `<div class="ng-form">
+      <label>Meses de gastos da casa<input type="number" min="1" max="36" step="1" data-famkr="resMeses" value="${C.resMeses}"></label>
+      <label>Outra reserva da casa<input type="number" min="0" step="500" data-famkr="resOutra" value="${C.resOutra || ''}" placeholder="0" title="Por exemplo, uma conta conjunta ou a reserva do cônjuge"></label>
+      <label>Juntar em quantos meses<input type="number" min="1" max="120" step="1" data-famkr="resPrazo" value="${C.resPrazo}"></label>
+    </div>
+    <label class="inline"><input type="checkbox" data-famkr="resFil"${C.resFil ? ' checked' : ''}> <span>Somar o custo dos filhos de hoje (${fm(famFilHoje())}/mês), se ele ainda não estiver nas contas da casa</span></label>
+    <div class="kpis fam-ef">${[['Gastos da casa por mês', fm(Rs.mes), Rs.semContas ? 'custos do seu Plano futuro (sem contas da casa cadastradas)' : 'contas da casa' + (Rs.fil ? ' + filhos' : '')],
+      ['Reserva ideal', fm(Rs.alvo), C.resMeses + (C.resMeses > 1 ? ' meses' : ' mês') + ' de gastos'],
+      ['Reserva de hoje', fm(Rs.tem), `${fm(Rs.cart)} com liquidez diária na Carteira${C.resOutra ? ` + ${fm(C.resOutra)} de outra reserva` : ''}`],
+      [Rs.falta > 0 ? 'Falta' : 'Reserva coberta', Rs.falta > 0 ? fm(Rs.falta) : 'Sim', Rs.falta > 0 ? `${fm(Rs.falta / C.resPrazo)}/mês para juntar em ${C.resPrazo} ${C.resPrazo > 1 ? 'meses' : 'mês'}` : `cobre ${num(Rs.cobre, 1)} meses de gastos da casa`]
+    ].map(([l, x, s]) => `<div class="kpi"><span class="l">${l}</span><span class="v">${x}</span><span class="d">${s}</span></div>`).join('')}</div>
+    ${Rs.alvo > 0 ? `<div class="fam-bar" role="img" aria-label="${Math.round(pc)}% da reserva ideal"><span style="width:${pc}%"></span></div><p class="subdet">${Math.round(pc)}% da reserva ideal. Hoje ela cobre ${num(Rs.cobre, 1)} ${Rs.cobre >= 1 && Rs.cobre < 2 ? 'mês' : 'meses'} de gastos da casa.</p>` : '<p class="hint">Cadastre as contas da casa ou monte o Plano futuro para calcular a reserva.</p>'}`;
+}
+
+/* ---------- eventos ---------- */
+function famEu() { const v = state.fam; let e = v.pessoas.find(p => p.tipo === 'eu'); if (!e) { e = famNorm({ id: uid(), tipo: 'eu', nome: 'Você' }); v.pessoas.unshift(e); } return e; }
+document.addEventListener('click', e => {
+  const t = e.target.closest('[data-famkadd],[data-famkimp],[data-famkdel],[data-famklanca],[data-famkgasto],[data-famkpdel],[data-famkacerta],[data-famkadel]'); if (!t || !state.fam) return;
+  const d = t.dataset, C = famCasa(); e.preventDefault();
+  if (d.famkadd != null) { const eu = famEu(); C.contas.push({ id: uid(), nome: 'Nova conta', valor: 0, dono: 'nosso', div: 'igual', fixo: {}, paga: eu.id }); famRe();
+    setTimeout(() => { const L = document.querySelectorAll('[data-famkc$=":nome"]'); const el = L[L.length - 1]; if (el) { el.focus(); el.select(); } }, 30); return; }
+  if (d.famkimp != null) { const eu = famEu(), tem = new Set(C.contas.map(c => c.nome.toLowerCase())), N = cats().filter(c => (c.grupo === 'Fixos' || c.grupo === 'Essenciais') && +c.orc > 0 && !tem.has(c.nome.toLowerCase()));
+    if (!N.length) { ngToast('Nada novo para trazer: preencha o orçamento dos custos fixos e essenciais em Receitas e custos.'); return; }
+    N.forEach(c => C.contas.push({ id: uid(), nome: c.nome, valor: +c.orc, dono: 'nosso', div: 'renda', fixo: {}, paga: eu.id })); famRe(); ngToast(`${N.length} ${N.length > 1 ? 'contas trazidas' : 'conta trazida'} do seu orçamento. Ajuste o que for só seu.`); return; }
+  if (d.famkdel) { const c = C.contas.find(x => x.id === d.famkdel); if (!c || !confirmar(`Remover a conta ${c.nome}?`)) return; C.contas = C.contas.filter(x => x !== c); C.pags.forEach(g => { if (g.contaId === c.id) g.contaId = ''; }); famRe(); return; }
+  if (d.famklanca != null) { const mes = famCasaMes(), A = famAdultos();
+    C.contas.filter(c => famEhNosso(c) && c.valor > 0 && !C.pags.some(g => g.mes === mes && g.contaId === c.id)).forEach(c => C.pags.push({ id: uid(), mes, desc: c.nome, valor: c.valor, quem: A.some(p => p.id === c.paga) ? c.paga : (A[0] || {}).id || '', contaId: c.id, div: 'igual' }));
+    famRe(); return; }
+  if (d.famkgasto != null) { const eu = famEu(); C.pags.push({ id: uid(), mes: famCasaMes(), desc: 'Gasto da casa', valor: 0, quem: eu.id, contaId: '', div: 'igual' }); famRe();
+    setTimeout(() => { const L = document.querySelectorAll('[data-famkp$=":desc"]'); const el = L[L.length - 1]; if (el) { el.focus(); el.select(); } }, 30); return; }
+  if (d.famkpdel) { C.pags = C.pags.filter(g => g.id !== d.famkpdel); famRe(); return; }
+  if (d.famkacerta) { const [de, para, v] = d.famkacerta.split(':'); if (!confirmar(`Registrar que ${famNomeDe(de)} pagou ${fm(+v)} a ${famNomeDe(para)}?`)) return; C.acertos.push({ id: uid(), mes: famCasaMes(), de, para, valor: +v }); famRe(); return; }
+  if (d.famkadel) { C.acertos = C.acertos.filter(a => a.id !== d.famkadel); famRe(); return; }
+});
+document.addEventListener('change', e => {
+  const t = e.target, d = t.dataset || {}; if (!state.fam || !state.fam.casa) return; const C = famCasa();
+  if (d.famkc) { const [id, k] = d.famkc.split(':'), c = C.contas.find(x => x.id === id); if (!c) return; c[k] = k === 'valor' ? Math.max(0, +t.value || 0) : k === 'nome' ? (TXT(t.value, 60) || 'Conta') : t.value; famRe(); return; }
+  if (d.famkfx) { const [id, pid] = d.famkfx.split(':'), c = C.contas.find(x => x.id === id); if (!c) return; if (t.value === '' || !isFinite(+t.value)) delete c.fixo[pid]; else c.fixo[pid] = Math.max(0, +t.value); famRe(); return; }
+  if (d.famkp) { const [id, k] = d.famkp.split(':'), g = C.pags.find(x => x.id === id); if (!g) return; g[k] = k === 'valor' ? Math.max(0, +t.value || 0) : k === 'desc' ? (TXT(t.value, 80) || 'Gasto da casa') : t.value; famRe(); return; }
+  if (d.famkmes != null) { C.mes = /^\d{4}-\d{2}$/.test(t.value) ? t.value : ''; save(); renderTab(); return; }
+  if (d.famkr) { const k = d.famkr; C[k] = k === 'resFil' ? t.checked : +t.value || 0; famCasaNormalizar(state); famRe(); return; }
+});
+// resumo na Visão geral da Família
+function famVgCasa() {
+  const el = $('famv-casa'); if (!el) return; const C = famCasa();
+  if (!C.contas.length && !C.pags.length) { el.innerHTML = '<p class="hint">Cadastre as contas da casa para ver o que é de cada um, quem deve a quem e a reserva da família. <button type="button" class="btn tiny" data-tab="famcasa">Abrir Orçamento da casa</button></p>'; return; }
+  const D = famDivisao(), T = famTransf(famSaldos(HOJE_IDX)), R = famReserva();
+  el.innerHTML = `<div class="kpis fam-ef">${[['Contas da casa', fm(D.tot) + '/mês', `${fm(D.nosso)} nosso · ${fm(D.ind)} só de cada um`],
+    ['Cada um põe', D.A.length ? D.A.map(p => `${esc(p.nome)} ${fm(D.R[p.id].nosso + D.R[p.id].meu)}`).join(' · ') : '—', 'por mês, parte do nosso + contas só suas'],
+    ['Quem deve a quem', T.length ? T.map(x => `${esc(famNomeDe(x.de))} deve ${fm(x.valor)} a ${esc(famNomeDe(x.para))}`).join(' · ') : 'Tudo certo', 'até ' + mLabel(HOJE_IDX)],
+    ['Reserva da família', R.alvo > 0 ? Math.round(Math.min(1, R.tem / R.alvo) * 100) + '%' : '—', R.alvo > 0 ? (R.falta > 0 ? `faltam ${fm(R.falta)} para ${C.resMeses} meses` : `cobre ${num(R.cobre, 1)} meses`) : '']
+  ].map(([l, x, s]) => `<div class="kpi"><span class="l">${l}</span><span class="v">${x}</span><span class="d">${s}</span></div>`).join('')}</div>`;
+}
+
 /* ---------- telas ---------- */
 const famSel = () => { const F = famFilhos(); return F.find(p => p.id === state.fam.sel) || F[0] || null; };
 const famIdadeTxt = p => { const n = famN0(p); if (n == null) return 'sem data'; if (n > HOJE_IDX) return 'previsto para ' + mLabel(n); const a = famIdade(p, HOJE_IDX); if (a < 1) { const m = HOJE_IDX - n; return m + (m === 1 ? ' mês' : ' meses'); } return a + (a === 1 ? ' ano' : ' anos'); };
@@ -5116,8 +5345,9 @@ function renderFamVg() {
       ef.innerHTML = `<div class="kpis fam-ef">${[['Sem os filhos no plano', fm(v(sem)), 'patrimônio em ' + mLabel(fimI)], ['Com todos os filhos', fm(v(com)), 'patrimônio em ' + mLabel(fimI)], ['Diferença', fm(d), d > 0 ? 'é quanto os filhos custam no plano, com o rendimento que o dinheiro deixaria de ter' : '']].map(([l, x, s]) => `<div class="kpi"><span class="l">${l}</span><span class="v">${x}</span><span class="d">${s}</span></div>`).join('')}</div>
         <p class="subdet">Entram aqui os filhos em Projeção real e em Só simulação. O plano atual usa só os de Projeção real${F.some(p => p.uso === 'real') ? '' : ' (nenhum ainda)'}. Para quem já nasceu e já está nos seus gastos, o plano soma só o quanto o custo muda nas próximas fases.</p>`; }
     catch (e) { console.error(e); ef.innerHTML = '<p class="hint">Monte o Plano futuro para ver o efeito no patrimônio.</p>'; } }
+  try { famVgCasa(); } catch (er) { console.error(er); }
   $('famv-tl').innerHTML = tlHtml(itensModulos().filter(y => y.mod === 'fam'));
-  const m = MODS.find(y => y.id === 'fam'), lk = [['fampes', 'Minha família', 'Quem mora com você, os filhos (inclusive os previstos, gêmeos ou trigêmeos), o custo de cada fase e a licença.']];
+  const m = MODS.find(y => y.id === 'fam'), lk = [['fampes', 'Minha família', 'Quem mora com você, os filhos (inclusive os previstos, gêmeos ou trigêmeos), o custo de cada fase e a licença.'], ['famcasa', 'Orçamento da casa', 'Meu, seu e nosso, como dividir cada conta, quem deve a quem no mês e a reserva da família.']];
   $('famv-links').innerHTML = lk.map(([t, n, d]) => `<button type="button" class="md-card" style="--mc:${m.cor}" data-tab="${t}"><div class="md-img">${MOD_SVG.fam}</div><h3>${esc(n)}</h3><p>${esc(d)}</p></button>`).join('');
 }
 function renderFamPes() {
@@ -9333,6 +9563,7 @@ function normalizar(s) {
   ngNormalizar(s);
   indNormalizar(s);
   famNormalizar(s);
+  famCasaNormalizar(s);
   agNormalizar(s);
   rdNormalizar(s);
   if (!Array.isArray(s.comp.rows)) s.comp.rows = clone(ROWS_PADRAO);
@@ -9343,7 +9574,7 @@ function normalizar(s) {
 try { if (quemLocal === 'dono') { const b = JSON.parse(localStorage.getItem('painel-priv')); if (b) aplicarBase(b); } } catch (e) {}
 try { const l = JSON.parse(localStorage.getItem(LSK('painel-fin-v2'))); if (l) state = normalizar(l); } catch (e) {}
 tab = 'modulos';
-const TABS = ['modulos', 'agcal', 'aglis', 'comousar', 'inicio', 'trabvg', 'viagvg', 'viagens', 'viagcmp', 'viagrot', 'viagcus', 'viagdur', 'negvg', 'negcad', 'negdre', 'negfc', 'negabr', 'negeco', 'negpesq', 'negviab', 'negcont', 'negval', 'negprec', 'negsoc', 'negcmp', 'famvg', 'fampes', 'indvg', 'indnum', 'indalv', 'rdvg', 'rdprod', 'rdcomp', 'leia', 'global', 'gastos', 'carteira', 'orcamento', 'compras', 'cenarios', 'patrimonio', 'comparador', 'simulador', 'pjpf', 'stock', 'config', 'familia'];
+const TABS = ['modulos', 'agcal', 'aglis', 'comousar', 'inicio', 'trabvg', 'viagvg', 'viagens', 'viagcmp', 'viagrot', 'viagcus', 'viagdur', 'negvg', 'negcad', 'negdre', 'negfc', 'negabr', 'negeco', 'negpesq', 'negviab', 'negcont', 'negval', 'negprec', 'negsoc', 'negcmp', 'famvg', 'fampes', 'famcasa', 'indvg', 'indnum', 'indalv', 'rdvg', 'rdprod', 'rdcomp', 'leia', 'global', 'gastos', 'carteira', 'orcamento', 'compras', 'cenarios', 'patrimonio', 'comparador', 'simulador', 'pjpf', 'stock', 'config', 'familia'];
 if (TABS.includes(location.hash.slice(1))) tab = location.hash.slice(1);
 if (!TABS.includes(tab)) tab = 'modulos';
 
@@ -13529,7 +13760,7 @@ $('cpform').addEventListener('submit', async e => {
 });
 
 /* ---------- abas ---------- */
-const BUILD = { modulos: () => {}, agcal: () => {}, aglis: () => {}, comousar: () => {}, inicio: () => {}, trabvg: () => {}, viagvg: () => {}, viagens: () => {}, viagcmp: () => {}, viagrot: () => {}, viagcus: () => {}, viagdur: () => {}, negvg: () => {}, negcad: () => {}, negdre: () => {}, negfc: () => {}, negabr: () => {}, negeco: () => {}, negpesq: () => {}, negviab: () => {}, negcont: () => {}, negprec: () => {}, negval: () => {}, negsoc: () => {}, negcmp: () => {}, famvg: () => {}, fampes: () => {}, indvg: () => {}, indnum: () => {}, indalv: () => {}, rdvg: () => {}, rdprod: () => {}, rdcomp: () => {}, leia: buildLeia, global: () => {}, cenarios: buildCenarios, compras: buildCenarios, carteira: buildCarteira, comparador: buildComparador, simulador: buildSimulador, gastos: buildGastos, orcamento: buildOrcamento, config: buildConfig, pjpf: buildPj, stock: buildStock, familia: () => carregarPerfis(), patrimonio: () => {} };
+const BUILD = { modulos: () => {}, agcal: () => {}, aglis: () => {}, comousar: () => {}, inicio: () => {}, trabvg: () => {}, viagvg: () => {}, viagens: () => {}, viagcmp: () => {}, viagrot: () => {}, viagcus: () => {}, viagdur: () => {}, negvg: () => {}, negcad: () => {}, negdre: () => {}, negfc: () => {}, negabr: () => {}, negeco: () => {}, negpesq: () => {}, negviab: () => {}, negcont: () => {}, negprec: () => {}, negval: () => {}, negsoc: () => {}, negcmp: () => {}, famvg: () => {}, fampes: () => {}, famcasa: () => {}, indvg: () => {}, indnum: () => {}, indalv: () => {}, rdvg: () => {}, rdprod: () => {}, rdcomp: () => {}, leia: buildLeia, global: () => {}, cenarios: buildCenarios, compras: buildCenarios, carteira: buildCarteira, comparador: buildComparador, simulador: buildSimulador, gastos: buildGastos, orcamento: buildOrcamento, config: buildConfig, pjpf: buildPj, stock: buildStock, familia: () => carregarPerfis(), patrimonio: () => {} };
 // (i) de cada seção: o que mostra e de onde vêm os números (chave: aba:data-nav)
 const INFO_SEC = {
   'comousar:Resumo': 'Para cada módulo: se já tem o mínimo para funcionar (os obrigatórios), quantos opcionais você resolveu e um botão para o próximo passo. Um opcional conta como resolvido quando você preenche ou marca que não tem.',
@@ -13569,9 +13800,14 @@ const INFO_SEC = {
   'famvg:Efeito no patrimônio': 'Patrimônio no fim do horizonte do Plano futuro com e sem os filhos. A diferença inclui o rendimento que o dinheiro gasto deixaria de ter. Para quem já nasceu e já está nos seus gastos, entra só o quanto o custo muda.',
   'famvg:Linha do tempo': 'Cada filho do nascimento (ou de hoje) até a idade final do custo. Tracejado: só simulação.',
   'famvg:Partes do módulo': 'Atalhos para as partes do módulo.',
-  'fampes:Pessoas da casa': 'Renda líquida por mês das outras pessoas: soma com a sua para sugerir o padrão de gastos (a divisão das contas vem na próxima etapa). Dependente no IR: cada um abate R$ 2.275,08 por ano da base na declaração completa, valor aproximado da tabela vigente.',
+  'fampes:Pessoas da casa': 'Renda líquida por mês das outras pessoas: soma com a sua para sugerir o padrão de gastos e entra na divisão proporcional em Orçamento da casa. Dependente no IR: cada um abate R$ 2.275,08 por ano da base na declaração completa, valor aproximado da tabela vigente.',
   'fampes:Padrão de gastos': 'Muda só os valores sugeridos. Econômico: metade do Intermediário e escola pública. Alto: 1,8 vez o Intermediário. Os valores sugeridos são estimativas de 2026, aproximadas.',
   'fampes:Filhos': 'Previsto: nascimento no futuro. Gêmeos e trigêmeos ficam ligados: mesmo nascimento, um parto e uma licença, enxoval e custos de cada bebê. Licença sem renda: a sua renda líquida do plano para nesses meses, como no sabático.',
+  'famvg:Orçamento da casa': 'Resumo do Orçamento da casa: contas por mês, quanto cada um põe, o saldo de quem deve a quem até este mês e a reserva da família.',
+  'famcasa:Contas da casa': 'Nosso: a conta é dividida entre você, o cônjuge e outros dependentes com renda. Proporcional à renda usa a sua renda líquida do Plano futuro e a renda de cada pessoa em Minha família. Valor fixo: cada um põe o valor digitado e a diferença para o total é dividida igualmente. Trazer do meu orçamento cria uma conta nossa para cada custo fixo ou essencial com orçamento em Receitas e custos.',
+  'famcasa:Quanto cada um põe': 'Por mês: a parte de cada um nas contas nossas mais as contas só dele. A sobra é a renda líquida menos esse total, antes dos gastos pessoais.',
+  'famcasa:Quem deve a quem': 'Lançar as contas do mês cria um pagamento para cada conta nossa ainda não lançada, com quem costuma pagar. Troque quem pagou se foi outra pessoa. O saldo soma todos os meses até o escolhido; Acertar registra o Pix ou a transferência que zera a diferença.',
+  'famcasa:Reserva da família': 'Gastos da casa: a soma das contas da casa (se não houver, os custos de hoje do seu Plano futuro). Reserva de hoje: aplicações com liquidez diária na Carteira (inclusive Tesouro Selic e poupança) mais a outra reserva digitada.',
   'fampes:Custo por fase': 'R$ por mês em cada fase, em valores de hoje; no Plano futuro sobem com o IPCA. Mude a idade em que cada fase começa no cabeçalho. A fase de hoje fica destacada.',
   'negvg:Meus negócios': 'Lucro líquido e Para você são a média por mês do último ano do horizonte, quando o negócio já maturou. Para você = lucro distribuído × sua parte + pró-labore líquido − dinheiro que você põe.',
   'negvg:Linha do tempo': 'Cada negócio do primeiro investimento até o fim do horizonte. Tracejado: só simulação.',
@@ -13722,7 +13958,7 @@ function infoSecoes() {
       if (h && !h.id) h.append(btn); else if (h) h.after(btn); else if (lg) lg.append(btn); }); });
 }
 infoSecoes();
-const RENDER = { modulos: renderModulos, agcal: renderAgCal, aglis: renderAgLis, comousar: renderComoUsar, inicio: renderHome, trabvg: renderTrabVg, viagvg: renderViagVg, viagens: renderViagens, viagcmp: renderViagCmp, viagrot: renderViagRot, viagcus: renderViagCus, viagdur: renderViagDur, negvg: renderNegVg, negcad: renderNegCad, negdre: renderNegDre, negfc: renderNegFc, negabr: renderNegAbr, negeco: renderNegEco, negpesq: renderNegPesq, negviab: renderNegViab, negcont: renderNegCont, negprec: renderNegPrec, negval: renderNegVal, negsoc: renderNegSoc, negcmp: renderNegCmp, famvg: renderFamVg, fampes: renderFamPes, indvg: renderIndVg, indnum: renderIndNum, indalv: renderIndAlv, rdvg: renderRdVg, rdprod: renderRdProd, rdcomp: renderRdComp, leia: () => {}, global: renderGlobal, cenarios: renderCenarios, compras: renderCenarios, carteira: renderCarteira, comparador: renderComparador, simulador: renderSimulador, gastos: () => { renderGastos(); renderFechamento(); renderHistorico(); }, orcamento: renderOrcamento, config: renderConfig, pjpf: renderPj, stock: renderStock, familia: renderFamilia, patrimonio: renderPatr };
+const RENDER = { modulos: renderModulos, agcal: renderAgCal, aglis: renderAgLis, comousar: renderComoUsar, inicio: renderHome, trabvg: renderTrabVg, viagvg: renderViagVg, viagens: renderViagens, viagcmp: renderViagCmp, viagrot: renderViagRot, viagcus: renderViagCus, viagdur: renderViagDur, negvg: renderNegVg, negcad: renderNegCad, negdre: renderNegDre, negfc: renderNegFc, negabr: renderNegAbr, negeco: renderNegEco, negpesq: renderNegPesq, negviab: renderNegViab, negcont: renderNegCont, negprec: renderNegPrec, negval: renderNegVal, negsoc: renderNegSoc, negcmp: renderNegCmp, famvg: renderFamVg, fampes: renderFamPes, famcasa: renderFamCasa, indvg: renderIndVg, indnum: renderIndNum, indalv: renderIndAlv, rdvg: renderRdVg, rdprod: renderRdProd, rdcomp: renderRdComp, leia: () => {}, global: renderGlobal, cenarios: renderCenarios, compras: renderCenarios, carteira: renderCarteira, comparador: renderComparador, simulador: renderSimulador, gastos: () => { renderGastos(); renderFechamento(); renderHistorico(); }, orcamento: renderOrcamento, config: renderConfig, pjpf: renderPj, stock: renderStock, familia: renderFamilia, patrimonio: renderPatr };
 function renderTab() { planCache = null; try { RENDER[tab](); } catch (err) { console.error(err); setSave('erro ao recalcular: ' + (err && err.message || err)); } }
 let navAbertos = null;
 try { navAbertos = JSON.parse(localStorage.getItem('painel-nav-abertos')); } catch (e) {}
@@ -13795,7 +14031,7 @@ const MODS = [
   { id: 'carr', corNav: '#B39DDB', nome: 'Carreira', cor: 'var(--s5)', vg: 'pjpf', desc: 'PJ e PF: CLT contra PJ nos dois sentidos, quanto pedir e o melhor pró-labore. Stock options: vesting, valor hoje e num evento de liquidez.', tabs: ['pjpf', 'stock'] },
   { id: 'viag', corNav: '#5fc2f5', nome: 'Viagens', cor: 'var(--s8)', vg: 'viagens', desc: 'Mapa de onde já foi e de onde quer ir, sorteio, comparação de destinos nas suas datas o roteiro com a rota mais barata, os custos ligados ao Plano futuro e os gastos durante a viagem.', tabs: ['viagvg', 'viagens', 'viagcmp', 'viagrot', 'viagcus', 'viagdur'] },
   { id: 'neg', corNav: '#a3e05a', nome: 'Empreendimentos', cor: 'var(--s7)', vg: 'negvg', desc: 'Suas ideias e empresas: DRE com as suas linhas, fluxo de caixa, quanto pôr e quanto chega para você no Plano futuro. Abrir empresa com a comparação de regimes, oportunidades de custo, pesquisa de mercado com IA, viabilidade, contabilidade fácil, preço, valuation, sócios e comparação.', tabs: ['negvg', 'negcad', 'negdre', 'negfc', 'negabr', 'negeco', 'negpesq', 'negviab', 'negcont', 'negval', 'negprec', 'negsoc', 'negcmp'] },
-  { id: 'fam', corNav: '#fb7185', nome: 'Família', cor: 'var(--s6)', vg: 'famvg', desc: 'Quem mora com você e os filhos, já nascidos ou previstos (gêmeos também): quanto cada um custa em cada fase, a chegada, a licença e o efeito no Plano futuro. Orçamento da casa e divisão de contas vêm a seguir.', tabs: ['famvg', 'fampes'] },
+  { id: 'fam', corNav: '#fb7185', nome: 'Família', cor: 'var(--s6)', vg: 'famvg', desc: 'Quem mora com você e os filhos, já nascidos ou previstos (gêmeos também): quanto cada um custa em cada fase, a chegada, a licença e o efeito no Plano futuro. E o orçamento da casa: meu, seu e nosso, divisão das contas, quem deve a quem e a reserva da família.', tabs: ['famvg', 'fampes', 'famcasa'] },
   { id: 'agen', corNav: '#34d399', nome: 'Agenda', cor: 'var(--s7)', vg: 'agcal', desc: 'Calendário com seus compromissos e contas, lembretes, as datas que o painel já conhece (viagens, aniversários, compras) e listas de compras.', tabs: ['agcal', 'aglis'] },
   { id: 'indep', corNav: '#E3B848', nome: 'Independência financeira', cor: 'var(--s3)', vg: 'indvg', desc: 'Quando dá para parar de trabalhar: o seu número, a data pelo Plano futuro, quanto falta para a sua meta e os marcos no caminho. Alavancas mostram o que adianta a data. Renda passiva, INSS e previdência vêm a seguir.', tabs: ['indvg', 'indnum', 'indalv'] },
   { id: 'preco', corNav: '#f59e0b', nome: 'Radar de preços', cor: 'var(--s2)', vg: 'rdvg', desc: 'O que você quer comprar e o preço que aceita pagar: histórico, selo de preço baixo ou alto, à vista ou parcelado, quando o dinheiro fica pronto e a compra no Plano futuro. A pesquisa automática todo dia e o aviso no sino vêm a seguir.', tabs: ['rdvg', 'rdprod', 'rdcomp'] },
@@ -13893,7 +14129,9 @@ function cuPassos() {
       passos: [
         { id: 'fampes', t: 'Cadastrar a família', d: 'Quem mora com você, com o mês de nascimento, a renda e quem é dependente no IR.', ok: famL().length > 1 || pul.includes('fampes'), tab: 'fampes', sec: 'Pessoas da casa', pular: 'Depois' },
         { id: 'famfil', t: 'Ver o custo dos filhos', d: 'Os valores de cada fase vêm sugeridos pelo padrão de gastos da casa. Ajuste o que quiser.', ok: famFilhos().length > 0 || pul.includes('famfil'), tab: 'fampes', sec: 'Custo por fase', pular: 'Não tenho filhos' },
-        { id: 'fampl', t: 'Levar ao Plano futuro', d: 'Escolha Projeção real para o filho entrar no plano, com a chegada, a licença e o custo de cada fase.', ok: famFilhos().some(p => p.uso === 'real') || pul.includes('fampl'), tab: 'fampes', sec: 'Filhos', pular: 'Depois' }
+        { id: 'fampl', t: 'Levar ao Plano futuro', d: 'Escolha Projeção real para o filho entrar no plano, com a chegada, a licença e o custo de cada fase.', ok: famFilhos().some(p => p.uso === 'real') || pul.includes('fampl'), tab: 'fampes', sec: 'Filhos', pular: 'Depois' },
+        { id: 'famcasa', t: 'Montar o orçamento da casa', d: 'As contas da casa, de quem é cada uma e como dividir: igual, proporcional à renda ou valor fixo.', ok: famCasa().contas.length > 0 || pul.includes('famcasa'), tab: 'famcasa', sec: 'Contas da casa', pular: 'Moro sozinho' },
+        { id: 'famres', t: 'Ver a reserva da família', d: 'Quantos meses de gastos da casa a sua reserva cobre e quanto falta.', ok: (famCasa().contas.length > 0 && famReserva().falta <= 0) || pul.includes('famres'), tab: 'famcasa', sec: 'Reserva da família', pular: 'Depois' }
       ]
     },
     indep: {
@@ -14064,7 +14302,7 @@ function modResumo(m) {
     if (m.id === 'preco') return rdResumoMod();
     if (m.id === 'agen') { const A = state.agenda || { evs: [], listas: [] }, h = agHoje(), p = agDoDia(h, new Date((agDiaN(h) + 7) * 864e5).toISOString().slice(0, 10)).length, it = A.listas.reduce((t, l) => t + l.itens.filter(i => !i.ok).length, 0);
       return p || it ? [p ? `<b>${p}</b> ${p > 1 ? 'compromissos' : 'compromisso'} em 7 dias` : '', it ? `<b>${it}</b> ${it > 1 ? 'itens' : 'item'} para comprar` : ''].filter(Boolean).join(' · ') : 'Marque compromissos e monte listas de compras'; }
-    if (m.id === 'fam') { const F = famFilhos(), n = famL().filter(p => p.tipo !== 'pet').length; if (!famL().length) return 'Cadastre quem mora com você'; const pv = F.filter(famPrevisto).length; return `<b>${n}</b> ${n > 1 ? 'pessoas' : 'pessoa'}${F.length ? ` · <b>${F.length}</b> ${F.length > 1 ? 'filhos' : 'filho'}${pv ? ` (${pv} ${pv > 1 ? 'previstos' : 'previsto'})` : ''}` : ''}`; }
+    if (m.id === 'fam') { const F = famFilhos(), n = famL().filter(p => p.tipo !== 'pet').length; if (!famL().length) return 'Cadastre quem mora com você'; const pv = F.filter(famPrevisto).length; const cr = famCasaResumo(); return `<b>${n}</b> ${n > 1 ? 'pessoas' : 'pessoa'}${F.length ? ` · <b>${F.length}</b> ${F.length > 1 ? 'filhos' : 'filho'}${pv ? ` (${pv} ${pv > 1 ? 'previstos' : 'previsto'})` : ''}` : ''}` + (cr ? ' · ' + cr : ''); }
     if (m.id === 'indep') { const r = indCalc(); if (r.C <= 0) return 'Confira o custo de vida'; return r.cruz == null ? 'Fora do horizonte com o plano atual' : r.cruz <= r.st ? '<b>Já</b> chegou lá' : `Independência em <b>${mLabel(r.cruz)}</b>${r.nascI != null ? ', aos ' + Math.floor((r.cruz - r.nascI) / 12) + ' anos' : ''}`; }
     if (m.id === 'viag') { const v = state.viag || {}, f = (v.fui || []).filter(c => VG_UN.includes(c)).length, q = (v.lugares || []).filter(l => l.st !== 'fui').length;
       return f || q ? [f ? `<b>${f}</b> ${f > 1 ? 'países' : 'país'} visitados (${pct(f / 195, 0)})` : '', q ? `<b>${q}</b> ${q > 1 ? 'lugares' : 'lugar'} na lista` : ''].filter(Boolean).join(' · ') : 'Marque onde já foi e para onde quer ir'; }
@@ -14926,6 +15164,7 @@ const LM_MODS = [
   'Família',
   ['famvg', 'O resumo da família: quantas pessoas, o custo dos filhos hoje, a próxima chegada, o IR com dependentes, o efeito no patrimônio e a linha do tempo.', 'para ver quanto os filhos pesam no plano.'],
   ['fampes', 'Quem mora com você e os filhos, já nascidos ou previstos (gêmeos também), com o custo de cada fase, a chegada e a licença.', 'quando a família mudar ou para planejar um filho.'],
+  ['famcasa', 'As contas da casa: o que é meu, seu e nosso, a divisão de cada conta (igual, proporcional à renda ou fixo), quem deve a quem no mês com o botão Acertar e a reserva de emergência da família.', 'todo mês, para lançar quem pagou e acertar as contas.'],
   'Independência financeira',
   ['indvg', 'A data em que você chega à independência pelo Plano futuro, o termômetro de quanto do número já tem, os marcos (reserva, Coast FI, Lean, FI, Fat FI e a sua meta) e o gráfico do patrimônio contra o número.', 'para saber quando pode parar de trabalhar por obrigação.'],
   ['indnum', 'O seu número: idade e meta, custo de vida na independência a partir dos Gastos ou do orçamento, os três níveis de custo e por quanto tempo o dinheiro precisa durar.', 'para ajustar a conta.'],
