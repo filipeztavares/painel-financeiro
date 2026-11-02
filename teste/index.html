@@ -1509,6 +1509,7 @@ tr.rd-hit td { background: color-mix(in srgb, var(--good) 9%, transparent); }
 .ag-rec { display: grid; grid-template-columns: max-content 1fr; gap: 4px 14px; margin: 0 0 10px; }
 .ag-rec dt { color: var(--muted); font-size: 12px; } .ag-rec dd { margin: 0; white-space: pre-wrap; }
 #agc-email.ag-erro { border-color: var(--bad); }
+.ag-ir { font-size: 11px; margin-left: 4px; }
 </style>
 
 
@@ -1595,7 +1596,7 @@ tr.rd-hit td { background: color-mix(in srgb, var(--good) 9%, transparent); }
     </div>
     <div class="nav-mobile-sub" id="navMobileSub"></div>
   </div>
-  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 251</div></div>
+  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 252</div></div>
 </nav>
 <div class="sino-pop" id="sino-pop" role="dialog" aria-label="Central de avisos" hidden></div>
 <div class="sino-pop" id="pess-pop" role="dialog" aria-label="Seus avisos" hidden></div>
@@ -3432,7 +3433,7 @@ tr.rd-hit td { background: color-mix(in srgb, var(--good) 9%, transparent); }
     return new Promise(resolve => { const { data } = sb.auth.onAuthStateChange(async (ev) => { if (ev !== 'PASSWORD_RECOVERY') return; const s = prompt('Digite a nova senha (mínimo 8 caracteres):'); if (s && s.length >= 8) { const { error } = await sb.auth.updateUser({ password: s }); alert(error ? 'Não deu para trocar a senha: ' + error.message : 'Senha trocada.'); } }); resolve(data); });
   }
   // ---------- rodapé: compartilhar, administração e sair ----------
-  const SITE_V = 134;
+  const SITE_V = 135;
   const escH = v => String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const dataBR = v => v ? new Date(v).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' }) : '–';
   const css2 = `.side-foot .r{flex-wrap:wrap}.side-foot .lg-acoes{margin-left:auto;display:inline-flex;gap:10px}
@@ -6068,6 +6069,7 @@ function agNormEv(x) {
   x.id = String(x.id || uid()); x.titulo = TXT(x.titulo, 80) || 'Compromisso'; if (!/^\d{4}-\d{2}-\d{2}$/.test(x.data || '')) x.data = agHoje();
   x.hora = /^\d{2}:\d{2}$/.test(x.hora || '') ? x.hora : ''; if (!AG_REP[x.rep]) x.rep = 'nao'; if (!AG_CAT[x.cat]) x.cat = 'comp';
   x.quem = typeof x.quem === 'string' ? x.quem : ''; x.aviso = AG_AVISO.some(a => a[0] === +x.aviso) ? +x.aviso : 1; x.nota = String(x.nota || '').slice(0, 1000);
+  x.ir = typeof x.ir === 'string' ? x.ir.slice(0, 80) : '';
   x.com = Array.isArray(x.com) ? [...new Set(x.com.filter(c => typeof c === 'string' && AG_EMAIL.test(c.trim())).map(c => c.trim().toLowerCase()))].slice(0, 20) : []; return x;
 }
 function agNormLista(l) {
@@ -6078,6 +6080,8 @@ function agNormalizar(s) {
   if (!s.agenda || typeof s.agenda !== 'object' || Array.isArray(s.agenda)) s.agenda = {};
   const a = s.agenda; a.evs = Array.isArray(a.evs) ? a.evs.filter(x => x && typeof x === 'object').map(agNormEv) : [];
   a.listas = Array.isArray(a.listas) ? a.listas.filter(x => x && typeof x === 'object').map(agNormLista) : [];
+  // a Agenda já nasce com o lembrete do fechamento todo dia 1 (só uma vez: se a pessoa apagar, não volta)
+  if (!a.semeado) { a.semeado = 1; if (!a.evs.some(x => x.id === 'ag-fech')) a.evs.unshift({ id: 'ag-fech', titulo: 'Preencher o fechamento do mês', data: agHoje().slice(0, 8) + '01', hora: '', rep: 'mes', cat: 'conta', quem: '', aviso: 0, nota: 'Em Finanças › Gastos e fechamento: confira os gastos do mês que passou e registre o fechamento (e o checkpoint do patrimônio).', ir: 'gastos|Fechamento do mês', com: [] }); } // literal: normalizar roda antes de TXT existir
   if (typeof a.sel !== 'string') a.sel = ''; a.ocultos = Array.isArray(a.ocultos) ? a.ocultos.filter(k => AG_AUTO[k]) : [];
 }
 // ocorrências de um compromisso entre duas datas (inclusive)
@@ -6162,7 +6166,7 @@ function agConvAvisos() {
 function agAvisos() {
   try { if (!state.agenda) return []; const h = agHoje(), fim = new Date((agDiaN(h) + 7) * 864e5).toISOString().slice(0, 10);
     return agDoDia(h, fim).filter(o => !o.auto && !(o.rec && o.rec.resposta !== 'aceito') && o.aviso >= 0 && agDiaN(o.data) - agDiaN(h) <= o.aviso).map(o => { const n = agDiaN(o.data) - agDiaN(h);
-      return { id: `agenda:${o.id}:${o.data}`, quando: o.data, fonte: 'Agenda', nivel: 'aviso', auto: true, msg: `${n === 0 ? 'Hoje' : n === 1 ? 'Amanhã' : 'Em ' + n + ' dias (' + agBr(o.data) + ')'}: ${o.titulo}${o.hora ? ' às ' + o.hora : ''}${o.quem && agQuem(o.quem) ? ' · ' + agQuem(o.quem) : ''}.` }; }); }
+      return { id: `agenda:${o.id}:${o.data}`, quando: o.data, fonte: 'Agenda', nivel: 'aviso', auto: true, ir: o.ir || '', msg: `${n === 0 ? 'Hoje' : n === 1 ? 'Amanhã' : 'Em ' + n + ' dias (' + agBr(o.data) + ')'}: ${o.titulo}${o.hora ? ' às ' + o.hora : ''}${o.quem && agQuem(o.quem) ? ' · ' + agQuem(o.quem) : ''}.` }; }); }
   catch (e) { return []; }
 }
 
@@ -6194,6 +6198,7 @@ function renderAgCal() {
       <label>Lembrete<select data-agf="${b('aviso')}">${AG_AVISO.map(([v, t]) => `<option value="${v}"${x.aviso === v ? ' selected' : ''}>${t}</option>`).join('')}</select></label>
       <label class="ag-wide">Anotações<textarea data-agf="${b('nota')}" rows="2" maxlength="1000">${esc(x.nota)}</textarea></label></div>
       <p class="subdet">O lembrete aparece em Seus avisos (o ícone ao lado do logo).${pes.length ? '' : ' Cadastre as pessoas da casa em Família › Minha família para escolher de quem é cada compromisso.'}</p>
+      ${x.ir ? `<p><a href="#" class="btn ghost tiny" data-agir="${esc(x.ir)}">Abrir ${esc(x.ir.split('|')[1] || 'a tela')}</a></p>` : ''}
       <div id="agc-com"></div>
       <div class="ag-pop-ac">${novo ? '' : `<button type="button" class="btn danger tiny" data-agdel="${x.id}">Remover</button>`}<span class="ag-sp"></span><button type="button" class="btn ghost" data-agfecha>Cancelar</button><button type="button" class="btn" data-agsalva>${novo ? 'Adicionar' : 'Salvar'}</button></div>`; }
   if (x && !x.rec && $('agc-com')) $('agc-com').innerHTML = agComHtml(x);
@@ -6204,7 +6209,7 @@ function renderAgCal() {
   $('agc-prox').innerHTML = prox.length ? `<ul class="ag-lst">${prox.map(agLi).join('')}</ul>` : '<p class="hint">Nada nos próximos 30 dias. Toque em + Compromisso.</p>';
   $('agc-auto').innerHTML = Object.entries(AG_AUTO).map(([k, t]) => `<label class="inline"><input type="checkbox" data-agauto="${k}"${state.agenda.ocultos.includes(k) ? '' : ' checked'}> <span>${t}</span></label>`).join('');
 }
-const agLi = o => `<li><i style="--agc:${agCor(o)}"></i><span class="q">${agBr(o.data)}${o.hora ? ' ' + o.hora : ''}</span><span>${o.auto ? `<a href="#" data-tab="${o.tab}">${esc(o.titulo)}</a>` : `<a href="#" data-agev="${o.id}">${esc(o.titulo)}</a>`}<small class="subdet">${o.auto ? 'do painel' : o.rec ? `de ${esc(o.rec.dono_nome || 'outra pessoa')}${o.rec.resposta === 'pendente' ? ' · aguardando você aceitar' : ''}` : (o.com && o.com.length ? `compartilhado com ${o.com.length} · ` : '') + esc([(AG_CAT[o.cat] || [''])[0], o.rep !== 'nao' ? AG_REP[o.rep].toLowerCase() : '', agQuem(o.quem)].filter(Boolean).join(' · '))}</small></span></li>`;
+const agLi = o => `<li><i style="--agc:${agCor(o)}"></i><span class="q">${agBr(o.data)}${o.hora ? ' ' + o.hora : ''}</span><span>${o.auto ? `<a href="#" data-tab="${o.tab}">${esc(o.titulo)}</a>` : `<a href="#" data-agev="${o.id}">${esc(o.titulo)}</a>${o.ir ? ` <a href="#" class="ag-ir" data-lmtab="${esc(o.ir.split('|')[0])}" data-lmsec="${esc(o.ir.split('|')[1] || '')}">abrir</a>` : ''}`}<small class="subdet">${o.auto ? 'do painel' : o.rec ? `de ${esc(o.rec.dono_nome || 'outra pessoa')}${o.rec.resposta === 'pendente' ? ' · aguardando você aceitar' : ''}` : (o.com && o.com.length ? `compartilhado com ${o.com.length} · ` : '') + esc([(AG_CAT[o.cat] || [''])[0], o.rep !== 'nao' ? AG_REP[o.rep].toLowerCase() : '', agQuem(o.quem)].filter(Boolean).join(' · '))}</small></span></li>`;
 const agLista = () => { const L = state.agenda.listas; return L.find(l => l.id === state.agenda.sel) || L[0] || null; };
 function renderAgLis() {
   const L = state.agenda.listas, l = agLista();
@@ -6228,9 +6233,10 @@ function agRe() { save(); setTimeout(() => { renderTab(); try { renderPess(); } 
 function agNovoItem(lid) { const l = state.agenda.listas.find(y => y.id === lid), inp = $('agl-novo'); if (!l) return; const n = TXT(inp && inp.value, 80); if (!n) { if (inp) inp.focus(); return; }
   l.itens.push(agNormLista({ itens: [{ nome: n, qtd: 1 }] }).itens[0]); agRe(); setTimeout(() => { const el = $('agl-novo'); if (el) el.focus(); }, 30); }
 document.addEventListener('click', e => {
-  const t = e.target.closest('[data-agcadd],[data-agcdel],[data-agcresp],[data-agmes],[data-agadd],[data-agev],[data-agdia],[data-agdel],[data-agfecha],[data-agsalva],[data-agladd],[data-agldel],[data-agiadd],[data-agidel],[data-aglimpa],[data-agdesm],[data-agrd],[data-agrdabre]'); if (!t || !state.agenda) return;
+  const t = e.target.closest('[data-agir],[data-agcadd],[data-agcdel],[data-agcresp],[data-agmes],[data-agadd],[data-agev],[data-agdia],[data-agdel],[data-agfecha],[data-agsalva],[data-agladd],[data-agldel],[data-agiadd],[data-agidel],[data-aglimpa],[data-agdesm],[data-agrd],[data-agrdabre]'); if (!t || !state.agenda) return;
   const d = t.dataset, A = state.agenda; e.preventDefault();
   if (d.agev) { e.stopPropagation(); const rc = agRecEvs().find(y => y.id === d.agev); if (rc) { agAbre(rc); return; } const x = agL().find(y => y.id === d.agev); if (!x) return; agAbre(clone(x)); return; }
+  if (d.agir) { const [tb, sc] = d.agir.split('|'); agFecha(true); showTab(tb); setTimeout(() => { const el = [...document.querySelectorAll(`#p-${tb} [data-nav]`)].find(y => y.dataset.nav === sc); if (el) el.scrollIntoView({ block: 'start' }); }, 80); return; }
   if (d.agcadd != null) { const inp = $('agc-email'), em = String(inp && inp.value || '').trim().toLowerCase(); if (!agRasc) return;
     if (!AG_EMAIL.test(em)) { if (inp) { inp.classList.add('ag-erro'); inp.focus(); } return; }
     if (!agRasc.com.includes(em)) agRasc.com.push(em); $('agc-com').innerHTML = agComHtml(agRasc); setTimeout(() => { const el = $('agc-email'); if (el) el.focus(); }, 20); return; }
@@ -6284,7 +6290,7 @@ document.addEventListener('click', e => { if (e.target.closest && e.target.close
    Cada módulo registra uma função em AVISOS_PESSOAIS que devolve [{id, mod, quando 'AAAA-MM-DD', msg, tab, sec}].
    Lidos ficam neste navegador (localStorage painel-pess-lidos). Separado do sino das rotinas, que é só do dono. */
 const AVISOS_PESSOAIS = [];
-AVISOS_PESSOAIS.push(() => agAvisos().map(a => ({ id: a.id, mod: 'agen', quando: a.quando, msg: a.msg, tab: 'agcal', sec: 'Próximos 30 dias' })));
+AVISOS_PESSOAIS.push(() => agAvisos().map(a => ({ id: a.id, mod: 'agen', quando: a.quando, msg: a.msg, tab: a.ir ? a.ir.split('|')[0] : 'agcal', sec: a.ir ? a.ir.split('|')[1] : 'Próximos 30 dias' })));
 AVISOS_PESSOAIS.push(() => agConvAvisos());
 function pessTodos() { const out = []; AVISOS_PESSOAIS.forEach(f => { try { (f() || []).forEach(a => { if (a && a.id && a.msg) out.push(a); }); } catch (e) { console.error(e); } }); return out.sort((a, b) => (a.quando || '') < (b.quando || '') ? -1 : 1); }
 function pessLidos() { try { return JSON.parse(localStorage.getItem('painel-pess-lidos')) || []; } catch (e) { return []; } }
