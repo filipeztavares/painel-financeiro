@@ -1285,7 +1285,7 @@ ul.ng-plano { margin: 8px 0; padding-left: 18px; font-size: 12.5px; line-height:
     </div>
     <div class="nav-mobile-sub" id="navMobileSub"></div>
   </div>
-  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 237</div></div>
+  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 238</div></div>
 </nav>
 <div class="sino-pop" id="sino-pop" role="dialog" aria-label="Central de avisos" hidden></div>
 <div class="tour-pop" id="tour-pop" role="dialog" aria-labelledby="tour-tit" hidden></div>
@@ -2707,7 +2707,7 @@ ul.ng-plano { margin: 8px 0; padding-left: 18px; font-size: 12.5px; line-height:
     return new Promise(resolve => { const { data } = sb.auth.onAuthStateChange(async (ev) => { if (ev !== 'PASSWORD_RECOVERY') return; const s = prompt('Digite a nova senha (mínimo 8 caracteres):'); if (s && s.length >= 8) { const { error } = await sb.auth.updateUser({ password: s }); alert(error ? 'Não deu para trocar a senha: ' + error.message : 'Senha trocada.'); } }); resolve(data); });
   }
   // ---------- rodapé: compartilhar, administração e sair ----------
-  const SITE_V = 120;
+  const SITE_V = 121;
   const escH = v => String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const dataBR = v => v ? new Date(v).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' }) : '–';
   const css2 = `.side-foot .r{flex-wrap:wrap}.side-foot .lg-acoes{margin-left:auto;display:inline-flex;gap:10px}
@@ -7546,6 +7546,10 @@ function renderGlobal() {
   const pi0 = calcPlano().i0;
   const plan = Array.from({ length: n }, (_, i) => i >= pi0 ? planoAt(i) : null);
   const dots = Array(n).fill(null); cps.forEach(c => { const i = mIndex(c.mes); if (i >= 0 && i < n) dots[i] = c.valor; });
+  // modo patrimônio: plano e checkpoints também somam bens e descontam dívidas (compras do plano, Uso: Projeção real)
+  if (key === 'pat') { const bl = (state.compras || []).filter(b => (state.plan.inc || []).includes(b.id)).map(b => ({ b, sch: schedule(b, b.modo) }));
+    const liq = i => bl.reduce((t, x) => t + valorBemEm(x.b, i) - dividaBemEm(x.b, x.sch, i), 0);
+    for (let i = 0; i < n; i++) { if (plan[i] != null || dots[i] != null) { const v = liq(i); if (plan[i] != null) plan[i] += v; if (dots[i] != null) dots[i] += v; } } }
   const st = Math.min(s0, Math.max(0, mIndex(INICIO_TELAS), Math.min(pi0, ...dots.map((v, i) => v == null ? Infinity : i))));
   const series = [{ name: 'Plano', c: 'var(--plan)', v: plan, dash: true }];
   projs.forEach(x => { const v = Array(n).fill(null); x.p[key].forEach((y, j) => v[s0 + j] = y); series.push({ name: x.c.nome, c: cenCor(x.c), v, w: x.c.id === state.destaque ? 2.8 : 1.8 }); });
