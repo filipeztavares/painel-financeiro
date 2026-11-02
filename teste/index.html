@@ -1456,6 +1456,14 @@ tr.rd-hit td { background: color-mix(in srgb, var(--good) 9%, transparent); }
 .ag-tot { font-weight: 600; margin: 8px 0; }
 @media (max-width: 640px) { .ag-c { min-height: 46px; padding: 3px; } .ag-ch b { display: none; } .ag-ch { padding: 0; background: none; } .ag-top .ag-mes { min-width: 0; flex: 1; font-size: 15px; } .ag-top .ag-sp { display: none; } .ag-wide { grid-column: auto; } }
 .ag-top .ag-mes::first-letter { text-transform: uppercase; }
+.ag-dlg { width: min(720px, 100%); }
+.ag-dlg .ng-form { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.ag-dlg .ag-wide { grid-column: span 2; }
+.ag-pop-ac { display: flex; align-items: center; gap: 8px; margin-top: 12px; }
+.ag-pop-ac .ag-sp { flex: 1; }
+#ag-pop input.ag-erro { border-color: var(--bad); box-shadow: 0 0 0 2px color-mix(in srgb, var(--bad) 25%, transparent); }
+@media (max-width: 480px) { .ag-dlg .ng-form { grid-template-columns: minmax(0, 1fr); } .ag-dlg .ag-wide { grid-column: auto; } }
+#ag-pop .sec-tog { display: none; }
 .pess-sino { margin-right: 6px; }
 .pess-g { display: flex; align-items: center; gap: 6px; padding: 8px 14px 4px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .5px; color: var(--muted); }
 .pess-g i { width: 8px; height: 8px; border-radius: 99px; background: var(--mc); }
@@ -1546,7 +1554,7 @@ tr.rd-hit td { background: color-mix(in srgb, var(--good) 9%, transparent); }
     </div>
     <div class="nav-mobile-sub" id="navMobileSub"></div>
   </div>
-  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 248</div></div>
+  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 249</div></div>
 </nav>
 <div class="sino-pop" id="sino-pop" role="dialog" aria-label="Central de avisos" hidden></div>
 <div class="sino-pop" id="pess-pop" role="dialog" aria-label="Seus avisos" hidden></div>
@@ -2230,10 +2238,7 @@ tr.rd-hit td { background: color-mix(in srgb, var(--good) 9%, transparent); }
       <h2>Dia escolhido</h2>
       <div id="agc-dia"></div>
     </section>
-    <section data-nav="Compromisso" class="panel" hidden>
-      <h2>Compromisso</h2>
-      <div id="agc-ev"></div>
-    </section>
+    <div class="conf-pop" id="ag-pop" hidden><div class="conf-dlg ag-dlg" role="dialog" aria-modal="true" aria-labelledby="ag-pop-t"><button type="button" class="conf-x" data-agfecha aria-label="Fechar sem salvar" title="Fechar sem salvar">✕</button><section class="panel"><h2 id="ag-pop-t">Compromisso</h2><div id="agc-ev"></div></section></div></div>
     <section data-nav="Próximos 30 dias" class="panel">
       <h2>Próximos 30 dias</h2>
       <div id="agc-prox"></div>
@@ -3357,7 +3362,7 @@ tr.rd-hit td { background: color-mix(in srgb, var(--good) 9%, transparent); }
     return new Promise(resolve => { const { data } = sb.auth.onAuthStateChange(async (ev) => { if (ev !== 'PASSWORD_RECOVERY') return; const s = prompt('Digite a nova senha (mínimo 8 caracteres):'); if (s && s.length >= 8) { const { error } = await sb.auth.updateUser({ password: s }); alert(error ? 'Não deu para trocar a senha: ' + error.message : 'Senha trocada.'); } }); resolve(data); });
   }
   // ---------- rodapé: compartilhar, administração e sair ----------
-  const SITE_V = 131;
+  const SITE_V = 132;
   const escH = v => String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const dataBR = v => v ? new Date(v).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' }) : '–';
   const css2 = `.side-foot .r{flex-wrap:wrap}.side-foot .lg-acoes{margin-left:auto;display:inline-flex;gap:10px}
@@ -5799,7 +5804,7 @@ const AG_AVISO = [[-1, 'Sem aviso'], [0, 'No dia'], [1, '1 dia antes'], [3, '3 d
 const AG_AUTO = { aniver: 'Aniversários da família', viag: 'Viagens', plano: 'Itens do Plano futuro (compras, eventos, chegadas)' };
 const AG_SEM = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'];
 const agHoje = () => { const d = new Date(); return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0'); };
-let agMes = agHoje().slice(0, 7), agDia = agHoje(), agEvSel = '';
+let agMes = agHoje().slice(0, 7), agDia = agHoje(), agRasc = null; // agRasc = rascunho do pop-up (só vai para a agenda ao salvar)
 const agDiasMes = mk => new Date(+mk.slice(0, 4), +mk.slice(5, 7), 0).getDate();
 const agDt = (mk, d) => mk + '-' + String(d).padStart(2, '0');
 const agMk = (mk, n) => { const d = new Date(+mk.slice(0, 4), +mk.slice(5, 7) - 1 + n, 1); return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0'); };
@@ -5874,21 +5879,22 @@ function renderAgCal() {
   const os = agDoDia(agDia, agDia);
   $('agc-dia').innerHTML = `<p class="ag-dia-t"><b>${new Date(agDia + 'T12:00:00').toLocaleDateString('pt-BR', { weekday: 'long', day: 'numeric', month: 'long' })}</b> <button type="button" class="btn ghost tiny" data-agadd="${agDia}">+ Neste dia</button></p>` +
     (os.length ? `<ul class="ag-lst">${os.map(agLi).join('')}</ul>` : '<p class="hint">Nada neste dia.</p>');
-  // compromisso escolhido
-  const x = agL().find(y => y.id === agEvSel), fb = $('agc-ev');
-  fb.closest('section').hidden = !x;
-  if (x) { const b = k => `${x.id}:${k}`; let pes = []; try { pes = famL(); } catch (e) {}
+  // pop-up do compromisso (rascunho)
+  const x = agRasc, pop = $('ag-pop'), fb = $('agc-ev'); pop.hidden = !x;
+  if (!x) fb.innerHTML = '';
+  else if (!fb.dataset.de || fb.dataset.de !== x.id) { fb.dataset.de = x.id; const b = k => `${x.id}:${k}`, novo = !agL().some(y => y.id === x.id); let pes = []; try { pes = famL(); } catch (e) {}
+    $('ag-pop-t').textContent = novo ? 'Novo compromisso' : 'Editar compromisso';
     fb.innerHTML = `<div class="ng-form">
-      <label class="ag-wide">Título<input type="text" data-agf="${b('titulo')}" value="${esc(x.titulo)}" maxlength="80"></label>
+      <label class="ag-wide">Título<input type="text" data-agf="${b('titulo')}" value="${esc(novo ? '' : x.titulo)}" maxlength="80" placeholder="Ex.: Pediatra, conta de luz, reunião da escola"></label>
       <label>Data<input type="date" data-agf="${b('data')}" value="${x.data}"></label>
       <label>Hora<input type="time" data-agf="${b('hora')}" value="${x.hora}"></label>
       <label>Repete<select data-agf="${b('rep')}">${Object.entries(AG_REP).map(([k, t]) => `<option value="${k}"${x.rep === k ? ' selected' : ''}>${t}</option>`).join('')}</select></label>
       <label>Tipo<select data-agf="${b('cat')}">${Object.entries(AG_CAT).map(([k, [t]]) => `<option value="${k}"${x.cat === k ? ' selected' : ''}>${t}</option>`).join('')}</select></label>
       <label>De quem é<select data-agf="${b('quem')}"><option value="">Da casa</option>${pes.filter(p => p.tipo !== 'pet').map(p => `<option value="${p.id}"${x.quem === p.id ? ' selected' : ''}>${esc(p.nome)}</option>`).join('')}</select></label>
-      <label>Aviso em Seus avisos<select data-agf="${b('aviso')}">${AG_AVISO.map(([v, t]) => `<option value="${v}"${x.aviso === v ? ' selected' : ''}>${t}</option>`).join('')}</select></label>
+      <label>Lembrete<select data-agf="${b('aviso')}">${AG_AVISO.map(([v, t]) => `<option value="${v}"${x.aviso === v ? ' selected' : ''}>${t}</option>`).join('')}</select></label>
       <label class="ag-wide">Anotações<textarea data-agf="${b('nota')}" rows="2" maxlength="1000">${esc(x.nota)}</textarea></label></div>
-      <div class="ng-ac" style="justify-content:flex-start"><button type="button" class="btn ghost tiny" data-agfecha>Fechar</button><button type="button" class="btn danger tiny" data-agdel="${x.id}">Remover</button></div>
-      <p class="subdet">${pes.length ? '' : 'Cadastre as pessoas da casa em Família › Minha família para escolher de quem é cada compromisso. '}Compartilhar com outras pessoas vai funcionar no site, quando cada uma tiver o próprio login.</p>`; }
+      <p class="subdet">O lembrete aparece em Seus avisos (o ícone ao lado do logo).${pes.length ? '' : ' Cadastre as pessoas da casa em Família › Minha família para escolher de quem é cada compromisso.'} Compartilhar com outras pessoas vai funcionar no site, quando cada uma tiver o próprio login.</p>
+      <div class="ag-pop-ac">${novo ? '' : `<button type="button" class="btn danger tiny" data-agdel="${x.id}">Remover</button>`}<span class="ag-sp"></span><button type="button" class="btn ghost" data-agfecha>Cancelar</button><button type="button" class="btn" data-agsalva>${novo ? 'Adicionar' : 'Salvar'}</button></div>`; }
   // mês e próximos
   const mm = agAutoMes(mk);
   $('agc-mesl').innerHTML = mm.length ? `<ul class="ag-lst">${mm.map(o => `<li><i style="--agc:var(--s8)"></i><span class="q">${esc(o.d)}</span><span><a href="#" data-lmtab="${o.tab}" data-lmsec="${esc(o.sec || '')}">${esc(o.t)}</a>${o.sim ? ' <small class="subdet">só simulação</small>' : ''}</span></li>`).join('')}</ul>` : '<p class="hint">Nada do resto do painel neste mês.</p>';
@@ -5920,15 +5926,15 @@ function agRe() { save(); setTimeout(() => { renderTab(); try { renderPess(); } 
 function agNovoItem(lid) { const l = state.agenda.listas.find(y => y.id === lid), inp = $('agl-novo'); if (!l) return; const n = TXT(inp && inp.value, 80); if (!n) { if (inp) inp.focus(); return; }
   l.itens.push(agNormLista({ itens: [{ nome: n, qtd: 1 }] }).itens[0]); agRe(); setTimeout(() => { const el = $('agl-novo'); if (el) el.focus(); }, 30); }
 document.addEventListener('click', e => {
-  const t = e.target.closest('[data-agmes],[data-agadd],[data-agev],[data-agdia],[data-agdel],[data-agfecha],[data-agladd],[data-agldel],[data-agiadd],[data-agidel],[data-aglimpa],[data-agdesm],[data-agrd],[data-agrdabre]'); if (!t || !state.agenda) return;
+  const t = e.target.closest('[data-agmes],[data-agadd],[data-agev],[data-agdia],[data-agdel],[data-agfecha],[data-agsalva],[data-agladd],[data-agldel],[data-agiadd],[data-agidel],[data-aglimpa],[data-agdesm],[data-agrd],[data-agrdabre]'); if (!t || !state.agenda) return;
   const d = t.dataset, A = state.agenda; e.preventDefault();
-  if (d.agev) { e.stopPropagation(); agEvSel = d.agev; const x = agL().find(y => y.id === d.agev); if (x && tab !== 'agcal') showTab('agcal'); else renderTab(); setTimeout(() => { const el = $('agc-ev'); if (el) el.closest('section').scrollIntoView({ block: 'start' }); }, 40); return; }
+  if (d.agev) { e.stopPropagation(); const x = agL().find(y => y.id === d.agev); if (!x) return; agAbre(clone(x)); return; }
   if (d.agmes != null) { agMes = +d.agmes ? agMk(agMes, +d.agmes) : agHoje().slice(0, 7); if (!+d.agmes) agDia = agHoje(); renderTab(); return; }
   if (d.agdia) { agDia = d.agdia; renderTab(); return; }
-  if (d.agadd != null) { const x = agNormEv({ titulo: '', data: /^\d{4}-\d{2}-\d{2}$/.test(d.agadd) ? d.agadd : agDia || agHoje() }); x.titulo = 'Novo compromisso'; A.evs.push(x); agEvSel = x.id; agDia = x.data; agMes = x.data.slice(0, 7); agRe();
-    setTimeout(() => { const el = document.querySelector(`[data-agf="${x.id}:titulo"]`); if (el) { el.closest('section').scrollIntoView({ block: 'start' }); el.focus(); el.select(); } }, 60); return; }
-  if (d.agfecha != null) { agEvSel = ''; renderTab(); return; }
-  if (d.agdel) { const x = agL().find(y => y.id === d.agdel); if (!x || !confirmar(`Remover "${x.titulo}"${x.rep !== 'nao' ? ' e todas as repetições' : ''}?`)) return; A.evs = A.evs.filter(y => y !== x); agEvSel = ''; agRe(); return; }
+  if (d.agadd != null) { agAbre(agNormEv({ titulo: '', data: /^\d{4}-\d{2}-\d{2}$/.test(d.agadd) ? d.agadd : agDia || agHoje() })); return; }
+  if (d.agfecha != null) { agFecha(); return; }
+  if (d.agsalva != null) { agSalva(); return; }
+  if (d.agdel) { const x = agL().find(y => y.id === d.agdel); if (!x || !confirmar(`Remover "${x.titulo}"${x.rep !== 'nao' ? ' e todas as repetições' : ''}?`)) return; A.evs = A.evs.filter(y => y !== x); agFecha(true); agRe(); return; }
   if (d.agladd != null) { const l = agNormLista({ nome: A.listas.length ? 'Lista ' + (A.listas.length + 1) : 'Mercado' }); A.listas.push(l); A.sel = l.id; agRe(); return; }
   if (d.agldel) { const l = A.listas.find(y => y.id === d.agldel); if (!l || !confirmar(`Remover a lista "${l.nome}"${l.itens.length ? ` com ${l.itens.length} itens` : ''}?`)) return; A.listas = A.listas.filter(y => y !== l); A.sel = ''; agRe(); return; }
   if (d.agiadd) { agNovoItem(d.agiadd); return; }
@@ -5939,19 +5945,32 @@ document.addEventListener('click', e => {
   if (d.agrd) { const [l, i] = li(d.agrd); if (!i) return; try { const r = rdNovo(); r.nome = i.nome || r.nome; i.rd = r.id; save(); showTab('rdprod'); } catch (er) { console.error(er); } return; }
   if (d.agrdabre) { try { state.radar.sel = d.agrdabre; save(); showTab('rdprod'); } catch (er) {} return; }
 });
+function agAbre(x) { agRasc = x; const fb = $('agc-ev'); if (fb) delete fb.dataset.de; if (tab !== 'agcal') showTab('agcal'); else renderTab();
+  setTimeout(() => { const el = document.querySelector(`#ag-pop [data-agf$=":titulo"]`); if (el) el.focus(); }, 40); }
+function agFecha(semRender) { agRasc = null; const fb = $('agc-ev'); if (fb) delete fb.dataset.de; if ($('ag-pop')) $('ag-pop').hidden = true; if (!semRender) renderTab(); }
+function agSalva() {
+  const x = agRasc; if (!x) return; const ti = document.querySelector('#ag-pop [data-agf$=":titulo"]');
+  if (ti) x.titulo = ti.value; if (!TXT(x.titulo, 80)) { if (ti) { ti.classList.add('ag-erro'); ti.focus(); } return; }
+  agNormEv(x); const A = state.agenda, i = A.evs.findIndex(y => y.id === x.id); if (i >= 0) A.evs[i] = x; else A.evs.push(x);
+  agDia = x.data; agMes = x.data.slice(0, 7); agFecha(true); agRe();
+}
+document.addEventListener('mousedown', e => { if (e.target.id === 'ag-pop') agFecha(); });
 document.addEventListener('keydown', e => {
+  if (agRasc && $('ag-pop') && !$('ag-pop').hidden) { if (e.key === 'Escape') { e.preventDefault(); agFecha(); return; } if (e.key === 'Enter' && e.target.matches('#ag-pop input')) { e.preventDefault(); agSalva(); return; } }
   if (e.target.id === 'agl-novo' && e.key === 'Enter') { e.preventDefault(); const l = agLista(); if (l) agNovoItem(l.id); return; }
   const c = e.target.closest && e.target.closest('[data-agdia]'); if (c && (e.key === 'Enter' || e.key === ' ') && e.target === c) { e.preventDefault(); agDia = c.dataset.agdia; renderTab(); }
 });
 document.addEventListener('change', e => {
   const t = e.target, d = t.dataset || {}; if (!state.agenda) return; const A = state.agenda;
-  if (d.agf) { const [id, k] = d.agf.split(':'), x = agL().find(y => y.id === id); if (!x) return; x[k] = k === 'aviso' ? +t.value : t.value; agNormEv(x); if (k === 'data') { agDia = x.data; agMes = x.data.slice(0, 7); } agRe(); return; }
+  if (d.agf) { if (!agRasc) return; const k = d.agf.split(':')[1]; agRasc[k] = k === 'aviso' ? +t.value : t.value; if (k === 'titulo') t.classList.remove('ag-erro'); return; }
   if (d.agauto) { A.ocultos = A.ocultos.filter(k => k !== d.agauto); if (!t.checked) A.ocultos.push(d.agauto); agRe(); return; }
   if (d.aglsel != null) { A.sel = t.value; save(); renderTab(); return; }
   if (d.aglf) { const l = A.listas.find(y => y.id === d.aglf.split(':')[0]); if (!l) return; l.nome = TXT(t.value, 60) || 'Lista'; agRe(); return; }
   if (d.agi) { const [lid, iid, k] = d.agi.split(':'), l = A.listas.find(y => y.id === lid), i = l && l.itens.find(y => y.id === iid); if (!i) return;
     i[k] = k === 'ok' ? t.checked : k === 'nome' ? TXT(t.value, 80) : Math.max(0, +t.value || 0); agRe(); return; }
 });
+// o cabeçalho do pop-up não recolhe a seção (como as faixas das outras seções)
+document.addEventListener('click', e => { if (e.target.closest && e.target.closest('#ag-pop .panel > h2')) e.stopPropagation(); }, true);
 
 /* ---------- Seus avisos: ícone comum de avisos pessoais (Agenda, Radar de preços e outros módulos) ----------
    Cada módulo registra uma função em AVISOS_PESSOAIS que devolve [{id, mod, quando 'AAAA-MM-DD', msg, tab, sec}].
@@ -13542,7 +13561,6 @@ const INFO_SEC = {
   'comousar:Agenda': 'Os passos da Agenda. Todos são opcionais.',
   'agcal:Mês': 'Toque num dia para ver o que tem nele, ou num compromisso para editar. Em itálico, as datas que vêm do resto do painel (viagens).',
   'agcal:Dia escolhido': 'Tudo o que cai no dia tocado, inclusive as repetições.',
-  'agcal:Compromisso': 'Repete: a data é a primeira vez. Todo mês cai no mesmo dia (ou no último dia, se o mês for mais curto). Aviso: aparece a partir de quantos dias antes. De quem é: escolha entre as pessoas da Família.',
   'agcal:Próximos 30 dias': 'A agenda em lista, de hoje até 30 dias, com as repetições.',
   'agcal:Do painel neste mês': 'O que o resto do painel marca para este mês sem dia exato: aniversários (mês de nascimento), chegada de filho, compras e eventos do Plano futuro.',
   'agcal:Mostrar também': 'Escolha quais datas do resto do painel entram no calendário. Elas não ficam salvas na agenda: mudam sozinhas quando você muda o módulo de origem.',
