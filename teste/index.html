@@ -1382,6 +1382,14 @@ ul.ng-acordo li { margin-bottom: 4px; }
 .ind-niv .nv .btn { align-self: flex-start; margin-top: 4px; }
 .ind-niv { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; margin-top: 10px; }
 @media (max-width: 700px) { .ind-niv { grid-template-columns: minmax(0, 1fr); } .ind-hero .t { font-size: 17px; } }
+.ind-alv { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px 22px; margin-bottom: 14px; }
+.ind-sl { text-transform: none; letter-spacing: 0; font-family: var(--f-ui); font-size: 12.5px; font-weight: 400; color: var(--ink); gap: 6px; }
+.ind-sl .nm { display: flex; justify-content: space-between; gap: 8px; font-weight: 600; }
+.ind-sl .nm b { color: var(--accent); font-variant-numeric: tabular-nums; }
+.ind-sl input[type="range"] { width: 100%; accent-color: var(--accent); }
+.ind-sl small { color: var(--muted); font-size: 11.5px; }
+@media (max-width: 700px) { .ind-alv { grid-template-columns: minmax(0, 1fr); } }
+/* fim independência */
 /* Radar de preços */
 .rd-graf { width: 100%; height: auto; max-height: 260px; display: block; margin: 8px 0 4px; }
 .rd-gl { stroke: var(--line); stroke-width: 1; }
@@ -1520,6 +1528,7 @@ tr.rd-hit td { background: color-mix(in srgb, var(--good) 9%, transparent); }
         <div class="nav-sec" data-sec="indep" data-mod="indep"><button type="button" class="nav-sec-h" data-sectog="indep" aria-expanded="true"><span>Independência financeira</span><span class="caret" aria-hidden="true">▾</span></button><div class="nav-sec-b">
           <div class="nav-group"><button type="button" class="nav-head" data-tab="indvg"><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 11.5 12 4l9 7.5"/><path d="M5.5 10v9.5h13V10"/><path d="M10 19.5v-5h4v5"/></svg></span>Visão geral</button><div class="nav-sub" data-sub="indvg"></div></div>
           <div class="nav-group"><button type="button" class="nav-head" data-tab="indnum"><span class="ico">01</span>Meu número<span class="caret" data-navtog="indnum" role="button" tabindex="0" aria-label="Abrir ou recolher submódulos">▾</span></button><div class="nav-sub" data-sub="indnum"></div></div>
+          <div class="nav-group"><button type="button" class="nav-head" data-tab="indalv"><span class="ico">02</span>Alavancas<span class="caret" data-navtog="indalv" role="button" tabindex="0" aria-label="Abrir ou recolher submódulos">▾</span></button><div class="nav-sub" data-sub="indalv"></div></div>
         </div></div>
         <div class="nav-sec" data-sec="preco" data-mod="preco"><button type="button" class="nav-sec-h" data-sectog="preco" aria-expanded="true"><span>Radar de preços</span><span class="caret" aria-hidden="true">▾</span></button><div class="nav-sec-b">
           <div class="nav-group"><button type="button" class="nav-head" data-tab="rdvg"><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 11.5 12 4l9 7.5"/><path d="M5.5 10v9.5h13V10"/><path d="M10 19.5v-5h4v5"/></svg></span>Visão geral</button><div class="nav-sub" data-sub="rdvg"></div></div>
@@ -1537,7 +1546,7 @@ tr.rd-hit td { background: color-mix(in srgb, var(--good) 9%, transparent); }
     </div>
     <div class="nav-mobile-sub" id="navMobileSub"></div>
   </div>
-  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 247</div></div>
+  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 248</div></div>
 </nav>
 <div class="sino-pop" id="sino-pop" role="dialog" aria-label="Central de avisos" hidden></div>
 <div class="sino-pop" id="pess-pop" role="dialog" aria-label="Seus avisos" hidden></div>
@@ -2098,6 +2107,22 @@ tr.rd-hit td { background: color-mix(in srgb, var(--good) 9%, transparent); }
       <div id="ch-ind"></div>
       <div class="readout" id="ro-ind"></div>
       <p class="sub" id="ind-ch-nota"></p>
+    </section>
+  </section>
+  <!-- ============ INDEPENDÊNCIA: ALAVANCAS ============ -->
+  <section role="tabpanel" id="p-indalv" hidden>
+    <div class="block-title"><span class="num">02</span><div><h1>Alavancas</h1><p class="desc">O que mais muda a sua data: guardar mais, gastar menos, render mais, e quanto cada item dos outros módulos adianta ou atrasa.</p></div></div>
+    <section data-nav="Alavancas" class="panel">
+      <h2>Alavancas</h2>
+      <p class="sub">Mexa e veja a data mudar. É só simulação: o Plano futuro e Meu número não mudam.</p>
+      <div class="ind-alv" id="ind-alv"></div>
+      <div class="row"><span></span><button type="button" class="btn tiny ghost" data-indalvzero>Voltar ao plano atual</button></div>
+      <div id="ind-alv-res"></div>
+    </section>
+    <section data-nav="O que adianta ou atrasa" class="panel">
+      <h2>O que adianta ou atrasa</h2>
+      <p class="sub">Para cada item dos módulos: se está na Projeção real, quanto ele atrasa (ou adianta) a data; se é Só simulação, o que aconteceria se entrasse no plano.</p>
+      <div class="tscroll"><table id="tbl-ind-itens"></table></div>
     </section>
   </section>
   <!-- ============ INDEPENDÊNCIA: MEU NÚMERO ============ -->
@@ -3332,7 +3357,7 @@ tr.rd-hit td { background: color-mix(in srgb, var(--good) 9%, transparent); }
     return new Promise(resolve => { const { data } = sb.auth.onAuthStateChange(async (ev) => { if (ev !== 'PASSWORD_RECOVERY') return; const s = prompt('Digite a nova senha (mínimo 8 caracteres):'); if (s && s.length >= 8) { const { error } = await sb.auth.updateUser({ password: s }); alert(error ? 'Não deu para trocar a senha: ' + error.message : 'Senha trocada.'); } }); resolve(data); });
   }
   // ---------- rodapé: compartilhar, administração e sair ----------
-  const SITE_V = 130;
+  const SITE_V = 131;
   const escH = v => String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const dataBR = v => v ? new Date(v).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' }) : '–';
   const css2 = `.side-foot .r{flex-wrap:wrap}.side-foot .lg-acoes{margin-left:auto;display:inline-flex;gap:10px}
@@ -5187,6 +5212,8 @@ function indNormalizar(s) {
   x.extras = Array.isArray(x.extras) ? x.extras.filter(e => e && typeof e === 'object').map(e => ({ id: String(e.id || uid()), nome: String(e.nome || 'Outro'), valor: +e.valor || 0 })) : [];
   x.taxaModo = x.taxaModo === 'fixa' ? 'fixa' : 'idade'; x.taxa = n(x.taxa, 1, 10, 4);
   x.rReal = x.rReal === '' || x.rReal == null || !isFinite(+x.rReal) ? '' : +x.rReal;
+  const a = x.alv && typeof x.alv === 'object' ? x.alv : {};
+  x.alv = { aporte: n(a.aporte, 0, 50000, 0), custo: n(a.custo, 30, 200, 100), rD: n(a.rD, 0, 15, null), taxa: n(a.taxa, 1, 10, null), ate: n(a.ate, 60, 120, null) };
 }
 // custo de hoje por categoria: média dos meses com lançamentos (até 12, sem o mês corrente) ou o orçamento
 function indBase() {
@@ -5195,11 +5222,11 @@ function indBase() {
   const usaG = I.base === 'gastos' && ms.length > 0;
   return { meses: usaG ? ms.length : 0, linhas: cats().map(c => ({ nome: c.nome, grupo: c.grupo, hoje: usaG ? Math.max(0, ms.reduce((t, m) => t + (m.porCat[c.nome] || 0), 0) / ms.length) : Math.max(0, +c.orc || 0) })) };
 }
-function indCusto() {
+function indCusto(pl) {
   const I = state.indep, B = indBase();
   B.linhas.forEach(l => { const a = I.ajuste[l.nome]; l.aj = a === '' || a == null || !isFinite(+a) ? null : Math.max(0, +a); l.ind = l.aj ?? l.hoje; });
   const ext = I.extras.reduce((t, e) => t + Math.max(0, +e.valor || 0), 0), soma = B.linhas.reduce((t, l) => t + l.ind, 0) + ext;
-  const pl = calcPlano(), m1 = pl.meses[Math.max(HOJE_IDX, pl.i0) + 1], aluguel = Math.max(0, m1 ? m1.rendaB : 0);
+  pl = pl || calcPlano(); const m1 = pl.meses[Math.max(HOJE_IDX, pl.i0) + 1], aluguel = Math.max(0, m1 ? m1.rendaB : 0);
   const nivel = id => Math.max(0, soma * I.mult[id] / 100 - aluguel);
   return { B, ext, soma, aluguel, nivel, hojeTot: B.linhas.reduce((t, l) => t + l.hoje, 0) };
 }
@@ -5212,28 +5239,32 @@ const indMeses = n => { n = Math.max(0, Math.round(n)); const a = Math.floor(n /
 // número para um custo mensal C, se a independência começar no mês i
 function indNumero(C, i, ctx) {
   if (C <= 0) return 0;
-  if (ctx.modo === 'fixa' || ctx.nascI == null) return C * 12 / (state.indep.taxa / 100);
+  if (ctx.modo === 'fixa' || ctx.nascI == null) return C * 12 / (ctx.taxa / 100);
   const n = ctx.fimI - i; if (n <= 0) return 0;
   const r = ctx.rmD; return r > 1e-9 ? C * (1 - Math.pow(1 + r, -n)) / r : C * n;
 }
 // patrimônio que rende, em reais de hoje, de hoje até fim (depois do horizonte do plano: rendimento real do plano + sobra média real)
-function indSerie(st, fim) {
-  const pl = calcPlano(), rm = Math.pow(1 + indRPlano(), 1 / 12) - 1, P = {}, sob = [];
+function indSerie(st, fim, pl, aporte) {
+  pl = pl || calcPlano(); aporte = +aporte || 0; let acc = 0; const rm = Math.pow(1 + indRPlano(), 1 / 12) - 1, P = {}, sob = [];
   let defl = 1, ult = null;
   for (let i = st; i <= fim; i++) {
     if (i > st) defl *= 1 + ipcaPlano(Math.min(i, pl.fim)) / 12;
     if (i <= pl.fim && pl.inv[i] != null) { ult = (pl.inv[i] + (pl.parado[i] || 0)) / defl; const m = pl.meses[i]; if (m) sob.push(m.sobra / defl); }
     else { if (ult == null) ult = +state.plan.valor || 0; const s12 = sob.slice(-12), sm = s12.length ? s12.reduce((a, b) => a + b, 0) / s12.length : 0; ult = ult * (1 + rm) + sm; }
-    P[i] = ult;
+    if (i > st && aporte) acc = acc * (1 + rm) + aporte;
+    P[i] = ult + acc;
   }
   return { P, planoFim: pl.fim };
 }
-function indCalc() {
-  const I = state.indep, st = Math.max(HOJE_IDX, calcPlano().i0), nascI = I.nasc ? mIndex(I.nasc) : null;
-  const fimI = nascI != null ? nascI + I.ate * 12 : null, metaI = nascI != null ? nascI + I.meta * 12 : null;
+// o = { pl (calcPlano com extra), aporte (R$/mês a mais, reais de hoje), custo (% do custo), rD (% a.a.), taxa (% a.a.), ate (anos) }
+function indCalc(o) {
+  o = o || {}; const I = state.indep, pl0 = o.pl || calcPlano(), st = Math.max(HOJE_IDX, calcPlano().i0), nascI = I.nasc ? mIndex(I.nasc) : null;
+  const ate = o.ate ?? I.ate, fimI = nascI != null ? nascI + ate * 12 : null, metaI = nascI != null ? nascI + I.meta * 12 : null;
   const busca = Math.min(st + 70 * 12, fimI != null ? fimI - 12 : st + 50 * 12);
-  const ctx = { modo: I.taxaModo, nascI, fimI, rmD: Math.pow(1 + indRDepois(), 1 / 12) - 1 };
-  const cu = indCusto(), S = indSerie(st, Math.max(busca, st + 12)), P = S.P;
+  const rD = o.rD != null ? o.rD / 100 : indRDepois();
+  const ctx = { modo: I.taxaModo, nascI, fimI, rmD: Math.pow(1 + rD, 1 / 12) - 1, taxa: o.taxa ?? I.taxa };
+  const cu0 = o.cu || indCusto(), f = (o.custo ?? 100) / 100, cu = f === 1 ? cu0 : Object.assign({}, cu0, { nivel: id => cu0.nivel(id) * f });
+  const S = indSerie(st, Math.max(busca, st + 12), pl0, o.aporte), P = S.P;
   const cruza = C => { for (let i = st; i <= busca; i++) if (P[i] >= indNumero(C, i, ctx)) return i; return null; };
   const C = cu.nivel(I.nivel), cruz = C > 0 ? cruza(C) : null;
   const niveis = IND_NIV.map(([id, nome, en]) => ({ id, nome, en, C: cu.nivel(id), i: cu.nivel(id) > 0 ? cruza(cu.nivel(id)) : null }));
@@ -5249,7 +5280,7 @@ function indCalc() {
   }
   let reserva = null; if (I.reserva > 0 && C > 0) { const alvo = cu.soma * I.reserva; for (let i = st; i <= busca; i++) if (P[i] >= alvo) { reserva = { i, alvo }; break; } if (!reserva) reserva = { i: null, alvo }; }
   const Nhoje = indNumero(C, cruz ?? metaI ?? st, ctx);
-  return { I, st, nascI, fimI, metaI, busca, ctx, cu, C, P, cruz, niveis, meta, reserva, Nref: Nhoje, planoFim: S.planoFim, rD: indRDepois(), rP: indRPlano() };
+  return { I, st, nascI, fimI, metaI, busca, ctx, cu, C, P, cruz, niveis, meta, reserva, Nref: Nhoje, planoFim: S.planoFim, rD, rP: indRPlano() };
 }
 const indIdade = (r, i) => r.nascI == null ? '' : indMeses(i - r.nascI);
 function indFrase(r) {
@@ -5257,7 +5288,7 @@ function indFrase(r) {
   if (r.cruz == null) return { t: `Com o plano atual, você ainda não chega lá${r.nascI != null ? ` até os ${Math.floor((r.busca - r.nascI) / 12)} anos` : ' nos próximos 50 anos'}.`, d: `O custo de ${fm(r.C)} por mês pede mais patrimônio do que o plano junta. Veja abaixo quanto falta e mexa no custo ou no Plano futuro.` };
   const quando = r.cruz <= r.st ? 'já' : `em <b>${mLabel(r.cruz)}</b>`;
   return { t: r.cruz <= r.st ? `Você <b>já</b> tem o suficiente para parar de trabalhar por obrigação.` : `Você chega à independência ${quando}${r.nascI != null ? `, aos <b>${indIdade(r, r.cruz)}</b>` : ''}: daqui a <b>${indMeses(r.cruz - HOJE_IDX)}</b>.`,
-    d: `Custo de ${fm(r.C)} por mês (nível ${IND_NIV.find(v => v[0] === r.I.nivel)[1].toLowerCase()}), número de <b>${fm(r.Nref)}</b> em reais de hoje${r.ctx.modo === 'idade' && r.nascI != null ? `, para durar até os ${r.I.ate} anos` : `, com saque de ${num(r.I.taxa, 1)}% ao ano`}. Pelo seu <a href="#" data-lmtab="orcamento" data-lmsec="Premissas">Plano futuro</a>.` };
+    d: `Custo de ${fm(r.C)} por mês (nível ${IND_NIV.find(v => v[0] === r.I.nivel)[1].toLowerCase()}), número de <b>${fm(r.Nref)}</b> em reais de hoje${r.ctx.modo === 'idade' && r.nascI != null ? `, para durar até os ${r.I.ate} anos` : `, com saque de ${num(r.I.taxa, 1)}% ao ano`}. Pelo seu <a href="#" data-lmtab="orcamento" data-lmsec="Premissas">Plano futuro</a>. Veja o que adianta essa data em <a href="#" data-lmtab="indalv" data-lmsec="Alavancas">Alavancas</a>.` };
 }
 function renderIndVg() {
   const r = indCalc(), f = indFrase(r);
@@ -5324,6 +5355,63 @@ document.addEventListener('click', e => {
   if (b.dataset.indextra != null) { I.extras.push({ id: uid(), nome: 'Saúde (plano particular)', valor: 0 }); save(); renderTab(); return; }
   if (b.dataset.indexdel) { const x = I.extras.find(y => y.id === b.dataset.indexdel); if (x && confirmar(`Remover a linha "${x.nome}"?`)) { I.extras = I.extras.filter(y => y.id !== x.id); save(); renderTab(); } return; }
 });
+
+/* ---------- Independência: Alavancas (etapa 2) ---------- */
+const IND_ALV = [
+  ['aporte', 'Guardar a mais por mês', 0, 10000, 100, v => '+' + fm(v), 'em reais de hoje, corrigido pela inflação'],
+  ['custo', 'Custo de vida', 50, 150, 5, v => num(v, 0) + '%', 'do custo do nível escolhido'],
+  ['rD', 'Rendimento real depois de parar', 2, 8, 0.25, v => num(v, 2) + '% a.a.', 'acima da inflação, líquido de IR'],
+  ['taxa', 'Taxa de saque', 2.5, 6, 0.25, v => num(v, 2) + '% a.a.', 'número = custo do ano ÷ taxa'],
+  ['ate', 'O dinheiro dura até os', 85, 110, 1, v => num(v, 0) + ' anos', 'quanto mais tempo, maior o número']
+];
+const indAlvOpts = () => { const a = state.indep.alv, I = state.indep; return { aporte: a.aporte, custo: a.custo, rD: a.rD ?? (I.rReal === '' ? IND_R_PAD : I.rReal), taxa: a.taxa ?? I.taxa, ate: a.ate ?? I.ate }; };
+const indDifM = (a, b) => a == null || b == null ? null : a - b;
+const indDifTxt = d => d == null ? '—' : d === 0 ? 'não muda' : d < 0 ? `<span class="pos">${indMeses(-d)} antes</span>` : `<span class="neg">${indMeses(d)} depois</span>`;
+function indAlvRes() {
+  const I = state.indep, base = indCalc(), o = indAlvOpts(), r = indCalc(o), d = indDifM(r.cruz, base.cruz);
+  const quando = x => x.cruz == null ? 'fora do horizonte' : x.cruz <= x.st ? 'já' : `${mLabel(x.cruz)}${x.nascI != null ? ', aos ' + Math.floor((x.cruz - x.nascI) / 12) + ' anos' : ''}`;
+  let html = `<div class="ind-hero"><div class="t">Com essas alavancas: <b>${quando(r)}</b></div><div class="d">Hoje, pelo plano: ${quando(base)}. ${d == null ? '' : d === 0 ? 'A data não muda.' : d < 0 ? `Adianta <b>${indMeses(-d)}</b>.` : `Atrasa <b>${indMeses(d)}</b>.`} Número: ${fm(r.Nref)}.</div></div>`;
+  // o que bastaria para a meta, mexendo uma coisa só
+  if (base.metaI != null && base.metaI > base.st && base.C > 0) {
+    const ok = x => x.cruz != null && x.cruz <= base.metaI, m = base.meta, linhas = [];
+    if (!ok(base)) {
+      if (m && m.aporte) linhas.push(`guardar <b>+${fm(m.aporte)}</b> por mês`);
+      let lo = 30, hi = 100; if (ok(indCalc({ custo: lo }))) { for (let j = 0; j < 18; j++) { const mid = (lo + hi) / 2; if (ok(indCalc({ custo: mid }))) lo = mid; else hi = mid; } linhas.push(`ou viver com <b>${fm(base.C * lo / 100)}</b> por mês (${num(lo, 0)}% do custo)`); }
+      let r1 = base.rD * 100, r2 = 15; if (ok(indCalc({ rD: r2 }))) { for (let j = 0; j < 18; j++) { const mid = (r1 + r2) / 2; if (ok(indCalc({ rD: mid }))) r2 = mid; else r1 = mid; } linhas.push(`ou render <b>${num(r2, 1)}%</b> real ao ano depois de parar`); }
+    }
+    html += ok(base) ? `<p class="sub" style="margin:10px 0 0">Meta dos <b>${I.meta} anos</b> (${mLabel(base.metaI)}): o plano atual já chega lá.</p>`
+      : `<p class="sub" style="margin:10px 0 0">Para chegar aos <b>${I.meta} anos</b> (${mLabel(base.metaI)}), mexendo em uma coisa só: ${linhas.join(', ')}.</p>`;
+  }
+  $('ind-alv-res').innerHTML = html;
+}
+function renderIndAlv() {
+  const I = state.indep, a = I.alv, o = indAlvOpts(), fixa = I.taxaModo === 'fixa' || !I.nasc;
+  $('ind-alv').innerHTML = IND_ALV.filter(([kk]) => kk !== (fixa ? 'ate' : 'taxa')).map(([kk, nome, lo, hi, step, f, sub]) => { const v = o[kk];
+    return `<label class="ind-sl"><span class="nm">${nome} <b data-indalvv="${kk}">${f(v)}</b></span><input type="range" min="${lo}" max="${hi}" step="${step}" value="${v}" data-indalv="${kk}" aria-label="${nome}"><small>${sub}</small></label>`; }).join('');
+  indAlvRes();
+  renderIndItens();
+}
+// quanto cada item dos módulos adianta ou atrasa a data (calcPlano com e sem o item)
+function renderIndItens() {
+  const base = indCalc(), cu = indCusto(), its = itensModulos().filter(x => !x.bloq && (x.uso === 'real' || x.uso === 'sim'));
+  const rows = its.map(x => { let d = null, nova = null;
+    try { const pl = calcPlano(new Set([(x.uso === 'real' ? '-' : '') + x.id])), r = indCalc({ pl, cu: indCusto(pl) });
+      if (x.uso === 'real') { d = indDifM(base.cruz, r.cruz); nova = r.cruz; } else { d = indDifM(r.cruz, base.cruz); nova = r.cruz; }
+      if (base.cruz == null || r.cruz == null) d = base.cruz == null && r.cruz == null ? 0 : x.uso === 'real' ? (r.cruz == null ? -999 : 999) : (r.cruz == null ? 999 : -999);
+    } catch (er) { console.error(er); }
+    return { x, d, nova }; }).sort((a, b) => Math.abs(b.d ?? 0) - Math.abs(a.d ?? 0));
+  const MODN = Object.fromEntries(MODS.map(m => [m.id, m.nome]));
+  const ef = d => d == null ? '—' : d === 999 ? '<span class="neg">tira do horizonte</span>' : d === -999 ? '<span class="pos">traz para o horizonte</span>' : d === 0 ? '<span class="z">não muda</span>' : d > 0 ? `<span class="neg">atrasa ${indMeses(d)}</span>` : `<span class="pos">adianta ${indMeses(-d)}</span>`;
+  $('tbl-ind-itens').innerHTML = rows.length ? `<thead><tr><th>Item</th><th>Módulo</th><th>Uso</th><th>Efeito na independência</th><th>Data</th></tr></thead><tbody>${rows.map(({ x, d, nova }) => `<tr><td class="name">${esc(x.nome)}${x.resumo ? `<span class="subdet" style="display:block">${esc(x.resumo)}</span>` : ''}</td><td class="name"><a href="#" data-lmtab="${esc(x.tab)}" data-lmsec="${esc(x.sec || '')}">${esc(x.sub || MODN[x.mod] || '')}</a></td><td class="name">${x.uso === 'real' ? 'Projeção real' : 'Só simulação'}</td><td class="name">${ef(d)}</td><td>${x.uso === 'real' ? `<span class="subdet">sem ele: ${nova == null ? 'fora do horizonte' : mLabel(nova)}</span>` : `<span class="subdet">com ele: ${nova == null ? 'fora do horizonte' : mLabel(nova)}</span>`}</td></tr>`).join('')}</tbody>`
+    : '<tbody><tr><td class="name"><span class="subdet">Nenhum item nos módulos ainda. Compras, viagens, negócios, stock options, família e eventos do Plano futuro aparecem aqui.</span></td></tr></tbody>';
+}
+document.addEventListener('input', e => { const el = e.target, kk = el.dataset && el.dataset.indalv; if (!kk || !state.indep) return;
+  const def = IND_ALV.find(x => x[0] === kk); state.indep.alv[kk] = +el.value; const b = document.querySelector(`[data-indalvv="${kk}"]`); if (b) b.textContent = def[5](+el.value);
+  clearTimeout(indAlvT); indAlvT = setTimeout(indAlvRes, 60); });
+let indAlvT = null;
+document.addEventListener('change', e => { if (e.target.dataset && e.target.dataset.indalv && state.indep) save(); });
+document.addEventListener('click', e => { const b = e.target.closest('button'); if (!b || b.dataset.indalvzero == null || !state.indep) return; state.indep.alv = { aporte: 0, custo: 100, rD: null, taxa: null, ate: null }; save(); renderTab(); });
+/* fim independência js */
 
 /* ---------- Radar de preços (state.radar) ---------- */
 // etapa 1: lista, alvo, preços lançados à mão, histórico, comprar ou esperar. A rotina diária (etapa 2) vai gravar em x.precos com fonte 'rotina'.
@@ -9236,7 +9324,7 @@ function normalizar(s) {
 try { if (quemLocal === 'dono') { const b = JSON.parse(localStorage.getItem('painel-priv')); if (b) aplicarBase(b); } } catch (e) {}
 try { const l = JSON.parse(localStorage.getItem(LSK('painel-fin-v2'))); if (l) state = normalizar(l); } catch (e) {}
 tab = 'modulos';
-const TABS = ['modulos', 'agcal', 'aglis', 'comousar', 'inicio', 'trabvg', 'viagvg', 'viagens', 'viagcmp', 'viagrot', 'viagcus', 'viagdur', 'negvg', 'negcad', 'negdre', 'negfc', 'negabr', 'negeco', 'negpesq', 'negviab', 'negcont', 'negval', 'negprec', 'negsoc', 'negcmp', 'famvg', 'fampes', 'indvg', 'indnum', 'rdvg', 'rdprod', 'rdcomp', 'leia', 'global', 'gastos', 'carteira', 'orcamento', 'compras', 'cenarios', 'patrimonio', 'comparador', 'simulador', 'pjpf', 'stock', 'config', 'familia'];
+const TABS = ['modulos', 'agcal', 'aglis', 'comousar', 'inicio', 'trabvg', 'viagvg', 'viagens', 'viagcmp', 'viagrot', 'viagcus', 'viagdur', 'negvg', 'negcad', 'negdre', 'negfc', 'negabr', 'negeco', 'negpesq', 'negviab', 'negcont', 'negval', 'negprec', 'negsoc', 'negcmp', 'famvg', 'fampes', 'indvg', 'indnum', 'indalv', 'rdvg', 'rdprod', 'rdcomp', 'leia', 'global', 'gastos', 'carteira', 'orcamento', 'compras', 'cenarios', 'patrimonio', 'comparador', 'simulador', 'pjpf', 'stock', 'config', 'familia'];
 if (TABS.includes(location.hash.slice(1))) tab = location.hash.slice(1);
 if (!TABS.includes(tab)) tab = 'modulos';
 
@@ -13422,7 +13510,7 @@ $('cpform').addEventListener('submit', async e => {
 });
 
 /* ---------- abas ---------- */
-const BUILD = { modulos: () => {}, agcal: () => {}, aglis: () => {}, comousar: () => {}, inicio: () => {}, trabvg: () => {}, viagvg: () => {}, viagens: () => {}, viagcmp: () => {}, viagrot: () => {}, viagcus: () => {}, viagdur: () => {}, negvg: () => {}, negcad: () => {}, negdre: () => {}, negfc: () => {}, negabr: () => {}, negeco: () => {}, negpesq: () => {}, negviab: () => {}, negcont: () => {}, negprec: () => {}, negval: () => {}, negsoc: () => {}, negcmp: () => {}, famvg: () => {}, fampes: () => {}, indvg: () => {}, indnum: () => {}, rdvg: () => {}, rdprod: () => {}, rdcomp: () => {}, leia: buildLeia, global: () => {}, cenarios: buildCenarios, compras: buildCenarios, carteira: buildCarteira, comparador: buildComparador, simulador: buildSimulador, gastos: buildGastos, orcamento: buildOrcamento, config: buildConfig, pjpf: buildPj, stock: buildStock, familia: () => carregarPerfis(), patrimonio: () => {} };
+const BUILD = { modulos: () => {}, agcal: () => {}, aglis: () => {}, comousar: () => {}, inicio: () => {}, trabvg: () => {}, viagvg: () => {}, viagens: () => {}, viagcmp: () => {}, viagrot: () => {}, viagcus: () => {}, viagdur: () => {}, negvg: () => {}, negcad: () => {}, negdre: () => {}, negfc: () => {}, negabr: () => {}, negeco: () => {}, negpesq: () => {}, negviab: () => {}, negcont: () => {}, negprec: () => {}, negval: () => {}, negsoc: () => {}, negcmp: () => {}, famvg: () => {}, fampes: () => {}, indvg: () => {}, indnum: () => {}, indalv: () => {}, rdvg: () => {}, rdprod: () => {}, rdcomp: () => {}, leia: buildLeia, global: () => {}, cenarios: buildCenarios, compras: buildCenarios, carteira: buildCarteira, comparador: buildComparador, simulador: buildSimulador, gastos: buildGastos, orcamento: buildOrcamento, config: buildConfig, pjpf: buildPj, stock: buildStock, familia: () => carregarPerfis(), patrimonio: () => {} };
 // (i) de cada seção: o que mostra e de onde vêm os números (chave: aba:data-nav)
 const INFO_SEC = {
   'comousar:Resumo': 'Para cada módulo: se já tem o mínimo para funcionar (os obrigatórios), quantos opcionais você resolveu e um botão para o próximo passo. Um opcional conta como resolvido quando você preenche ou marca que não tem.',
@@ -13445,6 +13533,8 @@ const INFO_SEC = {
   'rdcomp:À vista ou parcelado': 'As parcelas são trazidas para o valor de hoje pelo CDI do Focus menos o IR de renda fixa do prazo. Se esse valor for menor que o preço à vista, parcelar sem juros e deixar o dinheiro rendendo sai mais barato.',
   'rdcomp:Quando consigo comprar': 'Meses = (alvo − já guardado) ÷ quanto guarda por mês. Em branco, a sugestão é 20% da sobra típica do mês pelo Plano futuro.',
   'rdcomp:Comprei': 'Projeção real cria um bem em Bens e compromissos (à vista ou parcelado sem juros) que entra no Plano futuro. Desfazer tira o bem e devolve o produto ao radar.',
+  'indalv:Alavancas': 'Cada alavanca muda uma coisa e o painel recalcula a data. Guardar a mais entra todo mês a partir de agora, rendendo o rendimento real do plano. Nada aqui muda o Plano futuro: para valer, mude o plano ou Meu número.',
+  'indalv:O que adianta ou atrasa': 'O painel calcula o Plano futuro de novo sem o item (se ele está na Projeção real) ou com ele (se é Só simulação) e compara a data da independência. Um item que traz dinheiro, como stock options, adianta; uma compra atrasa.',
   'indnum:Sobre você': 'A idade serve para três coisas: dizer com quantos anos você chega lá, calcular a sua meta e saber até quando o dinheiro precisa durar.',
   'indnum:Custo de vida': 'Gastos reais: média por categoria dos meses com lançamentos nos últimos 12 (sem o mês atual). Parcelas de compras não entram. O aluguel que você recebe dos imóveis cadastrados em Bens e compromissos é descontado do custo: é o jeito de o imóvel de renda contar no número.',
   'indnum:Quanto precisa durar': 'Pela idade: o número é o valor que, rendendo o rendimento real escolhido, paga o custo todo mês, corrigido pela inflação, até a idade escolhida, e acaba em zero. Taxa fixa: número = custo do ano ÷ taxa; o dinheiro dura para sempre se o rendimento real for maior que a taxa. O rendimento é real (acima da inflação) e líquido de IR; em branco, usa 4% ao ano, mais prudente que o do Plano futuro para um período de 40 a 50 anos.',
@@ -13614,7 +13704,7 @@ function infoSecoes() {
       if (h && !h.id) h.append(btn); else if (h) h.after(btn); else if (lg) lg.append(btn); }); });
 }
 infoSecoes();
-const RENDER = { modulos: renderModulos, agcal: renderAgCal, aglis: renderAgLis, comousar: renderComoUsar, inicio: renderHome, trabvg: renderTrabVg, viagvg: renderViagVg, viagens: renderViagens, viagcmp: renderViagCmp, viagrot: renderViagRot, viagcus: renderViagCus, viagdur: renderViagDur, negvg: renderNegVg, negcad: renderNegCad, negdre: renderNegDre, negfc: renderNegFc, negabr: renderNegAbr, negeco: renderNegEco, negpesq: renderNegPesq, negviab: renderNegViab, negcont: renderNegCont, negprec: renderNegPrec, negval: renderNegVal, negsoc: renderNegSoc, negcmp: renderNegCmp, famvg: renderFamVg, fampes: renderFamPes, indvg: renderIndVg, indnum: renderIndNum, rdvg: renderRdVg, rdprod: renderRdProd, rdcomp: renderRdComp, leia: () => {}, global: renderGlobal, cenarios: renderCenarios, compras: renderCenarios, carteira: renderCarteira, comparador: renderComparador, simulador: renderSimulador, gastos: () => { renderGastos(); renderFechamento(); renderHistorico(); }, orcamento: renderOrcamento, config: renderConfig, pjpf: renderPj, stock: renderStock, familia: renderFamilia, patrimonio: renderPatr };
+const RENDER = { modulos: renderModulos, agcal: renderAgCal, aglis: renderAgLis, comousar: renderComoUsar, inicio: renderHome, trabvg: renderTrabVg, viagvg: renderViagVg, viagens: renderViagens, viagcmp: renderViagCmp, viagrot: renderViagRot, viagcus: renderViagCus, viagdur: renderViagDur, negvg: renderNegVg, negcad: renderNegCad, negdre: renderNegDre, negfc: renderNegFc, negabr: renderNegAbr, negeco: renderNegEco, negpesq: renderNegPesq, negviab: renderNegViab, negcont: renderNegCont, negprec: renderNegPrec, negval: renderNegVal, negsoc: renderNegSoc, negcmp: renderNegCmp, famvg: renderFamVg, fampes: renderFamPes, indvg: renderIndVg, indnum: renderIndNum, indalv: renderIndAlv, rdvg: renderRdVg, rdprod: renderRdProd, rdcomp: renderRdComp, leia: () => {}, global: renderGlobal, cenarios: renderCenarios, compras: renderCenarios, carteira: renderCarteira, comparador: renderComparador, simulador: renderSimulador, gastos: () => { renderGastos(); renderFechamento(); renderHistorico(); }, orcamento: renderOrcamento, config: renderConfig, pjpf: renderPj, stock: renderStock, familia: renderFamilia, patrimonio: renderPatr };
 function renderTab() { planCache = null; try { RENDER[tab](); } catch (err) { console.error(err); setSave('erro ao recalcular: ' + (err && err.message || err)); } }
 let navAbertos = null;
 try { navAbertos = JSON.parse(localStorage.getItem('painel-nav-abertos')); } catch (e) {}
@@ -13689,7 +13779,7 @@ const MODS = [
   { id: 'neg', corNav: '#a3e05a', nome: 'Empreendimentos', cor: 'var(--s7)', vg: 'negvg', desc: 'Suas ideias e empresas: DRE com as suas linhas, fluxo de caixa, quanto pôr e quanto chega para você no Plano futuro. Abrir empresa com a comparação de regimes, oportunidades de custo, pesquisa de mercado com IA, viabilidade, contabilidade fácil, preço, valuation, sócios e comparação.', tabs: ['negvg', 'negcad', 'negdre', 'negfc', 'negabr', 'negeco', 'negpesq', 'negviab', 'negcont', 'negval', 'negprec', 'negsoc', 'negcmp'] },
   { id: 'fam', corNav: '#fb7185', nome: 'Família', cor: 'var(--s6)', vg: 'famvg', desc: 'Quem mora com você e os filhos, já nascidos ou previstos (gêmeos também): quanto cada um custa em cada fase, a chegada, a licença e o efeito no Plano futuro. Orçamento da casa e divisão de contas vêm a seguir.', tabs: ['famvg', 'fampes'] },
   { id: 'agen', corNav: '#34d399', nome: 'Agenda', cor: 'var(--s7)', vg: 'agcal', desc: 'Calendário com seus compromissos e contas, lembretes, as datas que o painel já conhece (viagens, aniversários, compras) e listas de compras.', tabs: ['agcal', 'aglis'] },
-  { id: 'indep', corNav: '#E3B848', nome: 'Independência financeira', cor: 'var(--s3)', vg: 'indvg', desc: 'Quando dá para parar de trabalhar: o seu número, a data pelo Plano futuro, quanto falta para a sua meta e os marcos no caminho. Renda passiva, INSS e previdência vêm a seguir.', tabs: ['indvg', 'indnum'] },
+  { id: 'indep', corNav: '#E3B848', nome: 'Independência financeira', cor: 'var(--s3)', vg: 'indvg', desc: 'Quando dá para parar de trabalhar: o seu número, a data pelo Plano futuro, quanto falta para a sua meta e os marcos no caminho. Alavancas mostram o que adianta a data. Renda passiva, INSS e previdência vêm a seguir.', tabs: ['indvg', 'indnum', 'indalv'] },
   { id: 'preco', corNav: '#f59e0b', nome: 'Radar de preços', cor: 'var(--s2)', vg: 'rdvg', desc: 'O que você quer comprar e o preço que aceita pagar: histórico, selo de preço baixo ou alto, à vista ou parcelado, quando o dinheiro fica pronto e a compra no Plano futuro. A pesquisa automática todo dia e o aviso no sino vêm a seguir.', tabs: ['rdvg', 'rdprod', 'rdcomp'] },
   { id: 'edu', corNav: '#60a5fa', nome: 'Educação', cor: 'var(--s4)', breve: true, desc: 'Cursos, faculdade, pós e a escola dos filhos: quanto custam ao longo dos anos, como pagar e o retorno esperado na carreira.', tabs: [] }
 ];
@@ -13794,6 +13884,7 @@ function cuPassos() {
       passos: [
         { id: 'indnasc', t: 'Informar o nascimento e a meta', d: 'Mês e ano de nascimento e com quantos anos quer chegar lá.', ok: !!(state.indep && state.indep.nasc) || pul.includes('indnasc'), tab: 'indnum', sec: 'Sobre você', pular: 'Depois' },
         { id: 'indcusto', t: 'Conferir o custo de vida', d: 'O que some e o que aumenta quando você parar de trabalhar.', ok: !!(state.indep && (Object.keys(state.indep.ajuste).length || state.indep.extras.length)) || pul.includes('indcusto'), tab: 'indnum', sec: 'Custo de vida', pular: 'Já conferi' },
+        { id: 'indalv', t: 'Ver o que adianta a data', d: 'Guardar mais, gastar menos e quanto cada compra, viagem ou negócio atrasa a independência.', ok: pul.includes('indalv'), tab: 'indalv', sec: 'Alavancas', pular: 'Já vi' },
         { id: 'indtaxa', t: 'Escolher quanto o dinheiro precisa durar', d: 'Pela idade (até os 105, por exemplo) ou por uma taxa fixa de saque.', ok: pul.includes('indtaxa'), tab: 'indnum', sec: 'Quanto precisa durar', pular: 'Já escolhi' }
       ]
     },
@@ -14820,6 +14911,7 @@ const LM_MODS = [
   'Independência financeira',
   ['indvg', 'A data em que você chega à independência pelo Plano futuro, o termômetro de quanto do número já tem, os marcos (reserva, Coast FI, Lean, FI, Fat FI e a sua meta) e o gráfico do patrimônio contra o número.', 'para saber quando pode parar de trabalhar por obrigação.'],
   ['indnum', 'O seu número: idade e meta, custo de vida na independência a partir dos Gastos ou do orçamento, os três níveis de custo e por quanto tempo o dinheiro precisa durar.', 'para ajustar a conta.'],
+  ['indalv', 'Alavancas para mexer na data (guardar mais, custo, rendimento, taxa ou idade final), o que bastaria para chegar na sua meta e quanto cada item dos outros módulos adianta ou atrasa a independência.', 'antes de decidir uma compra, uma viagem ou um negócio.'],
   'Radar de preços',
   ['rdvg', 'A sua lista de compras com o melhor preço de agora, o alvo, quanto falta e o selo de preço baixo ou alto.', 'para ver de uma vez o que já chegou no preço.'],
   ['rdprod', 'O cadastro de cada produto, os links, as lojas, o local e as fotos, os preços encontrados e o gráfico do histórico.', 'quando quiser vigiar um produto novo ou lançar um preço.'],
