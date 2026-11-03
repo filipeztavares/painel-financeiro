@@ -1769,6 +1769,13 @@ body.jor-sim-on .main { padding-top: 44px; }
 .jg-sl.jor-tranc .jg-ic { opacity: .6; }
 .jg-sl.jor-tranc > .jg-f > path[stroke] { opacity: .5; }
 #jg-info .jor-lock { margin-right: 4px; }
+.gas-senha { grid-column: 1 / -1; display: flex; flex-direction: column; gap: 6px; padding: 12px 14px; border: 1px solid #F5C442; background: rgba(245,196,66,.12); border-radius: 12px; }
+.gas-senha[hidden] { display: none; }
+.gas-senha b { font-size: 14px; color: var(--ink); }
+.gas-senha span { font-size: 13px; color: var(--muted); }
+.gas-senha.erro span::before { content: "Senha não abriu o arquivo. "; color: var(--bad, #C0392B); font-weight: 600; }
+.gas-senha-l { display: flex; gap: 8px; flex-wrap: wrap; }
+.gas-senha-l input { flex: 1 1 180px; max-width: 280px; }
 </style>
 
 
@@ -1858,7 +1865,7 @@ body.jor-sim-on .main { padding-top: 44px; }
     </div>
     <div class="nav-mobile-sub" id="navMobileSub"></div>
   </div>
-  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 274</div></div>
+  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 275</div></div>
 </nav>
 <div class="sino-pop" id="sino-pop" role="dialog" aria-label="Atualizações das bases" hidden></div>
 <div class="sino-pop" id="pess-pop" role="dialog" aria-label="Seus avisos" hidden></div>
@@ -3121,7 +3128,7 @@ body.jor-sim-on .main { padding-top: 44px; }
       <fieldset>
         <legend>Importar fatura ou extrato</legend>
         <div class="gas-drop" id="gas-drop" role="button" tabindex="0" aria-label="Escolher os arquivos da fatura ou do extrato"><b>Solte aqui os arquivos da fatura ou do extrato</b><span>ou clique para escolher · CSV, OFX, PDF ou o ZIP do banco, vários de uma vez</span><input type="file" id="gas-file" multiple hidden accept=".csv,.ofx,.txt,.pdf,.zip,text/csv,application/pdf,application/zip,application/x-ofx"></div>
-        <label>Senha do arquivo<input type="password" id="fat-senha" autocomplete="off" placeholder="só se tiver senha"></label>
+        <div class="gas-senha" id="gas-senha" hidden role="group" aria-labelledby="gas-senha-t"><b id="gas-senha-t">Este arquivo tem senha</b><span>Digite a senha e clique em Abrir. Muitos bancos usam os 6 primeiros números do seu CPF.</span><div class="gas-senha-l"><input type="password" id="fat-senha" autocomplete="off" placeholder="senha do arquivo" aria-label="Senha do arquivo"><button type="button" class="btn" id="gas-senha-ok">Abrir</button></div></div>
         <label>Cartão<input type="text" class="name" id="fat-conta" value="Nubank" list="bancos-lista" placeholder="digite ou escolha o banco"></label>
         <label>Conta<input type="text" class="name" id="ext-conta" value="Nubank conta" list="bancos-lista" placeholder="digite ou escolha o banco"></label><datalist id="bancos-lista"><option value="Nubank"></option><option value="Itaú"></option><option value="Itaú Personnalité"></option><option value="Bradesco"></option><option value="Bradesco Prime"></option><option value="Banco do Brasil"></option><option value="Caixa"></option><option value="Santander"></option><option value="Inter"></option><option value="C6 Bank"></option><option value="BTG Pactual"></option><option value="XP"></option><option value="Rico"></option><option value="Clear"></option><option value="Mercado Pago"></option><option value="PicPay"></option><option value="PagBank"></option><option value="Next"></option><option value="Neon"></option><option value="Banco Original"></option><option value="Sicoob"></option><option value="Sicredi"></option><option value="Unicred"></option><option value="Cresol"></option><option value="Banrisul"></option><option value="BRB"></option><option value="Banestes"></option><option value="Banpará"></option><option value="Banco do Nordeste"></option><option value="Banese"></option><option value="Safra"></option><option value="Banco BV"></option><option value="Banco Pan"></option><option value="Agibank"></option><option value="Will Bank"></option><option value="Digio"></option><option value="Credicard"></option><option value="Porto Bank"></option><option value="Daycoval"></option><option value="Mercantil"></option><option value="Modal"></option><option value="Stone"></option><option value="InfinitePay"></option><option value="RecargaPay"></option><option value="Ame Digital"></option><option value="Nomad"></option><option value="Wise"></option><option value="Avenue"></option></datalist>
         <p class="hint full" id="fat-msg" role="status">Fatura do cartão ou extrato da conta, de qualquer banco: CSV, OFX, PDF ou o ZIP com senha que o banco envia. O painel identifica sozinho o banco, se é fatura ou extrato e quais colunas são data, descrição e valor; você confere antes de importar. Na fatura, pagamentos são ignorados e cada gasto vem com categoria sugerida. No extrato, Pix, boletos e transferências viram gasto, receita (ex.: salário) ou dedução (ex.: DAS); aplicações, resgates e o pagamento da fatura não entram. Se o arquivo tiver senha, digite na primeira vez; a do ZIP o painel lembra.</p>
@@ -3756,7 +3763,7 @@ body.jor-sim-on .main { padding-top: 44px; }
     return new Promise(resolve => { const { data } = sb.auth.onAuthStateChange(async (ev) => { if (ev !== 'PASSWORD_RECOVERY') return; const s = prompt('Digite a nova senha (mínimo 8 caracteres):'); if (s && s.length >= 8) { const { error } = await sb.auth.updateUser({ password: s }); alert(error ? 'Não deu para trocar a senha: ' + error.message : 'Senha trocada.'); } }); resolve(data); });
   }
   // ---------- rodapé: compartilhar, administração e sair ----------
-  const SITE_V = 158;
+  const SITE_V = 159;
   const escH = v => String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const dataBR = v => v ? new Date(v).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' }) : '–';
   const css2 = `.side-foot .r{flex-wrap:wrap}.side-foot .lg-acoes{margin-left:auto;display:inline-flex;gap:10px}
@@ -13070,16 +13077,16 @@ async function lerZip(buf, senha) {
     let dados = u.slice(ini, ini + csize);
     if (flags & 1) {
       if (metodo === 99) throw new Error('Esse ZIP usa criptografia AES, que o painel ainda não abre. Extraia o CSV e importe ele.');
-      if (!senha) { const er = new Error('Esse ZIP tem senha. Digite a senha e escolha o arquivo de novo.'); er.senha = true; throw er; }
+      if (!senha) { const er = new Error('Esse ZIP tem senha. Digite a senha no quadro logo abaixo.'); er.senha = true; throw er; }
       const d = zipDecifra(dados, senha);
-      if (d[11] !== (flags & 8 ? (hora >>> 8) & 0xff : crc >>> 24)) { const er = new Error('Senha do ZIP incorreta. Digite a senha certa e escolha o arquivo de novo.'); er.senha = true; throw er; }
+      if (d[11] !== (flags & 8 ? (hora >>> 8) & 0xff : crc >>> 24)) { const er = new Error('Senha do ZIP incorreta. Digite a senha certa no quadro logo abaixo.'); er.senha = true; throw er; }
       dados = d.subarray(12);
     }
     let saida;
     if (metodo === 0) saida = dados;
     else if (metodo === 8) saida = new Uint8Array(await new Response(new Blob([dados]).stream().pipeThrough(new DecompressionStream('deflate-raw'))).arrayBuffer());
     else throw new Error('Formato de compressão do ZIP não suportado.');
-    if (crc32(saida) !== crc) { const er = new Error('Senha do ZIP incorreta. Digite a senha certa e escolha o arquivo de novo.'); er.senha = true; throw er; }
+    if (crc32(saida) !== crc) { const er = new Error('Senha do ZIP incorreta. Digite a senha certa no quadro logo abaixo.'); er.senha = true; throw er; }
     arquivos.push({ nome, bytes: saida });
   }
   return arquivos;
@@ -13243,7 +13250,7 @@ function montarGastos(nome, regs, texto, tipo, banco, comp) {
 async function lerArquivoGastos(nome, bytes) {
   if (ehPdf(bytes)) {
     let ls; try { ls = await linhasPdf(bytes, $('fat-senha').value.trim() || SENHA_ZIP || ''); }
-    catch (e) { if (e && e.name === 'PasswordException') { const er = new Error('o PDF tem senha. Digite a senha em "Senha do arquivo" e envie de novo.'); er.senha = true; throw er; } throw new Error(/carregar|fetch|network/i.test(String(e && e.message)) ? 'não consegui carregar o leitor de PDF; confira a conexão.' : 'não consegui abrir o PDF.'); }
+    catch (e) { if (e && e.name === 'PasswordException') { const er = new Error('o PDF tem senha. Digite a senha no quadro logo abaixo.'); er.senha = true; throw er; } throw new Error(/carregar|fetch|network/i.test(String(e && e.message)) ? 'não consegui carregar o leitor de PDF; confira a conexão.' : 'não consegui abrir o PDF.'); }
     const texto = ls.join('\n'); if (lerCorretora(ls)) return { erro: `${nome}: é o extrato da corretora (investimentos). Importe em 04. Carteira › Importar extrato da corretora.` };
     if (texto.replace(/\s/g, '').length < 40) return { erro: `${nome}: o PDF não tem texto (parece escaneado ou foto), então não dá para ler.` };
     const r = lerPdfGastos(ls); if (!r) return { erro: `${nome}: abri o PDF${bancoDe(texto) ? ` (${bancoDe(texto)})` : ''}, mas não achei linhas com data, descrição e valor.` };
@@ -17062,6 +17069,31 @@ function jorSimDb(real) {
   ['dragenter', 'dragover'].forEach(ev => z.addEventListener(ev, e => { e.preventDefault(); z.classList.add('sobre'); }));
   ['dragleave', 'dragend'].forEach(ev => z.addEventListener(ev, () => z.classList.remove('sobre')));
   z.addEventListener('drop', e => { e.preventDefault(); z.classList.remove('sobre'); const fs = [...((e.dataTransfer && e.dataTransfer.files) || [])]; if (fs.length) abrirGastos(fs); });
+})();
+
+/* ---------- Gastos: senha só aparece depois do upload, quando o arquivo pede ---------- */
+(function () {
+  const box = $('gas-senha'), inp = $('fat-senha'), ok = $('gas-senha-ok'); if (!box || !inp || !ok) return;
+  let ult = null;
+  const o = abrirGastos;
+  abrirGastos = async function (files) {
+    ult = files; const r = await o(files);
+    const pede = /senha/i.test($('fat-msg').textContent || '');
+    box.hidden = !pede;
+    if (pede) { box.classList.toggle('erro', !!inp.value); box.scrollIntoView({ block: 'center', behavior: 'smooth' }); setTimeout(() => inp.focus({ preventScroll: true }), 300); }
+    return r;
+  };
+  ok.addEventListener('click', () => { if (ult && inp.value.trim()) abrirGastos(ult); else inp.focus(); });
+  inp.addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); ok.click(); } });
+})();
+
+/* ---------- Cartão e Conta: mostrar a lista inteira de bancos ao clicar ---------- */
+(function () {
+  ['fat-conta', 'ext-conta'].forEach(id => { const el = $(id); if (!el) return;
+    const abre = () => { if (el.value && el.dataset.ant == null) { el.dataset.ant = el.value; el.placeholder = el.value; el.value = ''; } try { el.showPicker && el.showPicker(); } catch (e) {} };
+    el.addEventListener('mousedown', abre); el.addEventListener('focus', abre);
+    el.addEventListener('blur', () => { if (el.dataset.ant != null) { if (!el.value.trim()) el.value = el.dataset.ant; delete el.dataset.ant; el.placeholder = 'digite ou escolha o banco'; } });
+  });
 })();
 </script>
 
