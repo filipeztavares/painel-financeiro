@@ -1759,6 +1759,10 @@ body.jor-sim-on .main { padding-top: 44px; }
 @media (max-width: 900px) { #jor-sim { left: 0; } }
 #tour-pop .jor-reaj { margin: 0 0 8px; padding-left: 18px; font-size: 13px; line-height: 1.45; }
 #tour-pop .jor-reaj li { margin: 3px 0; }
+.gas-drop { grid-column: 1 / -1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; text-align: center; min-height: 104px; padding: 18px 16px; border: 2px dashed var(--line); border-radius: 12px; background: var(--field); cursor: pointer; transition: border-color .15s, background .15s; }
+.gas-drop b { font-size: 14px; color: var(--accent-strong); }
+.gas-drop span { font-size: 12.5px; color: var(--muted); }
+.gas-drop:hover, .gas-drop:focus-visible, .gas-drop.sobre { border-color: var(--accent); background: var(--accent-soft); }
 </style>
 
 
@@ -1848,7 +1852,7 @@ body.jor-sim-on .main { padding-top: 44px; }
     </div>
     <div class="nav-mobile-sub" id="navMobileSub"></div>
   </div>
-  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 272</div></div>
+  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 273</div></div>
 </nav>
 <div class="sino-pop" id="sino-pop" role="dialog" aria-label="Atualizações das bases" hidden></div>
 <div class="sino-pop" id="pess-pop" role="dialog" aria-label="Seus avisos" hidden></div>
@@ -3110,10 +3114,10 @@ body.jor-sim-on .main { padding-top: 44px; }
       </fieldset>
       <fieldset>
         <legend>Importar fatura ou extrato</legend>
-        <label class="full">Arquivos do banco (pode escolher vários)<input type="file" id="gas-file" multiple accept=".csv,.ofx,.txt,.pdf,.zip,text/csv,application/pdf,application/zip,application/x-ofx"></label>
+        <div class="gas-drop" id="gas-drop" role="button" tabindex="0" aria-label="Escolher os arquivos da fatura ou do extrato"><b>Solte aqui os arquivos da fatura ou do extrato</b><span>ou clique para escolher · CSV, OFX, PDF ou o ZIP do banco, vários de uma vez</span><input type="file" id="gas-file" multiple hidden accept=".csv,.ofx,.txt,.pdf,.zip,text/csv,application/pdf,application/zip,application/x-ofx"></div>
         <label>Senha do arquivo<input type="password" id="fat-senha" autocomplete="off" placeholder="só se tiver senha"></label>
-        <label>Cartão<input type="text" class="name" id="fat-conta" value="Nubank"></label>
-        <label>Conta<input type="text" class="name" id="ext-conta" value="Nubank conta"></label>
+        <label>Cartão<input type="text" class="name" id="fat-conta" value="Nubank" list="bancos-lista" placeholder="digite ou escolha o banco"></label>
+        <label>Conta<input type="text" class="name" id="ext-conta" value="Nubank conta" list="bancos-lista" placeholder="digite ou escolha o banco"></label><datalist id="bancos-lista"><option value="Nubank"></option><option value="Itaú"></option><option value="Itaú Personnalité"></option><option value="Bradesco"></option><option value="Bradesco Prime"></option><option value="Banco do Brasil"></option><option value="Caixa"></option><option value="Santander"></option><option value="Inter"></option><option value="C6 Bank"></option><option value="BTG Pactual"></option><option value="XP"></option><option value="Rico"></option><option value="Clear"></option><option value="Mercado Pago"></option><option value="PicPay"></option><option value="PagBank"></option><option value="Next"></option><option value="Neon"></option><option value="Banco Original"></option><option value="Sicoob"></option><option value="Sicredi"></option><option value="Unicred"></option><option value="Cresol"></option><option value="Banrisul"></option><option value="BRB"></option><option value="Banestes"></option><option value="Banpará"></option><option value="Banco do Nordeste"></option><option value="Banese"></option><option value="Safra"></option><option value="Banco BV"></option><option value="Banco Pan"></option><option value="Agibank"></option><option value="Will Bank"></option><option value="Digio"></option><option value="Credicard"></option><option value="Porto Bank"></option><option value="Daycoval"></option><option value="Mercantil"></option><option value="Modal"></option><option value="Stone"></option><option value="InfinitePay"></option><option value="RecargaPay"></option><option value="Ame Digital"></option><option value="Nomad"></option><option value="Wise"></option><option value="Avenue"></option></datalist>
         <p class="hint full" id="fat-msg" role="status">Fatura do cartão ou extrato da conta, de qualquer banco: CSV, OFX, PDF ou o ZIP com senha que o banco envia. O painel identifica sozinho o banco, se é fatura ou extrato e quais colunas são data, descrição e valor; você confere antes de importar. Na fatura, pagamentos são ignorados e cada gasto vem com categoria sugerida. No extrato, Pix, boletos e transferências viram gasto, receita (ex.: salário) ou dedução (ex.: DAS); aplicações, resgates e o pagamento da fatura não entram. Se o arquivo tiver senha, digite na primeira vez; a do ZIP o painel lembra.</p>
         <p class="hint full" id="ext-msg" role="status"></p>
       </fieldset>
@@ -3746,7 +3750,7 @@ body.jor-sim-on .main { padding-top: 44px; }
     return new Promise(resolve => { const { data } = sb.auth.onAuthStateChange(async (ev) => { if (ev !== 'PASSWORD_RECOVERY') return; const s = prompt('Digite a nova senha (mínimo 8 caracteres):'); if (s && s.length >= 8) { const { error } = await sb.auth.updateUser({ password: s }); alert(error ? 'Não deu para trocar a senha: ' + error.message : 'Senha trocada.'); } }); resolve(data); });
   }
   // ---------- rodapé: compartilhar, administração e sair ----------
-  const SITE_V = 156;
+  const SITE_V = 157;
   const escH = v => String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const dataBR = v => v ? new Date(v).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' }) : '–';
   const css2 = `.side-foot .r{flex-wrap:wrap}.side-foot .lg-acoes{margin-left:auto;display:inline-flex;gap:10px}
@@ -13985,7 +13989,7 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape' && !$('tour-p
 const GUIA_PLANO = 'p-orcamento|Receitas e custos';
 const GUIAS = {
   'p-gastos|Lançar e importar': { auto: true, passos: [
-    { sel: '#gas-file', up: 'fieldset', t: 'Importar fatura ou extrato', o: 'O jeito mais rápido de lançar o mês: suba o arquivo do banco (CSV, OFX, PDF ou o ZIP com senha). O painel reconhece o banco, sugere a categoria de cada gasto e mostra uma prévia antes de salvar.' },
+    { sel: '#gas-drop', up: 'fieldset', t: 'Importar fatura ou extrato', o: 'O jeito mais rápido de lançar o mês: suba o arquivo do banco (CSV, OFX, PDF ou o ZIP com senha). O painel reconhece o banco, sugere a categoria de cada gasto e mostra uma prévia antes de salvar.' },
     { sel: '#gform', up: 'fieldset', t: 'Lançar à mão', o: 'Para o que não aparece na fatura nem no extrato: dinheiro vivo, Pix de outra conta, uma conta paga em outro banco. Valor positivo é gasto; estorno entra negativo.' },
     { sel: '#ext-conta', up: 'label', t: 'Nome do cartão e da conta', o: 'Só para identificar de onde veio cada gasto. O painel preenche sozinho quando reconhece o banco do arquivo.' }
   ] },
@@ -17002,6 +17006,16 @@ function jorSimDb(real) {
   const varre = () => main.querySelectorAll('input[type="number"]:not([data-milhar])').forEach(converte);
   varre();
   new MutationObserver(ms => { if (ms.some(m => m.addedNodes.length)) varre(); }).observe(main, { childList: true, subtree: true });
+})();
+
+/* ---------- Gastos: caixa de soltar os arquivos da fatura ou do extrato ---------- */
+(function () {
+  const z = $('gas-drop'), f = $('gas-file'); if (!z || !f) return;
+  z.addEventListener('click', e => { if (e.target !== f) f.click(); });
+  z.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); f.click(); } });
+  ['dragenter', 'dragover'].forEach(ev => z.addEventListener(ev, e => { e.preventDefault(); z.classList.add('sobre'); }));
+  ['dragleave', 'dragend'].forEach(ev => z.addEventListener(ev, () => z.classList.remove('sobre')));
+  z.addEventListener('drop', e => { e.preventDefault(); z.classList.remove('sobre'); const fs = [...((e.dataTransfer && e.dataTransfer.files) || [])]; if (fs.length) abrirGastos(fs); });
 })();
 </script>
 
