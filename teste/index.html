@@ -1763,6 +1763,12 @@ body.jor-sim-on .main { padding-top: 44px; }
 .gas-drop b { font-size: 14px; color: var(--accent-strong); }
 .gas-drop span { font-size: 12.5px; color: var(--muted); }
 .gas-drop:hover, .gas-drop:focus-visible, .gas-drop.sobre { border-color: var(--accent); background: var(--accent-soft); }
+/* roleta sem tabuleiro; durante a jornada só Primeiros passos e Finanças abertos */
+#jg-sec .tr-curta, #tr-sec { display: none !important; }
+.jg-sl.jor-tranc .jg-shape { filter: grayscale(1); opacity: .4; }
+.jg-sl.jor-tranc .jg-ic { opacity: .6; }
+.jg-sl.jor-tranc > .jg-f > path[stroke] { opacity: .5; }
+#jg-info .jor-lock { margin-right: 4px; }
 </style>
 
 
@@ -1852,7 +1858,7 @@ body.jor-sim-on .main { padding-top: 44px; }
     </div>
     <div class="nav-mobile-sub" id="navMobileSub"></div>
   </div>
-  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 273</div></div>
+  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 274</div></div>
 </nav>
 <div class="sino-pop" id="sino-pop" role="dialog" aria-label="Atualizações das bases" hidden></div>
 <div class="sino-pop" id="pess-pop" role="dialog" aria-label="Seus avisos" hidden></div>
@@ -1879,8 +1885,8 @@ body.jor-sim-on .main { padding-top: 44px; }
   <section role="tabpanel" id="p-modulos" hidden>
     <div class="block-title"><span class="num"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="3.5" width="7" height="7" rx="1.5"/><rect x="13.5" y="3.5" width="7" height="7" rx="1.5"/><rect x="3.5" y="13.5" width="7" height="7" rx="1.5"/><rect x="13.5" y="13.5" width="7" height="7" rx="1.5"/></svg></span><div><h1>Módulos</h1><p class="desc">Escolha uma área da sua vida. Cada módulo funciona sozinho, e o que ele planeja entra nas Finanças.</p></div></div>
     <div id="jor-mod" hidden></div>
-    <section data-nav="Seu tabuleiro" class="panel" id="jg-sec">
-      <div class="row"><h2>Seu tabuleiro</h2></div>
+    <section data-nav="Seus módulos" class="panel" id="jg-sec">
+      <div class="row"><h2>Seus módulos</h2></div>
       <div class="jg-hud" id="jg-hud"></div>
       <div class="jg-home" id="jg-home">
         <div class="jg-roda"><svg viewBox="-20 -20 540 540" id="jg-svg" role="group" aria-label="Roleta de módulos"><g id="jg-rot"></g><path d="M250 -2 L236 -22 L264 -22 Z" fill="var(--accent)"/></svg><div class="jg-hub" aria-hidden="true"><div><small id="jg-hn"></small><b id="jg-ht"></b></div></div></div>
@@ -1920,7 +1926,7 @@ body.jor-sim-on .main { padding-top: 44px; }
   <!-- ============ COMO USAR ============ -->
   <section role="tabpanel" id="p-comousar" hidden>
     <div class="block-title"><span class="num"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 4V2.8h6V4"/><path d="m8.5 10 1.6 1.6 3-3"/><path d="m8.5 16 1.6 1.6 3-3"/></svg></span><div><h1>Primeiros passos</h1><p class="desc">O que cada módulo faz, o que você precisa preencher para ele funcionar e o que é opcional. Cada passo tem um botão que leva direto ao lugar certo.</p></div></div>
-    <section data-nav="Sua trilha" class="panel" id="tr-sec">
+    <section class="panel" id="tr-sec" hidden>
       <div class="row"><h2>Sua trilha</h2><span class="ck-sem-q" id="tr-q"></span></div>
       <p class="sub">Cada parte configurada é uma casa andada. Toque numa casa para ir até ela.</p>
       <div class="tr-scroll"><svg id="tr-full" role="img"></svg></div>
@@ -3750,7 +3756,7 @@ body.jor-sim-on .main { padding-top: 44px; }
     return new Promise(resolve => { const { data } = sb.auth.onAuthStateChange(async (ev) => { if (ev !== 'PASSWORD_RECOVERY') return; const s = prompt('Digite a nova senha (mínimo 8 caracteres):'); if (s && s.length >= 8) { const { error } = await sb.auth.updateUser({ password: s }); alert(error ? 'Não deu para trocar a senha: ' + error.message : 'Senha trocada.'); } }); resolve(data); });
   }
   // ---------- rodapé: compartilhar, administração e sair ----------
-  const SITE_V = 157;
+  const SITE_V = 158;
   const escH = v => String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const dataBR = v => v ? new Date(v).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' }) : '–';
   const css2 = `.side-foot .r{flex-wrap:wrap}.side-foot .lg-acoes{margin-left:auto;display:inline-flex;gap:10px}
@@ -14003,7 +14009,7 @@ const GUIAS = {
   ] },
   'p-gastos|Fechamento do mês': { passos: [
     { sel: '#fe-sel', t: 'Escolha o mês', o: 'O fechamento compara o mês real com o que o plano previa, linha por linha.' },
-    { sel: '#fe-fechar', t: 'Feche o mês', o: 'Quando os gastos e o checkpoint do mês estiverem lançados, clique aqui. Cada mês fechado vale +100 no tabuleiro, e +150 se ficou dentro do planejado.' }
+    { sel: '#fe-fechar', t: 'Feche o mês', o: 'Quando os gastos e o checkpoint do mês estiverem lançados, clique aqui. Cada mês fechado vale +100 pontos, e +150 se ficou dentro do planejado.' }
   ] },
   'p-carteira|Cadastrar aplicação': { auto: true, passos: [
     { sel: '#cor-file', up: 'fieldset', t: 'Importe da corretora', o: 'Se você tem o extrato de custódia ou a posição da corretora (PDF ou CSV), suba aqui: o painel cadastra as aplicações e atualiza os valores de uma vez.' },
@@ -14024,7 +14030,7 @@ const GUIAS = {
   'p-global|Checkpoint do mês': { auto: true, passos: [
     { sel: '#cp-st', t: 'Como você está', o: 'O último checkpoint contra o que o plano previa para o mesmo mês: à frente ou atrás, e quanto.' },
     { sel: '#cp-valor', up: 'label', t: 'O total aplicado do mês', o: 'Some o saldo de todas as aplicações no fim do mês. Se a Carteira estiver cadastrada, o botão ao lado preenche sozinho.' },
-    { sel: '#cpform .btn[type="submit"]', t: 'Salve uma vez por mês', o: 'Cada checkpoint vale +80 no tabuleiro e vira um ponto no gráfico da Projeção.' }
+    { sel: '#cpform .btn[type="submit"]', t: 'Salve uma vez por mês', o: 'Cada checkpoint vale +80 pontos e vira um ponto no gráfico da Projeção.' }
   ] },
   'p-global|Projeção': { passos: [
     { sel: '#g-anos', t: 'Quantos anos ver', o: 'Escolha até onde o gráfico vai.' },
@@ -14054,7 +14060,7 @@ function guiaSec(k) { const i = k.indexOf('|'), tp = $(k.slice(0, i)); return tp
 function guiaVisivel(el) { return el && el.getClientRects().length > 0; }
 function guiaMarca(k, fim) { if (!state) return; const g = guiaSt(); let m = false;
   if (!g.vistos.includes(k)) { g.vistos.push(k); m = true; }
-  if (fim && GUIAS[k] && !g.feitos.includes(k)) { g.feitos.push(k); m = true; setSave(`+${JG_PTS.guia} no tabuleiro: guia concluído`); }
+  if (fim && GUIAS[k] && !g.feitos.includes(k)) { g.feitos.push(k); m = true; setSave(`+${JG_PTS.guia} pontos: guia concluído`); }
   if (m) { save(); sidePts(); try { if ($('jg-sec') && tab === 'modulos') renderJogo(); } catch (e) {} } }
 // toda seção com algo para preencher ganha o ?: guia escrito em GUIAS ou montado na hora (guiaGerado) a partir dos textos da própria seção
 const GUIA_CAMPOS = 'input:not([type=hidden]):not([type=checkbox]):not([type=radio]), select, textarea, input[type=checkbox], input[type=radio]';
@@ -16833,7 +16839,7 @@ function jorSimDb(real) {
     if (trancada(t)) {
       if (t === tab) { origShow('modulos', kS); decorar(); return; }   // recarregou numa tela que está bloqueada
       const s = etapaDe(t), pr = proximo(), m = MODS.find(x => x.tabs.includes(t));
-      const quando = s ? `Desbloqueia quando você terminar <b>${esc(ETAPAS[ETAPAS.indexOf(s.e) - 1].nome)}</b>.` : `Desbloqueia quando o básico de Finanças estiver pronto.`;
+      const quando = s ? `Desbloqueia quando você terminar <b>${esc(ETAPAS[ETAPAS.indexOf(s.e) - 1].nome)}</b>.` : `Complete <b>Finanças</b> primeiro: os outros módulos abrem quando você terminar as ${ETAPAS.length} etapas de Finanças.`;
       abre(`<div class="jor-mk"><span class="jor-lock"></span> Bloqueado</div><h3>${esc(s ? nomeTela(t) : (m ? m.nome : nomeTela(t)))}</h3><p>${s ? (PAG[t] || [])[1] || '' : esc(m ? m.desc : '')}</p><p class="jor-pq">${quando}${pr ? ` Próximo passo: <b>${esc(pr.p.nome)}</b>.` : ''}</p>`,
         [{ t: 'Agora não' }, ...(pr ? [{ t: 'Ir para o próximo passo', p: true, f: () => irPasso(pr.p) }] : [])]);
       return;
@@ -16864,6 +16870,7 @@ function jorSimDb(real) {
   function decorar() {
     if (!state) return;
     const cj = $('cfg-jor'); if (cj) cj.hidden = !ehAdmin() || JOR_SIM;
+    travaRoda();
     document.querySelectorAll('.nav-head[data-tab]').forEach(b => { const tr = trancada(b.dataset.tab); b.classList.toggle('jor-tranc', tr); if (tr) b.title = 'Bloqueado: termine a etapa anterior'; else if (b.title === 'Bloqueado: termine a etapa anterior') b.title = ''; });
     document.querySelectorAll('#md-grid [data-irmod]').forEach(b => { const m = MODS.find(x => x.id === b.dataset.irmod), tr = !!m && !m.fixo && trancada(m.vg || m.tabs[0]);
       b.classList.toggle('jor-tranc', tr); let t = b.querySelector('.jor-tag'); if (tr && !t) b.insertAdjacentHTML('beforeend', '<span class="jor-tag"><span class="jor-lock"></span> Bloqueado</span>'); else if (!tr && t) t.remove(); });
@@ -16881,6 +16888,7 @@ function jorSimDb(real) {
     const host = $(tab === 'modulos' ? 'jor-mod' : 'jor-ini'); if (!host) return;
     const pr = proximo(), planoOk = S[0].feita;
     const pai = host.parentElement;
+    const jg = $('jg-sec'); if (tab === 'modulos' && jg && jg.parentElement === pai && host.previousElementSibling !== jg) jg.after(host);   // a roleta vem antes da jornada
     [...pai.children].forEach(c => { if (c === host || c.classList.contains('block-title') || c.id === 'md-grid' || c.id === 'jg-sec') return;
       if (!planoOk && !c.hidden) { c.hidden = true; c.dataset.jorEsc = '1'; } else if (planoOk && c.dataset.jorEsc) { c.hidden = false; delete c.dataset.jorEsc; } });
     const tot = ETAPAS.reduce((a, e) => a + e.passos.length, 0), feitos = S.reduce((a, x) => a + x.n, 0);
@@ -16893,6 +16901,44 @@ function jorSimDb(real) {
     const c = host.querySelector('[data-jorcont]'); if (c && pr) c.onclick = () => irPasso(pr.p);
   }
   document.addEventListener('click', e => { if (e.target.closest('[data-jortudo]')) { ls('painel-jor-tudo', true); decorar(); pintaRetoma(); } });
+
+
+  // ---------- roleta durante a jornada: só Primeiros passos e Finanças abertos ----------
+  const CAD = 'M7 10V7a5 5 0 0 1 10 0v3h1a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-8a2 2 0 0 1 2-2h1zm2 0h6V7a3 3 0 0 0-6 0v3z';
+  const rodaTr = m => ativa() && !!m && !m.fixo;
+  function irFin() { const pr = proximo(); if (pr) irPasso(pr.p); else showTab('inicio'); }
+  function bloqMod(m) {
+    const pr = proximo();
+    abre(`<div class="jor-mk"><span class="jor-lock"></span> Bloqueado</div><h3>${esc(m.nome)}</h3><p>${esc(m.desc || '')}</p><p class="jor-pq">Complete <b>Finanças</b> primeiro. Os outros módulos abrem quando você terminar as ${ETAPAS.length} etapas de Finanças.${pr ? ` Próximo passo: <b>${esc(pr.p.nome)}</b>.` : ''}</p>`,
+      [{ t: 'Agora não' }, ...(pr ? [{ t: 'Ir para Finanças', p: true, f: () => irPasso(pr.p) }] : [])]);
+  }
+  function travaRoda() {
+    const on = ativa(), hud = $('jg-hud'); if (hud) hud.hidden = on;
+    let vis = []; try { vis = jgMods(); } catch (e) { return; }
+    document.querySelectorAll('#jg-rot .jg-sl').forEach(s => {
+      const m = vis[+s.dataset.jgi], tr = rodaTr(m), tx = s.querySelector('.jg-ic text'), cad = s.querySelector('.jor-cad');
+      s.classList.toggle('jor-tranc', tr);
+      if (tr && !cad && tx) { tx.style.display = 'none'; const x = +tx.getAttribute('x') - 9, y = +tx.getAttribute('y') - 14;
+        tx.insertAdjacentHTML('afterend', `<path class="jor-cad" transform="translate(${x.toFixed(1)} ${y.toFixed(1)}) scale(.75)" d="${CAD}" fill="var(--muted)"/>`); }
+      else if (!tr && cad) { cad.remove(); if (tx) tx.style.display = ''; }
+      if (m) s.setAttribute('aria-label', `Casa ${+s.dataset.jgi + 1}: ${m.nome}${tr ? ' (bloqueado)' : ''}`);
+    });
+    if ($('jg-rot') && $('jg-rot').children.length) { try { jgMostra(jgSel); } catch (e) {} }
+  }
+  { const o = renderJogo; renderJogo = function () { o(); travaRoda(); }; }
+  { const o = jgMostra; jgMostra = function (i) { o(i); if (!ativa()) return; const m = jgMods()[i], box = $('jg-info'); if (!m || !box) return;
+    box.querySelectorAll('.jg-prox').forEach(x => x.remove());
+    const b = box.querySelector('.jg-bts .btn:not(.ghost)'), ca = box.querySelector('.jg-casa');
+    if (rodaTr(m)) { if (ca) ca.textContent = `Casa ${i + 1} de ${jgMods().length} · bloqueado`; if (b) { b.outerHTML = `<button type="button" class="btn ghost" data-irmod="${m.id}"><span class="jor-lock"></span> Bloqueado</button>`; } }
+    else if (b) b.textContent = m.id === 'uso' ? 'Começar o passo a passo' : 'Entrar em Finanças'; }; }
+  { const o = jgPick; jgPick = function (i) { if (!ativa()) return o(i); const m = jgMods()[i];
+    if (m && m.id === 'uso') return irFin();
+    if (rodaTr(m)) { if (i !== jgSel) o(i); return bloqMod(m); }
+    if (m && m.id === 'fin' && i === jgSel) return irFin();
+    return o(i); }; }
+  document.addEventListener('click', e => { if (!ativa()) return; const b = e.target.closest && e.target.closest('[data-irmod]'); if (!b) return;
+    const m = MODS.find(x => x.id === b.dataset.irmod); if (!m) return; e.stopImmediatePropagation(); e.preventDefault();
+    if (m.fixo) irFin(); else bloqMod(m); }, true);
 
   // ---------- saiu do guia (✕ ou "Explorar sozinho"): botão fixo para voltar ao passo a passo ----------
   const ret = document.createElement('button'); ret.type = 'button'; ret.id = 'jor-retoma'; ret.hidden = true; document.body.append(ret);
