@@ -183,9 +183,9 @@ h1, h2, h3 { font-family: var(--f-head); }
 @keyframes rodPulse { 50% { opacity: .35; } }
 @media (prefers-reduced-motion: reduce) { .rod-on i, .sino-rod i, .sino.rodando::after { animation: none; } }
 .sino-f .sino-nota { margin: 6px 0 0; font-size: 11px; color: var(--muted); }
-.side-logo .side-pts { display: inline-flex; align-items: center; gap: 4px; margin-top: 3px; font-size: 11.5px; opacity: 1; text-transform: none; letter-spacing: 0; font-weight: 700; color: #F0A46B; white-space: nowrap; }
+.side-logo .side-pts { display: flex; flex-wrap: wrap; align-items: center; gap: 0 4px; margin-top: 3px; font-size: 11.5px; opacity: 1; text-transform: none; letter-spacing: 0; font-weight: 700; color: #F0A46B; white-space: nowrap; }
 .side-logo .side-pts svg { flex: none; }
-.side-logo .side-pts i { font-style: normal; font-weight: 500; opacity: .75; color: #fff; }
+.side-logo .side-pts i { flex-basis: 100%; font-style: normal; font-weight: 500; font-size: 10.5px; opacity: .75; color: #fff; margin-top: 1px; }
 .side-logo span { font-size: 9.5px; opacity: .62; letter-spacing: .5px; text-transform: uppercase; }
 .nav { flex: 1; overflow-y: auto; padding: 12px 10px; scrollbar-width: thin; scrollbar-color: rgba(255,255,255,.25) transparent; }
 .nav-group { margin-bottom: 4px; }
@@ -1765,7 +1765,7 @@ a.jg-prox{color:inherit;text-decoration:none}a.jg-prox:hover{border-color:var(--
     </div>
     <div class="nav-mobile-sub" id="navMobileSub"></div>
   </div>
-  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 262</div></div>
+  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 263</div></div>
 </nav>
 <div class="sino-pop" id="sino-pop" role="dialog" aria-label="Atualizações das bases" hidden></div>
 <div class="sino-pop" id="pess-pop" role="dialog" aria-label="Seus avisos" hidden></div>
@@ -3655,7 +3655,7 @@ a.jg-prox{color:inherit;text-decoration:none}a.jg-prox:hover{border-color:var(--
     return new Promise(resolve => { const { data } = sb.auth.onAuthStateChange(async (ev) => { if (ev !== 'PASSWORD_RECOVERY') return; const s = prompt('Digite a nova senha (mínimo 8 caracteres):'); if (s && s.length >= 8) { const { error } = await sb.auth.updateUser({ password: s }); alert(error ? 'Não deu para trocar a senha: ' + error.message : 'Senha trocada.'); } }); resolve(data); });
   }
   // ---------- rodapé: compartilhar, administração e sair ----------
-  const SITE_V = 146;
+  const SITE_V = 147;
   const escH = v => String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const dataBR = v => v ? new Date(v).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' }) : '–';
   const css2 = `.side-foot .r{flex-wrap:wrap}.side-foot .lg-acoes{margin-left:auto;display:inline-flex;gap:10px}
@@ -14603,7 +14603,7 @@ const RENDER = { modulos: renderModulos, agcal: renderAgCal, aglis: renderAgLis,
 function renderTab() { planCache = null; try { RENDER[tab](); } catch (err) { console.error(err); setSave('erro ao recalcular: ' + (err && err.message || err)); } sidePts(); }
 // pontos acumulados embaixo do nome, no topo do menu
 function sidePts() { const el = $('side-pts'); if (!el || !state) return; try { const d = jgPontos();
-  el.innerHTML = `<svg viewBox="0 0 24 24" width="12" height="12" aria-hidden="true"><path d="M12 2l3 6.5 7 .8-5.2 4.8 1.5 7L12 17.5 5.7 21l1.5-7L2 9.3l7-.8z" fill="currentColor"/></svg>${d.total.toLocaleString('pt-BR')} pts <i>· Nível ${d.nivel}</i>`;
+  el.innerHTML = `<svg viewBox="0 0 24 24" width="12" height="12" aria-hidden="true"><path d="M12 2l3 6.5 7 .8-5.2 4.8 1.5 7L12 17.5 5.7 21l1.5-7L2 9.3l7-.8z" fill="currentColor"/></svg>${d.total.toLocaleString('pt-BR')} pts<i>Nível ${d.nivel} · ${d.nome}</i>`;
   el.title = `${d.nome}: ${d.total.toLocaleString('pt-BR')} pontos${d.prox ? `, faltam ${(d.prox[0] - d.total).toLocaleString('pt-BR')} para ${d.prox[1]}` : ''}`; el.hidden = false; } catch (e) { console.error(e); } }
 let navAbertos = null;
 try { navAbertos = JSON.parse(localStorage.getItem('painel-nav-abertos')); } catch (e) {}
