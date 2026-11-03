@@ -1676,6 +1676,7 @@ a.jg-prox{color:inherit;text-decoration:none}a.jg-prox:hover{border-color:var(--
 .tr-leg i{display:inline-block;width:12px;height:12px;border-radius:3px;border:2px solid var(--muted);vertical-align:-2px;margin-right:5px}
 .tr-leg i.f{background:var(--muted)}
 .tr-curta{margin-top:14px;border-top:1px solid var(--line);padding-top:10px}
+.tr-curta svg{max-width:680px;min-width:520px;margin:0 auto}
 .tr-ch{display:flex;align-items:baseline;gap:10px;margin-bottom:4px;font-size:13px}
 .tr-ch a{margin-left:auto;font-size:12px;color:var(--accent)}
 </style>
@@ -1765,7 +1766,7 @@ a.jg-prox{color:inherit;text-decoration:none}a.jg-prox:hover{border-color:var(--
     </div>
     <div class="nav-mobile-sub" id="navMobileSub"></div>
   </div>
-  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 263</div></div>
+  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 264</div></div>
 </nav>
 <div class="sino-pop" id="sino-pop" role="dialog" aria-label="Atualizações das bases" hidden></div>
 <div class="sino-pop" id="pess-pop" role="dialog" aria-label="Seus avisos" hidden></div>
@@ -1796,7 +1797,7 @@ a.jg-prox{color:inherit;text-decoration:none}a.jg-prox:hover{border-color:var(--
         <div class="jg-roda"><svg viewBox="-20 -20 540 540" id="jg-svg" role="group" aria-label="Roleta de módulos"><g id="jg-rot"></g><path d="M250 -2 L236 -22 L264 -22 Z" fill="var(--accent)"/></svg><div class="jg-hub" aria-hidden="true"><div><small id="jg-hn"></small><b id="jg-ht"></b></div></div></div>
         <div class="jg-info" id="jg-info" aria-live="polite"></div>
       </div>
-      <div class="tr-curta"><div class="tr-ch"><b>Próximas casas</b><a href="#" data-jgir="comousar" data-jgsec="Sua trilha">Ver a trilha completa</a></div><div class="tr-scroll"><svg id="tr-short" role="img"></svg></div></div>
+      <div class="tr-curta"><div class="tr-ch"><b id="tr-tit">Próximas casas</b><a href="#" id="tr-exp" aria-expanded="false">Ver a trilha completa</a></div><div class="tr-scroll" id="tr-short-w"><svg id="tr-short" role="img"></svg></div><div class="tr-scroll" id="tr-jgfull-w" hidden><svg id="tr-jgfull" role="img"></svg></div></div>
       <div class="jg-vista"><button type="button" class="btn ghost tiny" id="jg-vista"></button></div>
     </section>
     <section data-nav="Checkpoint da semana" class="panel" id="ck-sem">
@@ -3655,7 +3656,7 @@ a.jg-prox{color:inherit;text-decoration:none}a.jg-prox:hover{border-color:var(--
     return new Promise(resolve => { const { data } = sb.auth.onAuthStateChange(async (ev) => { if (ev !== 'PASSWORD_RECOVERY') return; const s = prompt('Digite a nova senha (mínimo 8 caracteres):'); if (s && s.length >= 8) { const { error } = await sb.auth.updateUser({ password: s }); alert(error ? 'Não deu para trocar a senha: ' + error.message : 'Senha trocada.'); } }); resolve(data); });
   }
   // ---------- rodapé: compartilhar, administração e sair ----------
-  const SITE_V = 147;
+  const SITE_V = 148;
   const escH = v => String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const dataBR = v => v ? new Date(v).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' }) : '–';
   const css2 = `.side-foot .r{flex-wrap:wrap}.side-foot .lg-acoes{margin-left:auto;display:inline-flex;gap:10px}
@@ -14835,8 +14836,11 @@ function renderTrilha() {
   const L = trCasas(), feitas = L.filter(c => c.ok).length;
   if ($('tr-q')) $('tr-q').textContent = `${feitas} de ${L.length} casas`;
   if ($('tr-full')) trSvg(L, 0, 8, 'tr-full');
+  const exp = trExp(); if ($('tr-exp')) { $('tr-exp').textContent = exp ? 'Ver só as próximas' : 'Ver a trilha completa'; $('tr-exp').setAttribute('aria-expanded', String(exp)); $('tr-tit').textContent = exp ? `Trilha completa · ${feitas} de ${L.length} casas` : 'Próximas casas'; $('tr-short-w').hidden = exp; $('tr-jgfull-w').hidden = !exp; if (exp) trSvg(L, 0, 8, 'tr-jgfull'); }
   if ($('tr-short')) { const cur = Math.max(0, L.findIndex(c => !c.ok)), i0 = Math.max(0, Math.min(cur < 0 ? L.length - 8 : cur - 2, L.length - 8)); trSvg(L.slice(i0, i0 + 8), i0, 8, 'tr-short'); }
 }
+function trExp() { try { return localStorage.getItem('painel-tr-exp') === '1'; } catch (e) { return false; } }
+document.addEventListener('click', e => { const a = e.target.closest && e.target.closest('#tr-exp'); if (!a) return; e.preventDefault(); try { localStorage.setItem('painel-tr-exp', trExp() ? '0' : '1'); } catch (er) {} renderTrilha(); });
 document.addEventListener('keydown', e => { const g = e.target.closest && e.target.closest('.tr-c'); if (g && (e.key === 'Enter' || e.key === ' ')) { e.preventDefault(); g.dispatchEvent(new MouseEvent('click', { bubbles: true })); } });
 function renderComoUsar() {
   try { renderTrilha(); } catch (er) { console.error(er); }
