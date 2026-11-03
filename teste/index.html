@@ -1753,6 +1753,10 @@ a.jg-prox{color:inherit;text-decoration:none}a.jg-prox:hover{border-color:var(--
 #jor-rt-dica { position: fixed; right: 24px; bottom: 84px; z-index: 60; background: #F7F3EC; color: #0E1A2B; border: 1px solid #E4DCCD; border-radius: 12px; padding: 9px 12px; font-size: 13px; font-weight: 500; max-width: 280px; box-shadow: 0 8px 24px rgba(14,26,43,.18); }
 @media (max-width: 640px) { #jor-retoma { right: 16px; bottom: 16px; } #jor-rt-dica { right: 16px; bottom: 76px; } }
 @media (prefers-reduced-motion: reduce) { #jor-retoma.pulsa { animation: none; } }
+#jor-sim { position: fixed; top: 0; left: var(--side-w, 236px); right: 0; z-index: 150; display: flex; align-items: center; gap: 12px; flex-wrap: wrap; padding: 8px 18px; background: #F5C442; color: #0E1A2B; font-size: 13px; box-shadow: 0 2px 8px rgba(0,0,0,.15); }
+#jor-sim .btn { margin-left: auto; background: #0E1A2B; color: #fff; border-color: #0E1A2B; }
+body.jor-sim-on .main { padding-top: 44px; }
+@media (max-width: 900px) { #jor-sim { left: 0; } }
 </style>
 
 
@@ -1842,7 +1846,7 @@ a.jg-prox{color:inherit;text-decoration:none}a.jg-prox:hover{border-color:var(--
     </div>
     <div class="nav-mobile-sub" id="navMobileSub"></div>
   </div>
-  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 268</div></div>
+  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 269</div></div>
 </nav>
 <div class="sino-pop" id="sino-pop" role="dialog" aria-label="Atualizações das bases" hidden></div>
 <div class="sino-pop" id="pess-pop" role="dialog" aria-label="Seus avisos" hidden></div>
@@ -3262,6 +3266,11 @@ a.jg-prox{color:inherit;text-decoration:none}a.jg-prox:hover{border-color:var(--
         <div class="tscroll"><table id="tbl-curva"></table></div>
         <p class="hint" style="margin-top:8px">CDI médio do ano = média entre a Selic do fim do ano anterior e a do fim do ano, menos 0,10 p.p. TR estimada a partir do CDI. Editar qualquer célula passa para o modo manual; anos depois de 2031 usam a linha de 2031.</p>
       </section>
+      <section data-nav="Primeiro acesso" class="panel" id="cfg-jor" hidden>
+        <h2>Simular primeiro acesso</h2>
+        <p class="sub">Só o administrador vê esta parte. Abre o painel como uma conta recém-criada, vazia, com a jornada por etapas. Os seus dados não aparecem e nada do que você fizer na simulação é gravado. Vale só para esta aba do navegador.</p>
+        <div class="btns"><button class="btn" type="button" data-jorsim="1">Simular primeiro acesso</button></div>
+      </section>
       <section data-nav="Módulos" class="panel" id="cfg-mods" hidden>
         <h2>Módulos liberados</h2>
         <p class="sub">Só o administrador vê esta parte. O que você liberar aqui aparece para todas as pessoas, e cada uma escolhe o que quer ver na tela de módulos. As Finanças ficam sempre ligado.</p>
@@ -3735,7 +3744,7 @@ a.jg-prox{color:inherit;text-decoration:none}a.jg-prox:hover{border-color:var(--
     return new Promise(resolve => { const { data } = sb.auth.onAuthStateChange(async (ev) => { if (ev !== 'PASSWORD_RECOVERY') return; const s = prompt('Digite a nova senha (mínimo 8 caracteres):'); if (s && s.length >= 8) { const { error } = await sb.auth.updateUser({ password: s }); alert(error ? 'Não deu para trocar a senha: ' + error.message : 'Senha trocada.'); } }); resolve(data); });
   }
   // ---------- rodapé: compartilhar, administração e sair ----------
-  const SITE_V = 152;
+  const SITE_V = 153;
   const escH = v => String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const dataBR = v => v ? new Date(v).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' }) : '–';
   const css2 = `.side-foot .r{flex-wrap:wrap}.side-foot .lg-acoes{margin-left:auto;display:inline-flex;gap:10px}
@@ -10066,7 +10075,8 @@ let state = normalizar(DEFAULTS), cps = [], db = null, tab = 'inicio';
 // perfis: o dono usa os documentos da raiz; cada outra pessoa usa perfis/<id>/ (só ela e o dono leem)
 let PFX = '', souDono = true, meuId = null, userCap = null;
 let quemLocal = null; try { quemLocal = localStorage.getItem('painel-quem'); } catch (e) {}
-const LSK = key => key + (quemLocal && quemLocal !== 'dono' ? ':' + quemLocal : '');
+const JOR_SIM = (() => { try { return sessionStorage.getItem('painel-jor-sim') === '1'; } catch (e) { return false; } })();
+const LSK = key => key + (quemLocal && quemLocal !== 'dono' ? ':' + quemLocal : '') + (JOR_SIM ? ':sim' : '');
 const pdoc = path => db.doc(PFX + path), pcol = path => db.collection(PFX + path);
 function merge(base, s) { for (const key in s) { if (s[key] && typeof s[key] === 'object' && !Array.isArray(s[key]) && base[key] && typeof base[key] === 'object' && !Array.isArray(base[key])) merge(base[key], s[key]); else base[key] = s[key]; } return base; }
 function migrarV1(o) {
@@ -16650,6 +16660,7 @@ setTimeout(carregFim, 15000);
     window.claude.use('sample').then(s => { sampleFn = s; }).catch(() => {});
   }
   try { db = window.claude && window.claude.use ? await window.claude.use('db') : null; } catch (e) { db = null; }
+  if (db && JOR_SIM) db = jorSimDb(db);
   if (!db) { setSave('salvo só neste navegador'); carregFim(); return; }
   await entrarPerfil();
   try { db.doc('config/modulos').onSnapshot(d => { modCfg = sanitizeModCfg(d && d.exists ? clone(d.data()) : null); aplicarMod(); if (tab === 'modulos') renderModulos(); if (tab === 'config') renderCfgMods(); }, () => {}); } catch (e) {}
@@ -16683,6 +16694,41 @@ setTimeout(carregFim, 15000);
   db.collection('acoes').onSnapshot(s => { const m = {}; s.docs.forEach(d => { const x = clone(d.data() || null); if (x && /^[A-Z][A-Z0-9]{3}\d{1,2}B?$/.test(x.tk)) m[x.tk] = x; }); acoesDb = m; if (tab === 'carteira') renderAcoes(); }, () => {});
   showTab(tab);
 })().catch(e => { console.error(e); carregFim(); });
+
+/* ---------- simular primeiro acesso (admin): o banco vira uma cópia em memória vazia; dados de mercado e config continuam lidos do banco real; nada é gravado ---------- */
+function jorSimDb(real) {
+  const store = new Map(), subs = new Set(), segs = p => p.split('/').length;
+  const pub = p => /^(mercado|acoes|config)(\/|$)/.test(p);
+  const clone = v => v == null ? v : JSON.parse(JSON.stringify(v));
+  const snap = p => ({ exists: store.has(p), id: p.split('/').pop(), data: () => clone(store.get(p)) });
+  const avisar = p => subs.forEach(s => { if (s.m(p)) setTimeout(s.f, 0); });
+  const lista = c => [...store.keys()].filter(p => p.startsWith(c + '/') && segs(p) === segs(c) + 1).sort().map(snap);
+  const doc = p => pub(p) ? { get: () => real.doc(p).get(), onSnapshot: (a, b) => real.doc(p).onSnapshot(a, b), set: async () => {}, update: async () => {}, delete: async () => {} } : {
+    get: async () => snap(p),
+    set: async d => { store.set(p, clone(d)); avisar(p); },
+    update: async d => { const o = Object.assign({}, store.get(p) || {}); Object.entries(d || {}).forEach(([k, v]) => { if (v && v.__delete__) delete o[k]; else o[k] = clone(v); }); store.set(p, o); avisar(p); },
+    delete: async () => { store.delete(p); avisar(p); },
+    onSnapshot: (fn) => { const s = { m: x => x === p, f: () => fn(snap(p)) }; subs.add(s); setTimeout(s.f, 0); return () => subs.delete(s); }
+  };
+  return {
+    doc,
+    collection: c => pub(c) ? { get: () => real.collection(c).get(), onSnapshot: (a, b) => real.collection(c).onSnapshot(a, b), doc: id => doc(c + '/' + id) } : {
+      get: async () => ({ docs: lista(c) }), doc: id => doc(c + '/' + id),
+      onSnapshot: (fn) => { const s = { m: x => x.startsWith(c + '/') && segs(x) === segs(c) + 1, f: () => fn({ docs: lista(c) }) }; subs.add(s); setTimeout(s.f, 0); return () => subs.delete(s); }
+    }
+  };
+}
+(function () {
+  document.addEventListener('click', e => {
+    const b = e.target.closest('[data-jorsim]'); if (!b) return;
+    try { if (b.dataset.jorsim === '1') { sessionStorage.setItem('painel-jor-sim', '1'); localStorage.removeItem('painel-jor-tudo'); localStorage.setItem('painel-fin-tab2', 'modulos'); } else sessionStorage.removeItem('painel-jor-sim'); } catch (er) {}
+    location.reload();
+  });
+  if (!JOR_SIM) return;
+  const f = document.createElement('div'); f.id = 'jor-sim';
+  f.innerHTML = '<b>Simulação de primeiro acesso</b><span>Conta vazia, como a de quem acabou de entrar. Nada aqui é gravado.</span><button type="button" class="btn tiny" data-jorsim="0">Sair da simulação</button>';
+  document.body.append(f); document.body.classList.add('jor-sim-on');
+})();
 
 /* ---------- Jornada do primeiro login (03/11): Finanças abre por etapas; os outros módulos abrem quando o básico de Finanças está pronto ----------
    state.jornada: 'ativa' (conta nova, começou vazia) | 'feita' (terminou) | 'livre' (conta que já tinha dados). Só 'ativa' tranca telas.
@@ -16810,6 +16856,7 @@ setTimeout(carregFim, 15000);
 
   function decorar() {
     if (!state) return;
+    const cj = $('cfg-jor'); if (cj) cj.hidden = !ehAdmin() || JOR_SIM;
     document.querySelectorAll('.nav-head[data-tab]').forEach(b => { const tr = trancada(b.dataset.tab); b.classList.toggle('jor-tranc', tr); if (tr) b.title = 'Bloqueado: termine a etapa anterior'; else if (b.title === 'Bloqueado: termine a etapa anterior') b.title = ''; });
     document.querySelectorAll('#md-grid [data-irmod]').forEach(b => { const m = MODS.find(x => x.id === b.dataset.irmod), tr = !!m && !m.fixo && trancada(m.vg || m.tabs[0]);
       b.classList.toggle('jor-tranc', tr); let t = b.querySelector('.jor-tag'); if (tr && !t) b.insertAdjacentHTML('beforeend', '<span class="jor-tag"><span class="jor-lock"></span> Bloqueado</span>'); else if (!tr && t) t.remove(); });
