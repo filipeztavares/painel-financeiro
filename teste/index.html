@@ -110,6 +110,8 @@ h1, h2, h3 { font-family: var(--f-head); }
 .cad-div .guia-btn { right: 14px; top: 14px; margin-top: 0; border-color: var(--accent); color: var(--accent); background: transparent; }
 .cad-div .guia-btn:hover, .cad-div .guia-btn:focus-visible { color: #fff; }
 .conf-dlg .guia-btn { display: none !important; }
+.guia-btn.inl { position: static; margin: 0 0 0 8px; width: 20px; height: 20px; font-size: 11px; vertical-align: middle; border-color: var(--accent); color: var(--accent); background: transparent; }
+.guia-btn.inl:hover, .guia-btn.inl:focus-visible { color: #fff; background: var(--accent); }
 @media (max-width: 760px) { .panel .guia-btn { top: 12px; margin-top: 0; } }
 .tour-alvo { outline: 3px solid var(--accent) !important; outline-offset: 3px; border-radius: 6px; }
 @media (max-width: 640px) { .tour-pop { left: 16px !important; right: 16px; bottom: 16px; top: auto !important; width: auto; } }
@@ -181,6 +183,9 @@ h1, h2, h3 { font-family: var(--f-head); }
 @keyframes rodPulse { 50% { opacity: .35; } }
 @media (prefers-reduced-motion: reduce) { .rod-on i, .sino-rod i, .sino.rodando::after { animation: none; } }
 .sino-f .sino-nota { margin: 6px 0 0; font-size: 11px; color: var(--muted); }
+.side-logo .side-pts { display: inline-flex; align-items: center; gap: 4px; margin-top: 3px; font-size: 11.5px; opacity: 1; text-transform: none; letter-spacing: 0; font-weight: 700; color: #F0A46B; white-space: nowrap; }
+.side-logo .side-pts svg { flex: none; }
+.side-logo .side-pts i { font-style: normal; font-weight: 500; opacity: .75; color: #fff; }
 .side-logo span { font-size: 9.5px; opacity: .62; letter-spacing: .5px; text-transform: uppercase; }
 .nav { flex: 1; overflow-y: auto; padding: 12px 10px; scrollbar-width: thin; scrollbar-color: rgba(255,255,255,.25) transparent; }
 .nav-group { margin-bottom: 4px; }
@@ -1677,7 +1682,7 @@ a.jg-prox{color:inherit;text-decoration:none}a.jg-prox:hover{border-color:var(--
 
 
 <nav class="sidebar" aria-label="Módulos">
-  <div class="side-logo"><div class="box lb" title="Ir para os módulos" data-home role="link" tabindex="0"><svg viewBox="0 0 100 100" width="34" height="34" aria-hidden="true"><mask id="lb-furo"><rect x="-10" y="-10" width="120" height="120" fill="#fff"/><circle cx="50" cy="50" r="9" fill="#000"/></mask><g mask="url(#lb-furo)"><path d="M50 50 L51.33 12.02 A38 38 0 0 1 85.71 37.00 Z" fill="#5B8DEF"/><path d="M50 50 L86.53 39.53 A38 38 0 0 1 73.40 79.94 Z" fill="#F0A46B" transform="translate(6.66 2.16)"/><path d="M50 50 L71.25 81.50 A38 38 0 0 1 28.75 81.50 Z" fill="#EE6C4D"/><path d="M50 50 L26.60 79.94 A38 38 0 0 1 13.47 39.53 Z" fill="#3FB58A"/><path d="M50 50 L14.29 37.00 A38 38 0 0 1 48.67 12.02 Z" fill="#8E7CF0"/></g></svg></div><div class="side-nome" data-home role="link" tabindex="0" title="Ir para os módulos"><b>Jogo da Vida (Real)</b><span id="side-quem"></span></div><div class="side-acoes"><button type="button" class="sino pess-sino" id="pess-sino" aria-label="Seus avisos" aria-expanded="false" aria-haspopup="dialog" title="Seus avisos: checkpoint da semana, lembretes da Agenda e alertas de preço"><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M6 16V11a6 6 0 0 1 12 0v5l1.5 2h-15z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="M10 20.5a2 2 0 0 0 4 0" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg><span class="sino-n" id="pess-n" hidden></span></button><button type="button" class="sino" id="sino" data-sodono hidden aria-label="Atualizações das bases" title="Atualizações das bases: como foram as rotinas que buscam preços e dados" aria-expanded="false" aria-haspopup="dialog"><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round" stroke-linecap="round"><ellipse cx="11" cy="5.5" rx="7" ry="2.5"/><path d="M4 5.5v6c0 1.4 3.1 2.5 7 2.5M18 5.5v4"/><path d="M4 11.5v6c0 1.4 3.1 2.5 7 2.5"/><path d="M20.5 14.5a4 4 0 1 0-.4 4.3M20.6 12.3v2.4h-2.4"/></svg><span class="sino-n" id="sino-n" hidden></span></button></div></div>
+  <div class="side-logo"><div class="box lb" title="Ir para os módulos" data-home role="link" tabindex="0"><svg viewBox="0 0 100 100" width="34" height="34" aria-hidden="true"><mask id="lb-furo"><rect x="-10" y="-10" width="120" height="120" fill="#fff"/><circle cx="50" cy="50" r="9" fill="#000"/></mask><g mask="url(#lb-furo)"><path d="M50 50 L51.33 12.02 A38 38 0 0 1 85.71 37.00 Z" fill="#5B8DEF"/><path d="M50 50 L86.53 39.53 A38 38 0 0 1 73.40 79.94 Z" fill="#F0A46B" transform="translate(6.66 2.16)"/><path d="M50 50 L71.25 81.50 A38 38 0 0 1 28.75 81.50 Z" fill="#EE6C4D"/><path d="M50 50 L26.60 79.94 A38 38 0 0 1 13.47 39.53 Z" fill="#3FB58A"/><path d="M50 50 L14.29 37.00 A38 38 0 0 1 48.67 12.02 Z" fill="#8E7CF0"/></g></svg></div><div class="side-nome" data-home role="link" tabindex="0" title="Ir para os módulos"><b>Jogo da Vida (Real)</b><span id="side-quem"></span><span id="side-pts" class="side-pts" hidden></span></div><div class="side-acoes"><button type="button" class="sino pess-sino" id="pess-sino" aria-label="Seus avisos" aria-expanded="false" aria-haspopup="dialog" title="Seus avisos: checkpoint da semana, lembretes da Agenda e alertas de preço"><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M6 16V11a6 6 0 0 1 12 0v5l1.5 2h-15z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="M10 20.5a2 2 0 0 0 4 0" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg><span class="sino-n" id="pess-n" hidden></span></button><button type="button" class="sino" id="sino" data-sodono hidden aria-label="Atualizações das bases" title="Atualizações das bases: como foram as rotinas que buscam preços e dados" aria-expanded="false" aria-haspopup="dialog"><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round" stroke-linecap="round"><ellipse cx="11" cy="5.5" rx="7" ry="2.5"/><path d="M4 5.5v6c0 1.4 3.1 2.5 7 2.5M18 5.5v4"/><path d="M4 11.5v6c0 1.4 3.1 2.5 7 2.5"/><path d="M20.5 14.5a4 4 0 1 0-.4 4.3M20.6 12.3v2.4h-2.4"/></svg><span class="sino-n" id="sino-n" hidden></span></button></div></div>
   <div class="nav">
     <div class="nav-modh" id="nav-modh"><button type="button" class="nav-voltar" data-tab="modulos"><span aria-hidden="true">‹</span> Todos os módulos</button><div class="nav-modwrap"><button type="button" class="nav-modbox" id="nav-modbox" aria-haspopup="true" aria-expanded="false" aria-controls="nav-mod-pop"><span class="ic" id="nav-mod-ic" aria-hidden="true"></span><span class="tx"><span class="l">Você está em</span><span class="nm" id="nav-mod-nome"></span></span><span class="car" aria-hidden="true">▾</span></button><div class="nav-modpop" id="nav-mod-pop" role="menu" aria-label="Trocar de módulo" hidden></div></div></div>
     <div class="nav-tools"><button type="button" id="nav-recolher">Recolher todos</button><button type="button" id="nav-abrir">Abrir todos</button></div>
@@ -1760,7 +1765,7 @@ a.jg-prox{color:inherit;text-decoration:none}a.jg-prox:hover{border-color:var(--
     </div>
     <div class="nav-mobile-sub" id="navMobileSub"></div>
   </div>
-  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 261</div></div>
+  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 262</div></div>
 </nav>
 <div class="sino-pop" id="sino-pop" role="dialog" aria-label="Atualizações das bases" hidden></div>
 <div class="sino-pop" id="pess-pop" role="dialog" aria-label="Seus avisos" hidden></div>
@@ -3165,7 +3170,7 @@ a.jg-prox{color:inherit;text-decoration:none}a.jg-prox:hover{border-color:var(--
       </section>
       <section data-nav="Guias" class="panel">
         <h2>Guias passo a passo</h2>
-        <p class="sub">As seções com o botão <b>?</b> na faixa têm um guia que acende um campo por vez e explica o que preencher. Ele abre sozinho na primeira visita de cada tela; depois, é só clicar no <b>?</b> da seção.</p>
+        <p class="sub">Toda seção com algo para preencher tem o botão <b>?</b>, com um guia que acende um campo por vez e explica o que preencher. Ele abre sozinho na primeira visita de cada tela; depois, é só clicar no <b>?</b> da seção.</p>
         <div class="btns"><button class="btn ghost" type="button" id="guia-reset">Reiniciar todos os guias</button></div>
         <p class="hint" id="guia-msg" role="status"></p>
       </section>
@@ -3650,7 +3655,7 @@ a.jg-prox{color:inherit;text-decoration:none}a.jg-prox:hover{border-color:var(--
     return new Promise(resolve => { const { data } = sb.auth.onAuthStateChange(async (ev) => { if (ev !== 'PASSWORD_RECOVERY') return; const s = prompt('Digite a nova senha (mínimo 8 caracteres):'); if (s && s.length >= 8) { const { error } = await sb.auth.updateUser({ password: s }); alert(error ? 'Não deu para trocar a senha: ' + error.message : 'Senha trocada.'); } }); resolve(data); });
   }
   // ---------- rodapé: compartilhar, administração e sair ----------
-  const SITE_V = 145;
+  const SITE_V = 146;
   const escH = v => String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const dataBR = v => v ? new Date(v).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' }) : '–';
   const css2 = `.side-foot .r{flex-wrap:wrap}.side-foot .lg-acoes{margin-left:auto;display:inline-flex;gap:10px}
@@ -13952,30 +13957,58 @@ function guiaSec(k) { const i = k.indexOf('|'), tp = $(k.slice(0, i)); return tp
 function guiaVisivel(el) { return el && el.getClientRects().length > 0; }
 function guiaMarca(k, fim) { if (!state) return; const g = guiaSt(); let m = false;
   if (!g.vistos.includes(k)) { g.vistos.push(k); m = true; }
-  if (fim && !g.feitos.includes(k)) { g.feitos.push(k); m = true; setSave(`+${JG_PTS.guia} no tabuleiro: guia concluído`); }
-  if (m) { save(); try { if ($('jg-sec') && tab === 'modulos') renderJogo(); } catch (e) {} } }
+  if (fim && GUIAS[k] && !g.feitos.includes(k)) { g.feitos.push(k); m = true; setSave(`+${JG_PTS.guia} no tabuleiro: guia concluído`); }
+  if (m) { save(); sidePts(); try { if ($('jg-sec') && tab === 'modulos') renderJogo(); } catch (e) {} } }
+// toda seção com algo para preencher ganha o ?: guia escrito em GUIAS ou montado na hora (guiaGerado) a partir dos textos da própria seção
+const GUIA_CAMPOS = 'input:not([type=hidden]):not([type=checkbox]):not([type=radio]), select, textarea, input[type=checkbox], input[type=radio]';
+function guiaChave(sec) { const tp = sec.closest('[role="tabpanel"]'); return tp && sec.dataset.nav ? tp.id + '|' + sec.dataset.nav : null; }
 function guiaBotoes() {
-  Object.keys(GUIAS).forEach(k => { const sec = guiaSec(k); if (!sec) return;
-    let hd = null; const f = sec.firstElementChild;
+  document.querySelectorAll('[role="tabpanel"] section[data-nav]').forEach(sec => {
+    const k = guiaChave(sec); if (!k || sec.closest('.conf-pop') || guiaSec(k) !== sec) return;
+    if (!GUIAS[k] && !sec.querySelector(GUIA_CAMPOS)) return;
+    let hd = null, inl = false; const f = sec.firstElementChild;
     if (sec.matches('.panel') && f && (f.matches('h2') || (f.matches('.row') && f.querySelector('h2')))) hd = f;
     else hd = sec.querySelector(':scope > .sec-band, :scope > .cad-div');
+    if (!hd) { hd = sec.querySelector(':scope > h2, :scope > .row > h2, fieldset > legend'); inl = true; }
     if (!hd || hd.querySelector(':scope > .guia-btn')) return;
-    const b = document.createElement('button'); b.type = 'button'; b.className = 'guia-btn'; b.dataset.guia = k; b.textContent = '?'; b.title = 'Me guia nesta seção'; b.setAttribute('aria-label', b.title);
-    hd.classList.add('tem-guia'); hd.appendChild(b); });
+    const b = document.createElement('button'); b.type = 'button'; b.className = 'guia-btn' + (inl ? ' inl' : ''); b.dataset.guia = k; b.textContent = '?'; b.title = 'Me guia nesta seção'; b.setAttribute('aria-label', b.title);
+    if (!inl) hd.classList.add('tem-guia'); hd.appendChild(b); });
+}
+function guiaTxt(el) { if (!el) return ''; const c = el.cloneNode(true); c.querySelectorAll('button, .ibtn, .guia-btn, .sec-tog, select, input').forEach(x => x.remove()); return c.textContent.replace(/\s+/g, ' ').trim(); }
+function guiaCorta(t) { return t.length > 260 ? t.slice(0, t.lastIndexOf(' ', 256)) + '…' : t; }
+function guiaGerado(k) {
+  const sec = guiaSec(k); if (!sec) return null; const vis = guiaVisivel, P = [];
+  const h = sec.querySelector('h2, legend'), sub = [...sec.querySelectorAll('p.sub, .sec-band .hint, .cad-txt p, p.hint')].find(vis);
+  const tit = guiaTxt(h) || sec.dataset.nav;
+  P.push({ el: sub || h || sec, t: tit, o: guiaCorta(guiaTxt(sub)) || 'Aqui ficam os campos para preencher desta parte. Cada mudança é salva sozinha.' });
+  const fss = [...sec.querySelectorAll('fieldset')].filter(f => vis(f) && f.querySelector(GUIA_CAMPOS));
+  fss.slice(0, 4).forEach(fs => { const lg = fs.querySelector('legend'), hi = [...fs.querySelectorAll('.hint')].find(vis);
+    P.push({ el: fs, t: guiaTxt(lg) || 'Preencha estes campos', o: guiaCorta(guiaTxt(hi)) || 'Preencha os campos deste bloco. Onde houver um botão de salvar ou adicionar, clique nele para registrar.' }); });
+  if (!fss.length) {
+    const tb = [...sec.querySelectorAll('.tscroll, table')].find(t => vis(t) && t.querySelector(GUIA_CAMPOS));
+    if (tb) P.push({ el: tb.closest('.tscroll') || tb, t: 'Preencha a tabela', o: 'Os campos em branco ou com valor são editáveis. O painel recalcula tudo assim que você muda um número.' });
+    else { const c = [...sec.querySelectorAll(GUIA_CAMPOS)].find(vis), lb = c && (c.closest('label') || c);
+      if (lb && !(sub && sub.contains(lb))) { const lt = c.closest('label'), ls = lt && lt.querySelector(':scope > span, :scope > b'), lx = guiaTxt(ls || lt).replace(/\s*[+−-]?\s*R\$.*$/, ''); P.push({ el: lb, t: lx && lx.length <= 50 ? lx : 'Comece por aqui', o: 'Escolha ou digite aqui. Cada mudança é salva sozinha e o resto da tela se ajusta.' }); } }
+  }
+  const add = [...sec.querySelectorAll('button')].find(b => vis(b) && /^\+|adicionar|salvar/i.test(b.textContent.trim()) && !P.some(p => p.el.contains(b)));
+  if (add) P.push({ el: add, t: 'Registrar', o: `Use "${add.textContent.trim()}" para incluir o que você preencheu.` });
+  if (P[1] && P[1].t === P[0].t) P.shift();
+  return { gerado: true, passos: P.slice(0, 5) };
 }
 function guiaAbre(k) {
-  const G = GUIAS[k]; if (!G) return; if (G.plano) return tourAbre();
+  if (GUIAS[k] && GUIAS[k].plano) return tourAbre();
   if (tourI >= 0) tourFecha(false); if (gK) guiaFecha(false);
   const sec = guiaSec(k); if (sec && sec.matches('.panel')) abrirSecao(sec);
-  gL = G.passos.filter(p => guiaVisivel(document.querySelector(p.sel)));
+  const G = GUIAS[k] || guiaGerado(k); if (!G) return;
+  gL = G.passos.filter(p => guiaVisivel(p.el || document.querySelector(p.sel)));
   if (!gL.length) { guiaMarca(k, false); return; }
   gK = k; gI = 0; guiaMostra();
 }
 function guiaMostra() {
   if (gEl) gEl.classList.remove('tour-alvo');
-  const st = gL[gI], el = document.querySelector(st.sel); if (!guiaVisivel(el)) { if (gI < gL.length - 1) { gI++; return guiaMostra(); } return guiaFecha(true); }
+  const st = gL[gI], el = st.el || document.querySelector(st.sel); if (!guiaVisivel(el)) { if (gI < gL.length - 1) { gI++; return guiaMostra(); } return guiaFecha(true); }
   gEl = (st.up && el.closest(st.up)) || el; gEl.classList.add('tour-alvo');
-  const ult = gI === gL.length - 1, ganha = !guiaSt().feitos.includes(gK), nome = gK.slice(gK.indexOf('|') + 1), pop = $('tour-pop');
+  const ult = gI === gL.length - 1, ganha = !!GUIAS[gK] && !guiaSt().feitos.includes(gK), nome = gK.slice(gK.indexOf('|') + 1), pop = $('tour-pop');
   pop.innerHTML = `<div class="tour-n">Passo ${gI + 1} de ${gL.length} · ${esc(nome)}</div><h3 id="tour-tit">${esc(st.t)}</h3><p>${esc(st.o)}</p><div class="btns"><span><button class="btn ghost tiny" type="button" data-guiab="volta" ${gI ? '' : 'disabled'}>Voltar</button> <button class="btn ghost tiny" type="button" data-guiab="fecha">${gI ? 'Fechar' : 'Pular guia'}</button></span><span><button class="btn tiny" type="button" data-guiab="prox">${ult ? (ganha ? `Concluir (+${JG_PTS.guia})` : 'Concluir') : 'Próximo'}</button></span></div>`;
   pop.hidden = false;
   gEl.scrollIntoView({ block: 'center', behavior: 'smooth' });
@@ -14567,7 +14600,11 @@ function infoSecoes() {
 }
 infoSecoes();
 const RENDER = { modulos: renderModulos, agcal: renderAgCal, aglis: renderAgLis, comousar: renderComoUsar, inicio: renderHome, trabvg: renderTrabVg, viagvg: renderViagVg, viagens: renderViagens, viagcmp: renderViagCmp, viagrot: renderViagRot, viagcus: renderViagCus, viagdur: renderViagDur, negvg: renderNegVg, negcad: renderNegCad, negdre: renderNegDre, negfc: renderNegFc, negabr: renderNegAbr, negeco: renderNegEco, negpesq: renderNegPesq, negviab: renderNegViab, negcont: renderNegCont, negprec: renderNegPrec, negval: renderNegVal, negsoc: renderNegSoc, negcmp: renderNegCmp, famvg: renderFamVg, fampes: renderFamPes, famcasa: renderFamCasa, famcomp: renderFamComp, indvg: renderIndVg, indnum: renderIndNum, indalv: renderIndAlv, rdvg: renderRdVg, rdprod: renderRdProd, rdcomp: renderRdComp, leia: () => {}, global: renderGlobal, cenarios: renderCenarios, compras: renderCenarios, carteira: renderCarteira, comparador: renderComparador, simulador: renderSimulador, gastos: () => { renderGastos(); renderFechamento(); renderHistorico(); }, orcamento: renderOrcamento, config: renderConfig, pjpf: renderPj, stock: renderStock, familia: renderFamilia, patrimonio: renderPatr };
-function renderTab() { planCache = null; try { RENDER[tab](); } catch (err) { console.error(err); setSave('erro ao recalcular: ' + (err && err.message || err)); } }
+function renderTab() { planCache = null; try { RENDER[tab](); } catch (err) { console.error(err); setSave('erro ao recalcular: ' + (err && err.message || err)); } sidePts(); }
+// pontos acumulados embaixo do nome, no topo do menu
+function sidePts() { const el = $('side-pts'); if (!el || !state) return; try { const d = jgPontos();
+  el.innerHTML = `<svg viewBox="0 0 24 24" width="12" height="12" aria-hidden="true"><path d="M12 2l3 6.5 7 .8-5.2 4.8 1.5 7L12 17.5 5.7 21l1.5-7L2 9.3l7-.8z" fill="currentColor"/></svg>${d.total.toLocaleString('pt-BR')} pts <i>· Nível ${d.nivel}</i>`;
+  el.title = `${d.nome}: ${d.total.toLocaleString('pt-BR')} pontos${d.prox ? `, faltam ${(d.prox[0] - d.total).toLocaleString('pt-BR')} para ${d.prox[1]}` : ''}`; el.hidden = false; } catch (e) { console.error(e); } }
 let navAbertos = null;
 try { navAbertos = JSON.parse(localStorage.getItem('painel-nav-abertos')); } catch (e) {}
 // recolher e abrir cada seção pela faixa do cabeçalho (padrão: tudo aberto; lembra neste navegador)
