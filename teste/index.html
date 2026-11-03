@@ -1846,7 +1846,7 @@ body.jor-sim-on .main { padding-top: 44px; }
     </div>
     <div class="nav-mobile-sub" id="navMobileSub"></div>
   </div>
-  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 270</div></div>
+  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 271</div></div>
 </nav>
 <div class="sino-pop" id="sino-pop" role="dialog" aria-label="Atualizações das bases" hidden></div>
 <div class="sino-pop" id="pess-pop" role="dialog" aria-label="Seus avisos" hidden></div>
@@ -3744,7 +3744,7 @@ body.jor-sim-on .main { padding-top: 44px; }
     return new Promise(resolve => { const { data } = sb.auth.onAuthStateChange(async (ev) => { if (ev !== 'PASSWORD_RECOVERY') return; const s = prompt('Digite a nova senha (mínimo 8 caracteres):'); if (s && s.length >= 8) { const { error } = await sb.auth.updateUser({ password: s }); alert(error ? 'Não deu para trocar a senha: ' + error.message : 'Senha trocada.'); } }); resolve(data); });
   }
   // ---------- rodapé: compartilhar, administração e sair ----------
-  const SITE_V = 154;
+  const SITE_V = 155;
   const escH = v => String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const dataBR = v => v ? new Date(v).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' }) : '–';
   const css2 = `.side-foot .r{flex-wrap:wrap}.side-foot .lg-acoes{margin-left:auto;display:inline-flex;gap:10px}
@@ -16951,6 +16951,7 @@ function jorSimDb(real) {
     if (trancada(tab)) showTab('modulos'); else decorar();
     if (ativa() && !state.jornadaBv) setTimeout(() => {
       state.jornadaBv = true; save();
+      window.scrollTo(0, 0);   // atrás das boas-vindas, o topo da tela com a jornada
       abre(`<div class="jor-mk">Bem-vindo</div><h3>Vamos montar o seu painel</h3><p>O app abre por etapas. Cada etapa pede só o essencial e, quando você termina, <b>desbloqueia as próximas telas</b>. No fim de Finanças, abrem os outros módulos.</p>
         <div class="jor-bv">${ETAPAS.map((e, i) => `<div class="jor-bvi"><span class="n">${i + 1}</span><div><b>${esc(e.nome)}</b><p>${BV[i][0]}</p><span class="ab"><span class="jor-lock"></span> Desbloqueia: ${BV[i][1]}</span></div></div>`).join('')}</div>`,
         [{ t: 'Começar pelo Meu plano', p: true, f: () => irPasso(ETAPAS[0].passos[0]) }], () => avisaRetoma());
