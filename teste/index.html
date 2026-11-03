@@ -94,6 +94,14 @@ h1, h2, h3 { font-family: var(--f-head); }
 .orc-modelo { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; margin: 4px 0 12px; }
 .orc-modelo .orc-h { margin: 0; }
 .orc-modelo .hint { flex-basis: 100%; margin: 0; }
+#carregando { position: fixed; inset: 0; z-index: 8000; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px; background: var(--bg, #FAF8F4); color: var(--ink); transition: opacity .3s; }
+#carregando.some { opacity: 0; pointer-events: none; }
+#carregando[hidden] { display: none; }
+#carregando .cr-roda { width: 56px; height: 56px; animation: cr-gira 1.6s linear infinite; }
+#carregando b { font-size: 15px; font-weight: 700; }
+#carregando span { font-size: 13px; color: var(--muted); }
+@keyframes cr-gira { to { transform: rotate(360deg); } }
+@media (prefers-reduced-motion: reduce) { #carregando .cr-roda { animation-duration: 6s; } }
 .tour-pop { position: fixed; z-index: 1001; width: min(360px, calc(100vw - 32px)); background: var(--panel); color: var(--ink); border: 1px solid var(--line); border-top: 5px solid var(--accent); border-radius: 12px; padding: 14px 16px 12px; box-shadow: 0 12px 40px rgba(0,0,0,.28); }
 .tour-pop[hidden] { display: none; }
 .tour-pop .tour-n { font-size: 11px; font-weight: 600; letter-spacing: .05em; text-transform: uppercase; color: var(--accent); }
@@ -1767,10 +1775,11 @@ a.jg-prox{color:inherit;text-decoration:none}a.jg-prox:hover{border-color:var(--
     </div>
     <div class="nav-mobile-sub" id="navMobileSub"></div>
   </div>
-  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 266</div></div>
+  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 267</div></div>
 </nav>
 <div class="sino-pop" id="sino-pop" role="dialog" aria-label="Atualizações das bases" hidden></div>
 <div class="sino-pop" id="pess-pop" role="dialog" aria-label="Seus avisos" hidden></div>
+<div id="carregando" role="status" aria-live="polite"><svg class="cr-roda" viewBox="0 0 100 100" aria-hidden="true"><path d="M50 50 L50 12 A38 38 0 0 1 86.1 38.3 Z" fill="#5B8DEF"/><path d="M50 50 L86.1 38.3 A38 38 0 0 1 72.3 80.7 Z" fill="#F2C14E"/><path d="M50 50 L72.3 80.7 A38 38 0 0 1 27.7 80.7 Z" fill="#EE6C4D"/><path d="M50 50 L27.7 80.7 A38 38 0 0 1 13.9 38.3 Z" fill="#3FB58A"/><path d="M50 50 L13.9 38.3 A38 38 0 0 1 50 12 Z" fill="#8E7CF0"/><circle cx="50" cy="50" r="9" fill="var(--bg, #FAF8F4)"/></svg><b>Carregando seus dados…</b><span>Só um instante</span></div>
 <div class="tour-pop" id="tour-pop" role="dialog" aria-labelledby="tour-tit" hidden></div>
 <div class="imp-pop" id="imp-pop" role="dialog" aria-modal="true" aria-labelledby="imp-tit" hidden><div class="imp-box" id="imp-box"></div></div>
 
@@ -3657,7 +3666,7 @@ a.jg-prox{color:inherit;text-decoration:none}a.jg-prox:hover{border-color:var(--
     return new Promise(resolve => { const { data } = sb.auth.onAuthStateChange(async (ev) => { if (ev !== 'PASSWORD_RECOVERY') return; const s = prompt('Digite a nova senha (mínimo 8 caracteres):'); if (s && s.length >= 8) { const { error } = await sb.auth.updateUser({ password: s }); alert(error ? 'Não deu para trocar a senha: ' + error.message : 'Senha trocada.'); } }); resolve(data); });
   }
   // ---------- rodapé: compartilhar, administração e sair ----------
-  const SITE_V = 150;
+  const SITE_V = 151;
   const escH = v => String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const dataBR = v => v ? new Date(v).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' }) : '–';
   const css2 = `.side-foot .r{flex-wrap:wrap}.side-foot .lg-acoes{margin-left:auto;display:inline-flex;gap:10px}
@@ -16560,6 +16569,11 @@ try { const l = JSON.parse(localStorage.getItem(LSK('painel-fin-cps'))); if (Arr
 try { const g = JSON.parse(localStorage.getItem(LSK('painel-gastos'))); if (g && typeof g === 'object') gastos = g; } catch (e) {}
 if (!cps.length) cps = CP_PLANILHA.slice();
 showTab(tab); setSave('salvo só neste navegador');
+// tela de carregando: some quando o estado, os checkpoints e os gastos chegam (ou depois de 15 s)
+const CARREG = new Set(['estado', 'cps', 'gastos']);
+function carregou(k) { CARREG.delete(k); if (!CARREG.size) carregFim(); }
+function carregFim() { const el = $('carregando'); if (!el || el.hidden) return; CARREG.clear(); el.classList.add('some'); setTimeout(() => { el.hidden = true; }, 320); try { showTab(tab, true); } catch (e) {} }
+setTimeout(carregFim, 15000);
 (async () => {
   if (window.claude && window.claude.use) {
     window.claude.use('mcp').then(m => { mcp = m; if (tab === 'gastos') buildGastos(); if (tab === 'carteira') acaoNowVis(); }).catch(() => {});
@@ -16567,7 +16581,7 @@ showTab(tab); setSave('salvo só neste navegador');
     window.claude.use('sample').then(s => { sampleFn = s; }).catch(() => {});
   }
   try { db = window.claude && window.claude.use ? await window.claude.use('db') : null; } catch (e) { db = null; }
-  if (!db) { setSave('salvo só neste navegador'); return; }
+  if (!db) { setSave('salvo só neste navegador'); carregFim(); return; }
   await entrarPerfil();
   try { db.doc('config/modulos').onSnapshot(d => { modCfg = sanitizeModCfg(d && d.exists ? clone(d.data()) : null); aplicarMod(); if (tab === 'modulos') renderModulos(); if (tab === 'config') renderCfgMods(); }, () => {}); } catch (e) {}
   try { const a6 = await db.doc('mercado/acoes6m').get(); if (a6.exists) { const s = sanitizeA6(a6.data()); if (s) acoes6m = s; } } catch (e) {}
@@ -16591,14 +16605,15 @@ showTab(tab); setSave('salvo só neste navegador');
     else if (souDono) { const old = await db.doc('painel/estado').get(); if (old.exists) { state = normalizar(migrarV1(old.data())); flush(); } }
     setSave('salvo');
   } catch (e) { setSave('salvo só neste navegador'); }
+  carregou('estado');
   vgSemear();
-  pcol('checkpoints').onSnapshot(s => { const l = s.docs.map(d => d.data()).filter(d => d && d.mes && isFinite(d.valor)).map(d => ({ mes: String(d.mes).slice(0, 7), valor: +d.valor })); cps = l.length ? l : CP_PLANILHA.slice(); if (tab === 'global' || tab === 'cenarios' || tab === 'inicio' || tab === 'modulos' || tab === 'comousar') renderTab(); },
-    () => setSave('checkpoints indisponíveis agora'));
-  pcol('gastos').onSnapshot(s => { const g = {}; s.docs.forEach(d => { const x = clone(d.data() || null); if (x && /^\d{4}-\d{2}$/.test(x.mes) && Array.isArray(x.itens)) g[x.mes] = x.itens.filter(it => it && it.data && it.comp && isFinite(+it.valor)); }); gastos = g; if (tab === 'gastos') renderGastos(); if (tab === 'inicio') renderHome(); if (tab === 'modulos' || tab === 'comousar') renderTab(); },
-    () => setSave('gastos indisponíveis agora'));
+  pcol('checkpoints').onSnapshot(s => { setTimeout(() => carregou('cps'), 0); const l = s.docs.map(d => d.data()).filter(d => d && d.mes && isFinite(d.valor)).map(d => ({ mes: String(d.mes).slice(0, 7), valor: +d.valor })); cps = l.length ? l : CP_PLANILHA.slice(); if (tab === 'global' || tab === 'cenarios' || tab === 'inicio' || tab === 'modulos' || tab === 'comousar') renderTab(); },
+    () => { carregou('cps'); setSave('checkpoints indisponíveis agora'); });
+  pcol('gastos').onSnapshot(s => { setTimeout(() => carregou('gastos'), 0); const g = {}; s.docs.forEach(d => { const x = clone(d.data() || null); if (x && /^\d{4}-\d{2}$/.test(x.mes) && Array.isArray(x.itens)) g[x.mes] = x.itens.filter(it => it && it.data && it.comp && isFinite(+it.valor)); }); gastos = g; if (tab === 'gastos') renderGastos(); if (tab === 'inicio') renderHome(); if (tab === 'modulos' || tab === 'comousar') renderTab(); },
+    () => { carregou('gastos'); setSave('gastos indisponíveis agora'); });
   db.collection('acoes').onSnapshot(s => { const m = {}; s.docs.forEach(d => { const x = clone(d.data() || null); if (x && /^[A-Z][A-Z0-9]{3}\d{1,2}B?$/.test(x.tk)) m[x.tk] = x; }); acoesDb = m; if (tab === 'carteira') renderAcoes(); }, () => {});
   showTab(tab);
-})();
+})().catch(e => { console.error(e); carregFim(); });
 </script>
 
 </body></html>
