@@ -1865,7 +1865,7 @@ body.jor-sim-on .main { padding-top: 44px; }
     </div>
     <div class="nav-mobile-sub" id="navMobileSub"></div>
   </div>
-  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 275</div></div>
+  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 276</div></div>
 </nav>
 <div class="sino-pop" id="sino-pop" role="dialog" aria-label="Atualizações das bases" hidden></div>
 <div class="sino-pop" id="pess-pop" role="dialog" aria-label="Seus avisos" hidden></div>
@@ -3285,6 +3285,12 @@ body.jor-sim-on .main { padding-top: 44px; }
         <div class="tscroll"><table id="tbl-curva"></table></div>
         <p class="hint" style="margin-top:8px">CDI médio do ano = média entre a Selic do fim do ano anterior e a do fim do ano, menos 0,10 p.p. TR estimada a partir do CDI. Editar qualquer célula passa para o modo manual; anos depois de 2031 usam a linha de 2031.</p>
       </section>
+      <section data-nav="Seus dados" class="panel" id="cfg-dados">
+        <h2>Exportar e restaurar os seus dados</h2>
+        <p class="sub">Baixa tudo o que esta conta guarda (plano, gastos de todos os meses, checkpoints e os itens dos módulos) num arquivo JSON. Para voltar a um backup, escolha o arquivo e clique em Restaurar: os dados atuais da conta são trocados pelos do arquivo.</p>
+        <div class="btns"><button class="btn" type="button" id="dados-exp">Exportar dados (JSON)</button><label class="btn ghost" style="cursor:pointer">Escolher arquivo para restaurar<input type="file" id="dados-arq" accept=".json,application/json" hidden></label><button class="btn ghost" type="button" id="dados-rest" disabled>Restaurar</button></div>
+        <p class="hint" id="dados-msg" role="status"></p>
+      </section>
       <section data-nav="Primeiro acesso" class="panel" id="cfg-jor" hidden>
         <h2>Simular primeiro acesso</h2>
         <p class="sub">Só o administrador vê esta parte. Abre o painel como uma conta recém-criada, vazia, com a jornada por etapas. Os seus dados não aparecem e nada do que você fizer na simulação é gravado. Vale só para esta aba do navegador.</p>
@@ -3763,7 +3769,7 @@ body.jor-sim-on .main { padding-top: 44px; }
     return new Promise(resolve => { const { data } = sb.auth.onAuthStateChange(async (ev) => { if (ev !== 'PASSWORD_RECOVERY') return; const s = prompt('Digite a nova senha (mínimo 8 caracteres):'); if (s && s.length >= 8) { const { error } = await sb.auth.updateUser({ password: s }); alert(error ? 'Não deu para trocar a senha: ' + error.message : 'Senha trocada.'); } }); resolve(data); });
   }
   // ---------- rodapé: compartilhar, administração e sair ----------
-  const SITE_V = 159;
+  const SITE_V = 160;
   const escH = v => String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const dataBR = v => v ? new Date(v).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' }) : '–';
   const css2 = `.side-foot .r{flex-wrap:wrap}.side-foot .lg-acoes{margin-left:auto;display:inline-flex;gap:10px}
@@ -17094,6 +17100,61 @@ function jorSimDb(real) {
     el.addEventListener('mousedown', abre); el.addEventListener('focus', abre);
     el.addEventListener('blur', () => { if (el.dataset.ant != null) { if (!el.value.trim()) el.value = el.dataset.ant; delete el.dataset.ant; el.placeholder = 'digite ou escolha o banco'; } });
   });
+})();
+
+/* ---------- Configurações › Seus dados: exportar tudo em JSON e restaurar de um arquivo ---------- */
+(function () {
+  const COLS = ['painel', 'checkpoints', 'gastos'], OK_ID = /^(painel|checkpoints|gastos)\/[\w.-]{1,80}$/;
+  const msg = t => { const m = $('dados-msg'); if (m) m.textContent = t; };
+  async function junta() {
+    const docs = {};
+    for (const c of COLS) { const sn = await pcol(c).get(); sn.docs.forEach(d => { docs[c + '/' + d.id] = d.data(); }); }
+    if (!docs['painel/v2'] && state) docs['painel/v2'] = clone(state);
+    return docs;
+  }
+  async function exporta() {
+    if (!db) { msg('Sem banco de dados nesta visualização.'); return; }
+    msg('Juntando os seus dados…');
+    try {
+      const docs = await junta(), hoje = new Date().toISOString().slice(0, 10);
+      const data = JSON.stringify({ app: 'painel-financeiro', formato: 1, exportadoEm: new Date().toISOString(), docs }, null, 1), nome = `painel-dados-${hoje}.json`;
+      let foi = false;
+      if (downloads) { try { await downloads.save({ filename: nome, data }); foi = true; } catch (e) { if (e && e.code === 'declined') { msg(''); return; } } }
+      if (!foi) { const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([data], { type: 'application/json' })); a.download = nome; document.body.append(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(a.href), 3000); }
+      msg(`Arquivo ${nome} gerado com ${Object.keys(docs).length} partes (plano, meses de gastos e checkpoints).`);
+    } catch (e) { msg('Não consegui exportar' + (e && e.message ? ': ' + e.message : '.')); }
+  }
+  let lido = null;
+  async function le(f) {
+    lido = null; $('dados-rest').disabled = true;
+    try {
+      const j = JSON.parse(await f.text());
+      if (!j || j.app !== 'painel-financeiro' || !j.docs || typeof j.docs !== 'object') throw new Error('não é um arquivo exportado pelo painel');
+      const ids = Object.keys(j.docs).filter(k => OK_ID.test(k) && j.docs[k] && typeof j.docs[k] === 'object');
+      if (!ids.includes('painel/v2')) throw new Error('o arquivo não tem o plano (painel/v2)');
+      lido = { docs: j.docs, ids, em: j.exportadoEm };
+      const nG = ids.filter(k => k.startsWith('gastos/')).length, nC = ids.filter(k => k.startsWith('checkpoints/')).length;
+      msg(`Arquivo de ${j.exportadoEm ? new Date(j.exportadoEm).toLocaleString('pt-BR') : 'data desconhecida'}: plano, ${nG} ${nG === 1 ? 'mês' : 'meses'} de gastos e ${nC} checkpoint${nC === 1 ? '' : 's'}. Clique em Restaurar para trocar os dados atuais por estes.`);
+      $('dados-rest').disabled = false;
+    } catch (e) { msg('Não consegui ler o arquivo: ' + (e && e.message ? e.message : 'formato inválido') + '.'); }
+  }
+  async function restaura() {
+    if (!lido || !db) return;
+    if (!confirmar('Isso troca TODOS os dados desta conta pelos do arquivo. O que não estiver no arquivo será apagado.')) return;
+    msg('Restaurando…'); $('dados-rest').disabled = true;
+    try {
+      clearTimeout(saveTimer); save = function () {}; flush = async function () {};
+      for (const k of lido.ids) await pdoc(k).set(lido.docs[k]);
+      for (const c of COLS) { const sn = await pcol(c).get(); for (const d of sn.docs) if (!lido.ids.includes(c + '/' + d.id)) await pdoc(c + '/' + d.id).delete().catch(() => {}); }
+      try { localStorage.setItem(LSK('painel-fin-v2'), JSON.stringify(lido.docs['painel/v2'])); } catch (e) {}
+      msg('Dados restaurados. Recarregando…'); setTimeout(() => location.reload(), 800);
+    } catch (e) { msg('Não consegui restaurar' + (e && e.message ? ': ' + e.message : '.') + ' Recarregue a página antes de tentar de novo.'); }
+  }
+  document.addEventListener('click', e => {
+    if (e.target.closest('#dados-exp')) exporta();
+    else if (e.target.closest('#dados-rest')) restaura();
+  });
+  document.addEventListener('change', e => { if (e.target && e.target.id === 'dados-arq') { const f = e.target.files && e.target.files[0]; e.target.value = ''; if (f) le(f); } });
 })();
 </script>
 
