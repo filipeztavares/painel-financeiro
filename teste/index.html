@@ -1816,6 +1816,13 @@ label.bk-conf .subdet { font-size: 11.5px; text-transform: none; letter-spacing:
 .ck-alerta[hidden] { display: none; }
 .ck-alerta .ck-al-t { flex: 1 1 320px; }
 .ck-alerta .ck-al-ic { width: 26px; height: 26px; flex: none; display: grid; place-items: center; background: #F5C442; color: #0E1A2B; font-weight: 800; font-size: 15px; line-height: 1; clip-path: polygon(50% 4%, 98% 94%, 2% 94%); padding-top: 6px; box-sizing: border-box; }
+.pl-esc summary { cursor: pointer; font-weight: 600; font-size: 13px; }
+.pl-escl { max-height: 360px; overflow: auto; margin-top: 6px; }
+.pl-esc tr.pl-fora td { color: var(--muted); }
+.pl-esc tr.pl-fora td:nth-child(3) { text-decoration: line-through; }
+.pl-esc tr.pl-fora td:nth-child(3) .subdet { text-decoration: none; display: inline-block; }
+.pl-lin input[type=text] { width: 100%; }
+.pl-esc td:nth-child(3), .pl-esc th:nth-child(3) { text-align: left; }
 </style>
 
 
@@ -1905,7 +1912,7 @@ label.bk-conf .subdet { font-size: 11.5px; text-transform: none; letter-spacing:
     </div>
     <div class="nav-mobile-sub" id="navMobileSub"></div>
   </div>
-  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 283</div></div>
+  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 284</div></div>
 </nav>
 <div class="sino-pop" id="sino-pop" role="dialog" aria-label="Atualizações das bases" hidden></div>
 <div class="sino-pop" id="pess-pop" role="dialog" aria-label="Seus avisos" hidden></div>
@@ -3816,7 +3823,7 @@ label.bk-conf .subdet { font-size: 11.5px; text-transform: none; letter-spacing:
     return new Promise(resolve => { const { data } = sb.auth.onAuthStateChange(async (ev) => { if (ev !== 'PASSWORD_RECOVERY') return; const s = prompt('Digite a nova senha (mínimo 8 caracteres):'); if (s && s.length >= 8) { const { error } = await sb.auth.updateUser({ password: s }); alert(error ? 'Não deu para trocar a senha: ' + error.message : 'Senha trocada.'); } }); resolve(data); });
   }
   // ---------- rodapé: compartilhar, administração e sair ----------
-  const SITE_V = 167;
+  const SITE_V = 168;
   const escH = v => String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const dataBR = v => v ? new Date(v).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' }) : '–';
   const css2 = `.side-foot .r{flex-wrap:wrap}.side-foot .lg-acoes{margin-left:auto;display:inline-flex;gap:10px}
@@ -17369,6 +17376,11 @@ function jorSimDb(real) {
       a.op.outro = 'ign'; a.opSup.outro = 'na dúvida, valores com o outro sinal (salário, estorno, transferência) ficam de fora';
       const ds = a.map.data != null ? amostra(a, a.map.data).filter(c => typeof c === 'string') : [];
       const mdy = ds.some(s => { const p = s.split(/[\/\-.]/); return p.length >= 2 && +p[1] > 12 && +p[0] <= 12; }), amb = ds.length && !mdy && !ds.some(s => +s.split(/[\/\-.]/)[0] > 12) && !ds.every(s => /^\d{4}/.test(s));
+      const PAL = ['transferencia', 'transf ', 'entre contas', 'mesma titularidade', 'ted ', 'pagamento de fatura', 'pagto fatura', 'pgto fatura', 'pag fatura', 'aplicacao', 'resgate'];
+      const descs = a.map.desc != null ? a.rows.slice(a.hdr + 1).map(r => sem(r[a.map.desc]) + ' ') : [];
+      if (!(a.opUser && a.opUser.excl)) { const ach = PAL.filter(w => descs.some(d => d.includes(w))); a.op.excl = ach.map(w => w.trim()).join(', ');
+        a.opSup.excl = ach.length ? 'achei descrições com essas palavras, que costumam ser transferência entre contas, pagamento de fatura ou aplicação' : ''; }
+      a.manual = a.manual || new Map();
       a.op.fmt = mdy ? 'mdy' : 'dmy'; if (mdy) a.opSup.fmt = 'há datas com o segundo número maior que 12, então o formato é mês/dia'; else if (amb) a.opSup.fmt = 'nenhuma data tem o dia maior que 12; supus dia/mês, o padrão do Brasil';
     }
     if (a.tipo === 'cp') { a.op.subst = false; }
@@ -17377,7 +17389,7 @@ function jorSimDb(real) {
     if (!a.tipo) { const [t, m] = tipoSugerido(a); a.tipo = t; a.tipoSup = m; } mapear(a); sugereOpcoes(a); a.cats = null; }
 
   // ---------- montar os registros ----------
-  const CAT_NOVA = '__nova__';
+  const CAT_NOVA = '__nova__', CAT_FORA = '__fora__';
   function catsDaAba(a) {
     if (a.map.cat == null) return null;
     if (!a.cats) { a.cats = {}; const vals = [...new Set(a.rows.slice(a.hdr + 1).map(r => String(r[a.map.cat] ?? '').trim()).filter(Boolean))];
@@ -17389,7 +17401,8 @@ function jorSimDb(real) {
   function registros(a) {
     const out = [], ruins = [], M = a.map, lin = a.rows.slice(a.hdr + 1);
     if (a.tipo === 'gas') {
-      const cm = catsDaAba(a); let porDesc = 0;
+      const cm = catsDaAba(a); let porDesc = 0; a.cand = []; a.manual = a.manual || new Map();
+      const pals = String(a.op.excl || '').split(/[,;]/).map(w => sem(w)).filter(Boolean);
       lin.forEach((r, k) => { const n = a.hdr + k + 2;
         const data = dataDe(r[M.data], a.op.fmt), desc = String(r[M.desc] ?? '').trim(), v0 = valorDe(r[M.valor]);
         if (!data && !desc && v0 == null) return;
@@ -17397,11 +17410,14 @@ function jorSimDb(real) {
         if (v0 == null || v0 === 0) { ruins.push(`linha ${n}: sem valor`); return; }
         let v = a.op.sinal === 'neg' ? -v0 : v0;
         if (v < 0) { if (a.op.outro === 'ign') { ruins.push(`linha ${n}: ${desc || 'sem descrição'} (${fm(Math.abs(v0))}) tem o outro sinal`); return; } }
-        let cat;
-        if (cm) { const c = cm[String(r[M.cat] ?? '').trim()]; cat = !c ? 'Outros' : c.para === CAT_NOVA ? String(r[M.cat]).trim() : c.para; }
+        let cat, motivo = '';
+        const w = pals.find(p => (sem(desc) + ' ').includes(p)); if (w) motivo = `tem "${w}" na descrição`;
+        if (cm) { const cx = String(r[M.cat] ?? '').trim(), c = cm[cx]; if (c && c.para === CAT_FORA) { motivo = motivo || `categoria "${cx}" marcada para não importar`; cat = 'Outros'; } else cat = !c ? 'Outros' : c.para === CAT_NOVA ? cx : c.para; }
         else { cat = catPorRegra(desc, x => cats().some(c => c.nome === x)) || sugereCat(desc) || 'Outros'; porDesc++; }
         const fr = M.forma != null ? String(r[M.forma] ?? '') : '', forma = fr ? (FORMAS.find(f => sem(fr).includes(sem(f).split(' ')[0])) || '') : '';
-        out.push({ data, desc: desc || '(sem descrição)', valor: Math.round(v * 100) / 100, comp: data.slice(0, 7), cat, forma, conta: '', obs: 'da planilha' });
+        const it = { data, desc: desc || '(sem descrição)', valor: Math.round(v * 100) / 100, comp: data.slice(0, 7), cat, forma, conta: '', obs: 'da planilha' };
+        const entra = a.manual.has(n) ? a.manual.get(n) : !motivo; a.cand.push({ n, it, motivo, entra });
+        if (entra) out.push(it);
       });
       a.porDesc = porDesc;
     } else if (a.tipo === 'cp') {
@@ -17444,6 +17460,8 @@ function jorSimDb(real) {
   }
   function pinta() {
     if (!PL) { box.innerHTML = ''; return; }
+    const rol = {}; box.querySelectorAll('[data-plesc]').forEach(d => { const l = d.querySelector('.pl-escl'); if (l) rol[d.dataset.plesc] = l.scrollTop; });
+    const yJan = window.scrollY;
     let total = 0;
     const blocos = PL.abas.map((a, i) => {
       const def = TIPOS_ABA[a.tipo];
@@ -17456,6 +17474,7 @@ function jorSimDb(real) {
       if (falta.length) return h + `<p class="pl-erro">Escolha a coluna de: ${falta.join(', ')}.</p></div>`;
       if (a.tipo === 'gas') h += `<div class="pl-lin"><label>Qual sinal é gasto<select data-pl="${i}" data-plk="sinal"><option value="pos"${a.op.sinal === 'pos' ? ' selected' : ''}>Positivo é gasto</option><option value="neg"${a.op.sinal === 'neg' ? ' selected' : ''}>Negativo é gasto</option></select></label>${a.opUser && a.opUser.sinal ? '' : sup(a.opSup.sinal)}</div>
         <div class="pl-lin"><label>Valores com o outro sinal<select data-pl="${i}" data-plk="outro"><option value="ign"${a.op.outro === 'ign' ? ' selected' : ''}>Não importar</option><option value="est"${a.op.outro === 'est' ? ' selected' : ''}>Importar como estorno (reduz o gasto do mês)</option></select></label>${a.opUser && a.opUser.outro ? '' : sup(a.opSup.outro)}</div>
+        <div class="pl-lin"><label>Não importar descrições com<input type="text" data-pl="${i}" data-plk="excl" value="${esc(a.op.excl || '')}" placeholder="ex.: transferência, pagamento de fatura, resgate"><span class="subdet">Palavras separadas por vírgula. Serve para tirar transferência entre contas, pagamento de fatura e o que não é gasto.</span></label>${a.opUser && a.opUser.excl ? '' : sup(a.opSup.excl)}</div>
         <div class="pl-lin"><label>Formato das datas<select data-pl="${i}" data-plk="fmt"><option value="dmy"${a.op.fmt === 'dmy' ? ' selected' : ''}>dia/mês/ano</option><option value="mdy"${a.op.fmt === 'mdy' ? ' selected' : ''}>mês/dia/ano</option></select></label>${a.opUser && a.opUser.fmt ? '' : sup(a.opSup.fmt)}</div>`;
       if (a.tipo === 'cp') h += `<div class="pl-lin"><label class="check"><input type="checkbox" data-pl="${i}" data-plk="subst"${a.op.subst ? ' checked' : ''}> Substituir os checkpoints de meses que já existem no painel</label></div>`;
       const R = registros(a); a.res = R;
@@ -17463,7 +17482,7 @@ function jorSimDb(real) {
       if (a.tipo === 'gas') {
         const cm = catsDaAba(a);
         if (cm) { const ks = Object.keys(cm);
-          h += `<details class="pl-cats"${ks.some(k => cm[k].sup) ? ' open' : ''}><summary>Categorias da planilha → categorias do painel (${ks.length})</summary><div class="pl-catg">${ks.slice(0, 60).map(k => `<label><span>${esc(k)}</span><select data-pl="${i}" data-plk="cat" data-plv="${esc(k)}"><option value="${CAT_NOVA}"${cm[k].para === CAT_NOVA ? ' selected' : ''}>Criar "${esc(k)}"</option>${cats().map(c => `<option${cm[k].para === c.nome ? ' selected' : ''}>${esc(c.nome)}</option>`).join('')}</select>${cm[k].sup && !cm[k].user ? sup(cm[k].sup) : ''}</label>`).join('')}</div></details>`;
+          h += `<details class="pl-cats"${ks.some(k => cm[k].sup) ? ' open' : ''}><summary>Categorias da planilha → categorias do painel (${ks.length})</summary><div class="pl-catg">${ks.slice(0, 60).map(k => `<label><span>${esc(k)}</span><select data-pl="${i}" data-plk="cat" data-plv="${esc(k)}"><option value="${CAT_NOVA}"${cm[k].para === CAT_NOVA ? ' selected' : ''}>Criar "${esc(k)}"</option><option value="${CAT_FORA}"${cm[k].para === CAT_FORA ? ' selected' : ''}>Não importar</option>${cats().map(c => `<option${cm[k].para === c.nome ? ' selected' : ''}>${esc(c.nome)}</option>`).join('')}</select>${cm[k].sup && !cm[k].user ? sup(cm[k].sup) : ''}</label>`).join('')}</div></details>`;
           const nv = [...new Set(R.out.map(x => x.cat).filter(c => !cats().some(y => y.nome === c)))]; if (nv.length) sups.push(`${nv.length > 1 ? 'Serão criadas as categorias' : 'Será criada a categoria'} ${nv.map(x => `"${esc(x)}"`).join(', ')} no painel, com orçamento zero.`); }
         else if (a.porDesc) sups.push(`Sem coluna de categoria: a categoria de cada gasto foi sugerida pela descrição (o que não reconheci ficou em "Outros"). Você pode trocar depois em Gastos.`);
         sups.push('Cada gasto entra no mês da própria data e fica marcado como "da planilha". Repetidos (mesma data, descrição e valor de algo que já está no painel) são pulados.');
@@ -17472,6 +17491,9 @@ function jorSimDb(real) {
         const meses = [...new Set(R.out.map(x => x.comp))].sort();
         h += `<p class="pl-res"><b>${plural(a.nOk, 'gasto pronto', 'gastos prontos')}</b>${meses.length === 1 ? ` de ${mLabel(mIndex(meses[0]))}` : meses.length ? ` de ${mLabel(mIndex(meses[0]))} a ${mLabel(mIndex(meses[meses.length - 1]))}` : ''}${dup ? ` · ${dup} já no painel` : ''}${R.ruins.length ? ` · ${R.ruins.length} linha${R.ruins.length > 1 ? 's' : ''} fora` : ''}</p>`;
         h += tabela(['Data', 'Descrição', 'Valor', 'Categoria'], R.out.slice(0, 6).map(x => [x.data.split('-').reverse().join('/'), x.desc, fm2(x.valor), x.cat]));
+        const tir = a.cand.filter(c => !c.entra).length, mexi = a.cand.filter(c => a.manual.has(c.n)).length;
+        h += `<details class="pl-esc"${a.abreEsc ? ' open' : ''} data-plesc="${i}"><summary>Escolher linha a linha${tir ? ` · ${tir} fora` : ''}</summary><p class="subdet">Desmarque o que não quer importar. As linhas que caíram numa palavra ou categoria de "não importar" já vêm desmarcadas, com o motivo.${mexi ? ` <a href="#" data-plrst="${i}">Desfazer minhas escolhas (${mexi})</a>` : ''}</p><div class="tscroll pl-escl"><table class="pl-tab"><thead><tr><th></th><th>Data</th><th>Descrição</th><th>Valor</th><th>Categoria</th></tr></thead><tbody>${a.cand.slice(0, 500).map(c => `<tr class="${c.entra ? '' : 'pl-fora'}"><td><input type="checkbox" data-pl="${i}" data-plk="lin" data-pln="${c.n}"${c.entra ? ' checked' : ''} aria-label="Importar linha ${c.n}"></td><td>${c.it.data.split('-').reverse().join('/')}</td><td>${esc(c.it.desc)}${c.motivo && !a.manual.has(c.n) ? ` <span class="subdet">(${esc(c.motivo)})</span>` : ''}</td><td>${fm2(c.it.valor)}</td><td>${esc(c.it.cat)}</td></tr>`).join('')}</tbody></table></div>${a.cand.length > 500 ? `<p class="subdet">Mostrando as primeiras 500 linhas.</p>` : ''}</details>`;
+        if (tir) sups.push(`${plural(tir, 'linha fica', 'linhas ficam')} de fora por sua escolha ou pelas palavras e categorias de "não importar" (veja em "Escolher linha a linha").`);
       } else if (a.tipo === 'cp') {
         const ja = new Set((cps || []).map(c => c.mes)), novos = R.out.filter(x => !ja.has(x.mes) || a.op.subst);
         a.nOk = novos.length; total += a.nOk;
@@ -17498,6 +17520,8 @@ function jorSimDb(real) {
     });
     box.innerHTML = `<div class="pl-top"><b>${esc(PL.arquivo)}</b><span class="subdet">${plural(PL.abas.length, 'aba', 'abas')}. Os campos em amarelo foram supostos pelo painel: confira antes de importar.</span></div>${blocos.join('')}
       <div class="btns"><button class="btn" type="button" id="pl-go"${total ? '' : ' disabled'}>Importar ${total ? plural(total, 'item', 'itens') : ''}</button><button class="btn ghost" type="button" id="pl-cancel">Cancelar</button></div><p class="hint" id="pl-msg" role="status"></p>`;
+    box.querySelectorAll('[data-plesc]').forEach(d => { const l = d.querySelector('.pl-escl'); if (l && rol[d.dataset.plesc]) l.scrollTop = rol[d.dataset.plesc]; });
+    if (Object.keys(rol).length) window.scrollTo(0, yJan);
   }
   function tabela(cab, linhas, html) {
     if (!linhas.length) return '';
@@ -17510,12 +17534,15 @@ function jorSimDb(real) {
     else if (k === 'col') { const c = t.dataset.plc; if (t.value === '') delete a.map[c]; else a.map[c] = +t.value; delete a.sup[c]; if (c === 'valor' || c === 'data') sugereOpcoes(a); if (c === 'cat') a.cats = null; }
     else if (k === 'cat') { const c = a.cats[t.dataset.plv]; c.para = t.value; c.user = true; }
     else if (k === 'subst') a.op.subst = t.checked;
+    else if (k === 'lin') { a.manual.set(+t.dataset.pln, t.checked); a.abreEsc = true; }
     else { a.op[k] = t.value; (a.opUser = a.opUser || {})[k] = true; }
     pinta();
   });
+  box.addEventListener('toggle', e => { const d = e.target; if (d.dataset && d.dataset.plesc != null && PL) PL.abas[+d.dataset.plesc].abreEsc = d.open; }, true);
   box.addEventListener('click', e => {
     if (e.target.id === 'pl-cancel') { PL = null; pinta(); $('pl-st').textContent = 'Importação cancelada. Nada foi salvo.'; }
     if (e.target.id === 'pl-go') importa();
+    const rs = e.target.closest && e.target.closest('[data-plrst]'); if (rs && PL) { e.preventDefault(); const a = PL.abas[+rs.dataset.plrst]; a.manual = new Map(); a.abreEsc = true; pinta(); }
   });
   async function abre(f) {
     $('pl-st').textContent = `Lendo ${f.name}…`; PL = null; pinta();
