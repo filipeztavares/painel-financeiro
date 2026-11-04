@@ -1836,6 +1836,9 @@ body:has(#jor-divbar:not([hidden])) #jor-retoma { display: none; }
 
 .jor-ex + .jor-ex { margin-top: 8px; }
 #jor-body > .jor-al { margin-top: 10px; font-size: 13.5px; }
+
+body:has(#tour-pop:not([hidden])) #jor-divbar { display: none; }
+#comprasEd .compra .top .jor-q { flex: none; }
 /* telas novas (layout dos mockups) */
 :root { --np-azul: #5B8DEF; --np-plano: #A8582A; --np-dot: #0E1A2B; --np-ok: #1E8A5F; --np-al: #C2410C; --np-trk: #EFE8DC; }
 :root[data-theme="dark"] { --np-plano: #F0A46B; --np-dot: #F7F3EC; --np-ok: #6EE79A; --np-al: #FB923C; --np-trk: #24334F; }
@@ -2150,7 +2153,7 @@ body:has(#jor-divbar:not([hidden])) #jor-retoma { display: none; }
     </div>
     <div class="nav-mobile-sub" id="navMobileSub"></div>
   </div>
-  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 293</div></div>
+  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 294</div></div>
 </nav>
 <div class="sino-pop" id="sino-pop" role="dialog" aria-label="Atualizações das bases" hidden></div>
 <div class="sino-pop" id="pess-pop" role="dialog" aria-label="Seus avisos" hidden></div>
@@ -4061,7 +4064,7 @@ body:has(#jor-divbar:not([hidden])) #jor-retoma { display: none; }
     return new Promise(resolve => { const { data } = sb.auth.onAuthStateChange(async (ev) => { if (ev !== 'PASSWORD_RECOVERY') return; const s = prompt('Digite a nova senha (mínimo 8 caracteres):'); if (s && s.length >= 8) { const { error } = await sb.auth.updateUser({ password: s }); alert(error ? 'Não deu para trocar a senha: ' + error.message : 'Senha trocada.'); } }); resolve(data); });
   }
   // ---------- rodapé: compartilhar, administração e sair ----------
-  const SITE_V = 178;
+  const SITE_V = 179;
   const escH = v => String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const dataBR = v => v ? new Date(v).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' }) : '–';
   const css2 = `.side-foot .r{flex-wrap:wrap}.side-foot .lg-acoes{margin-left:auto;display:inline-flex;gap:10px}
@@ -17116,6 +17119,7 @@ function jorSimDb(real) {
     global: ['Projeção', 'Para onde o seu patrimônio vai com os números de hoje, comparado ao plano.', ['Registre o checkpoint do mês.', 'Veja a faixa otimista e pessimista.'], 'Um checkpoint por mês mostra se você está adiantado ou atrasado.'],
     cenarios: ['Cenários futuros', 'Futuros diferentes: outra carteira, outra renda, outros bens.', ['Crie um cenário novo.', 'Compare o patrimônio no fim.'], 'Ajuda a decidir antes de mudar algo na vida real.'],
     simulador: ['Simulações', 'Quanto um aporte mensal vira com o tempo, em reais de hoje.', ['Mude o aporte e o prazo.', 'Defina uma meta.'], 'Mostra o poder dos juros compostos com os seus números.'],
+    compras: ['Compras e bens', 'Seus bens (imóvel, carro), eventos que custam caro (casamento, reforma) e dívidas ou valores a receber, com as parcelas mês a mês.', ['Clique em + Carro, + Imóvel, + Evento, + A pagar ou + A receber.', 'Siga o guia de cada card: ele explica campo por campo. O (?) do card abre o guia de novo.', 'Deixe em Projeção real o que já existe ou vai acontecer.'], 'É o que transforma parcelas e bens em números no seu plano e no Patrimônio.'],
     comparador: ['Comparador', 'Qual produto de renda fixa rende mais no prazo que você escolher, já com IR.', ['Digite o valor e o prazo.', 'Veja o ranking pelo valor líquido.'], 'Evita escolher pelo maior número que não é o líquido.']
   };
   const introVistos = () => { const j = state.jornadaIntro = Array.isArray(state.jornadaIntro) ? state.jornadaIntro : []; return j; };
@@ -17866,6 +17870,93 @@ function jorSimDb(real) {
   zona.addEventListener('drop', e => { e.preventDefault(); zona.classList.remove('sobre'); const f = e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files[0]; if (f) abre(f); });
   inp.addEventListener('change', () => { const f = inp.files && inp.files[0]; inp.value = ''; if (f) abre(f); });
   document.addEventListener('click', e => { const l = e.target.closest && e.target.closest('[data-irplan]'); if (!l) return; e.preventDefault(); showTab('config'); setTimeout(() => { const s = $('cfg-plan'); if (s) { try { abrirSecao(s); } catch (er) {} s.scrollIntoView({ block: 'start', behavior: 'smooth' }); } }, 80); });
+})();
+
+/* ---------- Compras e bens: guia de cada tipo de bem ou compra (04/11, pedido do Filipe) ----------
+   Abre sozinho só na primeira vez que a pessoa cadastra cada tipo (state.tourBens[tipo]).
+   Depois, só pelo (?) do card, começando no primeiro campo que ainda está vazio. Usa o mesmo balão do guia do Meu plano. */
+(function () {
+  if (typeof TOUR_PL === 'undefined' || !document.getElementById('comprasEd')) return;
+  let TB = null;   // passos do guia de bem aberto agora (null = guia do Meu plano)
+  const tb = () => { if (!state.tourBens || typeof state.tourBens !== 'object') state.tourBens = {}; return state.tourBens; };
+  const cheio = el => !!el && String(el.value).trim() !== '';
+  const num = el => !!el && el.value !== '' && +el.value >= 0;
+  function passos(b) {
+    const id = b.id, S = k => `[data-compra="${id}"] [data-bind="compra:${id}:${k}"]`, modo = () => (state.compras.find(x => x.id === id) || {}).modo;
+    const nome = { sel: S('nome'), t: 'Nome', o: 'Um nome que você reconheça depois, como "Carro da família" ou "Empréstimo do banco".', p: 'É como o item aparece no plano, no Patrimônio e no fechamento do mês.', ok: cheio };
+    const uso = { sel: `[data-compra="${id}"] [data-plsel="${id}"]`, t: 'Uso: projeção real ou simulação', o: 'Projeção real: entra no Meu plano e no fechamento do mês, porque já existe ou vai acontecer. Só simulação: fica só nos cenários, para testar sem mexer no plano.', p: 'Bens que você já tem, dívidas e valores a receber de verdade devem ficar em Projeção real.', ok: () => true };
+    const res = { sel: `#cres-${id}`, t: 'Resumo', o: 'Aqui o painel mostra a conta que fez com o que você preencheu: quanto sai e quando, as parcelas, o que já foi pago e o que falta.', p: 'Confira se bate com o seu contrato. Se não bater, ajuste os campos acima.', ok: () => true };
+    if (b.tipo === 'pagar' || b.tipo === 'receber') { const rec = b.tipo === 'receber';
+      return [nome,
+        { sel: S('quem'), t: rec ? 'Quem deve' : 'Para quem', o: rec ? 'Quem vai te pagar: um parente, um cliente, um amigo.' : 'Para quem você deve: o banco, a financeira, um parente.', p: 'Só para você lembrar. É opcional.', ok: () => true },
+        { sel: S('mes'), t: 'Mês da 1ª parcela', o: rec ? 'O mês da próxima parcela que você vai receber.' : 'O mês da próxima parcela que você vai pagar. Se já pagou algumas, conte daqui para a frente.', p: 'É a partir dele que o plano conta cada parcela.', ok: cheio },
+        { sel: S('parcela'), t: 'Parcela (R$ por mês)', o: rec ? 'Quanto você recebe por mês. Ex.: R$ 300.' : 'Quanto você paga por mês. Ex.: R$ 500 de um empréstimo pessoal.', p: rec ? 'Cada parcela entra no plano como dinheiro a mais.' : 'Cada parcela sai do plano todo mês até a última. Se ela já está nos custos do Meu plano, tire de lá para não contar duas vezes.', ok: el => +el.value > 0 },
+        { sel: S('prazo'), t: 'Nº de parcelas', o: 'Quantas parcelas faltam. Pagamento único: 1.', p: 'Define até quando a parcela entra no plano e quanto ainda falta no Patrimônio.', ok: el => +el.value >= 1 },
+        { sel: S('taxa'), t: 'Juros (opcional)', o: 'A taxa do contrato, se souber. Pode deixar em branco: o painel usa só as parcelas.', p: 'Com os juros, o saldo que falta no Patrimônio fica mais certo.', ok: () => true },
+        ...(rec ? [{ sel: S('chance'), t: 'Chance de receber', o: '100% se é garantido. Se tem risco de não receber, ponha menos: 50% conta só metade de cada parcela.', p: 'Assim o plano não conta com dinheiro que talvez não venha.', ok: num }] : []),
+        uso, res];
+    }
+    if (b.tipo === 'evento') return [nome,
+      { sel: S('evTipo'), t: 'Tipo de evento', o: 'Casamento, reforma, mudança, faculdade, chegada de um filho e outros.', p: 'Ajuda a sugerir um valor de referência e a agrupar no plano.', ok: cheio },
+      { sel: S('mes'), t: 'Mês', o: 'Quando o evento acontece, ou quando começa a pagar.', p: 'É o mês em que o dinheiro sai do plano.', ok: cheio },
+      { sel: S('valor'), t: 'Valor total', o: 'Quanto vai custar tudo. Ex.: R$ 80 mil de um casamento.', p: 'Um evento não vira bem: é só uma saída do plano.', ok: el => +el.value > 0 },
+      { sel: S('modo'), t: 'Pagamento', o: 'À vista sai tudo de uma vez. Parcelado tem entrada e parcelas sem juros. Financiado tem juros.', p: 'Muda quanto sai de uma vez e quanto sai por mês.', ok: cheio },
+      { sel: S('entrada'), t: 'Entrada', o: 'Quanto você paga no começo.', p: 'Sai dos investimentos no mês do evento.', ok: num, so: () => modo() !== 'avista' },
+      { sel: S('parcela'), t: 'Parcela', o: 'O valor de cada parcela.', p: 'Sai do plano todo mês até a última.', ok: num, so: () => modo() === 'fixa' },
+      { sel: S('prazo'), t: 'Nº de parcelas', o: 'Em quantas vezes vai pagar.', p: 'Define até quando a parcela sai do plano.', ok: el => +el.value >= 1, so: () => modo() !== 'avista' },
+      uso, res];
+    const im = b.tipo === 'imovel', car = b.tipo === 'carro', cp = (typeof COMPRA_COPY !== 'undefined' && (COMPRA_COPY[b.tipo] || COMPRA_COPY.outro)) || {};
+    const ex = im ? 'um apartamento de R$ 1,2 milhão' : car ? 'um carro de R$ 150 mil' : 'um bem de R$ 30 mil';
+    return [nome,
+      { sel: S('mes'), t: 'Mês da compra', o: `Se você já tem ${im ? 'o imóvel' : car ? 'o carro' : 'o bem'}, ponha o mês em que comprou: o painel conta só as parcelas que faltam. Se ainda vai comprar, o mês previsto.`, p: 'Compra no passado vira bem que você já tem; no futuro, uma compra planejada.', ok: cheio },
+      { sel: S('valor'), t: 'Preço', o: `Quanto custou ou vai custar. Ex.: ${ex}.`, p: 'Vira o valor do bem no Patrimônio e a base do financiamento.', ok: el => +el.value > 0 },
+      { sel: S('entrada'), t: 'Entrada', o: 'Quanto você pagou ou vai pagar de entrada. Se foi à vista, ponha o preço todo.', p: 'Sai dos investimentos no mês da compra. O resto é financiado.', ok: num },
+      { sel: S('modo'), t: 'Pagamento', o: 'À vista: tudo de uma vez. SAC: parcelas que começam maiores e diminuem (comum em imóvel). Price: parcelas iguais (comum em carro). Parcela fixa: você digita a parcela do contrato.', p: 'Se tem o contrato em mãos, "Parcela fixa" é o mais fácil: é só copiar a parcela e o número de parcelas.', ok: cheio },
+      { sel: S('parcela'), t: 'Parcela', o: 'O valor da parcela do contrato.', p: 'Sai do plano todo mês até a última. Se ela já está nos custos do Meu plano, tire de lá para não contar duas vezes.', ok: el => +el.value > 0, so: () => modo() === 'fixa' },
+      { sel: S('taxa'), t: 'Juros', o: modo() === 'fixa' ? 'A taxa do contrato, se souber. É opcional: sem ela o painel calcula a taxa pela parcela.' : `O juro ou CET do financiamento. ${car ? 'Carro costuma ficar entre 18% e 30% ao ano.' : im ? 'Imóvel costuma ficar entre 10% e 13% ao ano mais TR.' : ''}`, p: 'Com os juros o painel calcula as parcelas e o saldo que falta.', ok: () => true, so: () => modo() !== 'avista' },
+      { sel: S('prazo'), t: 'Nº de parcelas', o: 'O prazo total do financiamento, em meses. Ex.: 48 para um carro.', p: 'Com o mês da compra, o painel sabe quantas já foram pagas e quantas faltam.', ok: el => +el.value >= 1, so: () => modo() !== 'avista' },
+      { sel: S('custos'), t: im ? 'ITBI e cartório' : 'Custos de compra', o: im ? 'Imposto e cartório, em % do preço. Costuma ficar entre 3% e 5%.' : 'Taxas da compra, em % do preço. Pode ficar 0.', p: 'Saem junto com a entrada.', ok: num },
+      { sel: S('valoriz'), t: 'Valorização ao ano', o: car ? 'Carro perde valor: −10% ao ano é uma boa referência.' : im ? 'Imóvel costuma acompanhar a inflação: 4% a 5% ao ano.' : 'Quanto o bem ganha ou perde de valor por ano. Negativo é desvalorização.', p: 'Define quanto o bem vale no Patrimônio ao longo do tempo.', ok: el => el.value !== '' },
+      { sel: S('posse'), t: cp.posse || 'Custo mensal de ter', o: car ? 'Seguro, IPVA e manutenção, por mês. Ex.: R$ 900.' : im ? 'Condomínio e IPTU, por mês.' : 'O que custa por mês ter esse bem.', p: 'Entra no plano todo mês depois da compra. Se já está nos custos do Meu plano (na categoria Carro ou Moradia), deixe 0 aqui ou tire de lá.', ok: num },
+      { sel: S('economia'), t: cp.eco || 'Gasto que deixa de ter', o: car ? 'Uber, ônibus ou aluguel de carro que você deixa de pagar com o carro.' : im ? 'O aluguel que você deixa de pagar ao se mudar.' : 'O gasto que some com esse bem.', p: 'Abate do custo de ter. Se já parou de pagar, ponha 0.', ok: num },
+      { sel: S('mudanca'), t: cp.mud || 'Meses até usar', o: im ? 'Quantos meses entre a compra e a mudança (imóvel na planta, reforma).' : 'Quantos meses entre a compra e começar a usar.', p: 'Até lá, a economia ainda não entra.', ok: num },
+      ...(im ? [{ sel: S('renda'), t: 'Aluguel recebido', o: 'Se o imóvel é para alugar, quanto entra por mês.', p: 'Entra no plano como receita.', ok: num }] : []),
+      uso, res];
+  }
+  // o mesmo balão do Meu plano mostra os passos do bem aberto
+  tourPassos = function () { return (TB || TOUR_PL).filter(x => !x.so || x.so()); };
+  { const o = tourFecha; tourFecha = function (fim) {
+    if (!TB) return o(fim);
+    if (tourEl) tourEl.classList.remove('tour-alvo'); tourEl = null; tourI = -1; TB = null; $('tour-pop').hidden = true; };
+  }
+  function abreBem(id, doVazio) {
+    const b = state.compras.find(x => x.id === id); if (!b) return;
+    if (typeof gK !== 'undefined' && gK) guiaFecha(false);
+    if (tourI >= 0) tourFecha(false);
+    TB = passos(b);
+    let i = 0;
+    if (doVazio) { const ps = tourPassos(); i = ps.findIndex(st => { try { const el = tourAlvo(st); return !!el && !st.ok(el); } catch (e) { return false; } }); if (i < 0) i = 0; }
+    tourI = i; tourMostra();
+  }
+  // (?) em cada card: abre o guia no primeiro campo vazio
+  function pinta() {
+    document.querySelectorAll('#comprasEd .compra[data-compra]').forEach(c => {
+      const top = c.querySelector('.top > div'); if (!top || top.querySelector('[data-tourbem]')) return;
+      const b = state.compras.find(x => x.id === c.dataset.compra); if (!b || b.tipo === 'negocio') return;
+      top.insertAdjacentHTML('beforeend', `<button type="button" class="jor-q" data-tourbem="${b.id}" title="Me guia neste card" aria-label="Me guia neste card">?</button>`);
+    });
+  }
+  { const o = buildCompras; buildCompras = function () { o(); pinta(); }; }
+  let antes = null;   // ids antes do clique em + (fase de captura, antes de o painel criar o card)
+  document.addEventListener('click', e => { if (e.target.closest && e.target.closest('#p-compras [data-add]')) antes = new Set((state.compras || []).map(x => x.id)); }, true);
+  document.addEventListener('click', e => {
+    const q = e.target.closest('[data-tourbem]'); if (q) { e.preventDefault(); abreBem(q.dataset.tourbem, true); return; }
+    const a = e.target.closest('#p-compras [data-add]'); if (!a) return;
+    const tipo = a.dataset.add, ja = antes || new Set(); antes = null;
+    setTimeout(() => { pinta(); const nova = (state.compras || []).find(x => !ja.has(x.id) && x.tipo === tipo); if (!nova || nova.tipo === 'negocio') return;
+      const T = tb(); if (T[tipo]) return; T[tipo] = 1; save(); setTimeout(() => abreBem(nova.id, false), 250); }, 120);
+  });
+  pinta();
 })();
 /* ---------- Layout novo de Finanças (04/11): só no site de teste, para comparar com a tela atual ---------- */
 (function () {
