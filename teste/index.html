@@ -1776,6 +1776,13 @@ body.jor-sim-on .main { padding-top: 44px; }
 .gas-senha.erro span::before { content: "Senha não abriu o arquivo. "; color: var(--bad, #C0392B); font-weight: 600; }
 .gas-senha-l { display: flex; gap: 8px; flex-wrap: wrap; }
 .gas-senha-l input { flex: 1 1 180px; max-width: 280px; }
+input.bk-in { padding-right: 28px; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.5 6 6.5 11 1.5' fill='none' stroke='%238A93A3' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 10px center; background-size: 11px 8px; }
+.bk-lista { position: fixed; z-index: 300; overflow-y: auto; background: var(--panel); border: 1px solid var(--line); border-radius: 10px; box-shadow: 0 12px 32px rgba(14,26,43,.18); padding: 4px; font-family: var(--f-ui); }
+.bk-lista[hidden] { display: none; }
+.bk-op { padding: 7px 10px; border-radius: 7px; font-size: 12.5px; color: var(--ink); cursor: pointer; }
+.bk-op:hover, .bk-op.at { background: var(--accent-soft); }
+.bk-op.sel { font-weight: 700; color: var(--accent-strong, var(--accent)); }
+.bk-vazio { padding: 8px 10px; font-size: 12px; color: var(--muted); }
 </style>
 
 
@@ -1865,7 +1872,7 @@ body.jor-sim-on .main { padding-top: 44px; }
     </div>
     <div class="nav-mobile-sub" id="navMobileSub"></div>
   </div>
-  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 276</div></div>
+  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 277</div></div>
 </nav>
 <div class="sino-pop" id="sino-pop" role="dialog" aria-label="Atualizações das bases" hidden></div>
 <div class="sino-pop" id="pess-pop" role="dialog" aria-label="Seus avisos" hidden></div>
@@ -3769,7 +3776,7 @@ body.jor-sim-on .main { padding-top: 44px; }
     return new Promise(resolve => { const { data } = sb.auth.onAuthStateChange(async (ev) => { if (ev !== 'PASSWORD_RECOVERY') return; const s = prompt('Digite a nova senha (mínimo 8 caracteres):'); if (s && s.length >= 8) { const { error } = await sb.auth.updateUser({ password: s }); alert(error ? 'Não deu para trocar a senha: ' + error.message : 'Senha trocada.'); } }); resolve(data); });
   }
   // ---------- rodapé: compartilhar, administração e sair ----------
-  const SITE_V = 160;
+  const SITE_V = 161;
   const escH = v => String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const dataBR = v => v ? new Date(v).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' }) : '–';
   const css2 = `.side-foot .r{flex-wrap:wrap}.side-foot .lg-acoes{margin-left:auto;display:inline-flex;gap:10px}
@@ -17093,13 +17100,42 @@ function jorSimDb(real) {
   inp.addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); ok.click(); } });
 })();
 
-/* ---------- Cartão e Conta: mostrar a lista inteira de bancos ao clicar ---------- */
+/* ---------- Cartão e Conta: lista de bancos no estilo do painel (pode digitar ou escolher) ---------- */
 (function () {
+  const dl = $('bancos-lista'); if (!dl) return;
+  const BANCOS = [...dl.options].map(o => o.value);
+  const ul = document.createElement('div'); ul.id = 'bk-lista'; ul.className = 'bk-lista'; ul.setAttribute('role', 'listbox'); ul.hidden = true; document.body.append(ul);
+  let alvo = null, itens = [], at = -1, mexeu = false;
+  const sem = s => String(s || '').normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
+  function pos() { if (!alvo) return; const r = alvo.getBoundingClientRect(), embaixo = innerHeight - r.bottom;
+    ul.style.left = r.left + 'px'; ul.style.width = Math.max(r.width, 200) + 'px';
+    if (embaixo < 200 && r.top > embaixo) { ul.style.top = ''; ul.style.bottom = (innerHeight - r.top + 4) + 'px'; ul.style.maxHeight = Math.min(260, r.top - 12) + 'px'; }
+    else { ul.style.bottom = ''; ul.style.top = (r.bottom + 4) + 'px'; ul.style.maxHeight = Math.min(260, embaixo - 12) + 'px'; } }
+  function pinta() {
+    const q = mexeu ? sem(alvo.value.trim()) : '';
+    itens = q ? BANCOS.filter(b => sem(b).includes(q)) : BANCOS.slice();
+    if (at >= itens.length) at = itens.length - 1;
+    ul.innerHTML = itens.length ? itens.map((b, k) => `<div class="bk-op${k === at ? ' at' : ''}${b === alvo.value ? ' sel' : ''}" role="option" data-bk="${k}" aria-selected="${b === alvo.value}">${esc(b)}</div>`).join('') : '<div class="bk-vazio">Nenhum banco com esse nome. Pode deixar o que você digitou.</div>';
+    ul.hidden = false; pos();
+    const a = ul.querySelector('.at'); if (a) a.scrollIntoView({ block: 'nearest' });
+  }
+  function fecha() { ul.hidden = true; at = -1; if (alvo) alvo.setAttribute('aria-expanded', 'false'); alvo = null; }
+  function escolhe(k) { const el = alvo, b = itens[k]; if (!el || b == null) return; el.value = b; el.dispatchEvent(new Event('input', { bubbles: true })); el.dispatchEvent(new Event('change', { bubbles: true })); fecha(); el.blur(); }
   ['fat-conta', 'ext-conta'].forEach(id => { const el = $(id); if (!el) return;
-    const abre = () => { if (el.value && el.dataset.ant == null) { el.dataset.ant = el.value; el.placeholder = el.value; el.value = ''; } try { el.showPicker && el.showPicker(); } catch (e) {} };
-    el.addEventListener('mousedown', abre); el.addEventListener('focus', abre);
-    el.addEventListener('blur', () => { if (el.dataset.ant != null) { if (!el.value.trim()) el.value = el.dataset.ant; delete el.dataset.ant; el.placeholder = 'digite ou escolha o banco'; } });
+    el.removeAttribute('list'); el.classList.add('bk-in'); el.setAttribute('autocomplete', 'off'); el.setAttribute('role', 'combobox'); el.setAttribute('aria-controls', 'bk-lista'); el.setAttribute('aria-expanded', 'false');
+    const abre = () => { if (alvo === el && !ul.hidden) return; alvo = el; mexeu = false; at = BANCOS.indexOf(el.value); el.setAttribute('aria-expanded', 'true'); pinta(); };
+    el.addEventListener('focus', () => { abre(); setTimeout(() => { try { el.select(); } catch (e) {} }, 0); }); el.addEventListener('mousedown', () => { if (document.activeElement === el) { if (ul.hidden) abre(); else fecha(); } });
+    el.addEventListener('input', () => { if (alvo !== el) { alvo = el; } mexeu = true; at = 0; pinta(); });
+    el.addEventListener('blur', () => setTimeout(() => { if (alvo === el && document.activeElement !== el) fecha(); }, 120));
+    el.addEventListener('keydown', e => {
+      if (e.key === 'ArrowDown' || e.key === 'ArrowUp') { e.preventDefault(); if (ul.hidden) { abre(); return; } at = Math.max(0, Math.min(itens.length - 1, at + (e.key === 'ArrowDown' ? 1 : -1))); pinta(); }
+      else if (e.key === 'Enter' && !ul.hidden && at >= 0) { e.preventDefault(); escolhe(at); }
+      else if (e.key === 'Escape' && !ul.hidden) { e.preventDefault(); e.stopPropagation(); fecha(); }
+      else if (e.key === 'Tab') fecha();
+    });
   });
+  ul.addEventListener('mousedown', e => { e.preventDefault(); const o = e.target.closest('[data-bk]'); if (o) escolhe(+o.dataset.bk); });
+  addEventListener('scroll', () => { if (!ul.hidden) pos(); }, true); addEventListener('resize', () => { if (!ul.hidden) pos(); });
 })();
 
 /* ---------- Configurações › Seus dados: exportar tudo em JSON e restaurar de um arquivo ---------- */
