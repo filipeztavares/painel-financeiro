@@ -2134,7 +2134,7 @@ label.bk-conf .subdet { font-size: 11.5px; text-transform: none; letter-spacing:
     </div>
     <div class="nav-mobile-sub" id="navMobileSub"></div>
   </div>
-  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 287</div></div>
+  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 288</div></div>
 </nav>
 <div class="sino-pop" id="sino-pop" role="dialog" aria-label="Atualizações das bases" hidden></div>
 <div class="sino-pop" id="pess-pop" role="dialog" aria-label="Seus avisos" hidden></div>
@@ -4045,7 +4045,7 @@ label.bk-conf .subdet { font-size: 11.5px; text-transform: none; letter-spacing:
     return new Promise(resolve => { const { data } = sb.auth.onAuthStateChange(async (ev) => { if (ev !== 'PASSWORD_RECOVERY') return; const s = prompt('Digite a nova senha (mínimo 8 caracteres):'); if (s && s.length >= 8) { const { error } = await sb.auth.updateUser({ password: s }); alert(error ? 'Não deu para trocar a senha: ' + error.message : 'Senha trocada.'); } }); resolve(data); });
   }
   // ---------- rodapé: compartilhar, administração e sair ----------
-  const SITE_V = 172;
+  const SITE_V = 173;
   const escH = v => String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const dataBR = v => v ? new Date(v).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' }) : '–';
   const css2 = `.side-foot .r{flex-wrap:wrap}.side-foot .lg-acoes{margin-left:auto;display:inline-flex;gap:10px}
@@ -17869,7 +17869,7 @@ function jorSimDb(real) {
   const L = (cols, itens) => ({ cols, itens });
   const LAYOUT = {
     gastos: [L('1fr', ['=gm-sel', 'kpi-x']), L('1fr', ['s-gastos-0']), L('1fr', ['s-gastos-1']), L('minmax(0,1fr) minmax(0,1fr)', ['s-gastos-4', 's-gastos-5']), L('1fr', ['s-gastos-2']), L('1fr', ['s-gastos-3'])],
-    patrimonio: [L('1fr', ['kpi-pt']), L('minmax(0,1fr) minmax(0,1.5fr)', ['@donut', 's-patrimonio-1']), L('1fr', ['s-patrimonio-2'])],
+    patrimonio: [L('1fr', ['kpi-pt']), L('minmax(0,1fr) minmax(0,1.5fr)', ['@donut', 's-patrimonio-0']), L('1fr', ['s-patrimonio-1']), L('1fr', ['s-patrimonio-2'])],
     carteira: [L('1fr', ['kpi-a']), L('minmax(0,1.2fr) minmax(0,1fr)', ['@alvo', 's-carteira-7']), L('1fr', ['s-carteira-1']), L('1fr', ['s-carteira-2']), L('1fr', ['s-carteira-4']), L('1fr', ['s-carteira-3']), L('minmax(0,1fr) minmax(0,1fr)', ['s-carteira-5', 's-carteira-6']), L('1fr', ['s-carteira-8']), L('1fr', ['s-carteira-0']), L('1fr', ['s-carteira-9']), L('1fr', ['s-carteira-10']), L('1fr', ['s-carteira-11'])],
     comparador: [L('1fr', ['kpi-r']), L('minmax(0,1fr) minmax(0,1.4fr)', ['s-comparador-0', 's-comparador-2']), L('1fr', ['s-comparador-1']), L('1fr', ['s-comparador-3'])],
     simulador: [L('1fr', ['kpi-s']), L('minmax(0,1fr) minmax(0,1.6fr)', ['s-simulador-0', 's-simulador-1']), L('1fr', ['s-simulador-2'])],
@@ -17909,7 +17909,7 @@ function jorSimDb(real) {
     const R = 70, r = 46, cx = 90, cy = 90;
     partes.forEach(([n, v, c]) => { const a1 = a0 + v / tot * Math.PI * 2, big = a1 - a0 > Math.PI ? 1 : 0, P1 = (ang, rr) => `${(cx + rr * Math.cos(ang)).toFixed(2)} ${(cy + rr * Math.sin(ang)).toFixed(2)}`;
       arcos += `<path d="M${P1(a0, R)} A${R} ${R} 0 ${big} 1 ${P1(a1 - 0.0001, R)} L${P1(a1 - 0.0001, r)} A${r} ${r} 0 ${big} 0 ${P1(a0, r)} Z" fill="${c}"><title>${n}: ${fm(v)}</title></path>`; a0 = a1; });
-    return cd('pt-donut', 'Composição hoje', '', `<div class="np-donut"><svg viewBox="0 0 180 180" width="180" height="180" role="img" aria-label="Composição do patrimônio">${arcos}<text x="90" y="86" text-anchor="middle" style="font:800 17px var(--f-head);fill:var(--ink)">${k(P.pl)}</text><text x="90" y="104" text-anchor="middle" style="font:12px var(--f-ui);fill:var(--muted)">líquido</text></svg>
+    return cd('pt-donut', 'Do que é feito o patrimônio', '', `<div class="np-donut"><svg viewBox="0 0 180 180" width="180" height="180" role="img" aria-label="Composição do patrimônio">${arcos}<text x="90" y="86" text-anchor="middle" style="font:800 17px var(--f-head);fill:var(--ink)">${k(P.pl)}</text><text x="90" y="104" text-anchor="middle" style="font:12px var(--f-ui);fill:var(--muted)">líquido</text></svg>
       <div class="np-dl">${partes.map(([n, v, c]) => `<div><i style="background:${c}"></i><span>${n}</span><b>${k(v)}</b><em>${pct(v / tot, 0)}</em></div>`).join('')}${P.div ? `<div><i style="background:#EE6C4D"></i><span>Dívidas</span><b class="np-al">−${k(P.div)}</b><em></em></div>` : ''}</div></div>`, 'donut');
   }
   // Carteira: hoje x alvo por classe
