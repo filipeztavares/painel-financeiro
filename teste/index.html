@@ -2134,7 +2134,7 @@ label.bk-conf .subdet { font-size: 11.5px; text-transform: none; letter-spacing:
     </div>
     <div class="nav-mobile-sub" id="navMobileSub"></div>
   </div>
-  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 286</div></div>
+  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 287</div></div>
 </nav>
 <div class="sino-pop" id="sino-pop" role="dialog" aria-label="Atualizações das bases" hidden></div>
 <div class="sino-pop" id="pess-pop" role="dialog" aria-label="Seus avisos" hidden></div>
@@ -4045,7 +4045,7 @@ label.bk-conf .subdet { font-size: 11.5px; text-transform: none; letter-spacing:
     return new Promise(resolve => { const { data } = sb.auth.onAuthStateChange(async (ev) => { if (ev !== 'PASSWORD_RECOVERY') return; const s = prompt('Digite a nova senha (mínimo 8 caracteres):'); if (s && s.length >= 8) { const { error } = await sb.auth.updateUser({ password: s }); alert(error ? 'Não deu para trocar a senha: ' + error.message : 'Senha trocada.'); } }); resolve(data); });
   }
   // ---------- rodapé: compartilhar, administração e sair ----------
-  const SITE_V = 171;
+  const SITE_V = 172;
   const escH = v => String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const dataBR = v => v ? new Date(v).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' }) : '–';
   const css2 = `.side-foot .r{flex-wrap:wrap}.side-foot .lg-acoes{margin-left:auto;display:inline-flex;gap:10px}
@@ -18077,7 +18077,7 @@ function jorSimDb(real) {
           <p class="np-mu">Quanto você tem investido, somando tudo. Último registro: ${C.ult ? mLabel(mIndex(C.ult.mes)) : 'nenhum'}${C.pend ? `. <b class="np-al">${mLabel(HOJE_IDX - 1)} está pendente.</b>` : '.'}</p>
           <div class="np-row" style="gap:10px"><label class="np-k" for="np-cp-mes">Mês</label><select class="np-sel" id="np-cp-mes">${[0, 1, 2].map(j => C.alvo - j).filter(i => i >= 0).map(i => `<option value="${mKey(i)}">${mLabel(i)}</option>`).join('')}</select></div>
           <label class="np-k" for="np-cp-val">Total aplicado no fim do mês (R$)</label>
-          <input id="np-cp-val" class="np-inp" inputmode="decimal" placeholder="ex.: ${Math.round(tot || 0)}">
+          <input id="np-cp-val" class="np-inp" type="number" step="any" placeholder="ex.: ${Math.round(tot || 0)}">
           <div class="np-row"><button type="button" class="np-btn p" id="np-cp-ok" data-np-g="cpbtn">Registrar checkpoint</button>${tot > 0 ? `<button type="button" class="np-btn s" id="np-cp-cart">Usar total da Carteira (${k(tot)})</button>` : ''}</div>
           <p class="np-mu" id="np-cp-msg" role="status"></p>
           <div class="np-g np-g2" style="gap:12px"><div><div class="np-k">Contra o plano</div><div class="np-v sm ${C.d == null ? '' : C.d >= 0 ? 'np-ok' : 'np-al'}">${C.d == null ? '—' : sinalP(C.d / C.pl)}</div></div><div><div class="np-k">No mês</div><div class="np-v sm">${noMes == null ? '—' : sinal(noMes)}</div></div></div>`, 'cp')}
@@ -18100,7 +18100,7 @@ function jorSimDb(real) {
     const msg = $$('np-cp-msg');
     if ($$('np-cp-cart')) $$('np-cp-cart').onclick = () => { $$('np-cp-val').value = Math.round(tot); $$('np-cp-val').focus(); };
     $$('np-cp-ok').onclick = async () => {
-      const mes = $$('np-cp-mes').value, valor = parseFloat(String($$('np-cp-val').value).replace(/\./g, '').replace(',', '.'));
+      const mes = $$('np-cp-mes').value, valor = parseFloat($$('np-cp-val').value);
       if (!isFinite(valor) || valor <= 0) { msg.textContent = 'Digite o total aplicado.'; return; }
       try { await pdoc('checkpoints/' + mes).set({ mes, valor, criadoEm: new Date().toISOString() }); setTimeout(() => { renderTab(); const m = $$('np-cp-msg'); if (m) m.textContent = `Checkpoint de ${mLabel(mIndex(mes))} registrado (só neste protótipo).`; }, 60); }
       catch (e) { msg.textContent = 'Não consegui registrar.'; }
