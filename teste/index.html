@@ -1812,6 +1812,10 @@ label.bk-conf .subdet { font-size: 11.5px; text-transform: none; letter-spacing:
 .pl-catg { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 8px 14px; margin-top: 8px; }
 .pl-catg label { display: flex; flex-direction: column; gap: 3px; font-size: 12.5px; }
 .pl-link { grid-column: 1 / -1; font-size: 12.5px; margin: 0; }
+.ck-alerta { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin: 0 0 14px; padding: 12px 16px; border-radius: 12px; border: 1px solid #F5C442; background: rgba(245,196,66,.16); color: var(--ink); font-size: 14px; line-height: 1.45; }
+.ck-alerta[hidden] { display: none; }
+.ck-alerta .ck-al-t { flex: 1 1 320px; }
+.ck-alerta .ck-al-ic { width: 26px; height: 26px; flex: none; display: grid; place-items: center; background: #F5C442; color: #0E1A2B; font-weight: 800; font-size: 15px; line-height: 1; clip-path: polygon(50% 4%, 98% 94%, 2% 94%); padding-top: 6px; box-sizing: border-box; }
 </style>
 
 
@@ -1901,7 +1905,7 @@ label.bk-conf .subdet { font-size: 11.5px; text-transform: none; letter-spacing:
     </div>
     <div class="nav-mobile-sub" id="navMobileSub"></div>
   </div>
-  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 282</div></div>
+  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 283</div></div>
 </nav>
 <div class="sino-pop" id="sino-pop" role="dialog" aria-label="Atualizações das bases" hidden></div>
 <div class="sino-pop" id="pess-pop" role="dialog" aria-label="Seus avisos" hidden></div>
@@ -3812,7 +3816,7 @@ label.bk-conf .subdet { font-size: 11.5px; text-transform: none; letter-spacing:
     return new Promise(resolve => { const { data } = sb.auth.onAuthStateChange(async (ev) => { if (ev !== 'PASSWORD_RECOVERY') return; const s = prompt('Digite a nova senha (mínimo 8 caracteres):'); if (s && s.length >= 8) { const { error } = await sb.auth.updateUser({ password: s }); alert(error ? 'Não deu para trocar a senha: ' + error.message : 'Senha trocada.'); } }); resolve(data); });
   }
   // ---------- rodapé: compartilhar, administração e sair ----------
-  const SITE_V = 166;
+  const SITE_V = 167;
   const escH = v => String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const dataBR = v => v ? new Date(v).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' }) : '–';
   const css2 = `.side-foot .r{flex-wrap:wrap}.side-foot .lg-acoes{margin-left:auto;display:inline-flex;gap:10px}
@@ -17244,6 +17248,35 @@ function jorSimDb(real) {
   const of = renderFatPrev; renderFatPrev = function () { casa.append(lf); of.apply(this, arguments); mete($('fat-prev'), lf, fc, false); };
   const oe = renderExtPrev; renderExtPrev = function () { casa.append(le); oe.apply(this, arguments); mete($('ext-prev'), le, ec, true); };
   document.addEventListener('click', e => { if (e.target && e.target.id === 'ext-go') { const v = ec.value.trim(); if (v && !/conta$/i.test(v)) ec.value = v + ' conta'; } }, true);
+})();
+
+/* ---------- Alerta do checkpoint da semana no topo da tela de módulos (Filipe 04/11) ----------
+   Aparece a partir de domingo, se o checkpoint desta semana não foi feito, e continua nos dias seguintes
+   enquanto a semana anterior também ficou sem checkpoint. Some quando o checkpoint é marcado. */
+(function () {
+  const pn = $('p-modulos'); if (!pn) return;
+  const el = document.createElement('div'); el.id = 'ck-alerta'; el.className = 'ck-alerta'; el.hidden = true; el.setAttribute('role', 'status');
+  const bt = pn.querySelector('.block-title'); if (bt) bt.after(el); else pn.prepend(el);
+  function pinta() {
+    if (!state) return;
+    let mostra = false, txt = '';
+    try {
+      const hoje = new Date(), f = ckSt().feitos, esta = f.includes(ckSemana(hoje)), ant = f.includes(ckSemana(new Date(hoje.getTime() - 7 * 864e5)));
+      const jor = state.jornada === 'ativa';
+      if (!esta && !jor) {
+        if (hoje.getDay() === 0) { mostra = true; txt = '<b>Hoje é dia do checkpoint da semana.</b> Importe a fatura ou o extrato e veja quanto já foi do projetado em cada categoria. Leva uns 5 minutos.'; }
+        else if (!ant) { mostra = true; txt = '<b>O checkpoint da semana ficou para trás.</b> Faça agora para saber se o mês está dentro do projetado e não perder a sequência.'; }
+      }
+    } catch (e) {}
+    el.hidden = !mostra;
+    if (mostra) el.innerHTML = `<span class="ck-al-ic" aria-hidden="true">!</span><span class="ck-al-t">${txt}</span><button type="button" class="btn" data-ckalerta>Fazer o checkpoint</button>`;
+  }
+  { const o = renderTab; renderTab = function () { o.apply(this, arguments); pinta(); }; }
+  document.addEventListener('click', e => {
+    if (e.target.closest && e.target.closest('[data-ckalerta]')) { const s = $('ck-sem'); if (s) { try { abrirSecao(s); } catch (er) {} s.scrollIntoView({ block: 'start', behavior: 'smooth' }); } }
+    else if (e.target.id === 'ck-feito') setTimeout(pinta, 100);
+  });
+  setTimeout(pinta, 1500);
 })();
 
 /* ---------- Importar minha planilha (04/11): Excel ou CSV da pessoa → gastos, checkpoints e aplicações ----------
