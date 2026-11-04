@@ -1826,13 +1826,16 @@ label.bk-conf .subdet { font-size: 11.5px; text-transform: none; letter-spacing:
 
 .jor-ex { background: var(--field, #FBF8F2); border: 1px solid var(--line); border-radius: 12px; padding: 12px 14px; margin: 10px 0 4px; font-size: 13.5px; }
 .jor-ex p { margin: 6px 0 0; }
-.jor-ex .jor-al { background: rgba(245,196,66,.18); border: 1px solid #F5C442; border-radius: 8px; padding: 8px 10px; }
+.jor-al { background: rgba(245,196,66,.18); border: 1px solid #F5C442; border-radius: 8px; padding: 8px 10px; }
 #jor-divbar { position: fixed; left: 50%; transform: translateX(-50%); bottom: 20px; z-index: 61; display: flex; gap: 12px; align-items: center; background: #0E1A2B; color: #F7F3EC; border: 1px solid #F0A46B; border-radius: 14px; padding: 10px 14px; max-width: calc(100vw - 32px); box-shadow: 0 8px 24px rgba(0,0,0,.25); font-size: 13px; }
 #jor-divbar[hidden] { display: none; }
 #jor-divbar b { display: block; } #jor-divbar span { color: #F0A46B; font-size: 12.5px; }
 #jor-divbar .btn.ghost { background: transparent; color: #F7F3EC; border-color: rgba(247,243,236,.4); }
 body:has(#jor-divbar:not([hidden])) #jor-retoma { display: none; }
 @media (max-width: 640px) { #jor-divbar { flex-wrap: wrap; bottom: 12px; } }
+
+.jor-ex + .jor-ex { margin-top: 8px; }
+#jor-body > .jor-al { margin-top: 10px; font-size: 13.5px; }
 /* telas novas (layout dos mockups) */
 :root { --np-azul: #5B8DEF; --np-plano: #A8582A; --np-dot: #0E1A2B; --np-ok: #1E8A5F; --np-al: #C2410C; --np-trk: #EFE8DC; }
 :root[data-theme="dark"] { --np-plano: #F0A46B; --np-dot: #F7F3EC; --np-ok: #6EE79A; --np-al: #FB923C; --np-trk: #24334F; }
@@ -2144,7 +2147,7 @@ body:has(#jor-divbar:not([hidden])) #jor-retoma { display: none; }
     </div>
     <div class="nav-mobile-sub" id="navMobileSub"></div>
   </div>
-  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 289</div></div>
+  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 290</div></div>
 </nav>
 <div class="sino-pop" id="sino-pop" role="dialog" aria-label="Atualizações das bases" hidden></div>
 <div class="sino-pop" id="pess-pop" role="dialog" aria-label="Seus avisos" hidden></div>
@@ -4055,7 +4058,7 @@ body:has(#jor-divbar:not([hidden])) #jor-retoma { display: none; }
     return new Promise(resolve => { const { data } = sb.auth.onAuthStateChange(async (ev) => { if (ev !== 'PASSWORD_RECOVERY') return; const s = prompt('Digite a nova senha (mínimo 8 caracteres):'); if (s && s.length >= 8) { const { error } = await sb.auth.updateUser({ password: s }); alert(error ? 'Não deu para trocar a senha: ' + error.message : 'Senha trocada.'); } }); resolve(data); });
   }
   // ---------- rodapé: compartilhar, administração e sair ----------
-  const SITE_V = 174;
+  const SITE_V = 175;
   const escH = v => String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const dataBR = v => v ? new Date(v).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' }) : '–';
   const css2 = `.side-foot .r{flex-wrap:wrap}.side-foot .lg-acoes{margin-left:auto;display:inline-flex;gap:10px}
@@ -17210,21 +17213,22 @@ function jorSimDb(real) {
 
 
   // ---------- passo "Dívidas e valores a receber" (04/11, pedido do Filipe): pergunta depois dos custos, com o exemplo do carro ----------
-  const ehFinJ = b => b.tipo === 'pagar' || b.tipo === 'receber';
+  const ehFinJ = b => ['pagar', 'receber', 'carro', 'imovel', 'outro'].includes(b.tipo);
   const finsJ = () => (state.compras || []).filter(ehFinJ);
   function pergDiv() {
     const tem = finsJ().length;
-    abre(`<div class="jor-mk">Meu plano · último passo</div><h3>Você tem dívidas ou valores a receber?</h3>
-      <p>Financiamento, empréstimo, consórcio, parcelamento longo ou dinheiro que alguém te deve. Isso muda o plano mês a mês e o seu patrimônio.</p>
-      <div class="jor-ex"><b>Exemplo: o carro financiado</b><p>Você comprou um carro e paga <b>R$ 2.600 por mês</b>, e ainda faltam <b>40 parcelas</b>. Em Compras e bens, clique em <b>+ A pagar</b> e preencha a parcela (2.600), o número de parcelas (40) e o mês da próxima. O painel desconta os R$ 2.600 de cada mês no plano até a última parcela, e mostra o que ainda falta pagar como dívida no Patrimônio.</p>
-      <p class="jor-al"><b>Atenção:</b> se você já colocou essa parcela nos custos do Meu plano (na categoria Carro, por exemplo), tire de lá. Senão ela conta duas vezes.</p>
-      <p class="subdet">Alguém te deve? Use <b>+ A receber</b> do mesmo jeito: cada parcela entra como dinheiro a mais no plano.</p></div>`,
+    abre(`<div class="jor-mk">Meu plano · último passo</div><h3>Você tem financiamentos, dívidas ou valores a receber?</h3>
+      <p>Tudo o que ainda tem parcelas pela frente muda o plano mês a mês e o seu patrimônio. Cadastre em Compras e bens. Três exemplos:</p>
+      <div class="jor-ex"><b>Carro financiado: use + Carro</b><p>Você comprou um carro de R$ 150 mil em jan/26, deu R$ 45 mil de entrada e financiou o resto em 48 meses. Em <b>+ Carro</b>, preencha o preço, a entrada, o mês da compra, os juros e o prazo. O painel calcula a parcela, desconta as que faltam no plano, conta o carro como bem e o saldo do financiamento como dívida no Patrimônio.</p></div>
+      <div class="jor-ex"><b>Dívida ou empréstimo: use + A pagar</b><p>Um empréstimo pessoal de R$ 500 por mês, faltando 24 parcelas. Em <b>+ A pagar</b>, preencha a parcela, o número de parcelas e o mês da próxima.</p></div>
+      <div class="jor-ex"><b>Valor a receber: use + A receber</b><p>Você emprestou dinheiro a alguém, que vai te pagar R$ 300 por mês em 10 vezes. Em <b>+ A receber</b>, preencha do mesmo jeito: cada parcela entra como dinheiro a mais no plano.</p></div>
+      <p class="jor-al"><b>Atenção:</b> se você já colocou essas parcelas nos custos do Meu plano (a do carro na categoria Carro, por exemplo), tire de lá. Senão elas contam duas vezes. O mesmo vale para IPVA e seguro, que você pode pôr no próprio carro.</p>`,
       [{ t: 'Não tenho', f: () => { state.jornadaDiv = 'nao'; save(); renderTab(); } },
        ...(tem ? [{ t: `Já cadastrei (${tem})`, f: () => fimDiv() }] : []),
        { t: 'Cadastrar agora', p: true, f: () => { state.jornadaDiv = 'cad'; save(); semIntro = true; showTab('compras'); semIntro = false;
          setTimeout(() => { const s = [...document.querySelectorAll('#p-compras [data-nav]')].find(x => x.dataset.nav === 'Compras e financiamentos'); if (s) { try { abrirSecao(s); } catch (e) {} s.scrollIntoView({ behavior: 'smooth', block: 'start' }); } pintaDiv(); }, 300); } }]);
   }
-  // as dívidas e valores a receber cadastrados aqui entram no Meu plano como projeção real
+  // o que foi cadastrado aqui (bens, dívidas e valores a receber) entra no Meu plano como projeção real
   function fimDiv() {
     const P = state.plan; P.inc = Array.isArray(P.inc) ? P.inc : [];
     finsJ().forEach(b => { if (!P.inc.includes(b.id)) P.inc.push(b.id); });
@@ -17234,7 +17238,7 @@ function jorSimDb(real) {
   function pintaDiv() {
     const on = !!state && ativa() && state.jornadaDiv === 'cad' && tab === 'compras'; divBar.hidden = !on; if (!on) return;
     const n = finsJ().length;
-    divBar.innerHTML = `<div><b>Dívidas e valores a receber</b><span>${n ? `${n} cadastrad${n > 1 ? 'os' : 'o'}. Elas entram no Meu plano quando você terminar.` : 'Use + A pagar ou + A receber em Compras e financiamentos.'}</span></div><button type="button" class="btn ghost tiny" data-jordiv="perg">Ver o exemplo</button><button type="button" class="btn tiny" data-jordiv="fim"${n ? '' : ' disabled'}>Terminei</button>`;
+    divBar.innerHTML = `<div><b>Dívidas e valores a receber</b><span>${n ? `${n} cadastrad${n > 1 ? 'os' : 'o'}. Entram no Meu plano quando você clicar em Terminei.` : 'Use + Carro, + Imóvel, + A pagar ou + A receber aqui em cima.'}</span></div><button type="button" class="btn ghost tiny" data-jordiv="perg">Ver o exemplo</button><button type="button" class="btn tiny" data-jordiv="fim"${n ? '' : ' disabled'}>Terminei</button>`;
   }
   document.addEventListener('click', e => { const b = e.target.closest('[data-jordiv]'); if (!b) return; if (b.dataset.jordiv === 'fim') fimDiv(); else pergDiv(); });
   { const o = renderTab; renderTab = function () { o(); pintaDiv(); }; }
