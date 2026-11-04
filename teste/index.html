@@ -1901,7 +1901,7 @@ label.bk-conf .subdet { font-size: 11.5px; text-transform: none; letter-spacing:
     </div>
     <div class="nav-mobile-sub" id="navMobileSub"></div>
   </div>
-  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 279</div></div>
+  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 280</div></div>
 </nav>
 <div class="sino-pop" id="sino-pop" role="dialog" aria-label="Atualizações das bases" hidden></div>
 <div class="sino-pop" id="pess-pop" role="dialog" aria-label="Seus avisos" hidden></div>
@@ -3812,7 +3812,7 @@ label.bk-conf .subdet { font-size: 11.5px; text-transform: none; letter-spacing:
     return new Promise(resolve => { const { data } = sb.auth.onAuthStateChange(async (ev) => { if (ev !== 'PASSWORD_RECOVERY') return; const s = prompt('Digite a nova senha (mínimo 8 caracteres):'); if (s && s.length >= 8) { const { error } = await sb.auth.updateUser({ password: s }); alert(error ? 'Não deu para trocar a senha: ' + error.message : 'Senha trocada.'); } }); resolve(data); });
   }
   // ---------- rodapé: compartilhar, administração e sair ----------
-  const SITE_V = 163;
+  const SITE_V = 164;
   const escH = v => String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const dataBR = v => v ? new Date(v).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' }) : '–';
   const css2 = `.side-foot .r{flex-wrap:wrap}.side-foot .lg-acoes{margin-left:auto;display:inline-flex;gap:10px}
@@ -6642,6 +6642,7 @@ function agNormalizar(s) {
   a.listas = Array.isArray(a.listas) ? a.listas.filter(x => x && typeof x === 'object').map(agNormLista) : [];
   // a Agenda já nasce com o lembrete do fechamento todo dia 1 (só uma vez: se a pessoa apagar, não volta)
   if (!a.semeado) { a.semeado = 1; if (!a.evs.some(x => x.id === 'ag-fech')) a.evs.unshift({ id: 'ag-fech', titulo: 'Preencher o fechamento do mês', data: agHoje().slice(0, 8) + '01', hora: '', rep: 'mes', cat: 'conta', quem: '', aviso: 0, nota: 'Em Finanças › Gastos e fechamento: confira os gastos do mês que passou e registre o fechamento (e o checkpoint do patrimônio).', ir: 'gastos|Fechamento do mês', com: [] }); } // literal: normalizar roda antes de TXT existir
+  if ((a.semeado || 0) < 2) { a.semeado = 2; if (!a.evs.some(x => x.id === 'ag-cksem')) { const sg = new Date(agHoje() + 'T12:00:00'); sg.setDate(sg.getDate() - ((sg.getDay() + 6) % 7)); a.evs.splice(1, 0, { id: 'ag-cksem', titulo: 'Checkpoint da semana', data: sg.toISOString().slice(0, 10), hora: '', rep: 'semana', cat: 'conta', quem: '', aviso: 0, nota: 'Importe a fatura do cartão ou o extrato da conta e veja quanto já foi do projetado em cada categoria. Leva uns 5 minutos.', ir: 'modulos|Checkpoint da semana', com: [] }); } }
   if (typeof a.sel !== 'string') a.sel = ''; a.ocultos = Array.isArray(a.ocultos) ? a.ocultos.filter(k => AG_AUTO[k]) : [];
 }
 // ocorrências de um compromisso entre duas datas (inclusive)
