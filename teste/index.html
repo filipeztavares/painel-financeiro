@@ -2150,7 +2150,7 @@ body:has(#jor-divbar:not([hidden])) #jor-retoma { display: none; }
     </div>
     <div class="nav-mobile-sub" id="navMobileSub"></div>
   </div>
-  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 291</div></div>
+  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 292</div></div>
 </nav>
 <div class="sino-pop" id="sino-pop" role="dialog" aria-label="Atualizações das bases" hidden></div>
 <div class="sino-pop" id="pess-pop" role="dialog" aria-label="Seus avisos" hidden></div>
@@ -4061,7 +4061,7 @@ body:has(#jor-divbar:not([hidden])) #jor-retoma { display: none; }
     return new Promise(resolve => { const { data } = sb.auth.onAuthStateChange(async (ev) => { if (ev !== 'PASSWORD_RECOVERY') return; const s = prompt('Digite a nova senha (mínimo 8 caracteres):'); if (s && s.length >= 8) { const { error } = await sb.auth.updateUser({ password: s }); alert(error ? 'Não deu para trocar a senha: ' + error.message : 'Senha trocada.'); } }); resolve(data); });
   }
   // ---------- rodapé: compartilhar, administração e sair ----------
-  const SITE_V = 176;
+  const SITE_V = 177;
   const escH = v => String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const dataBR = v => v ? new Date(v).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' }) : '–';
   const css2 = `.side-foot .r{flex-wrap:wrap}.side-foot .lg-acoes{margin-left:auto;display:inline-flex;gap:10px}
@@ -17221,7 +17221,7 @@ function jorSimDb(real) {
   function pergDiv() {
     const tem = finsJ().length;
     abre(`<div class="jor-mk">Meu plano · último passo</div><h3>Você tem financiamentos, dívidas ou valores a receber?</h3>
-      <p>Tudo o que ainda tem parcelas pela frente muda o plano mês a mês e o seu patrimônio. Cadastre em Compras e bens. Três exemplos:</p>
+      <p>Tudo o que ainda tem parcelas pela frente muda o plano mês a mês e o seu patrimônio. Cadastre no módulo <b>Bens e compromissos</b>, na tela Compras e bens. Três exemplos:</p>
       <div class="jor-ex"><b>Carro financiado: use + Carro</b><p>Você comprou um carro de R$ 150 mil em jan/26, deu R$ 45 mil de entrada e financiou o resto em 48 meses. Em <b>+ Carro</b>, preencha o preço, a entrada, o mês da compra, os juros e o prazo. O painel calcula a parcela, desconta as que faltam no plano, conta o carro como bem e o saldo do financiamento como dívida no Patrimônio.</p></div>
       <div class="jor-ex"><b>Dívida ou empréstimo: use + A pagar</b><p>Um empréstimo pessoal de R$ 500 por mês, faltando 24 parcelas. Em <b>+ A pagar</b>, preencha a parcela, o número de parcelas e o mês da próxima.</p></div>
       <div class="jor-ex"><b>Valor a receber: use + A receber</b><p>Você emprestou dinheiro a alguém, que vai te pagar R$ 300 por mês em 10 vezes. Em <b>+ A receber</b>, preencha do mesmo jeito: cada parcela entra como dinheiro a mais no plano.</p></div>
