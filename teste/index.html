@@ -1777,12 +1777,15 @@ body.jor-sim-on .main { padding-top: 44px; }
 .gas-senha-l { display: flex; gap: 8px; flex-wrap: wrap; }
 .gas-senha-l input { flex: 1 1 180px; max-width: 280px; }
 input.bk-in { padding-right: 28px; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.5 6 6.5 11 1.5' fill='none' stroke='%238A93A3' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 10px center; background-size: 11px 8px; }
-.bk-lista { position: fixed; z-index: 300; overflow-y: auto; background: var(--panel); border: 1px solid var(--line); border-radius: 10px; box-shadow: 0 12px 32px rgba(14,26,43,.18); padding: 4px; font-family: var(--f-ui); }
+.bk-lista { position: fixed; z-index: 1200; overflow-y: auto; background: var(--panel); border: 1px solid var(--line); border-radius: 10px; box-shadow: 0 12px 32px rgba(14,26,43,.18); padding: 4px; font-family: var(--f-ui); }
 .bk-lista[hidden] { display: none; }
 .bk-op { padding: 7px 10px; border-radius: 7px; font-size: 12.5px; color: var(--ink); cursor: pointer; }
 .bk-op:hover, .bk-op.at { background: var(--accent-soft); }
 .bk-op.sel { font-weight: 700; color: var(--accent-strong, var(--accent)); }
 .bk-vazio { padding: 8px 10px; font-size: 12px; color: var(--muted); }
+label.bk-conf { display: flex; flex-direction: column; gap: 4px; max-width: 320px; margin: 4px 0 10px; }
+label.bk-conf .bk-rot { font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+label.bk-conf .subdet { font-size: 11.5px; text-transform: none; letter-spacing: 0; font-weight: 400; }
 </style>
 
 
@@ -1872,7 +1875,7 @@ input.bk-in { padding-right: 28px; background-image: url("data:image/svg+xml,%3C
     </div>
     <div class="nav-mobile-sub" id="navMobileSub"></div>
   </div>
-  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 277</div></div>
+  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 278</div></div>
 </nav>
 <div class="sino-pop" id="sino-pop" role="dialog" aria-label="Atualizações das bases" hidden></div>
 <div class="sino-pop" id="pess-pop" role="dialog" aria-label="Seus avisos" hidden></div>
@@ -3776,7 +3779,7 @@ input.bk-in { padding-right: 28px; background-image: url("data:image/svg+xml,%3C
     return new Promise(resolve => { const { data } = sb.auth.onAuthStateChange(async (ev) => { if (ev !== 'PASSWORD_RECOVERY') return; const s = prompt('Digite a nova senha (mínimo 8 caracteres):'); if (s && s.length >= 8) { const { error } = await sb.auth.updateUser({ password: s }); alert(error ? 'Não deu para trocar a senha: ' + error.message : 'Senha trocada.'); } }); resolve(data); });
   }
   // ---------- rodapé: compartilhar, administração e sair ----------
-  const SITE_V = 161;
+  const SITE_V = 162;
   const escH = v => String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const dataBR = v => v ? new Date(v).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' }) : '–';
   const css2 = `.side-foot .r{flex-wrap:wrap}.side-foot .lg-acoes{margin-left:auto;display:inline-flex;gap:10px}
@@ -14016,8 +14019,7 @@ const GUIA_PLANO = 'p-orcamento|Receitas e custos';
 const GUIAS = {
   'p-gastos|Lançar e importar': { auto: true, passos: [
     { sel: '#gas-drop', up: 'fieldset', t: 'Importar fatura ou extrato', o: 'O jeito mais rápido de lançar o mês: suba o arquivo do banco (CSV, OFX, PDF ou o ZIP com senha). O painel reconhece o banco, sugere a categoria de cada gasto e mostra uma prévia antes de salvar.' },
-    { sel: '#gform', up: 'fieldset', t: 'Lançar à mão', o: 'Para o que não aparece na fatura nem no extrato: dinheiro vivo, Pix de outra conta, uma conta paga em outro banco. Valor positivo é gasto; estorno entra negativo.' },
-    { sel: '#ext-conta', up: 'label', t: 'Nome do cartão e da conta', o: 'Só para identificar de onde veio cada gasto. O painel preenche sozinho quando reconhece o banco do arquivo.' }
+    { sel: '#gform', up: 'fieldset', t: 'Lançar à mão', o: 'Para o que não aparece na fatura nem no extrato: dinheiro vivo, Pix de outra conta, uma conta paga em outro banco. Valor positivo é gasto; estorno entra negativo.' }
   ] },
   'p-gastos|Por categoria': { passos: [
     { sel: '#dn-cat', t: 'Para onde foi o dinheiro', o: 'A divisão do mês por categoria. As maiores fatias são onde um ajuste faz mais diferença.' },
@@ -16951,10 +16953,9 @@ function jorSimDb(real) {
     const b = box.querySelector('.jg-bts .btn:not(.ghost)'), ca = box.querySelector('.jg-casa');
     if (rodaTr(m)) { if (ca) ca.textContent = `Casa ${i + 1} de ${jgMods().length} · bloqueado`; if (b) { b.outerHTML = `<button type="button" class="btn ghost" data-irmod="${m.id}"><span class="jor-lock"></span> Bloqueado</button>`; } }
     else if (b) b.textContent = m.id === 'uso' ? 'Começar o passo a passo' : 'Entrar em Finanças'; }; }
-  { const o = jgPick; jgPick = function (i) { if (!ativa()) return o(i); const m = jgMods()[i];
-    if (m && m.id === 'uso') return irFin();
-    if (rodaTr(m)) { if (i !== jgSel) o(i); return bloqMod(m); }
-    if (m && m.id === 'fin' && i === jgSel) return irFin();
+  { const o = jgPick; jgPick = function (i) { const m = jgMods()[i];   // um clique na fatia já abre o módulo
+    if (ativa()) { if (m && m.fixo) return irFin(); if (rodaTr(m)) { if (i !== jgSel) o(i); return bloqMod(m); } return o(i); }
+    if (m && !m.breve) { if (i !== jgSel) o(i); return showTab(m.vg || m.tabs[0]); }
     return o(i); }; }
   document.addEventListener('click', e => { if (!ativa()) return; const b = e.target.closest && e.target.closest('[data-irmod]'); if (!b) return;
     const m = MODS.find(x => x.id === b.dataset.irmod); if (!m) return; e.stopImmediatePropagation(); e.preventDefault();
@@ -17191,6 +17192,23 @@ function jorSimDb(real) {
     else if (e.target.closest('#dados-rest')) restaura();
   });
   document.addEventListener('change', e => { if (e.target && e.target.id === 'dados-arq') { const f = e.target.files && e.target.files[0]; e.target.value = ''; if (f) le(f); } });
+})();
+
+/* ---------- Gastos: o banco só aparece na conferência, já preenchido (Filipe 04/11) ---------- */
+(function () {
+  const fc = $('fat-conta'), ec = $('ext-conta'); if (!fc || !ec) return;
+  const lf = fc.closest('label'), le = ec.closest('label'); if (!lf || !le) return;
+  const casa = document.createElement('div'); casa.hidden = true; casa.id = 'bk-casa'; lf.before(casa); casa.append(lf, le);
+  [[lf, fc], [le, ec]].forEach(([l, i]) => { l.classList.add('bk-conf'); [...l.childNodes].forEach(n => { if (n.nodeType === 3) n.remove(); }); l.insertAdjacentHTML('afterbegin', '<span class="bk-rot">Banco</span><span class="subdet">o painel reconheceu pelo arquivo; mude se precisar</span>'); });
+  const semConta = v => String(v || '').replace(/\s+conta$/i, '');
+  function mete(box, l, i, ext) {
+    if (!box.innerHTML.trim()) return;
+    if (ext) i.value = semConta(i.value);
+    const h = box.querySelector('h2'); if (h) h.after(l); else box.prepend(l);
+  }
+  const of = renderFatPrev; renderFatPrev = function () { casa.append(lf); of.apply(this, arguments); mete($('fat-prev'), lf, fc, false); };
+  const oe = renderExtPrev; renderExtPrev = function () { casa.append(le); oe.apply(this, arguments); mete($('ext-prev'), le, ec, true); };
+  document.addEventListener('click', e => { if (e.target && e.target.id === 'ext-go') { const v = ec.value.trim(); if (v && !/conta$/i.test(v)) ec.value = v + ' conta'; } }, true);
 })();
 </script>
 
