@@ -1773,6 +1773,42 @@ body.jor-sim-on .main { padding-top: 44px; }
 .gas-senha.erro span::before { content: "Senha não abriu o arquivo. "; color: var(--bad, #C0392B); font-weight: 600; }
 .gas-senha-l { display: flex; gap: 8px; flex-wrap: wrap; }
 .gas-senha-l input { flex: 1 1 180px; max-width: 280px; }
+input.bk-in { padding-right: 28px; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.5 6 6.5 11 1.5' fill='none' stroke='%238A93A3' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 10px center; background-size: 11px 8px; }
+.bk-lista { position: fixed; z-index: 1200; overflow-y: auto; background: var(--panel); border: 1px solid var(--line); border-radius: 10px; box-shadow: 0 12px 32px rgba(14,26,43,.18); padding: 4px; font-family: var(--f-ui); }
+.bk-lista[hidden] { display: none; }
+.bk-op { padding: 7px 10px; border-radius: 7px; font-size: 12.5px; color: var(--ink); cursor: pointer; }
+.bk-op:hover, .bk-op.at { background: var(--accent-soft); }
+.bk-op.sel { font-weight: 700; color: var(--accent-strong, var(--accent)); }
+.bk-vazio { padding: 8px 10px; font-size: 12px; color: var(--muted); }
+label.bk-conf { display: flex; flex-direction: column; gap: 4px; max-width: 320px; margin: 4px 0 10px; }
+label.bk-conf .bk-rot { font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+label.bk-conf .subdet { font-size: 11.5px; text-transform: none; letter-spacing: 0; font-weight: 400; }
+/* importar minha planilha */
+#pl-prev:empty { display: none; }
+#pl-prev { display: flex; flex-direction: column; gap: 14px; margin-top: 14px; }
+.pl-top { display: flex; flex-direction: column; gap: 2px; }
+.pl-aba { border: 1px solid var(--line); border-radius: 12px; padding: 12px 14px; display: flex; flex-direction: column; gap: 10px; background: var(--panel); }
+.pl-cab { display: flex; gap: 10px; align-items: baseline; flex-wrap: wrap; }
+.pl-cab b { font-size: 15px; }
+.pl-lin { display: flex; gap: 10px; align-items: flex-end; flex-wrap: wrap; }
+.pl-lin > label:not(.check) { display: flex; flex-direction: column; gap: 4px; min-width: 240px; max-width: 420px; flex: 1 1 260px; }
+.pl-cols { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 10px; }
+.pl-col { display: flex; flex-direction: column; gap: 4px; }
+.pl-col label { display: flex; flex-direction: column; gap: 4px; }
+.pl-sup { display: inline-block; align-self: flex-start; font-size: 11.5px; font-weight: 600; color: #6B4A00; background: rgba(245,196,66,.22); border: 1px solid #F5C442; border-radius: 999px; padding: 2px 9px; text-transform: none; letter-spacing: 0; }
+:root[data-theme="dark"] .pl-sup { color: #FFE08A; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .pl-sup { color: #FFE08A; } }
+.pl-lin .pl-sup { margin-bottom: 6px; }
+.pl-supos { background: rgba(245,196,66,.12); border: 1px solid #F5C442; border-radius: 10px; padding: 10px 12px; font-size: 13px; }
+.pl-supos ul { margin: 4px 0 0; padding-left: 18px; } .pl-supos li { margin: 2px 0; }
+.pl-erro { color: var(--bad, #C0392B); font-weight: 600; margin: 0; font-size: 13px; }
+.pl-res { margin: 0; font-size: 13.5px; }
+.pl-tab td, .pl-tab th { font-size: 12.5px; }
+.pl-cats summary, .pl-ruins summary { cursor: pointer; font-weight: 600; font-size: 13px; }
+.pl-ruins ul { font-size: 12.5px; color: var(--muted); margin: 6px 0 0; padding-left: 18px; }
+.pl-catg { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 8px 14px; margin-top: 8px; }
+.pl-catg label { display: flex; flex-direction: column; gap: 3px; font-size: 12.5px; }
+.pl-link { grid-column: 1 / -1; font-size: 12.5px; margin: 0; }
 </style>
 
 
@@ -1862,7 +1898,7 @@ body.jor-sim-on .main { padding-top: 44px; }
     </div>
     <div class="nav-mobile-sub" id="navMobileSub"></div>
   </div>
-  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 275</div></div>
+  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 281</div></div>
 </nav>
 <div class="sino-pop" id="sino-pop" role="dialog" aria-label="Atualizações das bases" hidden></div>
 <div class="sino-pop" id="pess-pop" role="dialog" aria-label="Seus avisos" hidden></div>
@@ -3128,7 +3164,7 @@ body.jor-sim-on .main { padding-top: 44px; }
         <div class="gas-senha" id="gas-senha" hidden role="group" aria-labelledby="gas-senha-t"><b id="gas-senha-t">Este arquivo tem senha</b><span>Digite a senha e clique em Abrir. Muitos bancos usam os 6 primeiros números do seu CPF.</span><div class="gas-senha-l"><input type="password" id="fat-senha" autocomplete="off" placeholder="senha do arquivo" aria-label="Senha do arquivo"><button type="button" class="btn" id="gas-senha-ok">Abrir</button></div></div>
         <label>Cartão<input type="text" class="name" id="fat-conta" value="Nubank" list="bancos-lista" placeholder="digite ou escolha o banco"></label>
         <label>Conta<input type="text" class="name" id="ext-conta" value="Nubank conta" list="bancos-lista" placeholder="digite ou escolha o banco"></label><datalist id="bancos-lista"><option value="Nubank"></option><option value="Itaú"></option><option value="Itaú Personnalité"></option><option value="Bradesco"></option><option value="Bradesco Prime"></option><option value="Banco do Brasil"></option><option value="Caixa"></option><option value="Santander"></option><option value="Inter"></option><option value="C6 Bank"></option><option value="BTG Pactual"></option><option value="XP"></option><option value="Rico"></option><option value="Clear"></option><option value="Mercado Pago"></option><option value="PicPay"></option><option value="PagBank"></option><option value="Next"></option><option value="Neon"></option><option value="Banco Original"></option><option value="Sicoob"></option><option value="Sicredi"></option><option value="Unicred"></option><option value="Cresol"></option><option value="Banrisul"></option><option value="BRB"></option><option value="Banestes"></option><option value="Banpará"></option><option value="Banco do Nordeste"></option><option value="Banese"></option><option value="Safra"></option><option value="Banco BV"></option><option value="Banco Pan"></option><option value="Agibank"></option><option value="Will Bank"></option><option value="Digio"></option><option value="Credicard"></option><option value="Porto Bank"></option><option value="Daycoval"></option><option value="Mercantil"></option><option value="Modal"></option><option value="Stone"></option><option value="InfinitePay"></option><option value="RecargaPay"></option><option value="Ame Digital"></option><option value="Nomad"></option><option value="Wise"></option><option value="Avenue"></option></datalist>
-        <p class="hint full" id="fat-msg" role="status">Fatura do cartão ou extrato da conta, de qualquer banco: CSV, OFX, PDF ou o ZIP com senha que o banco envia. O painel identifica sozinho o banco, se é fatura ou extrato e quais colunas são data, descrição e valor; você confere antes de importar. Na fatura, pagamentos são ignorados e cada gasto vem com categoria sugerida. No extrato, Pix, boletos e transferências viram gasto, receita (ex.: salário) ou dedução (ex.: DAS); aplicações, resgates e o pagamento da fatura não entram. Se o arquivo tiver senha, digite na primeira vez; a do ZIP o painel lembra.</p>
+        <p class="pl-link">Já controla os gastos numa planilha sua? <a href="#" data-irplan>Importar minha planilha</a></p><p class="hint full" id="fat-msg" role="status">Fatura do cartão ou extrato da conta, de qualquer banco: CSV, OFX, PDF ou o ZIP com senha que o banco envia. O painel identifica sozinho o banco, se é fatura ou extrato e quais colunas são data, descrição e valor; você confere antes de importar. Na fatura, pagamentos são ignorados e cada gasto vem com categoria sugerida. No extrato, Pix, boletos e transferências viram gasto, receita (ex.: salário) ou dedução (ex.: DAS); aplicações, resgates e o pagamento da fatura não entram. Se o arquivo tiver senha, digite na primeira vez; a do ZIP o painel lembra.</p>
         <p class="hint full" id="ext-msg" role="status"></p>
       </fieldset>
       <fieldset id="csv-box" hidden>
@@ -3281,6 +3317,19 @@ body.jor-sim-on .main { padding-top: 44px; }
         <p class="sub" id="curva-sub"></p>
         <div class="tscroll"><table id="tbl-curva"></table></div>
         <p class="hint" style="margin-top:8px">CDI médio do ano = média entre a Selic do fim do ano anterior e a do fim do ano, menos 0,10 p.p. TR estimada a partir do CDI. Editar qualquer célula passa para o modo manual; anos depois de 2031 usam a linha de 2031.</p>
+      </section>
+      <section data-nav="Seus dados" class="panel" id="cfg-dados">
+        <h2>Exportar e restaurar os seus dados</h2>
+        <p class="sub">Baixa tudo o que esta conta guarda (plano, gastos de todos os meses, checkpoints e os itens dos módulos) num arquivo JSON. Para voltar a um backup, escolha o arquivo e clique em Restaurar: os dados atuais da conta são trocados pelos do arquivo.</p>
+        <div class="btns"><button class="btn" type="button" id="dados-exp">Exportar dados (JSON)</button><label class="btn ghost" style="cursor:pointer">Escolher arquivo para restaurar<input type="file" id="dados-arq" accept=".json,application/json" hidden></label><button class="btn ghost" type="button" id="dados-rest" disabled>Restaurar</button></div>
+        <p class="hint" id="dados-msg" role="status"></p>
+      </section>
+      <section data-nav="Importar minha planilha" class="panel" id="cfg-plan">
+        <h2>Importar minha planilha</h2>
+        <p class="sub">Já controla o seu dinheiro numa planilha? Traga ela em Excel (.xlsx) ou CSV. Do Google Sheets, baixe em Arquivo › Fazer download › Microsoft Excel. O painel lê cada aba e diz o que acha que ela é (gastos, patrimônio por mês ou aplicações) e qual coluna é qual. <b>Tudo o que ele supôs fica marcado em amarelo</b> para você conferir e trocar. Nada é salvo antes de você clicar em Importar.</p>
+        <div class="gas-drop" id="pl-drop" role="button" tabindex="0" aria-label="Escolher a planilha"><b>Solte aqui a sua planilha</b><span>ou clique para escolher · Excel (.xlsx) ou CSV</span><input type="file" id="pl-file" hidden accept=".xlsx,.xlsm,.xls,.ods,.csv,.txt,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel,text/csv"></div>
+        <p class="hint" id="pl-st" role="status"></p>
+        <div id="pl-prev"></div>
       </section>
       <section data-nav="Primeiro acesso" class="panel" id="cfg-jor" hidden>
         <h2>Simular primeiro acesso</h2>
@@ -3760,7 +3809,7 @@ body.jor-sim-on .main { padding-top: 44px; }
     return new Promise(resolve => { const { data } = sb.auth.onAuthStateChange(async (ev) => { if (ev !== 'PASSWORD_RECOVERY') return; const s = prompt('Digite a nova senha (mínimo 8 caracteres):'); if (s && s.length >= 8) { const { error } = await sb.auth.updateUser({ password: s }); alert(error ? 'Não deu para trocar a senha: ' + error.message : 'Senha trocada.'); } }); resolve(data); });
   }
   // ---------- rodapé: compartilhar, administração e sair ----------
-  const SITE_V = 159;
+  const SITE_V = 165;
   const escH = v => String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const dataBR = v => v ? new Date(v).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' }) : '–';
   const css2 = `.side-foot .r{flex-wrap:wrap}.side-foot .lg-acoes{margin-left:auto;display:inline-flex;gap:10px}
@@ -6590,6 +6639,7 @@ function agNormalizar(s) {
   a.listas = Array.isArray(a.listas) ? a.listas.filter(x => x && typeof x === 'object').map(agNormLista) : [];
   // a Agenda já nasce com o lembrete do fechamento todo dia 1 (só uma vez: se a pessoa apagar, não volta)
   if (!a.semeado) { a.semeado = 1; if (!a.evs.some(x => x.id === 'ag-fech')) a.evs.unshift({ id: 'ag-fech', titulo: 'Preencher o fechamento do mês', data: agHoje().slice(0, 8) + '01', hora: '', rep: 'mes', cat: 'conta', quem: '', aviso: 0, nota: 'Em Finanças › Gastos e fechamento: confira os gastos do mês que passou e registre o fechamento (e o checkpoint do patrimônio).', ir: 'gastos|Fechamento do mês', com: [] }); } // literal: normalizar roda antes de TXT existir
+  if ((a.semeado || 0) < 2) { a.semeado = 2; if (!a.evs.some(x => x.id === 'ag-cksem')) { const sg = new Date(agHoje() + 'T12:00:00'); sg.setDate(sg.getDate() - ((sg.getDay() + 6) % 7)); a.evs.splice(1, 0, { id: 'ag-cksem', titulo: 'Checkpoint da semana', data: sg.toISOString().slice(0, 10), hora: '', rep: 'semana', cat: 'conta', quem: '', aviso: 0, nota: 'Importe a fatura do cartão ou o extrato da conta e veja quanto já foi do projetado em cada categoria. Leva uns 5 minutos.', ir: 'modulos|Checkpoint da semana', com: [] }); } }
   if (typeof a.sel !== 'string') a.sel = ''; a.ocultos = Array.isArray(a.ocultos) ? a.ocultos.filter(k => AG_AUTO[k]) : [];
 }
 // ocorrências de um compromisso entre duas datas (inclusive)
@@ -14000,8 +14050,7 @@ const GUIA_PLANO = 'p-orcamento|Receitas e custos';
 const GUIAS = {
   'p-gastos|Lançar e importar': { auto: true, passos: [
     { sel: '#gas-drop', up: 'fieldset', t: 'Importar fatura ou extrato', o: 'O jeito mais rápido de lançar o mês: suba o arquivo do banco (CSV, OFX, PDF ou o ZIP com senha). O painel reconhece o banco, sugere a categoria de cada gasto e mostra uma prévia antes de salvar.' },
-    { sel: '#gform', up: 'fieldset', t: 'Lançar à mão', o: 'Para o que não aparece na fatura nem no extrato: dinheiro vivo, Pix de outra conta, uma conta paga em outro banco. Valor positivo é gasto; estorno entra negativo.' },
-    { sel: '#ext-conta', up: 'label', t: 'Nome do cartão e da conta', o: 'Só para identificar de onde veio cada gasto. O painel preenche sozinho quando reconhece o banco do arquivo.' }
+    { sel: '#gform', up: 'fieldset', t: 'Lançar à mão', o: 'Para o que não aparece na fatura nem no extrato: dinheiro vivo, Pix de outra conta, uma conta paga em outro banco. Valor positivo é gasto; estorno entra negativo.' }
   ] },
   'p-gastos|Por categoria': { passos: [
     { sel: '#dn-cat', t: 'Para onde foi o dinheiro', o: 'A divisão do mês por categoria. As maiores fatias são onde um ajuste faz mais diferença.' },
@@ -16776,7 +16825,8 @@ function jorSimDb(real) {
     return out;
   }
   const basico = () => situacao().every(x => x.feita);
-  const modFixo = t => { const m = MODS.find(x => x.tabs.includes(t)); return !m || m.fixo; };
+  const LIVRES = ['agen'];   // abertos desde o primeiro acesso, além de Primeiros passos e Finanças
+  const modFixo = t => { const m = MODS.find(x => x.tabs.includes(t)); return !m || m.fixo || LIVRES.includes(m.id); };
   function trancada(t) {
     if (!ativa()) return false;
     const s = situacao().find(x => x.e.tabs.includes(t)); if (s) return !s.aberta;
@@ -16909,7 +16959,7 @@ function jorSimDb(real) {
 
   // ---------- roleta durante a jornada: só Primeiros passos e Finanças abertos ----------
   const CAD = 'M7 10V7a5 5 0 0 1 10 0v3h1a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-8a2 2 0 0 1 2-2h1zm2 0h6V7a3 3 0 0 0-6 0v3z';
-  const rodaTr = m => ativa() && !!m && !m.fixo;
+  const rodaTr = m => ativa() && !!m && !m.fixo && !LIVRES.includes(m.id);
   function irFin() { const pr = proximo(); if (pr) irPasso(pr.p); else showTab('inicio'); }
   function bloqMod(m) {
     const pr = proximo();
@@ -16934,14 +16984,13 @@ function jorSimDb(real) {
     box.querySelectorAll('.jg-prox').forEach(x => x.remove());
     const b = box.querySelector('.jg-bts .btn:not(.ghost)'), ca = box.querySelector('.jg-casa');
     if (rodaTr(m)) { if (ca) ca.textContent = `Casa ${i + 1} de ${jgMods().length} · bloqueado`; if (b) { b.outerHTML = `<button type="button" class="btn ghost" data-irmod="${m.id}"><span class="jor-lock"></span> Bloqueado</button>`; } }
-    else if (b) b.textContent = m.id === 'uso' ? 'Começar o passo a passo' : 'Entrar em Finanças'; }; }
-  { const o = jgPick; jgPick = function (i) { if (!ativa()) return o(i); const m = jgMods()[i];
-    if (m && m.id === 'uso') return irFin();
-    if (rodaTr(m)) { if (i !== jgSel) o(i); return bloqMod(m); }
-    if (m && m.id === 'fin' && i === jgSel) return irFin();
+    else if (b) b.textContent = m.id === 'uso' ? 'Começar o passo a passo' : m.id === 'fin' ? 'Entrar em Finanças' : 'Entrar nesta casa'; }; }
+  { const o = jgPick; jgPick = function (i) { const m = jgMods()[i];   // um clique na fatia já abre o módulo
+    if (ativa()) { if (m && m.fixo) return irFin(); if (rodaTr(m)) { if (i !== jgSel) o(i); return bloqMod(m); } if (m && !m.breve) { if (i !== jgSel) o(i); return showTab(m.vg || m.tabs[0]); } return o(i); }
+    if (m && !m.breve) { if (i !== jgSel) o(i); return showTab(m.vg || m.tabs[0]); }
     return o(i); }; }
   document.addEventListener('click', e => { if (!ativa()) return; const b = e.target.closest && e.target.closest('[data-irmod]'); if (!b) return;
-    const m = MODS.find(x => x.id === b.dataset.irmod); if (!m) return; e.stopImmediatePropagation(); e.preventDefault();
+    const m = MODS.find(x => x.id === b.dataset.irmod); if (!m || LIVRES.includes(m.id)) return; e.stopImmediatePropagation(); e.preventDefault();
     if (m.fixo) irFin(); else bloqMod(m); }, true);
 
   // ---------- saiu do guia (✕ ou "Explorar sozinho"): botão fixo para voltar ao passo a passo ----------
@@ -17084,13 +17133,399 @@ function jorSimDb(real) {
   inp.addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); ok.click(); } });
 })();
 
-/* ---------- Cartão e Conta: mostrar a lista inteira de bancos ao clicar ---------- */
+/* ---------- Cartão e Conta: lista de bancos no estilo do painel (pode digitar ou escolher) ---------- */
 (function () {
+  const dl = $('bancos-lista'); if (!dl) return;
+  const BANCOS = [...dl.options].map(o => o.value);
+  const ul = document.createElement('div'); ul.id = 'bk-lista'; ul.className = 'bk-lista'; ul.setAttribute('role', 'listbox'); ul.hidden = true; document.body.append(ul);
+  let alvo = null, itens = [], at = -1, mexeu = false;
+  const sem = s => String(s || '').normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
+  function pos() { if (!alvo) return; const r = alvo.getBoundingClientRect(), embaixo = innerHeight - r.bottom;
+    ul.style.left = r.left + 'px'; ul.style.width = Math.max(r.width, 200) + 'px';
+    if (embaixo < 200 && r.top > embaixo) { ul.style.top = ''; ul.style.bottom = (innerHeight - r.top + 4) + 'px'; ul.style.maxHeight = Math.min(260, r.top - 12) + 'px'; }
+    else { ul.style.bottom = ''; ul.style.top = (r.bottom + 4) + 'px'; ul.style.maxHeight = Math.min(260, embaixo - 12) + 'px'; } }
+  function pinta() {
+    const q = mexeu ? sem(alvo.value.trim()) : '';
+    itens = q ? BANCOS.filter(b => sem(b).includes(q)) : BANCOS.slice();
+    if (at >= itens.length) at = itens.length - 1;
+    ul.innerHTML = itens.length ? itens.map((b, k) => `<div class="bk-op${k === at ? ' at' : ''}${b === alvo.value ? ' sel' : ''}" role="option" data-bk="${k}" aria-selected="${b === alvo.value}">${esc(b)}</div>`).join('') : '<div class="bk-vazio">Nenhum banco com esse nome. Pode deixar o que você digitou.</div>';
+    ul.hidden = false; pos();
+    const a = ul.querySelector('.at'); if (a) a.scrollIntoView({ block: 'nearest' });
+  }
+  function fecha() { ul.hidden = true; at = -1; if (alvo) alvo.setAttribute('aria-expanded', 'false'); alvo = null; }
+  function escolhe(k) { const el = alvo, b = itens[k]; if (!el || b == null) return; el.value = b; el.dispatchEvent(new Event('input', { bubbles: true })); el.dispatchEvent(new Event('change', { bubbles: true })); fecha(); el.blur(); }
   ['fat-conta', 'ext-conta'].forEach(id => { const el = $(id); if (!el) return;
-    const abre = () => { if (el.value && el.dataset.ant == null) { el.dataset.ant = el.value; el.placeholder = el.value; el.value = ''; } try { el.showPicker && el.showPicker(); } catch (e) {} };
-    el.addEventListener('mousedown', abre); el.addEventListener('focus', abre);
-    el.addEventListener('blur', () => { if (el.dataset.ant != null) { if (!el.value.trim()) el.value = el.dataset.ant; delete el.dataset.ant; el.placeholder = 'digite ou escolha o banco'; } });
+    el.removeAttribute('list'); el.classList.add('bk-in'); el.setAttribute('autocomplete', 'off'); el.setAttribute('role', 'combobox'); el.setAttribute('aria-controls', 'bk-lista'); el.setAttribute('aria-expanded', 'false');
+    const abre = () => { if (alvo === el && !ul.hidden) return; alvo = el; mexeu = false; at = BANCOS.indexOf(el.value); el.setAttribute('aria-expanded', 'true'); pinta(); };
+    el.addEventListener('focus', () => { abre(); setTimeout(() => { try { el.select(); } catch (e) {} }, 0); }); el.addEventListener('mousedown', () => { if (document.activeElement === el) { if (ul.hidden) abre(); else fecha(); } });
+    el.addEventListener('input', () => { if (alvo !== el) { alvo = el; } mexeu = true; at = 0; pinta(); });
+    el.addEventListener('blur', () => setTimeout(() => { if (alvo === el && document.activeElement !== el) fecha(); }, 120));
+    el.addEventListener('keydown', e => {
+      if (e.key === 'ArrowDown' || e.key === 'ArrowUp') { e.preventDefault(); if (ul.hidden) { abre(); return; } at = Math.max(0, Math.min(itens.length - 1, at + (e.key === 'ArrowDown' ? 1 : -1))); pinta(); }
+      else if (e.key === 'Enter' && !ul.hidden && at >= 0) { e.preventDefault(); escolhe(at); }
+      else if (e.key === 'Escape' && !ul.hidden) { e.preventDefault(); e.stopPropagation(); fecha(); }
+      else if (e.key === 'Tab') fecha();
+    });
   });
+  ul.addEventListener('mousedown', e => { e.preventDefault(); const o = e.target.closest('[data-bk]'); if (o) escolhe(+o.dataset.bk); });
+  addEventListener('scroll', () => { if (!ul.hidden) pos(); }, true); addEventListener('resize', () => { if (!ul.hidden) pos(); });
+})();
+
+/* ---------- Configurações › Seus dados: exportar tudo em JSON e restaurar de um arquivo ---------- */
+(function () {
+  const COLS = ['painel', 'checkpoints', 'gastos'], OK_ID = /^(painel|checkpoints|gastos)\/[\w.-]{1,80}$/;
+  const msg = t => { const m = $('dados-msg'); if (m) m.textContent = t; };
+  async function junta() {
+    const docs = {};
+    for (const c of COLS) { const sn = await pcol(c).get(); sn.docs.forEach(d => { docs[c + '/' + d.id] = d.data(); }); }
+    if (!docs['painel/v2'] && state) docs['painel/v2'] = clone(state);
+    return docs;
+  }
+  async function exporta() {
+    if (!db) { msg('Sem banco de dados nesta visualização.'); return; }
+    msg('Juntando os seus dados…');
+    try {
+      const docs = await junta(), hoje = new Date().toISOString().slice(0, 10);
+      const data = JSON.stringify({ app: 'painel-financeiro', formato: 1, exportadoEm: new Date().toISOString(), docs }, null, 1), nome = `painel-dados-${hoje}.json`;
+      let foi = false;
+      if (downloads) { try { await downloads.save({ filename: nome, data }); foi = true; } catch (e) { if (e && e.code === 'declined') { msg(''); return; } } }
+      if (!foi) { const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([data], { type: 'application/json' })); a.download = nome; document.body.append(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(a.href), 3000); }
+      msg(`Arquivo ${nome} gerado com ${Object.keys(docs).length} partes (plano, meses de gastos e checkpoints).`);
+    } catch (e) { msg('Não consegui exportar' + (e && e.message ? ': ' + e.message : '.')); }
+  }
+  let lido = null;
+  async function le(f) {
+    lido = null; $('dados-rest').disabled = true;
+    try {
+      const j = JSON.parse(await f.text());
+      if (!j || j.app !== 'painel-financeiro' || !j.docs || typeof j.docs !== 'object') throw new Error('não é um arquivo exportado pelo painel');
+      const ids = Object.keys(j.docs).filter(k => OK_ID.test(k) && j.docs[k] && typeof j.docs[k] === 'object');
+      if (!ids.includes('painel/v2')) throw new Error('o arquivo não tem o plano (painel/v2)');
+      lido = { docs: j.docs, ids, em: j.exportadoEm };
+      const nG = ids.filter(k => k.startsWith('gastos/')).length, nC = ids.filter(k => k.startsWith('checkpoints/')).length;
+      msg(`Arquivo de ${j.exportadoEm ? new Date(j.exportadoEm).toLocaleString('pt-BR') : 'data desconhecida'}: plano, ${nG} ${nG === 1 ? 'mês' : 'meses'} de gastos e ${nC} checkpoint${nC === 1 ? '' : 's'}. Clique em Restaurar para trocar os dados atuais por estes.`);
+      $('dados-rest').disabled = false;
+    } catch (e) { msg('Não consegui ler o arquivo: ' + (e && e.message ? e.message : 'formato inválido') + '.'); }
+  }
+  async function restaura() {
+    if (!lido || !db) return;
+    if (!confirmar('Isso troca TODOS os dados desta conta pelos do arquivo. O que não estiver no arquivo será apagado.')) return;
+    msg('Restaurando…'); $('dados-rest').disabled = true;
+    try {
+      clearTimeout(saveTimer); save = function () {}; flush = async function () {};
+      for (const k of lido.ids) await pdoc(k).set(lido.docs[k]);
+      for (const c of COLS) { const sn = await pcol(c).get(); for (const d of sn.docs) if (!lido.ids.includes(c + '/' + d.id)) await pdoc(c + '/' + d.id).delete().catch(() => {}); }
+      try { localStorage.setItem(LSK('painel-fin-v2'), JSON.stringify(lido.docs['painel/v2'])); } catch (e) {}
+      msg('Dados restaurados. Recarregando…'); setTimeout(() => location.reload(), 800);
+    } catch (e) { msg('Não consegui restaurar' + (e && e.message ? ': ' + e.message : '.') + ' Recarregue a página antes de tentar de novo.'); }
+  }
+  document.addEventListener('click', e => {
+    if (e.target.closest('#dados-exp')) exporta();
+    else if (e.target.closest('#dados-rest')) restaura();
+  });
+  document.addEventListener('change', e => { if (e.target && e.target.id === 'dados-arq') { const f = e.target.files && e.target.files[0]; e.target.value = ''; if (f) le(f); } });
+})();
+
+/* ---------- Gastos: o banco só aparece na conferência, já preenchido (Filipe 04/11) ---------- */
+(function () {
+  const fc = $('fat-conta'), ec = $('ext-conta'); if (!fc || !ec) return;
+  const lf = fc.closest('label'), le = ec.closest('label'); if (!lf || !le) return;
+  const casa = document.createElement('div'); casa.hidden = true; casa.id = 'bk-casa'; lf.before(casa); casa.append(lf, le);
+  [[lf, fc], [le, ec]].forEach(([l, i]) => { l.classList.add('bk-conf'); [...l.childNodes].forEach(n => { if (n.nodeType === 3) n.remove(); }); l.insertAdjacentHTML('afterbegin', '<span class="bk-rot">Banco</span><span class="subdet">o painel reconheceu pelo arquivo; mude se precisar</span>'); });
+  const semConta = v => String(v || '').replace(/\s+conta$/i, '');
+  function mete(box, l, i, ext) {
+    if (!box.innerHTML.trim()) return;
+    if (ext) i.value = semConta(i.value);
+    const h = box.querySelector('h2'); if (h) h.after(l); else box.prepend(l);
+  }
+  const of = renderFatPrev; renderFatPrev = function () { casa.append(lf); of.apply(this, arguments); mete($('fat-prev'), lf, fc, false); };
+  const oe = renderExtPrev; renderExtPrev = function () { casa.append(le); oe.apply(this, arguments); mete($('ext-prev'), le, ec, true); };
+  document.addEventListener('click', e => { if (e.target && e.target.id === 'ext-go') { const v = ec.value.trim(); if (v && !/conta$/i.test(v)) ec.value = v + ' conta'; } }, true);
+})();
+
+/* ---------- Importar minha planilha (04/11): Excel ou CSV da pessoa → gastos, checkpoints e aplicações ----------
+   Tudo o que o painel supõe (tipo da aba, linha dos títulos, coluna de cada campo, sinal, categoria, tipo de aplicação)
+   fica marcado em amarelo na prévia, com o motivo. Nada é gravado antes do botão Importar. */
+(function () {
+  const box = $('pl-prev'), inp = $('pl-file'), zona = $('pl-drop'); if (!box || !inp || !zona) return;
+  const XLSX_URL = 'https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js';
+  let xlsxP = null;
+  const carregaXlsx = () => window.XLSX ? Promise.resolve(window.XLSX) : (xlsxP = xlsxP || new Promise((ok, err) => { const s = document.createElement('script'); s.src = XLSX_URL; s.onload = () => ok(window.XLSX); s.onerror = () => { xlsxP = null; err(new Error('não consegui carregar o leitor de Excel; confira a conexão')); }; document.head.append(s); }));
+  const sem = s => String(s == null ? '' : s).normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().trim();
+  const vazio = v => v == null || String(v).trim() === '';
+  const letra = i => { let s = ''; i++; while (i > 0) { const r = (i - 1) % 26; s = String.fromCharCode(65 + r) + s; i = Math.floor((i - 1) / 26); } return s; };
+  const MESES = { jan: 1, fev: 2, mar: 3, abr: 4, mai: 5, jun: 6, jul: 7, ago: 8, set: 9, out: 10, nov: 11, dez: 12 };
+
+  const TIPOS_ABA = {
+    ign: { nome: 'Não importar' },
+    gas: { nome: 'Gastos (um lançamento por linha)', campos: [['data', 'Data', 1, ['data', 'dia', 'date', 'quando']], ['desc', 'Descrição', 1, ['descri', 'historico', 'estabelecimento', 'lancamento', 'item', 'detalhe', 'nome', 'local']], ['valor', 'Valor', 1, ['valor', 'preco', 'total', 'r$', 'gasto', 'montante', 'quantia']], ['cat', 'Categoria', 0, ['categoria', 'classifica', 'grupo', 'tipo']], ['forma', 'Forma de pagamento', 0, ['forma', 'pagamento', 'meio', 'cartao']]] },
+    cp: { nome: 'Patrimônio por mês (vira checkpoints)', campos: [['mes', 'Mês', 1, ['mes', 'periodo', 'referencia', 'competencia', 'data']], ['valor', 'Patrimônio total', 1, ['patrimonio', 'total', 'saldo', 'liquido', 'valor']]] },
+    apl: { nome: 'Aplicações (o que você tem investido hoje)', campos: [['nome', 'Nome da aplicação', 1, ['nome', 'ativo', 'aplicacao', 'produto', 'papel', 'titulo', 'investimento', 'descri']], ['atual', 'Valor atual', 1, ['valor atual', 'atual', 'saldo', 'posicao', 'bruto', 'liquido', 'valor']], ['inst', 'Instituição', 0, ['instituicao', 'banco', 'corretora', 'emissor', 'onde']], ['tipo', 'Tipo', 0, ['tipo', 'classe', 'categoria', 'modalidade']], ['aplic', 'Valor aplicado', 0, ['aplicado', 'investido', 'custo', 'valor inicial']], ['data', 'Data da aplicação', 0, ['data da aplica', 'data', 'compra', 'inicio']], ['venc', 'Vencimento', 0, ['vencimento', 'venc', 'prazo']]] }
+  };
+
+  // ---------- leitura ----------
+  function dataDe(v, fmt) {
+    if (typeof v === 'number') return v > 20000 && v < 80000 ? parseData(String(Math.floor(v))) : null;
+    const s = String(v || '').trim(); if (!s) return null;
+    if (/^\d{4}-\d{2}-\d{2}/.test(s)) return s.slice(0, 10);
+    return parseData(s, fmt);
+  }
+  function mesDe(v) {
+    if (typeof v === 'number') { const d = dataDe(v); return d ? d.slice(0, 7) : null; }
+    const s = sem(v).replace(/\.$/, ''); if (!s) return null;
+    let m = s.match(/^(\d{4})[-\/](\d{1,2})$/); if (m && +m[2] >= 1 && +m[2] <= 12) return `${m[1]}-${String(+m[2]).padStart(2, '0')}`;
+    m = s.match(/^(\d{1,2})[-\/](\d{2}|\d{4})$/); if (m && +m[1] >= 1 && +m[1] <= 12) { let y = +m[2]; if (y < 100) y += 2000; return `${y}-${String(+m[1]).padStart(2, '0')}`; }
+    m = s.match(/^([a-z]{3})[a-z]*\.?[\s\/\-de]*(\d{2}|\d{4})$/); if (m && MESES[m[1]]) { let y = +m[2]; if (y < 100) y += 2000; return `${y}-${String(MESES[m[1]]).padStart(2, '0')}`; }
+    const d = dataDe(v, 'dmy'); return d ? d.slice(0, 7) : null;
+  }
+  const valorDe = v => typeof v === 'number' ? v : parseValor(v);
+  async function lerArquivo(f) {
+    const buf = await f.arrayBuffer(), b = new Uint8Array(buf);
+    const zip = b[0] === 0x50 && b[1] === 0x4b, ole = b[0] === 0xd0 && b[1] === 0xcf;
+    if (zip || ole || /\.(xlsx|xlsm|xls|ods)$/i.test(f.name)) {
+      const X = await carregaXlsx(), wb = X.read(b, { type: 'array', cellDates: false });
+      return wb.SheetNames.map(n => ({ nome: n, rows: X.utils.sheet_to_json(wb.Sheets[n], { header: 1, raw: true, defval: '', blankrows: true }) })).filter(a => a.rows.some(r => r.some(c => !vazio(c))));
+    }
+    return [{ nome: f.name.replace(/\.[a-z]+$/i, ''), rows: parseCSV(textoDe(b)) }];
+  }
+
+  // ---------- sugestões (todas marcadas como suposição) ----------
+  function linhaTitulos(rows) {
+    for (let i = 0; i < Math.min(12, rows.length); i++) { const r = rows[i] || [], ch = r.filter(c => !vazio(c));
+      if (ch.length >= 2 && ch.filter(c => typeof c === 'string' && !/^[\d.,\/\-\sR$()%]+$/.test(c)).length >= Math.ceil(ch.length * .6)) return i; }
+    return 0;
+  }
+  const amostra = (a, j) => a.rows.slice(a.hdr + 1, a.hdr + 41).map(r => r[j]).filter(c => !vazio(c));
+  function porConteudo(a, campo, usados) {
+    const nc = Math.max(...a.rows.slice(a.hdr, a.hdr + 40).map(r => r.length), 0), cands = [];
+    for (let j = 0; j < nc; j++) { if (usados.has(j)) continue; const am = amostra(a, j); if (am.length < 2) continue;
+      const pd = am.filter(c => dataDe(c, 'dmy')).length / am.length, pm = am.filter(c => mesDe(c)).length / am.length, pn = am.filter(c => valorDe(c) != null).length / am.length, txt = am.filter(c => typeof c === 'string' && valorDe(c) == null && !dataDe(c, 'dmy')).length / am.length;
+      const sc = campo === 'data' ? pd : campo === 'mes' ? pm : ['valor', 'atual', 'aplic'].includes(campo) ? (pd > .5 ? 0 : pn) : ['desc', 'nome'].includes(campo) ? txt * new Set(am).size / am.length : 0;
+      if (sc >= .7) cands.push([j, sc]); }
+    cands.sort((x, y) => y[1] - x[1]); return cands.length ? cands[0][0] : null;
+  }
+  function mapear(a) {
+    a.map = {}; a.sup = {}; const H = (a.rows[a.hdr] || []).map(sem), usados = new Set(); const def = TIPOS_ABA[a.tipo]; if (!def.campos) return;
+    def.campos.forEach(([c, , , kws]) => {
+      let achou = null;
+      for (const k of kws) { const j = H.findIndex((h, jj) => h && !usados.has(jj) && (h === k || h.includes(k))); if (j >= 0) { achou = j; a.sup[c] = `pelo título "${a.rows[a.hdr][j]}"`; break; } }
+      if (achou == null && def.campos.find(x => x[0] === c)[2]) { achou = porConteudo(a, c, usados); if (achou != null) a.sup[c] = 'pelo conteúdo da coluna'; }
+      if (achou != null) { a.map[c] = achou; usados.add(achou); }
+    });
+  }
+  function tipoSugerido(a) {
+    const n = sem(a.nome), H = (a.rows[a.hdr] || []).map(sem).join(' | ');
+    if (/gasto|despesa|fatura|lancament|cartao|compras/.test(n)) return ['gas', `pelo nome da aba "${a.nome}"`];
+    if (/patrimonio|evolucao|historico|mensal|checkpoint/.test(n)) return ['cp', `pelo nome da aba "${a.nome}"`];
+    if (/invest|carteira|aplica|ativos|renda fixa|acoes/.test(n)) return ['apl', `pelo nome da aba "${a.nome}"`];
+    if (/descri|estabelec|historico/.test(H) && /valor/.test(H) && /data/.test(H)) return ['gas', 'pelos títulos das colunas'];
+    if (/patrimonio/.test(H)) return ['cp', 'pelos títulos das colunas'];
+    if (/(aplicad|investid|vencimento|instituic|corretora)/.test(H)) return ['apl', 'pelos títulos das colunas'];
+    return ['ign', 'não reconheci o conteúdo'];
+  }
+  function sugereOpcoes(a) {
+    a.op = a.op || {}; a.opSup = {};
+    if (a.tipo === 'gas') {
+      const vs = a.map.valor != null ? amostra(a, a.map.valor).map(valorDe).filter(v => v != null && v !== 0) : [];
+      const neg = vs.filter(v => v < 0).length;
+      a.op.sinal = vs.length && neg / vs.length > .6 ? 'neg' : 'pos';
+      a.opSup.sinal = a.op.sinal === 'neg' ? `a maioria dos valores (${neg} de ${vs.length}) é negativa` : neg ? `a maioria dos valores é positiva (${vs.length - neg} de ${vs.length})` : 'todos os valores são positivos';
+      a.op.outro = 'ign'; a.opSup.outro = 'na dúvida, valores com o outro sinal (salário, estorno, transferência) ficam de fora';
+      const ds = a.map.data != null ? amostra(a, a.map.data).filter(c => typeof c === 'string') : [];
+      const mdy = ds.some(s => { const p = s.split(/[\/\-.]/); return p.length >= 2 && +p[1] > 12 && +p[0] <= 12; }), amb = ds.length && !mdy && !ds.some(s => +s.split(/[\/\-.]/)[0] > 12) && !ds.every(s => /^\d{4}/.test(s));
+      a.op.fmt = mdy ? 'mdy' : 'dmy'; if (mdy) a.opSup.fmt = 'há datas com o segundo número maior que 12, então o formato é mês/dia'; else if (amb) a.opSup.fmt = 'nenhuma data tem o dia maior que 12; supus dia/mês, o padrão do Brasil';
+    }
+    if (a.tipo === 'cp') { a.op.subst = false; }
+  }
+  function prepara(a) { if (a.hdr == null) { a.hdr = linhaTitulos(a.rows); a.hdrSup = `primeira linha com títulos (linha ${a.hdr + 1})`; }
+    if (!a.tipo) { const [t, m] = tipoSugerido(a); a.tipo = t; a.tipoSup = m; } mapear(a); sugereOpcoes(a); a.cats = null; }
+
+  // ---------- montar os registros ----------
+  const CAT_NOVA = '__nova__';
+  function catsDaAba(a) {
+    if (a.map.cat == null) return null;
+    if (!a.cats) { a.cats = {}; const vals = [...new Set(a.rows.slice(a.hdr + 1).map(r => String(r[a.map.cat] ?? '').trim()).filter(Boolean))];
+      vals.forEach(v => { const nv = sem(v), cs = cats(), ex = cs.find(c => sem(c.nome) === nv);
+        if (ex) a.cats[v] = { para: ex.nome, sup: '' };
+        else { const pa = acharCat(v) || (cs.find(c => nv.length >= 4 && sem(c.nome).includes(nv)) || {}).nome; a.cats[v] = pa ? { para: pa, sup: `nome parecido com "${pa}"` } : { para: CAT_NOVA, sup: 'não existe no painel; vira categoria nova com esse nome' }; } }); }
+    return a.cats;
+  }
+  function registros(a) {
+    const out = [], ruins = [], M = a.map, lin = a.rows.slice(a.hdr + 1);
+    if (a.tipo === 'gas') {
+      const cm = catsDaAba(a); let porDesc = 0;
+      lin.forEach((r, k) => { const n = a.hdr + k + 2;
+        const data = dataDe(r[M.data], a.op.fmt), desc = String(r[M.desc] ?? '').trim(), v0 = valorDe(r[M.valor]);
+        if (!data && !desc && v0 == null) return;
+        if (!data) { ruins.push(`linha ${n}: data "${r[M.data] ?? ''}" não reconhecida`); return; }
+        if (v0 == null || v0 === 0) { ruins.push(`linha ${n}: sem valor`); return; }
+        let v = a.op.sinal === 'neg' ? -v0 : v0;
+        if (v < 0) { if (a.op.outro === 'ign') { ruins.push(`linha ${n}: ${desc || 'sem descrição'} (${fm(Math.abs(v0))}) tem o outro sinal`); return; } }
+        let cat;
+        if (cm) { const c = cm[String(r[M.cat] ?? '').trim()]; cat = !c ? 'Outros' : c.para === CAT_NOVA ? String(r[M.cat]).trim() : c.para; }
+        else { cat = catPorRegra(desc, x => cats().some(c => c.nome === x)) || sugereCat(desc) || 'Outros'; porDesc++; }
+        const fr = M.forma != null ? String(r[M.forma] ?? '') : '', forma = fr ? (FORMAS.find(f => sem(fr).includes(sem(f).split(' ')[0])) || '') : '';
+        out.push({ data, desc: desc || '(sem descrição)', valor: Math.round(v * 100) / 100, comp: data.slice(0, 7), cat, forma, conta: '', obs: 'da planilha' });
+      });
+      a.porDesc = porDesc;
+    } else if (a.tipo === 'cp') {
+      const por = {}; let rep = 0;
+      lin.forEach((r, k) => { const n = a.hdr + k + 2, mes = mesDe(r[M.mes]), v = valorDe(r[M.valor]);
+        if (!mes && v == null) return;
+        if (!mes) { ruins.push(`linha ${n}: mês "${r[M.mes] ?? ''}" não reconhecido`); return; }
+        if (v == null) { ruins.push(`linha ${n}: sem valor`); return; }
+        if (por[mes]) rep++; por[mes] = { mes, valor: Math.round(v), linha: n }; });
+      a.rep = rep; Object.values(por).sort((x, y) => x.mes.localeCompare(y.mes)).forEach(x => out.push(x));
+    } else if (a.tipo === 'apl') {
+      const hoje = new Date().toISOString().slice(0, 10), ex = ativos();
+      lin.forEach((r, k) => { const n = a.hdr + k + 2, nome = String(r[M.nome] ?? '').trim(), atual = valorDe(r[M.atual]);
+        if (!nome && atual == null) return;
+        if (!nome) { ruins.push(`linha ${n}: sem nome`); return; }
+        if (atual == null) { ruins.push(`linha ${n}: ${nome} sem valor atual`); return; }
+        if (/^total|^soma|^subtotal/.test(sem(nome))) { ruins.push(`linha ${n}: "${nome}" parece uma linha de total`); return; }
+        const txTipo = M.tipo != null ? String(r[M.tipo] ?? '') : '', [tipo, tSup] = tipoAtivo(txTipo, nome);
+        const aplic = M.aplic != null ? valorDe(r[M.aplic]) : null, data = M.data != null ? dataDe(r[M.data], 'dmy') : null, venc = M.venc != null ? dataDe(r[M.venc], 'dmy') : null;
+        const igual = ex.find(x => sem(x.nome) === sem(nome));
+        out.push({ nome, inst: M.inst != null ? String(r[M.inst] ?? '').trim() : '', tipo, tSup, atual: Math.round(atual * 100) / 100, aplic: aplic != null ? aplic : atual, semAplic: aplic == null, data: data || hoje, semData: !data, venc: venc || '', igual: igual ? igual.id : null });
+      });
+    }
+    return { out, ruins };
+  }
+  function tipoAtivo(tx, nome) {
+    const t = sem(tx + ' ' + (tx ? '' : nome));
+    const R = [[/tesouro selic|lft/, 'tsel'], [/tesouro ipca|ntn-?b|ipca\+/, 'tipca'], [/tesouro pre|ltn|prefixad/, 'tpre'], [/lci|lca/, 'lci'], [/cri|cra/, 'cri'], [/incentivad/, 'debinc'], [/debenture/, 'deb'], [/cdb|rdb|\blc\b|caixinha|cofrinho/, 'cdb'], [/poupanca/, 'poup'], [/previd|pgbl|vgbl/, 'prev'], [/fii|imobiliari/, 'fii'], [/fundo/, 'fundo'], [/acao|acoes|etf|bolsa|b3/, 'acoes'], [/exterior|internacional|stock|reit|bdr|usd|dolar/, 'intl'], [/ouro/, 'ouro']];
+    const h = R.find(([re]) => re.test(t));
+    if (h) return [h[1], tx ? `pelo tipo "${tx}"` : `pelo nome`];
+    return ['outro', tx ? `não reconheci o tipo "${tx}"` : 'sem coluna de tipo e o nome não diz'];
+  }
+
+  // ---------- tela ----------
+  let PL = null;
+  const sup = t => t ? `<span class="pl-sup" title="Suposição do painel: confira">suposto: ${esc(t)}</span>` : '';
+  function opcoesColunas(a, sel) {
+    const H = a.rows[a.hdr] || [], nc = Math.max(...a.rows.slice(a.hdr, a.hdr + 30).map(r => r.length), 0);
+    let h = `<option value="">— não tem —</option>`; for (let j = 0; j < nc; j++) h += `<option value="${j}"${sel === j ? ' selected' : ''}>${letra(j)}${vazio(H[j]) ? '' : ' · ' + esc(String(H[j]).slice(0, 30))}</option>`; return h;
+  }
+  function pinta() {
+    if (!PL) { box.innerHTML = ''; return; }
+    let total = 0;
+    const blocos = PL.abas.map((a, i) => {
+      const def = TIPOS_ABA[a.tipo];
+      let h = `<div class="pl-aba"><div class="pl-cab"><b>Aba "${esc(a.nome)}"</b><span class="subdet">${a.rows.length} linhas</span></div>
+        <div class="pl-lin"><label>O que é esta aba<select data-pl="${i}" data-plk="tipo">${Object.entries(TIPOS_ABA).map(([k, t]) => `<option value="${k}"${a.tipo === k ? ' selected' : ''}>${t.nome}</option>`).join('')}</select></label>${a.tipoUser ? '' : sup(a.tipoSup)}</div>`;
+      if (!def.campos) return h + '</div>';
+      h += `<div class="pl-lin"><label>Linha dos títulos<select data-pl="${i}" data-plk="hdr">${a.rows.slice(0, 15).map((r, k) => `<option value="${k}"${a.hdr === k ? ' selected' : ''}>linha ${k + 1}: ${esc(r.filter(c => !vazio(c)).slice(0, 4).join(' · ').slice(0, 60))}</option>`).join('')}</select></label>${a.hdrUser ? '' : sup(a.hdrSup)}</div>`;
+      h += `<div class="pl-cols">${def.campos.map(([c, nome, ob]) => `<div class="pl-col"><label>${nome}${ob ? ' <span class="chip warn">obrigatório</span>' : ''}<select data-pl="${i}" data-plk="col" data-plc="${c}">${opcoesColunas(a, a.map[c])}</select></label>${a.map[c] != null && a.sup[c] ? sup(a.sup[c]) : ''}</div>`).join('')}</div>`;
+      const falta = def.campos.filter(([c, , ob]) => ob && a.map[c] == null).map(x => x[1]);
+      if (falta.length) return h + `<p class="pl-erro">Escolha a coluna de: ${falta.join(', ')}.</p></div>`;
+      if (a.tipo === 'gas') h += `<div class="pl-lin"><label>Qual sinal é gasto<select data-pl="${i}" data-plk="sinal"><option value="pos"${a.op.sinal === 'pos' ? ' selected' : ''}>Positivo é gasto</option><option value="neg"${a.op.sinal === 'neg' ? ' selected' : ''}>Negativo é gasto</option></select></label>${a.opUser && a.opUser.sinal ? '' : sup(a.opSup.sinal)}</div>
+        <div class="pl-lin"><label>Valores com o outro sinal<select data-pl="${i}" data-plk="outro"><option value="ign"${a.op.outro === 'ign' ? ' selected' : ''}>Não importar</option><option value="est"${a.op.outro === 'est' ? ' selected' : ''}>Importar como estorno (reduz o gasto do mês)</option></select></label>${a.opUser && a.opUser.outro ? '' : sup(a.opSup.outro)}</div>
+        <div class="pl-lin"><label>Formato das datas<select data-pl="${i}" data-plk="fmt"><option value="dmy"${a.op.fmt === 'dmy' ? ' selected' : ''}>dia/mês/ano</option><option value="mdy"${a.op.fmt === 'mdy' ? ' selected' : ''}>mês/dia/ano</option></select></label>${a.opUser && a.opUser.fmt ? '' : sup(a.opSup.fmt)}</div>`;
+      if (a.tipo === 'cp') h += `<div class="pl-lin"><label class="check"><input type="checkbox" data-pl="${i}" data-plk="subst"${a.op.subst ? ' checked' : ''}> Substituir os checkpoints de meses que já existem no painel</label></div>`;
+      const R = registros(a); a.res = R;
+      const sups = [];
+      if (a.tipo === 'gas') {
+        const cm = catsDaAba(a);
+        if (cm) { const ks = Object.keys(cm);
+          h += `<details class="pl-cats"${ks.some(k => cm[k].sup) ? ' open' : ''}><summary>Categorias da planilha → categorias do painel (${ks.length})</summary><div class="pl-catg">${ks.slice(0, 60).map(k => `<label><span>${esc(k)}</span><select data-pl="${i}" data-plk="cat" data-plv="${esc(k)}"><option value="${CAT_NOVA}"${cm[k].para === CAT_NOVA ? ' selected' : ''}>Criar "${esc(k)}"</option>${cats().map(c => `<option${cm[k].para === c.nome ? ' selected' : ''}>${esc(c.nome)}</option>`).join('')}</select>${cm[k].sup && !cm[k].user ? sup(cm[k].sup) : ''}</label>`).join('')}</div></details>`;
+          const nv = [...new Set(R.out.map(x => x.cat).filter(c => !cats().some(y => y.nome === c)))]; if (nv.length) sups.push(`${nv.length > 1 ? 'Serão criadas as categorias' : 'Será criada a categoria'} ${nv.map(x => `"${esc(x)}"`).join(', ')} no painel, com orçamento zero.`); }
+        else if (a.porDesc) sups.push(`Sem coluna de categoria: a categoria de cada gasto foi sugerida pela descrição (o que não reconheci ficou em "Outros"). Você pode trocar depois em Gastos.`);
+        sups.push('Cada gasto entra no mês da própria data e fica marcado como "da planilha". Repetidos (mesma data, descrição e valor de algo que já está no painel) são pulados.');
+        const keys = contarChaves(allItens()); let dup = 0; R.out.forEach(it => { const k2 = chave(it), c = keys.get(k2) || 0; if (c > 0) { keys.set(k2, c - 1); it.rep = true; dup++; } else it.rep = false; });
+        a.nOk = R.out.length - dup; total += a.nOk;
+        const meses = [...new Set(R.out.map(x => x.comp))].sort();
+        h += `<p class="pl-res"><b>${plural(a.nOk, 'gasto pronto', 'gastos prontos')}</b>${meses.length === 1 ? ` de ${mLabel(mIndex(meses[0]))}` : meses.length ? ` de ${mLabel(mIndex(meses[0]))} a ${mLabel(mIndex(meses[meses.length - 1]))}` : ''}${dup ? ` · ${dup} já no painel` : ''}${R.ruins.length ? ` · ${R.ruins.length} linha${R.ruins.length > 1 ? 's' : ''} fora` : ''}</p>`;
+        h += tabela(['Data', 'Descrição', 'Valor', 'Categoria'], R.out.slice(0, 6).map(x => [x.data.split('-').reverse().join('/'), x.desc, fm2(x.valor), x.cat]));
+      } else if (a.tipo === 'cp') {
+        const ja = new Set((cps || []).map(c => c.mes)), novos = R.out.filter(x => !ja.has(x.mes) || a.op.subst);
+        a.nOk = novos.length; total += a.nOk;
+        if (a.rep) sups.push(`${a.rep} mês${a.rep > 1 ? 'es aparecem' : ' aparece'} mais de uma vez: ficou o valor da última linha de cada mês.`);
+        sups.push('O valor de cada mês é tratado como o patrimônio líquido total no fim daquele mês, como um checkpoint registrado à mão.');
+        const pul = R.out.length - novos.length;
+        h += `<p class="pl-res"><b>${plural(a.nOk, 'checkpoint pronto', 'checkpoints prontos')}</b>${pul ? ` · ${pul} ${pul > 1 ? 'meses já têm' : 'mês já tem'} checkpoint e ${pul > 1 ? 'ficam' : 'fica'} como está` : ''}${R.ruins.length ? ` · ${R.ruins.length} linha${R.ruins.length > 1 ? 's' : ''} fora` : ''}</p>`;
+        h += tabela(['Mês', 'Patrimônio'], R.out.slice(-6).map(x => [mLabel(mIndex(x.mes)), fm(x.valor)]));
+      } else if (a.tipo === 'apl') {
+        a.nOk = R.out.length; total += a.nOk;
+        const nI = R.out.filter(x => x.igual).length, nT = R.out.filter(x => x.tipo === 'outro').length, nA = R.out.filter(x => x.semAplic).length, nD = R.out.filter(x => x.semData).length;
+        if (nI) sups.push(`${nI} aplicaç${nI > 1 ? 'ões têm' : 'ão tem'} o mesmo nome de uma que já está na Carteira: só o valor atual será atualizado.`);
+        sups.push('O tipo de cada aplicação foi deduzido pela coluna Tipo ou pelo nome (veja a coluna Tipo abaixo). CDB, LCI, fundos e similares entram como pós-fixados a 100% do CDI, e todas as aplicações com liquidez diária. Ajuste na Carteira o que for diferente.');
+        const nSem = R.out.filter(x => x.tipo === 'tipca' || x.tipo === 'tpre').length; if (nSem) sups.push(`${nSem} ${nSem > 1 ? 'são Tesouro IPCA+ ou Prefixado e entram' : 'é Tesouro IPCA+ ou Prefixado e entra'} sem taxa, porque a planilha não diz qual é: preencha a taxa na Carteira para a projeção ficar certa.`);
+        if (nT) sups.push(`${nT} ${nT > 1 ? 'ficaram' : 'ficou'} como "Outro" porque não reconheci o tipo.`);
+        if (nA) sups.push(`Sem valor aplicado em ${nA}: usei o valor atual, então o rendimento até hoje aparece como zero.`);
+        if (nD) sups.push(`Sem data em ${nD}: usei a data de hoje.`);
+        h += `<p class="pl-res"><b>${plural(R.out.length - nI, 'aplicação nova', 'aplicações novas')}</b>${nI ? ` · ${nI} para atualizar` : ''}${R.ruins.length ? ` · ${R.ruins.length} linha${R.ruins.length > 1 ? 's' : ''} fora` : ''}</p>`;
+        h += tabela(['Nome', 'Tipo', 'Valor atual', ''], R.out.slice(0, 8).map(x => [x.nome, `${ATIVO_TIPOS[x.tipo] || x.tipo} <span class="subdet">${esc(x.tSup)}</span>`, fm2(x.atual), x.igual ? 'atualiza' : 'nova']), true);
+      }
+      if (sups.length) h += `<div class="pl-supos"><b>O que eu supus nesta aba</b><ul>${sups.map(s => `<li>${s}</li>`).join('')}</ul></div>`;
+      if (R.ruins.length) h += `<details class="pl-ruins"><summary>${R.ruins.length} linha${R.ruins.length > 1 ? 's' : ''} que não ${R.ruins.length > 1 ? 'entram' : 'entra'}</summary><ul>${R.ruins.slice(0, 30).map(x => `<li>${esc(x)}</li>`).join('')}${R.ruins.length > 30 ? `<li>e mais ${R.ruins.length - 30}</li>` : ''}</ul></details>`;
+      return h + '</div>';
+    });
+    box.innerHTML = `<div class="pl-top"><b>${esc(PL.arquivo)}</b><span class="subdet">${plural(PL.abas.length, 'aba', 'abas')}. Os campos em amarelo foram supostos pelo painel: confira antes de importar.</span></div>${blocos.join('')}
+      <div class="btns"><button class="btn" type="button" id="pl-go"${total ? '' : ' disabled'}>Importar ${total ? plural(total, 'item', 'itens') : ''}</button><button class="btn ghost" type="button" id="pl-cancel">Cancelar</button></div><p class="hint" id="pl-msg" role="status"></p>`;
+  }
+  function tabela(cab, linhas, html) {
+    if (!linhas.length) return '';
+    return `<div class="tscroll"><table class="pl-tab"><thead><tr>${cab.map(c => `<th>${c}</th>`).join('')}</tr></thead><tbody>${linhas.map(l => `<tr>${l.map((c, k) => `<td>${html && k === 1 ? c : esc(String(c))}</td>`).join('')}</tr>`).join('')}</tbody></table></div><p class="subdet">${linhas.length < 6 ? '' : 'Mostrando as primeiras linhas.'}</p>`;
+  }
+  box.addEventListener('change', e => {
+    const t = e.target, i = t.dataset.pl; if (i == null || !PL) return; const a = PL.abas[+i], k = t.dataset.plk;
+    if (k === 'tipo') { a.tipo = t.value; a.tipoUser = true; mapear(a); sugereOpcoes(a); a.cats = null; }
+    else if (k === 'hdr') { a.hdr = +t.value; a.hdrUser = true; mapear(a); sugereOpcoes(a); a.cats = null; }
+    else if (k === 'col') { const c = t.dataset.plc; if (t.value === '') delete a.map[c]; else a.map[c] = +t.value; delete a.sup[c]; if (c === 'valor' || c === 'data') sugereOpcoes(a); if (c === 'cat') a.cats = null; }
+    else if (k === 'cat') { const c = a.cats[t.dataset.plv]; c.para = t.value; c.user = true; }
+    else if (k === 'subst') a.op.subst = t.checked;
+    else { a.op[k] = t.value; (a.opUser = a.opUser || {})[k] = true; }
+    pinta();
+  });
+  box.addEventListener('click', e => {
+    if (e.target.id === 'pl-cancel') { PL = null; pinta(); $('pl-st').textContent = 'Importação cancelada. Nada foi salvo.'; }
+    if (e.target.id === 'pl-go') importa();
+  });
+  async function abre(f) {
+    $('pl-st').textContent = `Lendo ${f.name}…`; PL = null; pinta();
+    try { const abas = await lerArquivo(f); if (!abas.length) throw new Error('o arquivo está vazio');
+      PL = { arquivo: f.name, abas }; abas.forEach(prepara); pinta(); $('pl-st').textContent = '';
+      box.scrollIntoView({ block: 'start', behavior: 'smooth' });
+    } catch (e) { $('pl-st').textContent = `Não consegui ler ${f.name}: ${e && e.message ? e.message : 'formato não reconhecido'}.`; }
+  }
+  async function importa() {
+    const b = $('pl-go'); if (!PL || !b) return; b.disabled = true; const res = [];
+    try {
+      const novasCats = new Set();
+      for (const a of PL.abas) {
+        if (!a.res || !a.nOk) continue;
+        if (a.tipo === 'gas') {
+          a.res.out.forEach(x => { if (!cats().some(c => c.nome === x.cat)) novasCats.add(x.cat); });
+          if (novasCats.size) { state.gastosCfg = state.gastosCfg || {}; const base = cats().map(c => Object.assign({}, c)); novasCats.forEach(n => base.push({ nome: n, grupo: 'Estilo de vida', orc: 0 })); state.gastosCfg.cats = base; save(); }
+          const r = addItens(a.res.out.filter(x => !x.rep).map(({ rep, ...x }) => x), 'planilha'); await salvarMeses(r.meses);
+          res.push(`${plural(r.n, 'gasto importado', 'gastos importados')}${r.dup ? ` (${r.dup} repetidos pulados)` : ''}`);
+        } else if (a.tipo === 'cp') {
+          const ja = new Set((cps || []).map(c => c.mes)); let n = 0;
+          for (const x of a.res.out) { if (ja.has(x.mes) && !a.op.subst) continue; await pdoc('checkpoints/' + x.mes).set({ mes: x.mes, valor: x.valor, origem: 'planilha', criadoEm: new Date().toISOString() }); n++; }
+          res.push(plural(n, 'checkpoint registrado', 'checkpoints registrados'));
+        } else if (a.tipo === 'apl') {
+          let nN = 0, nA = 0;
+          a.res.out.forEach(x => {
+            if (x.igual) { state.ativos = ativos().map(y => y.id === x.igual ? Object.assign({}, y, { atual: x.atual }) : y); nA++; return; }
+            const tp = TIPOS[x.tipo] || {}, rv = !!ATIVO_RV[x.tipo], idx = rv ? '' : (tp.idxs || ['pos'])[0];
+            state.ativos = ativos().concat({ id: uid(), nome: x.nome, inst: x.inst, tipo: x.tipo, idx, taxa: rv ? '' : idx === 'pos' ? 100 : 0, adm: tp.fundo ? 0 : '', cc: 'lp', data: x.data, venc: x.venc, aplic: x.aplic, atual: x.atual, receb: 0, liq: 'Diária', classe: '', origem: 'planilha' });
+            nN++; });
+          save(); res.push(`${plural(nN, 'aplicação nova', 'aplicações novas')}${nA ? ` e ${plural(nA, 'atualizada', 'atualizadas')}` : ''}`);
+        }
+      }
+      if (novasCats.size) res.push(`categorias criadas: ${[...novasCats].join(', ')}`);
+      PL = null; pinta(); $('pl-st').textContent = 'Importado: ' + res.join('; ') + '.';
+      try { renderTab(); } catch (e) {}
+      impPop('gas', 'ok', 'Planilha importada', [...res.map(s => s.charAt(0).toUpperCase() + s.slice(1) + '.'), 'Tudo fica marcado como "da planilha". Confira em Gastos, na Projeção e na Carteira.']);
+    } catch (e) { b.disabled = false; $('pl-msg').textContent = 'Não consegui importar' + (e && e.message ? ': ' + e.message : '.') + ' O que já tinha entrado fica salvo.'; }
+  }
+  zona.addEventListener('click', e => { if (e.target !== inp) inp.click(); });
+  zona.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); inp.click(); } });
+  ['dragenter', 'dragover'].forEach(ev => zona.addEventListener(ev, e => { e.preventDefault(); zona.classList.add('sobre'); }));
+  ['dragleave', 'dragend'].forEach(ev => zona.addEventListener(ev, () => zona.classList.remove('sobre')));
+  zona.addEventListener('drop', e => { e.preventDefault(); zona.classList.remove('sobre'); const f = e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files[0]; if (f) abre(f); });
+  inp.addEventListener('change', () => { const f = inp.files && inp.files[0]; inp.value = ''; if (f) abre(f); });
+  document.addEventListener('click', e => { const l = e.target.closest && e.target.closest('[data-irplan]'); if (!l) return; e.preventDefault(); showTab('config'); setTimeout(() => { const s = $('cfg-plan'); if (s) { try { abrirSecao(s); } catch (er) {} s.scrollIntoView({ block: 'start', behavior: 'smooth' }); } }, 80); });
 })();
 </script>
 

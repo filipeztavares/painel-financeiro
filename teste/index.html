@@ -1901,7 +1901,7 @@ label.bk-conf .subdet { font-size: 11.5px; text-transform: none; letter-spacing:
     </div>
     <div class="nav-mobile-sub" id="navMobileSub"></div>
   </div>
-  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 280</div></div>
+  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 281</div></div>
 </nav>
 <div class="sino-pop" id="sino-pop" role="dialog" aria-label="Atualizações das bases" hidden></div>
 <div class="sino-pop" id="pess-pop" role="dialog" aria-label="Seus avisos" hidden></div>
@@ -3812,7 +3812,7 @@ label.bk-conf .subdet { font-size: 11.5px; text-transform: none; letter-spacing:
     return new Promise(resolve => { const { data } = sb.auth.onAuthStateChange(async (ev) => { if (ev !== 'PASSWORD_RECOVERY') return; const s = prompt('Digite a nova senha (mínimo 8 caracteres):'); if (s && s.length >= 8) { const { error } = await sb.auth.updateUser({ password: s }); alert(error ? 'Não deu para trocar a senha: ' + error.message : 'Senha trocada.'); } }); resolve(data); });
   }
   // ---------- rodapé: compartilhar, administração e sair ----------
-  const SITE_V = 164;
+  const SITE_V = 165;
   const escH = v => String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const dataBR = v => v ? new Date(v).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' }) : '–';
   const css2 = `.side-foot .r{flex-wrap:wrap}.side-foot .lg-acoes{margin-left:auto;display:inline-flex;gap:10px}
@@ -16828,7 +16828,8 @@ function jorSimDb(real) {
     return out;
   }
   const basico = () => situacao().every(x => x.feita);
-  const modFixo = t => { const m = MODS.find(x => x.tabs.includes(t)); return !m || m.fixo; };
+  const LIVRES = ['agen'];   // abertos desde o primeiro acesso, além de Primeiros passos e Finanças
+  const modFixo = t => { const m = MODS.find(x => x.tabs.includes(t)); return !m || m.fixo || LIVRES.includes(m.id); };
   function trancada(t) {
     if (!ativa()) return false;
     const s = situacao().find(x => x.e.tabs.includes(t)); if (s) return !s.aberta;
@@ -16961,7 +16962,7 @@ function jorSimDb(real) {
 
   // ---------- roleta durante a jornada: só Primeiros passos e Finanças abertos ----------
   const CAD = 'M7 10V7a5 5 0 0 1 10 0v3h1a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-8a2 2 0 0 1 2-2h1zm2 0h6V7a3 3 0 0 0-6 0v3z';
-  const rodaTr = m => ativa() && !!m && !m.fixo;
+  const rodaTr = m => ativa() && !!m && !m.fixo && !LIVRES.includes(m.id);
   function irFin() { const pr = proximo(); if (pr) irPasso(pr.p); else showTab('inicio'); }
   function bloqMod(m) {
     const pr = proximo();
@@ -16986,13 +16987,13 @@ function jorSimDb(real) {
     box.querySelectorAll('.jg-prox').forEach(x => x.remove());
     const b = box.querySelector('.jg-bts .btn:not(.ghost)'), ca = box.querySelector('.jg-casa');
     if (rodaTr(m)) { if (ca) ca.textContent = `Casa ${i + 1} de ${jgMods().length} · bloqueado`; if (b) { b.outerHTML = `<button type="button" class="btn ghost" data-irmod="${m.id}"><span class="jor-lock"></span> Bloqueado</button>`; } }
-    else if (b) b.textContent = m.id === 'uso' ? 'Começar o passo a passo' : 'Entrar em Finanças'; }; }
+    else if (b) b.textContent = m.id === 'uso' ? 'Começar o passo a passo' : m.id === 'fin' ? 'Entrar em Finanças' : 'Entrar nesta casa'; }; }
   { const o = jgPick; jgPick = function (i) { const m = jgMods()[i];   // um clique na fatia já abre o módulo
-    if (ativa()) { if (m && m.fixo) return irFin(); if (rodaTr(m)) { if (i !== jgSel) o(i); return bloqMod(m); } return o(i); }
+    if (ativa()) { if (m && m.fixo) return irFin(); if (rodaTr(m)) { if (i !== jgSel) o(i); return bloqMod(m); } if (m && !m.breve) { if (i !== jgSel) o(i); return showTab(m.vg || m.tabs[0]); } return o(i); }
     if (m && !m.breve) { if (i !== jgSel) o(i); return showTab(m.vg || m.tabs[0]); }
     return o(i); }; }
   document.addEventListener('click', e => { if (!ativa()) return; const b = e.target.closest && e.target.closest('[data-irmod]'); if (!b) return;
-    const m = MODS.find(x => x.id === b.dataset.irmod); if (!m) return; e.stopImmediatePropagation(); e.preventDefault();
+    const m = MODS.find(x => x.id === b.dataset.irmod); if (!m || LIVRES.includes(m.id)) return; e.stopImmediatePropagation(); e.preventDefault();
     if (m.fixo) irFin(); else bloqMod(m); }, true);
 
   // ---------- saiu do guia (✕ ou "Explorar sozinho"): botão fixo para voltar ao passo a passo ----------
