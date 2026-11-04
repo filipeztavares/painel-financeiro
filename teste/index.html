@@ -1901,7 +1901,7 @@ label.bk-conf .subdet { font-size: 11.5px; text-transform: none; letter-spacing:
     </div>
     <div class="nav-mobile-sub" id="navMobileSub"></div>
   </div>
-  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 281</div></div>
+  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 282</div></div>
 </nav>
 <div class="sino-pop" id="sino-pop" role="dialog" aria-label="Atualizações das bases" hidden></div>
 <div class="sino-pop" id="pess-pop" role="dialog" aria-label="Seus avisos" hidden></div>
@@ -3812,7 +3812,7 @@ label.bk-conf .subdet { font-size: 11.5px; text-transform: none; letter-spacing:
     return new Promise(resolve => { const { data } = sb.auth.onAuthStateChange(async (ev) => { if (ev !== 'PASSWORD_RECOVERY') return; const s = prompt('Digite a nova senha (mínimo 8 caracteres):'); if (s && s.length >= 8) { const { error } = await sb.auth.updateUser({ password: s }); alert(error ? 'Não deu para trocar a senha: ' + error.message : 'Senha trocada.'); } }); resolve(data); });
   }
   // ---------- rodapé: compartilhar, administração e sair ----------
-  const SITE_V = 165;
+  const SITE_V = 166;
   const escH = v => String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const dataBR = v => v ? new Date(v).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' }) : '–';
   const css2 = `.side-foot .r{flex-wrap:wrap}.side-foot .lg-acoes{margin-left:auto;display:inline-flex;gap:10px}
@@ -16926,7 +16926,7 @@ function jorSimDb(real) {
 
   function decorar() {
     if (!state) return;
-    const cj = $('cfg-jor'); if (cj) cj.hidden = !ehAdmin() || JOR_SIM;
+    const cj = $('cfg-jor'); if (cj) cj.hidden = !ehAdmin() || JOR_SIM || !document.getElementById('amb-teste');   // só no site de teste
     travaRoda();
     document.querySelectorAll('.nav-head[data-tab]').forEach(b => { const tr = trancada(b.dataset.tab); b.classList.toggle('jor-tranc', tr); if (tr) b.title = 'Bloqueado: termine a etapa anterior'; else if (b.title === 'Bloqueado: termine a etapa anterior') b.title = ''; });
     document.querySelectorAll('#md-grid [data-irmod]').forEach(b => { const m = MODS.find(x => x.id === b.dataset.irmod), tr = !!m && !m.fixo && trancada(m.vg || m.tabs[0]);
