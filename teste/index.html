@@ -1912,7 +1912,7 @@ label.bk-conf .subdet { font-size: 11.5px; text-transform: none; letter-spacing:
     </div>
     <div class="nav-mobile-sub" id="navMobileSub"></div>
   </div>
-  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 284</div></div>
+  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 285</div></div>
 </nav>
 <div class="sino-pop" id="sino-pop" role="dialog" aria-label="Atualizações das bases" hidden></div>
 <div class="sino-pop" id="pess-pop" role="dialog" aria-label="Seus avisos" hidden></div>
@@ -3268,7 +3268,7 @@ label.bk-conf .subdet { font-size: 11.5px; text-transform: none; letter-spacing:
         <div class="orc-modelo" id="orc-modelo-box"><span class="orc-h">Como você recebe</span><div class="seg" id="orc-modelo"><button type="button" data-modelo="pj" aria-pressed="false">PJ (empresa própria)</button><button type="button" data-modelo="clt" aria-pressed="false">CLT (carteira assinada)</button></div><div class="seg" id="orc-cltmodo" hidden><button type="button" data-cltmodo="liq" aria-pressed="false">Digito o líquido</button><button type="button" data-cltmodo="bruto" aria-pressed="false">Digito o bruto</button></div><p class="hint" id="orc-modelo-hint"></p></div>
         <div class="orc-grid">
           <div><h3 class="orc-h">Receitas e deduções</h3><div class="tscroll"><table id="tbl-orc-rec"></table></div></div>
-          <div><div class="row" style="margin-bottom:0"><h3 class="orc-h">Custos por categoria</h3><span class="btns" style="margin:0"><button class="btn ghost tiny" type="button" id="orc-sug">Usar a distribuição sugerida</button> <button type="button" class="ibtn" data-info="orc:sug" aria-label="De onde vem a sugestão">i</button><button class="btn ghost tiny" type="button" id="orc-media">Usar a média dos últimos 3 meses</button></span></div>
+          <div><div class="row" style="margin-bottom:0"><h3 class="orc-h">Custos por categoria</h3><span class="btns" style="margin:0"><button class="btn ghost tiny" type="button" id="orc-sug">Usar a distribuição sugerida</button> <button type="button" class="ibtn" data-info="orc:sug" aria-label="De onde vem a sugestão">i</button><button class="btn ghost tiny" type="button" id="orc-media">Usar a média dos 3 meses mais recentes</button></span></div>
             <div class="tscroll"><table id="tbl-orc-cat"></table></div>
             <form id="orc-addcat" class="orc-add"><input type="text" class="name" id="orc-catnome" placeholder="Nova categoria" aria-label="Nome da nova categoria"><select id="orc-catgrupo" aria-label="Grupo"><option>Fixos</option><option>Essenciais</option><option selected>Estilo de vida</option></select><input type="number" step="50" id="orc-catval" placeholder="R$/mês" aria-label="Orçamento da nova categoria"><button class="btn tiny" type="submit">+ Categoria</button></form>
             <p class="hint" id="orc-catmsg" role="status"></p>
@@ -3823,7 +3823,7 @@ label.bk-conf .subdet { font-size: 11.5px; text-transform: none; letter-spacing:
     return new Promise(resolve => { const { data } = sb.auth.onAuthStateChange(async (ev) => { if (ev !== 'PASSWORD_RECOVERY') return; const s = prompt('Digite a nova senha (mínimo 8 caracteres):'); if (s && s.length >= 8) { const { error } = await sb.auth.updateUser({ password: s }); alert(error ? 'Não deu para trocar a senha: ' + error.message : 'Senha trocada.'); } }); resolve(data); });
   }
   // ---------- rodapé: compartilhar, administração e sair ----------
-  const SITE_V = 169;
+  const SITE_V = 170;
   const escH = v => String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const dataBR = v => v ? new Date(v).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' }) : '–';
   const css2 = `.side-foot .r{flex-wrap:wrap}.side-foot .lg-acoes{margin-left:auto;display:inline-flex;gap:10px}
@@ -14220,9 +14220,9 @@ function renderOrcamento() {
     <tr class="totrow"><td class="name">Receita líquida</td><td></td><td></td><td></td><td>${fm(pm.liq)}</td><td></td></tr></tbody>`;
   // custos por categoria
   const media = {}; let nM = 0;
-  [1, 2, 3].forEach(j => { const t = totaisMes(mKey(HOJE_IDX - j)); if (t.n) { nM++; Object.entries(t.porCat).forEach(([c, x]) => { media[c] = (media[c] || 0) + x; }); } });
+  const msMed = mesesMedia(); msMed.forEach(m => { const t = totaisMes(m); nM++; Object.entries(t.porCat).forEach(([c, x]) => { media[c] = (media[c] || 0) + x; }); });
   const gr = GRUPOS.map(g => g.id);
-  $('tbl-orc-cat').innerHTML = `<thead><tr><th>Categoria</th><th>Grupo</th><th>Valor de hoje (R$/mês)</th><th>Reajuste</th><th>Média dos 3 meses</th><th></th></tr></thead><tbody>
+  $('tbl-orc-cat').innerHTML = `<thead><tr><th>Categoria</th><th>Grupo</th><th>Valor de hoje (R$/mês)</th><th>Reajuste</th><th>${msMed.length ? 'Média ' + rotMedia(msMed) : 'Média dos 3 meses'}</th><th></th></tr></thead><tbody>
     ${gr.map(g => { const cs = cats().filter(c => (c.grupo || 'Estilo de vida') === g); if (!cs.length) return '';
       return `<tr class="og"><td class="name">${g}</td><td></td><td>${fm(cs.reduce((s, c) => s + (+c.orc || 0), 0))}</td><td></td><td>${nM ? fm(cs.reduce((s, c) => s + (media[c.nome] || 0), 0) / nM) : '—'}</td><td></td></tr>` +
       cs.map(c => `<tr><td class="name">${esc(c.nome)}</td><td class="name"><select data-bind="orccat:${esc(c.nome)}:grupo" aria-label="Grupo de ${esc(c.nome)}">${gr.map(x => `<option ${x === c.grupo ? 'selected' : ''}>${x}</option>`).join('')}</select></td><td><input type="number" step="50" data-bind="orccat:${esc(c.nome)}:orc" value="${+c.orc || 0}" aria-label="Orçamento de ${esc(c.nome)}"></td>${reajCel('orccat', c.nome, c, 'cat', c.nome)}<td>${nM ? fm((media[c.nome] || 0) / nM) : '—'}</td><td><button class="btn danger tiny" type="button" data-delorc="cat:${esc(c.nome)}">remover</button></td></tr>`).join(''); }).join('')}
@@ -14358,9 +14358,12 @@ $('orc-sug').addEventListener('click', () => {
   if (cats().some(c => +c.orc) && !confirmar('Trocar o orçamento de cada categoria pela distribuição sugerida (80% da receita líquida, pesos da POF/IBGE)?')) return;
   custosSugeridos(pm.liq); state.orc.sugFeita = true; save(); $('orc-catmsg').textContent = 'Distribuição sugerida aplicada. Ajuste cada linha ao seu caso.'; renderOrcamento();
 });
+// os 3 meses mais recentes antes do mês atual que têm gastos (não precisam ser seguidos)
+function mesesMedia() { const atual = mKey(HOJE_IDX); return Object.keys(gastos).filter(m => m < atual && totaisMes(m).n).sort().slice(-3); }
+function rotMedia(ms) { if (!ms.length) return ''; const l = m => mLabel(mIndex(m)); return ms.length === 1 ? 'de ' + l(ms[0]) : ms.length === 2 ? `de ${l(ms[0])} e ${l(ms[1])}` : `de ${l(ms[0])}, ${l(ms[1])} e ${l(ms[2])}`; }
 $('orc-media').addEventListener('click', () => {
-  const ts = [1, 2, 3].map(j => totaisMes(mKey(HOJE_IDX - j))).filter(x => x.n);
-  if (!ts.length || !confirmar(`Trocar o orçamento de cada categoria pela média de gasto dos últimos ${ts.length} mês(es)?`)) return;
+  const msM = mesesMedia(), ts = msM.map(totaisMes);
+  if (!ts.length || !confirmar(`Trocar o orçamento de cada categoria pela média de gasto ${rotMedia(msM)}?`)) return;
   catsEditaveis().forEach(c => { c.orc = Math.round(ts.reduce((s, x) => s + (x.porCat[c.nome] || 0), 0) / ts.length / 50) * 50; });
   save(); renderOrcamento();
 });
