@@ -2153,7 +2153,7 @@ body:has(#tour-pop:not([hidden])) #jor-divbar { display: none; }
     </div>
     <div class="nav-mobile-sub" id="navMobileSub"></div>
   </div>
-  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 296</div></div>
+  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 297</div></div>
 </nav>
 <div class="sino-pop" id="sino-pop" role="dialog" aria-label="Atualizações das bases" hidden></div>
 <div class="sino-pop" id="pess-pop" role="dialog" aria-label="Seus avisos" hidden></div>
@@ -4064,7 +4064,7 @@ body:has(#tour-pop:not([hidden])) #jor-divbar { display: none; }
     return new Promise(resolve => { const { data } = sb.auth.onAuthStateChange(async (ev) => { if (ev !== 'PASSWORD_RECOVERY') return; const s = prompt('Digite a nova senha (mínimo 8 caracteres):'); if (s && s.length >= 8) { const { error } = await sb.auth.updateUser({ password: s }); alert(error ? 'Não deu para trocar a senha: ' + error.message : 'Senha trocada.'); } }); resolve(data); });
   }
   // ---------- rodapé: compartilhar, administração e sair ----------
-  const SITE_V = 182;
+  const SITE_V = 183;
   const escH = v => String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const dataBR = v => v ? new Date(v).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' }) : '–';
   const css2 = `.side-foot .r{flex-wrap:wrap}.side-foot .lg-acoes{margin-left:auto;display:inline-flex;gap:10px}
@@ -15503,7 +15503,7 @@ function renderJogo() {
   $('jg-home').hidden = jgVista() !== 'roleta';
   $('jg-vista').textContent = jgVista() === 'roleta' ? 'Ver os módulos em cards' : 'Ver como roleta';
   const tm = jgTemaAtual();
-  $('jg-hud').innerHTML = `<span class="jg-pill" title="Pontos vêm de casas configuradas, checkpoints, meses fechados e meses dentro do projetado"><span class="jg-lv">${d.nivel}</span>${esc(d.nome)}</span><span class="jg-pill" style="--c:var(--s3)"><i></i>${d.total.toLocaleString('pt-BR')} pontos${d.prox ? ` <span class="subdet">· faltam ${(d.prox[0] - d.total).toLocaleString('pt-BR')} para ${esc(d.prox[1])}</span>` : ''}</span><span class="jg-pill" style="--c:var(--good)"><i></i>${seq} semana${seq === 1 ? '' : 's'} seguida${seq === 1 ? '' : 's'}</span><span class="jg-pill" style="--c:var(--s1)"><i></i>${d.casas} de ${d.casasN} casas</span>
+  $('jg-hud').innerHTML = `<span class="jg-pill" title="Pontos vêm de casas configuradas, checkpoints, meses fechados e meses dentro do projetado"><span class="jg-lv">${d.nivel}</span>${esc(d.nome)}</span><span class="jg-pill" style="--c:var(--s3)"><i></i>${d.total.toLocaleString('pt-BR')} pontos${d.prox ? ` <span class="subdet">· faltam ${(d.prox[0] - d.total).toLocaleString('pt-BR')} para ${esc(d.prox[1])}</span>` : ''}</span><span class="jg-pill" style="--c:var(--good)"><i></i>${seq} semana${seq === 1 ? '' : 's'} seguida${seq === 1 ? '' : 's'}</span>
     <span class="jg-tema">Aparência <span class="seg" role="group" aria-label="Aparência">${[['auto', 'Automática'], ['claro', 'Clara'], ['escuro', 'Escura']].map(([k, n]) => `<button type="button" data-jgtema="${k}" aria-pressed="${tm === k}">${n}</button>`).join('')}</span></span>`;
   if (jgVista() !== 'roleta' || !N) return;
   const CX = 250, CY = 250, R1 = 220, R0 = 74, ST = 360 / N, GAP = 1.1, f2 = n => n.toFixed(2);
