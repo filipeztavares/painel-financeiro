@@ -2153,7 +2153,7 @@ body:has(#tour-pop:not([hidden])) #jor-divbar { display: none; }
     </div>
     <div class="nav-mobile-sub" id="navMobileSub"></div>
   </div>
-  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 295</div></div>
+  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 296</div></div>
 </nav>
 <div class="sino-pop" id="sino-pop" role="dialog" aria-label="Atualizações das bases" hidden></div>
 <div class="sino-pop" id="pess-pop" role="dialog" aria-label="Seus avisos" hidden></div>
@@ -4064,7 +4064,7 @@ body:has(#tour-pop:not([hidden])) #jor-divbar { display: none; }
     return new Promise(resolve => { const { data } = sb.auth.onAuthStateChange(async (ev) => { if (ev !== 'PASSWORD_RECOVERY') return; const s = prompt('Digite a nova senha (mínimo 8 caracteres):'); if (s && s.length >= 8) { const { error } = await sb.auth.updateUser({ password: s }); alert(error ? 'Não deu para trocar a senha: ' + error.message : 'Senha trocada.'); } }); resolve(data); });
   }
   // ---------- rodapé: compartilhar, administração e sair ----------
-  const SITE_V = 181;
+  const SITE_V = 182;
   const escH = v => String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const dataBR = v => v ? new Date(v).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' }) : '–';
   const css2 = `.side-foot .r{flex-wrap:wrap}.side-foot .lg-acoes{margin-left:auto;display:inline-flex;gap:10px}
@@ -13122,18 +13122,18 @@ function sugereCat(desc) {
 function normCat(c, desc) { const s = String(c || '').trim(); const f = cats().find(x => x.nome.toLowerCase() === s.toLowerCase()); return f ? f.nome : (sugereCat(desc) || 'Outros'); }
 
 /* armazenamento: um documento por mês em gastos/AAAA-MM */
-const gWriting = {}, gPending = {};
+const gWriting = {}, gPending = {}, gSujo = new Set();   // gSujo: meses mudados aqui que o banco ainda não confirmou
 async function salvarMes(mes) {
   try { localStorage.setItem(LSK('painel-gastos'), JSON.stringify(gastos)); } catch (e) {}
-  if (!db) return;
+  if (!db) { gSujo.delete(mes); return; }
   if (gWriting[mes]) { gPending[mes] = true; return; }
   gWriting[mes] = true;
-  try { await pdoc('gastos/' + mes).set({ mes, itens: gastos[mes] || [] }); setSave('salvo'); }
+  try { await pdoc('gastos/' + mes).set({ mes, itens: gastos[mes] || [] }); if (!gPending[mes]) gSujo.delete(mes); setSave('salvo'); }
   catch (e) { setSave(e && e.code === 'quota_exceeded' ? 'limite de dados atingido' : 'gastos não salvaram, tente de novo'); }
   gWriting[mes] = false;
   if (gPending[mes]) { gPending[mes] = false; salvarMes(mes); }
 }
-async function salvarMeses(list) { for (const m of list) await salvarMes(m); }
+async function salvarMeses(list, prog) { list.forEach(m => gSujo.add(m)); let i = 0; for (const m of list) { if (prog) try { prog(++i, list.length); } catch (e) {} await salvarMes(m); } }
 // repetidos contam como multiconjunto: duas compras iguais no mesmo dia (ex.: lavanderia) entram as duas, e reimportar o mesmo arquivo não duplica
 function contarChaves(l) { const m = new Map(); l.forEach(it => { const k2 = chave(it); m.set(k2, (m.get(k2) || 0) + 1); }); return m; }
 function addItens(novos, origem) {
@@ -17018,7 +17018,7 @@ setTimeout(carregFim, 15000);
   vgSemear();
   pcol('checkpoints').onSnapshot(s => { setTimeout(() => carregou('cps'), 0); const l = s.docs.map(d => d.data()).filter(d => d && d.mes && isFinite(d.valor)).map(d => ({ mes: String(d.mes).slice(0, 7), valor: +d.valor, origem: d.origem || '', imp: d.imp || '' })); cps = l.length ? l : CP_PLANILHA.slice(); if (tab === 'global' || tab === 'cenarios' || tab === 'inicio' || tab === 'modulos' || tab === 'comousar') renderTab(); },
     () => { carregou('cps'); setSave('checkpoints indisponíveis agora'); });
-  pcol('gastos').onSnapshot(s => { setTimeout(() => carregou('gastos'), 0); const g = {}; s.docs.forEach(d => { const x = clone(d.data() || null); if (x && /^\d{4}-\d{2}$/.test(x.mes) && Array.isArray(x.itens)) g[x.mes] = x.itens.filter(it => it && it.data && it.comp && isFinite(+it.valor)); }); gastos = g; if (tab === 'gastos') renderGastos(); if (tab === 'inicio') renderHome(); if (tab === 'modulos' || tab === 'comousar') renderTab(); },
+  pcol('gastos').onSnapshot(s => { setTimeout(() => carregou('gastos'), 0); const g = {}; s.docs.forEach(d => { const x = clone(d.data() || null); if (x && /^\d{4}-\d{2}$/.test(x.mes) && Array.isArray(x.itens)) g[x.mes] = x.itens.filter(it => it && it.data && it.comp && isFinite(+it.valor)); }); gSujo.forEach(m => { if (gastos[m]) g[m] = gastos[m]; else delete g[m]; }); gastos = g; if (tab === 'gastos') renderGastos(); if (tab === 'inicio') renderHome(); if (tab === 'modulos' || tab === 'comousar') renderTab(); },
     () => { carregou('gastos'); setSave('gastos indisponíveis agora'); });
   db.collection('acoes').onSnapshot(s => { const m = {}; s.docs.forEach(d => { const x = clone(d.data() || null); if (x && /^[A-Z][A-Z0-9]{3}\d{1,2}B?$/.test(x.tk)) m[x.tk] = x; }); acoesDb = m; if (tab === 'carteira') renderAcoes(); }, () => {});
   showTab(tab);
@@ -17685,13 +17685,13 @@ function jorSimDb(real) {
     return a.cats;
   }
   function registros(a) {
-    const out = [], ruins = [], M = a.map, lin = a.rows.slice(a.hdr + 1);
+    const out = [], ruins = [], M = a.map, lin = a.rows.slice(a.hdr + 1); let vazias = 0;
     if (a.tipo === 'gas') {
       const cm = catsDaAba(a); let porDesc = 0; a.cand = []; a.manual = a.manual || new Map();
       const pals = String(a.op.excl || '').split(/[,;]/).map(w => sem(w)).filter(Boolean);
       lin.forEach((r, k) => { const n = a.hdr + k + 2;
         const data = dataDe(r[M.data], a.op.fmt), desc = String(r[M.desc] ?? '').trim(), v0 = valorDe(r[M.valor]);
-        if (!data && !desc && v0 == null) return;
+        if (!desc && !v0) { if (r.some(c => !vazio(c))) vazias++; return; }   // sem descrição e sem valor (ou zero): linha separadora
         if (!data) { ruins.push(`linha ${n}: data "${r[M.data] ?? ''}" não reconhecida`); return; }
         if (v0 == null || v0 === 0) { ruins.push(`linha ${n}: sem valor`); return; }
         let v = a.op.sinal === 'neg' ? -v0 : v0;
@@ -17727,6 +17727,7 @@ function jorSimDb(real) {
         out.push({ nome, inst: M.inst != null ? String(r[M.inst] ?? '').trim() : '', tipo, tSup, atual: Math.round(atual * 100) / 100, aplic: aplic != null ? aplic : atual, semAplic: aplic == null, data: data || hoje, semData: !data, venc: venc || '', igual: igual ? igual.id : null });
       });
     }
+    if (vazias) ruins.unshift(`${plural(vazias, 'linha', 'linhas')} sem descrição e sem valor (separadoras ou em branco) ${vazias > 1 ? 'foram puladas' : 'foi pulada'}`);
     return { out, ruins };
   }
   function tipoAtivo(tx, nome) {
@@ -17839,7 +17840,7 @@ function jorSimDb(real) {
     } catch (e) { $('pl-st').textContent = `Não consegui ler ${f.name}: ${e && e.message ? e.message : 'formato não reconhecido'}.`; }
   }
   async function importa() {
-    const b = $('pl-go'); if (!PL || !b) return; b.disabled = true; const res = [];
+    const b = $('pl-go'); if (!PL || !b) return; b.disabled = true; const res = []; $('pl-st').textContent = 'Importando…';
     try {
       const novasCats = new Set();
       IMP = { id: uid(), em: new Date().toISOString(), arquivo: PL.arquivo, gastos: 0, meses: [], cps: [], novos: [], atual: [], cats: [] };
@@ -17848,7 +17849,7 @@ function jorSimDb(real) {
         if (a.tipo === 'gas') {
           a.res.out.forEach(x => { if (!cats().some(c => c.nome === x.cat)) novasCats.add(x.cat); });
           if (novasCats.size) { state.gastosCfg = state.gastosCfg || {}; const base = cats().map(c => Object.assign({}, c)); novasCats.forEach(n => base.push({ nome: n, grupo: 'Estilo de vida', orc: 0 })); state.gastosCfg.cats = base; save(); }
-          const r = addItens(a.res.out.filter(x => !x.rep).map(({ rep, ...x }) => Object.assign(x, { imp: IMP.id })), 'planilha'); await salvarMeses(r.meses);
+          const r = addItens(a.res.out.filter(x => !x.rep).map(({ rep, ...x }) => Object.assign(x, { imp: IMP.id })), 'planilha'); await salvarMeses(r.meses, (i, n) => { $('pl-st').textContent = `Salvando os gastos: mês ${i} de ${n}…`; });
           IMP.gastos += r.n; IMP.meses = [...new Set(IMP.meses.concat(r.meses))].sort();
           res.push(`${plural(r.n, 'gasto importado', 'gastos importados')}${r.dup ? ` (${r.dup} repetidos pulados)` : ''}`);
         } else if (a.tipo === 'cp') {
