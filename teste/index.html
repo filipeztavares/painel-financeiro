@@ -2153,7 +2153,7 @@ body:has(#tour-pop:not([hidden])) #jor-divbar { display: none; }
     </div>
     <div class="nav-mobile-sub" id="navMobileSub"></div>
   </div>
-  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 294</div></div>
+  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 295</div></div>
 </nav>
 <div class="sino-pop" id="sino-pop" role="dialog" aria-label="Atualizações das bases" hidden></div>
 <div class="sino-pop" id="pess-pop" role="dialog" aria-label="Seus avisos" hidden></div>
@@ -3450,7 +3450,7 @@ body:has(#tour-pop:not([hidden])) #jor-divbar { display: none; }
         <div class="tscroll"><table id="tbl-cat"></table></div>
       </section>
       <section data-nav="Lançamentos" class="panel">
-        <div class="row"><h2>Lançamentos do mês</h2><div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;justify-content:flex-end"><button class="btn ghost tiny" type="button" id="lg-min">Recolher tudo</button><button class="btn ghost tiny" type="button" id="lg-max">Abrir tudo</button><input type="text" class="name" id="g-busca" placeholder="Buscar" style="width:200px"></div></div>
+        <div class="row"><h2>Lançamentos do mês</h2><div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;justify-content:flex-end"><button class="btn ghost tiny" type="button" id="lg-min">Recolher tudo</button><button class="btn ghost tiny" type="button" id="lg-max">Abrir tudo</button><select id="g-orig" aria-label="Filtrar por origem" style="width:auto"><option value="">Todas as origens</option></select><input type="text" class="name" id="g-busca" placeholder="Buscar" style="width:200px"></div></div>
         <div class="tscroll"><table id="tbl-lanc"></table></div>
       </section>
       <section data-nav="Fechamento do mês" class="panel">
@@ -4064,7 +4064,7 @@ body:has(#tour-pop:not([hidden])) #jor-divbar { display: none; }
     return new Promise(resolve => { const { data } = sb.auth.onAuthStateChange(async (ev) => { if (ev !== 'PASSWORD_RECOVERY') return; const s = prompt('Digite a nova senha (mínimo 8 caracteres):'); if (s && s.length >= 8) { const { error } = await sb.auth.updateUser({ password: s }); alert(error ? 'Não deu para trocar a senha: ' + error.message : 'Senha trocada.'); } }); resolve(data); });
   }
   // ---------- rodapé: compartilhar, administração e sair ----------
-  const SITE_V = 179;
+  const SITE_V = 180;
   const escH = v => String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const dataBR = v => v ? new Date(v).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' }) : '–';
   const css2 = `.side-foot .r{flex-wrap:wrap}.side-foot .lg-acoes{margin-left:auto;display:inline-flex;gap:10px}
@@ -11041,10 +11041,10 @@ function renderGlobal() {
     const nb = comprasDe(x.c).length;
     return `<tr${x.c.id === state.destaque ? ' class="best"' : ''}><td class="name" style="color:${cenCor(x.c)};font-weight:600">${esc(x.c.nome)}</td><td class="name">${x.c.manual !== '' && +x.c.manual > 0 ? 'taxa manual' : perfilDe(m.risco).nome}</td><td>${pct(net, 2)}</td><td>${nb}</td><td>${k(x.p.inv[H])}</td><td>${k(x.p.pat[H])}</td><td>${k(x.p.pat[H] / x.p.defl[H])}</td><td class="${mi < 0 ? 'neg' : ''}">${k(mi)}</td><td class="${neg ? 'neg' : ''}">${neg}</td></tr>`; }).join('')}</tbody>`;
   // checkpoints
-  const sorted = cps.filter(c => c.mes >= INICIO_TELAS).sort((a, b) => a.mes < b.mes ? 1 : -1);
+  const sorted = cps.filter(c => c.mes >= INICIO_TELAS || c.origem === 'planilha').sort((a, b) => a.mes < b.mes ? 1 : -1);
   $('cp-zerar').hidden = !sorted.length;
   $('tbl-cp').innerHTML = sorted.length ? `<thead><tr><th>Mês</th><th>Real</th><th>Plano</th><th>Diferença</th><th>%</th><th></th></tr></thead><tbody>${sorted.map(c => { const pl = planoAt(mIndex(c.mes)); const d = pl != null ? c.valor - pl : null;
-    return `<tr><td>${mLabel(mIndex(c.mes))}</td><td>${fm(c.valor)}</td><td>${pl != null ? fm(pl) : '—'}</td><td class="${d < 0 ? 'neg' : 'pos'}">${d == null ? '—' : (d >= 0 ? '+' : '') + fm(d)}</td><td class="${d < 0 ? 'neg' : 'pos'}">${d == null ? '' : pct(d / pl)}</td><td>${db ? `<button class="btn ghost tiny" type="button" data-delcp="${c.mes}" aria-label="Apagar checkpoint de ${mLabel(mIndex(c.mes))}">apagar</button>` : ''}</td></tr>`; }).join('')}</tbody>` : '<tbody><tr><td class="name">Nenhum checkpoint ainda.</td></tr></tbody>';
+    return `<tr><td>${mLabel(mIndex(c.mes))}${c.origem === 'planilha' ? ' <span class="chip info">da planilha</span>' : ''}</td><td>${fm(c.valor)}</td><td>${pl != null ? fm(pl) : '—'}</td><td class="${d < 0 ? 'neg' : 'pos'}">${d == null ? '—' : (d >= 0 ? '+' : '') + fm(d)}</td><td class="${d < 0 ? 'neg' : 'pos'}">${d == null ? '' : pct(d / pl)}</td><td>${db ? `<button class="btn ghost tiny" type="button" data-delcp="${c.mes}" aria-label="Apagar checkpoint de ${mLabel(mIndex(c.mes))}">apagar</button>` : ''}</td></tr>`; }).join('')}</tbody>` : '<tbody><tr><td class="name">Nenhum checkpoint ainda.</td></tr></tbody>';
   $('plano-desc').textContent = `Plano atual: o montado em Meu plano, a partir de ${mLabel(calcPlano().i0)}. Os checkpoints são comparados com ele (antes disso, com o plano antigo da planilha).`;
   // fluxo anual
   const rows = [];
@@ -11453,7 +11453,7 @@ function renderCarteira() {
   const tipoNome = a => ATIVO_TIPOS[a.tipo] || a.tipo;
   const taxaTxt = a => ATIVO_RV[a.tipo] ? '—' : a.idx === 'poup' ? 'poupança' : a.idx === 'pos' ? `${num(a.taxa)}% CDI` : a.idx === 'ipca' ? `IPCA+${num(a.taxa)}%` : a.idx === 'selic' ? `Selic+${num(a.taxa)}%` : `${num(a.taxa)}% a.a.`;
   $('tbl-ativos').innerHTML = ev.length ? `<thead><tr><th>Aplicação</th><th>Instituição</th><th>Tipo</th><th>Taxa</th><th>Aplicado em</th><th>Vencimento</th><th>Aplicado</th><th>Valor atual</th><th>Líquido hoje</th><th>Rend.</th><th>Tempo</th><th>% a.m.</th><th>% a.a.</th><th>Classe</th><th></th></tr></thead><tbody>${ev.sort((x, y) => y.v.atual - x.v.atual).map(({ a, v }) => `<tr>
-    <td class="name"><b>${esc(a.nome)}</b></td><td class="name">${esc(a.inst)}</td><td class="name">${tipoNome(a)}</td><td>${taxaTxt(a)}</td>
+    <td class="name"><b>${esc(a.nome)}</b>${a.origem === 'planilha' ? ' <span class="chip info">da planilha</span>' : ''}</td><td class="name">${esc(a.inst)}</td><td class="name">${tipoNome(a)}</td><td>${taxaTxt(a)}</td>
     <td>${a.data.split('-').reverse().join('/')}</td><td>${a.venc ? a.venc.split('-').reverse().join('/') : '—'}</td><td>${fm(a.aplic)}</td>
     <td>${fm(v.atual)}${v.estimado ? ' <span class="src">estimado</span>' : v.semValor ? ' <span class="chip amber">informe</span>' : ''}</td><td>${fm(v.liq)}</td>
     <td class="${v.atual + (+a.receb || 0) < +a.aplic ? 'neg' : 'pos'}">${+a.aplic ? pct((v.atual + (+a.receb || 0)) / a.aplic - 1) : '—'}${+a.receb ? `<br><span class="subdet">com ${fm(+a.receb)} recebidos</span>` : ''}</td>${tempoCels(v.dias, +a.aplic, v.atual + (+a.receb || 0), (fl => fl ? tirMensal(fl) : null)(fluxosAtivo(a, v.atual)))}<td class="name">${clsChip(v.classe)}</td>
@@ -11500,6 +11500,7 @@ $('aform').addEventListener('submit', e => {
   if (!a.nome || !a.data || !isFinite(a.aplic)) return;
   const ant = ativos().find(x => x.id === a.id);
   if (ant && ant.fluxos && Math.abs((+ant.receb || 0) - a.receb) < 0.005) a.fluxos = ant.fluxos;
+  if (ant && ant.origem) { a.origem = ant.origem; if (ant.imp) a.imp = ant.imp; }
   state.ativos = ativos().filter(x => x.id !== a.id).concat(a);
   save(); $('af-msg').textContent = `"${a.nome}" ${editAtivo ? 'atualizada' : 'cadastrada'}.`; carregarForm(null); renderCarteira();
 });
@@ -13318,14 +13319,17 @@ function renderGastos() {
   render12();
   // lançamentos
   const busca = $('g-busca').value.trim().toLowerCase();
-  const its = (gastos[gMes] || []).filter(it => !busca || (it.desc + ' ' + it.cat + ' ' + it.conta + ' ' + it.obs).toLowerCase().includes(busca)).sort((a, b) => a.data < b.data ? 1 : -1);
-  const ORIG = { artefato: 'painel', sheets: 'planilha', csv: 'CSV', fatura: 'fatura', extrato: 'extrato' };
+  const gOrig = $('g-orig'), fo = gOrig ? gOrig.value : '';
+  const its = (gastos[gMes] || []).filter(it => (!busca || (it.desc + ' ' + it.cat + ' ' + it.conta + ' ' + it.obs).toLowerCase().includes(busca)) && (!fo || (it.origem || 'artefato') === fo)).sort((a, b) => a.data < b.data ? 1 : -1);
+  const ORIG = { artefato: 'painel', sheets: 'Google Sheets', csv: 'CSV', fatura: 'fatura', extrato: 'extrato', planilha: 'planilha importada' };
   // agrupado por categoria (receitas, deduções e parcelas do extrato pelo rótulo), cada grupo recolhe
   const grupoDeIt = it => it.cat || 'Sem categoria', ordem = cats().map(c => c.nome);
   const gs = [...new Set(its.map(grupoDeIt))].sort((a, b) => { const ia = ordem.indexOf(a), ib = ordem.indexOf(b); return (ia < 0 ? 99 : ia) - (ib < 0 ? 99 : ib) || a.localeCompare(b); });
   const linhaIt = it => `<tr><td>${it.data.slice(8, 10)}/${it.data.slice(5, 7)}</td><td class="name">${esc(it.desc)}${it.rec ? ' <span class="chip info">recorrente</span>' : ''}</td><td class="name">${it.linha ? `<span class="chip ${it.linha.startsWith('rec~') ? 'best' : 'amber'}">${esc(it.cat)}</span>` : `<select data-gcat="${it.id}" aria-label="Categoria">${cats().map(c => `<option ${c.nome === it.cat ? 'selected' : ''}>${esc(c.nome)}</option>`).join('')}</select>`}</td><td class="${it.valor < 0 ? 'pos' : ''}">${fm(it.valor)}</td><td class="name">${esc(it.forma)}</td><td class="name">${esc(it.conta)}</td><td>${esc(it.parcela)}</td><td class="name">${ORIG[it.origem] || ''}${it.sync || it.linha ? '' : ' <span class="chip amber">pendente</span>'}</td><td><button class="btn ghost tiny" type="button" data-delg="${it.id}" aria-label="Apagar ${esc(it.desc)}">apagar</button></td></tr>`;
-  $('tbl-lanc').innerHTML = its.length ? `<thead><tr><th>Data</th><th>Descrição</th><th>Categoria</th><th>Valor</th><th>Forma</th><th>Conta</th><th>Parcela</th><th>Origem</th><th></th></tr></thead><tbody>${gs.map(g => { const gi = its.filter(it => grupoDeIt(it) === g), fech = !busca && lgFech.has(g), tot = gi.reduce((s, it) => s + (+it.valor || 0), 0);
-    return `<tr class="mm-g lg-g"><td colspan="3" class="name"><button type="button" class="mm-t" data-lgtog="${esc(g)}" aria-expanded="${!fech}">${fech ? '▸' : '▾'} ${esc(g)} <span class="subdet">${gi.length} lançamento${gi.length > 1 ? 's' : ''}</span></button></td><td>${fm(tot)}</td><td colspan="5"></td></tr>` + (fech ? '' : gi.map(linhaIt).join('')); }).join('')}</tbody>` : '<tbody><tr><td class="name">Nenhum lançamento neste mês.</td></tr></tbody>';
+  if (gOrig) { const os = new Set((gastos[gMes] || []).map(it => it.origem || 'artefato')); if (fo) os.add(fo);
+    gOrig.innerHTML = '<option value="">Todas as origens</option>' + [...os].map(o => `<option value="${esc(o)}"${o === fo ? ' selected' : ''}>${esc(ORIG[o] || o)}</option>`).join(''); }
+  $('tbl-lanc').innerHTML = its.length ? `<thead><tr><th>Data</th><th>Descrição</th><th>Categoria</th><th>Valor</th><th>Forma</th><th>Conta</th><th>Parcela</th><th>Origem</th><th></th></tr></thead><tbody>${gs.map(g => { const gi = its.filter(it => grupoDeIt(it) === g), fech = !busca && !fo && lgFech.has(g), tot = gi.reduce((s, it) => s + (+it.valor || 0), 0);
+    return `<tr class="mm-g lg-g"><td colspan="3" class="name"><button type="button" class="mm-t" data-lgtog="${esc(g)}" aria-expanded="${!fech}">${fech ? '▸' : '▾'} ${esc(g)} <span class="subdet">${gi.length} lançamento${gi.length > 1 ? 's' : ''}</span></button></td><td>${fm(tot)}</td><td colspan="5"></td></tr>` + (fech ? '' : gi.map(linhaIt).join('')); }).join('')}</tbody>` : `<tbody><tr><td class="name">${fo ? 'Nenhum lançamento desta origem neste mês.' : 'Nenhum lançamento neste mês.'}</td></tr></tbody>`;
 }
 $('gform').addEventListener('submit', async e => {
   e.preventDefault();
@@ -13346,6 +13350,7 @@ $('gm-sel').addEventListener('change', e => { gMes = e.target.value; renderGasto
 $('gm-prev').addEventListener('click', () => { gMes = mKey(mIndex(gMes) - 1); renderGastos(); });
 $('gm-next').addEventListener('click', () => { gMes = mKey(mIndex(gMes) + 1); renderGastos(); });
 $('g-busca').addEventListener('input', renderGastos);
+$('g-orig').addEventListener('change', renderGastos);
 $('sh-load').addEventListener('click', carregarPlanilha);
 $('sh-send').addEventListener('click', () => enviarPlanilha());
 $('exp-mes').addEventListener('click', () => exportar(gastos[gMes] || [], `gastos-${gMes}.csv`));
@@ -16902,7 +16907,7 @@ async function carregarPerfis(forcar) {
       const b = 'perfis/' + id + '/';
       const [st, gs, cs] = await Promise.all([db.doc(b + 'painel/v2').get(), db.collection(b + 'gastos').get(), db.collection(b + 'checkpoints').get()]);
       const g = {}; gs.docs.forEach(d => { const x = clone(d.data() || null); if (x && /^\d{4}-\d{2}$/.test(x.mes) && Array.isArray(x.itens)) g[x.mes] = x.itens.filter(it => it && it.data && it.comp && isFinite(+it.valor)); });
-      const c = cs.docs.map(d => d.data()).filter(d => d && d.mes && isFinite(d.valor)).map(d => ({ mes: String(d.mes).slice(0, 7), valor: +d.valor }));
+      const c = cs.docs.map(d => d.data()).filter(d => d && d.mes && isFinite(d.valor)).map(d => ({ mes: String(d.mes).slice(0, 7), valor: +d.valor, origem: d.origem || '', imp: d.imp || '' }));
       return { id, nome: (nomes[id] && nomes[id].name || '').split(' ')[0] || 'Pessoa sem nome', state: normalizar(st.exists ? st.data() : DEFAULTS), gastos: g, cps: c, plano: [], cpBase: [], vazio: !st.exists };
     }));
   } catch (e) { famErro = 'Não consegui ler os perfis agora. Tente "Atualizar".'; perfisFam = perfisFam || []; }
@@ -17011,7 +17016,7 @@ setTimeout(carregFim, 15000);
   } catch (e) { setSave('salvo só neste navegador'); }
   carregou('estado');
   vgSemear();
-  pcol('checkpoints').onSnapshot(s => { setTimeout(() => carregou('cps'), 0); const l = s.docs.map(d => d.data()).filter(d => d && d.mes && isFinite(d.valor)).map(d => ({ mes: String(d.mes).slice(0, 7), valor: +d.valor })); cps = l.length ? l : CP_PLANILHA.slice(); if (tab === 'global' || tab === 'cenarios' || tab === 'inicio' || tab === 'modulos' || tab === 'comousar') renderTab(); },
+  pcol('checkpoints').onSnapshot(s => { setTimeout(() => carregou('cps'), 0); const l = s.docs.map(d => d.data()).filter(d => d && d.mes && isFinite(d.valor)).map(d => ({ mes: String(d.mes).slice(0, 7), valor: +d.valor, origem: d.origem || '', imp: d.imp || '' })); cps = l.length ? l : CP_PLANILHA.slice(); if (tab === 'global' || tab === 'cenarios' || tab === 'inicio' || tab === 'modulos' || tab === 'comousar') renderTab(); },
     () => { carregou('cps'); setSave('checkpoints indisponíveis agora'); });
   pcol('gastos').onSnapshot(s => { setTimeout(() => carregou('gastos'), 0); const g = {}; s.docs.forEach(d => { const x = clone(d.data() || null); if (x && /^\d{4}-\d{2}$/.test(x.mes) && Array.isArray(x.itens)) g[x.mes] = x.itens.filter(it => it && it.data && it.comp && isFinite(+it.valor)); }); gastos = g; if (tab === 'gastos') renderGastos(); if (tab === 'inicio') renderHome(); if (tab === 'modulos' || tab === 'comousar') renderTab(); },
     () => { carregou('gastos'); setSave('gastos indisponíveis agora'); });
@@ -17740,6 +17745,7 @@ function jorSimDb(real) {
     let h = `<option value="">— não tem —</option>`; for (let j = 0; j < nc; j++) h += `<option value="${j}"${sel === j ? ' selected' : ''}>${letra(j)}${vazio(H[j]) ? '' : ' · ' + esc(String(H[j]).slice(0, 30))}</option>`; return h;
   }
   function pinta() {
+    try { pintaHist(); } catch (e) {}
     if (!PL) { box.innerHTML = ''; return; }
     const rol = {}; box.querySelectorAll('[data-plesc]').forEach(d => { const l = d.querySelector('.pl-escl'); if (l) rol[d.dataset.plesc] = l.scrollTop; });
     const yJan = window.scrollY;
@@ -17836,33 +17842,103 @@ function jorSimDb(real) {
     const b = $('pl-go'); if (!PL || !b) return; b.disabled = true; const res = [];
     try {
       const novasCats = new Set();
+      IMP = { id: uid(), em: new Date().toISOString(), arquivo: PL.arquivo, gastos: 0, meses: [], cps: [], novos: [], atual: [], cats: [] };
       for (const a of PL.abas) {
         if (!a.res || !a.nOk) continue;
         if (a.tipo === 'gas') {
           a.res.out.forEach(x => { if (!cats().some(c => c.nome === x.cat)) novasCats.add(x.cat); });
           if (novasCats.size) { state.gastosCfg = state.gastosCfg || {}; const base = cats().map(c => Object.assign({}, c)); novasCats.forEach(n => base.push({ nome: n, grupo: 'Estilo de vida', orc: 0 })); state.gastosCfg.cats = base; save(); }
-          const r = addItens(a.res.out.filter(x => !x.rep).map(({ rep, ...x }) => x), 'planilha'); await salvarMeses(r.meses);
+          const r = addItens(a.res.out.filter(x => !x.rep).map(({ rep, ...x }) => Object.assign(x, { imp: IMP.id })), 'planilha'); await salvarMeses(r.meses);
+          IMP.gastos += r.n; IMP.meses = [...new Set(IMP.meses.concat(r.meses))].sort();
           res.push(`${plural(r.n, 'gasto importado', 'gastos importados')}${r.dup ? ` (${r.dup} repetidos pulados)` : ''}`);
         } else if (a.tipo === 'cp') {
           const ja = new Set((cps || []).map(c => c.mes)); let n = 0;
-          for (const x of a.res.out) { if (ja.has(x.mes) && !a.op.subst) continue; await pdoc('checkpoints/' + x.mes).set({ mes: x.mes, valor: x.valor, origem: 'planilha', criadoEm: new Date().toISOString() }); n++; }
+          for (const x of a.res.out) { if (ja.has(x.mes) && !a.op.subst) continue; const ant = (cps || []).find(c => c.mes === x.mes);
+            await pdoc('checkpoints/' + x.mes).set({ mes: x.mes, valor: x.valor, origem: 'planilha', imp: IMP.id, criadoEm: new Date().toISOString() }); n++;
+            IMP.cps.push({ mes: x.mes, antes: ant ? ant.valor : null, antesOrig: ant ? ant.origem || '' : '' }); }
           res.push(plural(n, 'checkpoint registrado', 'checkpoints registrados'));
         } else if (a.tipo === 'apl') {
           let nN = 0, nA = 0;
           a.res.out.forEach(x => {
-            if (x.igual) { state.ativos = ativos().map(y => y.id === x.igual ? Object.assign({}, y, { atual: x.atual }) : y); nA++; return; }
+            if (x.igual) { IMP.atual.push({ id: x.igual, antes: (ativos().find(y => y.id === x.igual) || {}).atual }); state.ativos = ativos().map(y => y.id === x.igual ? Object.assign({}, y, { atual: x.atual }) : y); nA++; return; }
             const tp = TIPOS[x.tipo] || {}, rv = !!ATIVO_RV[x.tipo], idx = rv ? '' : (tp.idxs || ['pos'])[0];
-            state.ativos = ativos().concat({ id: uid(), nome: x.nome, inst: x.inst, tipo: x.tipo, idx, taxa: rv ? '' : idx === 'pos' ? 100 : 0, adm: tp.fundo ? 0 : '', cc: 'lp', data: x.data, venc: x.venc, aplic: x.aplic, atual: x.atual, receb: 0, liq: 'Diária', classe: '', origem: 'planilha' });
+            const nid = uid(); IMP.novos.push(nid);
+            state.ativos = ativos().concat({ id: nid, imp: IMP.id, nome: x.nome, inst: x.inst, tipo: x.tipo, idx, taxa: rv ? '' : idx === 'pos' ? 100 : 0, adm: tp.fundo ? 0 : '', cc: 'lp', data: x.data, venc: x.venc, aplic: x.aplic, atual: x.atual, receb: 0, liq: 'Diária', classe: '', origem: 'planilha' });
             nN++; });
           save(); res.push(`${plural(nN, 'aplicação nova', 'aplicações novas')}${nA ? ` e ${plural(nA, 'atualizada', 'atualizadas')}` : ''}`);
         }
       }
       if (novasCats.size) res.push(`categorias criadas: ${[...novasCats].join(', ')}`);
+      IMP.cats = [...novasCats]; registra();
       PL = null; pinta(); $('pl-st').textContent = 'Importado: ' + res.join('; ') + '.';
       try { renderTab(); } catch (e) {}
-      impPop('gas', 'ok', 'Planilha importada', [...res.map(s => s.charAt(0).toUpperCase() + s.slice(1) + '.'), 'Tudo fica marcado como "da planilha". Confira em Gastos, na Projeção e na Carteira.']);
-    } catch (e) { b.disabled = false; $('pl-msg').textContent = 'Não consegui importar' + (e && e.message ? ': ' + e.message : '.') + ' O que já tinha entrado fica salvo.'; }
+      impPop('gas', 'ok', 'Planilha importada', [...res.map(s => s.charAt(0).toUpperCase() + s.slice(1) + '.'), 'Em Gastos, a coluna Origem mostra "planilha importada" (e dá para filtrar por ela). Na Carteira e nos checkpoints aparece a etiqueta "da planilha".', 'A lista Importações feitas, logo abaixo do importador, mostra o que entrou em cada lugar e deixa desfazer.']);
+    } catch (e) { registra(); b.disabled = false; $('pl-msg').textContent = 'Não consegui importar' + (e && e.message ? ': ' + e.message : '.') + ' O que já tinha entrado fica salvo.'; }
   }
+  /* ---------- Importações feitas (06/11): o que entrou em cada lugar, com desfazer ---------- */
+  let IMP = null;
+  function registra() { if (!IMP) return; const I = IMP; IMP = null;
+    if (I.gastos || I.cps.length || I.novos.length || I.atual.length) { state.importacoes = (state.importacoes || []).concat(I).slice(-30); save(); } pintaHist(); setTimeout(() => { try { pintaHist(); } catch (e) {} }, 1200); }
+  let hist = $('pl-hist'); if (!hist) { hist = document.createElement('div'); hist.id = 'pl-hist'; box.after(hist); }
+  const dtBR = iso => { const d = new Date(iso); return isNaN(d) ? '' : d.toLocaleDateString('pt-BR') + ' ' + d.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' }); };
+  const mesesTxt = ms => !ms.length ? '' : ms.length === 1 ? ` em ${mLabel(mIndex(ms[0]))}` : ` de ${mLabel(mIndex(ms[0]))} a ${mLabel(mIndex(ms[ms.length - 1]))}`;
+  // o que ainda está no painel vindo de cada importação (o que a pessoa apagou à mão não conta)
+  function alvo(id) {
+    const ant = id === '__ant', I = ant ? null : (state.importacoes || []).find(x => x.id === id);
+    const pegaG = it => ant ? it.origem === 'planilha' && !it.imp : it.imp === id;
+    const g = []; Object.keys(gastos).sort().forEach(m => (gastos[m] || []).forEach(it => { if (pegaG(it)) g.push([m, it]); }));
+    const cp = ant ? (cps || []).filter(c => c.origem === 'planilha' && !c.imp).map(c => ({ mes: c.mes, antes: null }))
+      : (I ? I.cps.filter(c => ((cps || []).find(y => y.mes === c.mes) || {}).imp === id) : []);
+    const novos = ant ? ativos().filter(a => a.origem === 'planilha' && !a.imp).map(a => a.id) : (I ? I.novos.filter(n => ativos().some(a => a.id === n)) : []);
+    const atual = I ? I.atual.filter(x => ativos().some(a => a.id === x.id)) : [];
+    return { I, g, cp, novos, atual, meses: [...new Set(g.map(x => x[0]))] };
+  }
+  const resumo = (n, l) => [n.g ? plural(n.g, 'gasto', 'gastos') + ' em Gastos' + mesesTxt(n.meses) : '', n.cp ? plural(n.cp, 'checkpoint', 'checkpoints') + mesesTxt((n.cpm || []).slice().sort()) : '', n.nv ? plural(n.nv, 'aplicação nova', 'aplicações novas') + ' na Carteira' : '', n.at ? plural(n.at, 'aplicação atualizada', 'aplicações atualizadas') : '', l && l.length ? 'categorias criadas: ' + l.join(', ') : ''].filter(Boolean).join(' · ');
+  function pintaHist() {
+    if (!hist) return;
+    const L = (state.importacoes || []).slice().reverse(), A = alvo('__ant');
+    const temAnt = A.g.length || A.cp.length || A.novos.length;
+    if (!L.length && !temAnt) { hist.innerHTML = ''; return; }
+    const linha = (tit, sub, txt, acoes) => `<tr><td class="name"><b>${tit}</b><br><span class="subdet">${sub}</span></td><td class="name" style="white-space:normal;min-width:260px">${txt}</td><td class="name" style="white-space:nowrap">${acoes}</td></tr>`;
+    const ver = (id, ms) => ms.length ? `<button class="btn ghost tiny" type="button" data-plver="${id}" data-plmes="${ms[ms.length - 1]}">ver em Gastos</button> ` : '';
+    hist.innerHTML = `<h3 style="margin:18px 0 6px">Importações feitas</h3><p class="hint">O que cada planilha trouxe e onde foi parar. Em Gastos, a coluna Origem mostra "planilha importada" e o filtro de origem separa só esses lançamentos. Na Carteira e nos checkpoints, a etiqueta é "da planilha". Desfazer tira do painel só o que veio daquela importação e ainda está lá.</p>
+      <div class="tscroll"><table id="tbl-plhist"><thead><tr><th>Quando e arquivo</th><th>O que entrou</th><th></th></tr></thead><tbody>${L.map(I => {
+        const T = alvo(I.id), orig = resumo({ g: I.gastos, meses: I.meses, cp: I.cps.length, cpm: I.cps.map(c => c.mes), nv: I.novos.length, at: I.atual.length }, I.cats);
+        const agora = resumo({ g: T.g.length, meses: T.meses, cp: T.cp.length, cpm: T.cp.map(c => c.mes), nv: T.novos.length, at: T.atual.length });
+        const mudou = !I.desfeita && agora !== resumo({ g: I.gastos, meses: I.meses, cp: I.cps.length, cpm: I.cps.map(c => c.mes), nv: I.novos.length, at: I.atual.length });
+        return linha(esc(dtBR(I.em)), esc(I.arquivo || 'planilha'), (orig || 'nada') + (I.desfeita ? `<br><span class="chip amber">desfeita em ${esc(dtBR(I.desfeita))}</span>` : mudou ? `<br><span class="subdet">Ainda no painel: ${agora || 'nada (foi apagado à mão)'}</span>` : ''),
+          I.desfeita ? '' : ver(I.id, T.meses) + `<button class="btn danger tiny" type="button" data-pldesf="${I.id}">desfazer</button>`); }).join('')}
+      ${temAnt ? linha('Antes desta lista', 'importações feitas antes de 06/11/2026, sem registro de arquivo', resumo({ g: A.g.length, meses: A.meses, cp: A.cp.length, cpm: A.cp.map(c => c.mes), nv: A.novos.length }), ver('__ant', A.meses) + '<button class="btn danger tiny" type="button" data-pldesf="__ant">desfazer</button>') : ''}</tbody></table></div><p class="hint" id="pl-hmsg" role="status"></p>`;
+  }
+  async function desfaz(id) {
+    const T = alvo(id), ant = id === '__ant'; if (!ant && (!T.I || T.I.desfeita)) return;
+    const nSync = T.g.filter(x => x[1].sync).length;
+    const txt = resumo({ g: T.g.length, meses: T.meses, cp: T.cp.length, cpm: T.cp.map(c => c.mes), nv: T.novos.length, at: T.atual.length });
+    if (!txt) { if (T.I) { T.I.desfeita = new Date().toISOString(); save(); } pintaHist(); return; }
+    const cpVolta = T.cp.filter(c => c.antes != null).length;
+    if (!confirmar(`Desfazer esta importação? Sai do painel: ${txt}.${T.atual.length ? ' As aplicações atualizadas voltam ao valor de antes.' : ''}${cpVolta ? ` ${plural(cpVolta, 'checkpoint volta', 'checkpoints voltam')} ao valor que tinha antes.` : ''}${ant && T.cp.length ? ' Os checkpoints desta linha são apagados (não há registro do valor anterior).' : ''}${nSync ? ` ${plural(nSync, 'gasto já tinha ido', 'gastos já tinham ido')} para a planilha do Google: apague lá também se quiser.` : ''}`)) return;
+    const ids = new Set(T.g.map(x => x[1].id));
+    T.meses.forEach(m => { gastos[m] = (gastos[m] || []).filter(it => !ids.has(it.id)); });
+    const nv = new Set(T.novos); state.ativos = ativos().filter(a => !nv.has(a.id)).map(a => { const x = T.atual.find(y => y.id === a.id); return x ? Object.assign({}, a, { atual: x.antes }) : a; });
+    if (T.I && T.I.cats.length && state.gastosCfg && Array.isArray(state.gastosCfg.cats)) { const usadas = new Set(); Object.values(gastos).forEach(l => (l || []).forEach(it => usadas.add(it.cat)));
+      state.gastosCfg.cats = state.gastosCfg.cats.filter(c => !(T.I.cats.includes(c.nome) && !usadas.has(c.nome) && !+c.orc)); }
+    const meses = new Set(T.cp.map(c => c.mes)); cps = (cps || []).filter(c => !meses.has(c.mes)).concat(T.cp.filter(c => c.antes != null).map(c => ({ mes: c.mes, valor: c.antes, origem: c.antesOrig || '' })));
+    if (T.I) T.I.desfeita = new Date().toISOString(); save();
+    try { await salvarMeses(T.meses);
+      for (const c of T.cp) { const ref = pdoc('checkpoints/' + c.mes); if (c.antes == null) await ref.delete(); else await ref.set({ mes: c.mes, valor: c.antes, origem: c.antesOrig || '', criadoEm: new Date().toISOString() }); }
+    } catch (e) {}
+    try { renderTab(); } catch (e) {}
+    pintaHist(); const m = $('pl-hmsg'); if (m) m.textContent = `Importação desfeita: ${txt}.`;
+  }
+  hist.addEventListener('click', e => {
+    const d = e.target.closest('[data-pldesf]'); if (d) { desfaz(d.dataset.pldesf); return; }
+    const v = e.target.closest('[data-plver]'); if (!v) return;
+    gMes = v.dataset.plmes; showTab('gastos');
+    setTimeout(() => { const o = $('g-orig'); if (o) { if (![...o.options].some(x => x.value === 'planilha')) o.insertAdjacentHTML('beforeend', '<option value="planilha">planilha importada</option>'); o.value = 'planilha'; renderGastos(); }
+      const t = $('tbl-lanc'); if (t) t.scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 250);
+  });
+  pintaHist();
+  { const o = renderTab; renderTab = function () { o.apply(this, arguments); if (tab === 'config') try { pintaHist(); } catch (e) {} }; }
   zona.addEventListener('click', e => { if (e.target !== inp) inp.click(); });
   zona.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); inp.click(); } });
   ['dragenter', 'dragover'].forEach(ev => zona.addEventListener(ev, e => { e.preventDefault(); zona.classList.add('sobre'); }));
