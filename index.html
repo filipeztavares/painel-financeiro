@@ -91,6 +91,20 @@ h1, h2, h3 { font-family: var(--f-head); }
 .orc-modelo { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; margin: 4px 0 12px; }
 .orc-modelo .orc-h { margin: 0; }
 .orc-modelo .hint { flex-basis: 100%; margin: 0; }
+.orc-troca, #orc-regs { flex-basis: 100%; }
+.orc-troca { border: 1px solid var(--line); border-radius: 10px; padding: 12px 14px; background: var(--field); display: flex; flex-wrap: wrap; gap: 10px 14px; align-items: flex-end; }
+.orc-troca > b, .orc-troca .hint, .orc-troca .btns { flex-basis: 100%; margin: 0; }
+.orc-troca label { display: flex; flex-direction: column; gap: 4px; font-size: 12px; color: var(--muted); }
+.orc-troca input { width: 150px; }
+#orc-regs h3, #pj-regs h3 { margin: 10px 0 6px; }
+.rg-linha { display: flex; gap: 3px; margin: 4px 0; min-height: 58px; }
+.rg-seg { min-width: 0; border-radius: 8px; padding: 7px 9px; display: flex; flex-direction: column; gap: 1px; overflow: hidden; color: #fff; font-size: 11.5px; line-height: 1.3; }
+.rg-seg b { font-size: 12.5px; white-space: nowrap; } .rg-seg span, .rg-seg small { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; opacity: .92; }
+.rg-seg.pj { background: var(--accent); } .rg-seg.clt { background: var(--s1); } .rg-seg.hoje { box-shadow: inset 0 0 0 2px var(--dotc); }
+.rg-leg { margin: 2px 0 8px; }
+#pj-trocas .orc-troca { margin: 10px 0; }
+#tbl-plano th .chip { display: block; margin-top: 3px; font-size: 9.5px; text-transform: none; letter-spacing: 0; }
+#tbl-plano tr.mm-reg td { font-size: 11.5px; color: var(--muted); }
 #carregando { position: fixed; inset: 0; z-index: 8000; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px; background: var(--bg, #FAF8F4); color: var(--ink); transition: opacity .3s; }
 #carregando.some { opacity: 0; pointer-events: none; }
 #carregando[hidden] { display: none; }
@@ -672,7 +686,7 @@ tr.best td { background: var(--good-soft); }
 .cols-menu label.check { font-size: 12px; }
 .cols-bar { display: flex; justify-content: flex-end; margin-bottom: 6px; }
 .btn.armado { background: var(--bad); border-color: var(--bad); color: #fff; }
-.toast { position: fixed; left: 50%; transform: translateX(-50%); bottom: max(16px, env(safe-area-inset-bottom, 0px)); z-index: 60; max-width: min(520px, calc(100vw - 32px)); background: var(--accent-strong); color: var(--panel); font-size: 12.5px; padding: 10px 14px; border-radius: 9px; box-shadow: 0 8px 24px rgba(0,0,0,.2); }
+.toast { position: fixed; left: 50%; transform: translateX(-50%); bottom: max(16px, env(safe-area-inset-bottom, 0px)); z-index: 1300; max-width: min(520px, calc(100vw - 32px)); background: var(--accent-strong); color: var(--panel); font-size: 12.5px; padding: 10px 14px; border-radius: 9px; box-shadow: 0 8px 24px rgba(0,0,0,.2); }
 th.sortable { cursor: pointer; user-select: none; }
 tr.totrow td { font-weight: 700; border-top: 2px solid var(--line); }
 .clschip { display: inline-flex; align-items: center; gap: 6px; padding: 2px 9px 2px 7px; border-radius: 99px; white-space: nowrap; font-size: 12px; font-weight: 600; color: var(--cc); background: color-mix(in srgb, var(--cc) 13%, transparent); }
@@ -697,7 +711,7 @@ input.fatcat { cursor: pointer; padding-right: 26px !important; text-align: left
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' fill='none' stroke='%2394a3b8' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
   background-repeat: no-repeat; background-position: right 9px center; }
 input.fatcat:focus { cursor: text; }
-#cat-pop { position: fixed; z-index: 60; max-height: 300px; overflow-y: auto; background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 4px; box-shadow: 0 10px 28px rgba(var(--tint),.16), 0 2px 6px rgba(var(--tint),.08); font-size: 13px; }
+#cat-pop { position: fixed; z-index: 1100; max-height: 300px; overflow-y: auto; background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 4px; box-shadow: 0 10px 28px rgba(var(--tint),.16), 0 2px 6px rgba(var(--tint),.08); font-size: 13px; }
 #cat-pop .grp { padding: 7px 10px 3px; font-size: 10.5px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--faint); }
 #cat-pop .opt { padding: 6px 10px; border-radius: 6px; cursor: pointer; color: var(--ink); white-space: nowrap; }
 #cat-pop .opt.on { background: var(--accent-soft); }
@@ -739,7 +753,7 @@ th.sortable[data-sort="desc"]::after { content: " ▼"; color: var(--accent); }
 .tip ul { margin: 0; padding-left: 16px; }
 .tip li { margin: 3px 0; }
 .tip li::marker { color: var(--dotc); }
-.tip { position: fixed; z-index: 70; background: var(--accent-strong); color: var(--panel); font-size: 12px; line-height: 1.45; padding: 9px 12px; border-radius: 8px; box-shadow: 0 6px 20px rgba(0,0,0,.18); pointer-events: none; }
+.tip { position: fixed; z-index: 1300; background: var(--accent-strong); color: var(--panel); font-size: 12px; line-height: 1.45; padding: 9px 12px; border-radius: 8px; box-shadow: 0 6px 20px rgba(0,0,0,.18); pointer-events: none; }
 .cresumo { display: flex; flex-direction: column; gap: 6px; margin: 0 0 12px; font-size: 12px; color: var(--muted); }
 .cresumo .chips { gap: 6px; }
 .cresumo .chip { font-size: 10.5px; padding: 3px 10px; background: var(--accent-soft); color: var(--accent-strong); }
@@ -2152,7 +2166,7 @@ body:has(#tour-pop:not([hidden])) #jor-divbar { display: none; }
     </div>
     <div class="nav-mobile-sub" id="navMobileSub"></div>
   </div>
-  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 299</div></div>
+  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 304</div></div>
 </nav>
 <div class="sino-pop" id="sino-pop" role="dialog" aria-label="Atualizações das bases" hidden></div>
 <div class="sino-pop" id="pess-pop" role="dialog" aria-label="Seus avisos" hidden></div>
@@ -3505,7 +3519,7 @@ body:has(#tour-pop:not([hidden])) #jor-divbar { display: none; }
       <section data-nav="Receitas e custos" class="panel">
         <h2>Receitas e custos de hoje</h2>
         <p class="sub">Valores de um mês típico, em reais de hoje, e como cada linha reajusta no futuro. Contas sobem com o IPCA todo mês e aluguel uma vez por ano, como na planilha; o salário só muda quando você programar. Para mudar só um mês, edite o Projetado no fechamento daquele mês, em Gastos e fechamento.</p>
-        <div class="orc-modelo" id="orc-modelo-box"><span class="orc-h">Como você recebe</span><div class="seg" id="orc-modelo"><button type="button" data-modelo="pj" aria-pressed="false">PJ (empresa própria)</button><button type="button" data-modelo="clt" aria-pressed="false">CLT (carteira assinada)</button></div><div class="seg" id="orc-cltmodo" hidden><button type="button" data-cltmodo="liq" aria-pressed="false">Digito o líquido</button><button type="button" data-cltmodo="bruto" aria-pressed="false">Digito o bruto</button></div><p class="hint" id="orc-modelo-hint"></p></div>
+        <div class="orc-modelo" id="orc-modelo-box"><span class="orc-h">Como você recebe</span><div class="seg" id="orc-modelo"><button type="button" data-modelo="pj" aria-pressed="false">PJ (empresa própria)</button><button type="button" data-modelo="clt" aria-pressed="false">CLT (carteira assinada)</button></div><div class="seg" id="orc-cltmodo" hidden><button type="button" data-cltmodo="liq" aria-pressed="false">Digito o líquido</button><button type="button" data-cltmodo="bruto" aria-pressed="false">Digito o bruto</button></div><p class="hint" id="orc-modelo-hint"></p><div class="orc-troca" id="orc-troca" hidden></div><div id="orc-regs"></div></div>
         <div class="orc-grid">
           <div><h3 class="orc-h">Receitas e deduções</h3><div class="tscroll"><table id="tbl-orc-rec"></table></div></div>
           <div><div class="row" style="margin-bottom:0"><h3 class="orc-h">Custos por categoria</h3><span class="btns" style="margin:0"><button class="btn ghost tiny" type="button" id="orc-sug">Usar a distribuição sugerida</button> <button type="button" class="ibtn" data-info="orc:sug" aria-label="De onde vem a sugestão">i</button><button class="btn ghost tiny" type="button" id="orc-media">Usar a média dos 3 meses mais recentes</button></span></div>
@@ -3538,6 +3552,7 @@ body:has(#tour-pop:not([hidden])) #jor-divbar { display: none; }
         <div class="readout" id="ro-pl"></div>
         <p class="pl-cmp" id="pl-cmp" hidden></p>
         <div class="tscroll mm-wrap" style="margin-top:12px"><table id="tbl-plano" class="mm"></table></div>
+        <p class="hint" id="pl-pas-hint" hidden style="margin-top:8px"></p>
       </section>
   </section>
   <!-- ============ CONFIGURAÇÕES ============ -->
@@ -3685,6 +3700,13 @@ body:has(#tour-pop:not([hidden])) #jor-divbar { display: none; }
         <p class="sub" id="pj-lado-sub"></p>
         <div class="tscroll"><table id="tbl-pj-lado"></table></div>
         <div class="pj-barras" id="pj-barras"></div>
+      </section>
+      <section data-nav="Cenários de troca" class="panel" id="pj-trocas">
+        <h2>Cenários de troca</h2>
+        <p class="sub">Guarde cada proposta como um cenário: PJ ou CLT, a partir de um mês e com o valor. Em Só simulação, ela aparece em Itens dos módulos e na linha tracejada do gráfico do plano para você comparar; em Projeção real, entra no plano. É a mesma lista de Meu plano › Receitas e custos.</p>
+        <div class="btns"><button class="btn tiny" type="button" data-pjtroca="calc">Usar a proposta deste cálculo</button> <button class="btn ghost tiny" type="button" data-pjtroca="novo">+ Cenário em branco</button> <span class="hint" id="pj-troca-msg" role="status"></span></div>
+        <div class="orc-troca" id="pj-troca" hidden></div>
+        <div id="pj-regs"></div>
       </section>
       <section data-nav="Do faturamento ao bolso" class="panel">
         <h2>Do faturamento ao bolso</h2>
@@ -4067,7 +4089,7 @@ body:has(#tour-pop:not([hidden])) #jor-divbar { display: none; }
     return new Promise(resolve => { const { data } = sb.auth.onAuthStateChange(async (ev) => { if (ev !== 'PASSWORD_RECOVERY') return; const s = prompt('Digite a nova senha (mínimo 8 caracteres):'); if (s && s.length >= 8) { const { error } = await sb.auth.updateUser({ password: s }); alert(error ? 'Não deu para trocar a senha: ' + error.message : 'Senha trocada.'); } }); resolve(data); });
   }
   // ---------- rodapé: compartilhar, administração e sair ----------
-  const SITE_V = 185;
+  const SITE_V = 190;
   const escH = v => String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const dataBR = v => v ? new Date(v).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' }) : '–';
   const css2 = `.side-foot .r{flex-wrap:wrap}.side-foot .lg-acoes{margin-left:auto;display:inline-flex;gap:10px}
@@ -10450,6 +10472,7 @@ function normalizar(s) {
   if (!s.orc || !Array.isArray(s.orc.receitas)) s.orc = orcInicial(s.cfg);
   if (!Array.isArray(s.orc.deducoes)) s.orc.deducoes = [];
   if (!s.orc.mes || typeof s.orc.mes !== 'object') s.orc.mes = {};
+  if (!Array.isArray(s.orc.regimes)) s.orc.regimes = [];
   if (!s.fech || typeof s.fech !== 'object') s.fech = {};
   // plano (v33): premissas no formato da aba Investimentos da planilha
   if (!s.plan || typeof s.plan !== 'object') s.plan = planoInicial(s);
@@ -13899,7 +13922,114 @@ function orcInicial(cfg) {
 // CLT pelo bruto: INSS e IR na fonte da tabela de 2026 (as mesmas regras de PJ e PF)
 function dedCLT(modo, x) { x = +x || 0; if (x <= 0) return 0; const i = inssCLT(x); return modo === 'inss' ? i : irrf26(x, i, 0); }
 function orcModelo() { const o = state.orc; return o.modelo || (o.deducoes.some(d => (d.id === 'das' || d.id === 'contab') && +d.valor > 0) ? 'pj' : ''); }
-function setModelo(mod, cm) {
+// regimes: períodos do plano com outro jeito de receber (PJ ou CLT). 'antes' = meses anteriores a mes (o passado); 'apartir' = de mes em diante (troca futura)
+const MOD_DED = ['das', 'contab', 'inss', 'irrf'];
+const modeloNome = (m, cm) => m === 'pj' ? 'PJ' : m === 'clt' ? (cm === 'bruto' ? 'CLT (bruto)' : 'CLT (líquido)') : '—';
+function regDeds(r) { return r.modelo === 'pj' ? [{ id: 'das', nome: 'DAS (Simples Nacional)', modo: 'pct', valor: +r.das || 0 }, { id: 'contab', nome: 'Contabilidade', modo: 'fixo', valor: +r.contab || 0 }] : r.cltModo === 'bruto' ? [{ id: 'inss', nome: 'INSS', modo: 'inss', valor: 0 }, { id: 'irrf', nome: 'IR na fonte', modo: 'irrf', valor: 0 }] : []; }
+function regimeEm(i, extra) {
+  const R = (state.orc && state.orc.regimes) || []; let a = null, b = null;
+  R.forEach(r => { if (!r.mes) return; const m = mIndex(r.mes);
+    if (r.tipo === 'apartir' && m <= i && (r.uso !== 'sim' || (extra && extra.has('reg:' + r.id))) && (!a || r.mes > a.mes)) a = r;
+    if (r.tipo === 'antes' && i < m && (!b || r.mes < b.mes)) b = r; });
+  return a || b;
+}
+const dedVal = id => +((state.orc.deducoes.find(d => d.id === id) || {}).valor) || 0;
+// o regime de hoje fica guardado como período 'antes' e o painel passa a usar o novo
+function regimeAtual(mes) { const o = state.orc, sal = o.receitas.find(r => r.id === 'sal');
+  return { id: uid(), tipo: 'antes', mes, modelo: orcModelo() || 'pj', cltModo: o.cltModo || 'liq', sal: +(sal || {}).valor || 0, das: dedVal('das'), contab: dedVal('contab') }; }
+function trocarHoje(mod, cm, sal, das, contab, mesAntes) {
+  const o = state.orc;
+  if (mesAntes) o.regimes.push(regimeAtual(mesAntes));
+  if (mod === 'pj') o.pjDed = [{ id: 'das', nome: 'DAS (Simples Nacional)', modo: 'pct', valor: +das || 0 }, { id: 'contab', nome: 'Contabilidade', modo: 'fixo', valor: +contab || 0 }];
+  setModelo(mod, cm, true);
+  if (mod === 'pj') o.deducoes.forEach(d => { if (d.id === 'das') d.valor = +das || 0; if (d.id === 'contab') d.valor = +contab || 0; });
+  const s0 = o.receitas.find(r => r.id === 'sal'); if (s0 && sal > 0) s0.valor = sal;
+}
+// troca programada que já chegou: vira o regime de hoje, e o anterior fica guardado como passado
+function efetivarTrocas() {
+  const o = state.orc, R = (o.regimes || []).filter(r => r.tipo === 'apartir' && r.uso !== 'sim' && r.mes && mIndex(r.mes) <= HOJE_IDX).sort((a, b) => a.mes < b.mes ? -1 : 1);
+  if (!R.length) return false;
+  R.forEach(r => { o.regimes = o.regimes.filter(x => x !== r); trocarHoje(r.modelo, r.cltModo, +r.sal || 0, r.das, r.contab, r.mes); });
+  save(); return true;
+}
+let trocaPend = null;
+function pedirTroca(mod) {
+  const o = state.orc, atual = orcModelo(), sal = o.receitas.find(r => r.id === 'sal');
+  if (!atual || atual === mod || !(+(sal || {}).valor > 0)) { trocaPend = null; $('orc-troca').hidden = true; return setModelo(mod); }
+  const pjd = id => +((o.pjDed || []).find(d => d.id === id) || {}).valor || 0;
+  trocaPend = { alvo: 'orc', modelo: mod, de: atual, uso: 'real', cltModo: o.cltModo || 'liq', mes: mKey(HOJE_IDX + 1), sal: '', das: pjd('das') || 6, contab: pjd('contab') };
+  renderTroca();
+}
+function renderTroca() {
+  const t = trocaPend, alvo = t ? t.alvo || 'orc' : null;
+  document.querySelectorAll('#orc-modelo [data-modelo]').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.modelo === (alvo === 'orc' ? t.modelo : orcModelo()))));
+  ['orc-troca', 'pj-troca'].forEach(id => { const e = $(id); if (e && (!t || id !== alvo + '-troca')) { e.hidden = true; e.innerHTML = ''; } });
+  if (!t) return;
+  const el = $(alvo + '-troca'); if (!el) return;
+  const nome = m => m === 'pj' ? 'PJ' : 'CLT', cr = alvo === 'pj', salL = t.modelo === 'pj' ? (cr ? 'Faturamento bruto' : 'Faturamento bruto novo') : t.cltModo === 'bruto' ? (cr ? 'Salário bruto' : 'Salário bruto novo') : (cr ? 'Salário líquido' : 'Salário líquido novo');
+  el.hidden = false;
+  el.innerHTML = `<b>${cr ? 'Novo cenário de troca' : `Trocar de ${nome(t.de)} para ${nome(t.modelo)}`}</b>
+    ${cr ? `<label>Nome<input type="text" id="tr-nome" value="${esc(t.nome || '')}" placeholder="Ex.: proposta empresa X"></label><div class="seg" id="tr-mod"><button type="button" data-trmod="pj" aria-pressed="${t.modelo === 'pj'}">PJ</button><button type="button" data-trmod="clt" aria-pressed="${t.modelo === 'clt'}">CLT</button></div>` : ''}
+    <label>A partir de<input type="month" id="tr-mes" value="${esc(t.mes)}"></label>
+    ${t.modelo === 'clt' ? `<div class="seg" id="tr-cm"><button type="button" data-trcm="liq" aria-pressed="${t.cltModo !== 'bruto'}">Digito o líquido</button><button type="button" data-trcm="bruto" aria-pressed="${t.cltModo === 'bruto'}">Digito o bruto</button></div>` : ''}
+    <label>${salL} (R$/mês)<input type="number" step="100" id="tr-sal" value="${esc(t.sal)}"></label>
+    ${t.modelo === 'pj' ? `<label>${cr ? 'Impostos e DAS' : 'DAS'} (% do faturamento)<input type="number" step="0.1" id="tr-das" value="${esc(t.das)}"></label><label>Contabilidade (R$/mês)<input type="number" step="10" id="tr-contab" value="${esc(t.contab)}"></label>` : ''}
+    <label>Uso<select id="tr-uso"><option value="real">Projeção real</option><option value="sim"${t.uso === 'sim' ? ' selected' : ''}>Só simulação</option></select></label>
+    <p class="hint">${cr ? `Antes desse mês o plano segue como você recebe hoje; a partir dele usa este cenário.${t.calc ? ' Valores trazidos do cálculo acima: no PJ, o % junta DAS, INSS e IR do pró-labore, para o plano chegar no mesmo líquido do mês faturado.' : ''}` : `Antes desse mês o plano continua como ${nome(t.de)}, com os valores de hoje; a partir dele usa ${nome(t.modelo)} com o valor novo. Os meses que já passaram não mudam.`} Em Só simulação, o plano real não muda: a troca vira a linha tracejada "Com as simulações" no gráfico do plano e aparece em Itens dos módulos.${t.modelo === 'clt' ? ' 13º e férias: adicione em Meu plano › Mudanças e eventos.' : ''}</p>
+    <div class="btns"><button class="btn tiny" type="button" data-troca="programar">${cr ? 'Salvar cenário' : 'Trocar a partir desse mês'}</button>${cr ? '' : ` <button class="btn ghost tiny" type="button" data-troca="sempre">Sempre foi ${nome(t.modelo)}: corrigir desde o início</button>`} <button class="btn ghost tiny" type="button" data-troca="cancelar">Cancelar</button></div>
+    <p class="hint" id="tr-msg" role="status"></p>`;
+}
+function lerTroca() { const t = trocaPend; if (!t) return; const v = id => { const e = $(id); return e ? e.value : undefined; };
+  t.mes = v('tr-mes') ?? t.mes; t.sal = v('tr-sal') ?? t.sal; if ($('tr-das')) t.das = v('tr-das'); if ($('tr-contab')) t.contab = v('tr-contab'); if ($('tr-uso')) t.uso = v('tr-uso'); if ($('tr-nome')) t.nome = v('tr-nome'); }
+function aplicarTroca(sempre) {
+  lerTroca(); const t = trocaPend, sal = +t.sal || 0, msg = txt => { $('tr-msg').textContent = txt; };
+  if (!(sal > 0)) return msg('Digite o valor do salário ou do faturamento.');
+  if (!sempre && !/^\d{4}-\d{2}$/.test(t.mes)) return msg('Escolha o mês da troca.');
+  if (t.uso === 'sim' && (sempre || mIndex(t.mes) <= HOJE_IDX)) return msg('Só simulação vale para uma troca futura: escolha um mês depois de hoje.');
+  if (t.alvo === 'pj' && mIndex(t.mes) <= HOJE_IDX) return msg('O cenário precisa começar depois de hoje. Para uma troca que já aconteceu, use Como você recebe, em Meu plano.');
+  trocaPend = null;
+  if (!sempre && mIndex(t.mes) > HOJE_IDX) state.orc.regimes.push({ id: uid(), tipo: 'apartir', mes: t.mes, modelo: t.modelo, cltModo: t.cltModo, sal, das: +t.das || 0, contab: +t.contab || 0, uso: t.uso === 'sim' ? 'sim' : 'real', nome: String(t.nome || '').trim() });
+  else trocarHoje(t.modelo, t.cltModo, sal, t.das, t.contab, sempre ? null : t.mes);
+  save(); renderTroca(); renderTab();
+}
+// linha do tempo dos regimes reais: o passado guardado, o de hoje e as trocas futuras em Projeção real
+function regLinhaHtml() {
+  const pl = calcPlano(), ini = pl.i0 + 1, fim = Math.max(ini + 11, ...((state.orc.regimes || []).filter(r => r.tipo === 'apartir' && r.uso !== 'sim' && r.mes).map(r => mIndex(r.mes) + 11)));
+  const segs = []; for (let i = ini; i <= fim; i++) { const rg = regimeEm(i), id = rg ? rg.id : 'hoje', ult = segs[segs.length - 1];
+    if (ult && ult.id === id) ult.f = i; else segs.push({ id, rg, i0: i, f: i }); }
+  const sal0 = +((state.orc.receitas.find(r => r.id === 'sal') || {}).valor) || 0;
+  const info = sg => { const r = sg.rg; return r ? { m: r.modelo, t: modeloNome(r.modelo, r.cltModo), v: +r.sal || 0, n: r.nome || (r.tipo === 'antes' ? 'como recebia' : '') } : { m: orcModelo(), t: modeloNome(orcModelo(), state.orc.cltModo), v: sal0, n: 'hoje' }; };
+  const tot = fim - ini + 1, sims = (state.orc.regimes || []).filter(r => r.tipo === 'apartir' && r.uso === 'sim' && r.mes);
+  return `<div class="rg-linha" role="img" aria-label="Linha do tempo de como você recebe">${segs.map(sg => { const x = info(sg), hj = sg.i0 <= HOJE_IDX && HOJE_IDX <= sg.f;
+    return `<div class="rg-seg ${x.m === 'clt' ? 'clt' : 'pj'}${hj ? ' hoje' : ''}" style="flex:${sg.f - sg.i0 + 1}" title="${esc(x.t)} · ${fm(x.v)} · ${mLabel(sg.i0)} a ${sg.f === fim && sg.rg && sg.rg.tipo === 'apartir' ? 'em diante' : mLabel(sg.f)}"><b>${esc(x.t)}</b><span>${fm(x.v)}${x.n ? ' · ' + esc(x.n) : ''}</span><small>${mLabel(sg.i0)}${sg.f === fim ? ' em diante' : ' a ' + mLabel(sg.f)}</small></div>`; }).join('')}</div>
+    <p class="hint rg-leg">${tot > 12 ? '' : ''}Só as trocas em Projeção real.${sims.length ? ` Em simulação: ${sims.map(r => `${esc(r.nome || modeloNome(r.modelo, r.cltModo))} (${mLabel(mIndex(r.mes))})`).join(', ')}.` : ''}</p>`;
+}
+function regTabelaHtml() {
+  const R = (state.orc.regimes || []).slice().sort((a, b) => a.mes < b.mes ? -1 : 1);
+  if (!R.length) return '';
+  return `<div class="tscroll"><table><thead><tr><th>Período</th><th>Nome</th><th>Como recebe</th><th>Salário ou faturamento</th><th>DAS %</th><th>Contabilidade</th><th>Uso</th><th></th></tr></thead><tbody>${R.map(r => { const pj = r.modelo === 'pj';
+    return `<tr><td class="name">${r.tipo === 'antes' ? 'Antes de' : 'A partir de'} <input type="month" data-bind="orcreg:${r.id}:mes" value="${esc(r.mes)}" aria-label="Mês"></td><td class="name"><input type="text" class="name" data-bind="orcreg:${r.id}:nome" value="${esc(r.nome || '')}" placeholder="${r.tipo === 'antes' ? 'como recebia' : 'sem nome'}" aria-label="Nome"></td><td class="name">${modeloNome(r.modelo, r.cltModo)}</td><td><input type="number" step="100" data-bind="orcreg:${r.id}:sal" value="${+r.sal || 0}" aria-label="Salário ou faturamento"></td><td>${pj ? `<input type="number" step="0.1" data-bind="orcreg:${r.id}:das" value="${+r.das || 0}" aria-label="DAS %">` : '<span class="z">—</span>'}</td><td>${pj ? `<input type="number" step="10" data-bind="orcreg:${r.id}:contab" value="${+r.contab || 0}" aria-label="Contabilidade">` : '<span class="z">—</span>'}</td><td class="name">${r.tipo === 'apartir' ? `<select data-bind="orcreg:${r.id}:uso" aria-label="Uso"><option value="real">Projeção real</option><option value="sim"${r.uso === 'sim' ? ' selected' : ''}>Só simulação</option></select>` : '<span class="subdet">passado</span>'}</td><td><button class="btn danger tiny" type="button" data-delreg="${r.id}">remover</button></td></tr>`; }).join('')}</tbody></table></div>
+    <p class="hint">${R.some(r => r.tipo === 'antes') ? '"Antes de": como você recebia antes da troca; o plano usa esses valores nos meses anteriores. ' : ''}${R.some(r => r.tipo === 'apartir') ? '"A partir de": troca futura; quando o mês chegar, uma troca em Projeção real vira o "Como você recebe" de hoje e o regime anterior fica guardado como passado. Em Só simulação, só aparece na linha tracejada do gráfico do plano e em Itens dos módulos.' : ''}</p>`;
+}
+function renderRegimes() {
+  const el = $('orc-regs'), R = state.orc.regimes || [];
+  el.innerHTML = R.length ? `<h3 class="orc-h">Linha do tempo de como você recebe</h3>${regLinhaHtml()}<h3 class="orc-h">Trocas e cenários <span class="subdet">(também em Carreira › PJ e PF)</span></h3>${regTabelaHtml()}` : '';
+}
+function renderTrocasPj() {
+  const el = $('pj-regs'); if (!el) return;
+  el.innerHTML = `<h3 class="orc-h">Linha do tempo de como você recebe</h3>${orcModelo() ? regLinhaHtml() : '<p class="hint">Escolha como você recebe hoje em Meu plano › Receitas e custos para ver a linha do tempo.</p>'}${(state.orc.regimes || []).length ? `<h3 class="orc-h">Trocas e cenários</h3>${regTabelaHtml()}` : '<p class="hint">Nenhum cenário ainda.</p>'}`;
+}
+function novoCenarioPj(calc) {
+  const p = state.pj, orcD = id => +((state.orc.pjDed || state.orc.deducoes || []).find(d => d.id === id) || {}).valor || 0;
+  const t = { alvo: 'pj', de: orcModelo(), uso: 'sim', mes: mKey(HOJE_IDX + 1), cltModo: 'bruto', sal: '', das: orcD('das') || 6, contab: orcD('contab'), nome: '', calc: !!calc };
+  t.modelo = (p.dir === 'pjclt') ? 'clt' : 'pj';
+  if (calc) { const o = pjOpts();
+    if (t.modelo === 'pj' && o.fat) { const r = pjCalc(o.fat, o); t.sal = o.fat; t.contab = Math.round(o.contab + o.outros); t.das = Math.round(Math.max(0, (o.fat - r.liq - t.contab) / o.fat * 100) * 10) / 10; t.nome = 'Proposta PJ'; }
+    else if (t.modelo === 'clt' && o.clt) { t.sal = o.clt; t.cltModo = 'bruto'; t.nome = 'Proposta CLT'; }
+    else return 'Preencha a proposta acima para usar o cálculo.'; }
+  trocaPend = t; renderTroca(); return '';
+}
+function setModelo(mod, cm, semRender) {
   const o = state.orc, PJ_IDS = ['das', 'contab'], AUTO = ['inss', 'irrf'];
   cm = cm || o.cltModo || 'liq';
   if (o.modelo !== 'clt' && mod === 'clt') { const pj = o.deducoes.filter(d => PJ_IDS.includes(d.id)); if (pj.length) o.pjDed = clone(pj); }
@@ -13908,7 +14038,7 @@ function setModelo(mod, cm) {
   if (mod === 'clt' && cm === 'bruto') o.deducoes.unshift({ id: 'inss', nome: 'INSS', modo: 'inss', valor: 0 }, { id: 'irrf', nome: 'IR na fonte', modo: 'irrf', valor: 0 });
   let sal = o.receitas.find(r => r.id === 'sal'); if (!sal) { sal = { id: 'sal', nome: '', valor: 0 }; o.receitas.unshift(sal); }
   if (!sal.nome || ['Salário bruto', 'Salário líquido', 'Faturamento', 'Faturamento bruto'].includes(sal.nome)) sal.nome = mod === 'clt' && cm === 'liq' ? 'Salário líquido' : mod === 'clt' ? 'Salário bruto' : 'Faturamento bruto';
-  o.modelo = mod; o.cltModo = cm; save(); renderOrcamento();
+  o.modelo = mod; o.cltModo = cm; if (semRender) return; save(); renderOrcamento();
 }
 // distribuição inicial de custos: 80% da receita líquida (50/30/20) com pesos da POF 2017-2018 (IBGE)
 const CUSTO_SUG = { 'Moradia': 25, 'Contas da Casa': 8, 'Assinaturas': 2, 'Saúde': 8, 'Educação': 5, 'Mercado': 12, 'Transporte (Uber/99)': 4, 'Carro': 12, 'Serviços': 3,
@@ -14033,24 +14163,30 @@ const mdFimIdx = () => mdAnos() ? Math.max(mIndex((state.plan || {}).inicio), HO
 function calcPlano(extra) {
   if (!extra && planCache) return planCache;
   const P = state.plan, i0 = mIndex(P.inicio), fim = Math.max(i0 + Math.round((+P.anos || 10) * 12), HOJE_IDX + Math.round(state.cfg.anos * 12) + 13, mdFimIdx());
-  const L = linhasPlano(), cur = {}, mud = (P.mud || []).filter(m => m.key && m.mes).slice().sort((a, b) => a.mes < b.mes ? -1 : 1);
-  L.forEach(l => { cur[l.key] = l.base; mud.filter(m => m.key === l.key && mIndex(m.mes) <= i0).forEach(m => { cur[l.key] = +m.valor || 0; }); });
+  const L = linhasPlano(), cur = {}, salL = L.find(l => l.key === 'rec~sal');
+  (state.orc.regimes || []).forEach(r => regDeds(r).forEach(d => { const key = 'ded~' + d.id;
+    L.push({ key, ck: key + '@' + r.id, nome: d.nome, tipo: 'ded', pct: d.modo === 'pct', calc: d.modo === 'inss' || d.modo === 'irrf' ? d.modo : undefined, base: +d.valor || 0, reaj: d.modo === 'fixo' ? 'ipca_anual' : 'nenhum', pctA: 0, mesA: 1, reg: r.id, o: d }); }));
+  L.forEach(l => { if (!l.reg && l.tipo === 'ded' && MOD_DED.includes(l.key.slice(4))) l.modDed = true; });
+  let regAnt = null, salReg = 0;
+  const mud = (P.mud || []).filter(m => m.key && m.mes).slice().sort((a, b) => a.mes < b.mes ? -1 : 1);
+  L.forEach(l => { cur[l.ck || l.key] = l.base; if (!l.reg) mud.filter(m => m.key === l.key && mIndex(m.mes) <= i0).forEach(m => { cur[l.key] = +m.valor || 0; }); });
   const buys = state.compras.filter(b => ((P.inc || []).includes(b.id) && !(extra && extra.has('-compra:' + b.id))) || (extra && extra.has('compra:' + b.id))).map(b => ({ b, m0: mIndex(b.mes), sch: schedule(b, b.modo) }));
   const reinv = Math.min(100, Math.max(0, +P.reinv || 0)) / 100;
   const out = { i0, fim, meses: {}, inv: { [i0]: +P.valor || 0 }, parado: { [i0]: 0 }, buys: buys.map(x => x.b), L };
   let inv = +P.valor || 0, parado = 0, fIpca = 1;
   for (let i = i0 + 1; i <= fim; i++) {
     const mk = mKey(i), cm = calMonth(i) + 1, ip = ipcaPlano(i), ov = (state.orc.mes || {})[mk] || {};
-    L.forEach(l => {
-      if (l.reaj === 'ipca_mensal') cur[l.key] *= 1 + ip / 12;
-      else if (l.reaj === 'ipca_anual' && cm === l.mesA) cur[l.key] *= 1 + ip;
-      else if (l.reaj === 'pct_anual' && cm === l.mesA) cur[l.key] *= 1 + l.pctA / 100;
-    });
-    mud.filter(m => m.mes === mk).forEach(m => { if (m.key in cur) cur[m.key] = +m.valor || 0; });
+    const fReaj = l => l.reaj === 'ipca_mensal' ? 1 + ip / 12 : l.reaj === 'ipca_anual' && cm === l.mesA ? 1 + ip : l.reaj === 'pct_anual' && cm === l.mesA ? 1 + l.pctA / 100 : 1;
+    L.forEach(l => { cur[l.ck || l.key] *= fReaj(l); });
+    // regime do mês (PJ ou CLT): o salário do período começa no valor do período e segue a regra de reajuste da linha
+    const rg = regimeEm(i, extra);
+    if (rg && rg !== regAnt) salReg = +rg.sal || 0; else if (rg && salL) salReg *= fReaj(salL);
+    regAnt = rg;
+    mud.filter(m => m.mes === mk).forEach(m => { if (rg && m.key === 'rec~sal') salReg = +m.valor || 0; else if (m.key in cur) cur[m.key] = +m.valor || 0; });
     fIpca *= 1 + ip / 12;
     const v = {}; let bruto = 0, ded = 0, custos = 0; const porGrupo = {};
-    L.filter(l => l.tipo === 'rec').forEach(l => { v[l.key] = ov[l.key] ?? cur[l.key]; bruto += v[l.key]; });
-    L.filter(l => l.tipo === 'ded').forEach(l => { v[l.key] = ov[l.key] ?? (l.calc ? dedCLT(l.calc, v['rec~sal'] ?? bruto) : l.pct ? bruto * cur[l.key] / 100 : cur[l.key]); ded += v[l.key]; });
+    L.filter(l => l.tipo === 'rec').forEach(l => { v[l.key] = ov[l.key] ?? (rg && l.key === 'rec~sal' ? salReg : cur[l.key]); bruto += v[l.key]; });
+    L.filter(l => l.tipo === 'ded').forEach(l => { if (l.reg ? !(rg && rg.id === l.reg) : rg && l.modDed) { if (!(l.key in v)) v[l.key] = 0; return; } v[l.key] = ov[l.key] ?? (l.calc ? dedCLT(l.calc, v['rec~sal'] ?? bruto) : l.pct ? bruto * cur[l.ck || l.key] / 100 : cur[l.ck || l.key]); ded += v[l.key]; });
     L.filter(l => l.tipo === 'cat').forEach(l => { v[l.key] = ov[l.key] ?? cur[l.key]; custos += v[l.key]; porGrupo[l.grupo] = (porGrupo[l.grupo] || 0) + v[l.key]; });
     // eventos: férias, bônus... (os anuais repetem corrigidos pelo IPCA)
     let evRec = 0, evGas = 0; const evs = {};
@@ -14068,9 +14204,20 @@ function calcPlano(extra) {
         if (kk > (+x.b.mudanca || 0)) { const g = bemMes(x.b, kk, fIpca); c.posse = g.posse - g.econ; c.renda = g.renda; } }
       parc += c.parc; lump += c.lump; posse += c.posse; rendaB += c.renda;
       if (c.parc || c.lump || c.posse || c.renda || c.venda) porCompra.push(c); });
+    // mês fechado: o projetado ficou congelado no fechamento; mudanças de hoje não reescrevem o passado
+    const fz = state.fech[mk], frz = !!(fz && fz.fechado && fz.proj);
+    if (frz) {
+      const pj = fz.proj; Object.keys(v).forEach(k => { v[k] = 0; }); bruto = 0; ded = 0; custos = 0; Object.keys(porGrupo).forEach(k => delete porGrupo[k]);
+      Object.keys(pj).forEach(k => { const x = +pj[k] || 0;
+        if (k.startsWith('rec~')) { v[k] = x; bruto += x; }
+        else if (k.startsWith('ded~')) { v[k] = x; ded += x; }
+        else if (k.startsWith('cat~')) { v[k] = x; custos += x; const c = cats().find(y => y.nome === k.slice(4)); const g = (c && c.grupo) || 'Estilo de vida'; porGrupo[g] = (porGrupo[g] || 0) + x; } });
+      evRec = +pj.evr || 0; evGas = +pj.evg || 0; Object.keys(evs).forEach(k => delete evs[k]);
+      parc = +pj.parc || 0; lump = 0; posse = 0; rendaB = 0; porCompra.length = 0;
+    }
     const sobra = bruto - ded + rendaB + evRec - custos - evGas - parc - lump - posse;
-    const rend = inv * taxaPlanoMes(i), liquido = sobra + rend, re = liquido * reinv;
-    out.meses[i] = { i, mk, v, evs, bruto, ded, liq: bruto - ded, custos, porGrupo, evRec, evGas, parc, lump, posse, rendaB, porCompra, sobra, rend, reinv: re, paradoMes: liquido - re, ini: inv, venda };
+    const rend = inv * (frz && fz.taxaPlano != null ? fz.taxaPlano : taxaPlanoMes(i)), liquido = sobra + rend, re = liquido * reinv;
+    out.meses[i] = { i, mk, v, evs, bruto, ded, liq: bruto - ded, custos, porGrupo, evRec, evGas, parc, lump, posse, rendaB, porCompra, sobra, rend, reinv: re, paradoMes: liquido - re, ini: inv, venda, fechado: frz, reg: rg ? modeloNome(rg.modelo, rg.cltModo) : modeloNome(orcModelo(), state.orc.cltModo) };
     // o dinheiro da venda de um bem vai direto para os investimentos
     inv += re + venda; parado += liquido - re;
     out.inv[i] = inv; out.parado[i] = parado;
@@ -14096,7 +14243,7 @@ function renderPlano() {
   $('pl-ipca').closest('label').hidden = P.ipcaModo !== 'fixo';
   renderItens();
   // mudanças programadas
-  const L = pl.L, opL = sel => L.map(l => `<option value="${esc(l.key)}" ${l.key === sel ? 'selected' : ''}>${esc(l.nome)}${l.pct ? ' (%)' : ''}</option>`).join('');
+  const L = pl.L.filter(l => !l.reg), opL = sel => L.map(l => `<option value="${esc(l.key)}" ${l.key === sel ? 'selected' : ''}>${esc(l.nome)}${l.pct ? ' (%)' : ''}</option>`).join('');
   $('tbl-mud').innerHTML = `<thead><tr><th>Linha</th><th>A partir de</th><th>Novo valor</th><th></th></tr></thead><tbody>${(P.mud || []).map(m => `<tr><td class="name"><select data-bind="plmud:${m.id}:key" aria-label="Linha">${opL(m.key)}</select></td><td><input type="month" data-bind="plmud:${m.id}:mes" value="${esc(m.mes)}" aria-label="A partir de"></td><td><input type="number" step="100" data-bind="plmud:${m.id}:valor" value="${+m.valor || 0}" aria-label="Novo valor"></td><td><button class="btn danger tiny" type="button" data-delpl="mud:${m.id}">remover</button></td></tr>`).join('') || '<tr><td class="name" colspan="4"><span class="subdet">Nenhuma mudança. Ex.: salário bruto R$ 22.000 a partir de mar/27.</span></td></tr>'}</tbody>`;
   $('tbl-ev').innerHTML = `<thead><tr><th>Evento</th><th>Tipo</th><th>Valor</th><th>Mês</th><th>Todo ano</th><th></th></tr></thead><tbody>${(P.ev || []).map(e => `<tr><td class="name"><input type="text" class="name" data-bind="plev:${e.id}:nome" value="${esc(e.nome)}" aria-label="Nome do evento"></td><td class="name"><select data-bind="plev:${e.id}:tipo" aria-label="Tipo"><option value="gasto" ${e.tipo !== 'receita' ? 'selected' : ''}>Gasto</option><option value="receita" ${e.tipo === 'receita' ? 'selected' : ''}>Receita</option></select></td><td><input type="number" step="500" data-bind="plev:${e.id}:valor" value="${+e.valor || 0}" aria-label="Valor"></td><td><input type="month" data-bind="plev:${e.id}:mes" value="${esc(e.mes)}" aria-label="Mês"></td><td><input type="checkbox" data-bind="plev:${e.id}:anual" ${e.anual ? 'checked' : ''} aria-label="Repete todo ano"></td><td><button class="btn danger tiny" type="button" data-delpl="ev:${e.id}">remover</button></td></tr>`).join('') || '<tr><td class="name" colspan="6"><span class="subdet">Nenhum evento. Ex.: férias de R$ 15.000 em dezembro, todo ano; bônus em março.</span></td></tr>'}${soPlanEvs().map(e => `<tr><td class="name">${esc(e.nome)}</td><td class="name">Receita</td><td>${fm(e.valor)}</td><td>${mLabel(mIndex(e.mes))}</td><td></td><td><a class="lm-ir" data-lmtab="stock" data-lmsec="Evento de liquidez">vem de Stock options</a></td></tr>`).join('')}</tbody>`;
   // KPIs
@@ -14135,16 +14282,18 @@ function renderPlano() {
 function renderPlanoMM(pl) {
   const i0 = pl.i0, fimI = i0 + Math.round((+state.plan.anos || 10) * 12), anos = [];
   for (let i = i0 + 1; i <= fimI; i++) { const y = +mKey(i).slice(0, 4); if (!anos.includes(y)) anos.push(y); }
-  if (plPer !== 'prox' && plPer !== 'tudo' && !anos.includes(plPer)) plPer = 'prox';
-  $('pl-per').innerHTML = [['prox', 'Próximos 12 meses'], ...anos.map(y => [y, String(y)]), ['tudo', 'Tudo']].map(([v, l]) => `<button type="button" data-plper="${v}" aria-pressed="${v === plPer}">${l}</button>`).join('');
+  if (plPer !== 'prox' && plPer !== 'tudo' && plPer !== 'passado' && !anos.includes(plPer)) plPer = 'prox';
+  $('pl-per').innerHTML = [['passado', 'Passado'], ['prox', 'Próximos 12 meses'], ...anos.map(y => [y, String(y)]), ['tudo', 'Tudo']].map(([v, l]) => `<button type="button" data-plper="${v}" aria-pressed="${v === plPer}">${l}</button>`).join('');
+  $('pl-pas-hint').hidden = plPer !== 'passado';
+  if (plPer === 'passado') return renderPassado(pl);
   const st = Math.max(i0 + 1, HOJE_IDX), is = [];
   for (let i = i0 + 1; i <= fimI; i++) if (plPer === 'tudo' || (plPer === 'prox' && i >= st && i < st + 12) || +mKey(i).slice(0, 4) === plPer) is.push(i);
   const M = i => pl.meses[i], cpMap = Object.fromEntries(cps.map(c => [mIndex(c.mes), c.valor]));
   const G = [], g = (id, nome, f, linhas, cls) => G.push({ id, nome, f, linhas: linhas.filter(l => l.sempre || is.some(i => Math.abs(l.f(i)) >= 0.5)), cls });
   const Lh = (nome, f, sempre) => ({ nome, f, sempre });
   const L = pl.L;
-  g('rec', 'Receita líquida', i => M(i).liq, [...L.filter(l => l.tipo === 'rec').map(l => Lh(l.nome, i => M(i).v[l.key], true)), ...L.filter(l => l.tipo === 'ded').map(l => Lh(`− ${l.nome}`, i => -M(i).v[l.key]))]);
-  g('custos', 'Custos', i => -M(i).custos, GRUPOS.flatMap(gr => L.filter(l => l.tipo === 'cat' && l.grupo === gr.id).map(l => Lh(`${l.nome}`, i => -M(i).v[l.key]))));
+  g('rec', 'Receita líquida', i => M(i).liq, [...L.filter(l => l.tipo === 'rec').map(l => Lh(l.key === 'rec~sal' && (state.orc.regimes || []).length ? 'Salário ou faturamento' : l.nome, i => M(i).v[l.key] || 0, true)), ...L.filter((l, j) => l.tipo === 'ded' && L.findIndex(x => x.key === l.key) === j).map(l => Lh(`− ${l.nome}`, i => -(M(i).v[l.key] || 0)))]);
+  g('custos', 'Custos', i => -M(i).custos, GRUPOS.flatMap(gr => L.filter(l => l.tipo === 'cat' && l.grupo === gr.id).map(l => Lh(`${l.nome}`, i => -(M(i).v[l.key] || 0)))));
   g('compras', 'Compras e eventos', i => M(i).rendaB + M(i).evRec - M(i).evGas - M(i).parc - M(i).lump - M(i).posse, [
     Lh('Parcelas', i => -M(i).parc), Lh('Entradas e compras à vista', i => -M(i).lump), Lh('Custos de ter − o que deixa de pagar', i => -M(i).posse), Lh('Renda dos bens', i => M(i).rendaB),
     ...planEvs(state.plan).filter((e, k, a) => a.findIndex(y => y.id === e.id) === k).map(e => Lh(e.nome || 'Evento', i => (M(i).evs[e.id] || 0) * (e.tipo === 'receita' ? 1 : -1)))]);
@@ -14152,9 +14301,42 @@ function renderPlanoMM(pl) {
   g('rend', 'Rendimento', i => M(i).rend, [], 'res');
   g('inv', 'Investido no fim do mês', i => pl.inv[i], [Lh('Reinvestido no mês', i => M(i).reinv, true), Lh('Fica parado no mês', i => M(i).paradoMes), Lh('Parado acumulado', i => pl.parado[i]), Lh('Checkpoint real', i => cpMap[i] ?? 0)], 'saldo');
   const cel = (v, saldo) => { const r = Math.round(v); return `<td class="${r < 0 ? 'neg' : ''}">${r === 0 && !saldo ? '<span class="z">—</span>' : fm(v)}</td>`; };
-  $('tbl-plano').innerHTML = `<thead><tr><th>Mês</th>${is.map(i => `<th>${mLabel(i)}</th>`).join('')}</tr></thead><tbody>${G.map(x => { const f = plFechados.includes(x.id);
+  const regRow = (state.orc.regimes || []).length ? `<tr class="mm-s mm-reg"><td>Como recebe</td>${is.map(i => `<td>${M(i).reg}</td>`).join('')}</tr>` : '';
+  $('tbl-plano').innerHTML = `<thead><tr><th>Mês</th>${is.map(i => `<th>${mLabel(i)}${M(i).fechado ? '<span class="chip best">fechado</span>' : ''}</th>`).join('')}</tr></thead><tbody>${regRow}${G.map(x => { const f = plFechados.includes(x.id);
     return `<tr class="mm-g ${x.cls || ''}"><td>${x.linhas.length ? `<button type="button" class="mm-t" data-pltog="${x.id}" aria-expanded="${!f}">${f ? '▸' : '▾'} ${x.nome}</button>` : `<span class="mm-t">${x.nome}</span>`}</td>${is.map(i => cel(x.f(i), true)).join('')}</tr>` +
       x.linhas.map(l => `<tr class="mm-s" ${f ? 'hidden' : ''}><td>${esc(l.nome)}</td>${is.map(i => cel(l.f(i), x.cls === 'saldo' && l.sempre)).join('')}</tr>`).join(''); }).join('')}</tbody>`;
+}
+// Passado: cada mês que já foi, desde o primeiro checkpoint: o real do fechamento contra o plano
+function renderPassado(pl) {
+  const cpsP = cps.filter(c => c.mes >= INICIO_TELAS || c.origem === 'planilha'), cpMap = Object.fromEntries(cpsP.map(c => [mIndex(c.mes), c.valor]));
+  const ini = Math.min(pl.i0, ...cpsP.map(c => mIndex(c.mes))), is = [];
+  for (let i = ini; i < HOJE_IDX; i++) is.push(i);
+  const hint = $('pl-pas-hint');
+  if (!is.length) { $('tbl-plano').innerHTML = '<tbody><tr><td class="name">Ainda não há meses passados no plano.</td></tr></tbody>'; hint.textContent = ''; return; }
+  const F = {}; is.forEach(i => { const mk = mKey(i); F[i] = mk >= INICIO_TELAS ? fechamento(mk) : null; });
+  const R = (i, k) => F[i] && F[i].real[k] != null ? F[i].real[k] : null;
+  const cel = (v, neg) => v == null || !isFinite(v) ? '<td><span class="z">—</span></td>' : `<td class="${Math.round(v) < 0 ? 'neg' : ''}">${fm(neg ? -v : v)}</td>`;
+  const dif = v => v == null ? '<td><span class="z">—</span></td>' : `<td class="${v >= 0 ? 'pos' : 'neg'}">${v >= 0 ? '+' : '−'}${fm(Math.abs(v))}</td>`;
+  const keys = pre => { const s = new Set(); is.forEach(i => { if (F[i]) Object.keys(F[i].P).filter(k => k.startsWith(pre)).forEach(k => s.add(k)); }); return [...s].filter(k => is.some(i => Math.abs(R(i, k) || 0) >= 0.5)); };
+  const nomeL = k => { if (k === 'rec~sal' && (state.orc.regimes || []).length) return 'Salário ou faturamento'; const l = pl.L.find(x => x.key === k); return l ? l.nome : k.slice(4).replace(/@.*/, ''); };
+  const grupo = (id, nome, f, subs) => { const fe = plFechados.includes(id);
+    return `<tr class="mm-g"><td>${subs.length ? `<button type="button" class="mm-t" data-pltog="${id}" aria-expanded="${!fe}">${fe ? '▸' : '▾'} ${nome}</button>` : `<span class="mm-t">${nome}</span>`}</td>${is.map(i => cel(f(i))).join('')}</tr>` +
+      subs.map(([n, g]) => `<tr class="mm-s" ${fe ? 'hidden' : ''}><td>${esc(n)}</td>${is.map(i => cel(g(i))).join('')}</tr>`).join(''); };
+  const linha = (nome, f, cls) => `<tr class="mm-g ${cls || ''}"><td><span class="mm-t">${nome}</span></td>${is.map(i => cel(f(i))).join('')}</tr>`;
+  const T = (i, k) => F[i] ? F[i].tr[k] : null, TP = (i, k) => F[i] ? F[i].tp[k] : null;
+  const planoP = i => planoAt(i);
+  const regRow = (state.orc.regimes || []).length ? `<tr class="mm-s mm-reg"><td>Como recebia</td>${is.map(i => `<td>${i > pl.i0 && pl.meses[i] ? pl.meses[i].reg : '<span class="z">—</span>'}</td>`).join('')}</tr>` : '';
+  $('tbl-plano').innerHTML = `<thead><tr><th>Mês</th>${is.map(i => { const f = state.fech[mKey(i)]; return `<th>${mLabel(i)}${f && f.fechado ? '<span class="chip best">fechado</span>' : F[i] && F[i].temLanc ? '<span class="chip amber">aberto</span>' : ''}</th>`; }).join('')}</tr></thead><tbody>${regRow}
+    ${grupo('prec', 'Receita líquida real', i => T(i, 'liq'), [...keys('rec~').map(k => [nomeL(k), i => R(i, k)]), ...keys('ded~').map(k => ['− ' + nomeL(k), i => R(i, k) == null ? null : -R(i, k)])])}
+    ${grupo('pcus', 'Custos reais', i => T(i, 'custos') == null ? null : -T(i, 'custos'), keys('cat~').map(k => [k.slice(4), i => R(i, k) == null ? null : -R(i, k)]))}
+    ${linha('Parcelas e eventos', i => F[i] ? -(R(i, 'parc') || 0) - (R(i, 'evg') || 0) + (R(i, 'evr') || 0) : null)}
+    ${linha('Sobra real', i => T(i, 'sobra'), 'res')}
+    ${linha('Sobra no plano', i => TP(i, 'sobra'), 'res')}
+    ${linha('Rendimento real', i => T(i, 'rend'), 'res')}
+    <tr class="mm-g saldo"><td><span class="mm-t">Patrimônio real (checkpoint)</span></td>${is.map(i => cel(cpMap[i] ?? null)).join('')}</tr>
+    <tr class="mm-s"><td>No plano</td>${is.map(i => cel(planoP(i))).join('')}</tr>
+    <tr class="mm-s"><td>Diferença</td>${is.map(i => dif(cpMap[i] != null && planoP(i) != null ? cpMap[i] - planoP(i) : null)).join('')}</tr></tbody>`;
+  hint.textContent = `Os meses que já passaram, de ${mLabel(is[0])} a ${mLabel(is[is.length - 1])}. O real vem do fechamento de cada mês (lançamentos, extratos e o que você digitou); "no plano" é o que estava projetado, congelado nos meses fechados.${is[0] < mIndex(INICIO_TELAS) ? ` Antes de ${mLabel(mIndex(INICIO_TELAS))} só existem os checkpoints e o plano da planilha.` : ''} O detalhe de cada mês fica em Gastos e fechamento.`;
 }
 document.addEventListener('click', e => {
   const b = e.target.closest('button'); if (!b) return;
@@ -14203,6 +14385,7 @@ function itensModulos() {
     out.push({ id: 'ev:' + e.id, mod: 'fin', sub: 'Meu plano', tab: 'orcamento', sec: 'Mudanças e eventos', nome: e.nome || 'Evento', tipo: rec ? 'receita' : 'gasto', ini: e.mes,
       unico: rec ? v : -v, mensal: 0, meses: 0, anual: !!e.anual, resumo: fm(v) + (e.anual ? ' todo ano, corrigido pelo IPCA' : ' uma vez'), uso: 'real', fixo: true });
   });
+  ((state.orc || {}).regimes || []).filter(r => r.tipo === 'apartir' && r.mes).forEach(r => out.push({ id: 'reg:' + r.id, mod: 'carr', sub: 'PJ e PF', tab: 'pjpf', sec: 'Cenários de troca', nome: (r.nome ? r.nome + ': ' : '') + 'troca para ' + modeloNome(r.modelo, r.cltModo), tipo: 'receita', ini: r.mes, unico: 0, mensal: 0, meses: 0, resumo: `${r.modelo === 'pj' ? 'faturamento' : 'salário'} de ${fm(+r.sal || 0)} por mês`, uso: r.uso === 'sim' ? 'sim' : 'real' }));
   try { out.push(...vgItensMod()); } catch (er) {}
   try { out.push(...ngItensMod()); } catch (er) { console.error(er); }
   try { out.push(...famItensMod()); } catch (er) { console.error(er); }
@@ -14215,6 +14398,7 @@ function setUsoItem(id, uso) {
   else if (k === 'viag') { const v = ((state.viag || {}).viagens || []).find(y => y.id === x); if (!v) return false; vgCusNorm(v); v.cus.plano = on; }
   else if (k === 'neg') { const n = ngLista().find(y => y.id === x); if (!n) return false; n.uso = on ? 'real' : 'sim'; ngCache.v = {}; }
   else if (k === 'fam') { const p = famAcha(x); if (!p) return false; p.uso = on ? 'real' : 'sim'; famPeC.k = null; }
+  else if (k === 'reg') { const r = ((state.orc || {}).regimes || []).find(y => y.id === x); if (!r) return false; r.uso = on ? 'real' : 'sim'; }
   else if (k === 'so') { const e = ((state.so || {}).empresas || []).find(y => y.id === x); if (!e || !e.ev || !e.ev.definido) return false; e.ev.plano = on; }
   else return false;
   planCache = null; save(); return true;
@@ -14365,7 +14549,7 @@ const GUIAS = {
     { sel: '#pl-inc', t: 'Projeção real ou simulação', o: 'Em Projeção real o item entra no plano e muda a sobra dos meses em que acontece. Em Só simulação fica de fora, só para comparar.' }
   ] },
   'p-orcamento|Plano mês a mês': { passos: [
-    { sel: '#pl-per', t: 'Período', o: 'Escolha quantos meses ver no gráfico e na tabela.' },
+    { sel: '#pl-per', t: 'Período', o: 'Escolha quantos meses ver no gráfico e na tabela. Passado mostra os meses que já foram, o real de cada um contra o plano.' },
     { sel: '#tbl-plano', up: '.tscroll', t: 'Mês a mês', o: 'Receita, custos, parcelas, rendimento e patrimônio projetados de cada mês. É daqui que sai a linha Plano da Projeção.' }
   ] }
 };
@@ -14452,6 +14636,7 @@ document.addEventListener('click', e => {
 }, true);
 $('guia-reset').addEventListener('click', () => { const g = guiaSt(); g.vistos = []; delete state.tourPlano; save(); $('guia-msg').textContent = 'Pronto: os guias vão abrir de novo na primeira visita de cada tela. Os pontos que você já ganhou continuam.'; });
 function renderOrcamento() {
+  if (efetivarTrocas()) planCache = null;
   const foco = guardarFoco();
   const pm = projMes(mKey(HOJE_IDX)), sobraT = pm.liq - pm.custos;
   // KPIs
@@ -14477,8 +14662,9 @@ function renderOrcamento() {
       cs.map(c => `<tr><td class="name">${esc(c.nome)}</td><td class="name"><select data-bind="orccat:${esc(c.nome)}:grupo" aria-label="Grupo de ${esc(c.nome)}">${gr.map(x => `<option ${x === c.grupo ? 'selected' : ''}>${x}</option>`).join('')}</select></td><td><input type="number" step="50" data-bind="orccat:${esc(c.nome)}:orc" value="${+c.orc || 0}" aria-label="Orçamento de ${esc(c.nome)}"></td>${reajCel('orccat', c.nome, c, 'cat', c.nome)}<td>${nM ? fm((media[c.nome] || 0) / nM) : '—'}</td><td><button class="btn danger tiny" type="button" data-delorc="cat:${esc(c.nome)}">remover</button></td></tr>`).join(''); }).join('')}
     <tr class="totrow"><td class="name">Total</td><td></td><td>${fm(cats().reduce((s, c) => s + (+c.orc || 0), 0))}</td><td></td><td>${nM ? fm(Object.values(media).reduce((s, x) => s + x, 0) / nM) : '—'}</td><td></td></tr></tbody>`;
   $('orc-media').disabled = !nM;
+  renderRegimes();
   const mod = orcModelo(), cm = state.orc.cltModo || 'liq';
-  document.querySelectorAll('#orc-modelo [data-modelo]').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.modelo === mod)));
+  document.querySelectorAll('#orc-modelo [data-modelo]').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.modelo === (trocaPend ? trocaPend.modelo : mod))));
   $('orc-cltmodo').hidden = mod !== 'clt'; document.querySelectorAll('#orc-cltmodo [data-cltmodo]').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.cltmodo === cm)));
   $('orc-modelo-hint').textContent = !mod ? 'Escolha como você recebe: isso ajusta a receita e as deduções abaixo.'
     : mod === 'pj' ? 'PJ: digite o faturamento bruto da empresa por mês. DAS (% do faturamento) e contabilidade são descontados para chegar no que sobra para você. Para o detalhe de pró-labore e impostos, veja PJ e PF.'
@@ -14577,7 +14763,7 @@ $('tbl-fech').addEventListener('keydown', e => { if (e.key === 'Enter' && e.targ
 function renderHistorico() {
   const ms = new Set(Object.keys(state.fech));
   Object.keys(gastos).forEach(m => { if (mIndex(m) <= HOJE_IDX) ms.add(m); });
-  const lista = [...ms].filter(m => mIndex(m) <= HOJE_IDX && m >= INICIO_TELAS).sort().slice(-12);
+  const lista = [...ms].filter(m => mIndex(m) <= HOJE_IDX && m >= INICIO_TELAS).sort();
   if (!lista.length) { $('tbl-hist').innerHTML = '<tbody><tr><td class="name">Nenhum mês com dados reais ainda. Preencha o fechamento de um mês acima.</td></tr></tbody>'; return; }
   const Fs = lista.map(fechamento), acc = { p: 0, r: 0 };
   const c2 = (p, r, bom) => { const d = p != null && r != null ? r - p : null; const ok = d == null ? true : bom > 0 ? d >= 0 : d <= 0;
@@ -14594,13 +14780,26 @@ $('fe-prev').addEventListener('click', () => { fMes = mKey(mIndex(fMes) - 1); re
 $('fe-next').addEventListener('click', () => { fMes = mKey(mIndex(fMes) + 1); renderFechamento(); });
 $('fe-fechar').addEventListener('click', () => {
   const f = state.fech[fMes] = state.fech[fMes] || { real: {} };
-  if (f.fechado) { if (!confirmar(`Reabrir ${mLabel(mIndex(fMes))}? O projetado volta a seguir o orçamento atual.`)) return; f.fechado = false; delete f.proj; }
-  else { const F = fechamento(fMes); f.proj = clone(F.P); f.fechado = true; }
+  if (f.fechado) { if (!confirmar(`Reabrir ${mLabel(mIndex(fMes))}? O projetado volta a seguir o orçamento atual.`)) return; f.fechado = false; delete f.proj; delete f.taxaPlano; }
+  else { const F = fechamento(fMes), pm = planoMes(mIndex(fMes)); f.proj = clone(F.P); if (pm) f.taxaPlano = taxaPlanoMes(mIndex(fMes)); f.fechado = true; }
   save(); renderFechamento(); renderOrcamento();
+});
+document.addEventListener('click', e => {
+  if (!e.target.closest || !e.target.closest('#pj-trocas')) return;
+  const nv = e.target.closest('[data-pjtroca]'), tm = e.target.closest('[data-trmod]'), tb = e.target.closest('[data-troca]'), tc = e.target.closest('[data-trcm]'), dr = e.target.closest('[data-delreg]');
+  if (nv) { $('pj-troca-msg').textContent = novoCenarioPj(nv.dataset.pjtroca === 'calc'); return; }
+  if (tm) { lerTroca(); trocaPend.modelo = tm.dataset.trmod; renderTroca(); return; }
+  if (tb) { const k = tb.dataset.troca; if (k === 'cancelar') { trocaPend = null; renderTroca(); } else aplicarTroca(k === 'sempre'); return; }
+  if (tc) { lerTroca(); trocaPend.cltModo = tc.dataset.trcm; renderTroca(); return; }
+  if (dr) { if (!confirmar('Remover esta troca de regime? O plano volta a usar os valores de hoje nesses meses.')) return; state.orc.regimes = state.orc.regimes.filter(r => r.id !== dr.dataset.delreg); save(); renderTab(); return; }
 });
 $('orc-modelo-box').addEventListener('click', e => {
   const m = e.target.closest('[data-modelo]'), c = e.target.closest('[data-cltmodo]');
-  if (m) setModelo(m.dataset.modelo); else if (c) setModelo('clt', c.dataset.cltmodo);
+  const tb = e.target.closest('[data-troca]'), tc = e.target.closest('[data-trcm]'), dr = e.target.closest('[data-delreg]');
+  if (tb) { const k = tb.dataset.troca; if (k === 'cancelar') { trocaPend = null; renderTroca(); } else aplicarTroca(k === 'sempre'); return; }
+  if (tc) { lerTroca(); trocaPend.cltModo = tc.dataset.trcm; renderTroca(); return; }
+  if (dr) { if (!confirmar('Remover esta troca de regime? O plano volta a usar os valores de hoje nesses meses.')) return; state.orc.regimes = state.orc.regimes.filter(r => r.id !== dr.dataset.delreg); save(); renderTab(); return; }
+  if (m) pedirTroca(m.dataset.modelo); else if (c) setModelo('clt', c.dataset.cltmodo);
 });
 $('orc-sug').addEventListener('click', () => {
   const pm = projMes(mKey(HOJE_IDX)); if (!(pm.liq > 0)) { $('orc-catmsg').textContent = 'Preencha a receita primeiro: a sugestão é uma parte da receita líquida.'; return; }
@@ -14654,6 +14853,7 @@ function bindTarget(scope, id, create) {
     case 'row': return state.comp.rows.find(r => r.id === id);
     case 'orcrec': return state.orc.receitas.find(r => r.id === id);
     case 'orcded': return state.orc.deducoes.find(r => r.id === id);
+    case 'orcreg': return (state.orc.regimes || []).find(r => r.id === id);
     case 'orccat': return create ? catsEditaveis().find(c => c.nome === id) : cats().find(c => c.nome === id);
     case 'plan': return state.plan;
     case 'plmud': return (state.plan.mud || []).find(x => x.id === id);
@@ -14984,7 +15184,7 @@ const INFO_SEC = {
   'orcamento:Premissas': 'O ponto de partida do plano (mês e valor), o rendimento, a inflação, quanto da sobra é reinvestido, o horizonte e as compras incluídas.',
   'orcamento:Receitas e custos': 'O orçamento de hoje: receitas, deduções e custos por categoria, e como cada linha é reajustada (IPCA todo mês, IPCA 1 vez por ano, % fixo ou sem reajuste).',
   'orcamento:Mudanças e eventos': 'Mudanças programadas (uma linha muda de valor a partir de um mês) e eventos (gastos ou receitas pontuais ou anuais, como férias e bônus).',
-  'orcamento:Plano mês a mês': 'O plano calculado mês a mês, linha por linha. É a base da linha Plano na Projeção e do projetado no fechamento.',
+  'orcamento:Plano mês a mês': 'O plano calculado mês a mês, linha por linha. É a base da linha Plano na Projeção e do projetado no fechamento. Meses fechados ficam congelados: mudar algo hoje não reescreve o passado. Em Passado, cada mês que já foi, desde o primeiro checkpoint: receita, custos, sobra e rendimento reais contra o plano, e o patrimônio real contra o previsto.',
   'config:Renda e projeção': 'Valores gerais usados pelos cenários: horizonte da projeção, alíquota de IR e reajuste do salário.',
   'config:Curva de juros': 'Selic, CDI e IPCA esperados para cada ano, pelo Boletim Focus (atualizado toda segunda) ou digitados à mão. Alimentam todas as projeções.',
   'config:Classes de ativo': 'O retorno esperado de cada classe de ativo (por exemplo, 100% do CDI ou IPCA + 7,2%). Os cenários usam esses números.',
@@ -16819,6 +17019,7 @@ function buildPj() {
   renderPjBens();
 }
 function renderPj() {
+  try { renderTrocasPj(); } catch (er) { console.error(er); }
   const o = pjOpts(), cl = o.cl, sg = v => (v >= 0 ? '+' : '−') + fm(Math.abs(v));
   const c = o.clt ? cltAnual(o.clt, o) : null, r = o.fat ? pjCalc(o.fat, o) : null, tP = r ? r.anual + 12 * o.benPJ : null;
   const REG = { III: 'Simples Anexo III', V: 'Simples Anexo V', presumido: 'Lucro Presumido' }, PLN = { minimo: 'salário mínimo', fatorR: '28% do faturamento', fixo: 'valor fixo' };
