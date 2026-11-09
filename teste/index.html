@@ -689,7 +689,7 @@ tr.best td { background: var(--good-soft); }
 .cols-menu label.check { font-size: 12px; }
 .cols-bar { display: flex; justify-content: flex-end; margin-bottom: 6px; }
 .btn.armado { background: var(--bad); border-color: var(--bad); color: #fff; }
-.toast { position: fixed; left: 50%; transform: translateX(-50%); bottom: max(16px, env(safe-area-inset-bottom, 0px)); z-index: 60; max-width: min(520px, calc(100vw - 32px)); background: var(--accent-strong); color: var(--panel); font-size: 12.5px; padding: 10px 14px; border-radius: 9px; box-shadow: 0 8px 24px rgba(0,0,0,.2); }
+.toast { position: fixed; left: 50%; transform: translateX(-50%); bottom: max(16px, env(safe-area-inset-bottom, 0px)); z-index: 1300; max-width: min(520px, calc(100vw - 32px)); background: var(--accent-strong); color: var(--panel); font-size: 12.5px; padding: 10px 14px; border-radius: 9px; box-shadow: 0 8px 24px rgba(0,0,0,.2); }
 th.sortable { cursor: pointer; user-select: none; }
 tr.totrow td { font-weight: 700; border-top: 2px solid var(--line); }
 .clschip { display: inline-flex; align-items: center; gap: 6px; padding: 2px 9px 2px 7px; border-radius: 99px; white-space: nowrap; font-size: 12px; font-weight: 600; color: var(--cc); background: color-mix(in srgb, var(--cc) 13%, transparent); }
@@ -756,7 +756,7 @@ th.sortable[data-sort="desc"]::after { content: " ▼"; color: var(--accent); }
 .tip ul { margin: 0; padding-left: 16px; }
 .tip li { margin: 3px 0; }
 .tip li::marker { color: var(--dotc); }
-.tip { position: fixed; z-index: 70; background: var(--accent-strong); color: var(--panel); font-size: 12px; line-height: 1.45; padding: 9px 12px; border-radius: 8px; box-shadow: 0 6px 20px rgba(0,0,0,.18); pointer-events: none; }
+.tip { position: fixed; z-index: 1300; background: var(--accent-strong); color: var(--panel); font-size: 12px; line-height: 1.45; padding: 9px 12px; border-radius: 8px; box-shadow: 0 6px 20px rgba(0,0,0,.18); pointer-events: none; }
 .cresumo { display: flex; flex-direction: column; gap: 6px; margin: 0 0 12px; font-size: 12px; color: var(--muted); }
 .cresumo .chips { gap: 6px; }
 .cresumo .chip { font-size: 10.5px; padding: 3px 10px; background: var(--accent-soft); color: var(--accent-strong); }
@@ -2169,7 +2169,7 @@ body:has(#tour-pop:not([hidden])) #jor-divbar { display: none; }
     </div>
     <div class="nav-mobile-sub" id="navMobileSub"></div>
   </div>
-  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 303</div></div>
+  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 304</div></div>
 </nav>
 <div class="sino-pop" id="sino-pop" role="dialog" aria-label="Atualizações das bases" hidden></div>
 <div class="sino-pop" id="pess-pop" role="dialog" aria-label="Seus avisos" hidden></div>
@@ -4092,7 +4092,7 @@ body:has(#tour-pop:not([hidden])) #jor-divbar { display: none; }
     return new Promise(resolve => { const { data } = sb.auth.onAuthStateChange(async (ev) => { if (ev !== 'PASSWORD_RECOVERY') return; const s = prompt('Digite a nova senha (mínimo 8 caracteres):'); if (s && s.length >= 8) { const { error } = await sb.auth.updateUser({ password: s }); alert(error ? 'Não deu para trocar a senha: ' + error.message : 'Senha trocada.'); } }); resolve(data); });
   }
   // ---------- rodapé: compartilhar, administração e sair ----------
-  const SITE_V = 189;
+  const SITE_V = 190;
   const escH = v => String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const dataBR = v => v ? new Date(v).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' }) : '–';
   const css2 = `.side-foot .r{flex-wrap:wrap}.side-foot .lg-acoes{margin-left:auto;display:inline-flex;gap:10px}
