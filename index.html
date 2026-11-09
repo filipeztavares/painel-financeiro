@@ -413,6 +413,8 @@ input:hover, select:hover { border-color: var(--s1); }
 .pj-fatcalc { grid-column: 1 / -1; margin: 4px 0 10px; padding: 10px 12px; border-radius: 8px; background: var(--accent-soft); font-size: 12.5px; }
 .pj-fatcalc b { font-size: 16px; color: var(--accent); }
 .pj-pedir { margin: 0 0 12px; flex-wrap: wrap; }
+.pj-modo { grid-column: 1 / -1; margin: 0 0 4px; }
+.pj-modo[hidden] { display: none; }
 .pj-resumo { display: grid; gap: 6px; margin-top: 12px; padding: 12px 14px; border-radius: 8px; background: var(--accent-soft); font-size: 13px; }
 .pj-resumo b.big { font-size: 18px; color: var(--accent); }
 .pj-resumo .parts { display: flex; flex-wrap: wrap; gap: 4px 14px; color: var(--muted); font-size: 12px; }
@@ -2150,7 +2152,7 @@ body:has(#tour-pop:not([hidden])) #jor-divbar { display: none; }
     </div>
     <div class="nav-mobile-sub" id="navMobileSub"></div>
   </div>
-  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 295</div></div>
+  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 299</div></div>
 </nav>
 <div class="sino-pop" id="sino-pop" role="dialog" aria-label="Atualizações das bases" hidden></div>
 <div class="sino-pop" id="pess-pop" role="dialog" aria-label="Seus avisos" hidden></div>
@@ -3625,7 +3627,9 @@ body:has(#tour-pop:not([hidden])) #jor-divbar { display: none; }
       <fieldset>
         <legend>Salário</legend>
         <label id="pj-l-clt">Salário bruto (R$/mês)<input type="number" step="500" min="0" data-bind="pj::clt"></label>
+        <div class="seg pj-modo" id="pj-modo-clt" role="group" aria-label="Como dizer quanto quer ganhar"><button type="button" data-pjmodo="pct">% a mais que a PJ</button><button type="button" data-pjmodo="liq">R$ líquido por mês</button></div>
         <label id="pj-l-margem-clt">Quero ganhar a mais que na PJ (%)<input type="number" step="5" min="0" max="200" data-bind="pj::margem"></label>
+        <label id="pj-l-liq-clt">Líquido que quero receber por mês (R$)<input type="number" step="500" min="0" data-bind="pj::liqClt"></label>
         <p class="pj-fatcalc" id="pj-calc-clt"></p>
         <label>Dependentes no IR<input type="number" step="1" min="0" max="10" data-bind="pj::dep"></label>
         <label class="check"><input type="checkbox" data-bind="pj::fgts"> Contar o FGTS como ganho</label>
@@ -3649,7 +3653,9 @@ body:has(#tour-pop:not([hidden])) #jor-divbar { display: none; }
       <fieldset>
         <legend>Contrato</legend>
         <label id="pj-l-fat">Valor do contrato (R$/mês)<input type="number" step="500" min="0" data-bind="pj::fat"></label>
+        <div class="seg pj-modo" id="pj-modo-pj" role="group" aria-label="Como dizer quanto quer ganhar"><button type="button" data-pjmodo="pct">% a mais que o CLT</button><button type="button" data-pjmodo="liq">R$ líquido por mês</button></div>
         <label id="pj-l-margem-pj">Quero ganhar a mais que no CLT (%)<input type="number" step="5" min="0" max="200" data-bind="pj::margem"></label>
+        <label id="pj-l-liq-pj">Líquido que quero receber por mês (R$)<input type="number" step="500" min="0" data-bind="pj::liqPj"></label>
         <p class="pj-fatcalc" id="pj-calc-pj"></p>
         <label>Meses faturados no ano<select data-bind="pj::meses"><option value="12">12 (sem pausa)</option><option value="11">11 (1 mês de descanso sem receber)</option></select></label>
         <label>Regime<select data-bind="pj::reg"><option value="fatorR">Simples com fator R (III ou V)</option><option value="III">Simples Anexo III</option><option value="V">Simples Anexo V</option><option value="presumido">Lucro Presumido</option></select></label>
@@ -4061,7 +4067,7 @@ body:has(#tour-pop:not([hidden])) #jor-divbar { display: none; }
     return new Promise(resolve => { const { data } = sb.auth.onAuthStateChange(async (ev) => { if (ev !== 'PASSWORD_RECOVERY') return; const s = prompt('Digite a nova senha (mínimo 8 caracteres):'); if (s && s.length >= 8) { const { error } = await sb.auth.updateUser({ password: s }); alert(error ? 'Não deu para trocar a senha: ' + error.message : 'Senha trocada.'); } }); resolve(data); });
   }
   // ---------- rodapé: compartilhar, administração e sair ----------
-  const SITE_V = 181;
+  const SITE_V = 185;
   const escH = v => String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const dataBR = v => v ? new Date(v).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' }) : '–';
   const css2 = `.side-foot .r{flex-wrap:wrap}.side-foot .lg-acoes{margin-left:auto;display:inline-flex;gap:10px}
@@ -4397,7 +4403,7 @@ const DEFAULTS = {
   orc: null,
   fech: {},
   plan: null,
-  pj: { dir: 'cltpj', pedir: false, margem: 20, bensPJ: [], fat: null, meses: '12', reg: 'fatorR', iss: 5, pl: 'otimo', plValor: 5000, contab: null, outros: 0, dep: 0, clt: null, benef: 0, saude: 0, vt: 0, fgts: true },
+  pj: { dir: 'cltpj', pedir: false, pedirModo: 'pct', margem: 20, liqClt: null, liqPj: null, bensPJ: [], fat: null, meses: '12', reg: 'fatorR', iss: 5, pl: 'otimo', plValor: 5000, contab: null, outros: 0, dep: 0, clt: null, benef: 0, saude: 0, vt: 0, fgts: true },
   so: { sel: '', simSaida: '', empresas: [] }
 };
 
@@ -13119,18 +13125,18 @@ function sugereCat(desc) {
 function normCat(c, desc) { const s = String(c || '').trim(); const f = cats().find(x => x.nome.toLowerCase() === s.toLowerCase()); return f ? f.nome : (sugereCat(desc) || 'Outros'); }
 
 /* armazenamento: um documento por mês em gastos/AAAA-MM */
-const gWriting = {}, gPending = {};
+const gWriting = {}, gPending = {}, gSujo = new Set();   // gSujo: meses mudados aqui que o banco ainda não confirmou
 async function salvarMes(mes) {
   try { localStorage.setItem(LSK('painel-gastos'), JSON.stringify(gastos)); } catch (e) {}
-  if (!db) return;
+  if (!db) { gSujo.delete(mes); return; }
   if (gWriting[mes]) { gPending[mes] = true; return; }
   gWriting[mes] = true;
-  try { await pdoc('gastos/' + mes).set({ mes, itens: gastos[mes] || [] }); setSave('salvo'); }
+  try { await pdoc('gastos/' + mes).set({ mes, itens: gastos[mes] || [] }); if (!gPending[mes]) gSujo.delete(mes); setSave('salvo'); }
   catch (e) { setSave(e && e.code === 'quota_exceeded' ? 'limite de dados atingido' : 'gastos não salvaram, tente de novo'); }
   gWriting[mes] = false;
   if (gPending[mes]) { gPending[mes] = false; salvarMes(mes); }
 }
-async function salvarMeses(list) { for (const m of list) await salvarMes(m); }
+async function salvarMeses(list, prog) { list.forEach(m => gSujo.add(m)); let i = 0; for (const m of list) { if (prog) try { prog(++i, list.length); } catch (e) {} await salvarMes(m); } }
 // repetidos contam como multiconjunto: duas compras iguais no mesmo dia (ex.: lavanderia) entram as duas, e reimportar o mesmo arquivo não duplica
 function contarChaves(l) { const m = new Map(); l.forEach(it => { const k2 = chave(it); m.set(k2, (m.get(k2) || 0) + 1); }); return m; }
 function addItens(novos, origem) {
@@ -14721,6 +14727,7 @@ document.addEventListener('click', e => {
   if (d.delcps != null) { if (confirmar(`Apagar todos os ${cps.length} checkpoints? As projeções ficam sem ponto de partida até você salvar um novo.`)) apagarCps(cps.map(c => c.mes)); return; }
   if (d.modo) { state.gModo = d.modo; save(); renderGlobal(); return; }
   if (d.pjdir) { state.pj.dir = d.pjdir; save(); buildPj(); renderPj(); return; }
+  if (d.pjmodo) { state.pj.pedirModo = d.pjmodo === 'liq' ? 'liq' : 'pct'; save(); buildPj(); renderPj(); return; }
   if (d.pjpedir != null) { state.pj.pedir = d.pjpedir === '1'; save(); buildPj(); renderPj(); return; }
   if (d.ganos) { state.cfg.anos = +d.ganos; save(); renderGlobal(); return; }
   if (d.mdanos != null) { state.plan.anosMd = +d.mdanos; planCache = null; save(); renderMdChart(); return; }
@@ -14995,8 +15002,8 @@ const INFO_SEC = {
   'stock:Se eu sair': 'O que fica liberado e quanto custa exercer se você sair numa data.',
   'stock:Todas as empresas': 'Soma de todas as empresas em que você tem opções.',
   'stock:Como funciona': 'As contas, as regras de imposto e o que muda para empresa no exterior.',
-  'pjpf:CLT': 'O emprego CLT (o seu de hoje ou a proposta): salário bruto, dependentes, FGTS e benefícios. Em "Quanto devo pedir?", o salário sai da conta para empatar com a PJ mais a margem que você quer.',
-  'pjpf:PJ': 'A PJ (a sua de hoje ou a proposta): valor do contrato ou faturamento, meses faturados, regime, pró-labore, custos e o que o contratante paga além do contrato. Em "Quanto devo pedir?", o contrato sai da conta.',
+  'pjpf:CLT': 'O emprego CLT (o seu de hoje ou a proposta): salário bruto, dependentes, FGTS e benefícios. Em "Quanto devo pedir?", o salário sai da conta: para empatar com a PJ mais a margem que você quer, ou para receber o valor líquido por mês que você informar (o que cai na conta).',
+  'pjpf:PJ': 'A PJ (a sua de hoje ou a proposta): valor do contrato ou faturamento, meses faturados, regime, pró-labore, custos e o que o contratante paga além do contrato. Em "Quanto devo pedir?", o contrato sai da conta: pela margem a mais que no CLT ou pelo valor líquido por mês que você quer receber.',
   'pjpf:Do faturamento ao bolso': 'Do faturamento da empresa ao dinheiro na sua conta: DAS, contabilidade, INSS e IR do pró-labore e o lucro distribuído sem imposto.',
   'pjpf:Regimes e pró-labore': 'O mesmo faturamento em cada regime (Anexo III com fator R, Anexo V, Lucro Presumido) e com cada pró-labore, para achar a combinação que deixa mais no bolso.',
   'pjpf:Lado a lado': 'Os dois lados no mesmo ano, linha a linha: salário ou faturamento, impostos, 13º e férias, FGTS, benefícios e custos da PJ. A diferença é a proposta menos o que você tem hoje.',
@@ -15500,7 +15507,7 @@ function renderJogo() {
   $('jg-home').hidden = jgVista() !== 'roleta';
   $('jg-vista').textContent = jgVista() === 'roleta' ? 'Ver os módulos em cards' : 'Ver como roleta';
   const tm = jgTemaAtual();
-  $('jg-hud').innerHTML = `<span class="jg-pill" title="Pontos vêm de casas configuradas, checkpoints, meses fechados e meses dentro do projetado"><span class="jg-lv">${d.nivel}</span>${esc(d.nome)}</span><span class="jg-pill" style="--c:var(--s3)"><i></i>${d.total.toLocaleString('pt-BR')} pontos${d.prox ? ` <span class="subdet">· faltam ${(d.prox[0] - d.total).toLocaleString('pt-BR')} para ${esc(d.prox[1])}</span>` : ''}</span><span class="jg-pill" style="--c:var(--good)"><i></i>${seq} semana${seq === 1 ? '' : 's'} seguida${seq === 1 ? '' : 's'}</span><span class="jg-pill" style="--c:var(--s1)"><i></i>${d.casas} de ${d.casasN} casas</span>
+  $('jg-hud').innerHTML = `<span class="jg-pill" title="Pontos vêm de casas configuradas, checkpoints, meses fechados e meses dentro do projetado"><span class="jg-lv">${d.nivel}</span>${esc(d.nome)}</span><span class="jg-pill" style="--c:var(--s3)"><i></i>${d.total.toLocaleString('pt-BR')} pontos${d.prox ? ` <span class="subdet">· faltam ${(d.prox[0] - d.total).toLocaleString('pt-BR')} para ${esc(d.prox[1])}</span>` : ''}</span><span class="jg-pill" style="--c:var(--good)"><i></i>${seq} semana${seq === 1 ? '' : 's'} seguida${seq === 1 ? '' : 's'}</span>
     <span class="jg-tema">Aparência <span class="seg" role="group" aria-label="Aparência">${[['auto', 'Automática'], ['claro', 'Clara'], ['escuro', 'Escura']].map(([k, n]) => `<button type="button" data-jgtema="${k}" aria-pressed="${tm === k}">${n}</button>`).join('')}</span></span>`;
   if (jgVista() !== 'roleta' || !N) return;
   const CX = 250, CY = 250, R1 = 220, R0 = 74, ST = 360 / N, GAP = 1.1, f2 = n => n.toFixed(2);
@@ -16776,10 +16783,14 @@ function pjPadrao() {
 function pjOpts() {
   const p = state.pj; if (p.dir !== 'cltpj' && p.dir !== 'pjclt') p.dir = 'cltpj'; pjBensMig();
   const d = pjPadrao();
-  const o = { fat: p.fat != null ? +p.fat : (d.fat || 0), meses: +p.meses === 11 ? 11 : 12, reg: p.reg, iss: +p.iss || 0, pl: p.pl, plValor: +p.plValor || 0, contab: p.contab != null ? +p.contab : d.contab, outros: +p.outros || 0, dep: +p.dep || 0, clt: p.clt != null ? +p.clt : (d.clt || 0), benef: pjBensMes(p), bens: pjBens(p), saude: +p.saude || 0, vt: +p.vt || 0, fgts: p.fgts !== false, benPJ: pjBensPJMes(p), bensPJ: (p.bensPJ || []).filter(b => b && +b.valor > 0), margem: p.margem != null && isFinite(+p.margem) ? Math.max(0, +p.margem) : 20, pedir: !!p.pedir, dir: p.dir };
+  const o = { fat: p.fat != null ? +p.fat : (d.fat || 0), meses: +p.meses === 11 ? 11 : 12, reg: p.reg, iss: +p.iss || 0, pl: p.pl, plValor: +p.plValor || 0, contab: p.contab != null ? +p.contab : d.contab, outros: +p.outros || 0, dep: +p.dep || 0, clt: p.clt != null ? +p.clt : (d.clt || 0), benef: pjBensMes(p), bens: pjBens(p), saude: +p.saude || 0, vt: +p.vt || 0, fgts: p.fgts !== false, benPJ: pjBensPJMes(p), bensPJ: (p.bensPJ || []).filter(b => b && +b.valor > 0), margem: p.margem != null && isFinite(+p.margem) ? Math.max(0, +p.margem) : 20, pedir: !!p.pedir, dir: p.dir, modo: p.pedirModo === 'liq' ? 'liq' : 'pct', liqClt: Math.max(0, +p.liqClt || 0), liqPj: Math.max(0, +p.liqPj || 0) };
   o.cl = o.dir === 'cltpj';
   // "Quanto devo pedir?": o lado da proposta sai da conta (empate com a base + margem no bolso)
-  if (o.pedir) {
+  // ou um valor líquido fixo por mês: salário CLT líquido (o que cai na conta) ou líquido da PJ no mês faturado
+  if (o.pedir && o.modo === 'liq') {
+    if (o.cl) o.fat = o.liqPj > 0 ? Math.ceil(busca(F => pjCalc(F, o).liq, o.liqPj, Math.max(1000, o.liqPj * 1.3)) / 100) * 100 : 0;
+    else o.clt = o.liqClt > 0 ? Math.ceil(busca(S => netCLT(S, o.dep), o.liqClt, Math.max(1000, o.liqClt * 1.5)) / 100) * 100 : 0;
+  } else if (o.pedir) {
     if (o.cl) { const alvo = o.clt ? cltAnual(o.clt, o).total * (1 + o.margem / 100) : 0; o.fat = alvo > 0 ? Math.ceil(busca(F => pjTotal(F, o), alvo, Math.max(1000, alvo / 12)) / 100) * 100 : 0; }
     else { const alvo = o.fat ? pjTotal(o.fat, o) * (1 + o.margem / 100) : 0; o.clt = alvo > 0 ? Math.ceil(busca(S => cltAnual(S, o).total, alvo, Math.max(1000, alvo / 12)) / 100) * 100 : 0; }
   }
@@ -16798,8 +16809,10 @@ function buildPj() {
   $('pj-d-pj').textContent = cl ? 'O que muda quando você vira PJ. Em "Quanto devo pedir?", o painel calcula o valor do contrato que vale a troca.' : 'Sua empresa hoje: quanto fatura, regime, pró-labore e custos.';
   $('pj-pedir-clt').hidden = cl; $('pj-pedir-pj').hidden = !cl;
   const pc = !cl && ped, pp = cl && ped;
-  $('pj-l-clt').hidden = pc; $('pj-l-margem-clt').hidden = !pc; $('pj-calc-clt').hidden = !pc;
-  $('pj-l-fat').hidden = pp; $('pj-l-margem-pj').hidden = !pp; $('pj-calc-pj').hidden = !pp;
+  const lq = p.pedirModo === 'liq';
+  document.querySelectorAll('#p-pjpf [data-pjmodo]').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.pjmodo === (lq ? 'liq' : 'pct'))));
+  $('pj-l-clt').hidden = pc; $('pj-modo-clt').hidden = !pc; $('pj-l-margem-clt').hidden = !pc || lq; $('pj-l-liq-clt').hidden = !pc || !lq; $('pj-calc-clt').hidden = !pc;
+  $('pj-l-fat').hidden = pp; $('pj-modo-pj').hidden = !pp; $('pj-l-margem-pj').hidden = !pp || lq; $('pj-l-liq-pj').hidden = !pp || !lq; $('pj-calc-pj').hidden = !pp;
   $('pj-l-fat').firstChild.textContent = cl ? 'Valor do contrato (R$/mês)' : 'Faturamento mensal (R$)';
   $('pj-passos').append(cl ? $('pj-s-pj') : $('pj-s-clt'));
   document.querySelectorAll('#p-pjpf [data-bind]').forEach(fillBound);
@@ -16810,12 +16823,18 @@ function renderPj() {
   const c = o.clt ? cltAnual(o.clt, o) : null, r = o.fat ? pjCalc(o.fat, o) : null, tP = r ? r.anual + 12 * o.benPJ : null;
   const REG = { III: 'Simples Anexo III', V: 'Simples Anexo V', presumido: 'Lucro Presumido' }, PLN = { minimo: 'salário mínimo', fatorR: '28% do faturamento', fixo: 'valor fixo' };
   // resumos de cada passo
-  $('pj-sum-clt').innerHTML = c ? `<div>${cl ? 'Seu pacote CLT' : 'O pacote CLT'} vale <b class="big">${fm(c.total / 12)}</b> por mês no bolso, ou <b>${fm(c.total)}</b> por ano.</div><div class="parts"><span>Líquido do salário ${fm(c.n)}</span><span>13º e 1/3 de férias ${fm((c.n13 + c.fer) / 12)}</span>${c.fgts ? `<span>FGTS ${fm(c.fgts / 12)}</span>` : ''}${c.ben ? `<span>Benefícios ${fm(c.ben / 12)}</span>` : ''}</div>`
+  $('pj-sum-clt').innerHTML = c ? `<div>Líquido do salário (o que cai na conta todo mês): <b class="big">${fm(c.n)}</b></div><div>Pacote com ${['13º', 'férias'].concat(c.fgts ? ['FGTS'] : [], c.ben ? ['benefícios'] : []).join(', ').replace(/, ([^,]*)$/, ' e $1')} (média por mês): <b>${fm(c.total / 12)}</b>, ou <b>${fm(c.total)}</b> por ano.</div><div class="parts"><span>13º e 1/3 de férias ${fm((c.n13 + c.fer) / 12)}</span>${c.fgts ? `<span>FGTS ${fm(c.fgts / 12)}</span>` : ''}${c.ben ? `<span>Benefícios ${fm(c.ben / 12)}</span>` : ''}</div>`
     : `<div class="subdet">${!cl && o.pedir ? 'Preencha a sua PJ para calcular o salário.' : 'Preencha o salário bruto para ver quanto o pacote CLT vale no bolso.'}</div>`;
   $('pj-sum-pj').innerHTML = r ? `<div>${cl ? 'A PJ' : 'Sua PJ'} deixa <b class="big">${fm(tP / 12)}</b> por mês no bolso na média do ano, ou <b>${fm(tP)}</b> por ano.</div><div class="parts"><span>No mês faturado ${fm(r.liq)}</span><span>Impostos e INSS ${fm(r.imp + r.cpp + r.inss + r.ir)} por mês</span><span>${o.meses} meses faturados</span>${o.benPJ ? `<span>Benefícios ${fm(o.benPJ)} por mês</span>` : ''}</div>`
     : `<div class="subdet">${cl && o.pedir ? 'Preencha o seu CLT para calcular o contrato.' : cl ? 'Preencha o valor do contrato para ver quanto sobra no bolso.' : 'Preencha o faturamento para ver quanto sobra no bolso.'}</div>`;
-  $('pj-calc-pj').innerHTML = o.fat ? `Peça pelo menos <b>${fm(o.fat)}</b> por mês <span class="subdet">(${o.meses} meses faturados) para ganhar ${o.margem}% a mais no bolso que no CLT</span>` : 'Preencha o seu CLT para calcular.';
-  $('pj-calc-clt').innerHTML = o.clt ? `Peça um salário bruto de pelo menos <b>${fm(o.clt)}</b> <span class="subdet">para ganhar ${o.margem}% a mais no bolso que na PJ</span>` : 'Preencha a sua PJ para calcular.';
+  const cmpL = (x, y, nm) => x && y ? `. Somando 13º, férias, FGTS e benefícios, dá ${pct(Math.abs(x / y - 1))} a ${x >= y ? 'mais' : 'menos'} no bolso que ${nm}` : '';
+  if (o.modo === 'liq') {
+    $('pj-calc-pj').innerHTML = o.fat ? `Peça pelo menos <b>${fm(o.fat)}</b> por mês <span class="subdet">(${o.meses} meses faturados) para receber ${fm(o.liqPj)} líquido nos meses faturados, depois de impostos, INSS, IR e contador${cmpL(tP, c && c.total, 'no CLT')}</span>` : 'Preencha quanto quer receber líquido por mês.';
+    $('pj-calc-clt').innerHTML = o.clt ? `Peça um salário bruto de pelo menos <b>${fm(o.clt)}</b> <span class="subdet">para receber ${fm(c ? c.n : o.liqClt)} líquido por mês (o salário que cai na conta, depois de INSS e IR)${cmpL(c && c.total, tP, 'na PJ')}</span>` : 'Preencha quanto quer receber líquido por mês.';
+  } else {
+    $('pj-calc-pj').innerHTML = o.fat ? `Peça pelo menos <b>${fm(o.fat)}</b> por mês <span class="subdet">(${o.meses} meses faturados) para ganhar ${o.margem}% a mais no bolso que no CLT</span>` : 'Preencha o seu CLT para calcular.';
+    $('pj-calc-clt').innerHTML = o.clt ? `Peça um salário bruto de pelo menos <b>${fm(o.clt)}</b> <span class="subdet">para ganhar ${o.margem}% a mais no bolso que na PJ</span>` : 'Preencha a sua PJ para calcular.';
+  }
   // base, proposta, empate e quanto pedir
   const tB = cl ? (c ? c.total : null) : tP, tX = cl ? tP : (c ? c.total : null);
   const prop = cl ? (x => pjTotal(x, o)) : (x => cltAnual(x, o).total), acha = alvo => busca(prop, alvo, Math.max(1000, alvo / 12));
@@ -16824,7 +16843,7 @@ function renderPj() {
   kpis($('kpi-pj'), [
     ['Diferença no bolso', dif == null ? '–' : sg(dif / 12), dif == null ? 'preencha os dois passos' : `por mês; ${sg(dif)} por ano: ${nX} deixa ${pct(Math.abs(dif) / tB)} a ${dif >= 0 ? 'mais' : 'menos'} que ${nB}`, dif != null && dif < 0],
     [`Empate com ${nB}`, emp ? fm(emp) : '–', !emp ? 'preencha o passo 1' : cl ? `de contrato por mês, faturando ${o.meses} meses; abaixo disso o CLT ganha` : 'de salário bruto CLT por mês; abaixo disso a PJ ganha'],
-    ['Quanto pedir', o.pedir ? (cl ? (o.fat ? fm(o.fat) : '–') : (o.clt ? fm(o.clt) : '–')) : faixa ? `${fm(faixa[0])} a ${fm(faixa[1])}` : '–', o.pedir ? `empate + ${o.margem}% a mais no bolso` : `${cl ? 'de contrato' : 'de salário'} para ganhar 20% a 30% a mais no bolso`]]);
+    ['Quanto pedir', o.pedir ? (cl ? (o.fat ? fm(o.fat) : '–') : (o.clt ? fm(o.clt) : '–')) : faixa ? `${fm(faixa[0])} a ${fm(faixa[1])}` : '–', o.pedir ? (o.modo === 'liq' ? ((cl ? o.liqPj : o.liqClt) ? `para receber ${fm(cl ? o.liqPj : o.liqClt)} líquido por mês` : 'preencha o líquido que quer receber') : `empate + ${o.margem}% a mais no bolso`) : `${cl ? 'de contrato' : 'de salário'} para ganhar 20% a 30% a mais no bolso`]]);
   // lado a lado
   if (c && r) {
     const i = inssCLT(o.clt), ir = irrf26(o.clt, i, o.dep);
@@ -17015,7 +17034,7 @@ setTimeout(carregFim, 15000);
   vgSemear();
   pcol('checkpoints').onSnapshot(s => { setTimeout(() => carregou('cps'), 0); const l = s.docs.map(d => d.data()).filter(d => d && d.mes && isFinite(d.valor)).map(d => ({ mes: String(d.mes).slice(0, 7), valor: +d.valor, origem: d.origem || '', imp: d.imp || '' })); cps = l.length ? l : CP_PLANILHA.slice(); if (tab === 'global' || tab === 'cenarios' || tab === 'inicio' || tab === 'modulos' || tab === 'comousar') renderTab(); },
     () => { carregou('cps'); setSave('checkpoints indisponíveis agora'); });
-  pcol('gastos').onSnapshot(s => { setTimeout(() => carregou('gastos'), 0); const g = {}; s.docs.forEach(d => { const x = clone(d.data() || null); if (x && /^\d{4}-\d{2}$/.test(x.mes) && Array.isArray(x.itens)) g[x.mes] = x.itens.filter(it => it && it.data && it.comp && isFinite(+it.valor)); }); gastos = g; if (tab === 'gastos') renderGastos(); if (tab === 'inicio') renderHome(); if (tab === 'modulos' || tab === 'comousar') renderTab(); },
+  pcol('gastos').onSnapshot(s => { setTimeout(() => carregou('gastos'), 0); const g = {}; s.docs.forEach(d => { const x = clone(d.data() || null); if (x && /^\d{4}-\d{2}$/.test(x.mes) && Array.isArray(x.itens)) g[x.mes] = x.itens.filter(it => it && it.data && it.comp && isFinite(+it.valor)); }); gSujo.forEach(m => { if (gastos[m]) g[m] = gastos[m]; else delete g[m]; }); gastos = g; if (tab === 'gastos') renderGastos(); if (tab === 'inicio') renderHome(); if (tab === 'modulos' || tab === 'comousar') renderTab(); },
     () => { carregou('gastos'); setSave('gastos indisponíveis agora'); });
   db.collection('acoes').onSnapshot(s => { const m = {}; s.docs.forEach(d => { const x = clone(d.data() || null); if (x && /^[A-Z][A-Z0-9]{3}\d{1,2}B?$/.test(x.tk)) m[x.tk] = x; }); acoesDb = m; if (tab === 'carteira') renderAcoes(); }, () => {});
   showTab(tab);
@@ -17682,13 +17701,13 @@ function jorSimDb(real) {
     return a.cats;
   }
   function registros(a) {
-    const out = [], ruins = [], M = a.map, lin = a.rows.slice(a.hdr + 1);
+    const out = [], ruins = [], M = a.map, lin = a.rows.slice(a.hdr + 1); let vazias = 0;
     if (a.tipo === 'gas') {
       const cm = catsDaAba(a); let porDesc = 0; a.cand = []; a.manual = a.manual || new Map();
       const pals = String(a.op.excl || '').split(/[,;]/).map(w => sem(w)).filter(Boolean);
       lin.forEach((r, k) => { const n = a.hdr + k + 2;
         const data = dataDe(r[M.data], a.op.fmt), desc = String(r[M.desc] ?? '').trim(), v0 = valorDe(r[M.valor]);
-        if (!data && !desc && v0 == null) return;
+        if (!desc && !v0) { if (r.some(c => !vazio(c))) vazias++; return; }   // sem descrição e sem valor (ou zero): linha separadora
         if (!data) { ruins.push(`linha ${n}: data "${r[M.data] ?? ''}" não reconhecida`); return; }
         if (v0 == null || v0 === 0) { ruins.push(`linha ${n}: sem valor`); return; }
         let v = a.op.sinal === 'neg' ? -v0 : v0;
@@ -17724,6 +17743,7 @@ function jorSimDb(real) {
         out.push({ nome, inst: M.inst != null ? String(r[M.inst] ?? '').trim() : '', tipo, tSup, atual: Math.round(atual * 100) / 100, aplic: aplic != null ? aplic : atual, semAplic: aplic == null, data: data || hoje, semData: !data, venc: venc || '', igual: igual ? igual.id : null });
       });
     }
+    if (vazias) ruins.unshift(`${plural(vazias, 'linha', 'linhas')} sem descrição e sem valor (separadoras ou em branco) ${vazias > 1 ? 'foram puladas' : 'foi pulada'}`);
     return { out, ruins };
   }
   function tipoAtivo(tx, nome) {
@@ -17836,7 +17856,7 @@ function jorSimDb(real) {
     } catch (e) { $('pl-st').textContent = `Não consegui ler ${f.name}: ${e && e.message ? e.message : 'formato não reconhecido'}.`; }
   }
   async function importa() {
-    const b = $('pl-go'); if (!PL || !b) return; b.disabled = true; const res = [];
+    const b = $('pl-go'); if (!PL || !b) return; b.disabled = true; const res = []; $('pl-st').textContent = 'Importando…';
     try {
       const novasCats = new Set();
       IMP = { id: uid(), em: new Date().toISOString(), arquivo: PL.arquivo, gastos: 0, meses: [], cps: [], novos: [], atual: [], cats: [] };
@@ -17845,7 +17865,7 @@ function jorSimDb(real) {
         if (a.tipo === 'gas') {
           a.res.out.forEach(x => { if (!cats().some(c => c.nome === x.cat)) novasCats.add(x.cat); });
           if (novasCats.size) { state.gastosCfg = state.gastosCfg || {}; const base = cats().map(c => Object.assign({}, c)); novasCats.forEach(n => base.push({ nome: n, grupo: 'Estilo de vida', orc: 0 })); state.gastosCfg.cats = base; save(); }
-          const r = addItens(a.res.out.filter(x => !x.rep).map(({ rep, ...x }) => Object.assign(x, { imp: IMP.id })), 'planilha'); await salvarMeses(r.meses);
+          const r = addItens(a.res.out.filter(x => !x.rep).map(({ rep, ...x }) => Object.assign(x, { imp: IMP.id })), 'planilha'); await salvarMeses(r.meses, (i, n) => { $('pl-st').textContent = `Salvando os gastos: mês ${i} de ${n}…`; });
           IMP.gastos += r.n; IMP.meses = [...new Set(IMP.meses.concat(r.meses))].sort();
           res.push(`${plural(r.n, 'gasto importado', 'gastos importados')}${r.dup ? ` (${r.dup} repetidos pulados)` : ''}`);
         } else if (a.tipo === 'cp') {
