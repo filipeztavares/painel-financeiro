@@ -2163,7 +2163,7 @@ body:has(#tour-pop:not([hidden])) #jor-divbar { display: none; }
     </div>
     <div class="nav-mobile-sub" id="navMobileSub"></div>
   </div>
-  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 300</div></div>
+  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 301</div></div>
 </nav>
 <div class="sino-pop" id="sino-pop" role="dialog" aria-label="Atualizações das bases" hidden></div>
 <div class="sino-pop" id="pess-pop" role="dialog" aria-label="Seus avisos" hidden></div>
@@ -4079,7 +4079,7 @@ body:has(#tour-pop:not([hidden])) #jor-divbar { display: none; }
     return new Promise(resolve => { const { data } = sb.auth.onAuthStateChange(async (ev) => { if (ev !== 'PASSWORD_RECOVERY') return; const s = prompt('Digite a nova senha (mínimo 8 caracteres):'); if (s && s.length >= 8) { const { error } = await sb.auth.updateUser({ password: s }); alert(error ? 'Não deu para trocar a senha: ' + error.message : 'Senha trocada.'); } }); resolve(data); });
   }
   // ---------- rodapé: compartilhar, administração e sair ----------
-  const SITE_V = 186;
+  const SITE_V = 187;
   const escH = v => String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const dataBR = v => v ? new Date(v).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' }) : '–';
   const css2 = `.side-foot .r{flex-wrap:wrap}.side-foot .lg-acoes{margin-left:auto;display:inline-flex;gap:10px}
@@ -13951,7 +13951,9 @@ function pedirTroca(mod) {
   renderTroca();
 }
 function renderTroca() {
-  const t = trocaPend, el = $('orc-troca'); if (!t) { el.hidden = true; el.innerHTML = ''; return; }
+  const t = trocaPend, el = $('orc-troca');
+  document.querySelectorAll('#orc-modelo [data-modelo]').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.modelo === (t ? t.modelo : orcModelo()))));
+  if (!t) { el.hidden = true; el.innerHTML = ''; return; }
   const nome = m => m === 'pj' ? 'PJ' : 'CLT', salL = t.modelo === 'pj' ? 'Faturamento bruto novo' : t.cltModo === 'bruto' ? 'Salário bruto novo' : 'Salário líquido novo';
   el.hidden = false;
   el.innerHTML = `<b>Trocar de ${nome(t.de)} para ${nome(t.modelo)}</b>
@@ -14618,7 +14620,7 @@ function renderOrcamento() {
   $('orc-media').disabled = !nM;
   renderRegimes();
   const mod = orcModelo(), cm = state.orc.cltModo || 'liq';
-  document.querySelectorAll('#orc-modelo [data-modelo]').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.modelo === mod)));
+  document.querySelectorAll('#orc-modelo [data-modelo]').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.modelo === (trocaPend ? trocaPend.modelo : mod))));
   $('orc-cltmodo').hidden = mod !== 'clt'; document.querySelectorAll('#orc-cltmodo [data-cltmodo]').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.cltmodo === cm)));
   $('orc-modelo-hint').textContent = !mod ? 'Escolha como você recebe: isso ajusta a receita e as deduções abaixo.'
     : mod === 'pj' ? 'PJ: digite o faturamento bruto da empresa por mês. DAS (% do faturamento) e contabilidade são descontados para chegar no que sobra para você. Para o detalhe de pró-labore e impostos, veja PJ e PF.'
