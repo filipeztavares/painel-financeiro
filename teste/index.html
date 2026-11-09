@@ -717,7 +717,8 @@ input.fatcat:focus { cursor: text; }
 #cat-pop { position: fixed; z-index: 1100; max-height: 300px; overflow-y: auto; background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 4px; box-shadow: 0 10px 28px rgba(var(--tint),.16), 0 2px 6px rgba(var(--tint),.08); font-size: 13px; }
 #cat-pop .grp { padding: 7px 10px 3px; font-size: 10.5px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--faint); }
 #cat-pop .opt { padding: 6px 10px; border-radius: 6px; cursor: pointer; color: var(--ink); white-space: nowrap; }
-#cat-pop .opt.on { background: var(--accent-soft); }
+#cat-pop .opt.on, #cat-pop .opt:hover { background: var(--accent-soft); }
+[role="listbox"] [role="option"]:not([aria-disabled="true"]):hover { background: var(--accent-soft); }
 #cat-pop .opt.sel { color: var(--accent-strong); font-weight: 600; }
 #cat-pop .opt.sel::after { content: ' ✓'; }
 
@@ -2169,7 +2170,7 @@ body:has(#tour-pop:not([hidden])) #jor-divbar { display: none; }
     </div>
     <div class="nav-mobile-sub" id="navMobileSub"></div>
   </div>
-  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 304</div></div>
+  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 305</div></div>
 </nav>
 <div class="sino-pop" id="sino-pop" role="dialog" aria-label="Atualizações das bases" hidden></div>
 <div class="sino-pop" id="pess-pop" role="dialog" aria-label="Seus avisos" hidden></div>
@@ -4092,7 +4093,7 @@ body:has(#tour-pop:not([hidden])) #jor-divbar { display: none; }
     return new Promise(resolve => { const { data } = sb.auth.onAuthStateChange(async (ev) => { if (ev !== 'PASSWORD_RECOVERY') return; const s = prompt('Digite a nova senha (mínimo 8 caracteres):'); if (s && s.length >= 8) { const { error } = await sb.auth.updateUser({ password: s }); alert(error ? 'Não deu para trocar a senha: ' + error.message : 'Senha trocada.'); } }); resolve(data); });
   }
   // ---------- rodapé: compartilhar, administração e sair ----------
-  const SITE_V = 190;
+  const SITE_V = 191;
   const escH = v => String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const dataBR = v => v ? new Date(v).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' }) : '–';
   const css2 = `.side-foot .r{flex-wrap:wrap}.side-foot .lg-acoes{margin-left:auto;display:inline-flex;gap:10px}
@@ -13853,6 +13854,7 @@ document.addEventListener('focusin', e => { const t = e.target; if (!t.classList
 document.addEventListener('focusout', e => { if (e.target === popAlvo) fecharPop(); });
 document.addEventListener('mousedown', e => { const t = e.target; if (t.classList && t.classList.contains('fatcat') && document.activeElement === t && catPop.hidden) abrirPop(t, false); });
 document.addEventListener('input', e => { const t = e.target; if (t.classList && t.classList.contains('fatcat') && document.activeElement === t) abrirPop(t, true); });
+catPop.addEventListener('mouseover', e => { const o = e.target.closest('.opt'); if (!o) return; const os = popOpts(), i = os.indexOf(o); if (i >= 0 && i !== popIdx) { popIdx = i; os.forEach((x, k) => x.classList.toggle('on', k === i)); } });
 catPop.addEventListener('mousedown', e => { e.preventDefault(); const o = e.target.closest('.opt'); if (o) escolherPop(o.dataset.v); });
 document.addEventListener('keydown', e => {
   const f = e.target;
