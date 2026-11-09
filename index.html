@@ -714,7 +714,8 @@ input.fatcat:focus { cursor: text; }
 #cat-pop { position: fixed; z-index: 1100; max-height: 300px; overflow-y: auto; background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 4px; box-shadow: 0 10px 28px rgba(var(--tint),.16), 0 2px 6px rgba(var(--tint),.08); font-size: 13px; }
 #cat-pop .grp { padding: 7px 10px 3px; font-size: 10.5px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--faint); }
 #cat-pop .opt { padding: 6px 10px; border-radius: 6px; cursor: pointer; color: var(--ink); white-space: nowrap; }
-#cat-pop .opt.on { background: var(--accent-soft); }
+#cat-pop .opt.on, #cat-pop .opt:hover { background: var(--accent-soft); }
+[role="listbox"] [role="option"]:not([aria-disabled="true"]):hover { background: var(--accent-soft); }
 #cat-pop .opt.sel { color: var(--accent-strong); font-weight: 600; }
 #cat-pop .opt.sel::after { content: ' ✓'; }
 
@@ -1601,7 +1602,8 @@ tr.rd-hit td { background: color-mix(in srgb, var(--good) 9%, transparent); }
 .ck-t{position:relative;height:12px;border-radius:6px;background:var(--line)}
 .ck-t>span{position:absolute;inset:0 auto 0 0;border-radius:6px;background:var(--good)}
 .ck-t>span.al{background:var(--red)} .ck-t>span.lv{background:var(--warn)} .ck-t>span.fx{background:var(--s1)}
-.ck-t>i{position:absolute;top:-3px;bottom:-3px;width:2px;background:var(--ink);opacity:.75}
+.ck-t>span.b-ok{background:var(--good)} .ck-t>span.b-am{background:#E0A800} .ck-t>span.b-al{background:var(--red)}
+.ck-t>i{position:absolute;top:-3px;bottom:-3px;width:2px;margin-left:-1px;background:var(--ink);opacity:.75}
 .ck-c .v{font-variant-numeric:tabular-nums;color:var(--muted);text-align:right;white-space:nowrap}
 .ck-c .st{grid-column:2/4;display:flex;flex-wrap:wrap;gap:6px;align-items:center;color:var(--muted);font-size:12px}
 .ck-fx{font:inherit;font-size:11px;border:1px dashed var(--line);background:transparent;color:var(--muted);border-radius:999px;padding:0 8px;cursor:pointer}
@@ -2166,7 +2168,7 @@ body:has(#tour-pop:not([hidden])) #jor-divbar { display: none; }
     </div>
     <div class="nav-mobile-sub" id="navMobileSub"></div>
   </div>
-  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 304</div></div>
+  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 306</div></div>
 </nav>
 <div class="sino-pop" id="sino-pop" role="dialog" aria-label="Atualizações das bases" hidden></div>
 <div class="sino-pop" id="pess-pop" role="dialog" aria-label="Seus avisos" hidden></div>
@@ -4089,7 +4091,7 @@ body:has(#tour-pop:not([hidden])) #jor-divbar { display: none; }
     return new Promise(resolve => { const { data } = sb.auth.onAuthStateChange(async (ev) => { if (ev !== 'PASSWORD_RECOVERY') return; const s = prompt('Digite a nova senha (mínimo 8 caracteres):'); if (s && s.length >= 8) { const { error } = await sb.auth.updateUser({ password: s }); alert(error ? 'Não deu para trocar a senha: ' + error.message : 'Senha trocada.'); } }); resolve(data); });
   }
   // ---------- rodapé: compartilhar, administração e sair ----------
-  const SITE_V = 190;
+  const SITE_V = 192;
   const escH = v => String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const dataBR = v => v ? new Date(v).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' }) : '–';
   const css2 = `.side-foot .r{flex-wrap:wrap}.side-foot .lg-acoes{margin-left:auto;display:inline-flex;gap:10px}
@@ -13850,6 +13852,7 @@ document.addEventListener('focusin', e => { const t = e.target; if (!t.classList
 document.addEventListener('focusout', e => { if (e.target === popAlvo) fecharPop(); });
 document.addEventListener('mousedown', e => { const t = e.target; if (t.classList && t.classList.contains('fatcat') && document.activeElement === t && catPop.hidden) abrirPop(t, false); });
 document.addEventListener('input', e => { const t = e.target; if (t.classList && t.classList.contains('fatcat') && document.activeElement === t) abrirPop(t, true); });
+catPop.addEventListener('mouseover', e => { const o = e.target.closest('.opt'); if (!o) return; const os = popOpts(), i = os.indexOf(o); if (i >= 0 && i !== popIdx) { popIdx = i; os.forEach((x, k) => x.classList.toggle('on', k === i)); } });
 catPop.addEventListener('mousedown', e => { e.preventDefault(); const o = e.target.closest('.opt'); if (o) escolherPop(o.dataset.v); });
 document.addEventListener('keydown', e => {
   const f = e.target;
@@ -15647,10 +15650,10 @@ function renderCkSem() {
   const nAl = L.filter(x => x.st === 'al').length;
   box.innerHTML = `<div class="ck-kp"><div><small>Gasto no mês</small><b>${fm(D.tg)}</b></div><div><small>Projetado no mês</small><b>${fm(D.tp)}</b></div><div><small>Se o resto seguir o projetado</small><b class="${D.tprev > D.tp * 1.02 ? 'neg' : 'pos'}">${fm(D.tprev)}</b></div><div><small>Categorias em atenção</small><b class="${nAl ? 'neg' : 'pos'}">${nAl}</b></div></div>
     ${D.temLanc ? '' : '<p class="hint">Nenhum gasto lançado neste mês ainda. Importe a fatura do cartão ou o extrato da conta para começar.</p>'}
-    <div class="ck-l">${L.filter(x => ckTodas || x.g > 0 || x.st !== 'ok').map(x => `<div class="ck-c"><span class="n" title="${esc(x.nome)}">${esc(x.nome)}</span><div class="ck-t" role="img" aria-label="${esc(x.nome)}: ${pct(Math.min(x.u, 9), 0)} do projetado"><span class="${x.st}" style="width:${Math.min(100, x.u * 100).toFixed(1)}%"></span>${x.fixa ? '' : `<i style="left:${(D.fr * 100).toFixed(1)}%"></i>`}</div><span class="v">${fm(x.g)} / ${fm(x.p)}</span><div class="st"><span class="chip ${CH[x.st][0]}">${CH[x.st][1]}</span>${txt(x)}<button type="button" class="ck-fx" data-ckfx="${esc(x.nome)}" aria-pressed="${x.fixa}" title="Conta fixa não segue o ritmo do mês e só ganha um alerta leve quando passa do previsto">${x.fixa ? 'conta fixa' : 'marcar como fixa'}</button></div></div>`).join('')}</div>
+    <div class="ck-l">${L.filter(x => ckTodas || x.g > 0 || x.st !== 'ok').map(x => `<div class="ck-c"><span class="n" title="${esc(x.nome)}">${esc(x.nome)}</span><div class="ck-t" role="img" aria-label="${esc(x.nome)}: ${pct(Math.min(x.u, 9), 0)} do projetado">${(() => { const esc_ = Math.max(x.g, x.p) || 1, cor = x.u > 1 ? 'b-al' : x.u >= 0.7 ? 'b-am' : 'b-ok'; return `<span class="${cor}" style="width:${Math.min(100, x.g / esc_ * 100).toFixed(1)}%"></span>${x.p > 0 ? `<i style="left:${(x.p / esc_ * 100).toFixed(1)}%" title="Projetado: ${fm(x.p)}"></i>` : ''}`; })()}</div><span class="v">${fm(x.g)} / ${fm(x.p)}</span><div class="st"><span class="chip ${CH[x.st][0]}">${CH[x.st][1]}</span>${txt(x)}<button type="button" class="ck-fx" data-ckfx="${esc(x.nome)}" aria-pressed="${x.fixa}" title="Conta fixa não segue o ritmo do mês e só ganha um alerta leve quando passa do previsto">${x.fixa ? 'conta fixa' : 'marcar como fixa'}</button></div></div>`).join('')}</div>
     ${(() => { const z = L.filter(x => x.g === 0 && x.st === 'ok').length; return z ? `<button type="button" class="btn ghost tiny" id="ck-todas" style="margin-top:10px">${ckTodas ? 'Esconder as categorias sem gasto' : `Mostrar mais ${z} categoria${z > 1 ? 's' : ''} ainda sem gasto`}</button>` : ''; })()}
     <div class="ck-acoes"><button type="button" class="btn" data-irtab="gastos">Importar fatura ou extrato</button><button type="button" class="btn ${feito ? 'ghost' : ''}" id="ck-feito">${feito ? 'Checkpoint desta semana feito ✓' : 'Marcar checkpoint da semana'}</button><span class="ck-seq">${seq ? `<b>${seq} semana${seq > 1 ? 's' : ''} seguida${seq > 1 ? 's' : ''}</b> com checkpoint` : 'Faça o checkpoint toda semana para começar uma sequência.'}</span></div>
-    <p class="hint">A linha vertical mostra onde o gasto estaria se seguisse o ritmo do mês. Conta fixa não segue esse ritmo: ela só ganha um alerta leve quando passa do previsto, que costuma ser sinal de gasto novo.</p>`;
+    <p class="hint">O traço preto marca o projetado de cada categoria; quando o gasto passa dele, a barra segue além do traço. Cor da barra: verde até 70% do projetado, amarelo de 70% a 100%, vermelho acima de 100%. O aviso ao lado compara com o ritmo do mês; conta fixa só ganha alerta quando passa do previsto.</p>`;
 }
 document.addEventListener('click', e => {
   const fx = e.target.closest('[data-ckfx]');
