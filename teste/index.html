@@ -106,6 +106,11 @@ h1, h2, h3 { font-family: var(--f-head); }
 .rg-seg.pj { background: var(--accent); } .rg-seg.clt { background: var(--s1); } .rg-seg.sem { background: var(--s10); }
 #orc-regs td.rg-per, #pj-regs td.rg-per { white-space: nowrap; } #orc-regs td.rg-per input, #pj-regs td.rg-per input { width: 132px; display: inline-block; } .rg-seg.hoje { box-shadow: inset 0 0 0 2px var(--dotc); }
 .rg-leg { margin: 2px 0 8px; }
+.tr-sai { flex-basis: 100%; display: flex; flex-direction: column; gap: 6px; }
+.tr-sai > div { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; font-size: 12.5px; }
+.tr-sai .inline { min-width: 150px; flex-direction: row; align-items: center; gap: 6px; color: var(--ink); font-size: 12.5px; }
+.tr-sai input[type=number] { width: 130px; } .tr-sai input[type=month] { width: 150px; }
+.rg-sai { display: flex; flex-direction: column; gap: 4px; align-items: flex-end; white-space: nowrap; } .rg-sai input[type=month] { width: 132px; }
 #pj-trocas .orc-troca { margin: 10px 0; }
 #tbl-plano th .chip { display: block; margin-top: 3px; font-size: 9.5px; text-transform: none; letter-spacing: 0; }
 #tbl-plano tr.mm-reg td { font-size: 11.5px; color: var(--muted); }
@@ -2172,7 +2177,7 @@ body:has(#tour-pop:not([hidden])) #jor-divbar { display: none; }
     </div>
     <div class="nav-mobile-sub" id="navMobileSub"></div>
   </div>
-  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 307</div></div>
+  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 308</div></div>
 </nav>
 <div class="sino-pop" id="sino-pop" role="dialog" aria-label="Atualizações das bases" hidden></div>
 <div class="sino-pop" id="pess-pop" role="dialog" aria-label="Seus avisos" hidden></div>
@@ -4095,7 +4100,7 @@ body:has(#tour-pop:not([hidden])) #jor-divbar { display: none; }
     return new Promise(resolve => { const { data } = sb.auth.onAuthStateChange(async (ev) => { if (ev !== 'PASSWORD_RECOVERY') return; const s = prompt('Digite a nova senha (mínimo 8 caracteres):'); if (s && s.length >= 8) { const { error } = await sb.auth.updateUser({ password: s }); alert(error ? 'Não deu para trocar a senha: ' + error.message : 'Senha trocada.'); } }); resolve(data); });
   }
   // ---------- rodapé: compartilhar, administração e sair ----------
-  const SITE_V = 193;
+  const SITE_V = 194;
   const escH = v => String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const dataBR = v => v ? new Date(v).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' }) : '–';
   const css2 = `.side-foot .r{flex-wrap:wrap}.side-foot .lg-acoes{margin-left:auto;display:inline-flex;gap:10px}
@@ -13980,7 +13985,11 @@ function renderTroca() {
     <label>${cr ? 'De' : 'A partir de'}<input type="month" id="tr-mes" value="${esc(t.mes)}"></label>
     ${cr ? `<label>Até <span class="subdet">(opcional)</span><input type="month" id="tr-ate" value="${esc(t.ate || '')}"></label>` : ''}
     ${t.modelo === 'clt' ? `<div class="seg" id="tr-cm"><button type="button" data-trcm="liq" aria-pressed="${t.cltModo !== 'bruto'}">Digito o líquido</button><button type="button" data-trcm="bruto" aria-pressed="${t.cltModo === 'bruto'}">Digito o bruto</button></div>` : ''}
-    ${sem ? `<label>Recebido na saída (R$, uma vez)<input type="number" step="500" id="tr-saida" value="${esc(t.saida || '')}" placeholder="rescisão, FGTS..."></label><label>Custos que continuam (R$/mês)<input type="number" step="10" id="tr-contab" value="${esc(t.contab)}" placeholder="ex.: contador"></label>` : `<label>${salL} (R$/mês)<input type="number" step="100" id="tr-sal" value="${esc(t.sal)}"></label>`}
+    ${sem ? `<div class="tr-sai"><span class="orc-h">O que você vai receber</span>
+      <div><label class="inline"><input type="checkbox" data-trck="resc"${t.cResc ? ' checked' : ''}> Rescisão</label>${t.cResc ? `<input type="number" step="500" id="tr-resc" value="${esc(t.resc || '')}" placeholder="R$, uma vez" aria-label="Valor da rescisão">` : ''}</div>
+      <div><label class="inline"><input type="checkbox" data-trck="fgts"${t.cFgts ? ' checked' : ''}> Saque do FGTS</label>${t.cFgts ? `<input type="number" step="500" id="tr-fgts" value="${esc(t.fgts || '')}" placeholder="R$, uma vez" aria-label="Valor do FGTS">` : ''}</div>
+      <div><label class="inline"><input type="checkbox" data-trck="seg"${t.cSeg ? ' checked' : ''}> Seguro-desemprego</label>${t.cSeg ? `<input type="number" step="50" id="tr-seg" value="${esc(t.seg || '')}" placeholder="R$ por mês" aria-label="Seguro-desemprego por mês"> de <input type="month" id="tr-segde" value="${esc(t.segDe || t.mes)}" aria-label="Início do seguro"> até <input type="month" id="tr-segate" value="${esc(t.segAte || '')}" aria-label="Fim do seguro">` : ''}</div>
+      <p class="hint">Rescisão e FGTS entram uma vez, no primeiro mês do período. O seguro entra todo mês, do início ao fim que você escolher, enquanto você estiver sem emprego no plano.</p></div><label>Custos que continuam (R$/mês)<input type="number" step="10" id="tr-contab" value="${esc(t.contab)}" placeholder="ex.: contador"></label>` : `<label>${salL} (R$/mês)<input type="number" step="100" id="tr-sal" value="${esc(t.sal)}"></label>`}
     ${t.modelo === 'pj' ? `<label>${cr ? 'Impostos e DAS' : 'DAS'} (% do faturamento)<input type="number" step="0.1" id="tr-das" value="${esc(t.das)}"></label><label>Contabilidade (R$/mês)<input type="number" step="10" id="tr-contab" value="${esc(t.contab)}"></label>` : ''}
     <label>Uso<select id="tr-uso"><option value="real">Projeção real</option><option value="sim"${t.uso === 'sim' ? ' selected' : ''}>Só simulação</option></select></label>
     <p class="hint">${cr ? `${sem ? 'Nesses meses o salário ou faturamento fica em zero e os custos seguem normais; a sobra negativa sai dos investimentos.' : 'Antes desse mês o plano segue como você recebe hoje; a partir dele usa este cenário.'} Com "Até", o período acaba nesse mês e depois o plano volta ao que valia antes; sem "Até", vale daí em diante.${t.calc ? ' Valores trazidos do cálculo acima: no PJ, o % junta DAS, INSS e IR do pró-labore, para o plano chegar no mesmo líquido do mês faturado.' : ''}` : `Antes desse mês o plano continua como ${nome(t.de)}, com os valores de hoje; a partir dele usa ${nome(t.modelo)} com o valor novo. Os meses que já passaram não mudam.`} Em Só simulação, o plano real não muda: o cenário vira a linha tracejada "Com as simulações" no gráfico do plano e aparece em Itens dos módulos.${t.modelo === 'clt' ? ' 13º e férias: adicione em Meu plano › Mudanças e eventos.' : ''}</p>
@@ -13988,16 +13997,17 @@ function renderTroca() {
     <p class="hint" id="tr-msg" role="status"></p>`;
 }
 function lerTroca() { const t = trocaPend; if (!t) return; const v = id => { const e = $(id); return e ? e.value : undefined; };
-  t.mes = v('tr-mes') ?? t.mes; t.sal = v('tr-sal') ?? t.sal; if ($('tr-das')) t.das = v('tr-das'); if ($('tr-contab')) t.contab = v('tr-contab'); if ($('tr-uso')) t.uso = v('tr-uso'); if ($('tr-nome')) t.nome = v('tr-nome'); if ($('tr-ate')) t.ate = v('tr-ate'); if ($('tr-saida')) t.saida = v('tr-saida'); }
+  t.mes = v('tr-mes') ?? t.mes; t.sal = v('tr-sal') ?? t.sal; if ($('tr-das')) t.das = v('tr-das'); if ($('tr-contab')) t.contab = v('tr-contab'); if ($('tr-uso')) t.uso = v('tr-uso'); if ($('tr-nome')) t.nome = v('tr-nome'); if ($('tr-ate')) t.ate = v('tr-ate'); ['resc', 'fgts', 'seg'].forEach(k => { if ($('tr-' + k)) t[k] = v('tr-' + k); }); if ($('tr-segde')) t.segDe = v('tr-segde'); if ($('tr-segate')) t.segAte = v('tr-segate'); }
 function aplicarTroca(sempre) {
   lerTroca(); const t = trocaPend, sem = t.modelo === 'sem', sal = sem ? 0 : +t.sal || 0, msg = txt => { $('tr-msg').textContent = txt; };
   if (!sem && !(sal > 0)) return msg('Digite o valor do salário ou do faturamento.');
   if (!sempre && !/^\d{4}-\d{2}$/.test(t.mes)) return msg('Escolha o mês de início.');
   if (t.ate && t.ate < t.mes) return msg('O mês final precisa ser depois do início.');
+  if (sem && t.cSeg && (!(+t.seg > 0) || !/^\d{4}-\d{2}$/.test(t.segDe || '') || !/^\d{4}-\d{2}$/.test(t.segAte || '') || t.segAte < t.segDe)) return msg('Seguro-desemprego: preencha o valor por mês e o início e o fim.');
   if (t.uso === 'sim' && (sempre || mIndex(t.mes) <= HOJE_IDX)) return msg('Só simulação vale para um cenário futuro: escolha um mês depois de hoje.');
   if (t.alvo === 'pj' && mIndex(t.mes) <= HOJE_IDX) return msg('O cenário precisa começar depois de hoje. Para uma troca que já aconteceu, use Como você recebe, em Meu plano.');
   trocaPend = null;
-  if (!sempre && mIndex(t.mes) > HOJE_IDX) state.orc.regimes.push({ id: uid(), tipo: 'apartir', mes: t.mes, ate: t.ate || '', modelo: t.modelo, cltModo: t.cltModo, sal, das: +t.das || 0, contab: +t.contab || 0, saida: sem ? +t.saida || 0 : 0, uso: t.uso === 'sim' ? 'sim' : 'real', nome: String(t.nome || '').trim() });
+  if (!sempre && mIndex(t.mes) > HOJE_IDX) state.orc.regimes.push({ id: uid(), tipo: 'apartir', mes: t.mes, ate: t.ate || '', modelo: t.modelo, cltModo: t.cltModo, sal, das: +t.das || 0, contab: +t.contab || 0, resc: sem && t.cResc ? +t.resc || 0 : 0, fgts: sem && t.cFgts ? +t.fgts || 0 : 0, seg: sem && t.cSeg ? +t.seg || 0 : 0, segDe: sem && t.cSeg ? t.segDe : '', segAte: sem && t.cSeg ? t.segAte : '', uso: t.uso === 'sim' ? 'sim' : 'real', nome: String(t.nome || '').trim() });
   else trocarHoje(t.modelo, t.cltModo, sal, t.das, t.contab, sempre ? null : t.mes);
   save(); renderTroca(); renderTab();
 }
@@ -14017,8 +14027,8 @@ function regTabelaHtml() {
   const R = (state.orc.regimes || []).slice().sort((a, b) => a.mes < b.mes ? -1 : 1);
   if (!R.length) return '';
   const inp = (r, k, step, lab) => `<input type="number" step="${step}" data-bind="orcreg:${r.id}:${k}" value="${+r[k] || 0}" aria-label="${lab}">`;
-  return `<div class="tscroll"><table><thead><tr><th>Período</th><th>Nome</th><th>Como recebe</th><th>Salário, faturamento ou saída</th><th>DAS %</th><th>Contabilidade ou custos</th><th>Uso</th><th></th></tr></thead><tbody>${R.map(r => { const pj = r.modelo === 'pj', sem = r.modelo === 'sem';
-    return `<tr><td class="name rg-per">${r.tipo === 'antes' ? 'Antes de' : 'De'} <input type="month" data-bind="orcreg:${r.id}:mes" value="${esc(r.mes)}" aria-label="Mês de início">${r.tipo === 'apartir' ? ` até <input type="month" data-bind="orcreg:${r.id}:ate" value="${esc(r.ate || '')}" aria-label="Mês final (opcional)">` : ''}</td><td class="name"><input type="text" class="name" data-bind="orcreg:${r.id}:nome" value="${esc(r.nome || '')}" placeholder="${r.tipo === 'antes' ? 'como recebia' : 'sem nome'}" aria-label="Nome"></td><td class="name">${modeloNome(r.modelo, r.cltModo)}</td><td>${sem ? `<span class="subdet">saída</span> ${inp(r, 'saida', 500, 'Recebido na saída')}` : inp(r, 'sal', 100, 'Salário ou faturamento')}</td><td>${pj ? inp(r, 'das', 0.1, 'DAS %') : '<span class="z">—</span>'}</td><td>${pj || sem ? inp(r, 'contab', 10, sem ? 'Custos que continuam' : 'Contabilidade') : '<span class="z">—</span>'}</td><td class="name">${r.tipo === 'apartir' ? `<select data-bind="orcreg:${r.id}:uso" aria-label="Uso"><option value="real">Projeção real</option><option value="sim"${r.uso === 'sim' ? ' selected' : ''}>Só simulação</option></select>` : '<span class="subdet">passado</span>'}</td><td><button class="btn danger tiny" type="button" data-delreg="${r.id}">remover</button></td></tr>`; }).join('')}</tbody></table></div>
+  return `<div class="tscroll"><table><thead><tr><th>Período</th><th>Nome</th><th>Como recebe</th><th>Salário, faturamento ou o que recebe na saída</th><th>DAS %</th><th>Contabilidade ou custos</th><th>Uso</th><th></th></tr></thead><tbody>${R.map(r => { const pj = r.modelo === 'pj', sem = r.modelo === 'sem';
+    return `<tr><td class="name rg-per">${r.tipo === 'antes' ? 'Antes de' : 'De'} <input type="month" data-bind="orcreg:${r.id}:mes" value="${esc(r.mes)}" aria-label="Mês de início">${r.tipo === 'apartir' ? ` até <input type="month" data-bind="orcreg:${r.id}:ate" value="${esc(r.ate || '')}" aria-label="Mês final (opcional)">` : ''}</td><td class="name"><input type="text" class="name" data-bind="orcreg:${r.id}:nome" value="${esc(r.nome || '')}" placeholder="${r.tipo === 'antes' ? 'como recebia' : 'sem nome'}" aria-label="Nome"></td><td class="name">${modeloNome(r.modelo, r.cltModo)}</td><td>${sem ? `<div class="rg-sai"><span><span class="subdet">rescisão</span> ${inp(r, 'resc', 500, 'Rescisão')}</span><span><span class="subdet">FGTS</span> ${inp(r, 'fgts', 500, 'FGTS')}</span><span><span class="subdet">seguro/mês</span> ${inp(r, 'seg', 50, 'Seguro-desemprego por mês')} <span class="subdet">de</span> <input type="month" data-bind="orcreg:${r.id}:segDe" value="${esc(r.segDe || '')}" aria-label="Início do seguro"> <span class="subdet">até</span> <input type="month" data-bind="orcreg:${r.id}:segAte" value="${esc(r.segAte || '')}" aria-label="Fim do seguro"></span></div>` : inp(r, 'sal', 100, 'Salário ou faturamento')}</td><td>${pj ? inp(r, 'das', 0.1, 'DAS %') : '<span class="z">—</span>'}</td><td>${pj || sem ? inp(r, 'contab', 10, sem ? 'Custos que continuam' : 'Contabilidade') : '<span class="z">—</span>'}</td><td class="name">${r.tipo === 'apartir' ? `<select data-bind="orcreg:${r.id}:uso" aria-label="Uso"><option value="real">Projeção real</option><option value="sim"${r.uso === 'sim' ? ' selected' : ''}>Só simulação</option></select>` : '<span class="subdet">passado</span>'}</td><td><button class="btn danger tiny" type="button" data-delreg="${r.id}">remover</button></td></tr>`; }).join('')}</tbody></table></div>
     <p class="hint">${R.some(r => r.tipo === 'antes') ? '"Antes de": como você recebia antes da troca; o plano usa esses valores nos meses anteriores. ' : ''}${R.some(r => r.tipo === 'apartir') ? 'Com "até", o cenário vale só nesse período e depois o plano volta ao que valia antes; sem "até", vale daí em diante. Se dois cenários se sobrepõem, vale o que começa por último. Uma troca de emprego sem "até", em Projeção real, vira o "Como você recebe" de hoje quando o mês chegar. Em Só simulação, o cenário só aparece na linha tracejada do gráfico do plano e em Itens dos módulos.' : ''}</p>`;
 }
 function renderRegimes() {
@@ -14204,7 +14214,10 @@ function calcPlano(extra) {
     planEvs(P, extra).forEach(e => { const m0 = mIndex(e.mes); if (!e.mes || i < m0 || (i !== m0 && !(e.anual && (i - m0) % 12 === 0))) return;
       const anos = Math.round((i - m0) / 12), val = e.pausa ? Math.max(0, bruto - ded) : ov['ev~' + e.id] ?? (+e.valor || 0) * Math.pow(1 + ip, anos);
       evs[e.id] = val; if (e.tipo === 'receita') evRec += val; else evGas += val; });
-    if (rg && rg.modelo === 'sem' && i === mIndex(rg.mes) && +rg.saida > 0) { evRec += +rg.saida; evs['reg:' + rg.id] = +rg.saida; }
+    if (rg && rg.modelo === 'sem') { let x = 0;
+      if (i === mIndex(rg.mes)) x += (+rg.resc || 0) + (+rg.fgts || 0) + (+rg.saida || 0);
+      if (+rg.seg > 0 && rg.segDe && rg.segAte && i >= mIndex(rg.segDe) && i <= mIndex(rg.segAte)) x += +rg.seg;
+      if (x) { evRec += x; evs['reg:' + rg.id] = x; } }
     // compras do plano
     let parc = 0, lump = 0, posse = 0, rendaB = 0; const porCompra = [];
     let venda = 0;
@@ -14397,7 +14410,7 @@ function itensModulos() {
     out.push({ id: 'ev:' + e.id, mod: 'fin', sub: 'Meu plano', tab: 'orcamento', sec: 'Mudanças e eventos', nome: e.nome || 'Evento', tipo: rec ? 'receita' : 'gasto', ini: e.mes,
       unico: rec ? v : -v, mensal: 0, meses: 0, anual: !!e.anual, resumo: fm(v) + (e.anual ? ' todo ano, corrigido pelo IPCA' : ' uma vez'), uso: 'real', fixo: true });
   });
-  ((state.orc || {}).regimes || []).filter(r => r.tipo === 'apartir' && r.mes).forEach(r => out.push({ id: 'reg:' + r.id, mod: 'carr', sub: 'PJ e PF', tab: 'pjpf', sec: 'Cenários de troca', nome: (r.nome ? r.nome + ': ' : '') + (r.modelo === 'sem' ? 'sem emprego' : 'troca para ' + modeloNome(r.modelo, r.cltModo)), tipo: 'receita', ini: r.mes, unico: 0, mensal: 0, meses: 0, resumo: (r.modelo === 'sem' ? `sem salário${+r.saida > 0 ? `, ${fm(+r.saida)} na saída` : ''}` : `${r.modelo === 'pj' ? 'faturamento' : 'salário'} de ${fm(+r.sal || 0)} por mês`) + (r.ate ? ` até ${mLabel(mIndex(r.ate))}` : ''), uso: r.uso === 'sim' ? 'sim' : 'real' }));
+  ((state.orc || {}).regimes || []).filter(r => r.tipo === 'apartir' && r.mes).forEach(r => out.push({ id: 'reg:' + r.id, mod: 'carr', sub: 'PJ e PF', tab: 'pjpf', sec: 'Cenários de troca', nome: (r.nome ? r.nome + ': ' : '') + (r.modelo === 'sem' ? 'sem emprego' : 'troca para ' + modeloNome(r.modelo, r.cltModo)), tipo: 'receita', ini: r.mes, unico: 0, mensal: 0, meses: 0, resumo: (r.modelo === 'sem' ? `sem salário${[+r.resc > 0 ? `rescisão ${fm(+r.resc)}` : '', +r.fgts > 0 ? `FGTS ${fm(+r.fgts)}` : '', +r.saida > 0 ? `${fm(+r.saida)} na saída` : '', +r.seg > 0 ? `seguro ${fm(+r.seg)}/mês` : ''].filter(Boolean).map(x => ', ' + x).join('')}` : `${r.modelo === 'pj' ? 'faturamento' : 'salário'} de ${fm(+r.sal || 0)} por mês`) + (r.ate ? ` até ${mLabel(mIndex(r.ate))}` : ''), uso: r.uso === 'sim' ? 'sim' : 'real' }));
   try { out.push(...vgItensMod()); } catch (er) {}
   try { out.push(...ngItensMod()); } catch (er) { console.error(er); }
   try { out.push(...famItensMod()); } catch (er) { console.error(er); }
@@ -14800,6 +14813,8 @@ document.addEventListener('click', e => {
   if (!e.target.closest || !e.target.closest('#pj-trocas')) return;
   const nv = e.target.closest('[data-pjtroca]'), tm = e.target.closest('[data-trmod]'), tb = e.target.closest('[data-troca]'), tc = e.target.closest('[data-trcm]'), dr = e.target.closest('[data-delreg]');
   if (nv) { $('pj-troca-msg').textContent = novoCenarioPj(nv.dataset.pjtroca); return; }
+  const ck = e.target.closest('[data-trck]');
+  if (ck) { lerTroca(); const k = { resc: 'cResc', fgts: 'cFgts', seg: 'cSeg' }[ck.dataset.trck]; trocaPend[k] = ck.checked; if (k === 'cSeg' && ck.checked && !trocaPend.segAte) { trocaPend.segDe = trocaPend.segDe || trocaPend.mes; trocaPend.segAte = mKey(mIndex(trocaPend.segDe) + 4); } renderTroca(); return; }
   if (tm) { lerTroca(); trocaPend.modelo = tm.dataset.trmod; renderTroca(); return; }
   if (tb) { const k = tb.dataset.troca; if (k === 'cancelar') { trocaPend = null; renderTroca(); } else aplicarTroca(k === 'sempre'); return; }
   if (tc) { lerTroca(); trocaPend.cltModo = tc.dataset.trcm; renderTroca(); return; }
