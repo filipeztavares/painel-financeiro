@@ -2300,7 +2300,7 @@ svg path[data-si] { transition: opacity .12s; }
     </div>
     <div class="nav-mobile-sub" id="navMobileSub"></div>
   </div>
-  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 330</div></div>
+  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 331</div></div>
 </nav>
 <div class="sino-pop" id="sino-pop" role="dialog" aria-label="Atualizações das bases" hidden></div>
 <div class="sino-pop" id="pess-pop" role="dialog" aria-label="Seus avisos" hidden></div>
@@ -4268,7 +4268,7 @@ svg path[data-si] { transition: opacity .12s; }
     return new Promise(resolve => { const { data } = sb.auth.onAuthStateChange(async (ev) => { if (ev !== 'PASSWORD_RECOVERY') return; const s = prompt('Digite a nova senha (mínimo 8 caracteres):'); if (s && s.length >= 8) { const { error } = await sb.auth.updateUser({ password: s }); alert(error ? 'Não deu para trocar a senha: ' + error.message : 'Senha trocada.'); } }); resolve(data); });
   }
   // ---------- rodapé: compartilhar, administração e sair ----------
-  const SITE_V = 216;
+  const SITE_V = 217;
   const escH = v => String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const dataBR = v => v ? new Date(v).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' }) : '–';
   const css2 = `.side-foot .r{flex-wrap:wrap}.side-foot .lg-acoes{margin-left:auto;display:inline-flex;gap:10px}
@@ -7428,7 +7428,7 @@ function renderSimCen(manter) {
       its.filter(x => x.mod === m.id).sort((a, b) => (a.ini || '9999') < (b.ini || '9999') ? -1 : (a.ini || '9999') > (b.ini || '9999') ? 1 : 0).map(x => `<tr data-scit="${esc(x.id)}"${simFoco === x.id ? ' class="sc-foco"' : ''}>
         <td class="name"><a href="#" data-lmtab="${x.tab}" data-lmsec="${esc(x.sec || '')}" data-lmitem="${esc(x.id || '')}">${esc(x.nome)}</a> <span class="subdet">${esc(x.sub)}</span></td>
         <td>${x.ini ? mLabel(mIndex(x.ini)) : '–'}</td>
-        <td class="it-v">${esc(x.resumo)}</td>
+        <td class="it-v">${x.bloq ? `<a href="#" class="lm-ir" data-lmitem="${esc(x.id)}">${esc(x.resumo)}</a>` : esc(x.resumo)}</td>
         ${vch ? `<td><input type="number" min="0" max="100" step="5" data-ichance="${esc(x.id)}" value="${x.chance}" aria-label="Chance de acontecer (%) de ${esc(x.nome)}">%</td>` : ''}
         ${ord.map(c => { const on = emCen(c, x); return `<td class="sc-c${c.id === cen.id ? ' sc-cur' : ''}"><button type="button" class="sc-tg" style="--c:${corC(c)}" data-sctg="${esc(c.id)}|${esc(x.id)}" aria-pressed="${on}" aria-label="${esc(x.nome)} no cenário ${esc(c.nome)}"${x.bloq ? ' disabled title="Defina o evento de liquidez primeiro"' : ` title="${on ? 'Incluído em' : 'Fora de'} ${esc(c.nome)}. Clique para ${on ? 'tirar' : 'incluir'}."`}>${on ? '✓ Incluído' : '+ Incluir'}</button></td>`; }).join('')}</tr>`).join('')).join('')}</tbody>`;
   // resultados: Meu plano com os itens e as premissas de cada cenário
@@ -14821,7 +14821,7 @@ function renderItens() {
       <td class="name"><a href="#" data-lmtab="${x.tab}" data-lmsec="${esc(x.sec || '')}" data-lmitem="${esc(x.id || '')}">${esc(x.nome)}</a> <span class="subdet">${esc(x.sub)}</span></td>
       <td data-l="Tipo"><span class="chip ${x.unico >= 0 && x.mensal >= 0 ? 'best' : 'info'} it-tipo">${IT_TIPO[x.tipo] || x.tipo}</span></td>
       <td data-l="Quando">${x.ini ? mLabel(mIndex(x.ini)) : '–'}</td>
-      <td class="it-v">${esc(x.resumo)}</td></tr>`).join('')).join('')}</tbody>`;
+      <td class="it-v">${x.bloq ? `<a href="#" class="lm-ir" data-lmitem="${esc(x.id)}">${esc(x.resumo)}</a>` : esc(x.resumo)}</td></tr>`).join('')).join('')}</tbody>`;
 }
 document.addEventListener('change', e => {
   const u = e.target.closest('[data-iuso]');
@@ -19142,6 +19142,7 @@ function intIrItem(id, c) {
   if (!x) return;
   const fs = intDoItem(x), f = (c && fs.find(y => y.c === c)) || fs[0];
   if (f) return intIr(f.alvo, `<b>Preencha aqui:</b> sem ${esc(f.t)}, ${esc(x.nome)} não entra na conta.`, id);
+  if (x.bloq && id.startsWith('so:')) return intIr({ tab: 'stock', sec: 'Evento de liquidez', sel: '[data-so="v:definido"]', pre: () => { state.so.sel = id.slice(3); } }, `<b>Marque aqui</b> quando o evento estiver definido (assinado ou anunciado). Só então ${esc(x.nome)} entra no plano.`, id);
   intIr(intAlvoItem(x), '', id);
 }
 // destino de um item sem pendência: o cartão dele
@@ -19159,7 +19160,7 @@ function intAlvoItem(x) {
 // links: data-lmitem (item dos módulos) e data-lmsel/data-lmmsg (campo de uma seção)
 document.addEventListener('click', e => {
   const a = e.target.closest && e.target.closest('[data-lmitem],[data-lmsel]'); if (!a) return;
-  if (a.dataset.lmitem) { const x = itensModulos().find(y => y.id === a.dataset.lmitem); if (!x) return; e.preventDefault(); e.stopImmediatePropagation(); intIr(intAlvoItem(x), '', x.id); return; }
+  if (a.dataset.lmitem) { const x = itensModulos().find(y => y.id === a.dataset.lmitem); if (!x) return; e.preventDefault(); e.stopImmediatePropagation(); if (x.bloq) { intIrItem(x.id); return; } intIr(intAlvoItem(x), '', x.id); return; }
   if (!RENDER[a.dataset.lmtab]) return; e.preventDefault(); e.stopImmediatePropagation();
   intIr({ tab: a.dataset.lmtab, sec: a.dataset.lmsec || '', sel: a.dataset.lmsel }, a.dataset.lmmsg ? esc(a.dataset.lmmsg) : '');
 }, true);
