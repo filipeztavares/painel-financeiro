@@ -2123,6 +2123,9 @@ body:has(#tour-pop:not([hidden])) #jor-divbar { display: none; }
 #tbl-sc tr.sc-foco td { box-shadow: inset 0 0 0 2px var(--accent); }
 .sc-tg { min-width: 54px; min-height: 30px; border-radius: 99px; border: 1px solid var(--line); background: var(--panel); color: var(--muted); font: inherit; font-size: 12px; font-weight: 600; cursor: pointer; }
 .sc-tg[aria-pressed="true"] { background: var(--c, var(--accent)); border-color: var(--c, var(--accent)); color: #fff; }
+.sc-tg { min-width: 92px; padding: 0 10px; }
+.sc-tg[aria-pressed="false"]:not(:disabled) { border-style: dashed; }
+.sc-opt { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; color: var(--muted); margin: 0 0 10px; cursor: pointer; }
 .sc-tg:disabled { opacity: .45; cursor: not-allowed; }
 .sc-dec { display: flex; flex-direction: column; gap: 10px; }
 .sc-dec ul { margin: 0; padding-left: 18px; line-height: 1.6; }
@@ -2223,7 +2226,7 @@ body:has(#tour-pop:not([hidden])) #jor-divbar { display: none; }
     </div>
     <div class="nav-mobile-sub" id="navMobileSub"></div>
   </div>
-  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 313</div></div>
+  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 314</div></div>
 </nav>
 <div class="sino-pop" id="sino-pop" role="dialog" aria-label="Atualizações das bases" hidden></div>
 <div class="sino-pop" id="pess-pop" role="dialog" aria-label="Seus avisos" hidden></div>
@@ -3145,7 +3148,7 @@ body:has(#tour-pop:not([hidden])) #jor-divbar { display: none; }
   <!-- ============ CENÁRIOS E COMPRAS ============ -->
   <!-- ============ SIMULAÇÃO: CENÁRIOS ============ -->
   <section role="tabpanel" id="p-simcen" hidden>
-    <div class="block-title"><span class="num">01</span><div><h1>Cenários</h1><p class="desc">Tudo o que você cadastrou nos módulos, num lugar só. Em cada cenário, marque Sim ou Não em cada item. O cenário Real é o que vale em Finanças; quando decidir, use "Tornar este o real".</p></div></div>
+    <div class="block-title"><span class="num">01</span><div><h1>Cenários</h1><p class="desc">Tudo o que você cadastrou nos módulos, num lugar só. Em cada cenário, inclua ou tire cada item com um clique. O cenário Real é o que vale em Finanças; quando decidir, use "Tornar este o real".</p></div></div>
     <div class="kpis" id="kpi-sc"></div>
     <section data-nav="Cenários" class="panel">
       <h2>Cenários</h2>
@@ -3162,9 +3165,10 @@ body:has(#tour-pop:not([hidden])) #jor-divbar { display: none; }
     </section>
     <section data-nav="Itens dos módulos" class="panel">
       <h2>Itens dos módulos</h2>
-      <p class="sub">Clique em Sim ou Não para ligar ou desligar o item em cada cenário. A coluna destacada é o cenário aberto. Mexer na coluna Real muda o que está em Finanças na hora. Item novo começa como só simulação.</p>
+      <p class="sub">Cada coluna é um cenário. Clique em <b>+ Incluir</b> para colocar o item naquele cenário; ele fica colorido como <b>✓ Incluído</b>. Clique de novo para tirar. A coluna destacada é o cenário aberto. A coluna do Real é o que vale em Finanças: mexer nela muda Finanças na hora. Item novo começa fora do Real.</p>
+      <label class="sc-opt"><input type="checkbox" id="sc-chance"> Mostrar a coluna Chance</label>
       <div class="tscroll"><table id="tbl-sc"></table></div>
-      <p class="hint" style="margin-top:8px">Chance: o quanto você acha provável que o item aconteça. Os cenários usam o valor cheio; a chance entra na linha "Real esperado pela chance" do gráfico.</p>
+      <p class="hint" id="sc-chance-hint" style="margin-top:8px" hidden>Chance: o quanto você acha provável que o item aconteça. Os cenários usam o valor cheio; a chance entra na linha "Real esperado pela chance" do gráfico.</p>
     </section>
     <section data-nav="Patrimônio projetado" class="panel chart">
       <h2>Patrimônio projetado</h2>
@@ -4184,7 +4188,7 @@ body:has(#tour-pop:not([hidden])) #jor-divbar { display: none; }
     return new Promise(resolve => { const { data } = sb.auth.onAuthStateChange(async (ev) => { if (ev !== 'PASSWORD_RECOVERY') return; const s = prompt('Digite a nova senha (mínimo 8 caracteres):'); if (s && s.length >= 8) { const { error } = await sb.auth.updateUser({ password: s }); alert(error ? 'Não deu para trocar a senha: ' + error.message : 'Senha trocada.'); } }); resolve(data); });
   }
   // ---------- rodapé: compartilhar, administração e sair ----------
-  const SITE_V = 199;
+  const SITE_V = 200;
   const escH = v => String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const dataBR = v => v ? new Date(v).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' }) : '–';
   const css2 = `.side-foot .r{flex-wrap:wrap}.side-foot .lg-acoes{margin-left:auto;display:inline-flex;gap:10px}
@@ -7315,9 +7319,14 @@ function simSelo(id) {
   return x.uso === 'real' ? '<span class="chip info">No Real</span>' : n ? `<span class="chip amber">Em ${n} ${n > 1 ? 'cenários' : 'cenário'}</span>` : '<span class="chip">Só simulação</span>';
 }
 let simFoco = null;
-function renderSimCen() {
+let simOrdFix = null;
+function renderSimCen(manter) {
   const its = itensModulos(); simPrep(its);
-  const ord = simOrdem(its), R = cenRealObj();
+  let ord = simOrdem(its); const R = cenRealObj();
+  // ao clicar em Incluir as colunas não trocam de lugar; a ordem do tempo volta ao abrir a aba ou trocar de cenário
+  if (manter && simOrdFix && simOrdFix.length === ord.length && ord.every(c => simOrdFix.includes(c.id))) ord = simOrdFix.map(id => ord.find(c => c.id === id));
+  simOrdFix = ord.map(c => c.id);
+  const vch = !!state.simChance; if ($('sc-chance')) $('sc-chance').checked = vch; if ($('sc-chance-hint')) $('sc-chance-hint').hidden = !vch;
   if (!state.cenarios.find(c => c.id === state.cenAtivo)) state.cenAtivo = R.id;
   const cen = state.cenarios.find(c => c.id === state.cenAtivo), real = ehCenReal(cen);
   $('sc-seg').innerHTML = ord.map(c => `<button type="button" data-sccen="${esc(c.id)}" aria-pressed="${c.id === cen.id}" style="--c:${ehCenReal(c) ? 'var(--s1)' : cenCor(c)}"><i></i>${esc(c.nome)}${ehCenReal(c) ? '<em>Real</em>' : ''}</button>`).join('');
@@ -7329,13 +7338,13 @@ function renderSimCen() {
   const pl = calcPlano(), fimI = pl.i0 + Math.round((+state.plan.anos || 10) * 12);
   const grupos = MODS.filter(m => its.some(x => x.mod === m.id)), corC = c => ehCenReal(c) ? 'var(--s1)' : cenCor(c);
   $('tbl-sc').innerHTML = !its.length ? '<tbody><tr><td class="hint">Nenhum item ainda. Cadastre bens em Bens e compromissos, viagens, filhos, negócios, trocas de emprego em Carreira ou eventos no Meu plano.</td></tr></tbody>'
-    : `<thead><tr><th>Item</th><th>Quando</th><th>Valores</th><th>Chance</th>${ord.map(c => `<th class="sc-col${c.id === cen.id ? ' sc-cur' : ''}" style="--c:${corC(c)}"><i></i>${esc(c.nome)}</th>`).join('')}</tr></thead><tbody>${grupos.map(m => `<tr class="it-g"><td colspan="${4 + ord.length}"><i style="background:${m.cor}"></i>${esc(m.nome)}</td></tr>` +
+    : `<thead><tr><th>Item</th><th>Quando</th><th>Valores</th>${vch ? '<th>Chance</th>' : ''}${ord.map(c => `<th class="sc-col${c.id === cen.id ? ' sc-cur' : ''}" style="--c:${corC(c)}"><i></i>${esc(c.nome)}</th>`).join('')}</tr></thead><tbody>${grupos.map(m => `<tr class="it-g"><td colspan="${(vch ? 4 : 3) + ord.length}"><i style="background:${m.cor}"></i>${esc(m.nome)}</td></tr>` +
       its.filter(x => x.mod === m.id).sort((a, b) => (a.ini || '9999') < (b.ini || '9999') ? -1 : (a.ini || '9999') > (b.ini || '9999') ? 1 : 0).map(x => `<tr data-scit="${esc(x.id)}"${simFoco === x.id ? ' class="sc-foco"' : ''}>
         <td class="name"><a href="#" data-lmtab="${x.tab}" data-lmsec="${esc(x.sec || '')}">${esc(x.nome)}</a> <span class="subdet">${esc(x.sub)}</span></td>
         <td>${x.ini ? mLabel(mIndex(x.ini)) : '–'}</td>
         <td class="it-v">${esc(x.resumo)}</td>
-        <td><input type="number" min="0" max="100" step="5" data-ichance="${esc(x.id)}" value="${x.chance}" aria-label="Chance de acontecer (%) de ${esc(x.nome)}">%</td>
-        ${ord.map(c => { const on = emCen(c, x); return `<td class="sc-c${c.id === cen.id ? ' sc-cur' : ''}"><button type="button" class="sc-tg" style="--c:${corC(c)}" data-sctg="${esc(c.id)}|${esc(x.id)}" aria-pressed="${on}" aria-label="${esc(x.nome)} no cenário ${esc(c.nome)}"${x.bloq ? ' disabled title="Defina o evento de liquidez primeiro"' : ''}>${on ? 'Sim' : 'Não'}</button></td>`; }).join('')}</tr>`).join('')).join('')}</tbody>`;
+        ${vch ? `<td><input type="number" min="0" max="100" step="5" data-ichance="${esc(x.id)}" value="${x.chance}" aria-label="Chance de acontecer (%) de ${esc(x.nome)}">%</td>` : ''}
+        ${ord.map(c => { const on = emCen(c, x); return `<td class="sc-c${c.id === cen.id ? ' sc-cur' : ''}"><button type="button" class="sc-tg" style="--c:${corC(c)}" data-sctg="${esc(c.id)}|${esc(x.id)}" aria-pressed="${on}" aria-label="${esc(x.nome)} no cenário ${esc(c.nome)}"${x.bloq ? ' disabled title="Defina o evento de liquidez primeiro"' : ` title="${on ? 'Incluído em' : 'Fora de'} ${esc(c.nome)}. Clique para ${on ? 'tirar' : 'incluir'}."`}>${on ? '✓ Incluído' : '+ Incluir'}</button></td>`; }).join('')}</tr>`).join('')).join('')}</tbody>`;
   // resultados: Meu plano com os itens e as premissas de cada cenário
   const res = new Map(ord.map(c => [c.id, simPlanoDe(c, its)]));
   const pat = (p, i) => (p.inv[i] ?? 0) + (p.parado[i] ?? 0);
@@ -7353,7 +7362,7 @@ function renderSimCen() {
   if (n >= 2) {
     const series = ord.map(c => ({ name: c.nome + (ehCenReal(c) ? ' (Real)' : ''), c: corC(c), v: arr(i => pat(res.get(c.id), i)), w: ehCenReal(c) ? 2.8 : c.id === cen.id ? 2.4 : 1.8, dash: !ehCenReal(c) }));
     // Real esperado: tira de cada item real a parte que pode não acontecer
-    const pes = its.filter(x => !x.bloq && x.ini && x.uso === 'real' && x.chance < 100);
+    const pes = vch ? its.filter(x => !x.bloq && x.ini && x.uso === 'real' && x.chance < 100) : [];
     if (pes.length) { const im = impactos(pes); series.push({ name: 'Real esperado pela chance', c: 'var(--s3)', dash: true, w: 2, v: arr(i => { let v = pat(pr, i); pes.forEach(x => { const e = im[x.id]; if (e) v -= (1 - x.chance / 100) * e.ef(i); }); return v; }) }); }
     legend($('lg-sc'), series);
     chart($('ch-sc'), $('ro-sc'), n, series, k, t => mLabel(st + t), 0);
@@ -7374,13 +7383,13 @@ document.addEventListener('click', e => {
   const a = e.target.closest('[data-simir]'); if (a) { e.preventDefault(); simIr(a.dataset.simir); return; }
   const b = e.target.closest('button'); if (!b) return;
   if (b.dataset.sccen) { state.cenAtivo = b.dataset.sccen; save(); renderSimCen(); return; }
-  if (b.dataset.sctg) { const [cid, id] = b.dataset.sctg.split('|'), c = state.cenarios.find(x => x.id === cid), x = itensModulos().find(y => y.id === id); if (c && x && setEmCen(c, x, b.getAttribute('aria-pressed') !== 'true')) renderSimCen(); return; }
-  if (b.id === 'sc-novo') { simNovoCen('Cenário ' + state.cenarios.length); renderSimCen(); return; }
+  if (b.dataset.sctg) { const [cid, id] = b.dataset.sctg.split('|'), c = state.cenarios.find(x => x.id === cid), x = itensModulos().find(y => y.id === id); if (c && x && setEmCen(c, x, b.getAttribute('aria-pressed') !== 'true')) renderSimCen(true); return; }
+  if (b.id === 'sc-novo') { let n = 2; while (state.cenarios.some(c => c.nome === 'Cenário ' + n)) n++; simNovoCen('Cenário ' + n); renderSimCen(); return; }
   if (b.id === 'sc-dup' || b.id === 'sc-dup2') { const o = cenAtual(); simNovoCen(o.nome + ' (cópia)', o); renderSimCen(); return; }
   if (b.id === 'sc-del') { if (simApagar(cenAtual())) renderSimCen(); return; }
   if (b.id === 'sc-real') { if (simTornarReal(cenAtual())) renderTab(); return; }
 });
-document.addEventListener('change', e => { if (e.target.dataset && e.target.dataset.ichance && tab === 'simcen') { planCache = null; renderSimCen(); return; } if (e.target.id !== 'sc-nome') return; const c = cenAtual(), v = TXT(e.target.value, 60).trim(); if (!c || !v) { e.target.value = c ? c.nome : ''; return; } c.nome = v; save(); renderSimCen(); });
+document.addEventListener('change', e => { if (e.target.dataset && e.target.dataset.ichance && tab === 'simcen') { planCache = null; renderSimCen(true); return; } if (e.target.id === 'sc-chance') { state.simChance = e.target.checked; save(); renderSimCen(true); return; } if (e.target.id !== 'sc-nome') return; const c = cenAtual(), v = TXT(e.target.value, 60).trim(); if (!c || !v) { e.target.value = c ? c.nome : ''; return; } c.nome = v; save(); renderSimCen(); });
 // no cadastro de cada módulo: onde o item está e o link para decidir na Simulação (v313: o seletor Só simulação / Projeção real saiu dos módulos)
 function simUsoHtml(id, rot) {
   const x = itensModulos().find(y => y.id === id), real = x && x.uso === 'real';
@@ -16890,7 +16899,7 @@ const LM_MODS = [
   ['orcamento', 'O plano de referência: renda, custos por categoria, reajustes, rendimento, IPCA, mudanças programadas e eventos. Daqui saem a linha Plano da Projeção e o projetado do fechamento.', 'quando a renda ou os custos mudam.'],
   ['familia', 'Soma os perfis das pessoas com quem você compartilhou o painel, com a parte de cada uma em ganhos, gastos e patrimônio. Só você vê.', 'para olhar a família como um todo.'],
   'Simulação',
-  ['simcen', 'Todos os itens dos módulos num lugar só: em cada cenário você marca Sim ou Não em cada item, compara o patrimônio projetado e torna real o que decidir. O Real é o que vale em Finanças.', 'antes de decidir uma compra, uma viagem, um filho, um negócio ou uma troca de emprego.'],
+  ['simcen', 'Todos os itens dos módulos num lugar só: em cada cenário você inclui ou tira cada item com um clique, compara o patrimônio projetado e torna real o que decidir. O Real é o que vale em Finanças.', 'antes de decidir uma compra, uma viagem, um filho, um negócio ou uma troca de emprego.'],
   ['cenarios', 'As premissas de cada cenário: carteira, ajustes de CDI e IPCA, renda extra, taxa manual e quais bens de Compras e bens entram. Mostra patrimônio, sobra mensal e rebalanceamento.', 'antes de uma compra grande ou para comparar caminhos.'],
   ['simulador', 'Simula aportes e metas: quanto aportar por mês para chegar a um valor, ou onde você chega com o que aporta hoje, no perfil de risco escolhido.', 'para planejar uma meta (reserva, aposentadoria, entrada de imóvel).'],
   'Bens e compromissos',
