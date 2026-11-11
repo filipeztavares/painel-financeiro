@@ -2292,7 +2292,7 @@ input[type="month"].mp-on { outline: 2px solid var(--accent); outline-offset: 1p
     </div>
     <div class="nav-mobile-sub" id="navMobileSub"></div>
   </div>
-  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 324</div></div>
+  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 325</div></div>
 </nav>
 <div class="sino-pop" id="sino-pop" role="dialog" aria-label="Atualizações das bases" hidden></div>
 <div class="sino-pop" id="pess-pop" role="dialog" aria-label="Seus avisos" hidden></div>
@@ -3268,11 +3268,7 @@ input[type="month"].mp-on { outline: 2px solid var(--accent); outline-offset: 1p
         <label>Ajuste no IPCA (p.p.)<input type="number" step="0.25" data-bind="aj::ipca"></label>
         <label>Renda extra (R$/mês)<input type="number" step="500" data-bind="cen::extra"></label>
         <label>Taxa manual (% a.a. líq.)<input type="number" step="0.1" data-bind="cen::manual" placeholder="vazio = carteira"></label>
-        <label>Aumento nos Fixos (%)<input type="number" step="1" data-bind="cen::custoFix" placeholder="0"></label>
-        <label>Aumento nos Essenciais (%)<input type="number" step="1" data-bind="cen::custoEss" placeholder="0"></label>
-        <label>Aumento no Estilo de vida (%)<input type="number" step="1" data-bind="cen::custoEst" placeholder="0"></label>
-        <label>Aumentos a partir de<input type="month" data-bind="cen::custoDe"></label>
-        <p class="hint">Ajustes somam às taxas de Configurações só neste cenário (ex.: −1 no CDI simula juros mais baixos). Renda extra soma ao salário todo mês (bônus, PJ, aluguel). A taxa manual ignora a carteira, como a planilha fazia com 11%. Aumentos: cada grupo de custos do Meu plano (Fixos, Essenciais, Estilo de vida) fica X% maior a partir do mês escolhido, além do IPCA; mês vazio = desde já. Vale no Patrimônio projetado da aba Cenários.</p>
+        <p class="hint">Ajustes somam às taxas de Configurações só neste cenário (ex.: −1 no CDI simula juros mais baixos). Renda extra soma ao salário todo mês (bônus, PJ, aluguel). A taxa manual ignora a carteira, como a planilha fazia com 11%. O aumento dos custos fica na seção Custos do cenário, logo abaixo. Vale no Patrimônio projetado da aba Cenários.</p>
         <p class="hint" id="cen-real-hint" hidden>Este é o cenário Real: ele usa as premissas do Meu plano (rendimento e IPCA), então os ajustes, a renda extra e a taxa manual ficam travados aqui. Teste outras premissas num cenário de simulação.</p>
       </fieldset>
       <fieldset>
@@ -3289,6 +3285,14 @@ input[type="month"].mp-on { outline: 2px solid var(--accent); outline-offset: 1p
         <p class="hint">O "Hoje (R$)" vem da Carteira. O aporte vai para as classes mais abaixo do alvo deste cenário.</p>
       </fieldset>
         </div>
+      </section>
+      <section data-nav="Custos do cenário" class="panel">
+        <h2>Custos do cenário</h2>
+        <p class="sub">Quanto cada grupo de custos do Meu plano fica maior neste cenário, além do IPCA. Vazio ou 0 = igual ao Meu plano.</p>
+        <div class="tscroll"><table id="tbl-cc"><thead><tr><th>Grupo</th><th>Hoje no Meu plano (R$/mês)</th><th>Aumento (%)</th><th>Com o aumento (R$/mês)</th></tr></thead>
+        <tbody><tr><td class="name">Fixos<span class="subdet" style="display:block">moradia, contas, saúde, educação</span></td><td id="cc-hoje-fix"></td><td><input type="number" step="1" data-bind="cen::custoFix" placeholder="0" aria-label="Aumento em Fixos (%)" style="max-width:90px"></td><td id="cc-com-fix"></td></tr><tr><td class="name">Essenciais<span class="subdet" style="display:block">mercado, transporte, carro, serviços</span></td><td id="cc-hoje-ess"></td><td><input type="number" step="1" data-bind="cen::custoEss" placeholder="0" aria-label="Aumento em Essenciais (%)" style="max-width:90px"></td><td id="cc-com-ess"></td></tr><tr><td class="name">Estilo de vida<span class="subdet" style="display:block">lazer, restaurantes, viagem, roupas</span></td><td id="cc-hoje-est"></td><td><input type="number" step="1" data-bind="cen::custoEst" placeholder="0" aria-label="Aumento em Estilo de vida (%)" style="max-width:90px"></td><td id="cc-com-est"></td></tr></tbody><tfoot><tr><td class="name"><b>Total</b></td><td id="cc-hoje-tot"></td><td id="cc-pct-tot"></td><td id="cc-com-tot"></td></tr></tfoot></table></div>
+        <div class="params" style="margin-top:12px"><fieldset><legend>Quando começa</legend><label>A partir de<input type="month" data-bind="cen::custoDe"></label><p class="hint">Mês vazio = vale desde já. Os valores de hoje são os do orçamento do Meu plano; na projeção cada linha ainda segue o próprio reajuste.</p></fieldset></div>
+        <p class="hint" id="cc-real" hidden>Este é o cenário Real: ele usa os custos do Meu plano. Escolha outro cenário para testar aumentos.</p>
       </section>
       <section data-nav="Bens do cenário" class="panel">
         <div class="row"><h2>Bens em cada cenário</h2><button class="btn tiny ghost" type="button" data-tab="compras">Cadastrar ou editar bens</button></div>
@@ -4259,7 +4263,7 @@ input[type="month"].mp-on { outline: 2px solid var(--accent); outline-offset: 1p
     return new Promise(resolve => { const { data } = sb.auth.onAuthStateChange(async (ev) => { if (ev !== 'PASSWORD_RECOVERY') return; const s = prompt('Digite a nova senha (mínimo 8 caracteres):'); if (s && s.length >= 8) { const { error } = await sb.auth.updateUser({ password: s }); alert(error ? 'Não deu para trocar a senha: ' + error.message : 'Senha trocada.'); } }); resolve(data); });
   }
   // ---------- rodapé: compartilhar, administração e sair ----------
-  const SITE_V = 210;
+  const SITE_V = 211;
   const escH = v => String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const dataBR = v => v ? new Date(v).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' }) : '–';
   const css2 = `.side-foot .r{flex-wrap:wrap}.side-foot .lg-acoes{margin-left:auto;display:inline-flex;gap:10px}
@@ -11490,6 +11494,12 @@ const COMPRA_COPY = {
   outro: { posse: 'Custo mensal de ter', eco: 'Gasto que deixa de ter', mud: 'Meses até usar' },
   negocio: { posse: 'Custos fixos (R$/mês)', eco: '', mud: 'Meses até abrir' }
 };
+function ccResumo(cen) { if (!$('tbl-cc')) return; const pc = cusPcts(cen), rl = ehCenReal(cen); let tH = 0, tC = 0;
+  [['Fixos', 'fix'], ['Essenciais', 'ess'], ['Estilo de vida', 'est']].forEach(([G, k]) => { const hj = cats().filter(c => c.grupo === G).reduce((t, c) => t + Math.max(0, +c.orc || 0), 0), x = rl ? 0 : pc[G] || 0, com = hj * (1 + x / 100);
+    tH += hj; tC += com; $('cc-hoje-' + k).textContent = fm(hj); $('cc-com-' + k).innerHTML = x ? `<b>${fm(com)}</b> <span class="subdet">${x > 0 ? '+' : ''}${fm(com - hj)}</span>` : fm(com); });
+  $('cc-hoje-tot').textContent = fm(tH); $('cc-com-tot').innerHTML = `<b>${fm(tC)}</b>`; $('cc-pct-tot').textContent = tH && Math.abs(tC - tH) > 0.5 ? `${tC > tH ? '+' : ''}${num((tC / tH - 1) * 100, 1)}% no total` : '';
+  $('cc-real').hidden = !rl; }
+['input', 'change'].forEach(t => document.addEventListener(t, e => { if (e.target.closest && e.target.closest('#tbl-cc')) setTimeout(() => ccResumo(cenAtual()), 0); }));
 function buildCenarios() {
   state.cenarios.forEach(cusMig);
   const cen = cenAtual();
@@ -11497,6 +11507,7 @@ function buildCenarios() {
   $('cen-del').disabled = state.cenarios.length < 2 || ehCenReal(cen);
   { const rl = ehCenReal(cen); document.querySelectorAll('#p-cenarios [data-bind^="aj::"], #p-cenarios [data-bind="cen::extra"], #p-cenarios [data-bind="cen::manual"], #p-cenarios [data-bind^="cen::custo"]').forEach(el => { el.disabled = rl; }); $('cen-real-hint').hidden = !rl; }
   document.querySelectorAll('#p-cenarios [data-bind]').forEach(fillBound);
+  ccResumo(cen);
   $('cen-proprio').checked = !!cen.proprio; $('presetSeg').hidden = !cen.proprio;
   $('presetSeg').innerHTML = PRESETS.map(p => `<button type="button" data-preset="${p.id}" aria-pressed="${cen.preset === p.id}">${p.nome}</button>`).join('');
   // tabela de carteira (entradas fixas, saídas por id)
@@ -15515,8 +15526,9 @@ const INFO_SEC = {
   'global:Comparação de cenários': 'Lado a lado, como cada cenário termina o período: rendimento líquido, compras incluídas, investimentos, patrimônio e o menor saldo no caminho.',
   'global:Checkpoints': 'Cada checkpoint real contra o valor do plano no mesmo mês. Verde: acima do plano; vermelho: abaixo.',
   'global:Fluxo por ano': 'A projeção do cenário em destaque somada por ano: quanto entra, quanto sai, quanto rende e com quanto termina cada ano.',
-  'cenarios:Cenário e carteira': 'O que muda em cada cenário além dos itens. Escolha o cenário nos botões; o Real usa as premissas do Meu plano e fica travado aqui. Nome: como o cenário aparece nos botões, nas colunas e no gráfico. Ajuste no CDI: pontos percentuais somados ao CDI de Configurações só neste cenário; −1 simula juros mais baixos e +1 juros mais altos; vazio ou 0 não muda nada. Ajuste no IPCA: o mesmo para a inflação, que corrige as linhas com reajuste pelo IPCA; +2 simula inflação mais alta. Renda extra: valor em R$ somado à receita todo mês (bônus, PJ, aluguel); vazio se não houver. Taxa manual: rendimento líquido ao ano que substitui o da carteira (por exemplo 11 para 11% a.a.); vazio usa a carteira do cenário. Aumento nos Fixos: quantos % os custos fixos do Meu plano (moradia, contas, saúde, educação) ficam maiores, além do IPCA (10 = 10% mais altos); vazio ou 0 não muda. Aumento nos Essenciais: o mesmo para os essenciais (mercado, transporte, carro, serviços). Aumento no Estilo de vida: o mesmo para lazer, restaurantes, viagem, roupas e compras. Aumentos a partir de: mês em que os aumentos começam; vazio vale desde já. Carteira do cenário: marque para usar uma divisão própria; sem marcar, usa a carteira-alvo (Finanças › Carteira). O efeito aparece no Patrimônio projetado de Simulação › Cenários.',
+  'cenarios:Cenário e carteira': 'O que muda em cada cenário além dos itens. Escolha o cenário nos botões; o Real usa as premissas do Meu plano e fica travado aqui. Nome: como o cenário aparece nos botões, nas colunas e no gráfico. Ajuste no CDI: pontos percentuais somados ao CDI de Configurações só neste cenário; −1 simula juros mais baixos e +1 juros mais altos; vazio ou 0 não muda nada. Ajuste no IPCA: o mesmo para a inflação, que corrige as linhas com reajuste pelo IPCA; +2 simula inflação mais alta. Renda extra: valor em R$ somado à receita todo mês (bônus, PJ, aluguel); vazio se não houver. Taxa manual: rendimento líquido ao ano que substitui o da carteira (por exemplo 11 para 11% a.a.); vazio usa a carteira do cenário. Carteira do cenário: marque para usar uma divisão própria; sem marcar, usa a carteira-alvo (Finanças › Carteira). O efeito aparece no Patrimônio projetado de Simulação › Cenários.',
   'compras:Compras e financiamentos': 'O cadastro único do que sai ou entra de uma vez ou em parcelas, fora do dia a dia. Imóvel, Carro e Outro bem: preço, entrada, forma de pagamento, juros, custos de ter e valorização; o bem soma no patrimônio. Evento: um custo alto planejado que não vira bem, como casamento, lua de mel, festa de 15 anos, reforma, mudança, faculdade ou pós, intercâmbio, chegada de filho, tratamento de saúde ou Outro; sai do plano à vista ou parcelado. A receber: dinheiro que alguém te deve, em parcelas ou de uma vez, com a chance de receber; as parcelas somam no plano e o saldo soma no patrimônio. A pagar: uma dívida sua fora dos financiamentos de bens, como empréstimo de parente ou acordo; as parcelas saem do plano e o saldo desconta do patrimônio. Em cada card, "Uso" decide se entra na projeção real ou é só simulação, e cada cenário escolhe quais entram.',
+  'cenarios:Custos do cenário': 'Quanto cada grupo de custos do Meu plano fica maior neste cenário, além do IPCA. Fixos: moradia, contas, saúde, educação e assinaturas. Essenciais: mercado, transporte, carro e serviços. Estilo de vida: lazer, restaurantes, viagem, roupas, presentes e compras. Aumento (%): 10 deixa o grupo 10% mais caro; vazio ou 0 não muda; dá para pôr número negativo para simular um corte. Com o aumento: como fica o valor de hoje com o %; na projeção cada linha ainda sobe pelo próprio reajuste. A partir de: mês em que os aumentos começam; vazio vale desde já. O efeito aparece no Patrimônio projetado de Simulação › Cenários. Para um gasto novo e pontual (escola, um filho, um aluguel) use + Só simulação em Meu plano › Mudanças e eventos.',
   'cenarios:Bens do cenário': 'Quais bens do cadastro (Compras e bens) entram em cada cenário. Um bem pode estar em vários cenários; o cenário aberto aparece destacado.',
   'cenarios:Carteira por classe': 'A divisão por classe que o cenário usa (a carteira-alvo ou a divisão própria dele) e quanto cada uma rende líquido com a curva de juros atual. A média ponderada é o rendimento do cenário.',
   'cenarios:Patrimônio': 'Patrimônio líquido = investimentos + bens − dívidas. Investimentos: o que está aplicado. Bens: valor dos bens comprados, com a valorização ou depreciação cadastrada. Dívidas: saldo devedor dos financiamentos, que cai a cada parcela.',
