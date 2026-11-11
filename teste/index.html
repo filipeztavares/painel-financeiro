@@ -2105,7 +2105,9 @@ body:has(#tour-pop:not([hidden])) #jor-divbar { display: none; }
 #np-inicio .np-cat .vl { text-align: right; line-height: 1.2; }
 /* ---------- Simulação: cenários com sim ou não em cada item (v312) ---------- */
 #md-cens { margin: 4px 0 10px; }
+#sc-vis { margin: 4px 0 10px; flex-wrap: wrap; }
 #md-cens button[aria-pressed="false"] { background: transparent; }
+#sc-vis button[aria-pressed="false"] { background: transparent; opacity: .55; text-decoration: line-through; }
 .sc-seg button { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; padding: 7px 14px; }
 .sc-seg button i { width: 9px; height: 9px; border-radius: 50%; background: var(--c); display: inline-block; }
 .sc-seg button em { font-style: normal; font-size: 10px; padding: 1px 6px; border-radius: 99px; background: var(--accent-soft, rgba(168,88,42,.15)); color: var(--accent); }
@@ -2316,7 +2318,7 @@ svg path[data-si] { transition: opacity .12s; }
     </div>
     <div class="nav-mobile-sub" id="navMobileSub"></div>
   </div>
-  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 332</div></div>
+  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 333</div></div>
 </nav>
 <div class="sino-pop" id="sino-pop" role="dialog" aria-label="Atualizações das bases" hidden></div>
 <div class="sino-pop" id="pess-pop" role="dialog" aria-label="Seus avisos" hidden></div>
@@ -3264,6 +3266,7 @@ svg path[data-si] { transition: opacity .12s; }
     <section data-nav="Patrimônio projetado" class="panel chart">
       <div class="row"><h2>Patrimônio projetado</h2><div class="seg" id="sc-anos" role="group" aria-label="Até quando projetar"><button type="button" data-scanos="0">Fim do plano</button><button type="button" data-scanos="1">1 ano</button><button type="button" data-scanos="3">3 anos</button><button type="button" data-scanos="5">5 anos</button><button type="button" data-scanos="10">10 anos</button><button type="button" data-scanos="15">15 anos</button><button type="button" data-scanos="20">20 anos</button></div></div>
       <p class="sub">Investido mais o que fica parado, pelo Meu plano, em cada cenário. O Real em linha cheia.</p>
+      <div class="seg sc-seg" id="sc-vis" role="group" aria-label="Cenários no gráfico"></div>
       <div class="legend" id="lg-sc"></div>
       <div id="ch-sc" data-h="440"></div>
       <div class="readout" id="ro-sc"></div>
@@ -4284,7 +4287,7 @@ svg path[data-si] { transition: opacity .12s; }
     return new Promise(resolve => { const { data } = sb.auth.onAuthStateChange(async (ev) => { if (ev !== 'PASSWORD_RECOVERY') return; const s = prompt('Digite a nova senha (mínimo 8 caracteres):'); if (s && s.length >= 8) { const { error } = await sb.auth.updateUser({ password: s }); alert(error ? 'Não deu para trocar a senha: ' + error.message : 'Senha trocada.'); } }); resolve(data); });
   }
   // ---------- rodapé: compartilhar, administração e sair ----------
-  const SITE_V = 218;
+  const SITE_V = 219;
   const escH = v => String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const dataBR = v => v ? new Date(v).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' }) : '–';
   const css2 = `.side-foot .r{flex-wrap:wrap}.side-foot .lg-acoes{margin-left:auto;display:inline-flex;gap:10px}
@@ -7421,6 +7424,10 @@ function simSelo(id) {
 }
 let simFoco = null;
 let simOrdFix = null;
+document.addEventListener('click', e => { const b = e.target.closest && e.target.closest('[data-scvis]'); if (!b) return; e.preventDefault();
+  const id = b.dataset.scvis, oc = state.plan.scOcultos = (state.plan.scOcultos || []).filter(x => state.cenarios.some(c => c.id === x));
+  if (oc.includes(id)) oc.splice(oc.indexOf(id), 1); else { if (state.cenarios.length - oc.length <= 1) return ngToast('Deixe pelo menos um cenário no gráfico.'); oc.push(id); }
+  save(); renderSimCen(true); });
 function renderSimCen(manter) {
   const its = itensModulos(); simPrep(its);
   let ord = simOrdem(its); const R = cenRealObj();
@@ -7462,14 +7469,16 @@ function renderSimCen(manter) {
     ['Itens neste cenário', `${its.filter(x => !x.bloq && emCen(cen, x)).length} de ${its.filter(x => !x.bloq).length}`, real ? 'os que estão em Finanças' : `${simDifs(cen, its).length} diferente(s) do Real`]
   ]);
   if (n >= 2) {
-    const series = ord.map(c => ({ name: c.nome + (ehCenReal(c) ? ' (Real)' : ''), c: corC(c), v: arr(i => pat(res.get(c.id), i)), w: ehCenReal(c) ? 2.8 : c.id === cen.id ? 2.4 : 1.8, dash: !ehCenReal(c) }));
+    const oc = (state.plan.scOcultos || []).filter(id => ord.some(c => c.id === id)), vis = ord.filter(c => !oc.includes(c.id));
+    $('sc-vis').innerHTML = `<span class="subdet" style="align-self:center;margin-right:4px">No gráfico:</span>` + ord.map(c => `<button type="button" data-scvis="${esc(c.id)}" aria-pressed="${!oc.includes(c.id)}" style="--c:${corC(c)}" title="Mostrar ou esconder no gráfico"><i></i>${esc(c.nome)}${ehCenReal(c) ? ' (Real)' : ''}</button>`).join('');
+    const series = vis.map(c => ({ name: c.nome + (ehCenReal(c) ? ' (Real)' : ''), c: corC(c), v: arr(i => pat(res.get(c.id), i)), w: ehCenReal(c) ? 2.8 : c.id === cen.id ? 2.4 : 1.8, dash: !ehCenReal(c) }));
     // Real esperado: tira de cada item real a parte que pode não acontecer
     const pes = vch ? its.filter(x => !x.bloq && x.ini && x.uso === 'real' && x.chance < 100) : [];
     if (pes.length) { const im = impactos(pes); series.push({ name: 'Real esperado pela chance', c: 'var(--s3)', dash: true, w: 2, v: arr(i => { let v = pat(pr, i); pes.forEach(x => { const e = im[x.id]; if (e) v -= (1 - x.chance / 100) * e.ef(i); }); return v; }) }); }
     legend($('lg-sc'), series);
     chart($('ch-sc'), $('ro-sc'), n, series, k, t => mLabel(st + t), 0);
   } else { $('ch-sc').innerHTML = '<p class="tl-vazio">Monte o Meu plano para ver a projeção.</p>'; $('lg-sc').innerHTML = ''; }
-  $('sc-res').innerHTML = ord.map(c => `<b>${esc(c.nome)}</b>: ${k(pat(res.get(c.id), fimI))}`).join(' · ') + ` em ${mLabel(fimI)}.`;
+  $('sc-res').innerHTML = ord.filter(c => !(state.plan.scOcultos || []).includes(c.id)).map(c => `<b>${esc(c.nome)}</b>: ${k(pat(res.get(c.id), fimI))}`).join(' · ') + ` em ${mLabel(fimI)}.`;
   // decidir
   const dif = simDifs(cen, its);
   $('sc-dec').innerHTML = real ? `<p>Este é o cenário <b>Real</b>: é o que Finanças usa no Meu plano, na Projeção e nos checkpoints. Para testar mudanças, abra outro cenário ou crie um novo.</p>`
