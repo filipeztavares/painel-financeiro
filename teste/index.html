@@ -2138,6 +2138,47 @@ body:has(#tour-pop:not([hidden])) #jor-divbar { display: none; }
 .sim-uso { display: inline-flex; flex-wrap: wrap; align-items: center; gap: 6px 8px; font-size: 12.5px; }
 .sim-uso .l { color: var(--muted); font-size: 12px; width: 100%; }
 .sim-uso a, .it-res a { color: var(--accent); font-weight: 600; }
+
+/* v319 integração: aviso do que falta, campo destacado, balão, voltar, faixas */
+.int-falta { display: inline-flex; align-items: center; gap: 5px; font: inherit; font-size: 11.5px; font-weight: 600; line-height: 1.3; padding: 2px 8px 2px 4px; border-radius: 999px; border: 1px solid #F5C442; background: rgba(245,196,66,.18); color: var(--ink); cursor: pointer; white-space: nowrap; vertical-align: 1px; }
+.int-falta::before { content: "!"; display: inline-grid; place-items: center; width: 15px; height: 15px; border-radius: 50%; background: #E0A800; color: #fff; font-size: 10px; font-weight: 800; }
+.int-falta:hover { background: rgba(245,196,66,.32); }
+.int-falta:focus-visible, .int-kpi:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.int-hl { outline: 3px solid #F5C442 !important; outline-offset: 2px; border-radius: 6px; animation: intPisca 1.2s ease-out 2; }
+@keyframes intPisca { 0% { box-shadow: 0 0 0 10px rgba(245,196,66,.55); } 100% { box-shadow: 0 0 0 0 rgba(245,196,66,0); } }
+.int-balao { position: absolute; z-index: 1250; max-width: min(340px, calc(100vw - 16px)); display: flex; gap: 8px; align-items: flex-start; padding: 9px 10px; border-radius: 10px; border: 1px solid #F5C442; background: #FFF6D6; color: #3d2f00; font-size: 13px; line-height: 1.4; box-shadow: 0 8px 24px rgba(0,0,0,.18); }
+.int-balao::before { content: ""; position: absolute; top: -7px; left: 18px; width: 12px; height: 12px; background: #FFF6D6; border-left: 1px solid #F5C442; border-top: 1px solid #F5C442; transform: rotate(45deg); }
+.int-balao .ic { flex: none; display: inline-grid; place-items: center; width: 18px; height: 18px; border-radius: 50%; background: #E0A800; color: #fff; font-weight: 800; font-size: 11px; }
+.int-balao button { flex: none; margin-left: auto; background: none; border: 0; color: inherit; cursor: pointer; font-size: 13px; padding: 0 2px; }
+.int-balao.ok { border-color: var(--good); background: var(--good-soft); color: var(--ink); }
+.int-balao.ok::before { background: var(--good-soft); border-color: var(--good); }
+.int-balao.ok .ic { background: var(--good); }
+.int-volta { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin: 0 0 14px; padding: 8px 12px; border-radius: 10px; background: var(--accent-soft); border: 1px solid color-mix(in srgb, var(--accent) 35%, transparent); font-size: 13px; color: var(--muted); }
+.int-volta #int-volta-b { font: inherit; font-weight: 700; color: var(--accent); background: none; border: 0; cursor: pointer; padding: 0; }
+.int-volta .x { margin-left: auto; background: none; border: 0; color: var(--muted); cursor: pointer; }
+.int-faixa { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin: 0 0 14px; padding: 10px 14px; border-radius: 12px; border: 1px solid #F5C442; background: rgba(245,196,66,.16); color: var(--ink); font-size: 13.5px; line-height: 1.45; }
+.int-faixa > span:nth-child(2) { flex: 1 1 240px; min-width: 0; }
+.int-faixa .ic { flex: none; display: inline-grid; place-items: center; width: 20px; height: 20px; border-radius: 50%; background: #E0A800; color: #fff; font-weight: 800; font-size: 12px; }
+.int-dlg { width: min(560px, 100%); }
+.int-dlg .panel h2 { padding-right: 40px; }
+.int-campos { display: grid; gap: 10px; margin-top: 10px; }
+.int-campos label:not(.check) { display: grid; gap: 4px; font-size: 13px; color: var(--muted); }
+.int-campos .btns { display: flex; gap: 8px; flex-wrap: wrap; }
+.int-g { display: flex; align-items: center; gap: 8px; margin: 14px 0 6px; font-size: 12px; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; color: var(--muted); }
+.int-g i { width: 10px; height: 10px; border-radius: 50%; }
+.int-l { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 8px 10px; border: 1px solid var(--line); border-radius: 8px; margin-bottom: 6px; }
+.int-l span { min-width: 0; display: grid; }
+.int-l small { color: var(--muted); font-size: 12px; }
+.int-kpi { cursor: pointer; }
+.int-kpi:hover { outline: 1px dashed var(--accent); outline-offset: 2px; }
+.int-kpi .d::after { content: " · ver ›"; color: var(--accent); font-weight: 600; }
+.int-aviso { color: #9a6b00 !important; font-weight: 600; }
+.int-sino a { font-weight: 600; }
+:root[data-theme="dark"] .int-balao { background: #3a300e; color: #FFE8A3; }
+:root[data-theme="dark"] .int-balao::before { background: #3a300e; }
+:root[data-theme="dark"] .int-aviso { color: #F5C442 !important; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .int-balao { background: #3a300e; color: #FFE8A3; } :root:not([data-theme="light"]) .int-balao::before { background: #3a300e; } :root:not([data-theme="light"]) .int-aviso { color: #F5C442 !important; } }
+@media (prefers-reduced-motion: reduce) { .int-hl { animation: none; } }
 </style>
 
 
@@ -2228,7 +2269,7 @@ body:has(#tour-pop:not([hidden])) #jor-divbar { display: none; }
     </div>
     <div class="nav-mobile-sub" id="navMobileSub"></div>
   </div>
-  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 318</div></div>
+  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 319</div></div>
 </nav>
 <div class="sino-pop" id="sino-pop" role="dialog" aria-label="Atualizações das bases" hidden></div>
 <div class="sino-pop" id="pess-pop" role="dialog" aria-label="Seus avisos" hidden></div>
@@ -2308,6 +2349,7 @@ body:has(#tour-pop:not([hidden])) #jor-divbar { display: none; }
       <div class="cu-res" id="cu-res"></div>
     </section>
     <section data-nav="Finanças" class="panel cu-mod" id="cu-fin"></section>
+    <section data-nav="Simulação" class="panel cu-mod" id="cu-simu"></section>
     <section data-nav="Bens e compromissos" class="panel cu-mod" id="cu-trab"></section>
     <section data-nav="Carreira" class="panel cu-mod" id="cu-carr"></section>
     <section data-nav="Viagens" class="panel cu-mod" id="cu-viag"></section>
@@ -2897,7 +2939,7 @@ body:has(#tour-pop:not([hidden])) #jor-divbar { display: none; }
         <label>Quero chegar lá aos (anos)<input type="number" step="1" min="18" max="100" data-ind="meta"></label>
         <label>O dinheiro precisa durar até os (anos)<input type="number" step="1" min="60" max="120" data-ind="ate"></label>
         <label>Reserva de emergência (meses de custo)<input type="number" step="1" min="0" max="36" data-ind="reserva"></label>
-        <p class="hint" style="grid-column:1/-1">Sugestão: até os 105 anos (95 de expectativa + 10 de margem). A data de nascimento fica só no seu painel.</p>
+        <p class="hint" style="grid-column:1/-1">Sugestão: até os 105 anos (95 de expectativa + 10 de margem). A data de nascimento é a mesma de Família › Pessoas da casa (Você): mudar aqui muda lá.</p>
       </fieldset></div>
     </section>
     <section data-nav="Custo de vida" class="panel">
@@ -4192,7 +4234,7 @@ body:has(#tour-pop:not([hidden])) #jor-divbar { display: none; }
     return new Promise(resolve => { const { data } = sb.auth.onAuthStateChange(async (ev) => { if (ev !== 'PASSWORD_RECOVERY') return; const s = prompt('Digite a nova senha (mínimo 8 caracteres):'); if (s && s.length >= 8) { const { error } = await sb.auth.updateUser({ password: s }); alert(error ? 'Não deu para trocar a senha: ' + error.message : 'Senha trocada.'); } }); resolve(data); });
   }
   // ---------- rodapé: compartilhar, administração e sair ----------
-  const SITE_V = 204;
+  const SITE_V = 205;
   const escH = v => String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const dataBR = v => v ? new Date(v).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' }) : '–';
   const css2 = `.side-foot .r{flex-wrap:wrap}.side-foot .lg-acoes{margin-left:auto;display:inline-flex;gap:10px}
@@ -5048,7 +5090,7 @@ function renderNegVg() {
     ['No Meu plano', String(real.length), real.length ? 'em Projeção real' : 'todos em Só simulação']
   ]);
   const tb = $('tbl-ngv');
-  tb.innerHTML = !L.length ? `<tbody><tr><td class="hint">Nenhum negócio ainda. Comece em Meus negócios. <button type="button" class="btn tiny" data-ngadd>+ Novo negócio</button></td></tr></tbody>`
+  tb.innerHTML = !L.length ? `<tbody><tr><td class="hint">Nenhum negócio ainda. Comece em <a href="#" class="lm-ir" data-lmtab="negcad" data-lmsec="Cadastro">Meus negócios</a>. <button type="button" class="btn tiny" data-ngadd>+ Novo negócio</button></td></tr></tbody>`
     : `<thead><tr><th>Negócio</th><th>Tipo</th><th>Início</th><th>Investimento</th><th>Lucro líquido/mês</th><th>Para você/mês</th><th>Payback</th><th>Uso</th></tr></thead><tbody>${Rs.map(([x, R]) => `<tr>
       <td class="name"><a href="#" data-ngabre="${x.id}:negdre">${esc(x.nome)}</a> <span class="subdet">${esc([x.setor, x.cidade].filter(Boolean).join(' · '))}</span></td>
       <td data-l="Tipo">${NG_TIPO[x.tipo]}</td><td data-l="Início">${mLabel(R.i0)}</td><td data-l="Investimento">${fm(R.invTot)}</td><td data-l="Lucro/mês">${ngSg(R.llMad)}</td><td data-l="Para você">${ngSg(R.voceMad)}</td>
@@ -6294,7 +6336,7 @@ function renderFamVg() {
     ['IR a menos por ano', deps ? fm(deps * FAM_DEP_IR * 0.275) : '—', deps ? `${deps} ${deps > 1 ? 'dependentes' : 'dependente'} · ${fm(deps * FAM_DEP_IR)} a menos na base da declaração completa (até 27,5%)` : 'marque quem é dependente em Minha família']
   ]);
   const tb = $('tbl-famv');
-  tb.innerHTML = !F.length ? `<tbody><tr><td class="hint">Nenhum filho ainda. Cadastre em Minha família. <button type="button" class="btn tiny" data-famadd="filho">+ Filho</button> <button type="button" class="btn tiny ghost" data-famadd="previsto">+ Filho previsto</button></td></tr></tbody>`
+  tb.innerHTML = !F.length ? `<tbody><tr><td class="hint">Nenhum filho ainda. Cadastre em <a href="#" class="lm-ir" data-lmtab="fampes" data-lmsec="Pessoas da casa">Minha família</a>. <button type="button" class="btn tiny" data-famadd="filho">+ Filho</button> <button type="button" class="btn tiny ghost" data-famadd="previsto">+ Filho previsto</button></td></tr></tbody>`
     : `<thead><tr><th>Filho</th><th>Idade</th><th>Fase agora</th><th>Custo/mês hoje</th><th>Até a idade final</th><th>Uso</th></tr></thead><tbody>${F.map(p => { const f = famFaseDe(p, famIdade(p, HOJE_IDX)), M = famMeses(p);
       return `<tr><td class="name"><a href="#" data-famabre="${p.id}">${esc(p.nome)}</a>${p.grupo && famGrupo(p).length > 1 ? ` <span class="subdet">${famGrupo(p).length === 2 ? 'gêmeos' : 'trigêmeos'}</span>` : ''}</td><td data-l="Idade">${famIdadeTxt(p)}</td><td data-l="Fase">${f ? esc(f.n) : famPrevisto(p) ? 'ainda não nasceu' : '—'}</td>
       <td data-l="Custo/mês" class="ng-num">${f ? fm(famMesFase(p, f.id)) : '—'}</td><td data-l="Total" class="ng-num">${M.length ? fm(famTotal(p)) : '—'}<small>${M.length ? 'até os ' + p.fim + ' anos, em R$ de hoje' : ''}</small></td>
@@ -6481,7 +6523,7 @@ function indCalc(o) {
 }
 const indIdade = (r, i) => r.nascI == null ? '' : indMeses(i - r.nascI);
 function indFrase(r) {
-  if (r.C <= 0) return { t: 'Preencha o custo de vida para calcular a sua data.', d: 'Use Gastos para lançar o que você gasta ou o orçamento do Meu plano. Depois confira em <a href="#" data-lmtab="indnum" data-lmsec="Custo de vida">Meu número</a>.' };
+  if (r.C <= 0) return { t: 'Preencha o custo de vida para calcular a sua data.', d: 'Use <a href="#" class="lm-ir" data-lmtab="gastos" data-lmsec="Lançar e importar">Gastos</a> para lançar o que você gasta ou <a href="#" class="lm-ir" data-lmtab="orcamento" data-lmsec="Receitas e custos">o orçamento do Meu plano</a>. Depois confira em <a href="#" data-lmtab="indnum" data-lmsec="Custo de vida">Meu número</a>.' };
   if (r.cruz == null) return { t: `Com o plano atual, você ainda não chega lá${r.nascI != null ? ` até os ${Math.floor((r.busca - r.nascI) / 12)} anos` : ' nos próximos 50 anos'}.`, d: `O custo de ${fm(r.C)} por mês pede mais patrimônio do que o plano junta. Veja abaixo quanto falta e mexa no custo ou no Meu plano.` };
   const quando = r.cruz <= r.st ? 'já' : `em <b>${mLabel(r.cruz)}</b>`;
   return { t: r.cruz <= r.st ? `Você <b>já</b> tem o suficiente para parar de trabalhar por obrigação.` : `Você chega à independência ${quando}${r.nascI != null ? `, aos <b>${indIdade(r, r.cruz)}</b>` : ''}: daqui a <b>${indMeses(r.cruz - HOJE_IDX)}</b>.`,
@@ -6599,8 +6641,8 @@ function renderIndItens() {
     return { x, d, nova }; }).sort((a, b) => Math.abs(b.d ?? 0) - Math.abs(a.d ?? 0));
   const MODN = Object.fromEntries(MODS.map(m => [m.id, m.nome]));
   const ef = d => d == null ? '—' : d === 999 ? '<span class="neg">tira do horizonte</span>' : d === -999 ? '<span class="pos">traz para o horizonte</span>' : d === 0 ? '<span class="z">não muda</span>' : d > 0 ? `<span class="neg">atrasa ${indMeses(d)}</span>` : `<span class="pos">adianta ${indMeses(-d)}</span>`;
-  $('tbl-ind-itens').innerHTML = rows.length ? `<thead><tr><th>Item</th><th>Módulo</th><th>Uso</th><th>Efeito na independência</th><th>Data</th></tr></thead><tbody>${rows.map(({ x, d, nova }) => `<tr><td class="name">${esc(x.nome)}${x.resumo ? `<span class="subdet" style="display:block">${esc(x.resumo)}</span>` : ''}</td><td class="name"><a href="#" data-lmtab="${esc(x.tab)}" data-lmsec="${esc(x.sec || '')}">${esc(x.sub || MODN[x.mod] || '')}</a></td><td class="name">${x.uso === 'real' ? 'Projeção real' : 'Só simulação'}</td><td class="name">${ef(d)}</td><td>${x.uso === 'real' ? `<span class="subdet">sem ele: ${nova == null ? 'fora do horizonte' : mLabel(nova)}</span>` : `<span class="subdet">com ele: ${nova == null ? 'fora do horizonte' : mLabel(nova)}</span>`}</td></tr>`).join('')}</tbody>`
-    : '<tbody><tr><td class="name"><span class="subdet">Nenhum item nos módulos ainda. Compras, viagens, negócios, stock options, família e eventos do Meu plano aparecem aqui.</span></td></tr></tbody>';
+  $('tbl-ind-itens').innerHTML = rows.length ? `<thead><tr><th>Item</th><th>Módulo</th><th>Uso</th><th>Efeito na independência</th><th>Data</th></tr></thead><tbody>${rows.map(({ x, d, nova }) => `<tr><td class="name">${esc(x.nome)}${x.resumo ? `<span class="subdet" style="display:block">${esc(x.resumo)}</span>` : ''}</td><td class="name"><a href="#" data-lmtab="${esc(x.tab)}" data-lmsec="${esc(x.sec || '')}" data-lmitem="${esc(x.id)}">${esc(x.sub || MODN[x.mod] || '')}</a></td><td class="name">${x.uso === 'real' ? 'Projeção real' : 'Só simulação'}</td><td class="name">${ef(d)}</td><td>${x.uso === 'real' ? `<span class="subdet">sem ele: ${nova == null ? 'fora do horizonte' : mLabel(nova)}</span>` : `<span class="subdet">com ele: ${nova == null ? 'fora do horizonte' : mLabel(nova)}</span>`}</td></tr>`).join('')}</tbody>`
+    : '<tbody><tr><td class="name"><span class="subdet">Nenhum item nos módulos ainda. <a href="#" class="lm-ir" data-lmtab="compras" data-lmsec="Compras e financiamentos">Compras</a>, <a href="#" class="lm-ir" data-lmtab="viagrot" data-lmsec="">viagens</a>, <a href="#" class="lm-ir" data-lmtab="negcad" data-lmsec="Cadastro">negócios</a>, <a href="#" class="lm-ir" data-lmtab="stock" data-lmsec="Evento de liquidez">stock options</a>, <a href="#" class="lm-ir" data-lmtab="fampes" data-lmsec="Filhos">filhos</a> e <a href="#" class="lm-ir" data-lmtab="orcamento" data-lmsec="Mudanças e eventos">eventos do Meu plano</a> aparecem aqui.</span></td></tr></tbody>';
 }
 document.addEventListener('input', e => { const el = e.target, kk = el.dataset && el.dataset.indalv; if (!kk || !state.indep) return;
   const def = IND_ALV.find(x => x[0] === kk); state.indep.alv[kk] = +el.value; const b = document.querySelector(`[data-indalvv="${kk}"]`); if (b) b.textContent = def[5](+el.value);
@@ -7138,7 +7180,7 @@ function renderAgCal() {
       <label>De quem é<select data-agf="${b('quem')}"><option value="">Da casa</option>${pes.filter(p => p.tipo !== 'pet').map(p => `<option value="${p.id}"${x.quem === p.id ? ' selected' : ''}>${esc(p.nome)}</option>`).join('')}</select></label>
       <label>Lembrete<select data-agf="${b('aviso')}">${AG_AVISO.map(([v, t]) => `<option value="${v}"${x.aviso === v ? ' selected' : ''}>${t}</option>`).join('')}</select></label>
       <label class="ag-wide">Anotações<textarea data-agf="${b('nota')}" rows="2" maxlength="1000">${esc(x.nota)}</textarea></label></div>
-      <p class="subdet">O lembrete aparece em Seus avisos (o ícone ao lado do logo).${pes.length ? '' : ' Cadastre as pessoas da casa em Família › Minha família para escolher de quem é cada compromisso.'}</p>
+      <p class="subdet">O lembrete aparece em Seus avisos (o ícone ao lado do logo).${pes.length ? '' : ' Cadastre as pessoas da casa em <a href="#" class="lm-ir" data-lmtab="fampes" data-lmsec="Pessoas da casa">Família › Minha família</a> para escolher de quem é cada compromisso.'}</p>
       ${x.ir ? `<p><a href="#" class="btn ghost tiny" data-agir="${esc(x.ir)}">Abrir ${esc(x.ir.split('|')[1] || 'a tela')}</a></p>` : ''}
       <div id="agc-com"></div>
       <div class="ag-pop-ac">${novo ? '' : `<button type="button" class="btn danger tiny" data-agdel="${x.id}">Remover</button>`}<span class="ag-sp"></span><button type="button" class="btn ghost" data-agfecha>Cancelar</button><button type="button" class="btn" data-agsalva>${novo ? 'Adicionar' : 'Salvar'}</button></div>`; }
@@ -7342,10 +7384,10 @@ function renderSimCen(manter) {
   const pl = calcPlano(), fimI = scAnos() ? scFimIdx() : pl.i0 + Math.round((+state.plan.anos || 10) * 12);
   document.querySelectorAll('#sc-anos button').forEach(b => b.setAttribute('aria-pressed', String(+b.dataset.scanos === scAnos())));
   const grupos = MODS.filter(m => its.some(x => x.mod === m.id)), corC = c => ehCenReal(c) ? 'var(--s1)' : cenCor(c);
-  $('tbl-sc').innerHTML = !its.length ? '<tbody><tr><td class="hint">Nenhum item ainda. Cadastre bens em Bens e compromissos, viagens, filhos, negócios, trocas de emprego em Carreira ou eventos no Meu plano.</td></tr></tbody>'
+  $('tbl-sc').innerHTML = !its.length ? '<tbody><tr><td class="hint">Nenhum item ainda. Cadastre <a href="#" class="lm-ir" data-lmtab="compras" data-lmsec="Compras e financiamentos">bens e compromissos</a>, <a href="#" class="lm-ir" data-lmtab="viagrot" data-lmsec="">viagens</a>, <a href="#" class="lm-ir" data-lmtab="fampes" data-lmsec="Filhos">filhos</a>, <a href="#" class="lm-ir" data-lmtab="negcad" data-lmsec="Cadastro">negócios</a>, <a href="#" class="lm-ir" data-lmtab="pjpf" data-lmsec="Cenários de troca">trocas de emprego</a> ou <a href="#" class="lm-ir" data-lmtab="orcamento" data-lmsec="Mudanças e eventos">eventos no Meu plano</a>.</td></tr></tbody>'
     : `<thead><tr><th>Item</th><th>Quando</th><th>Valores</th>${vch ? '<th>Chance</th>' : ''}${ord.map(c => `<th class="sc-col${c.id === cen.id ? ' sc-cur' : ''}" style="--c:${corC(c)}"><i></i>${esc(c.nome)}</th>`).join('')}</tr></thead><tbody>${grupos.map(m => `<tr class="it-g"><td colspan="${(vch ? 4 : 3) + ord.length}"><i style="background:${m.cor}"></i>${esc(m.nome)}</td></tr>` +
       its.filter(x => x.mod === m.id).sort((a, b) => (a.ini || '9999') < (b.ini || '9999') ? -1 : (a.ini || '9999') > (b.ini || '9999') ? 1 : 0).map(x => `<tr data-scit="${esc(x.id)}"${simFoco === x.id ? ' class="sc-foco"' : ''}>
-        <td class="name"><a href="#" data-lmtab="${x.tab}" data-lmsec="${esc(x.sec || '')}">${esc(x.nome)}</a> <span class="subdet">${esc(x.sub)}</span></td>
+        <td class="name"><a href="#" data-lmtab="${x.tab}" data-lmsec="${esc(x.sec || '')}" data-lmitem="${esc(x.id || '')}">${esc(x.nome)}</a> <span class="subdet">${esc(x.sub)}</span></td>
         <td>${x.ini ? mLabel(mIndex(x.ini)) : '–'}</td>
         <td class="it-v">${esc(x.resumo)}</td>
         ${vch ? `<td><input type="number" min="0" max="100" step="5" data-ichance="${esc(x.id)}" value="${x.chance}" aria-label="Chance de acontecer (%) de ${esc(x.nome)}">%</td>` : ''}
@@ -7399,7 +7441,7 @@ document.addEventListener('change', e => { if (e.target.dataset && e.target.data
 // no cadastro de cada módulo: onde o item está e o link para decidir na Simulação (v313: o seletor Só simulação / Projeção real saiu dos módulos)
 function simUsoHtml(id, rot) {
   const x = itensModulos().find(y => y.id === id), real = x && x.uso === 'real';
-  return `<span class="sim-uso">${rot ? `<span class="l">${esc(rot)}</span>` : ''}${simSelo(id) || '<span class="chip">Só simulação</span>'}<a href="#" data-simir="${esc(id)}">${real ? 'Mudar na Simulação' : 'Tornar real na Simulação'} ›</a></span>`;
+  return `<span class="sim-uso"><span class="l">Na Simulação</span>${simSelo(id) || '<span class="chip">Só simulação</span>'}<a href="#" data-simir="${esc(id)}">${real ? 'Mudar na Simulação' : 'Tornar real na Simulação'} ›</a></span>`;
 }
 
 function vgDataPadrao() { const d = new Date(NOW.getFullYear(), NOW.getMonth() + 6, 1); while (d.getDay() !== 6) d.setDate(d.getDate() + 1); const v = new Date(d); v.setDate(v.getDate() + 14); const f = x => x.toISOString().slice(0, 10); return [f(d), f(v)]; }
@@ -10251,7 +10293,7 @@ function renderViagCus() { vgAutoTodos();
   let imp = '';
   if (T.proj > 0) { try { const pl0 = calcPlano(), P = state.plan, fimI = pl0.i0 + Math.round((+P.anos || 10) * 12), com = calcPlano(new Set([c.plano ? '-viag:' + x.id : 'viag:' + x.id])), a0 = (pl0.inv[fimI] ?? 0) + (pl0.parado[fimI] ?? 0), a1 = (com.inv[fimI] ?? 0) + (com.parado[fimI] ?? 0), d = c.plano ? a0 - a1 : a1 - a0;
     imp = `<p>Com a viagem, o patrimônio do plano em ${mLabel(fimI)} fica <b class="neg">${fm(Math.abs(d))}</b> menor${c.plano ? ' (já está na projeção)' : ' do que a projeção atual'}. É o custo de hoje somado ao que esse dinheiro renderia até lá.</p>`; } catch (er) { imp = ''; } }
-  $('vgc-plano').innerHTML = `<div class="vgc-uso">${simUsoHtml('viag:' + x.id, 'Uso no Meu plano')}<span class="subdet">${it ? esc(it.resumo) : ''}</span></div>${imp}${vgSabHtml(x)}<p class="hint">Projeção real: os pagamentos entram no seu plano como gasto. Só simulação: aparece em Meu plano › Itens dos módulos e na linha de comparação, sem mudar a projeção.</p>`;
+  $('vgc-plano').innerHTML = `<div class="vgc-uso">${simUsoHtml('viag:' + x.id, 'Uso no Meu plano')}<span class="subdet">${it ? esc(it.resumo) : ''}</span></div>${imp}${vgSabHtml(x)}<p class="hint">Projeção real: os pagamentos entram no seu plano como gasto. Só simulação: fica na Simulação para você comparar cenários, sem mudar a projeção.</p>`;
   // média por estilo
   const linhas = Object.entries(VG_EST).map(([k, e]) => { const vs = v.viagens.filter(y => y.estilo === k && y.rot && y.rot.paradas && y.rot.paradas.length).map(y => { const t = vgCusLinhas(y).tot, nn = vgRotNoites(y), real = y.st === 'concluida' && y.dur ? vgDurTot(y) : 0; return { y, pd: (real > 0 ? real + t.def : t.hoje) / y.pessoas / Math.max(1, nn), ok: y.st === 'concluida' }; });
     const ref = VG_DEST.length ? VG_DEST.filter(d => d.pais !== 'BR').reduce((s, d) => s + (d.h * e.h / 2 + d.d * e.d), 0) / VG_DEST.filter(d => d.pais !== 'BR').length * vgMoedaFx('USD') : 0;
@@ -11489,7 +11531,7 @@ function buildCompras() {
   $('comprasResumo').innerHTML = (todas.length ? `<div><b>${todas.length} ${todas.length === 1 ? 'bem cadastrado' : 'bens cadastrados'}.</b> O cenário aberto agora tem ${list.length}.</div>
     <div class="tscroll"><table class="incm"><thead><tr><th>Bem</th><th>Tipo</th><th>Mês</th><th>Uso</th>${state.cenarios.map(c => `<th${c.id === cen.id ? ' class="cur"' : ''}>${esc(c.nome)}</th>`).join('')}</tr></thead><tbody>
     ${todas.map(b => `<tr><td class="name">${esc(b.nome)}</td><td class="name">${nomeTipo[b.tipo] || 'bem'}</td><td>${mLabel(mIndex(b.mes))}</td><td class="name">${(state.plan.inc || []).includes(b.id) ? 'Projeção real' : 'Simulação'}</td>${state.cenarios.map(c => `<td${c.id === cen.id ? ' class="cur"' : ''}><input type="checkbox" data-inc="${c.id}:${b.id}" ${incluida(c, b) ? 'checked' : ''} aria-label="${esc(b.nome)} em ${esc(c.nome)}"></td>`).join('')}</tr>`).join('')}
-    </tbody></table></div>` : '<p class="hint">Nenhum bem cadastrado ainda. Cadastre em Compras e bens.</p>');
+    </tbody></table></div>` : '<p class="hint">Nenhum bem cadastrado ainda. Cadastre em <a href="#" class="lm-ir" data-lmtab="compras" data-lmsec="Compras e financiamentos">Compras e bens</a>.</p>');
   $('compraMsg').innerHTML = (compraNova ? `<div class="ok">${esc(compraNova.nome)} cadastrado como só simulação, no cenário "${esc(cen.nome)}". Para valer no plano, use "Tornar real na Simulação" no card. O card está no fim da lista, destacado.</div>` : '');
   if ($('pg-cen')) $('pg-cen').textContent = '"' + cen.nome + '"';
   const pg = $('pg-compra'), s0 = mIndex(lastCp().mes), fut = todas.filter(b => mIndex(b.mes) > s0 && !ehFin(b));
@@ -14700,11 +14742,11 @@ function renderItens() {
   const tb = $('tbl-itens'); if (!tb) return;
   const its = itensModulos(), real = its.filter(x => x.uso === 'real'), nS = its.length - real.length;
   $('pl-itens-res').innerHTML = its.length ? `<span><b>${real.length}</b> no plano (cenário Real)</span><span><b>${nS}</b> só na simulação</span><a href="#" data-lmtab="simcen" data-lmsec="Simulação de cenários">Mudar na Simulação ›</a>` : '';
-  if (!real.length) { tb.innerHTML = `<tbody><tr><td class="hint">${its.length ? 'Nenhum item dos módulos está no Real ainda. Escolha o que entra em <a href="#" data-lmtab="simcen" data-lmsec="Simulação de cenários">Simulação › Cenários</a>.' : 'Nenhum item ainda. Cadastre bens em Bens e compromissos, eventos de stock options em Carreira ou eventos aqui no Plano.'}</td></tr></tbody>`; return; }
+  if (!real.length) { tb.innerHTML = `<tbody><tr><td class="hint">${its.length ? 'Nenhum item dos módulos está no Real ainda. Escolha o que entra em <a href="#" data-lmtab="simcen" data-lmsec="Simulação de cenários">Simulação › Cenários</a>.' : 'Nenhum item ainda. Cadastre <a href="#" class="lm-ir" data-lmtab="compras" data-lmsec="Compras e financiamentos">bens e compromissos</a>, <a href="#" class="lm-ir" data-lmtab="viagrot" data-lmsec="">viagens</a>, <a href="#" class="lm-ir" data-lmtab="fampes" data-lmsec="Filhos">filhos</a>, <a href="#" class="lm-ir" data-lmtab="stock" data-lmsec="Evento de liquidez">stock options</a> ou <a href="#" class="lm-ir" data-lmtab="orcamento" data-lmsec="Mudanças e eventos">eventos aqui no Plano</a>.'}</td></tr></tbody>`; return; }
   const grupos = MODS.filter(m => real.some(x => x.mod === m.id));
   tb.innerHTML = `<thead><tr><th>Item</th><th>Tipo</th><th>Quando</th><th>Valores</th></tr></thead><tbody>${grupos.map(m => `<tr class="it-g"><td colspan="4"><i style="background:${m.cor}"></i>${esc(m.nome)}</td></tr>` +
     real.filter(x => x.mod === m.id).sort((a, b) => (a.ini || '9999') < (b.ini || '9999') ? -1 : 1).map(x => `<tr>
-      <td class="name"><a href="#" data-lmtab="${x.tab}" data-lmsec="${esc(x.sec || '')}">${esc(x.nome)}</a> <span class="subdet">${esc(x.sub)}</span></td>
+      <td class="name"><a href="#" data-lmtab="${x.tab}" data-lmsec="${esc(x.sec || '')}" data-lmitem="${esc(x.id || '')}">${esc(x.nome)}</a> <span class="subdet">${esc(x.sub)}</span></td>
       <td data-l="Tipo"><span class="chip ${x.unico >= 0 && x.mensal >= 0 ? 'best' : 'info'} it-tipo">${IT_TIPO[x.tipo] || x.tipo}</span></td>
       <td data-l="Quando">${x.ini ? mLabel(mIndex(x.ini)) : '–'}</td>
       <td class="it-v">${esc(x.resumo)}</td></tr>`).join('')).join('')}</tbody>`;
@@ -15316,6 +15358,7 @@ const BUILD = { modulos: () => {}, simcen: () => {}, agcal: () => {}, aglis: () 
 // (i) de cada seção: o que mostra e de onde vêm os números (chave: aba:data-nav)
 const INFO_SEC = {
   'comousar:Resumo': 'Para cada módulo: se já tem o mínimo para funcionar (os obrigatórios), quantos opcionais você resolveu e um botão para o próximo passo. Um opcional conta como resolvido quando você preenche ou marca que não tem.',
+  'comousar:Simulação': 'Os passos da Simulação. Nada é obrigatório: serve para comparar caminhos antes de decidir o que vale em Finanças.',
   'comousar:Finanças': 'Os passos das Finanças. Os três obrigatórios são a base de tudo: sem renda, aplicações e checkpoint, o plano não tem de onde partir.',
   'comousar:Carreira': 'Os passos de Carreira. Todos são opcionais.',
   'comousar:Bens e compromissos': 'Os passos de Bens e compromissos. Todos são opcionais: o módulo só mostra o que você cadastrar.',
@@ -15430,7 +15473,7 @@ const INFO_SEC = {
   'viagcmp:Lado a lado': 'Passagem: média de referência ida e volta saindo de São Paulo, por pessoa. Hospedagem: quarto duplo por noite. Dia a dia: comida, transporte local e passeios por pessoa. Tudo no estilo escolhido, convertido com spread e IOF e corrigido até a data da viagem. Seguro: estimativa por dia. Custo de oportunidade: quanto o total renderia em 10 anos no rendimento real do Meu plano.',
   'viagcmp:Melhor mês': 'O total estimado se a viagem saísse em cada mês, com o mesmo número de noites. A borda escura é o mês que você escolheu; o número em negrito é o mês de boa época mais barato.',
   'viagcmp:Premissas': 'Spread e IOF entram na conversão de tudo o que é pago lá fora. A inflação lá fora corrige hospedagem e dia a dia até a data da viagem; passagem e lugares no Brasil usam o IPCA do Meu plano.',
-  'orcamento:Itens dos módulos': 'A lista única do que os módulos planejam (compras e bens, stock options e os eventos do próprio plano), cada um com quando, quanto, chance de acontecer e se entra na projeção real ou fica só para simular.',
+  'orcamento:Itens dos módulos': 'O que os módulos planejam e já está no cenário Real: compras e bens, viagens, filhos, negócios, trocas de emprego, stock options e os eventos do próprio plano, com quando e quanto. O que entra ou sai você decide na Simulação. Item com aviso amarelo não entra na conta até você preencher o que falta.',
   'modulos:Escolher módulos': 'Quais módulos aparecem para você. O administrador decide quais estão disponíveis; aqui você escolhe, entre eles, o que quer ver. Desligar não apaga nada.',
   'config:Módulos': 'Só o administrador vê. Define quais módulos ficam disponíveis para todas as pessoas que usam o painel.',
   'global:Projeção': 'Quanto você terá ao longo do tempo. Tracejado: o plano do 01. Meu plano. Linhas cheias: cada cenário do 07, partindo do último checkpoint, com renda, gastos, parcelas e rendimento reinvestido todo mês. Pontos vermelhos: checkpoints reais. Os botões mudam o período.',
@@ -15641,6 +15684,16 @@ function cuPassos() {
         { id: 'plano', t: 'Conferir as premissas do plano', d: 'Rendimento, inflação, quanto reinveste e por quantos anos. Já vem preenchido; ajuste se quiser.', ok: vis.includes('orcamento') || pul.includes('plano'), tab: 'orcamento', sec: 'Premissas', pular: 'Está bom assim' }
       ]
     },
+    simu: {
+      sobre: 'Junta num lugar só tudo o que os módulos cadastram e mexe com dinheiro. Você monta cenários, compara o patrimônio de cada um e torna real o que decidir.',
+      precisa: 'Nada aqui é obrigatório. Para ter o que comparar, cadastre itens nos outros módulos: um bem, uma viagem, um filho, uma troca de emprego. O cenário <b>Real</b> é o que vale em Finanças.',
+      passos: [
+        { id: 'simcen', t: 'Criar um cenário', d: 'Duplique o Real ou comece um novo para testar um caminho diferente.', ok: (state.cenarios || []).length > 1 || pul.includes('simcen'), tab: 'simcen', sec: 'Cenários', pular: 'Depois' },
+        { id: 'siminc', t: 'Incluir ou tirar itens', d: 'Em cada cenário, clique em + Incluir nos itens que entram nele.', ok: pul.includes('siminc') || (() => { try { const its = itensModulos(); return (state.cenarios || []).some(c => !ehCenReal(c) && simDifs(c, its).length); } catch (e) { return false; } })(), tab: 'simcen', sec: 'Simulação de cenários', pular: 'Depois' },
+        { id: 'simpat', t: 'Comparar o patrimônio', d: 'Veja onde cada cenário chega e escolha o horizonte, de 1 a 20 anos.', ok: pul.includes('simpat'), tab: 'simcen', sec: 'Patrimônio projetado', pular: 'Já vi' },
+        { id: 'simdec', t: 'Tornar real o que decidir', d: 'O cenário escolhido passa a valer em Finanças. O Real de hoje fica guardado como cenário.', ok: pul.includes('simdec'), tab: 'simcen', sec: 'Decidir', pular: 'Agora não' }
+      ]
+    },
     trab: {
       sobre: 'Os seus bens e compromissos: imóveis, carros e outras compras com financiamento, eventos como casamento e reforma, e dívidas a receber e a pagar.',
       precisa: 'Nada aqui é obrigatório: preencha só o que fizer parte da sua vida. Cada compra ou evento pode ficar como <b>Só simulação</b> ou entrar na <b>Projeção real</b> do Meu plano. Para entrar no plano, as Finanças precisam estar com os obrigatórios feitos.',
@@ -15813,10 +15866,10 @@ function tlHtml(its) {
   ev.sort((p, q) => p.a - q.a || p.nome.localeCompare(q.nome));
   const larga = `<div class="tl tl-wide" style="--tly:${(12 * passo / W * 100).toFixed(4)}%"><div class="tl-h"><span></span><div class="tl-ax">${ticks.join('')}</div></div>` + ev.map(x => {
     const sm = x.uso === 'sim' ? ' sim' : '', st = `--mc:${cor(x.mod)}`;
-    return `<div class="tl-r"><div class="tl-n"><a href="#" data-lmtab="${x.tab}" data-lmsec="${esc(x.sec || '')}">${esc(x.nome)}</a>${ch(x)}<small>${sub(x)} · ${esc(x.resumo)}</small></div><div class="tl-b">${x.b > x.a ? `<span class="tl-bar${sm}" style="${st};left:${pc(x.a)}%;width:${Math.max(0.6, pc(x.b) - pc(x.a))}%"></span>` : ''}<span class="tl-dot${sm}" style="${st};left:${pc(x.a)}%" title="${esc(x.nome)}: ${mLabel(x.a)}"></span>${''}</div></div>`;
+    return `<div class="tl-r"><div class="tl-n"><a href="#" data-lmtab="${x.tab}" data-lmsec="${esc(x.sec || '')}" data-lmitem="${esc(x.id || '')}">${esc(x.nome)}</a>${ch(x)}<small>${sub(x)} · ${esc(x.resumo)}</small></div><div class="tl-b">${x.b > x.a ? `<span class="tl-bar${sm}" style="${st};left:${pc(x.a)}%;width:${Math.max(0.6, pc(x.b) - pc(x.a))}%"></span>` : ''}<span class="tl-dot${sm}" style="${st};left:${pc(x.a)}%" title="${esc(x.nome)}: ${mLabel(x.a)}"></span>${''}</div></div>`;
   }).join('') + `<span class="tl-hoje" style="left:calc(var(--tlw) + 12px + (100% - var(--tlw) - 12px) * ${(pc(HOJE_IDX) / 100).toFixed(4)})"><span>hoje</span></span></div>`;
   const porAno = {}; ev.forEach(x => { const y = x.a < HOJE_IDX - calMonth(HOJE_IDX) ? 'Em andamento' : mKey(x.a).slice(0, 4); (porAno[y] = porAno[y] || []).push(x); });
-  const lista = `<div class="tl-list">${Object.keys(porAno).sort((p, q) => p === 'Em andamento' ? -1 : q === 'Em andamento' ? 1 : p.localeCompare(q)).map(y => `<div class="tl-ano">${y}</div>` + porAno[y].map(x => `<div class="tl-li"><i class="${x.uso === 'sim' ? 'sim' : ''}" style="--mc:${cor(x.mod)}"></i><span class="q">${mLabel(x.a)}</span><span><a href="#" data-lmtab="${x.tab}" data-lmsec="${esc(x.sec || '')}">${esc(x.nome)}</a>${ch(x)}<small>${esc(x.resumo)}${x.uso === 'sim' ? ' · só simulação' : ''}</small></span></div>`).join('')).join('')}</div>`;
+  const lista = `<div class="tl-list">${Object.keys(porAno).sort((p, q) => p === 'Em andamento' ? -1 : q === 'Em andamento' ? 1 : p.localeCompare(q)).map(y => `<div class="tl-ano">${y}</div>` + porAno[y].map(x => `<div class="tl-li"><i class="${x.uso === 'sim' ? 'sim' : ''}" style="--mc:${cor(x.mod)}"></i><span class="q">${mLabel(x.a)}</span><span><a href="#" data-lmtab="${x.tab}" data-lmsec="${esc(x.sec || '')}" data-lmitem="${esc(x.id || '')}">${esc(x.nome)}</a>${ch(x)}<small>${esc(x.resumo)}${x.uso === 'sim' ? ' · só simulação' : ''}</small></span></div>`).join('')).join('')}</div>`;
   return larga + lista;
 }
 function renderMdChart() {
@@ -18908,6 +18961,267 @@ function jorSimDb(real) {
   hd.addEventListener('click', e => { if (e.target.closest('[data-lay]')) setTimeout(pinta, 0); });
   pinta();
 })();
+
+/* ---------- v319 Integração dos módulos: link até o campo, o que falta em cada item, preenchimento rápido, lista do que falta,
+   voltar para a origem, nascimento único (Família › Você), passos da Simulação e números da Simulação que explicam o motivo ---------- */
+// o que falta em cada item para entrar na conta: [{c, t, campos?:[{l, tipo, v, set}], alvo:{tab, sec, pre, sel}}]
+function intFaltas(x) {
+  const [k, id] = [x.id.slice(0, x.id.indexOf(':')), x.id.slice(x.id.indexOf(':') + 1)], out = [];
+  try {
+    if (k === 'compra') { const b = (state.compras || []).find(y => y.id === id); if (!b) return out;
+      const alvo = sel => ({ tab: 'compras', sec: 'Compras e financiamentos', sel: `[data-compra="${id}"] [data-bind="compra:${id}:${sel}"]` });
+      if (!/^\d{4}-\d{2}/.test(b.mes || '')) out.push({ c: 'mes', t: b.tipo === 'negocio' ? 'mês do investimento' : ehFin(b) || b.tipo === 'evento' ? 'mês' : 'mês da compra', alvo: alvo('mes'),
+        campos: [{ l: b.tipo === 'negocio' ? 'Mês do investimento' : 'Mês', tipo: 'month', v: b.mes || '', set: v => { b.mes = v; } }] });
+      if (!(+b.valor > 0) && !(+b.parcela > 0)) { const l = b.tipo === 'negocio' ? 'Investimento inicial (R$)' : b.tipo === 'evento' || ehFin(b) ? 'Valor total (R$)' : 'Preço (R$)';
+        out.push({ c: 'valor', t: l.replace(' (R$)', '').toLowerCase(), alvo: alvo('valor'), campos: [{ l, tipo: 'number', v: '', set: v => { b.valor = +v || 0; } }] }); }
+    } else if (k === 'viag' && x.bloq) {
+      out.push({ c: 'custo', t: 'custo da viagem', alvo: { tab: 'viagrot', sec: '', pre: () => { state.viag.rotSel = id; } }, info: 'O custo sai do roteiro: adicione as cidades e as noites para o painel estimar hospedagem, passagens e o dia a dia.' });
+    } else if (k === 'neg' && x.bloq) {
+      out.push({ c: 'receita', t: 'receita no DRE', alvo: { tab: 'negdre', sec: 'Linhas do DRE', sel: '#ngd-linhas input[type="number"]', pre: () => { state.neg.sel = id; } }, info: 'O negócio entra no plano quando o DRE tem a receita (o que você vende por mês).' });
+    } else if (k === 'fam') { const p = famAcha(id); if (p && famN0(p) == null)
+      out.push({ c: 'nasc', t: 'nascimento ou previsão', alvo: { tab: 'fampes', sec: 'Filhos', sel: `[data-famf="${id}:nasc"]` },
+        campos: [{ l: 'Nascimento ou previsão', tipo: 'month', v: '', set: v => { p.nasc = v; famNorm(p); if (p.grupo) famGrupo(p).forEach(y => { y.nasc = p.nasc; }); famPeC.k = null; } }] });
+    } else if (k === 'so' && x.bloq) { const e = ((state.so || {}).empresas || []).find(y => y.id === id); if (!e) return out; const ev = e.ev || {}, sm = !/^\d{4}-\d{2}/.test(ev.mes || ''), sb = !(+ev.base > 0);
+      // com data e valor, o que falta é só marcar como definido: isso é uma escolha, não um dado faltando
+      if (sm || sb) out.push({ c: 'evento', t: sm && sb ? 'data e valor do evento de liquidez' : sm ? 'data do evento de liquidez' : 'valor da empresa no evento', alvo: { tab: 'stock', sec: 'Evento de liquidez', sel: sm ? '[data-so="v:mes"]' : '[data-so="v:base"]', pre: () => { state.so.sel = id; } },
+        info: 'Quando a empresa pode ser vendida ou abrir capital, e quanto valeria. Só entra no plano quando estiver marcado como definido.',
+        campos: [{ l: 'Quando', tipo: 'month', v: ev.mes || '', set: v => { e.ev = e.ev || {}; e.ev.mes = v; } }, { l: 'Valor no evento, cenário base (o mesmo campo Base de Evento de liquidez)', tipo: 'number', v: ev.base || '', set: v => { e.ev = e.ev || {}; e.ev.base = v === '' ? null : +v; } },
+          { l: 'O evento está definido (assinado ou anunciado)', tipo: 'checkbox', v: !!ev.definido, set: v => { e.ev = e.ev || {}; e.ev.definido = !!v; } }] });
+    } else if (k === 'reg') { const r = ((state.orc || {}).regimes || []).find(y => y.id === id); if (r && r.modelo !== 'sem' && !(+r.sal > 0))
+      out.push({ c: 'sal', t: 'salário ou faturamento', alvo: { tab: 'pjpf', sec: 'Cenários de troca', sel: `[data-bind="orcreg:${id}:sal"]` },
+        campos: [{ l: 'Salário ou faturamento (R$/mês)', tipo: 'number', v: '', set: v => { r.sal = +v || 0; } }] });
+    } else if (k === 'ev') { const e = ((state.plan || {}).ev || []).find(y => y.id === id); if (e && !(+e.valor > 0))
+      out.push({ c: 'valor', t: 'valor', alvo: { tab: 'orcamento', sec: 'Mudanças e eventos', sel: `[data-bind="plev:${id}:valor"]` }, campos: [{ l: 'Valor (R$)', tipo: 'number', v: '', set: v => { e.valor = +v || 0; } }] });
+    }
+  } catch (er) { console.error(er); }
+  return out;
+}
+const intDoItem = x => x.falta || (x.falta = intFaltas(x));
+// nascimento: um campo só, o de Família › Você (Independência lê e grava nele)
+const intEu = () => ((state.fam || {}).pessoas || []).find(p => p.tipo === 'eu') || null;
+function intNascSync() {
+  if (!state || !state.indep) return; const eu = intEu(); if (!eu) return;
+  if (!eu.nasc && state.indep.nasc) { eu.nasc = state.indep.nasc; save(); }
+  const v = (eu.nasc || '').slice(0, 7); if (state.indep.nasc !== v) state.indep.nasc = v;
+}
+['input', 'change'].forEach(ev => document.addEventListener(ev, e => {
+  const t = e.target; if (!t || !t.dataset || !state) return;
+  if (t.dataset.ind === 'nasc' && state.fam) { try { const eu = famEu(), v = t.value; eu.nasc = v && (eu.nasc || '').slice(0, 7) === v ? eu.nasc : v; famNorm(eu); } catch (er) { console.error(er); } }
+}, true));
+// outras pendências que não são itens
+function intPendGerais() {
+  const out = [];
+  try { const m = MODS.find(y => y.id === 'indep'); if (m && modVisivel(m) && !(intEu() || {}).nasc && !(state.indep || {}).nasc)
+    out.push({ id: 'g:nasc', mod: 'indep', nome: 'Sua data de nascimento', falta: [{ c: 'nasc', t: 'para a idade e a meta', alvo: { tab: 'indnum', sec: 'Sobre você', sel: '[data-ind="nasc"]' },
+      campos: [{ l: 'Mês e ano de nascimento', tipo: 'month', v: '', set: v => { const eu = famEu(); eu.nasc = v; famNorm(eu); state.indep.nasc = v; } }] }] }); } catch (er) {}
+  return out;
+}
+function intPendencias() {
+  let its = []; try { its = itensModulos(); } catch (er) {}
+  return its.filter(x => intDoItem(x).length).concat(intPendGerais());
+}
+const intChip = (x, f) => `<button type="button" class="int-falta" data-intfalta="${esc(x.id)}|${esc(f.c)}" title="Clique para preencher">falta: ${esc(f.t)}</button>`;
+
+// ---------- ir até o campo: abre a tela, a seção e o cartão certo, pisca o campo e mostra o balão ----------
+let intVolta = null, intBalaoEl = null, intHlEl = null;
+function intLimpaHl() { if (intHlEl) intHlEl.classList.remove('int-hl'); intHlEl = null; if (intBalaoEl) intBalaoEl.remove(); intBalaoEl = null; }
+function intBalao(el, msg) {
+  intLimpaHl(); intHlEl = el; el.classList.remove('int-hl'); void el.offsetWidth; el.classList.add('int-hl');
+  const b = document.createElement('div'); b.className = 'int-balao'; b.setAttribute('role', 'status'); b.innerHTML = `<span class="ic" aria-hidden="true">!</span><span>${msg}</span><button type="button" aria-label="Fechar">✕</button>`;
+  document.body.appendChild(b); intBalaoEl = b;
+  const pos = () => { if (!el.isConnected || !b.isConnected) return intLimpaHl(); const r = el.getBoundingClientRect(); b.style.top = Math.round(r.bottom + scrollY + 10) + 'px'; b.style.left = Math.round(Math.max(8 + scrollX, Math.min(r.left + scrollX, scrollX + innerWidth - b.offsetWidth - 8))) + 'px'; };
+  pos(); b._pos = pos; b.querySelector('button').addEventListener('click', intLimpaHl);
+  const pronto = () => { if (el.matches && el.matches('input,select,textarea') && el.value !== '') { b.classList.add('ok'); b.querySelector('span:nth-child(2)').textContent = 'Pronto. A conta já foi refeita.'; setTimeout(() => { if (intBalaoEl === b) intLimpaHl(); }, 1600); } };
+  el.addEventListener('change', pronto, { once: true });
+}
+addEventListener('resize', () => { if (intBalaoEl && intBalaoEl._pos) intBalaoEl._pos(); });
+function intIr(alvo, msg, origem) {
+  if (!alvo || !RENDER[alvo.tab]) return;
+  const de = tab;
+  if (alvo.pre) { try { alvo.pre(); } catch (er) {} }
+  showTab(alvo.tab);
+  if (tab !== alvo.tab) return;   // tela bloqueada (jornada)
+  if (de !== alvo.tab && origem !== false) intMostraVolta(de, origem);
+  setTimeout(() => {
+    const P = $('p-' + alvo.tab); if (!P) return;
+    const sec = alvo.sec ? [...P.querySelectorAll('[data-nav]')].find(y => y.dataset.nav === alvo.sec) : null;
+    if (sec) { try { abrirSecao(sec); } catch (er) {} }
+    let el = null; if (alvo.sel) { try { el = P.querySelector(alvo.sel); } catch (er) {} }
+    if (el) { const d = el.closest('details'); if (d && !d.open) d.open = true; }
+    const foco = el || (sec && (sec.querySelector('h2') || sec)) || null; if (!foco) return;
+    spyLock = Date.now() + 1500;
+    foco.scrollIntoView({ behavior: 'smooth', block: el ? 'center' : 'start' });
+    if (el && msg) { setTimeout(() => { try { el.focus({ preventScroll: true }); } catch (er) {} intBalao(el, msg); }, 420); }
+    else if (el) { el.classList.remove('cp-pisca'); void el.offsetWidth; el.classList.add('cp-pisca'); }
+    else if (sec) { sec.classList.remove('cp-pisca'); void sec.offsetWidth; sec.classList.add('cp-pisca'); if (msg) setTimeout(() => intBalao(sec.querySelector('h2') || sec, msg), 420); }
+  }, 90);
+}
+function intIrItem(id, c) {
+  const x = intPendencias().find(y => y.id === id) || (itensModulos().find(y => y.id === id));
+  if (!x) return;
+  const fs = intDoItem(x), f = (c && fs.find(y => y.c === c)) || fs[0];
+  if (f) return intIr(f.alvo, `<b>Preencha aqui:</b> sem ${esc(f.t)}, ${esc(x.nome)} não entra na conta.`, id);
+  intIr(intAlvoItem(x), '', id);
+}
+// destino de um item sem pendência: o cartão dele
+function intAlvoItem(x) {
+  const [k, id] = [x.id.slice(0, x.id.indexOf(':')), x.id.slice(x.id.indexOf(':') + 1)];
+  if (k === 'compra') return { tab: 'compras', sec: x.sec, sel: `[data-compra="${id}"]` };
+  if (k === 'viag') return { tab: x.tab, sec: x.sec, pre: () => { state.viag.rotSel = id; } };
+  if (k === 'neg') return { tab: x.tab, sec: x.sec, pre: () => { state.neg.sel = id; } };
+  if (k === 'so') return { tab: x.tab, sec: x.sec, pre: () => { state.so.sel = id; } };
+  if (k === 'fam') return { tab: x.tab, sec: x.sec, sel: `[data-famp="${id}"]` };
+  if (k === 'reg') return { tab: x.tab, sec: x.sec, sel: `[data-bind="orcreg:${id}:mes"]` };
+  if (k === 'ev') return { tab: x.tab, sec: x.sec, sel: `[data-bind="plev:${id}:nome"]` };
+  return { tab: x.tab, sec: x.sec };
+}
+// links: data-lmitem (item dos módulos) e data-lmsel/data-lmmsg (campo de uma seção)
+document.addEventListener('click', e => {
+  const a = e.target.closest && e.target.closest('[data-lmitem],[data-lmsel]'); if (!a) return;
+  if (a.dataset.lmitem) { const x = itensModulos().find(y => y.id === a.dataset.lmitem); if (!x) return; e.preventDefault(); e.stopImmediatePropagation(); intIr(intAlvoItem(x), '', x.id); return; }
+  if (!RENDER[a.dataset.lmtab]) return; e.preventDefault(); e.stopImmediatePropagation();
+  intIr({ tab: a.dataset.lmtab, sec: a.dataset.lmsec || '', sel: a.dataset.lmsel }, a.dataset.lmmsg ? esc(a.dataset.lmmsg) : '');
+}, true);
+
+// ---------- voltar para a tela de origem ----------
+const intNomeTela = t => { const h = document.querySelector(`#p-${t} .block-title h1`); const n = h ? h.textContent.trim() : t; return t === 'simcen' ? 'a Simulação' : t === 'orcamento' ? 'o Meu plano' : t === 'inicio' ? 'o Resumo' : t === 'comousar' ? 'Primeiros passos' : n; };
+function intMostraVolta(de, item) {
+  intVolta = { de, item, alvo: tab };
+  let v = $('int-volta'); if (v) v.remove();
+  v = document.createElement('div'); v.id = 'int-volta'; v.className = 'int-volta';
+  v.innerHTML = `<button type="button" id="int-volta-b"><span aria-hidden="true">‹</span> Voltar para ${esc(intNomeTela(de))}</button><span>Depois de preencher, volte para ver a conta refeita.</span><button type="button" class="x" id="int-volta-x" aria-label="Fechar">✕</button>`;
+  const P = $('p-' + tab), bt = P && P.querySelector('.block-title'); if (bt) bt.after(v); else if (P) P.prepend(v);
+}
+document.addEventListener('click', e => {
+  if (e.target.closest('#int-volta-x')) { const v = $('int-volta'); if (v) v.remove(); intVolta = null; return; }
+  if (!e.target.closest('#int-volta-b') || !intVolta) return;
+  const V = intVolta; intVolta = null; intLimpaHl();
+  if (V.de === 'simcen' && V.item && typeof simIr === 'function') { simIr(V.item); setTimeout(() => { const tr = document.querySelector(`#tbl-sc tr[data-scit="${CSS.escape(V.item)}"]`); if (tr) { tr.classList.remove('cp-pisca'); void tr.offsetWidth; tr.classList.add('cp-pisca'); } }, 300); return; }
+  showTab(V.de);
+  if (V.item) setTimeout(() => { const a = document.querySelector(`#p-${V.de} [data-lmitem="${CSS.escape(V.item)}"]`); if (a) { a.scrollIntoView({ behavior: 'smooth', block: 'center' }); const tr = a.closest('tr') || a; tr.classList.remove('cp-pisca'); void tr.offsetWidth; tr.classList.add('cp-pisca'); } }, 200);
+});
+{ const s0 = showTab; showTab = function (t, kS) { if (intVolta && t !== intVolta.alvo) { intVolta = null; } intLimpaHl(); const r = s0(t, kS); if (!intVolta) { const v = $('int-volta'); if (v) v.remove(); } return r; }; }
+
+// ---------- preenchimento rápido ----------
+const intPop = document.createElement('div'); intPop.className = 'conf-pop'; intPop.id = 'int-pop'; intPop.hidden = true;
+intPop.innerHTML = '<div class="conf-dlg int-dlg" role="dialog" aria-modal="true" aria-labelledby="int-pop-t"><button type="button" class="conf-x" id="int-pop-x" aria-label="Fechar" title="Fechar">✕</button><div class="panel" id="int-pop-c"></div></div>';
+document.body.appendChild(intPop);
+let intPopAt = null;
+function intPopFecha() { intPop.hidden = true; document.body.style.overflow = ''; intPopAt = null; }
+function intPopAbre(id, c) {
+  const x = intPendencias().find(y => y.id === id); if (!x) { intIrItem(id, c); return; }
+  const f = intDoItem(x).find(y => y.c === c) || intDoItem(x)[0]; if (!f) return;
+  if (!f.campos) { intIrItem(id, f.c); return; }
+  intPopAt = { x, f };
+  $('int-pop-c').innerHTML = `<h2 id="int-pop-t">${esc(x.nome)}</h2><p class="sub">Falta ${esc(f.t)} para ${x.id.startsWith('g:') ? 'o painel calcular' : 'este item entrar na conta'}.${f.info ? ' ' + esc(f.info) : ''}</p>
+    <form id="int-pop-f" class="int-campos">${f.campos.map((q, i) => q.tipo === 'checkbox' ? `<label class="check"><input type="checkbox" id="int-q${i}"${q.v ? ' checked' : ''}> ${esc(q.l)}</label>`
+      : `<label>${esc(q.l)}<input id="int-q${i}" type="${q.tipo}"${q.tipo === 'number' ? ' step="any" min="0"' : ''} value="${esc(q.v ?? '')}" required></label>`).join('')}
+      <div class="btns"><button type="submit" class="btn">Salvar</button><button type="button" class="btn ghost" id="int-pop-ir">Abrir o cadastro completo</button></div><p class="hint" id="int-pop-msg"></p></form>`;
+  intPop.hidden = false; document.body.style.overflow = 'hidden';
+  setTimeout(() => { const i = $('int-q0'); if (i) i.focus(); }, 40);
+}
+intPop.addEventListener('mousedown', e => { if (e.target === intPop) intPopFecha(); });
+intPop.addEventListener('click', e => {
+  if (e.target.closest('#int-pop-x')) return intPopFecha();
+  if (e.target.closest('#int-pop-ir') && intPopAt) { const { x, f } = intPopAt; intPopFecha(); if (x.id.startsWith('g:')) intIr(f.alvo, `<b>Preencha aqui:</b> ${esc(x.nome.toLowerCase())}, ${esc(f.t)}.`); else intIrItem(x.id, f.c); }
+});
+intPop.addEventListener('submit', e => {
+  e.preventDefault(); if (!intPopAt) return; const { f } = intPopAt;
+  const vs = f.campos.map((q, i) => { const el = $('int-q' + i); return q.tipo === 'checkbox' ? el.checked : el.value; });
+  if (f.campos.some((q, i) => q.tipo !== 'checkbox' && (vs[i] === '' || (q.tipo === 'number' && !(+vs[i] > 0))))) { $('int-pop-msg').textContent = 'Preencha todos os campos.'; return; }
+  f.campos.forEach((q, i) => q.set(vs[i]));
+  planCache = null; try { if (typeof ngCache !== 'undefined') ngCache.v = {}; } catch (er) {}
+  save(); intPopFecha(); renderTab(); try { renderPess(); } catch (er) {}
+});
+document.addEventListener('keydown', e => { if (e.key === 'Escape' && !intPop.hidden) intPopFecha(); });
+document.addEventListener('click', e => {
+  const b = e.target.closest && e.target.closest('[data-intfalta]'); if (!b) return;
+  e.preventDefault(); e.stopImmediatePropagation();
+  const [id, c] = b.dataset.intfalta.split('|'); try { pessAbre(false); } catch (er) {} const L = $('int-lista'); if (L) L.hidden = true;
+  intPopAbre(id, c);
+}, true);
+
+// ---------- lista "O que falta preencher" (faixa na Simulação e no Resumo, pop-up e Seus avisos) ----------
+const intLista = document.createElement('div'); intLista.className = 'conf-pop'; intLista.id = 'int-lista'; intLista.hidden = true;
+intLista.innerHTML = '<div class="conf-dlg int-dlg" role="dialog" aria-modal="true" aria-label="O que falta preencher"><button type="button" class="conf-x" id="int-lista-x" aria-label="Fechar" title="Fechar">✕</button><div class="panel" id="int-lista-c"></div></div>';
+document.body.appendChild(intLista);
+function intListaHtml(L) {
+  const grupos = MODS.filter(m => L.some(x => x.mod === m.id));
+  return grupos.map(m => `<div class="int-g"><i style="background:${m.cor}"></i>${esc(m.nome)}</div>` + L.filter(x => x.mod === m.id).map(x => intDoItem(x).map(f =>
+    `<div class="int-l"><span><b>${esc(x.nome)}</b><small>falta ${esc(f.t)}</small></span><button type="button" class="btn tiny${f.campos ? '' : ' ghost'}" data-intfalta="${esc(x.id)}|${esc(f.c)}">${f.campos ? 'Preencher' : 'Ir ao campo ›'}</button></div>`).join('')).join('')).join('');
+}
+function intListaAbre() {
+  const L = intPendencias();
+  $('int-lista-c').innerHTML = `<h2>O que falta preencher</h2><p class="sub">${L.length ? 'Cada linha é um dado que falta para a conta ficar completa. Preencha aqui mesmo ou vá até o campo.' : 'Nada faltando. Tudo o que você cadastrou já entra na conta.'}</p>${intListaHtml(L)}`;
+  intLista.hidden = false; document.body.style.overflow = 'hidden';
+}
+function intListaFecha() { intLista.hidden = true; document.body.style.overflow = ''; }
+intLista.addEventListener('mousedown', e => { if (e.target === intLista) intListaFecha(); });
+intLista.addEventListener('click', e => { if (e.target.closest('#int-lista-x')) intListaFecha(); });
+document.addEventListener('keydown', e => { if (e.key === 'Escape' && !intLista.hidden) intListaFecha(); });
+document.addEventListener('click', e => { if (e.target.closest && e.target.closest('[data-intlista]')) { e.preventDefault(); intListaAbre(); } });
+function intFaixa(onde, L, txt) {
+  const id = 'int-faixa-' + onde; let f = $(id);
+  if (!L.length) { if (f) f.remove(); return; }
+  if (!f) { f = document.createElement('div'); f.id = id; f.className = 'int-faixa'; const P = $('p-' + onde), bt = P && P.querySelector('.block-title'); if (!P) return; if (bt) bt.after(f); else P.prepend(f); }
+  const n = L.reduce((t, x) => t + intDoItem(x).length, 0);
+  f.innerHTML = `<span class="ic" aria-hidden="true">!</span><span><b>${n} ${n > 1 ? 'dados faltando' : 'dado faltando'}</b> ${txt}: ${L.slice(0, 3).map(x => esc(x.nome)).join(', ')}${L.length > 3 ? ` e mais ${L.length - 3}` : ''}.</span><button type="button" class="btn tiny" data-intlista>Ver o que falta</button>`;
+}
+AVISOS_PESSOAIS.push(() => intPendencias().flatMap(x => intDoItem(x).map(f => ({ id: 'falta:' + x.id + ':' + f.c, mod: x.mod, quando: '0000', msg: `${x.nome}: falta ${f.t}`, tab: (f.alvo || {}).tab, sec: (f.alvo || {}).sec, falta: x.id + '|' + f.c }))));
+
+// ---------- depois de desenhar cada tela: chips, faixas, travas e números que explicam ----------
+function intChipsEm(box) {
+  if (!box) return; const its = new Map(itensModulos().map(x => [x.id, x]));
+  box.querySelectorAll('a[data-lmitem]').forEach(a => { const x = its.get(a.dataset.lmitem); if (!x) return; const fs = intDoItem(x); const td = a.closest('td') || a.parentNode;
+    td.querySelectorAll('.int-falta').forEach(y => y.remove()); if (fs.length) td.insertAdjacentHTML('beforeend', ' ' + fs.map(f => intChip(x, f)).join(' ')); });
+}
+function intPosSimCen() {
+  const its = itensModulos(), L = intPendencias();
+  intChipsEm($('tbl-sc'));
+  document.querySelectorAll('#tbl-sc tr[data-scit]').forEach(tr => { const x = its.find(y => y.id === tr.dataset.scit); if (!x) return; const fs = intDoItem(x);
+    if (fs.length) tr.querySelectorAll('.sc-tg[disabled]').forEach(b => { b.title = `Falta ${fs.map(f => f.t).join(' e ')}. Clique no aviso amarelo para preencher.`; }); });
+  intFaixa('simcen', L.filter(x => !x.id.startsWith('g:')), 'nos itens dos módulos');
+  // números da Simulação que levam ao motivo
+  const k = $('kpi-sc'); if (!k) return; const tiles = k.querySelectorAll('.kpi');
+  [[1, 'sobra'], [2, 'verm']].forEach(([i, q]) => { const t = tiles[i]; if (!t) return; t.classList.add('int-kpi'); t.dataset.intkpi = q; t.setAttribute('role', 'button'); t.tabIndex = 0; t.title = q === 'verm' ? 'Ver quais meses' : 'Ver o que mais pesa'; });
+}
+function intKpiAbre(q) {
+  const its = itensModulos(), R = cenRealObj(), cen = state.cenarios.find(c => c.id === state.cenAtivo) || R, p = simPlanoDe(cen, its), pl = calcPlano();
+  const fimI = scAnos() ? scFimIdx() : pl.i0 + Math.round((+state.plan.anos || 10) * 12), real = ehCenReal(cen);
+  let h = '';
+  if (q === 'verm') {
+    const ms = Object.values(p.meses).filter(m => m.i > HOJE_IDX && m.i <= fimI && m.sobra < 0).sort((a, b) => a.i - b.i);
+    h = `<h2>Meses no vermelho em ${esc(cen.nome)}</h2><p class="sub">${ms.length ? 'Nesses meses sai mais do que entra. O que acontece em cada um:' : 'Nenhum mês no vermelho até ' + mLabel(fimI) + '.'}</p>` +
+      (ms.length ? `<div class="tscroll"><table><thead><tr><th>Mês</th><th>Sobra</th><th>O que acontece</th></tr></thead><tbody>${ms.slice(0, 36).map(m => { const no = its.filter(x => !x.bloq && emCen(cen, x) && x.ini && (mIndex(x.ini) === m.i || (x.meses && mIndex(x.ini) <= m.i && m.i < mIndex(x.ini) + x.meses)));
+        return `<tr><td>${mLabel(m.i)}</td><td class="neg">${fm(m.sobra)}</td><td class="name">${no.length ? no.map(x => `<a href="#" data-lmitem="${esc(x.id)}">${esc(x.nome)}</a>`).join(', ') : '<span class="subdet">custos do Meu plano maiores que a renda</span>'}</td></tr>`; }).join('')}</tbody></table></div>${ms.length > 36 ? `<p class="hint">E mais ${ms.length - 36} meses.</p>` : ''}` : '') +
+      `<p class="hint">${real ? 'Veja mês a mês em <a href="#" data-lmtab="orcamento" data-lmsec="Plano mês a mês">Meu plano › Plano mês a mês</a>.' : 'O Meu plano mostra só o Real; aqui está o cenário aberto.'}</p>`;
+  } else {
+    const de = Math.max(pl.i0, HOJE_IDX) + 1, ate = de + 11;
+    const pesa = its.filter(x => !x.bloq && emCen(cen, x) && x.ini).map(x => { const i0 = mIndex(x.ini); let v = 0; for (let i = de; i <= ate; i++) { if (i === i0) v += +x.unico || 0; if (x.mensal && i >= i0 && i < i0 + Math.max(1, x.meses || 0)) v += +x.mensal || 0; } return { x, v: v / 12 }; }).filter(o => Math.abs(o.v) > 0.5).sort((a, b) => a.v - b.v);
+    h = `<h2>O que mais pesa na sobra (${esc(cen.nome)})</h2><p class="sub">Média por mês nos próximos 12 meses, por item dos módulos. O resto vem da renda e dos custos do <a href="#" data-lmtab="orcamento" data-lmsec="Receitas e custos">Meu plano</a>.</p>` +
+      (pesa.length ? `<div class="tscroll"><table><thead><tr><th>Item</th><th>Por mês</th></tr></thead><tbody>${pesa.map(o => `<tr><td class="name"><a href="#" data-lmitem="${esc(o.x.id)}">${esc(o.x.nome)}</a></td><td class="${o.v < 0 ? 'neg' : 'pos'}">${fm(o.v)}</td></tr>`).join('')}</tbody></table></div>` : '<p class="hint">Nenhum item dos módulos mexe nos próximos 12 meses deste cenário.</p>');
+  }
+  $('int-lista-c').innerHTML = h; intLista.hidden = false; document.body.style.overflow = 'hidden';
+}
+document.addEventListener('click', e => { const t = e.target.closest && e.target.closest('[data-intkpi]'); if (t) intKpiAbre(t.dataset.intkpi); });
+document.addEventListener('keydown', e => { const t = e.target.closest && e.target.closest('[data-intkpi]'); if (t && (e.key === 'Enter' || e.key === ' ')) { e.preventDefault(); intKpiAbre(t.dataset.intkpi); } });
+// links dentro da lista levam ao lugar e fecham a lista
+intLista.addEventListener('click', e => { if (e.target.closest('[data-lmitem],[data-lmtab]')) intListaFecha(); }, true);
+function intPosPlano() {
+  intChipsEm($('tbl-itens'));
+  const L = intPendencias().filter(x => !x.id.startsWith('g:')), r = $('pl-itens-res');
+  if (r && L.length && !r.querySelector('[data-intlista]')) r.insertAdjacentHTML('beforeend', `<a href="#" class="int-aviso" data-intlista>${L.length} ${L.length > 1 ? 'itens não entram' : 'item não entra'} por falta de dado ›</a>`);
+}
+function intPosHome() { intFaixa('inicio', intPendencias(), 'para a conta ficar completa'); }
+function intPosInd() { intChipsEm($('tbl-ind-itens')); }
+const INT_POS = { simcen: intPosSimCen, orcamento: intPosPlano, inicio: intPosHome, indalv: intPosInd };
+Object.keys(INT_POS).forEach(t => { const r0 = RENDER[t]; if (!r0) return; RENDER[t] = function () { const o = r0.apply(this, arguments); try { INT_POS[t](); } catch (er) { console.error(er); } return o; }; });
+{ const r0 = renderSimCen; renderSimCen = function () { const o = r0.apply(this, arguments); try { intPosSimCen(); } catch (er) { console.error(er); } return o; }; }
+{ const r0 = RENDER.indnum; if (r0) RENDER.indnum = function () { intNascSync(); return r0.apply(this, arguments); }; }
+{ const r0 = renderTab; renderTab = function () { try { intNascSync(); } catch (er) {} return r0.apply(this, arguments); }; }
+// Seus avisos: o aviso de falta abre o preenchimento rápido
+{ const r0 = renderPess; renderPess = function () { const o = r0.apply(this, arguments); try { const T = pessTodos(); document.querySelectorAll('#pess-pop [data-pessir]').forEach(a => { const av = T.find(y => y.msg === a.textContent && y.falta); if (av) { a.dataset.intfalta = av.falta; a.closest('.sino-i').classList.add('int-sino'); } }); } catch (er) {} return o; }; }
+/* fim integração */
 </script>
 
 </body></html>
