@@ -2207,6 +2207,22 @@ input[type="month"].mp-on { outline: 2px solid var(--accent); outline-offset: 1p
 .legend .lg-off { opacity: .35; }
 .legend .lg-on { font-weight: 700; }
 svg path[data-si] { transition: opacity .12s; }
+
+/* v332 tabela de trocas e cenários alinhada */
+#orc-regs, #pj-regs { min-width: 0; max-width: 100%; flex: 1 1 100%; }
+#orc-regs td.rg-per input, #pj-regs td.rg-per input { width: 172px; display: block; margin: 2px 0 4px; }
+#orc-regs td.rg-per, #pj-regs td.rg-per { font-size: 12px; color: var(--muted); }
+#orc-regs td.rg-val, #pj-regs td.rg-val { text-align: left; min-width: 250px; vertical-align: middle; }
+#orc-regs td.rg-val .rg-sl, #pj-regs td.rg-val .rg-sl { display: flex; align-items: center; gap: 8px; font-size: 12px; }
+#orc-regs td.rg-val .rg-sl .subdet, #pj-regs td.rg-val .rg-sl .subdet, #orc-regs td.rg-val .rg-x .subdet, #pj-regs td.rg-val .rg-x .subdet { min-width: 92px; display: inline-block; }
+#orc-regs td.rg-val input[type=number], #pj-regs td.rg-val input[type=number] { width: 120px; }
+#orc-regs td.rg-val .rg-x, #pj-regs td.rg-val .rg-x { justify-content: flex-start; }
+#orc-regs td.rg-val .rg-x > span, #pj-regs td.rg-val .rg-x > span { display: flex; align-items: center; gap: 8px; flex-basis: 100%; }
+#orc-regs td.rg-val .rg-sai, #pj-regs td.rg-val .rg-sai { align-items: flex-start; }
+#orc-regs th, #pj-regs th { white-space: normal; }
+#orc-regs td input.name, #pj-regs td input.name { width: 150px; }
+#orc-regs td input[data-bind$=":das"], #pj-regs td input[data-bind$=":das"] { width: 70px; }
+#orc-regs td input[data-bind$=":contab"], #pj-regs td input[data-bind$=":contab"] { width: 100px; }
 </style>
 
 
@@ -2297,7 +2313,7 @@ svg path[data-si] { transition: opacity .12s; }
     </div>
     <div class="nav-mobile-sub" id="navMobileSub"></div>
   </div>
-  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 330</div></div>
+  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 332</div></div>
 </nav>
 <div class="sino-pop" id="sino-pop" role="dialog" aria-label="Atualizações das bases" hidden></div>
 <div class="sino-pop" id="pess-pop" role="dialog" aria-label="Seus avisos" hidden></div>
@@ -4265,7 +4281,7 @@ svg path[data-si] { transition: opacity .12s; }
     return new Promise(resolve => { const { data } = sb.auth.onAuthStateChange(async (ev) => { if (ev !== 'PASSWORD_RECOVERY') return; const s = prompt('Digite a nova senha (mínimo 8 caracteres):'); if (s && s.length >= 8) { const { error } = await sb.auth.updateUser({ password: s }); alert(error ? 'Não deu para trocar a senha: ' + error.message : 'Senha trocada.'); } }); resolve(data); });
   }
   // ---------- rodapé: compartilhar, administração e sair ----------
-  const SITE_V = 216;
+  const SITE_V = 218;
   const escH = v => String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const dataBR = v => v ? new Date(v).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' }) : '–';
   const css2 = `.side-foot .r{flex-wrap:wrap}.side-foot .lg-acoes{margin-left:auto;display:inline-flex;gap:10px}
@@ -7425,7 +7441,7 @@ function renderSimCen(manter) {
       its.filter(x => x.mod === m.id).sort((a, b) => (a.ini || '9999') < (b.ini || '9999') ? -1 : (a.ini || '9999') > (b.ini || '9999') ? 1 : 0).map(x => `<tr data-scit="${esc(x.id)}"${simFoco === x.id ? ' class="sc-foco"' : ''}>
         <td class="name"><a href="#" data-lmtab="${x.tab}" data-lmsec="${esc(x.sec || '')}" data-lmitem="${esc(x.id || '')}">${esc(x.nome)}</a> <span class="subdet">${esc(x.sub)}</span></td>
         <td>${x.ini ? mLabel(mIndex(x.ini)) : '–'}</td>
-        <td class="it-v">${esc(x.resumo)}</td>
+        <td class="it-v">${x.bloq ? `<a href="#" class="lm-ir" data-lmitem="${esc(x.id)}">${esc(x.resumo)}</a>` : esc(x.resumo)}</td>
         ${vch ? `<td><input type="number" min="0" max="100" step="5" data-ichance="${esc(x.id)}" value="${x.chance}" aria-label="Chance de acontecer (%) de ${esc(x.nome)}">%</td>` : ''}
         ${ord.map(c => { const on = emCen(c, x); return `<td class="sc-c${c.id === cen.id ? ' sc-cur' : ''}"><button type="button" class="sc-tg" style="--c:${corC(c)}" data-sctg="${esc(c.id)}|${esc(x.id)}" aria-pressed="${on}" aria-label="${esc(x.nome)} no cenário ${esc(c.nome)}"${x.bloq ? ' disabled title="Defina o evento de liquidez primeiro"' : ` title="${on ? 'Incluído em' : 'Fora de'} ${esc(c.nome)}. Clique para ${on ? 'tirar' : 'incluir'}."`}>${on ? '✓ Incluído' : '+ Incluir'}</button></td>`; }).join('')}</tr>`).join('')).join('')}</tbody>`;
   // resultados: Meu plano com os itens e as premissas de cada cenário
@@ -14385,7 +14401,7 @@ function regTabelaHtml() {
   if (!R.length) return '';
   const inp = (r, k, step, lab) => `<input type="number" step="${step}" data-bind="orcreg:${r.id}:${k}" value="${+r[k] || 0}" aria-label="${lab}">`;
   return `<div class="tscroll"><table><thead><tr><th>Período</th><th>Nome</th><th>Como recebe</th><th>Salário, faturamento ou o que recebe na saída</th><th>DAS %</th><th>Contabilidade ou custos</th><th>Uso</th><th></th></tr></thead><tbody>${R.map(r => { const pj = r.modelo === 'pj', sem = r.modelo === 'sem';
-    return `<tr><td class="name rg-per">${r.tipo === 'antes' ? 'Antes de' : 'De'} <input type="month" data-bind="orcreg:${r.id}:mes" value="${esc(r.mes)}" aria-label="Mês de início">${r.tipo === 'apartir' ? ` até <input type="month" data-bind="orcreg:${r.id}:ate" value="${esc(r.ate || '')}" aria-label="Mês final (opcional)">` : ''}</td><td class="name"><input type="text" class="name" data-bind="orcreg:${r.id}:nome" value="${esc(r.nome || '')}" placeholder="${r.tipo === 'antes' ? 'como recebia' : 'sem nome'}" aria-label="Nome"></td><td class="name">${modeloNome(r.modelo, r.cltModo)}</td><td>${sem ? `<div class="rg-sai"><span><span class="subdet">rescisão</span> ${inp(r, 'resc', 500, 'Rescisão')}</span><span><span class="subdet">FGTS</span> ${inp(r, 'fgts', 500, 'FGTS')}</span><span><span class="subdet">seguro/mês</span> ${inp(r, 'seg', 50, 'Seguro-desemprego por mês')} <span class="subdet">de</span> <input type="month" data-bind="orcreg:${r.id}:segDe" value="${esc(r.segDe || '')}" aria-label="Início do seguro"> <span class="subdet">até</span> <input type="month" data-bind="orcreg:${r.id}:segAte" value="${esc(r.segAte || '')}" aria-label="Fim do seguro"></span></div>` : inp(r, 'sal', 100, 'Salário ou faturamento') + (r.tipo === 'apartir' ? `<div class="rg-x">${r.modelo === 'clt' ? [['x13', '13º'], ['xFer', 'férias'], ['xFgts', 'FGTS']].map(([k, n]) => `<label class="inline"><input type="checkbox" data-bind="orcreg:${r.id}:${k}"${r[k] ? ' checked' : ''}> ${n}</label>`).join('') : ''}<span><span class="subdet">benefícios/mês</span> ${inp(r, 'ben', 50, 'Benefícios por mês')}</span></div>` : '')}</td><td>${pj ? inp(r, 'das', 0.1, 'DAS %') : '<span class="z">—</span>'}</td><td>${pj || sem ? inp(r, 'contab', 10, sem ? 'Custos do CNPJ parado' : 'Contabilidade') : '<span class="z">—</span>'}</td><td class="name">${r.tipo === 'apartir' ? simUsoHtml('reg:' + r.id, '') : '<span class="subdet">passado</span>'}</td><td><button class="btn danger tiny" type="button" data-delreg="${r.id}">remover</button></td></tr>`; }).join('')}</tbody></table></div>
+    return `<tr><td class="name rg-per">${r.tipo === 'antes' ? 'Antes de' : 'De'} <input type="month" data-bind="orcreg:${r.id}:mes" value="${esc(r.mes)}" aria-label="Mês de início">${r.tipo === 'apartir' ? ` até <input type="month" data-bind="orcreg:${r.id}:ate" value="${esc(r.ate || '')}" aria-label="Mês final (opcional)">` : ''}</td><td class="name"><input type="text" class="name" data-bind="orcreg:${r.id}:nome" value="${esc(r.nome || '')}" placeholder="${r.tipo === 'antes' ? 'como recebia' : 'sem nome'}" aria-label="Nome"></td><td class="name">${modeloNome(r.modelo, r.cltModo)}</td><td class="rg-val">${sem ? `<div class="rg-sai"><span><span class="subdet">rescisão</span> ${inp(r, 'resc', 500, 'Rescisão')}</span><span><span class="subdet">FGTS</span> ${inp(r, 'fgts', 500, 'FGTS')}</span><span><span class="subdet">seguro/mês</span> ${inp(r, 'seg', 50, 'Seguro-desemprego por mês')} <span class="subdet">de</span> <input type="month" data-bind="orcreg:${r.id}:segDe" value="${esc(r.segDe || '')}" aria-label="Início do seguro"> <span class="subdet">até</span> <input type="month" data-bind="orcreg:${r.id}:segAte" value="${esc(r.segAte || '')}" aria-label="Fim do seguro"></span></div>` : `<span class="rg-sl"><span class="subdet">${pj ? 'faturamento/mês' : 'salário/mês'}</span> ${inp(r, 'sal', 100, 'Salário ou faturamento')}</span>` + (r.tipo === 'apartir' ? `<div class="rg-x">${r.modelo === 'clt' ? [['x13', '13º'], ['xFer', 'férias'], ['xFgts', 'FGTS']].map(([k, n]) => `<label class="inline"><input type="checkbox" data-bind="orcreg:${r.id}:${k}"${r[k] ? ' checked' : ''}> ${n}</label>`).join('') : ''}<span><span class="subdet">benefícios/mês</span> ${inp(r, 'ben', 50, 'Benefícios por mês')}</span></div>` : '')}</td><td>${pj ? inp(r, 'das', 0.1, 'DAS %') : '<span class="z">—</span>'}</td><td>${pj || sem ? inp(r, 'contab', 10, sem ? 'Custos do CNPJ parado' : 'Contabilidade') : '<span class="z">—</span>'}</td><td class="name">${r.tipo === 'apartir' ? simUsoHtml('reg:' + r.id, '') : '<span class="subdet">passado</span>'}</td><td><button class="btn danger tiny" type="button" data-delreg="${r.id}">remover</button></td></tr>`; }).join('')}</tbody></table></div>
     <p class="hint">${R.some(r => r.tipo === 'antes') ? '"Antes de": como você recebia antes da troca; o plano usa esses valores nos meses anteriores. ' : ''}${R.some(r => r.tipo === 'apartir') ? 'Com "até", o cenário vale só nesse período e depois o plano volta ao que valia antes; sem "até", vale daí em diante. Se dois cenários se sobrepõem, vale o que começa por último. Uma troca de emprego sem "até", em Projeção real, vira o "Como você recebe" de hoje quando o mês chegar. Em Só simulação, o cenário só aparece na linha tracejada do gráfico do plano e em Itens dos módulos.' : ''}</p>`;
 }
 function renderRegimes() {
@@ -14818,7 +14834,7 @@ function renderItens() {
       <td class="name"><a href="#" data-lmtab="${x.tab}" data-lmsec="${esc(x.sec || '')}" data-lmitem="${esc(x.id || '')}">${esc(x.nome)}</a> <span class="subdet">${esc(x.sub)}</span></td>
       <td data-l="Tipo"><span class="chip ${x.unico >= 0 && x.mensal >= 0 ? 'best' : 'info'} it-tipo">${IT_TIPO[x.tipo] || x.tipo}</span></td>
       <td data-l="Quando">${x.ini ? mLabel(mIndex(x.ini)) : '–'}</td>
-      <td class="it-v">${esc(x.resumo)}</td></tr>`).join('')).join('')}</tbody>`;
+      <td class="it-v">${x.bloq ? `<a href="#" class="lm-ir" data-lmitem="${esc(x.id)}">${esc(x.resumo)}</a>` : esc(x.resumo)}</td></tr>`).join('')).join('')}</tbody>`;
 }
 document.addEventListener('change', e => {
   const u = e.target.closest('[data-iuso]');
@@ -19139,6 +19155,7 @@ function intIrItem(id, c) {
   if (!x) return;
   const fs = intDoItem(x), f = (c && fs.find(y => y.c === c)) || fs[0];
   if (f) return intIr(f.alvo, `<b>Preencha aqui:</b> sem ${esc(f.t)}, ${esc(x.nome)} não entra na conta.`, id);
+  if (x.bloq && id.startsWith('so:')) return intIr({ tab: 'stock', sec: 'Evento de liquidez', sel: '[data-so="v:definido"]', pre: () => { state.so.sel = id.slice(3); } }, `<b>Marque aqui</b> quando o evento estiver definido (assinado ou anunciado). Só então ${esc(x.nome)} entra no plano.`, id);
   intIr(intAlvoItem(x), '', id);
 }
 // destino de um item sem pendência: o cartão dele
@@ -19156,7 +19173,7 @@ function intAlvoItem(x) {
 // links: data-lmitem (item dos módulos) e data-lmsel/data-lmmsg (campo de uma seção)
 document.addEventListener('click', e => {
   const a = e.target.closest && e.target.closest('[data-lmitem],[data-lmsel]'); if (!a) return;
-  if (a.dataset.lmitem) { const x = itensModulos().find(y => y.id === a.dataset.lmitem); if (!x) return; e.preventDefault(); e.stopImmediatePropagation(); intIr(intAlvoItem(x), '', x.id); return; }
+  if (a.dataset.lmitem) { const x = itensModulos().find(y => y.id === a.dataset.lmitem); if (!x) return; e.preventDefault(); e.stopImmediatePropagation(); if (x.bloq) { intIrItem(x.id); return; } intIr(intAlvoItem(x), '', x.id); return; }
   if (!RENDER[a.dataset.lmtab]) return; e.preventDefault(); e.stopImmediatePropagation();
   intIr({ tab: a.dataset.lmtab, sec: a.dataset.lmsec || '', sel: a.dataset.lmsel }, a.dataset.lmmsg ? esc(a.dataset.lmmsg) : '');
 }, true);
