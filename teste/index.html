@@ -2126,6 +2126,8 @@ body:has(#tour-pop:not([hidden])) #jor-divbar { display: none; }
 .sc-tg { min-width: 92px; padding: 0 10px; }
 .sc-tg[aria-pressed="false"]:not(:disabled) { border-style: dashed; }
 .sc-opt { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; color: var(--muted); margin: 0 0 10px; cursor: pointer; }
+.rg-x { display: flex; flex-wrap: wrap; gap: 4px 10px; align-items: center; margin-top: 6px; font-size: 12px; }
+.rg-x input[type="number"] { width: 80px; }
 .sc-tg:disabled { opacity: .45; cursor: not-allowed; }
 .sc-dec { display: flex; flex-direction: column; gap: 10px; }
 .sc-dec ul { margin: 0; padding-left: 18px; line-height: 1.6; }
@@ -2226,7 +2228,7 @@ body:has(#tour-pop:not([hidden])) #jor-divbar { display: none; }
     </div>
     <div class="nav-mobile-sub" id="navMobileSub"></div>
   </div>
-  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 315</div></div>
+  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 316</div></div>
 </nav>
 <div class="sino-pop" id="sino-pop" role="dialog" aria-label="Atualizações das bases" hidden></div>
 <div class="sino-pop" id="pess-pop" role="dialog" aria-label="Seus avisos" hidden></div>
@@ -4187,7 +4189,7 @@ body:has(#tour-pop:not([hidden])) #jor-divbar { display: none; }
     return new Promise(resolve => { const { data } = sb.auth.onAuthStateChange(async (ev) => { if (ev !== 'PASSWORD_RECOVERY') return; const s = prompt('Digite a nova senha (mínimo 8 caracteres):'); if (s && s.length >= 8) { const { error } = await sb.auth.updateUser({ password: s }); alert(error ? 'Não deu para trocar a senha: ' + error.message : 'Senha trocada.'); } }); resolve(data); });
   }
   // ---------- rodapé: compartilhar, administração e sair ----------
-  const SITE_V = 201;
+  const SITE_V = 202;
   const escH = v => String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const dataBR = v => v ? new Date(v).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' }) : '–';
   const css2 = `.side-foot .r{flex-wrap:wrap}.side-foot .lg-acoes{margin-left:auto;display:inline-flex;gap:10px}
@@ -14222,12 +14224,21 @@ function renderTroca() {
       <div><label class="inline"><input type="checkbox" data-trck="seg"${t.cSeg ? ' checked' : ''}> Seguro-desemprego</label>${t.cSeg ? `<input type="number" step="50" id="tr-seg" value="${esc(t.seg || '')}" placeholder="R$ por mês" aria-label="Seguro-desemprego por mês"> de <input type="month" id="tr-segde" value="${esc(t.segDe || t.mes)}" aria-label="Início do seguro"> até <input type="month" id="tr-segate" value="${esc(t.segAte || '')}" aria-label="Fim do seguro">` : ''}</div>
       <p class="hint">Rescisão e FGTS entram uma vez, no primeiro mês do período. O seguro entra todo mês, do início ao fim que você escolher, enquanto você estiver sem emprego no plano.</p></div><label>Custos do CNPJ parado (R$/mês)<input type="number" step="10" id="tr-contab" value="${esc(t.contab)}" placeholder="0"><span class="hint">Só se você mantiver a empresa aberta sem faturar: contador, DAS mínimo (MEI), certificado digital, alvará, tarifa da conta PJ. Seus gastos pessoais já estão no plano, não repita aqui. Se fechar o CNPJ, deixe 0.</span></label>` : `<label>${salL} (R$/mês)<input type="number" step="100" id="tr-sal" value="${esc(t.sal)}"></label>`}
     ${t.modelo === 'pj' ? `<label>${cr ? 'Impostos e DAS' : 'DAS'} (% do faturamento)<input type="number" step="0.1" id="tr-das" value="${esc(t.das)}"></label><label>Contabilidade (R$/mês)<input type="number" step="10" id="tr-contab" value="${esc(t.contab)}"></label>` : ''}
+    ${cr && !sem ? trExtrasHtml(t) : ''}
     <p class="hint">Uma troca futura entra como só simulação. Para valer no plano, depois de salvar use "Tornar real na Simulação".</p>
-    <p class="hint">${cr ? `${sem ? 'Nesses meses o salário ou faturamento fica em zero e os custos seguem normais; a sobra negativa sai dos investimentos.' : 'Antes desse mês o plano segue como você recebe hoje; a partir dele usa este cenário.'} Com "Até", o período acaba nesse mês e depois o plano volta ao que valia antes; sem "Até", vale daí em diante.${t.calc ? ' Valores trazidos do cálculo acima: no PJ, o % junta DAS, INSS e IR do pró-labore, para o plano chegar no mesmo líquido do mês faturado.' : ''}` : `Antes desse mês o plano continua como ${nome(t.de)}, com os valores de hoje; a partir dele usa ${nome(t.modelo)} com o valor novo. Os meses que já passaram não mudam.`} Uma troca futura começa como só simulação: o plano real não muda e ela aparece no módulo Simulação para comparar.${t.modelo === 'clt' ? ' 13º e férias: adicione em Meu plano › Mudanças e eventos.' : ''}</p>
+    <p class="hint">${cr ? `${sem ? 'Nesses meses o salário ou faturamento fica em zero e os custos seguem normais; a sobra negativa sai dos investimentos.' : 'Antes desse mês o plano segue como você recebe hoje; a partir dele usa este cenário.'} Com "Até", o período acaba nesse mês e depois o plano volta ao que valia antes; sem "Até", vale daí em diante.${t.calc ? ' Valores trazidos do cálculo acima: no PJ, o % junta DAS, INSS e IR do pró-labore, para o plano chegar no mesmo líquido do mês faturado.' : ''}` : `Antes desse mês o plano continua como ${nome(t.de)}, com os valores de hoje; a partir dele usa ${nome(t.modelo)} com o valor novo. Os meses que já passaram não mudam.`} Uma troca futura começa como só simulação: o plano real não muda e ela aparece no módulo Simulação para comparar.${t.modelo === 'clt' ? '' : ''}</p>
     <div class="btns"><button class="btn tiny" type="button" data-troca="programar">${cr ? 'Salvar cenário' : 'Trocar a partir desse mês'}</button>${cr ? '' : ` <button class="btn ghost tiny" type="button" data-troca="sempre">Sempre foi ${nome(t.modelo)}: corrigir desde o início</button>`} <button class="btn ghost tiny" type="button" data-troca="cancelar">Cancelar</button></div>
     <p class="hint" id="tr-msg" role="status"></p>`;
 }
-function lerTroca() { const t = trocaPend; if (!t) return; const v = id => { const e = $(id); return e ? e.value : undefined; };
+// v316: além do salário, o cenário pode levar 13º, férias, FGTS e benefícios (CLT) ou os benefícios pagos pelo contratante (PJ)
+function trExtrasHtml(t) {
+  const ck = (k, rot, dica) => `<div><label class="inline"><input type="checkbox" data-trx="${k}"${t[k] ? ' checked' : ''}> ${rot}</label> <span class="subdet">${dica}</span></div>`;
+  const ben = `<div><label class="inline">${t.modelo === 'clt' ? 'Benefícios' : 'Benefícios pagos pelo contratante'} (R$/mês) <input type="number" step="50" id="tr-ben" value="${esc(t.ben ?? '')}" placeholder="0" aria-label="Benefícios por mês"></label> <span class="subdet">${t.modelo === 'clt' ? 'VR, VA, plano de saúde, auxílios. Vem da conta da CLT acima; ajuste se quiser.' : 'plano de saúde, auxílios, bônus por mês. Vem da conta acima; ajuste se quiser.'}</span></div>`;
+  return `<div class="tr-sai"><span class="orc-h">O que entra no cenário além do ${t.modelo === 'clt' ? 'salário' : 'faturamento'}</span>
+    ${t.modelo === 'clt' ? ck('x13', '13º salário', 'em dezembro; no primeiro ano, proporcional aos meses') + ck('xFer', 'Férias: o 1/3 a mais', 'a cada 12 meses no emprego') + ck('xFgts', 'FGTS', '8% do bruto todo mês (com 13º e férias); conta como dinheiro seu guardado') : ''}${ben}
+    <p class="hint">Desmarque o que não quiser contar. Depois de salvar, dá para mudar na tabela Trocas e cenários.</p></div>`;
+}
+function lerTroca() { const t = trocaPend; if (!t) return; const v = id => { const e = $(id); return e ? e.value : undefined; }; if ($('tr-ben')) t.ben = v('tr-ben');
   t.mes = v('tr-mes') ?? t.mes; t.sal = v('tr-sal') ?? t.sal; if ($('tr-das')) t.das = v('tr-das'); if ($('tr-contab')) t.contab = v('tr-contab'); if ($('tr-uso')) t.uso = v('tr-uso'); if ($('tr-nome')) t.nome = v('tr-nome'); if ($('tr-ate')) t.ate = v('tr-ate'); ['resc', 'fgts', 'seg'].forEach(k => { if ($('tr-' + k)) t[k] = v('tr-' + k); }); if ($('tr-segde')) t.segDe = v('tr-segde'); if ($('tr-segate')) t.segAte = v('tr-segate'); }
 function aplicarTroca(sempre) {
   lerTroca(); const t = trocaPend, sem = t.modelo === 'sem', sal = sem ? 0 : +t.sal || 0, msg = txt => { $('tr-msg').textContent = txt; };
@@ -14238,7 +14249,7 @@ function aplicarTroca(sempre) {
   t.uso = sempre || mIndex(t.mes) <= HOJE_IDX ? 'real' : 'sim';   // v313: futura começa como só simulação; decide na Simulação
   if (t.alvo === 'pj' && mIndex(t.mes) <= HOJE_IDX) return msg('O cenário precisa começar depois de hoje. Para uma troca que já aconteceu, use Como você recebe, em Meu plano.');
   trocaPend = null;
-  if (!sempre && mIndex(t.mes) > HOJE_IDX) state.orc.regimes.push({ id: uid(), tipo: 'apartir', mes: t.mes, ate: t.ate || '', modelo: t.modelo, cltModo: t.cltModo, sal, das: +t.das || 0, contab: +t.contab || 0, resc: sem && t.cResc ? +t.resc || 0 : 0, fgts: sem && t.cFgts ? +t.fgts || 0 : 0, seg: sem && t.cSeg ? +t.seg || 0 : 0, segDe: sem && t.cSeg ? t.segDe : '', segAte: sem && t.cSeg ? t.segAte : '', uso: t.uso === 'sim' ? 'sim' : 'real', nome: String(t.nome || '').trim() });
+  if (!sempre && mIndex(t.mes) > HOJE_IDX) state.orc.regimes.push({ id: uid(), tipo: 'apartir', mes: t.mes, ate: t.ate || '', modelo: t.modelo, cltModo: t.cltModo, sal, x13: t.modelo === 'clt' && !!t.x13, xFer: t.modelo === 'clt' && !!t.xFer, xFgts: t.modelo === 'clt' && !!t.xFgts, ben: sem ? 0 : Math.max(0, +t.ben || 0), das: +t.das || 0, contab: +t.contab || 0, resc: sem && t.cResc ? +t.resc || 0 : 0, fgts: sem && t.cFgts ? +t.fgts || 0 : 0, seg: sem && t.cSeg ? +t.seg || 0 : 0, segDe: sem && t.cSeg ? t.segDe : '', segAte: sem && t.cSeg ? t.segAte : '', uso: t.uso === 'sim' ? 'sim' : 'real', nome: String(t.nome || '').trim() });
   else trocarHoje(t.modelo, t.cltModo, sal, t.das, t.contab, sempre ? null : t.mes);
   save(); renderTroca(); renderTab();
 }
@@ -14259,7 +14270,7 @@ function regTabelaHtml() {
   if (!R.length) return '';
   const inp = (r, k, step, lab) => `<input type="number" step="${step}" data-bind="orcreg:${r.id}:${k}" value="${+r[k] || 0}" aria-label="${lab}">`;
   return `<div class="tscroll"><table><thead><tr><th>Período</th><th>Nome</th><th>Como recebe</th><th>Salário, faturamento ou o que recebe na saída</th><th>DAS %</th><th>Contabilidade ou custos</th><th>Uso</th><th></th></tr></thead><tbody>${R.map(r => { const pj = r.modelo === 'pj', sem = r.modelo === 'sem';
-    return `<tr><td class="name rg-per">${r.tipo === 'antes' ? 'Antes de' : 'De'} <input type="month" data-bind="orcreg:${r.id}:mes" value="${esc(r.mes)}" aria-label="Mês de início">${r.tipo === 'apartir' ? ` até <input type="month" data-bind="orcreg:${r.id}:ate" value="${esc(r.ate || '')}" aria-label="Mês final (opcional)">` : ''}</td><td class="name"><input type="text" class="name" data-bind="orcreg:${r.id}:nome" value="${esc(r.nome || '')}" placeholder="${r.tipo === 'antes' ? 'como recebia' : 'sem nome'}" aria-label="Nome"></td><td class="name">${modeloNome(r.modelo, r.cltModo)}</td><td>${sem ? `<div class="rg-sai"><span><span class="subdet">rescisão</span> ${inp(r, 'resc', 500, 'Rescisão')}</span><span><span class="subdet">FGTS</span> ${inp(r, 'fgts', 500, 'FGTS')}</span><span><span class="subdet">seguro/mês</span> ${inp(r, 'seg', 50, 'Seguro-desemprego por mês')} <span class="subdet">de</span> <input type="month" data-bind="orcreg:${r.id}:segDe" value="${esc(r.segDe || '')}" aria-label="Início do seguro"> <span class="subdet">até</span> <input type="month" data-bind="orcreg:${r.id}:segAte" value="${esc(r.segAte || '')}" aria-label="Fim do seguro"></span></div>` : inp(r, 'sal', 100, 'Salário ou faturamento')}</td><td>${pj ? inp(r, 'das', 0.1, 'DAS %') : '<span class="z">—</span>'}</td><td>${pj || sem ? inp(r, 'contab', 10, sem ? 'Custos do CNPJ parado' : 'Contabilidade') : '<span class="z">—</span>'}</td><td class="name">${r.tipo === 'apartir' ? simUsoHtml('reg:' + r.id, '') : '<span class="subdet">passado</span>'}</td><td><button class="btn danger tiny" type="button" data-delreg="${r.id}">remover</button></td></tr>`; }).join('')}</tbody></table></div>
+    return `<tr><td class="name rg-per">${r.tipo === 'antes' ? 'Antes de' : 'De'} <input type="month" data-bind="orcreg:${r.id}:mes" value="${esc(r.mes)}" aria-label="Mês de início">${r.tipo === 'apartir' ? ` até <input type="month" data-bind="orcreg:${r.id}:ate" value="${esc(r.ate || '')}" aria-label="Mês final (opcional)">` : ''}</td><td class="name"><input type="text" class="name" data-bind="orcreg:${r.id}:nome" value="${esc(r.nome || '')}" placeholder="${r.tipo === 'antes' ? 'como recebia' : 'sem nome'}" aria-label="Nome"></td><td class="name">${modeloNome(r.modelo, r.cltModo)}</td><td>${sem ? `<div class="rg-sai"><span><span class="subdet">rescisão</span> ${inp(r, 'resc', 500, 'Rescisão')}</span><span><span class="subdet">FGTS</span> ${inp(r, 'fgts', 500, 'FGTS')}</span><span><span class="subdet">seguro/mês</span> ${inp(r, 'seg', 50, 'Seguro-desemprego por mês')} <span class="subdet">de</span> <input type="month" data-bind="orcreg:${r.id}:segDe" value="${esc(r.segDe || '')}" aria-label="Início do seguro"> <span class="subdet">até</span> <input type="month" data-bind="orcreg:${r.id}:segAte" value="${esc(r.segAte || '')}" aria-label="Fim do seguro"></span></div>` : inp(r, 'sal', 100, 'Salário ou faturamento') + (r.tipo === 'apartir' ? `<div class="rg-x">${r.modelo === 'clt' ? [['x13', '13º'], ['xFer', 'férias'], ['xFgts', 'FGTS']].map(([k, n]) => `<label class="inline"><input type="checkbox" data-bind="orcreg:${r.id}:${k}"${r[k] ? ' checked' : ''}> ${n}</label>`).join('') : ''}<span><span class="subdet">benefícios/mês</span> ${inp(r, 'ben', 50, 'Benefícios por mês')}</span></div>` : '')}</td><td>${pj ? inp(r, 'das', 0.1, 'DAS %') : '<span class="z">—</span>'}</td><td>${pj || sem ? inp(r, 'contab', 10, sem ? 'Custos do CNPJ parado' : 'Contabilidade') : '<span class="z">—</span>'}</td><td class="name">${r.tipo === 'apartir' ? simUsoHtml('reg:' + r.id, '') : '<span class="subdet">passado</span>'}</td><td><button class="btn danger tiny" type="button" data-delreg="${r.id}">remover</button></td></tr>`; }).join('')}</tbody></table></div>
     <p class="hint">${R.some(r => r.tipo === 'antes') ? '"Antes de": como você recebia antes da troca; o plano usa esses valores nos meses anteriores. ' : ''}${R.some(r => r.tipo === 'apartir') ? 'Com "até", o cenário vale só nesse período e depois o plano volta ao que valia antes; sem "até", vale daí em diante. Se dois cenários se sobrepõem, vale o que começa por último. Uma troca de emprego sem "até", em Projeção real, vira o "Como você recebe" de hoje quando o mês chegar. Em Só simulação, o cenário só aparece na linha tracejada do gráfico do plano e em Itens dos módulos.' : ''}</p>`;
 }
 function renderRegimes() {
@@ -14275,6 +14286,7 @@ function novoCenarioPj(tipo) {
   const t = { alvo: 'pj', de: orcModelo(), uso: 'sim', mes: mKey(HOJE_IDX + 1), ate: '', cltModo: 'bruto', sal: '', das: orcD('das') || 6, contab: orcD('contab'), nome: '', calc };
   t.modelo = (p.dir === 'pjclt') ? 'clt' : 'pj';
   if (tipo === 'sem') { t.modelo = 'sem'; t.contab = 0; t.saida = ''; t.nome = 'Sem emprego'; }
+  else { t.x13 = t.xFer = t.xFgts = true; try { const o = pjOpts(); t.benClt = o.clt ? Math.round(cltAnual(o.clt, o).ben / 12) : Math.round((o.benef || 0) + (o.saude || 0)); t.benPj = Math.round(o.benPJ || 0); t.ben = (t.modelo === 'clt' ? t.benClt : t.benPj) || ''; } catch (er) {} }
   if (calc) { const o = pjOpts();
     if (t.modelo === 'pj' && o.fat) { const r = pjCalc(o.fat, o); t.sal = o.fat; t.contab = Math.round(o.contab + o.outros); t.das = Math.round(Math.max(0, (o.fat - r.liq - t.contab) / o.fat * 100) * 10) / 10; t.nome = 'Proposta PJ'; }
     else if (t.modelo === 'clt' && o.clt) { t.sal = o.clt; t.cltModo = 'bruto'; t.nome = 'Proposta CLT'; }
@@ -14424,7 +14436,7 @@ function calcPlano(extra, cenSim) {
   (state.orc.regimes || []).forEach(r => regDeds(r).forEach(d => { const key = 'ded~' + d.id;
     L.push({ key, ck: key + '@' + r.id, nome: d.nome, tipo: 'ded', pct: d.modo === 'pct', calc: d.modo === 'inss' || d.modo === 'irrf' ? d.modo : undefined, base: +d.valor || 0, reaj: d.modo === 'fixo' ? 'ipca_anual' : 'nenhum', pctA: 0, mesA: 1, reg: r.id, o: d }); }));
   L.forEach(l => { if (!l.reg && l.tipo === 'ded' && MOD_DED.includes(l.key.slice(4))) l.modDed = true; });
-  let regAnt = null, salReg = 0;
+  let regAnt = null, salReg = 0; const regBrutoC = {};
   const mud = (P.mud || []).filter(m => m.key && m.mes && (m.sim ? !!(extra && extra.has('mud:' + m.id)) : !(extra && extra.has('-mud:' + m.id)))).slice().sort((a, b) => a.mes < b.mes ? -1 : 1);
   L.forEach(l => { cur[l.ck || l.key] = l.base; if (!l.reg) mud.filter(m => m.key === l.key && mIndex(m.mes) <= i0).forEach(m => { cur[l.key] = +m.valor || 0; }); });
   const buys = state.compras.filter(b => ((P.inc || []).includes(b.id) && !(extra && extra.has('-compra:' + b.id))) || (extra && extra.has('compra:' + b.id))).map(b => ({ b, m0: mIndex(b.mes), sch: schedule(b, b.modo) }));
@@ -14451,6 +14463,12 @@ function calcPlano(extra, cenSim) {
     planEvs(P, extra).forEach(e => { const m0 = mIndex(e.mes); if (!e.mes || i < m0 || (i !== m0 && !(e.anual && (i - m0) % 12 === 0))) return;
       const anos = Math.round((i - m0) / 12), val = e.pausa ? Math.max(0, bruto - ded) : ov['ev~' + e.id] ?? (+e.valor || 0) * Math.pow(1 + ip, anos);
       evs[e.id] = val; if (e.tipo === 'receita') evRec += val; else evGas += val; });
+    if (rg && rg.tipo === 'apartir' && rg.modelo !== 'sem') { let x = +rg.ben || 0; const m0 = mIndex(rg.mes), dep = +(state.pj || {}).dep || 0;
+      if (rg.modelo === 'clt' && (rg.x13 || rg.xFer || rg.xFgts)) { const br = rg.cltModo === 'bruto', S = salReg, liq = br ? netCLT(S, dep) : S, Sb = br ? S : (regBrutoC[S] ??= busca(y => netCLT(y, dep), S, S * 2));
+        if (rg.x13 && cm === 12) x += liq * (i - Math.max(m0, i - 11) + 1) / 12;
+        if (rg.xFer && i > m0 && (i - m0) % 12 === 0) x += br ? netCLT(S * 4 / 3, dep) - liq : S / 3;
+        if (rg.xFgts) x += 0.08 * Sb * (1 + (1 + 1 / 3) / 12); }
+      if (x) { evRec += x; evs['reg:' + rg.id] = x; } }
     if (rg && rg.modelo === 'sem') { let x = 0;
       if (i === mIndex(rg.mes)) x += (+rg.resc || 0) + (+rg.fgts || 0) + (+rg.saida || 0);
       if (+rg.seg > 0 && rg.segDe && rg.segAte && i >= mIndex(rg.segDe) && i <= mIndex(rg.segAte)) x += +rg.seg;
@@ -14652,7 +14670,7 @@ function itensModulos() {
   { const LP = linhasPlano(); (P.mud || []).filter(m => m.key && m.mes).forEach(m => { const l = LP.find(y => y.key === m.key), nm = l ? l.nome : m.key.slice(4);
     out.push({ id: 'mud:' + m.id, mod: 'fin', sub: 'Meu plano', tab: 'orcamento', sec: 'Mudanças e eventos', nome: 'Mudança: ' + nm, tipo: m.key.startsWith('rec~') ? 'receita' : 'gasto', ini: m.mes,
       unico: 0, mensal: 0, meses: 0, resumo: `${nm} passa a ${fm(+m.valor || 0)}${l && l.pct ? '%' : ' por mês'}`, uso: m.sim ? 'sim' : 'real' }); }); }
-  ((state.orc || {}).regimes || []).filter(r => r.tipo === 'apartir' && r.mes).forEach(r => out.push({ id: 'reg:' + r.id, mod: 'carr', sub: 'PJ e PF', tab: 'pjpf', sec: 'Cenários de troca', nome: (r.nome ? r.nome + ': ' : '') + (r.modelo === 'sem' ? 'sem emprego' : 'troca para ' + modeloNome(r.modelo, r.cltModo)), tipo: 'receita', ini: r.mes, unico: 0, mensal: 0, meses: 0, resumo: (r.modelo === 'sem' ? `sem salário${[+r.resc > 0 ? `rescisão ${fm(+r.resc)}` : '', +r.fgts > 0 ? `FGTS ${fm(+r.fgts)}` : '', +r.saida > 0 ? `${fm(+r.saida)} na saída` : '', +r.seg > 0 ? `seguro ${fm(+r.seg)}/mês` : ''].filter(Boolean).map(x => ', ' + x).join('')}` : `${r.modelo === 'pj' ? 'faturamento' : 'salário'} de ${fm(+r.sal || 0)} por mês`) + (r.ate ? ` até ${mLabel(mIndex(r.ate))}` : ''), uso: r.uso === 'sim' ? 'sim' : 'real' }));
+  ((state.orc || {}).regimes || []).filter(r => r.tipo === 'apartir' && r.mes).forEach(r => out.push({ id: 'reg:' + r.id, mod: 'carr', sub: 'PJ e PF', tab: 'pjpf', sec: 'Cenários de troca', nome: (r.nome ? r.nome + ': ' : '') + (r.modelo === 'sem' ? 'sem emprego' : 'troca para ' + modeloNome(r.modelo, r.cltModo)), tipo: 'receita', ini: r.mes, unico: 0, mensal: 0, meses: 0, resumo: (r.modelo === 'sem' ? `sem salário${[+r.resc > 0 ? `rescisão ${fm(+r.resc)}` : '', +r.fgts > 0 ? `FGTS ${fm(+r.fgts)}` : '', +r.saida > 0 ? `${fm(+r.saida)} na saída` : '', +r.seg > 0 ? `seguro ${fm(+r.seg)}/mês` : ''].filter(Boolean).map(x => ', ' + x).join('')}` : `${r.modelo === 'pj' ? 'faturamento' : 'salário'} de ${fm(+r.sal || 0)} por mês${[r.x13 ? '13º' : '', r.xFer ? 'férias' : '', r.xFgts ? 'FGTS' : '', +r.ben > 0 ? `benefícios ${fm(+r.ben)}/mês` : ''].filter(Boolean).map((x, j, a) => (j ? (j === a.length - 1 ? ' e ' : ', ') : ' + ') + x).join('')}`) + (r.ate ? ` até ${mLabel(mIndex(r.ate))}` : ''), uso: r.uso === 'sim' ? 'sim' : 'real' }));
   try { out.push(...vgItensMod()); } catch (er) {}
   try { out.push(...ngItensMod()); } catch (er) { console.error(er); }
   try { out.push(...famItensMod()); } catch (er) { console.error(er); }
@@ -15054,9 +15072,10 @@ document.addEventListener('click', e => {
   if (!e.target.closest || !e.target.closest('#pj-trocas')) return;
   const nv = e.target.closest('[data-pjtroca]'), tm = e.target.closest('[data-trmod]'), tb = e.target.closest('[data-troca]'), tc = e.target.closest('[data-trcm]'), dr = e.target.closest('[data-delreg]');
   if (nv) { $('pj-troca-msg').textContent = novoCenarioPj(nv.dataset.pjtroca); return; }
+  const cx = e.target.closest('[data-trx]'); if (cx && trocaPend) { lerTroca(); trocaPend[cx.dataset.trx] = cx.checked; return; }
   const ck = e.target.closest('[data-trck]');
   if (ck) { lerTroca(); const k = { resc: 'cResc', fgts: 'cFgts', seg: 'cSeg' }[ck.dataset.trck]; trocaPend[k] = ck.checked; if (k === 'cSeg' && ck.checked && !trocaPend.segAte) { trocaPend.segDe = trocaPend.segDe || trocaPend.mes; trocaPend.segAte = mKey(mIndex(trocaPend.segDe) + 4); } renderTroca(); return; }
-  if (tm) { lerTroca(); trocaPend.modelo = tm.dataset.trmod; renderTroca(); return; }
+  if (tm) { lerTroca(); trocaPend.modelo = tm.dataset.trmod; if (trocaPend.alvo === 'pj' && 'benClt' in trocaPend) trocaPend.ben = (trocaPend.modelo === 'clt' ? trocaPend.benClt : trocaPend.benPj) || ''; renderTroca(); return; }
   if (tb) { const k = tb.dataset.troca; if (k === 'cancelar') { trocaPend = null; renderTroca(); } else aplicarTroca(k === 'sempre'); return; }
   if (tc) { lerTroca(); trocaPend.cltModo = tc.dataset.trcm; renderTroca(); return; }
   if (dr) { if (!confirmar('Remover esta troca de regime? O plano volta a usar os valores de hoje nesses meses.')) return; state.orc.regimes = state.orc.regimes.filter(r => r.id !== dr.dataset.delreg); save(); renderTab(); return; }
