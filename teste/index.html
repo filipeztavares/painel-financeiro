@@ -2228,7 +2228,7 @@ body:has(#tour-pop:not([hidden])) #jor-divbar { display: none; }
     </div>
     <div class="nav-mobile-sub" id="navMobileSub"></div>
   </div>
-  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 317</div></div>
+  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 318</div></div>
 </nav>
 <div class="sino-pop" id="sino-pop" role="dialog" aria-label="Atualizações das bases" hidden></div>
 <div class="sino-pop" id="pess-pop" role="dialog" aria-label="Seus avisos" hidden></div>
@@ -3202,7 +3202,10 @@ body:has(#tour-pop:not([hidden])) #jor-divbar { display: none; }
         <label>Ajuste no IPCA (p.p.)<input type="number" step="0.25" data-bind="aj::ipca"></label>
         <label>Renda extra (R$/mês)<input type="number" step="500" data-bind="cen::extra"></label>
         <label>Taxa manual (% a.a. líq.)<input type="number" step="0.1" data-bind="cen::manual" placeholder="vazio = carteira"></label>
-        <p class="hint">Ajustes somam às taxas de Configurações só neste cenário (ex.: −1 no CDI simula juros mais baixos). Renda extra soma ao salário todo mês (bônus, PJ, aluguel). A taxa manual ignora a carteira, como a planilha fazia com 11%.</p>
+        <label>Aumento de custos (%)<input type="number" step="1" data-bind="cen::custoPct" placeholder="0"></label>
+        <label>Em quais custos<select data-bind="cen::custoGrp"><option value="">Todos</option><option>Fixos</option><option>Essenciais</option><option>Estilo de vida</option></select></label>
+        <label>A partir de<input type="month" data-bind="cen::custoDe"></label>
+        <p class="hint">Ajustes somam às taxas de Configurações só neste cenário (ex.: −1 no CDI simula juros mais baixos). Renda extra soma ao salário todo mês (bônus, PJ, aluguel). A taxa manual ignora a carteira, como a planilha fazia com 11%. Aumento de custos: os custos do Meu plano ficam X% maiores (todos ou só um grupo) a partir do mês escolhido, além do IPCA; vazio = desde já. Vale no Patrimônio projetado da aba Cenários.</p>
         <p class="hint" id="cen-real-hint" hidden>Este é o cenário Real: ele usa as premissas do Meu plano (rendimento e IPCA), então os ajustes, a renda extra e a taxa manual ficam travados aqui. Teste outras premissas num cenário de simulação.</p>
       </fieldset>
       <fieldset>
@@ -3634,8 +3637,8 @@ body:has(#tour-pop:not([hidden])) #jor-divbar { display: none; }
         <h2>Mudanças programadas e eventos</h2>
         <p class="sub">Mudança: a partir de um mês, a linha passa a ter um novo valor (e segue a regra de reajuste dali em diante), como digitar na linha 15 ou 20 da planilha. Evento: um gasto ou uma receita pontual, que pode repetir todo ano corrigido pelo IPCA.</p>
         <div class="orc-grid">
-          <div><div class="row" style="margin-bottom:0"><h3 class="orc-h">Mudanças programadas</h3><button class="btn ghost tiny" type="button" data-addpl="mud">+ Mudança</button></div><div class="tscroll"><table id="tbl-mud"></table></div></div>
-          <div><div class="row" style="margin-bottom:0"><h3 class="orc-h">Eventos</h3><button class="btn ghost tiny" type="button" data-addpl="ev">+ Evento</button></div><div class="tscroll"><table id="tbl-ev"></table></div></div>
+          <div><div class="row" style="margin-bottom:0"><h3 class="orc-h">Mudanças programadas</h3><button class="btn ghost tiny" type="button" data-addpl="mud">+ Mudança</button><button class="btn ghost tiny" type="button" data-addpl="mudsim" title="Não mexe no plano: aparece na Simulação para você comparar">+ Só simulação</button></div><div class="tscroll"><table id="tbl-mud"></table></div></div>
+          <div><div class="row" style="margin-bottom:0"><h3 class="orc-h">Eventos</h3><button class="btn ghost tiny" type="button" data-addpl="ev">+ Evento</button><button class="btn ghost tiny" type="button" data-addpl="evsim" title="Não mexe no plano: aparece na Simulação para você comparar">+ Só simulação</button></div><div class="tscroll"><table id="tbl-ev"></table></div></div>
         </div>
       </section>
       <section data-nav="Itens dos módulos" class="panel" id="pl-itens">
@@ -4189,7 +4192,7 @@ body:has(#tour-pop:not([hidden])) #jor-divbar { display: none; }
     return new Promise(resolve => { const { data } = sb.auth.onAuthStateChange(async (ev) => { if (ev !== 'PASSWORD_RECOVERY') return; const s = prompt('Digite a nova senha (mínimo 8 caracteres):'); if (s && s.length >= 8) { const { error } = await sb.auth.updateUser({ password: s }); alert(error ? 'Não deu para trocar a senha: ' + error.message : 'Senha trocada.'); } }); resolve(data); });
   }
   // ---------- rodapé: compartilhar, administração e sair ----------
-  const SITE_V = 203;
+  const SITE_V = 204;
   const escH = v => String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const dataBR = v => v ? new Date(v).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' }) : '–';
   const css2 = `.side-foot .r{flex-wrap:wrap}.side-foot .lg-acoes{margin-left:auto;display:inline-flex;gap:10px}
@@ -7282,7 +7285,7 @@ function setEmCen(c, x, on) {
 }
 const simDifs = (c, its) => ehCenReal(c) ? [] : its.filter(x => !x.bloq && emCen(c, x) !== (x.uso === 'real'));
 function simExtra(c, its) { const s = new Set(); simDifs(c, its).forEach(x => s.add((emCen(c, x) ? '' : '-') + x.id)); return s; }
-const premDif = c => !ehCenReal(c) && !!((+(c.aj || {}).cdi || 0) || (+(c.aj || {}).ipca || 0) || (+c.extra || 0) || (c.manual !== '' && +c.manual > 0) || c.proprio);
+const premDif = c => !ehCenReal(c) && !!((+(c.aj || {}).cdi || 0) || (+(c.aj || {}).ipca || 0) || (+c.extra || 0) || (c.manual !== '' && +c.manual > 0) || c.proprio || (+c.custoPct || 0));
 const simPlanoDe = (c, its) => ehCenReal(c) ? calcPlano() : calcPlano(simExtra(c, its), c);
 // ordem no tempo: o Real primeiro; depois pelo mês da primeira mudança em relação ao Real
 function simOrdem(its) {
@@ -7334,7 +7337,7 @@ function renderSimCen(manter) {
   const nm = $('sc-nome'); if (document.activeElement !== nm) nm.value = cen.nome;
   $('sc-del').disabled = real || state.cenarios.length < 2;
   $('sc-prem').innerHTML = real ? 'O Real usa as premissas do <a href="#" data-lmtab="orcamento" data-lmsec="Premissas">Meu plano</a> (rendimento e IPCA).'
-    : premDif(cen) ? `Premissas próprias deste cenário: ${[+(cen.aj || {}).cdi ? `CDI ${+(cen.aj.cdi) > 0 ? '+' : ''}${num(+cen.aj.cdi)} p.p.` : '', +(cen.aj || {}).ipca ? `IPCA ${+(cen.aj.ipca) > 0 ? '+' : ''}${num(+cen.aj.ipca)} p.p.` : '', +cen.extra ? `renda extra ${fm(+cen.extra)}/mês` : '', cen.manual !== '' && +cen.manual > 0 ? `taxa de ${num(+cen.manual)}% a.a.` : '', cen.proprio ? 'carteira própria' : ''].filter(Boolean).join(', ')}. Mude em Premissas deste cenário.` : 'Usa as mesmas premissas do Meu plano. Para testar outra taxa, renda extra ou carteira, use Premissas deste cenário.';
+    : premDif(cen) ? `Premissas próprias deste cenário: ${[+(cen.aj || {}).cdi ? `CDI ${+(cen.aj.cdi) > 0 ? '+' : ''}${num(+cen.aj.cdi)} p.p.` : '', +(cen.aj || {}).ipca ? `IPCA ${+(cen.aj.ipca) > 0 ? '+' : ''}${num(+cen.aj.ipca)} p.p.` : '', +cen.extra ? `renda extra ${fm(+cen.extra)}/mês` : '', cen.manual !== '' && +cen.manual > 0 ? `taxa de ${num(+cen.manual)}% a.a.` : '', cen.proprio ? 'carteira própria' : '', +cen.custoPct ? `custos ${+cen.custoPct > 0 ? '+' : ''}${num(+cen.custoPct)}%${cen.custoGrp ? ' em ' + cen.custoGrp : ''}${cen.custoDe ? ' a partir de ' + mLabel(mIndex(cen.custoDe)) : ''}` : ''].filter(Boolean).join(', ')}. Mude em Premissas deste cenário.` : 'Usa as mesmas premissas do Meu plano. Para testar outra taxa, renda extra, aumento de custos ou carteira, use Premissas deste cenário.';
   // tabela: itens por módulo, uma coluna por cenário na ordem do tempo
   const pl = calcPlano(), fimI = scAnos() ? scFimIdx() : pl.i0 + Math.round((+state.plan.anos || 10) * 12);
   document.querySelectorAll('#sc-anos button').forEach(b => b.setAttribute('aria-pressed', String(+b.dataset.scanos === scAnos())));
@@ -11419,7 +11422,7 @@ function buildCenarios() {
   const cen = cenAtual();
   $('cenSeg').innerHTML = simOrdem().map(c => `<button type="button" data-cen="${c.id}" aria-pressed="${c.id === cen.id}" style="${c.id === cen.id ? '' : `border-color:${cenCor(c)}`}">${esc(c.nome)}${ehCenReal(c) ? ' · Real' : ''}</button>`).join('');
   $('cen-del').disabled = state.cenarios.length < 2 || ehCenReal(cen);
-  { const rl = ehCenReal(cen); document.querySelectorAll('#p-cenarios [data-bind^="aj::"], #p-cenarios [data-bind="cen::extra"], #p-cenarios [data-bind="cen::manual"]').forEach(el => { el.disabled = rl; }); $('cen-real-hint').hidden = !rl; }
+  { const rl = ehCenReal(cen); document.querySelectorAll('#p-cenarios [data-bind^="aj::"], #p-cenarios [data-bind="cen::extra"], #p-cenarios [data-bind="cen::manual"], #p-cenarios [data-bind^="cen::custo"]').forEach(el => { el.disabled = rl; }); $('cen-real-hint').hidden = !rl; }
   document.querySelectorAll('#p-cenarios aside [data-bind]').forEach(fillBound);
   $('cen-proprio').checked = !!cen.proprio; $('presetSeg').hidden = !cen.proprio;
   $('presetSeg').innerHTML = PRESETS.map(p => `<button type="button" data-preset="${p.id}" aria-pressed="${cen.preset === p.id}">${p.nome}</button>`).join('');
@@ -14432,7 +14435,7 @@ const mdFimIdx = () => mdAnos() ? Math.max(mIndex((state.plan || {}).inicio), HO
 function calcPlano(extra, cenSim) {
   const cs = cenSim && cenSim.id !== state.cenReal ? cenSim : null;   // premissas próprias só nos cenários de simulação
   if (!extra && !cs && planCache) return planCache;
-  const ipX = cs ? (+(cs.aj || {}).ipca || 0) / 100 : 0, rendaX = cs ? +cs.extra || 0 : 0;
+  const ipX = cs ? (+(cs.aj || {}).ipca || 0) / 100 : 0, rendaX = cs ? +cs.extra || 0 : 0, cusX = cs ? (+cs.custoPct || 0) / 100 : 0, cusG = cs && cs.custoGrp || '', cusI = cs && /^\d{4}-\d{2}$/.test(cs.custoDe || '') ? mIndex(cs.custoDe) : 0;
   const P = state.plan, i0 = mIndex(P.inicio), fim = Math.max(i0 + Math.round((+P.anos || 10) * 12), HOJE_IDX + Math.round(state.cfg.anos * 12) + 13, mdFimIdx(), scFimIdx());
   const L = linhasPlano(), cur = {}, salL = L.find(l => l.key === 'rec~sal');
   (state.orc.regimes || []).forEach(r => regDeds(r).forEach(d => { const key = 'ded~' + d.id;
@@ -14459,7 +14462,7 @@ function calcPlano(extra, cenSim) {
     L.filter(l => l.tipo === 'rec').forEach(l => { v[l.key] = ov[l.key] ?? (rg && l.key === 'rec~sal' ? salReg : cur[l.key]); bruto += v[l.key]; });
     if (rendaX) bruto += rendaX;   // renda extra do cenário de simulação
     L.filter(l => l.tipo === 'ded').forEach(l => { if (l.reg ? !(rg && rg.id === l.reg) : rg && l.modDed) { if (!(l.key in v)) v[l.key] = 0; return; } v[l.key] = ov[l.key] ?? (l.calc ? dedCLT(l.calc, v['rec~sal'] ?? bruto) : l.pct ? bruto * cur[l.ck || l.key] / 100 : cur[l.ck || l.key]); ded += v[l.key]; });
-    L.filter(l => l.tipo === 'cat').forEach(l => { v[l.key] = ov[l.key] ?? cur[l.key]; custos += v[l.key]; porGrupo[l.grupo] = (porGrupo[l.grupo] || 0) + v[l.key]; });
+    L.filter(l => l.tipo === 'cat').forEach(l => { v[l.key] = ov[l.key] ?? cur[l.key] * (cusX && i >= cusI && (!cusG || l.grupo === cusG) ? 1 + cusX : 1); custos += v[l.key]; porGrupo[l.grupo] = (porGrupo[l.grupo] || 0) + v[l.key]; });
     // eventos: férias, bônus... (os anuais repetem corrigidos pelo IPCA)
     let evRec = 0, evGas = 0; const evs = {};
     planEvs(P, extra).forEach(e => { const m0 = mIndex(e.mes); if (!e.mes || i < m0 || (i !== m0 && !(e.anual && (i - m0) % 12 === 0))) return;
@@ -14627,8 +14630,9 @@ document.addEventListener('click', e => {
   if (b.dataset.pltog) { const id = b.dataset.pltog; plFechados = plFechados.includes(id) ? plFechados.filter(x => x !== id) : plFechados.concat(id); try { localStorage.setItem('painel-pl-fechados', JSON.stringify(plFechados)); } catch (err) {} renderPlanoMM(calcPlano()); return; }
   if (b.dataset.plper) { const v = b.dataset.plper; plPer = /^\d+$/.test(v) ? +v : v; renderPlanoMM(calcPlano()); return; }
   if (b.dataset.addpl) { const P = state.plan, id = uid();
-    if (b.dataset.addpl === 'mud') { const l = linhasPlano()[0]; (P.mud = P.mud || []).push({ id, key: l ? l.key : '', mes: mKey(HOJE_IDX + 3), valor: l ? Math.round(l.base) : 0 }); }
-    else (P.ev = P.ev || []).push({ id, nome: 'Férias', tipo: 'gasto', valor: 15000, mes: mKey(HOJE_IDX + 1 + ((11 - calMonth(HOJE_IDX + 1)) + 12) % 12), anual: true });
+    const so = /sim$/.test(b.dataset.addpl);
+    if (/^mud/.test(b.dataset.addpl)) { const l = linhasPlano()[0]; (P.mud = P.mud || []).push(Object.assign({ id, key: l ? l.key : '', mes: mKey(HOJE_IDX + 3), valor: l ? Math.round(l.base) : 0 }, so ? { sim: true } : {})); }
+    else (P.ev = P.ev || []).push(Object.assign({ id, nome: 'Férias', tipo: 'gasto', valor: 15000, mes: mKey(HOJE_IDX + 1 + ((11 - calMonth(HOJE_IDX + 1)) + 12) % 12), anual: true }, so ? { sim: true } : {}));
     save(); renderOrcamento(); return; }
   if (b.dataset.delpl) { const [t, id] = b.dataset.delpl.split(':'), P = state.plan;
     if (t === 'mud') { if (!confirmar('Remover esta mudança programada?')) return; P.mud = P.mud.filter(x => x.id !== id); }
