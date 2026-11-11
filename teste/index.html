@@ -2292,7 +2292,7 @@ input[type="month"].mp-on { outline: 2px solid var(--accent); outline-offset: 1p
     </div>
     <div class="nav-mobile-sub" id="navMobileSub"></div>
   </div>
-  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 322</div></div>
+  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 323</div></div>
 </nav>
 <div class="sino-pop" id="sino-pop" role="dialog" aria-label="Atualizações das bases" hidden></div>
 <div class="sino-pop" id="pess-pop" role="dialog" aria-label="Seus avisos" hidden></div>
@@ -4258,7 +4258,7 @@ input[type="month"].mp-on { outline: 2px solid var(--accent); outline-offset: 1p
     return new Promise(resolve => { const { data } = sb.auth.onAuthStateChange(async (ev) => { if (ev !== 'PASSWORD_RECOVERY') return; const s = prompt('Digite a nova senha (mínimo 8 caracteres):'); if (s && s.length >= 8) { const { error } = await sb.auth.updateUser({ password: s }); alert(error ? 'Não deu para trocar a senha: ' + error.message : 'Senha trocada.'); } }); resolve(data); });
   }
   // ---------- rodapé: compartilhar, administração e sair ----------
-  const SITE_V = 208;
+  const SITE_V = 209;
   const escH = v => String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const dataBR = v => v ? new Date(v).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' }) : '–';
   const css2 = `.side-foot .r{flex-wrap:wrap}.side-foot .lg-acoes{margin-left:auto;display:inline-flex;gap:10px}
@@ -15508,7 +15508,7 @@ const INFO_SEC = {
   'global:Comparação de cenários': 'Lado a lado, como cada cenário termina o período: rendimento líquido, compras incluídas, investimentos, patrimônio e o menor saldo no caminho.',
   'global:Checkpoints': 'Cada checkpoint real contra o valor do plano no mesmo mês. Verde: acima do plano; vermelho: abaixo.',
   'global:Fluxo por ano': 'A projeção do cenário em destaque somada por ano: quanto entra, quanto sai, quanto rende e com quanto termina cada ano.',
-  'cenarios:Cenário e carteira': 'Monte cada cenário: ajustes de CDI e IPCA, renda extra e quais compras ele inclui. A carteira usa a sua carteira-alvo (04. Carteira), a não ser que você marque uma divisão própria para o cenário.',
+  'cenarios:Cenário e carteira': 'O que muda em cada cenário além dos itens. Escolha o cenário nos botões; o Real usa as premissas do Meu plano e fica travado aqui. Nome: como o cenário aparece nos botões, nas colunas e no gráfico. Ajuste no CDI: pontos percentuais somados ao CDI de Configurações só neste cenário; −1 simula juros mais baixos e +1 juros mais altos; vazio ou 0 não muda nada. Ajuste no IPCA: o mesmo para a inflação, que corrige as linhas com reajuste pelo IPCA; +2 simula inflação mais alta. Renda extra: valor em R$ somado à receita todo mês (bônus, PJ, aluguel); vazio se não houver. Taxa manual: rendimento líquido ao ano que substitui o da carteira (por exemplo 11 para 11% a.a.); vazio usa a carteira do cenário. Aumento de custos: quantos % os custos do Meu plano ficam maiores, além do IPCA (10 = custos 10% mais altos). Em quais custos: todos ou só um grupo (Fixos, Essenciais ou Estilo de vida). A partir de: mês em que o aumento começa; vazio vale desde já. Carteira do cenário: marque para usar uma divisão própria; sem marcar, usa a carteira-alvo (Finanças › Carteira). O efeito aparece no Patrimônio projetado de Simulação › Cenários.',
   'compras:Compras e financiamentos': 'O cadastro único do que sai ou entra de uma vez ou em parcelas, fora do dia a dia. Imóvel, Carro e Outro bem: preço, entrada, forma de pagamento, juros, custos de ter e valorização; o bem soma no patrimônio. Evento: um custo alto planejado que não vira bem, como casamento, lua de mel, festa de 15 anos, reforma, mudança, faculdade ou pós, intercâmbio, chegada de filho, tratamento de saúde ou Outro; sai do plano à vista ou parcelado. A receber: dinheiro que alguém te deve, em parcelas ou de uma vez, com a chance de receber; as parcelas somam no plano e o saldo soma no patrimônio. A pagar: uma dívida sua fora dos financiamentos de bens, como empréstimo de parente ou acordo; as parcelas saem do plano e o saldo desconta do patrimônio. Em cada card, "Uso" decide se entra na projeção real ou é só simulação, e cada cenário escolhe quais entram.',
   'cenarios:Bens do cenário': 'Quais bens do cadastro (Compras e bens) entram em cada cenário. Um bem pode estar em vários cenários; o cenário aberto aparece destacado.',
   'cenarios:Carteira por classe': 'A divisão por classe que o cenário usa (a carteira-alvo ou a divisão própria dele) e quanto cada uma rende líquido com a curva de juros atual. A média ponderada é o rendimento do cenário.',
@@ -17147,14 +17147,16 @@ function tipHtml(txt) {
   while ((m = re.exec(txt))) { const ant = txt.slice(ini, m.index + 1); if (/(?:\bEx|\bex|\ba\.a|\ba\.m|\bp\.ex|\bSr|\bSra|\bn[ºo]|\bart|\bInc)\.$/.test(ant)) continue; fr.push(ant.trim()); ini = m.index + 1; }
   const resto = txt.slice(ini).trim(); if (resto) fr.push(resto);
   if (fr.length < 2) return esc(txt);
-  return `<p>${esc(fr[0])}</p><ul>${fr.slice(1).map(f => `<li>${esc(f)}</li>`).join('')}</ul>`;
+  const rot = f => { const m = /^([^:;,.()]{2,32}): (.*)$/.exec(f); return m ? `<b>${esc(m[1])}:</b> ${esc(m[2])}` : esc(f); };
+  return `<p>${esc(fr[0])}</p><ul>${fr.slice(1).map(f => `<li>${rot(f)}</li>`).join('')}</ul>`;
 }
 function mostrarTip(btn) {
   tipDe = btn; tipEl.innerHTML = tipHtml(btn.dataset.tip || INFO_TIPO[btn.dataset.info] || ''); tipEl.hidden = false;
-  const r = btn.getBoundingClientRect(), w = Math.min(320, window.innerWidth - 24);
+  const r = btn.getBoundingClientRect(), w = Math.min(tipEl.textContent.length > 500 ? 460 : 320, window.innerWidth - 24);
   tipEl.style.width = w + 'px';
   tipEl.style.left = Math.max(12, Math.min(window.innerWidth - w - 12, r.left + r.width / 2 - w / 2)) + 'px';
-  const h = tipEl.offsetHeight; tipEl.style.top = (r.bottom + 8 + h > window.innerHeight ? r.top - h - 8 : r.bottom + 8) + 'px';
+  const h = tipEl.offsetHeight; let t = r.bottom + 8 + h > window.innerHeight ? r.top - h - 8 : r.bottom + 8;
+  if (t < 8) t = Math.max(8, Math.min(r.bottom + 8, window.innerHeight - h - 8)); tipEl.style.top = t + 'px';
 }
 const esconderTip = () => { tipEl.hidden = true; tipDe = null; };
 document.addEventListener('mouseover', e => { const b = e.target.closest && e.target.closest('.ibtn'); if (b) mostrarTip(b); });
