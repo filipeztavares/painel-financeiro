@@ -2104,6 +2104,8 @@ body:has(#tour-pop:not([hidden])) #jor-divbar { display: none; }
 #np-inicio .np-cat .vl small { display: block; white-space: nowrap; font-size: 11px; font-weight: 500; color: var(--muted); }
 #np-inicio .np-cat .vl { text-align: right; line-height: 1.2; }
 /* ---------- Simulação: cenários com sim ou não em cada item (v312) ---------- */
+#md-cens { margin: 4px 0 10px; }
+#md-cens button[aria-pressed="false"] { background: transparent; }
 .sc-seg button { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; padding: 7px 14px; }
 .sc-seg button i { width: 9px; height: 9px; border-radius: 50%; background: var(--c); display: inline-block; }
 .sc-seg button em { font-style: normal; font-size: 10px; padding: 1px 6px; border-radius: 99px; background: var(--accent-soft, rgba(168,88,42,.15)); color: var(--accent); }
@@ -2269,7 +2271,7 @@ body:has(#tour-pop:not([hidden])) #jor-divbar { display: none; }
     </div>
     <div class="nav-mobile-sub" id="navMobileSub"></div>
   </div>
-  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 319</div></div>
+  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 320</div></div>
 </nav>
 <div class="sino-pop" id="sino-pop" role="dialog" aria-label="Atualizações das bases" hidden></div>
 <div class="sino-pop" id="pess-pop" role="dialog" aria-label="Seus avisos" hidden></div>
@@ -2322,7 +2324,8 @@ body:has(#tour-pop:not([hidden])) #jor-divbar { display: none; }
     </section>
     <section data-nav="Patrimônio projetado" class="panel chart">
       <div class="row"><h2>Patrimônio projetado</h2><div class="seg" id="md-anos" role="group" aria-label="Até quando projetar"><button type="button" data-mdanos="0">Até o fim do plano</button><button type="button" data-mdanos="3">3 anos</button><button type="button" data-mdanos="5">5 anos</button><button type="button" data-mdanos="10">10 anos</button></div></div>
-      <p class="sub">Investido no plano atual, com as simulações que você marcou em Comparar e o esperado pela chance de cada item acontecer.</p>
+      <p class="sub">Investido no plano atual (o cenário Real). Para comparar, ligue os cenários da Simulação que quer ver no gráfico.</p>
+      <div class="seg sc-seg" id="md-cens" role="group" aria-label="Cenários no gráfico"></div>
       <div class="legend" id="lg-md"></div>
       <div id="ch-md"></div>
       <div class="readout" id="ro-md"></div>
@@ -4234,7 +4237,7 @@ body:has(#tour-pop:not([hidden])) #jor-divbar { display: none; }
     return new Promise(resolve => { const { data } = sb.auth.onAuthStateChange(async (ev) => { if (ev !== 'PASSWORD_RECOVERY') return; const s = prompt('Digite a nova senha (mínimo 8 caracteres):'); if (s && s.length >= 8) { const { error } = await sb.auth.updateUser({ password: s }); alert(error ? 'Não deu para trocar a senha: ' + error.message : 'Senha trocada.'); } }); resolve(data); });
   }
   // ---------- rodapé: compartilhar, administração e sair ----------
-  const SITE_V = 205;
+  const SITE_V = 206;
   const escH = v => String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const dataBR = v => v ? new Date(v).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' }) : '–';
   const css2 = `.side-foot .r{flex-wrap:wrap}.side-foot .lg-acoes{margin-left:auto;display:inline-flex;gap:10px}
@@ -15268,6 +15271,7 @@ document.addEventListener('click', e => {
   if (d.ganos) { state.cfg.anos = +d.ganos; save(); renderGlobal(); return; }
   if (d.scanos != null) { state.plan.anosSim = +d.scanos; planCache = null; save(); renderSimCen(true); return; }
   if (d.mdanos != null) { state.plan.anosMd = +d.mdanos; planCache = null; save(); renderMdChart(); return; }
+  if (d.mdcen != null) { const P = state.plan, L = Array.isArray(P.mdCens) ? P.mdCens.slice() : [], j = L.indexOf(d.mdcen); if (j < 0) L.push(d.mdcen); else L.splice(j, 1); P.mdCens = L; save(); renderMdChart(); return; }
   if (d.rendbase) { state.cfg.rendBase = d.rendbase; save(); renderGlobal(); return; }
   switch (t.id) {
     case 'cen-novo': { simNovoCen('Cenário ' + state.cenarios.length); buildCenarios(); renderCenarios(); break; }
@@ -15446,7 +15450,7 @@ const INFO_SEC = {
   'negfc:Fluxo mês a mês': 'Fluxo do mês = caixa da operação − investimentos + empréstimo − amortização. Se o caixa ficaria abaixo do mínimo, os sócios põem a diferença; se sobra, a empresa distribui o % escolhido do que passou do mínimo.',
   'negfc:No Meu plano': 'Projeção real: o dinheiro que você põe entra como gasto e o que chega para você como receita, mês a mês. Se marcar a saída da renda atual, as receitas do plano param a partir daquele mês, como no sabático. Só simulação: fica em Itens dos módulos para comparar.',
   'modulos:Linha do tempo': 'Os itens de todos os módulos no tempo: quando começam e, se tiverem parcelas, até quando vão. Cheio é Projeção real; tracejado é Só simulação. A % ao lado do nome é a chance de acontecer, quando for menor que 100%.',
-  'modulos:Patrimônio projetado': 'Linha azul: investido no plano atual (Meu plano). Verde tracejada: o plano somando os itens que estão só na simulação. Amarela: o esperado, pesando cada item pela chance de acontecer.',
+  'modulos:Patrimônio projetado': 'Linha azul: investido no plano atual (o cenário Real, que é o Meu plano). Os botões acima do gráfico ligam os outros cenários da Simulação, cada um numa linha tracejada com a cor dele. Começa sem nenhum. Amarela: o esperado pela chance dos itens reais, quando algum tem chance menor que 100%.',
   'inicio:Total dos módulos': 'Para cada módulo, quanto os itens do cenário Real mudam o investido no fim do plano (já incluído no plano). Para ver o efeito de outros itens, use o módulo Simulação.',
   'trabvg:Próximos no tempo': 'A linha do tempo só com os itens deste módulo: bens e eventos com as parcelas até o fim, e os valores a receber e a pagar.',
   'trabvg:Partes do módulo': 'Atalhos para as partes do módulo.',
@@ -15876,20 +15880,25 @@ function renderMdChart() {
   document.querySelectorAll('#md-anos button').forEach(b => b.setAttribute('aria-pressed', +b.dataset.mdanos === mdAnos()));
   const pl = calcPlano(), fimI = mdAnos() ? mdFimIdx() : pl.i0 + Math.round((+state.plan.anos || 10) * 12), st = Math.max(pl.i0, HOJE_IDX), n = fimI - st + 1;
   if (n < 2) { $('ch-md').innerHTML = '<p class="tl-vazio">Monte o Meu plano para ver a projeção.</p>'; $('lg-md').innerHTML = ''; $('md-cmp').textContent = ''; return; }
-  const its = itensVisiveis(), cmp = cmpItens(), arr = f => Array.from({ length: n }, (_, t) => f(st + t));
+  const its = itensVisiveis(), arr = f => Array.from({ length: n }, (_, t) => f(st + t));
   const series = [{ name: 'Plano atual', c: 'var(--s1)', v: arr(i => pl.inv[i] ?? null), w: 2.6 }];
-  let pc = null; if (cmp.size) { pc = calcPlano(cmp); series.push({ name: 'Com as simulações', c: 'var(--s7)', v: arr(i => pc.inv[i] ?? null), dash: true, w: 2.2 }); }
-  // esperado: tira de cada item real a parte que pode não acontecer e soma a parte provável das simulações marcadas
-  const pesados = its.filter(x => !x.bloq && x.ini && ((x.uso === 'real' && x.chance < 100) || (x.uso === 'sim' && cmp.has(x.id))));
+  // cenários escolhidos nos botões (state.plan.mdCens; padrão: nenhum)
+  const outros = simOrdem().filter(c => !ehCenReal(c)), liga = (Array.isArray(state.plan.mdCens) ? state.plan.mdCens : []).filter(id => outros.some(c => c.id === id));
+  $('md-cens').hidden = !outros.length;
+  $('md-cens').innerHTML = outros.map(c => `<button type="button" data-mdcen="${esc(c.id)}" aria-pressed="${liga.includes(c.id)}" style="--c:${cenCor(c)}"><i></i>${esc(c.nome)}</button>`).join('');
+  const itsT = itensModulos(), cens = outros.filter(c => liga.includes(c.id)).map(c => ({ c, p: simPlanoDe(c, itsT) }));
+  cens.forEach(({ c, p }) => series.push({ name: c.nome, c: cenCor(c), v: arr(i => p.inv[i] ?? null), dash: true, w: 2.2 }));
+  // esperado: tira de cada item real a parte que pode não acontecer
+  const pesados = its.filter(x => !x.bloq && x.ini && x.uso === 'real' && x.chance < 100);
   let esp = null;
   if (pesados.length) { const im = impactos(pesados); esp = arr(i => { let v = pl.inv[i] ?? 0; pesados.forEach(x => { const e = im[x.id]; if (!e) return; v += x.uso === 'real' ? -(1 - x.chance / 100) * e.ef(i) : (x.chance / 100) * e.ef(i); }); return v; });
     if (pesados.some(x => x.chance < 100)) series.push({ name: 'Esperado (pela chance)', c: 'var(--s3)', v: esp, dash: true, w: 2 }); else esp = null; }
   legend($('lg-md'), series);
   chart($('ch-md'), $('ro-md'), n, series, k, t => mLabel(st + t), 0);
   const fim = pl.inv[fimI] ?? 0, partes = [`Plano atual em ${mLabel(fimI)}: <b>${k(fim)}</b>`];
-  if (pc) { const d = (pc.inv[fimI] ?? 0) - fim; partes.push(`com as simulações: <b>${k(pc.inv[fimI] ?? 0)}</b> (<span class="${d < 0 ? 'neg' : 'pos'}">${d >= 0 ? '+' : '−'}${k(Math.abs(d))}</span>)`); }
+  cens.forEach(({ c, p }) => { const d = (p.inv[fimI] ?? 0) - fim; partes.push(`${esc(c.nome)}: <b>${k(p.inv[fimI] ?? 0)}</b> (<span class="${d < 0 ? 'neg' : 'pos'}">${d >= 0 ? '+' : '−'}${k(Math.abs(d))}</span>)`); });
   if (esp) partes.push(`esperado pela chance: <b>${k(esp[n - 1])}</b>`);
-  $('md-cmp').innerHTML = partes.join(' · ') + `. Monte cenários e ajuste a chance de cada item em <a href="#" data-lmtab="simcen" data-lmsec="Simulação de cenários">Simulação › Cenários</a>.`;
+  $('md-cmp').innerHTML = partes.join(' · ') + `. ${outros.length ? 'Ligue os cenários acima para comparar, ou monte outros' : 'Para comparar caminhos, monte cenários'} em <a href="#" data-lmtab="simcen" data-lmsec="Simulação de cenários">Simulação › Cenários</a>.`;
 }
 function renderHmTot() {
   const box = $('hm-tot'), its = itensModulos().filter(x => !x.bloq && x.ini); box.hidden = !its.length; if (!its.length) return;
