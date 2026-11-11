@@ -2300,7 +2300,7 @@ svg path[data-si] { transition: opacity .12s; }
     </div>
     <div class="nav-mobile-sub" id="navMobileSub"></div>
   </div>
-  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 329</div></div>
+  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 330</div></div>
 </nav>
 <div class="sino-pop" id="sino-pop" role="dialog" aria-label="Atualizações das bases" hidden></div>
 <div class="sino-pop" id="pess-pop" role="dialog" aria-label="Seus avisos" hidden></div>
@@ -4268,7 +4268,7 @@ svg path[data-si] { transition: opacity .12s; }
     return new Promise(resolve => { const { data } = sb.auth.onAuthStateChange(async (ev) => { if (ev !== 'PASSWORD_RECOVERY') return; const s = prompt('Digite a nova senha (mínimo 8 caracteres):'); if (s && s.length >= 8) { const { error } = await sb.auth.updateUser({ password: s }); alert(error ? 'Não deu para trocar a senha: ' + error.message : 'Senha trocada.'); } }); resolve(data); });
   }
   // ---------- rodapé: compartilhar, administração e sair ----------
-  const SITE_V = 215;
+  const SITE_V = 216;
   const escH = v => String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const dataBR = v => v ? new Date(v).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' }) : '–';
   const css2 = `.side-foot .r{flex-wrap:wrap}.side-foot .lg-acoes{margin-left:auto;display:inline-flex;gap:10px}
@@ -16151,7 +16151,7 @@ function renderJogo() {
   let h = '';
   vis.forEach((m, i) => { const a0 = i * ST + GAP, a1 = (i + 1) * ST - GAP, mid = (a0 + a1) / 2, [ix, iy] = pt(mid, R0 + (R1 - R0) * .6), [nx, ny] = pt(mid, R0 + (R1 - R0) * .26), g = jgProg(m), cor = m.breve ? 'var(--line)' : m.corNav;
     const ic = String(MOD_SVG[m.id] || '').replace('<svg ', `<svg x="${f2(ix - 17)}" y="${f2(iy - 17)}" width="34" height="34" `).replace(/stroke="currentColor"/, `stroke="${m.breve ? 'var(--muted)' : '#0F1F3D'}"`);
-    h += `<g class="jg-sl${i === jgSel ? ' on' : ''}" data-jgi="${i}" tabindex="0" role="button" aria-label="Casa ${i + 1}: ${esc(m.nome)}"><path class="jg-hit" d="${ann(a0, a1, R0, R1)}" fill="transparent"/><g class="jg-f"><path class="jg-shape" d="${ann(a0, a1, R0, R1)}" fill="${cor}"/><path d="${arc(a0 + 1, a1 - 1, R1 + 11)}" stroke="var(--line)" stroke-width="5" stroke-linecap="round" fill="none"/>${g && g.f ? `<path d="${arc(a0 + 1, a0 + 1 + (a1 - a0 - 2) * Math.min(1, g.f / g.n), R1 + 11)}" stroke="${cor}" stroke-width="5" stroke-linecap="round" fill="none"/>` : ''}<g class="jg-ic">${ic}</g><g class="jg-ic"><text x="${f2(nx)}" y="${f2(ny + 5)}" text-anchor="middle" font-family="Poppins, sans-serif" font-weight="700" font-size="15" fill="${m.breve ? 'var(--muted)' : '#0F1F3D'}" opacity=".7">${i + 1}</text></g></g></g>`; });
+    h += `<g class="jg-sl${i === jgSel ? ' on' : ''}" data-jgi="${i}" tabindex="0" role="button" aria-label="Módulo ${i + 1}: ${esc(m.nome)}"><path class="jg-hit" d="${ann(a0, a1, R0, R1)}" fill="transparent"/><g class="jg-f"><path class="jg-shape" d="${ann(a0, a1, R0, R1)}" fill="${cor}"/><path d="${arc(a0 + 1, a1 - 1, R1 + 11)}" stroke="var(--line)" stroke-width="5" stroke-linecap="round" fill="none"/>${g && g.f ? `<path d="${arc(a0 + 1, a0 + 1 + (a1 - a0 - 2) * Math.min(1, g.f / g.n), R1 + 11)}" stroke="${cor}" stroke-width="5" stroke-linecap="round" fill="none"/>` : ''}<g class="jg-ic">${ic}</g><g class="jg-ic"><text x="${f2(nx)}" y="${f2(ny + 5)}" text-anchor="middle" font-family="Poppins, sans-serif" font-weight="700" font-size="15" fill="${m.breve ? 'var(--muted)' : '#0F1F3D'}" opacity=".7">${i + 1}</text></g></g></g>`; });
   h += `<circle cx="${CX}" cy="${CY}" r="${R0 - 6}" fill="var(--panel)" stroke="var(--line)"/>`;
   const g0 = $('jg-rot'); g0.innerHTML = h; g0.style.transform = `rotate(${jgRot}deg)`; g0.querySelectorAll('.jg-ic').forEach(x => x.style.transform = `rotate(${-jgRot}deg)`);
   jgGrow(jgSel, true); jgMostra(jgSel);
@@ -16161,11 +16161,11 @@ function jgMostra(i) {
   const vis = jgMods(), m = vis[i]; if (!m) return; const g = jgProg(m), sug = jgSugestao(vis);
   $('jg-hn').textContent = ''; $('jg-hn').hidden = true; $('jg-ht').textContent = m.nome; $('jg-ht').classList.toggle('longo', m.nome.length > 11);
   const prox = g && g.prox ? g.prox : null, pct = g ? Math.round(g.f / g.n * 100) : null;
-  $('jg-info').innerHTML = `<span class="jg-casa">Casa ${i + 1} de ${vis.length}${m.breve ? ' · em breve' : ''}${m === sug ? ' · próxima jogada sugerida' : ''}</span><h3>${esc(m.nome)}</h3><p>${esc(m.desc)}</p>
+  $('jg-info').innerHTML = `<span class="jg-casa">Módulo ${i + 1} de ${vis.length}${m.breve ? ' · em breve' : ''}${m === sug ? ' · próxima jogada sugerida' : ''}</span><h3>${esc(m.nome)}</h3><p>${esc(m.desc)}</p>
     ${m.breve ? '' : `<div class="jg-res">${modResumo(m)}</div>`}
     ${g ? `<div><div class="jg-pl"><span>${g.f} de ${g.n} casas deste módulo</span><span>${pct}% completo</span></div><div class="jg-bar"><span style="width:${pct}%;background:${m.corNav}"></span></div></div>` : ''}
     ${prox ? `<a href="#" class="jg-prox" data-jgir="${esc(prox.tab || '')}" data-jgsec="${esc(prox.sec || '')}"><span><b>Próxima casa: ${esc(prox.t)}</b><small>${esc(prox.d || '')}</small></span><span class="jg-pt">+${JG_PTS.casa}</span></a>` : g && g.f === g.n ? `<div class="jg-prox"><span><b>Módulo completo</b><small>Valeu +${JG_PTS.modulo} pontos.</small></span></div>` : ''}
-    <div class="jg-bts">${m.breve ? '<button type="button" class="btn" disabled>Em breve</button>' : `<button type="button" class="btn" data-irmod="${m.id}">Entrar nesta casa</button>`}<button type="button" class="btn ghost" id="jg-girar">Próxima jogada</button></div>`;
+    <div class="jg-bts">${m.breve ? '<button type="button" class="btn" disabled>Em breve</button>' : `<button type="button" class="btn" data-irmod="${m.id}">Entrar no módulo</button>`}<button type="button" class="btn ghost" id="jg-girar">Próxima jogada</button></div>`;
 }
 function jgGira(i) { const vis = jgMods(), N = vis.length, mid = (i + .5) * 360 / N; let t = -mid; while (t > jgRot - 360) t -= 360; jgRot = t;
   const g0 = $('jg-rot'); g0.style.transform = `rotate(${jgRot}deg)`; g0.querySelectorAll('.jg-ic').forEach(x => x.style.transform = `rotate(${-jgRot}deg)`);
@@ -16222,7 +16222,7 @@ function renderJgRes() {
   const cols = ['#5B8DEF', '#F2C14E', '#EE6C4D', '#3FB58A', '#8E7CF0', '#F0A46B']; let pt = '', k = 7;
   const P = (a, rr) => { const t = (a - 90) * Math.PI / 180; return (50 + rr * Math.cos(t)).toFixed(1) + ' ' + (50 + rr * Math.sin(t)).toFixed(1); };
   for (let y = 0; y < 3; y++) for (let x = 0; x < 6; x++) { k = (k * 37 + 11) % 97; if (k % 4 === 0) continue; pt += `<path d="M50 50 L${P(2, 44)} A44 44 0 0 1 ${P(70, 44)} Z" fill="${cols[k % 6]}" transform="translate(${x * 36} ${y * 36}) scale(.34) rotate(${(k % 5) * 72} 50 50)"/>`; }
-  box.innerHTML = `<div class="jg-fin"><div class="jg-fin-h"><svg class="pat" viewBox="0 0 216 108" aria-hidden="true">${pt}</svg><h3>Finanças · Resumo</h3>${g ? `<span class="jg-pill">Casa ${idx + 1} · ${Math.round(g.f / g.n * 100)}%</span>` : ''}</div>
+  box.innerHTML = `<div class="jg-fin"><div class="jg-fin-h"><svg class="pat" viewBox="0 0 216 108" aria-hidden="true">${pt}</svg><h3>Finanças · Resumo</h3>${g ? `<span class="jg-pill">Módulo ${idx + 1} · ${Math.round(g.f / g.n * 100)}%</span>` : ''}</div>
     <div class="jg-fin-b"><div class="jg-k3">
       <div class="jg-k" style="--c:#F2C14E"><small>Patrimônio</small><b>${pat ? fm(pat) : '–'}</b><span>${pat ? 'hoje' : 'cadastre a carteira'}</span></div>
       <div class="jg-k" style="--c:#EE6C4D"><small>Gasto no mês</small><b class="${usado != null && D.tprev > D.tp * 1.02 ? 'neg' : ''}">${usado == null ? '–' : pct(usado, 0)}</b><span>${usado == null ? 'sem custos projetados' : `do projetado, dia ${D.dia} de ${D.dm}`}</span></div>
@@ -17946,7 +17946,7 @@ function jorSimDb(real) {
       if (tr && !cad && tx) { tx.style.display = 'none'; const x = +tx.getAttribute('x') - 9, y = +tx.getAttribute('y') - 14;
         tx.insertAdjacentHTML('afterend', `<path class="jor-cad" transform="translate(${x.toFixed(1)} ${y.toFixed(1)}) scale(.75)" d="${CAD}" fill="var(--muted)"/>`); }
       else if (!tr && cad) { cad.remove(); if (tx) tx.style.display = ''; }
-      if (m) s.setAttribute('aria-label', `Casa ${+s.dataset.jgi + 1}: ${m.nome}${tr ? ' (bloqueado)' : ''}`);
+      if (m) s.setAttribute('aria-label', `Módulo ${+s.dataset.jgi + 1}: ${m.nome}${tr ? ' (bloqueado)' : ''}`);
     });
     if ($('jg-rot') && $('jg-rot').children.length) { try { jgMostra(jgSel); } catch (e) {} }
   }
@@ -17954,8 +17954,8 @@ function jorSimDb(real) {
   { const o = jgMostra; jgMostra = function (i) { o(i); if (!ativa()) return; const m = jgMods()[i], box = $('jg-info'); if (!m || !box) return;
     box.querySelectorAll('.jg-prox').forEach(x => x.remove());
     const b = box.querySelector('.jg-bts .btn:not(.ghost)'), ca = box.querySelector('.jg-casa');
-    if (rodaTr(m)) { if (ca) ca.textContent = `Casa ${i + 1} de ${jgMods().length} · bloqueado`; if (b) { b.outerHTML = `<button type="button" class="btn ghost" data-irmod="${m.id}"><span class="jor-lock"></span> Bloqueado</button>`; } }
-    else if (b) b.textContent = m.id === 'uso' ? 'Começar o passo a passo' : m.id === 'fin' ? 'Entrar em Finanças' : 'Entrar nesta casa'; }; }
+    if (rodaTr(m)) { if (ca) ca.textContent = `Módulo ${i + 1} de ${jgMods().length} · bloqueado`; if (b) { b.outerHTML = `<button type="button" class="btn ghost" data-irmod="${m.id}"><span class="jor-lock"></span> Bloqueado</button>`; } }
+    else if (b) b.textContent = m.id === 'uso' ? 'Começar o passo a passo' : m.id === 'fin' ? 'Entrar em Finanças' : 'Entrar no módulo'; }; }
   { const o = jgPick; jgPick = function (i) { const m = jgMods()[i];   // um clique na fatia já abre o módulo
     if (ativa()) { if (m && m.fixo) return irFin(); if (rodaTr(m)) { if (i !== jgSel) o(i); return bloqMod(m); } if (m && !m.breve) { if (i !== jgSel) o(i); return showTab(m.vg || m.tabs[0]); } return o(i); }
     if (m && !m.breve) { if (i !== jgSel) o(i); return showTab(m.vg || m.tabs[0]); }
