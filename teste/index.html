@@ -2226,7 +2226,7 @@ body:has(#tour-pop:not([hidden])) #jor-divbar { display: none; }
     </div>
     <div class="nav-mobile-sub" id="navMobileSub"></div>
   </div>
-  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 314</div></div>
+  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 315</div></div>
 </nav>
 <div class="sino-pop" id="sino-pop" role="dialog" aria-label="Atualizações das bases" hidden></div>
 <div class="sino-pop" id="pess-pop" role="dialog" aria-label="Seus avisos" hidden></div>
@@ -3163,10 +3163,9 @@ body:has(#tour-pop:not([hidden])) #jor-divbar { display: none; }
       </div>
       <p class="hint" id="sc-prem"></p>
     </section>
-    <section data-nav="Itens dos módulos" class="panel">
-      <h2>Itens dos módulos</h2>
+    <section data-nav="Simulação de cenários" class="panel">
+      <div class="row" style="margin-bottom:0"><h2>Simulação de cenários</h2><button class="btn ghost tiny" type="button" id="sc-chance" aria-pressed="false" style="margin-left:auto;margin-right:8px">Mostrar chance</button></div>
       <p class="sub">Cada coluna é um cenário. Clique em <b>+ Incluir</b> para colocar o item naquele cenário; ele fica colorido como <b>✓ Incluído</b>. Clique de novo para tirar. A coluna destacada é o cenário aberto. A coluna do Real é o que vale em Finanças: mexer nela muda Finanças na hora. Item novo começa fora do Real.</p>
-      <label class="sc-opt"><input type="checkbox" id="sc-chance"> Mostrar a coluna Chance</label>
       <div class="tscroll"><table id="tbl-sc"></table></div>
       <p class="hint" id="sc-chance-hint" style="margin-top:8px" hidden>Chance: o quanto você acha provável que o item aconteça. Os cenários usam o valor cheio; a chance entra na linha "Real esperado pela chance" do gráfico.</p>
     </section>
@@ -3221,7 +3220,7 @@ body:has(#tour-pop:not([hidden])) #jor-divbar { display: none; }
       </section>
       <section data-nav="Bens do cenário" class="panel">
         <div class="row"><h2>Bens em cada cenário</h2><button class="btn tiny ghost" type="button" data-tab="compras">Cadastrar ou editar bens</button></div>
-        <p class="sub" style="font-size:12.5px;margin:0 0 10px">Marque quais bens de Compras e bens entram em cada cenário. A coluna destacada é o cenário aberto; a do Real muda o Meu plano. Os outros itens dos módulos (viagens, filhos, negócios, trocas de emprego) ficam em <a href="#" data-lmtab="simcen" data-lmsec="Itens dos módulos">Simulação › Cenários</a>.</p>
+        <p class="sub" style="font-size:12.5px;margin:0 0 10px">Marque quais bens de Compras e bens entram em cada cenário. A coluna destacada é o cenário aberto; a do Real muda o Meu plano. Os outros itens dos módulos (viagens, filhos, negócios, trocas de emprego) ficam em <a href="#" data-lmtab="simcen" data-lmsec="Simulação de cenários">Simulação › Cenários</a>.</p>
         <div class="cresumo" id="comprasResumo"></div>
       </section>
       <section data-nav="Carteira por classe" class="panel">
@@ -4188,7 +4187,7 @@ body:has(#tour-pop:not([hidden])) #jor-divbar { display: none; }
     return new Promise(resolve => { const { data } = sb.auth.onAuthStateChange(async (ev) => { if (ev !== 'PASSWORD_RECOVERY') return; const s = prompt('Digite a nova senha (mínimo 8 caracteres):'); if (s && s.length >= 8) { const { error } = await sb.auth.updateUser({ password: s }); alert(error ? 'Não deu para trocar a senha: ' + error.message : 'Senha trocada.'); } }); resolve(data); });
   }
   // ---------- rodapé: compartilhar, administração e sair ----------
-  const SITE_V = 200;
+  const SITE_V = 201;
   const escH = v => String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const dataBR = v => v ? new Date(v).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' }) : '–';
   const css2 = `.side-foot .r{flex-wrap:wrap}.side-foot .lg-acoes{margin-left:auto;display:inline-flex;gap:10px}
@@ -5210,7 +5209,7 @@ function renderNegFc() {
       <li>O lucro distribuído e o pró-labore líquido entram como <b>receita</b>: ${fm(R.voceMad)}/mês quando maduro.</li>
       ${x.saida.on ? `<li>A partir de ${mLabel(mIndex(x.saida.mes || x.ini))}, a sua receita atual do Meu plano para${fimPl ? ` até o fim do plano (${mLabel(fimPl)})` : ''}, como no sabático.</li>` : ''}
       <li>Depois do horizonte de ${x.anos} ${x.anos > 1 ? 'anos' : 'ano'}, o plano segue com o negócio rodando nas mesmas premissas.</li></ul>
-    <p class="subdet">${x.uso === 'real' ? 'Está na projeção real.' : 'Está só como simulação: compare e decida no módulo Simulação.'} <a href="#" data-lmtab="simcen" data-lmsec="Itens dos módulos">Abrir na Simulação</a></p>`;
+    <p class="subdet">${x.uso === 'real' ? 'Está na projeção real.' : 'Está só como simulação: compare e decida no módulo Simulação.'} <a href="#" data-lmtab="simcen" data-lmsec="Simulação de cenários">Abrir na Simulação</a></p>`;
 }
 
 /* ---------- Abrir empresa: natureza jurídica, comparador de regimes e passo a passo ---------- */
@@ -7326,7 +7325,7 @@ function renderSimCen(manter) {
   // ao clicar em Incluir as colunas não trocam de lugar; a ordem do tempo volta ao abrir a aba ou trocar de cenário
   if (manter && simOrdFix && simOrdFix.length === ord.length && ord.every(c => simOrdFix.includes(c.id))) ord = simOrdFix.map(id => ord.find(c => c.id === id));
   simOrdFix = ord.map(c => c.id);
-  const vch = !!state.simChance; if ($('sc-chance')) $('sc-chance').checked = vch; if ($('sc-chance-hint')) $('sc-chance-hint').hidden = !vch;
+  const vch = !!state.simChance; if ($('sc-chance')) { $('sc-chance').setAttribute('aria-pressed', vch); $('sc-chance').textContent = vch ? 'Esconder chance' : 'Mostrar chance'; } if ($('sc-chance-hint')) $('sc-chance-hint').hidden = !vch;
   if (!state.cenarios.find(c => c.id === state.cenAtivo)) state.cenAtivo = R.id;
   const cen = state.cenarios.find(c => c.id === state.cenAtivo), real = ehCenReal(cen);
   $('sc-seg').innerHTML = ord.map(c => `<button type="button" data-sccen="${esc(c.id)}" aria-pressed="${c.id === cen.id}" style="--c:${ehCenReal(c) ? 'var(--s1)' : cenCor(c)}"><i></i>${esc(c.nome)}${ehCenReal(c) ? '<em>Real</em>' : ''}</button>`).join('');
@@ -7384,12 +7383,13 @@ document.addEventListener('click', e => {
   const b = e.target.closest('button'); if (!b) return;
   if (b.dataset.sccen) { state.cenAtivo = b.dataset.sccen; save(); renderSimCen(); return; }
   if (b.dataset.sctg) { const [cid, id] = b.dataset.sctg.split('|'), c = state.cenarios.find(x => x.id === cid), x = itensModulos().find(y => y.id === id); if (c && x && setEmCen(c, x, b.getAttribute('aria-pressed') !== 'true')) renderSimCen(true); return; }
+  if (b.id === 'sc-chance') { state.simChance = !state.simChance; save(); renderSimCen(true); return; }
   if (b.id === 'sc-novo') { let n = 2; while (state.cenarios.some(c => c.nome === 'Cenário ' + n)) n++; simNovoCen('Cenário ' + n); renderSimCen(); return; }
   if (b.id === 'sc-dup' || b.id === 'sc-dup2') { const o = cenAtual(); simNovoCen(o.nome + ' (cópia)', o); renderSimCen(); return; }
   if (b.id === 'sc-del') { if (simApagar(cenAtual())) renderSimCen(); return; }
   if (b.id === 'sc-real') { if (simTornarReal(cenAtual())) renderTab(); return; }
 });
-document.addEventListener('change', e => { if (e.target.dataset && e.target.dataset.ichance && tab === 'simcen') { planCache = null; renderSimCen(true); return; } if (e.target.id === 'sc-chance') { state.simChance = e.target.checked; save(); renderSimCen(true); return; } if (e.target.id !== 'sc-nome') return; const c = cenAtual(), v = TXT(e.target.value, 60).trim(); if (!c || !v) { e.target.value = c ? c.nome : ''; return; } c.nome = v; save(); renderSimCen(); });
+document.addEventListener('change', e => { if (e.target.dataset && e.target.dataset.ichance && tab === 'simcen') { planCache = null; renderSimCen(true); return; } if (e.target.id !== 'sc-nome') return; const c = cenAtual(), v = TXT(e.target.value, 60).trim(); if (!c || !v) { e.target.value = c ? c.nome : ''; return; } c.nome = v; save(); renderSimCen(); });
 // no cadastro de cada módulo: onde o item está e o link para decidir na Simulação (v313: o seletor Só simulação / Projeção real saiu dos módulos)
 function simUsoHtml(id, rot) {
   const x = itensModulos().find(y => y.id === id), real = x && x.uso === 'real';
@@ -14675,8 +14675,8 @@ function setUsoItem(id, uso) {
 function renderItens() {
   const tb = $('tbl-itens'); if (!tb) return;
   const its = itensModulos(), real = its.filter(x => x.uso === 'real'), nS = its.length - real.length;
-  $('pl-itens-res').innerHTML = its.length ? `<span><b>${real.length}</b> no plano (cenário Real)</span><span><b>${nS}</b> só na simulação</span><a href="#" data-lmtab="simcen" data-lmsec="Itens dos módulos">Mudar na Simulação ›</a>` : '';
-  if (!real.length) { tb.innerHTML = `<tbody><tr><td class="hint">${its.length ? 'Nenhum item dos módulos está no Real ainda. Escolha o que entra em <a href="#" data-lmtab="simcen" data-lmsec="Itens dos módulos">Simulação › Cenários</a>.' : 'Nenhum item ainda. Cadastre bens em Bens e compromissos, eventos de stock options em Carreira ou eventos aqui no Plano.'}</td></tr></tbody>`; return; }
+  $('pl-itens-res').innerHTML = its.length ? `<span><b>${real.length}</b> no plano (cenário Real)</span><span><b>${nS}</b> só na simulação</span><a href="#" data-lmtab="simcen" data-lmsec="Simulação de cenários">Mudar na Simulação ›</a>` : '';
+  if (!real.length) { tb.innerHTML = `<tbody><tr><td class="hint">${its.length ? 'Nenhum item dos módulos está no Real ainda. Escolha o que entra em <a href="#" data-lmtab="simcen" data-lmsec="Simulação de cenários">Simulação › Cenários</a>.' : 'Nenhum item ainda. Cadastre bens em Bens e compromissos, eventos de stock options em Carreira ou eventos aqui no Plano.'}</td></tr></tbody>`; return; }
   const grupos = MODS.filter(m => real.some(x => x.mod === m.id));
   tb.innerHTML = `<thead><tr><th>Item</th><th>Tipo</th><th>Quando</th><th>Valores</th></tr></thead><tbody>${grupos.map(m => `<tr class="it-g"><td colspan="4"><i style="background:${m.cor}"></i>${esc(m.nome)}</td></tr>` +
     real.filter(x => x.mod === m.id).sort((a, b) => (a.ini || '9999') < (b.ini || '9999') ? -1 : 1).map(x => `<tr>
@@ -15439,7 +15439,7 @@ const INFO_SEC = {
   'comparador:Resultado no prazo': 'Quanto cada produto entrega no prazo escolhido, bruto e líquido de IR, com a curva de juros do Focus. A melhor opção fica em destaque.',
   'comparador:Valor por mês': 'O valor líquido de cada produto se você resgatasse em cada mês, para ver qual vence em prazos diferentes.',
   'simcen:Cenários': 'O Real é o cenário que vale em Finanças. Os outros começam como cópia do Real e você liga ou desliga itens. A ordem é a do tempo: vem antes o cenário cuja primeira diferença para o Real acontece antes.',
-  'simcen:Itens dos módulos': 'Cada linha é um item que algum módulo cadastrou e mexe com dinheiro. Sim: o item entra naquele cenário. A coluna Real é o que está em Finanças: mudar ali muda o Meu plano na hora. Item novo começa como só simulação.',
+  'simcen:Simulação de cenários': 'Aqui você monta cada cenário. Cada linha é um item que algum módulo cadastrou e mexe com dinheiro; cada coluna é um cenário. Clique em + Incluir para colocar o item naquele cenário (fica ✓ Incluído) e clique de novo para tirar. A coluna do Real é o que está em Finanças: mudar ali muda o Meu plano na hora. Item novo começa fora do Real. Em Mostrar chance você vê e ajusta a probabilidade de cada item acontecer, que vira a linha Real esperado pela chance no gráfico.',
   'simcen:Patrimônio projetado': 'Cada linha é o Meu plano com os itens e as premissas daquele cenário: investido mais o que fica parado. A amarela tracejada é o Real pesando cada item pela chance de acontecer.',
   'simcen:Decidir': 'Tornar este o real: os itens do cenário passam a valer em Finanças, e o Real de hoje vira um cenário comum, para você voltar se quiser.',
   'simulador:Parâmetros': 'Valor inicial, aporte mensal, reajuste do aporte, prazo, produto e meta da simulação.',
@@ -15810,7 +15810,7 @@ function renderMdChart() {
   const fim = pl.inv[fimI] ?? 0, partes = [`Plano atual em ${mLabel(fimI)}: <b>${k(fim)}</b>`];
   if (pc) { const d = (pc.inv[fimI] ?? 0) - fim; partes.push(`com as simulações: <b>${k(pc.inv[fimI] ?? 0)}</b> (<span class="${d < 0 ? 'neg' : 'pos'}">${d >= 0 ? '+' : '−'}${k(Math.abs(d))}</span>)`); }
   if (esp) partes.push(`esperado pela chance: <b>${k(esp[n - 1])}</b>`);
-  $('md-cmp').innerHTML = partes.join(' · ') + `. Monte cenários e ajuste a chance de cada item em <a href="#" data-lmtab="simcen" data-lmsec="Itens dos módulos">Simulação › Cenários</a>.`;
+  $('md-cmp').innerHTML = partes.join(' · ') + `. Monte cenários e ajuste a chance de cada item em <a href="#" data-lmtab="simcen" data-lmsec="Simulação de cenários">Simulação › Cenários</a>.`;
 }
 function renderHmTot() {
   const box = $('hm-tot'), its = itensModulos().filter(x => !x.bloq && x.ini); box.hidden = !its.length; if (!its.length) return;
