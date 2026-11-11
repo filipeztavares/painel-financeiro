@@ -708,6 +708,17 @@ tr.totrow td { font-weight: 700; border-top: 2px solid var(--line); }
 .pj-bens .orc-h { display: block; margin: 4px 0 2px; }
 .pj-ben { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) auto; gap: 6px; align-items: center; padding: 6px 0; border-bottom: 1px solid var(--line); }
 .pj-ben:last-of-type { border-bottom: 0; }
+/* passos CLT e PJ: cartões um embaixo do outro, na largura toda (v311) */
+.pj-params { grid-template-columns: minmax(0, 1fr); }
+.pj-params fieldset { grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); }
+.pj-params fieldset > .hint, .pj-params fieldset > .seg, .pj-params fieldset > .pj-fatcalc, .pj-params fieldset > .check, .pj-params .pj-bens { grid-column: 1 / -1; }
+@media (min-width: 1100px) { .pj-params fieldset { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+@media (min-width: 700px) {
+  .pj-params .pj-ben { grid-template-columns: minmax(0, 1fr) 120px 120px 104px; }
+  .pj-params .pj-ben input[type=text], .pj-params .pj-ben select.pjb-sel { grid-column: auto; }
+  .pj-params .pj-ben-novo:has(.pjb-nome:not([hidden])) { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) 120px 120px 104px; }
+  .pj-params .pj-ben .btn { width: 100%; }
+}
 .pj-ben input[type=text], .pj-ben select.pjb-sel { grid-column: 1 / -1; } .pj-ben input, .pj-ben select { width: 100%; }
 #fat-prev:empty, #ext-prev:empty { display: none; }
 #ext-prev { margin-top: 14px; }
@@ -2177,7 +2188,7 @@ body:has(#tour-pop:not([hidden])) #jor-divbar { display: none; }
     </div>
     <div class="nav-mobile-sub" id="navMobileSub"></div>
   </div>
-  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 310</div></div>
+  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 311</div></div>
 </nav>
 <div class="sino-pop" id="sino-pop" role="dialog" aria-label="Atualizações das bases" hidden></div>
 <div class="sino-pop" id="pess-pop" role="dialog" aria-label="Seus avisos" hidden></div>
@@ -3649,7 +3660,7 @@ body:has(#tour-pop:not([hidden])) #jor-divbar { display: none; }
         <h2><span id="pj-h-clt">1. Seu CLT hoje</span></h2>
         <p class="sub" id="pj-d-clt"></p>
         <div class="seg pj-pedir" id="pj-pedir-clt" role="group" aria-label="Como calcular o salário"><button type="button" data-pjpedir="0">Tenho uma proposta</button><button type="button" data-pjpedir="1">Quanto devo pedir?</button></div>
-        <div class="params">
+        <div class="params pj-params">
       <fieldset>
         <legend>Salário</legend>
         <label id="pj-l-clt">Salário bruto (R$/mês)<input type="number" step="500" min="0" data-bind="pj::clt"></label>
@@ -3675,7 +3686,7 @@ body:has(#tour-pop:not([hidden])) #jor-divbar { display: none; }
         <h2><span id="pj-h-pj">2. A proposta PJ</span></h2>
         <p class="sub" id="pj-d-pj"></p>
         <div class="seg pj-pedir" id="pj-pedir-pj" role="group" aria-label="Como calcular o contrato"><button type="button" data-pjpedir="0">Tenho uma proposta</button><button type="button" data-pjpedir="1">Quanto devo pedir?</button></div>
-        <div class="params">
+        <div class="params pj-params">
       <fieldset>
         <legend>Contrato</legend>
         <label id="pj-l-fat">Valor do contrato (R$/mês)<input type="number" step="500" min="0" data-bind="pj::fat"></label>
@@ -4100,7 +4111,7 @@ body:has(#tour-pop:not([hidden])) #jor-divbar { display: none; }
     return new Promise(resolve => { const { data } = sb.auth.onAuthStateChange(async (ev) => { if (ev !== 'PASSWORD_RECOVERY') return; const s = prompt('Digite a nova senha (mínimo 8 caracteres):'); if (s && s.length >= 8) { const { error } = await sb.auth.updateUser({ password: s }); alert(error ? 'Não deu para trocar a senha: ' + error.message : 'Senha trocada.'); } }); resolve(data); });
   }
   // ---------- rodapé: compartilhar, administração e sair ----------
-  const SITE_V = 196;
+  const SITE_V = 197;
   const escH = v => String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const dataBR = v => v ? new Date(v).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' }) : '–';
   const css2 = `.side-foot .r{flex-wrap:wrap}.side-foot .lg-acoes{margin-left:auto;display:inline-flex;gap:10px}
