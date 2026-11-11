@@ -2202,6 +2202,14 @@ input[type="month"].mp-on { outline: 2px solid var(--accent); outline-offset: 1p
 .mp-f button { border: 0; background: none; color: var(--accent); font: inherit; font-weight: 600; cursor: pointer; padding: 4px 6px; border-radius: 6px; }
 .mp-f button:hover { background: var(--accent-soft); }
 .mp-pop button:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+
+/* v327 destaque de linha nos gráficos */
+.ch-tag { position: absolute; z-index: 5; pointer-events: none; white-space: nowrap; background: var(--panel); color: var(--ink); border: 1px solid var(--line); border-radius: 8px; padding: 4px 8px; font-size: 12px; box-shadow: 0 4px 14px rgba(15,31,61,.16); }
+.ch-tag[hidden] { display: none; }
+.ch-tag i { display: inline-block; width: 9px; height: 9px; border-radius: 50%; margin-right: 6px; vertical-align: -1px; }
+.legend .lg-off { opacity: .35; }
+.legend .lg-on { font-weight: 700; }
+svg path[data-si] { transition: opacity .12s; }
 </style>
 
 
@@ -2292,7 +2300,7 @@ input[type="month"].mp-on { outline: 2px solid var(--accent); outline-offset: 1p
     </div>
     <div class="nav-mobile-sub" id="navMobileSub"></div>
   </div>
-  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 326</div></div>
+  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 327</div></div>
 </nav>
 <div class="sino-pop" id="sino-pop" role="dialog" aria-label="Atualizações das bases" hidden></div>
 <div class="sino-pop" id="pess-pop" role="dialog" aria-label="Seus avisos" hidden></div>
@@ -3241,7 +3249,7 @@ input[type="month"].mp-on { outline: 2px solid var(--accent); outline-offset: 1p
       <div class="row"><h2>Patrimônio projetado</h2><div class="seg" id="sc-anos" role="group" aria-label="Até quando projetar"><button type="button" data-scanos="0">Fim do plano</button><button type="button" data-scanos="1">1 ano</button><button type="button" data-scanos="3">3 anos</button><button type="button" data-scanos="5">5 anos</button><button type="button" data-scanos="10">10 anos</button><button type="button" data-scanos="15">15 anos</button><button type="button" data-scanos="20">20 anos</button></div></div>
       <p class="sub">Investido mais o que fica parado, pelo Meu plano, em cada cenário. O Real em linha cheia.</p>
       <div class="legend" id="lg-sc"></div>
-      <div id="ch-sc"></div>
+      <div id="ch-sc" data-h="440"></div>
       <div class="readout" id="ro-sc"></div>
       <p class="sc-res" id="sc-res"></p>
     </section>
@@ -4260,7 +4268,7 @@ input[type="month"].mp-on { outline: 2px solid var(--accent); outline-offset: 1p
     return new Promise(resolve => { const { data } = sb.auth.onAuthStateChange(async (ev) => { if (ev !== 'PASSWORD_RECOVERY') return; const s = prompt('Digite a nova senha (mínimo 8 caracteres):'); if (s && s.length >= 8) { const { error } = await sb.auth.updateUser({ password: s }); alert(error ? 'Não deu para trocar a senha: ' + error.message : 'Senha trocada.'); } }); resolve(data); });
   }
   // ---------- rodapé: compartilhar, administração e sair ----------
-  const SITE_V = 212;
+  const SITE_V = 213;
   const escH = v => String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const dataBR = v => v ? new Date(v).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' }) : '–';
   const css2 = `.side-foot .r{flex-wrap:wrap}.side-foot .lg-acoes{margin-left:auto;display:inline-flex;gap:10px}
@@ -11204,7 +11212,7 @@ function barrasCat(el, roEl, lgEl, ms, tt, orc) {
   const ult = tt.map((t, j) => t.n ? j : -1).filter(j => j >= 0).pop(); show(ult ?? n - 1);
 }
 function chart(el, roEl, n, series, fmtY, xLabel, startCursor, fmtR = fm) {
-  const W = Math.max(520, Math.round(el.clientWidth || 720)), Hh = 280, pl = 58, pr = 12, pt = 10, pb = 26;
+  const W = Math.max(520, Math.round(el.clientWidth || 720)), Hh = +el.dataset.h || 280, pl = 58, pr = 12, pt = 10, pb = 26;
   let lo = Infinity, hi = -Infinity;
   series.forEach(s => s.v.forEach(v => { if (v == null || !isFinite(v)) return; lo = Math.min(lo, v); hi = Math.max(hi, v); }));
   if (!isFinite(lo)) { lo = 0; hi = 1; }
@@ -11240,11 +11248,11 @@ function chart(el, roEl, n, series, fmtY, xLabel, startCursor, fmtR = fm) {
     xt += `<text x="${borda ? W - 2 : X(t)}" y="${Hh - 8}" text-anchor="${borda ? 'end' : 'middle'}"${ini ? ' font-weight="600"' : ''}>${compacto && !ini ? l.split('/')[0] : l}</text>`;
   }
   const zero = y0 < 0 && y1 > 0 ? `<line class="zero" x1="${pl}" x2="${W - pr}" y1="${Y(0)}" y2="${Y(0)}"/>` : '';
-  const paths = series.map(s => {
+  const paths = series.map((s, si) => {
     if (s.dots) return s.v.map((v, j) => v == null ? '' : `<circle cx="${X(j).toFixed(1)}" cy="${Y(v).toFixed(1)}" r="4.5" fill="${s.c}" stroke="var(--panel)" stroke-width="1.5"/>`).join('');
     let d = '', pen = false;
     s.v.forEach((v, j) => { if (v == null || !isFinite(v)) { pen = false; return; } d += (pen ? 'L' : 'M') + X(j).toFixed(1) + ' ' + Y(v).toFixed(1); pen = true; });
-    return `<path d="${d}" fill="none" stroke="${s.c}" stroke-width="${s.w || 2}" stroke-linejoin="round" ${s.dash ? 'stroke-dasharray="5 4"' : ''}/>`;
+    return `<path data-si="${si}" d="${d}" fill="none" stroke="${s.c}" stroke-width="${s.w || 2}" stroke-linejoin="round" ${s.dash ? 'stroke-dasharray="5 4"' : ''}/>`;
   }).join('');
   el.innerHTML = `<svg viewBox="0 0 ${W} ${Hh}" role="img">${g}${zero}${xt}${paths}<line class="cursor" x1="0" x2="0" y1="${pt}" y2="${Hh - pb}" visibility="hidden"/><rect x="${pl}" y="${pt}" width="${W - pl - pr}" height="${Hh - pt - pb}" fill="transparent"/></svg>`;
   const svg = el.querySelector('svg'), cur = svg.querySelector('.cursor');
@@ -11255,6 +11263,31 @@ function chart(el, roEl, n, series, fmtY, xLabel, startCursor, fmtR = fm) {
   const move = ev => { const r = svg.getBoundingClientRect(); const x = (ev.clientX - r.left) / r.width * W; show(Math.min(n - 1, Math.max(0, Math.round((x - pl) / (W - pl - pr) * (n - 1))))); };
   svg.addEventListener('pointermove', move); svg.addEventListener('pointerdown', move);
   show(startCursor ?? n - 1);
+  chFoco(el, svg, series, n, W, X, Y, pl, pr, fmtR);
+}
+// v327: passar o mouse perto de uma linha (ou na legenda) destaca a linha e mostra o nome; clicar fixa o destaque, clicar de novo solta
+function chFoco(el, svg, series, n, W, X, Y, pl, pr, fmtR) {
+  const ps = [...svg.querySelectorAll('path[data-si]')]; if (ps.length < 2) return;
+  const lgEl = el.previousElementSibling && el.previousElementSibling.classList.contains('legend') ? el.previousElementSibling : null;
+  const lgs = lgEl && lgEl.children.length === series.length ? [...lgEl.children] : [];
+  el.style.position = 'relative'; let tag = el.querySelector('.ch-tag'); if (!tag) { tag = document.createElement('div'); tag.className = 'ch-tag'; tag.hidden = true; el.appendChild(tag); }
+  let fixo = null;
+  const realca = si => {
+    ps.forEach(pa => { const i = +pa.dataset.si, on = si == null || i === si; pa.style.opacity = on ? 1 : .18; pa.setAttribute('stroke-width', (series[i].w || 2) + (si != null && on ? 1.8 : 0)); if (si != null && on) pa.parentNode.appendChild(pa); });
+    lgs.forEach((s, i) => { s.classList.toggle('lg-off', si != null && i !== si); s.classList.toggle('lg-on', si != null && i === si); });
+  };
+  const perto = ev => { const r = svg.getBoundingClientRect(), x = (ev.clientX - r.left) / r.width * W, y = (ev.clientY - r.top) / r.height * svg.viewBox.baseVal.height;
+    const t = Math.min(n - 1, Math.max(0, Math.round((x - pl) / (W - pl - pr) * (n - 1)))); let best = null, bd = 16 * (svg.viewBox.baseVal.width / r.width);
+    series.forEach((s, i) => { if (s.dots) return; const v = s.v[t]; if (v == null || !isFinite(v)) return; const d = Math.abs(Y(v) - y); if (d < bd) { bd = d; best = i; } });
+    return { t, si: best, r }; };
+  const mostraTag = (si, t, r) => { const s = series[si], v = s.v[t]; if (v == null) { tag.hidden = true; return; } const k = r.width / W;
+    tag.innerHTML = `<i style="background:${s.c}"></i>${esc(s.name)}: <b>${fmtR(v)}</b>`; tag.hidden = false;
+    const tx = X(t) * k, ty = Y(v) * k; tag.style.left = Math.round(Math.min(r.width - tag.offsetWidth - 4, Math.max(4, tx + 10))) + 'px'; tag.style.top = Math.round(Math.max(0, ty - tag.offsetHeight - 8)) + 'px'; };
+  svg.addEventListener('pointermove', ev => { const o = perto(ev), si = o.si ?? fixo; realca(si); if (si != null) mostraTag(si, o.t, o.r); else tag.hidden = true; });
+  svg.addEventListener('pointerleave', () => { realca(fixo); tag.hidden = true; });
+  svg.addEventListener('click', ev => { const o = perto(ev); fixo = o.si == null || o.si === fixo ? null : o.si; realca(fixo ?? o.si); if (fixo != null) mostraTag(fixo, o.t, o.r); });
+  lgs.forEach((s, i) => { s.style.cursor = 'pointer'; s.title = 'Destacar esta linha (clique para fixar)';
+    s.onmouseenter = () => realca(i); s.onmouseleave = () => realca(fixo); s.onclick = () => { fixo = fixo === i ? null : i; realca(fixo); }; });
 }
 const legend = (el, items) => { el.innerHTML = items.map(s => `<span class="${s.dash ? 'dash' : ''}${s.dots ? ' dot' : ''}" style="--c:${s.c}">${esc(s.name)}</span>`).join(''); };
 const kpis = (el, list) => { el.innerHTML = list.map(([l, v, d, neg]) => `<div class="kpi"><span class="l">${l}</span><span class="v${neg ? ' neg' : ''}">${v}</span><span class="d">${d}</span></div>`).join(''); };
