@@ -2225,7 +2225,7 @@ body:has(#tour-pop:not([hidden])) #jor-divbar { display: none; }
     </div>
     <div class="nav-mobile-sub" id="navMobileSub"></div>
   </div>
-  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 316</div></div>
+  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 317</div></div>
 </nav>
 <div class="sino-pop" id="sino-pop" role="dialog" aria-label="Atualizações das bases" hidden></div>
 <div class="sino-pop" id="pess-pop" role="dialog" aria-label="Seus avisos" hidden></div>
@@ -3169,7 +3169,7 @@ body:has(#tour-pop:not([hidden])) #jor-divbar { display: none; }
       <p class="hint" id="sc-chance-hint" style="margin-top:8px" hidden>Chance: o quanto você acha provável que o item aconteça. Os cenários usam o valor cheio; a chance entra na linha "Real esperado pela chance" do gráfico.</p>
     </section>
     <section data-nav="Patrimônio projetado" class="panel chart">
-      <h2>Patrimônio projetado</h2>
+      <div class="row"><h2>Patrimônio projetado</h2><div class="seg" id="sc-anos" role="group" aria-label="Até quando projetar"><button type="button" data-scanos="0">Fim do plano</button><button type="button" data-scanos="1">1 ano</button><button type="button" data-scanos="3">3 anos</button><button type="button" data-scanos="5">5 anos</button><button type="button" data-scanos="10">10 anos</button><button type="button" data-scanos="15">15 anos</button><button type="button" data-scanos="20">20 anos</button></div></div>
       <p class="sub">Investido mais o que fica parado, pelo Meu plano, em cada cenário. O Real em linha cheia.</p>
       <div class="legend" id="lg-sc"></div>
       <div id="ch-sc"></div>
@@ -4186,7 +4186,7 @@ body:has(#tour-pop:not([hidden])) #jor-divbar { display: none; }
     return new Promise(resolve => { const { data } = sb.auth.onAuthStateChange(async (ev) => { if (ev !== 'PASSWORD_RECOVERY') return; const s = prompt('Digite a nova senha (mínimo 8 caracteres):'); if (s && s.length >= 8) { const { error } = await sb.auth.updateUser({ password: s }); alert(error ? 'Não deu para trocar a senha: ' + error.message : 'Senha trocada.'); } }); resolve(data); });
   }
   // ---------- rodapé: compartilhar, administração e sair ----------
-  const SITE_V = 202;
+  const SITE_V = 203;
   const escH = v => String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const dataBR = v => v ? new Date(v).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' }) : '–';
   const css2 = `.side-foot .r{flex-wrap:wrap}.side-foot .lg-acoes{margin-left:auto;display:inline-flex;gap:10px}
@@ -7333,7 +7333,8 @@ function renderSimCen(manter) {
   $('sc-prem').innerHTML = real ? 'O Real usa as premissas do <a href="#" data-lmtab="orcamento" data-lmsec="Premissas">Meu plano</a> (rendimento e IPCA).'
     : premDif(cen) ? `Premissas próprias deste cenário: ${[+(cen.aj || {}).cdi ? `CDI ${+(cen.aj.cdi) > 0 ? '+' : ''}${num(+cen.aj.cdi)} p.p.` : '', +(cen.aj || {}).ipca ? `IPCA ${+(cen.aj.ipca) > 0 ? '+' : ''}${num(+cen.aj.ipca)} p.p.` : '', +cen.extra ? `renda extra ${fm(+cen.extra)}/mês` : '', cen.manual !== '' && +cen.manual > 0 ? `taxa de ${num(+cen.manual)}% a.a.` : '', cen.proprio ? 'carteira própria' : ''].filter(Boolean).join(', ')}. Mude em Premissas deste cenário.` : 'Usa as mesmas premissas do Meu plano. Para testar outra taxa, renda extra ou carteira, use Premissas deste cenário.';
   // tabela: itens por módulo, uma coluna por cenário na ordem do tempo
-  const pl = calcPlano(), fimI = pl.i0 + Math.round((+state.plan.anos || 10) * 12);
+  const pl = calcPlano(), fimI = scAnos() ? scFimIdx() : pl.i0 + Math.round((+state.plan.anos || 10) * 12);
+  document.querySelectorAll('#sc-anos button').forEach(b => b.setAttribute('aria-pressed', String(+b.dataset.scanos === scAnos())));
   const grupos = MODS.filter(m => its.some(x => x.mod === m.id)), corC = c => ehCenReal(c) ? 'var(--s1)' : cenCor(c);
   $('tbl-sc').innerHTML = !its.length ? '<tbody><tr><td class="hint">Nenhum item ainda. Cadastre bens em Bens e compromissos, viagens, filhos, negócios, trocas de emprego em Carreira ou eventos no Meu plano.</td></tr></tbody>'
     : `<thead><tr><th>Item</th><th>Quando</th><th>Valores</th>${vch ? '<th>Chance</th>' : ''}${ord.map(c => `<th class="sc-col${c.id === cen.id ? ' sc-cur' : ''}" style="--c:${corC(c)}"><i></i>${esc(c.nome)}</th>`).join('')}</tr></thead><tbody>${grupos.map(m => `<tr class="it-g"><td colspan="${(vch ? 4 : 3) + ord.length}"><i style="background:${m.cor}"></i>${esc(m.nome)}</td></tr>` +
@@ -14423,12 +14424,13 @@ function taxaPlanoMes(i, cs) {
 // extra = Set de ids de itens ("compra:<id>", "so:<id>") somados ao plano só para comparar; sem extra, é o plano de verdade (com cache)
 // gráfico "Patrimônio projetado" (Primeiros passos): 0 = até o fim do plano; 3, 5 ou 10 anos a partir de hoje
 const mdAnos = () => [3, 5, 10].includes(+(state.plan || {}).anosMd) ? +state.plan.anosMd : 0;
+const scAnos = () => +((state.plan || {}).anosSim) || 0, scFimIdx = () => scAnos() ? Math.max(mIndex((state.plan || {}).inicio), HOJE_IDX) + scAnos() * 12 : 0;
 const mdFimIdx = () => mdAnos() ? Math.max(mIndex((state.plan || {}).inicio), HOJE_IDX) + mdAnos() * 12 : 0;
 function calcPlano(extra, cenSim) {
   const cs = cenSim && cenSim.id !== state.cenReal ? cenSim : null;   // premissas próprias só nos cenários de simulação
   if (!extra && !cs && planCache) return planCache;
   const ipX = cs ? (+(cs.aj || {}).ipca || 0) / 100 : 0, rendaX = cs ? +cs.extra || 0 : 0;
-  const P = state.plan, i0 = mIndex(P.inicio), fim = Math.max(i0 + Math.round((+P.anos || 10) * 12), HOJE_IDX + Math.round(state.cfg.anos * 12) + 13, mdFimIdx());
+  const P = state.plan, i0 = mIndex(P.inicio), fim = Math.max(i0 + Math.round((+P.anos || 10) * 12), HOJE_IDX + Math.round(state.cfg.anos * 12) + 13, mdFimIdx(), scFimIdx());
   const L = linhasPlano(), cur = {}, salL = L.find(l => l.key === 'rec~sal');
   (state.orc.regimes || []).forEach(r => regDeds(r).forEach(d => { const key = 'ded~' + d.id;
     L.push({ key, ck: key + '@' + r.id, nome: d.nome, tipo: 'ded', pct: d.modo === 'pct', calc: d.modo === 'inss' || d.modo === 'irrf' ? d.modo : undefined, base: +d.valor || 0, reaj: d.modo === 'fixo' ? 'ipca_anual' : 'nenhum', pctA: 0, mesA: 1, reg: r.id, o: d }); }));
@@ -15215,6 +15217,7 @@ document.addEventListener('click', e => {
   if (d.pjmodo) { state.pj.pedirModo = d.pjmodo === 'liq' ? 'liq' : 'pct'; save(); buildPj(); renderPj(); return; }
   if (d.pjpedir != null) { state.pj.pedir = d.pjpedir === '1'; save(); buildPj(); renderPj(); return; }
   if (d.ganos) { state.cfg.anos = +d.ganos; save(); renderGlobal(); return; }
+  if (d.scanos != null) { state.plan.anosSim = +d.scanos; planCache = null; save(); renderSimCen(true); return; }
   if (d.mdanos != null) { state.plan.anosMd = +d.mdanos; planCache = null; save(); renderMdChart(); return; }
   if (d.rendbase) { state.cfg.rendBase = d.rendbase; save(); renderGlobal(); return; }
   switch (t.id) {
