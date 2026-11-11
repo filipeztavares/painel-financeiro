@@ -2271,7 +2271,7 @@ body:has(#tour-pop:not([hidden])) #jor-divbar { display: none; }
     </div>
     <div class="nav-mobile-sub" id="navMobileSub"></div>
   </div>
-  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 320</div></div>
+  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 321</div></div>
 </nav>
 <div class="sino-pop" id="sino-pop" role="dialog" aria-label="Atualizações das bases" hidden></div>
 <div class="sino-pop" id="pess-pop" role="dialog" aria-label="Seus avisos" hidden></div>
@@ -4237,7 +4237,7 @@ body:has(#tour-pop:not([hidden])) #jor-divbar { display: none; }
     return new Promise(resolve => { const { data } = sb.auth.onAuthStateChange(async (ev) => { if (ev !== 'PASSWORD_RECOVERY') return; const s = prompt('Digite a nova senha (mínimo 8 caracteres):'); if (s && s.length >= 8) { const { error } = await sb.auth.updateUser({ password: s }); alert(error ? 'Não deu para trocar a senha: ' + error.message : 'Senha trocada.'); } }); resolve(data); });
   }
   // ---------- rodapé: compartilhar, administração e sair ----------
-  const SITE_V = 206;
+  const SITE_V = 207;
   const escH = v => String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const dataBR = v => v ? new Date(v).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' }) : '–';
   const css2 = `.side-foot .r{flex-wrap:wrap}.side-foot .lg-acoes{margin-left:auto;display:inline-flex;gap:10px}
@@ -18986,7 +18986,7 @@ function intFaltas(x) {
     } else if (k === 'viag' && x.bloq) {
       out.push({ c: 'custo', t: 'custo da viagem', alvo: { tab: 'viagrot', sec: '', pre: () => { state.viag.rotSel = id; } }, info: 'O custo sai do roteiro: adicione as cidades e as noites para o painel estimar hospedagem, passagens e o dia a dia.' });
     } else if (k === 'neg' && x.bloq) {
-      out.push({ c: 'receita', t: 'receita no DRE', alvo: { tab: 'negdre', sec: 'Linhas do DRE', sel: '#ngd-linhas input[type="number"]', pre: () => { state.neg.sel = id; } }, info: 'O negócio entra no plano quando o DRE tem a receita (o que você vende por mês).' });
+      out.push({ c: 'receita', t: 'receita no DRE', alvo: { tab: 'negdre', sec: 'Linhas do DRE', sel: '#ngd-linhas [data-ngl$=":v"]', pre: () => { state.neg.sel = id; } }, info: 'O negócio entra no plano quando o DRE tem a receita (o que você vende por mês).' });
     } else if (k === 'fam') { const p = famAcha(id); if (p && famN0(p) == null)
       out.push({ c: 'nasc', t: 'nascimento ou previsão', alvo: { tab: 'fampes', sec: 'Filhos', sel: `[data-famf="${id}:nasc"]` },
         campos: [{ l: 'Nascimento ou previsão', tipo: 'month', v: '', set: v => { p.nasc = v; famNorm(p); if (p.grupo) famGrupo(p).forEach(y => { y.nasc = p.nasc; }); famPeC.k = null; } }] });
@@ -19231,6 +19231,42 @@ Object.keys(INT_POS).forEach(t => { const r0 = RENDER[t]; if (!r0) return; RENDE
 // Seus avisos: o aviso de falta abre o preenchimento rápido
 { const r0 = renderPess; renderPess = function () { const o = r0.apply(this, arguments); try { const T = pessTodos(); document.querySelectorAll('#pess-pop [data-pessir]').forEach(a => { const av = T.find(y => y.msg === a.textContent && y.falta); if (av) { a.dataset.intfalta = av.falta; a.closest('.sino-i').classList.add('int-sino'); } }); } catch (er) {} return o; }; }
 /* fim integração */
+/* ---------- v321 voltar e avançar do navegador: cada tela é um passo no histórico (#tela); voltar com um pop-up aberto fecha o pop-up ---------- */
+(() => {
+  if (!window.history || !history.pushState) return;
+  const POPS = ['#int-pop', '#int-lista', '#cp-pop', '#conf-pop', '#ag-pop', '#imp-pop', '#jor-modal', '#pess-pop', '#sino-pop', '#tour-pop', '#nav-mod-pop', '#vg-mpop'];
+  const vis = el => { if (!el || el.hidden) return false; const cs = getComputedStyle(el); return cs.display !== 'none' && cs.visibility !== 'hidden'; };
+  const abertos = () => POPS.map(s => document.querySelector(s)).filter(vis);
+  function fecha(el) {
+    const id = el.id;
+    try {
+      if (id === 'int-pop') return intPopFecha(); if (id === 'int-lista') return intListaFecha(); if (id === 'cp-pop') return cpPopFechar();
+      if (id === 'pess-pop') return pessAbre(false);
+      if (id === 'tour-pop') { if (typeof guiaFecha === 'function' && gK) guiaFecha(false); else tourFecha(false); return; }
+    } catch (e) {}
+    const x = el.querySelector('.conf-x, .sino-x, [aria-label="Fechar"], [data-tour="fecha"]');
+    if (x) { x.click(); if (el.hidden || !vis(el)) return; }
+    document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true }));
+    if (vis(el)) { el.hidden = true; document.body.style.overflow = ''; }
+  }
+  let navegando = false;
+  const marca = (t, troca) => { try { const u = location.pathname + location.search + '#' + t; if (troca) history.replaceState({ pt: t }, '', u); else history.pushState({ pt: t }, '', u); } catch (e) {} };
+  const s0 = showTab;
+  showTab = function (t, kS) {
+    const antes = tab, r = s0(t, kS);
+    if (!navegando && tab !== antes && (!history.state || history.state.pt !== tab)) marca(tab, false);
+    return r;
+  };
+  marca(tab, true);
+  addEventListener('popstate', e => {
+    const A = abertos();
+    if (A.length) { A.forEach(fecha); marca(tab, false); return; }   // voltar com pop-up aberto: só fecha o pop-up e fica na tela
+    const t = e.state && e.state.pt || location.hash.slice(1);
+    if (!t || t === tab || !RENDER[t]) return;
+    navegando = true; try { showTab(t); } finally { navegando = false; }
+    if (tab !== t) marca(tab, true);   // tela bloqueada: o endereço volta a mostrar a tela atual
+  });
+})();
 </script>
 
 </body></html>
