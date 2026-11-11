@@ -2181,6 +2181,27 @@ body:has(#tour-pop:not([hidden])) #jor-divbar { display: none; }
 :root[data-theme="dark"] .int-aviso { color: #F5C442 !important; }
 @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .int-balao { background: #3a300e; color: #FFE8A3; } :root:not([data-theme="light"]) .int-balao::before { background: #3a300e; } :root:not([data-theme="light"]) .int-aviso { color: #F5C442 !important; } }
 @media (prefers-reduced-motion: reduce) { .int-hl { animation: none; } }
+
+/* v322 seletor de mês */
+input[type="month"] { cursor: pointer; }
+input[type="month"]::-webkit-calendar-picker-indicator { cursor: pointer; opacity: .55; }
+input[type="month"].mp-on { outline: 2px solid var(--accent); outline-offset: 1px; }
+.mp-pop { position: fixed; z-index: 1350; width: 252px; padding: 10px; border-radius: 12px; background: var(--panel); color: var(--ink); border: 1px solid var(--line); box-shadow: 0 14px 36px rgba(15,31,61,.22); font-size: 13px; }
+.mp-pop[hidden] { display: none; }
+.mp-h { display: grid; grid-template-columns: 28px 28px 1fr 28px 28px; gap: 2px; align-items: center; margin-bottom: 8px; }
+.mp-h button { height: 30px; border: 0; border-radius: 8px; background: transparent; color: var(--muted); font: inherit; font-size: 15px; cursor: pointer; }
+.mp-h button:hover { background: var(--accent-soft); color: var(--accent); }
+.mp-h .mp-ano { font-size: 14px; font-weight: 700; color: var(--ink); }
+.mp-g { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; }
+.mp-g button { height: 34px; border: 1px solid transparent; border-radius: 8px; background: transparent; color: var(--ink); font: inherit; cursor: pointer; }
+.mp-g button:hover:not([disabled]) { background: var(--accent-soft); }
+.mp-g button.hoje { border-color: var(--accent); }
+.mp-g button.sel { background: var(--accent); border-color: var(--accent); color: #fff; font-weight: 700; }
+.mp-g button[disabled] { opacity: .35; cursor: not-allowed; }
+.mp-f { display: flex; justify-content: space-between; margin-top: 8px; padding-top: 8px; border-top: 1px solid var(--line); }
+.mp-f button { border: 0; background: none; color: var(--accent); font: inherit; font-weight: 600; cursor: pointer; padding: 4px 6px; border-radius: 6px; }
+.mp-f button:hover { background: var(--accent-soft); }
+.mp-pop button:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
 </style>
 
 
@@ -2271,7 +2292,7 @@ body:has(#tour-pop:not([hidden])) #jor-divbar { display: none; }
     </div>
     <div class="nav-mobile-sub" id="navMobileSub"></div>
   </div>
-  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 321</div></div>
+  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 322</div></div>
 </nav>
 <div class="sino-pop" id="sino-pop" role="dialog" aria-label="Atualizações das bases" hidden></div>
 <div class="sino-pop" id="pess-pop" role="dialog" aria-label="Seus avisos" hidden></div>
@@ -4237,7 +4258,7 @@ body:has(#tour-pop:not([hidden])) #jor-divbar { display: none; }
     return new Promise(resolve => { const { data } = sb.auth.onAuthStateChange(async (ev) => { if (ev !== 'PASSWORD_RECOVERY') return; const s = prompt('Digite a nova senha (mínimo 8 caracteres):'); if (s && s.length >= 8) { const { error } = await sb.auth.updateUser({ password: s }); alert(error ? 'Não deu para trocar a senha: ' + error.message : 'Senha trocada.'); } }); resolve(data); });
   }
   // ---------- rodapé: compartilhar, administração e sair ----------
-  const SITE_V = 207;
+  const SITE_V = 208;
   const escH = v => String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const dataBR = v => v ? new Date(v).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' }) : '–';
   const css2 = `.side-foot .r{flex-wrap:wrap}.side-foot .lg-acoes{margin-left:auto;display:inline-flex;gap:10px}
@@ -19234,7 +19255,7 @@ Object.keys(INT_POS).forEach(t => { const r0 = RENDER[t]; if (!r0) return; RENDE
 /* ---------- v321 voltar e avançar do navegador: cada tela é um passo no histórico (#tela); voltar com um pop-up aberto fecha o pop-up ---------- */
 (() => {
   if (!window.history || !history.pushState) return;
-  const POPS = ['#int-pop', '#int-lista', '#cp-pop', '#conf-pop', '#ag-pop', '#imp-pop', '#jor-modal', '#pess-pop', '#sino-pop', '#tour-pop', '#nav-mod-pop', '#vg-mpop'];
+  const POPS = ['#int-pop', '#int-lista', '#cp-pop', '#conf-pop', '#ag-pop', '#imp-pop', '#jor-modal', '#pess-pop', '#sino-pop', '#tour-pop', '#nav-mod-pop', '#vg-mpop', '#mp-pop'];
   const vis = el => { if (!el || el.hidden) return false; const cs = getComputedStyle(el); return cs.display !== 'none' && cs.visibility !== 'hidden'; };
   const abertos = () => POPS.map(s => document.querySelector(s)).filter(vis);
   function fecha(el) {
@@ -19242,6 +19263,7 @@ Object.keys(INT_POS).forEach(t => { const r0 = RENDER[t]; if (!r0) return; RENDE
     try {
       if (id === 'int-pop') return intPopFecha(); if (id === 'int-lista') return intListaFecha(); if (id === 'cp-pop') return cpPopFechar();
       if (id === 'pess-pop') return pessAbre(false);
+      if (id === 'mp-pop') return mpFecha(true);
       if (id === 'tour-pop') { if (typeof guiaFecha === 'function' && gK) guiaFecha(false); else tourFecha(false); return; }
     } catch (e) {}
     const x = el.querySelector('.conf-x, .sino-x, [aria-label="Fechar"], [data-tour="fecha"]');
@@ -19266,6 +19288,67 @@ Object.keys(INT_POS).forEach(t => { const r0 = RENDER[t]; if (!r0) return; RENDE
     navegando = true; try { showTab(t); } finally { navegando = false; }
     if (tab !== t) marca(tab, true);   // tela bloqueada: o endereço volta a mostrar a tela atual
   });
+})();
+
+/* ---------- v322 seletor de mês próprio para todo input type=month: ano com setas (±1 e ±5), grade de meses, grade de anos, Este mês, Limpar.
+   O campo continua sendo type=month (o valor segue AAAA-MM e os eventos input/change de sempre); só o calendário do navegador é trocado. ---------- */
+(() => {
+  const MS = ['jan', 'fev', 'mar', 'abr', 'mai', 'jun', 'jul', 'ago', 'set', 'out', 'nov', 'dez'];
+  const pop = document.createElement('div'); pop.id = 'mp-pop'; pop.className = 'mp-pop'; pop.hidden = true; pop.setAttribute('role', 'dialog'); pop.setAttribute('aria-label', 'Escolher mês');
+  document.body.appendChild(pop);
+  let alvo = null, ano = 0, modo = 'mes';
+  const hoje = new Date(), hA = hoje.getFullYear(), hM = hoje.getMonth() + 1;
+  const lim = el => { const f = s => /^\d{4}-\d{2}$/.test(s || '') ? s : null; return [f(el.min), f(el.max)]; };
+  const k = (a, m) => `${a}-${String(m).padStart(2, '0')}`;
+  function desenha() {
+    const v = /^\d{4}-\d{2}/.test(alvo.value || '') ? alvo.value.slice(0, 7) : '', [mn, mx] = lim(alvo), fora = s => (mn && s < mn) || (mx && s > mx);
+    let corpo;
+    if (modo === 'mes') corpo = `<div class="mp-g">${MS.map((n, i) => { const s = k(ano, i + 1); return `<button type="button" data-mpm="${i + 1}" class="${s === v ? 'sel' : ''}${ano === hA && i + 1 === hM ? ' hoje' : ''}"${fora(s) ? ' disabled' : ''}>${n}</button>`; }).join('')}</div>`;
+    else { const a0 = ano - 5; corpo = `<div class="mp-g">${Array.from({ length: 12 }, (_, i) => a0 + i).map(a => `<button type="button" data-mpa="${a}" class="${v && +v.slice(0, 4) === a ? 'sel' : ''}${a === hA ? ' hoje' : ''}">${a}</button>`).join('')}</div>`; }
+    pop.innerHTML = `<div class="mp-h"><button type="button" data-mpd="-5" aria-label="5 anos antes" title="5 anos antes">«</button><button type="button" data-mpd="-1" aria-label="Ano anterior" title="Ano anterior">‹</button>
+      <button type="button" class="mp-ano" data-mpmodo aria-label="${modo === 'mes' ? 'Escolher o ano' : 'Voltar aos meses'}">${modo === 'mes' ? ano : (ano - 5) + '–' + (ano + 6)}</button>
+      <button type="button" data-mpd="1" aria-label="Próximo ano" title="Próximo ano">›</button><button type="button" data-mpd="5" aria-label="5 anos depois" title="5 anos depois">»</button></div>${corpo}
+      <div class="mp-f"><button type="button" data-mplimpa>Limpar</button><button type="button" data-mphoje>Este mês</button></div>`;
+  }
+  function posiciona() { if (!alvo || pop.hidden) return; const r = alvo.getBoundingClientRect(), w = pop.offsetWidth, h = pop.offsetHeight;
+    let top = r.bottom + 6; if (top + h > innerHeight - 8 && r.top - h - 6 > 8) top = r.top - h - 6;
+    pop.style.top = Math.round(top) + 'px'; pop.style.left = Math.round(Math.max(8, Math.min(r.left, innerWidth - w - 8))) + 'px'; }
+  function abre(el) {
+    if (el.disabled || el.readOnly) return;
+    alvo = el; modo = 'mes'; ano = /^\d{4}/.test(el.value || '') ? +el.value.slice(0, 4) : hA;
+    desenha(); pop.hidden = false; posiciona(); el.classList.add('mp-on');
+  }
+  const focaGrade = () => { const b = pop.querySelector('.mp-g .sel') || pop.querySelector('.mp-g .hoje') || pop.querySelector('.mp-g button'); if (b) b.focus({ preventScroll: true }); };
+  function fecha(foco) { if (pop.hidden) return; pop.hidden = true; if (alvo) { alvo.classList.remove('mp-on'); if (foco) try { alvo.focus({ preventScroll: true }); } catch (e) {} } alvo = null; }
+  function poe(v) { const el = alvo; if (!el) return; el.value = v; fecha(true); el.dispatchEvent(new Event('input', { bubbles: true })); el.dispatchEvent(new Event('change', { bubbles: true })); }
+  window.mpFecha = fecha;
+  const ehMes = el => el && el.tagName === 'INPUT' && el.type === 'month';
+  // abre no clique (no lugar do calendário do navegador); digitar continua funcionando com o teclado
+  document.addEventListener('pointerdown', e => { const el = e.target; if (!ehMes(el)) return; e.preventDefault(); try { el.focus({ preventScroll: true }); } catch (er) {} if (alvo === el && !pop.hidden) return fecha(true); abre(el); }, true);
+  document.addEventListener('click', e => { if (ehMes(e.target)) e.preventDefault(); }, true);
+  document.addEventListener('keydown', e => {
+    const el = e.target;
+    if (ehMes(el) && ((e.altKey && e.key === 'ArrowDown') || e.key === 'Enter' || e.key === ' ' || e.key === 'F4')) { e.preventDefault(); abre(el); focaGrade(); return; }
+    if (pop.hidden) return;
+    if (e.key === 'Escape') { e.preventDefault(); e.stopImmediatePropagation(); fecha(true); return; }
+    if (!pop.contains(document.activeElement)) return;
+    const bs = [...pop.querySelectorAll('.mp-g button:not([disabled])')], i = bs.indexOf(document.activeElement); if (i < 0) return;
+    const d = { ArrowLeft: -1, ArrowRight: 1, ArrowUp: -3, ArrowDown: 3 }[e.key]; if (d == null) return;
+    e.preventDefault(); const j = i + d; if (bs[j]) bs[j].focus();
+  }, true);
+  pop.addEventListener('mousedown', e => e.preventDefault());
+  pop.addEventListener('click', e => {
+    const b = e.target.closest('button'); if (!b || !alvo) return;
+    if (b.dataset.mpd) { const d = +b.dataset.mpd; ano += modo === 'ano' ? Math.sign(d) * (Math.abs(d) === 1 ? 12 : 24) : d; desenha(); posiciona(); return; }
+    if (b.dataset.mpmodo != null) { modo = modo === 'mes' ? 'ano' : 'mes'; desenha(); posiciona(); return; }
+    if (b.dataset.mpa) { ano = +b.dataset.mpa; modo = 'mes'; desenha(); posiciona(); const x = pop.querySelector('.mp-g button'); if (x) x.focus(); return; }
+    if (b.dataset.mpm) return poe(k(ano, +b.dataset.mpm));
+    if (b.dataset.mphoje != null) return poe(k(hA, hM));
+    if (b.dataset.mplimpa != null) return poe('');
+  });
+  document.addEventListener('mousedown', e => { if (!pop.hidden && !pop.contains(e.target) && e.target !== alvo) fecha(false); }, true);
+  addEventListener('scroll', () => { if (!pop.hidden) { if (alvo && !alvo.isConnected) fecha(false); else posiciona(); } }, true);
+  addEventListener('resize', posiciona);
 })();
 </script>
 
