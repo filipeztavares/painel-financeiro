@@ -425,6 +425,10 @@ input:hover, select:hover { border-color: var(--s1); }
 .pj-avisos p.warn { background: rgba(214,137,16,.12); }
 #tbl-pj tr.tot td, #tbl-pj-lado tr.tot td, #tbl-pj-cltc tr.tot td { font-weight: 700; }
 #tbl-pj-cltc tr.sub td:first-child { padding-left: 24px; color: var(--muted); }
+#tbl-pj-cltc tr.ben-det td { font-size: 12px; color: var(--muted); } #tbl-pj-cltc tr.ben-det td:first-child { padding-left: 52px; }
+#tbl-pj-cltc tr[data-bengr="ano"] + tr.ben-det td:first-child, #tbl-pj-cltc tr[data-bendet="ano"] td:first-child { padding-left: 34px; }
+.ben-tog { background: none; border: 1px solid var(--line); border-radius: 5px; width: 20px; height: 20px; margin-right: 6px; padding: 0; font-size: 10px; line-height: 1; color: var(--accent); cursor: pointer; vertical-align: 1px; }
+.ben-tog:hover { border-color: var(--accent); }
 #tbl-pj tr.sub td:first-child { padding-left: 24px; color: var(--muted); }
 #tbl-pj-reg tr.sel td { background: var(--accent-soft); font-weight: 600; }
 .pj-regras p { margin: 0 0 8px; font-size: 13px; line-height: 1.5; color: var(--muted); }
@@ -2185,7 +2189,7 @@ body:has(#tour-pop:not([hidden])) #jor-divbar { display: none; }
     </div>
     <div class="nav-mobile-sub" id="navMobileSub"></div>
   </div>
-  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 311</div></div>
+  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 312</div></div>
 </nav>
 <div class="sino-pop" id="sino-pop" role="dialog" aria-label="Atualizações das bases" hidden></div>
 <div class="sino-pop" id="pess-pop" role="dialog" aria-label="Seus avisos" hidden></div>
@@ -4108,7 +4112,7 @@ body:has(#tour-pop:not([hidden])) #jor-divbar { display: none; }
     return new Promise(resolve => { const { data } = sb.auth.onAuthStateChange(async (ev) => { if (ev !== 'PASSWORD_RECOVERY') return; const s = prompt('Digite a nova senha (mínimo 8 caracteres):'); if (s && s.length >= 8) { const { error } = await sb.auth.updateUser({ password: s }); alert(error ? 'Não deu para trocar a senha: ' + error.message : 'Senha trocada.'); } }); resolve(data); });
   }
   // ---------- rodapé: compartilhar, administração e sair ----------
-  const SITE_V = 197;
+  const SITE_V = 198;
   const escH = v => String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const dataBR = v => v ? new Date(v).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' }) : '–';
   const css2 = `.side-foot .r{flex-wrap:wrap}.side-foot .lg-acoes{margin-left:auto;display:inline-flex;gap:10px}
@@ -16999,6 +17003,11 @@ Object.keys(PJ_BOX).forEach(bid => { const box = $(bid); if (!box) return; const
   box.addEventListener('change', e => { if (e.target.classList.contains('pjb-sel')) { const o = e.target.value === '__outro', n = box.querySelector('.pjb-nome'); n.hidden = !o; (o ? n : box.querySelector('.pjb-val')).focus(); return; }
     const t = e.target, b = t.dataset.pjben && lista().find(x => x.id === t.dataset.pjben); if (!b) return;
     const c = t.dataset.campo; b[c] = c === 'valor' ? (+t.value || 0) : c === 'freq' ? (t.value === 'ano' ? 'ano' : 'mes') : t.value.trim(); save(); renderPj(); }); });
+const pjBenAb = { mes: false, ano: false };
+document.addEventListener('click', e => { const b = e.target.closest && e.target.closest('#tbl-pj-cltc .ben-tog'); if (!b) return;
+  const g = b.dataset.benab, ab = pjBenAb[g] = !pjBenAb[g]; b.setAttribute('aria-expanded', String(ab)); b.textContent = ab ? '▾' : '▸'; b.title = (ab ? 'Esconder' : 'Mostrar') + ' cada benefício';
+  document.querySelectorAll(`#tbl-pj-cltc tr[data-bendet="${g}"]`).forEach(r => r.hidden = !ab);
+  const nt = b.parentNode.querySelector('.subdet'); if (nt) nt.hidden = ab; });
 // CLT: 12 salários líquidos + 13º (tributado à parte) + 1/3 de férias + FGTS (opcional) + benefícios
 function cltAnual(S, o) {
   const n = netCLT(S, o.dep), n13 = netCLT(S, o.dep), fer = netCLT(S * 4 / 3, o.dep) - n, fgts = o.fgts ? 0.08 * (13 + 1 / 3) * S : 0;
@@ -17136,7 +17145,14 @@ function renderPj() {
     cc.forEach(k => { k.a.benMes = bMes.reduce((t, b) => t + +b.valor, 0) + (o.saude || 0) + k.a.vtLiq; });
     const temBM = bMes.length || o.saude || o.vt;
     const L = (n, fn, cls, nota) => `<tr${cls ? ` class="${cls}"` : ''}><td class="name">${n}${nota ? ` <span class="subdet">${nota}</span>` : ''}</td>${cc.map(k => { const v = fn(k); return `<td>${v == null ? '<span class="subdet">não conta</span>' : fm(v)}</td>`; }).join('')}</tr>`;
-    const BM = temBM ? L('(+) Benefícios mensais', k => k.a.benMes, 'sub', [...bMes.map(b => `${esc(b.nome)} ${fm(b.valor)}`), ...(o.saude ? [`saúde ${fm(o.saude)}`] : []), ...(o.vt ? ['VT acima dos 6%'] : [])].join(', ')) : '';
+    // benefícios: linha somada que abre a lista, um benefício por linha (v312)
+    const itM = [...bMes.map(b => [esc(b.nome), () => +b.valor, '']), ...(o.saude ? [['Plano de saúde', () => o.saude, '']] : []), ...(o.vt ? [['Vale-transporte', k => k.a.vtLiq, 'só o que passa dos 6% descontados do salário']] : [])];
+    const itA = bAno.map(b => [esc(b.nome), () => +b.valor, '']);
+    const GR = (g, nome, fn, cls, itens) => { const ab = !!pjBenAb[g], n = itens.length;
+      const tog = `<button type="button" class="ben-tog" data-benab="${g}" aria-expanded="${ab}" title="${ab ? 'Esconder' : 'Mostrar'} cada benefício">${ab ? '▾' : '▸'}</button>`;
+      return L(tog + nome, fn, cls, ab ? '' : `${n} ${n === 1 ? 'benefício' : 'benefícios'}`).replace('<tr', `<tr data-bengr="${g}"`)
+        + itens.map(([nm, f2, nota]) => L(nm, f2, 'ben-det', nota).replace('<tr', `<tr data-bendet="${g}"${ab ? '' : ' hidden'}`)).join(''); };
+    const BM = temBM ? GR('mes', '(+) Benefícios mensais', k => k.a.benMes, 'sub', itM) : '';
     $('tbl-pj-cltc').innerHTML = `<thead><tr><th>Linha</th>${cc.map(k => `<th>${k.t}</th>`).join('')}</tr></thead><tbody>`
       + L('Salário bruto por mês', k => k.x, 'tot')
       + L('(−) INSS', k => -k.i, 'sub', 'progressivo, até R$ 988,09') + L('(−) IR', k => -k.ir, 'sub', 'tabela 2026 com a redução da Lei 15.270')
@@ -17147,7 +17163,7 @@ function renderPj() {
       + L('13º líquido', k => k.a.n13, '', 'mesmo desconto de um salário, tributado à parte')
       + L('1/3 de férias líquido', k => k.a.fer, '', 'no mês de férias recebe 4/3 do salário; conta só o que passa do salário normal')
       + L('FGTS', k => k.f ? k.a.fgts : null, '', '8% sobre 13 salários + 1/3 de férias')
-      + (bAno.length ? L('Benefícios anuais', () => bAno.reduce((t, b) => t + +b.valor, 0), '', bAno.map(b => `${esc(b.nome)} ${fm(b.valor)}`).join(', ')) : '')
+      + (bAno.length ? GR('ano', 'Benefícios anuais', () => bAno.reduce((t, b) => t + +b.valor, 0), '', itA) : '')
       + L('Total líquido no ano', k => k.a.total, 'tot')
       + (tP ? L('PJ no ano', () => tP) + L('Diferença CLT − PJ', k => k.a.total - tP) : '') + '</tbody>';
   }
