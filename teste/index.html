@@ -2292,7 +2292,7 @@ input[type="month"].mp-on { outline: 2px solid var(--accent); outline-offset: 1p
     </div>
     <div class="nav-mobile-sub" id="navMobileSub"></div>
   </div>
-  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 325</div></div>
+  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 326</div></div>
 </nav>
 <div class="sino-pop" id="sino-pop" role="dialog" aria-label="Atualizações das bases" hidden></div>
 <div class="sino-pop" id="pess-pop" role="dialog" aria-label="Seus avisos" hidden></div>
@@ -3279,11 +3279,6 @@ input[type="month"].mp-on { outline: 2px solid var(--accent); outline-offset: 1p
         <div class="sumline" id="alvoSum"></div>
         <div id="perfilBox" style="grid-column:1/-1"></div>
       </fieldset>
-      <fieldset>
-        <legend>Próximo aporte</legend>
-        <label class="full">Valor do aporte (R$)<input type="number" step="500" data-bind="cfg::aporteReb"></label>
-        <p class="hint">O "Hoje (R$)" vem da Carteira. O aporte vai para as classes mais abaixo do alvo deste cenário.</p>
-      </fieldset>
         </div>
       </section>
       <section data-nav="Custos do cenário" class="panel">
@@ -3316,7 +3311,9 @@ input[type="month"].mp-on { outline: 2px solid var(--accent); outline-offset: 1p
         <div class="readout" id="ro-c2"></div>
       </section>
       <section data-nav="Rebalanceamento" class="panel">
-        <h2>Rebalanceamento com o próximo aporte</h2>
+        <h2>Onde investir o próximo aporte</h2>
+        <p class="sub">Uma calculadora para o dinheiro que você vai investir agora. Diga o valor e a tabela mostra quanto pôr em cada classe para a sua carteira de hoje ficar mais perto do alvo deste cenário, sem vender nada. As classes mais abaixo do alvo recebem primeiro. Não muda a projeção nem o plano.</p>
+        <div class="params" style="margin:10px 0 12px"><fieldset><legend>Quanto vai investir agora</legend><label>Valor do aporte (R$)<input type="number" step="500" data-bind="cfg::aporteReb"></label><p class="hint">O que você tem hoje em cada classe vem da Carteira (coluna "Hoje (R$)" da tabela Carteira por classe, acima).</p></fieldset></div>
         <p class="sub" id="reb-sub"></p>
         <div class="tscroll"><table id="tbl-reb"></table></div>
       </section>
@@ -4263,7 +4260,7 @@ input[type="month"].mp-on { outline: 2px solid var(--accent); outline-offset: 1p
     return new Promise(resolve => { const { data } = sb.auth.onAuthStateChange(async (ev) => { if (ev !== 'PASSWORD_RECOVERY') return; const s = prompt('Digite a nova senha (mínimo 8 caracteres):'); if (s && s.length >= 8) { const { error } = await sb.auth.updateUser({ password: s }); alert(error ? 'Não deu para trocar a senha: ' + error.message : 'Senha trocada.'); } }); resolve(data); });
   }
   // ---------- rodapé: compartilhar, administração e sair ----------
-  const SITE_V = 211;
+  const SITE_V = 212;
   const escH = v => String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const dataBR = v => v ? new Date(v).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' }) : '–';
   const css2 = `.side-foot .r{flex-wrap:wrap}.side-foot .lg-acoes{margin-left:auto;display:inline-flex;gap:10px}
@@ -11679,12 +11676,12 @@ document.addEventListener('click', e => { const b = e.target.closest('[data-pent
 function renderReb(cen) {
   const H0 = hojeAtual(), hojeTot = CLASSES.reduce((s, c) => s + (+H0[c.id] || 0), 0);
   const ap = +state.cfg.aporteReb || 0, novoTot = hojeTot + ap;
-  if (hojeTot <= 0) { $('reb-sub').textContent = 'Preencha a coluna "Hoje (R$)" na tabela de carteira para ver a sugestão.'; $('tbl-reb').innerHTML = ''; return; }
+  if (hojeTot <= 0) { $('reb-sub').textContent = 'Para ver a sugestão, cadastre suas aplicações em Finanças › Carteira ou preencha a coluna "Hoje (R$)" da tabela Carteira por classe.'; $('tbl-reb').innerHTML = ''; return; }
   const AL = alvoDe(cen), totA = CLASSES.reduce((s, c) => s + (+AL[c.id] || 0), 0) || 1;
   const gaps = CLASSES.map(c => ({ c, hoje: +H0[c.id] || 0, alvoR: novoTot * (+AL[c.id] || 0) / totA })).map(x => ({ ...x, gap: Math.max(0, x.alvoR - x.hoje) }));
   const gapTot = gaps.reduce((s, x) => s + x.gap, 0);
   gaps.forEach(x => x.aporte = gapTot > 0 ? ap * x.gap / gapTot : 0);
-  $('reb-sub').textContent = `Você tem ${fm(hojeTot)} lançados. Com o aporte de ${fm(ap)}, a carteira vai a ${fm(novoTot)}.`;
+  $('reb-sub').textContent = `Hoje você tem ${fm(hojeTot)} investidos. Com o aporte de ${fm(ap)}, a carteira vai a ${fm(novoTot)}. A última coluna diz quanto do aporte vai para cada classe.`;
   $('tbl-reb').innerHTML = `<thead><tr><th>Classe</th><th>Hoje</th><th>% hoje</th><th>% alvo</th><th>Alvo após aporte</th><th>Colocar neste aporte</th></tr></thead><tbody>${gaps.map(x => `<tr><td class="name">${x.c.nome}</td><td>${fm(x.hoje)}</td><td>${pct(x.hoje / hojeTot)}</td><td>${pct((+AL[x.c.id] || 0) / totA)}</td><td>${fm(x.alvoR)}</td><td class="${x.aporte > 0 ? 'pos' : ''}">${x.aporte > 0 ? fm(x.aporte) : '—'}</td></tr>`).join('')}</tbody>`;
 }
 
@@ -15534,7 +15531,7 @@ const INFO_SEC = {
   'cenarios:Patrimônio': 'Patrimônio líquido = investimentos + bens − dívidas. Investimentos: o que está aplicado. Bens: valor dos bens comprados, com a valorização ou depreciação cadastrada. Dívidas: saldo devedor dos financiamentos, que cai a cada parcela.',
   'cenarios:Sobra mensal': 'Quanto sobra em cada mês: receita líquida menos custos e parcelas das compras. É o que vai para os investimentos; abaixo de zero, o mês é pago com eles. Degraus aparecem quando um reajuste entra (custos com IPCA 1 vez por ano sobem em janeiro, por exemplo) ou quando uma parcela começa ou termina.',
   'compras:Formas de pagamento': 'Quanto dar de entrada: compara entradas de 10% a 80% e à vista no financiamento do card, com o dinheiro que não foi para a entrada rendendo na carteira pela taxa líquida atual dela (ou a do cenário, se a carteira estiver vazia), e mostra quanto desse rendimento cobre a parcela. Para a compra escolhida, compara pagar à vista, financiar (SAC ou Price) ou consórcio, considerando o que o dinheiro renderia se ficasse investido.',
-  'cenarios:Rebalanceamento': 'Como dividir o próximo aporte entre as classes para aproximar a carteira de hoje do alvo do cenário, sem vender nada.',
+  'cenarios:Rebalanceamento': 'Uma calculadora para o próximo aporte: diz quanto pôr em cada classe para a carteira de hoje chegar mais perto do alvo deste cenário, sem vender nada. Valor do aporte: quanto você vai investir agora. Hoje: quanto você tem em cada classe, vindo da Carteira. % alvo: a divisão que o cenário quer (a carteira-alvo ou a divisão própria do cenário). Alvo após aporte: quanto cada classe deveria ter com o aporte somado. Colocar neste aporte: quanto do aporte vai para cada classe; as mais abaixo do alvo recebem primeiro. Não muda a projeção nem o plano.',
   'carteira:Saúde da carteira': 'Nota de 0 a 1.000 em cinco eixos (diversificação, liquidez, retorno, eficiência e proteção), cada um até 200 pontos, calculada com as aplicações cadastradas. O (i) de cada eixo mostra a conta.',
   'carteira:Rentabilidade x CDI': 'Quanto a carteira rendeu contra o CDI e contra o Ibovespa (escolha em "Comparar com"). O Ibovespa já inclui dividendos reinvestidos; a comparação com ele vem em pontos percentuais de diferença no período. Usa a data, o valor aplicado e o valor atual de cada aplicação (cupons, dividendos, JCP e rendimentos já recebidos contam) e o CDI mensal do Banco Central. "Desde cada aplicação" compara cada uma com o CDI do próprio período.',
   'carteira:Cadastrar aplicação': 'Cadastre cada aplicação com tipo, indexador, taxa, datas e valor atual. Com o valor atual informado, o painel usa ele; sem ele, estima pela taxa contratada. Também dá para importar o extrato da corretora em PDF.',
