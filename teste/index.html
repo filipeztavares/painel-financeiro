@@ -2300,7 +2300,7 @@ svg path[data-si] { transition: opacity .12s; }
     </div>
     <div class="nav-mobile-sub" id="navMobileSub"></div>
   </div>
-  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 327</div></div>
+  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 328</div></div>
 </nav>
 <div class="sino-pop" id="sino-pop" role="dialog" aria-label="Atualizações das bases" hidden></div>
 <div class="sino-pop" id="pess-pop" role="dialog" aria-label="Seus avisos" hidden></div>
@@ -4268,7 +4268,7 @@ svg path[data-si] { transition: opacity .12s; }
     return new Promise(resolve => { const { data } = sb.auth.onAuthStateChange(async (ev) => { if (ev !== 'PASSWORD_RECOVERY') return; const s = prompt('Digite a nova senha (mínimo 8 caracteres):'); if (s && s.length >= 8) { const { error } = await sb.auth.updateUser({ password: s }); alert(error ? 'Não deu para trocar a senha: ' + error.message : 'Senha trocada.'); } }); resolve(data); });
   }
   // ---------- rodapé: compartilhar, administração e sair ----------
-  const SITE_V = 213;
+  const SITE_V = 214;
   const escH = v => String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const dataBR = v => v ? new Date(v).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' }) : '–';
   const css2 = `.side-foot .r{flex-wrap:wrap}.side-foot .lg-acoes{margin-left:auto;display:inline-flex;gap:10px}
@@ -15711,14 +15711,14 @@ const MODS = [
   { id: 'uso', corNav: '#D4A72C', nome: 'Primeiros passos', cor: 'var(--accent)', fixo: true, vg: 'comousar', desc: 'O que cada módulo faz, o que é obrigatório preencher, o que é opcional e quanto você já configurou.', tabs: ['comousar'] },
   { id: 'fin', corNav: '#7FA6E0', nome: 'Finanças', cor: 'var(--s1)', fixo: true, vg: 'inicio', desc: 'Gastos, patrimônio, carteira e o Meu plano, só com o que é real. Recebe o que você decidiu na Simulação.', tabs: ['inicio', 'global', 'gastos', 'patrimonio', 'carteira', 'comparador', 'orcamento', 'familia'] },
   { id: 'simu', corNav: '#F0A46B', nome: 'Simulação', cor: 'var(--s9)', fixo: true, vg: 'simcen', desc: 'Todos os itens dos módulos num lugar só. Monte cenários marcando sim ou não em cada um, compare o patrimônio e torne real o que decidir. Também as premissas de cada cenário e o simulador de aportes.', tabs: ['simcen', 'cenarios', 'simulador'] },
-  { id: 'trab', corNav: '#E09A63', nome: 'Bens e compromissos', cor: 'var(--s2)', vg: 'trabvg', desc: 'Imóveis, carros e outros bens, eventos como casamento e reforma, e dívidas a receber e a pagar. O que entra no plano vai para o Meu plano.', tabs: ['trabvg', 'compras'] },
+  { id: 'trab', corNav: '#3FB8AF', nome: 'Bens e compromissos', cor: 'var(--s2)', vg: 'trabvg', desc: 'Imóveis, carros e outros bens, eventos como casamento e reforma, e dívidas a receber e a pagar. O que entra no plano vai para o Meu plano.', tabs: ['trabvg', 'compras'] },
   { id: 'carr', corNav: '#B39DDB', nome: 'Carreira', cor: 'var(--s5)', vg: 'pjpf', desc: 'PJ e PF: CLT contra PJ nos dois sentidos, quanto pedir e o melhor pró-labore. Stock options: vesting, valor hoje e num evento de liquidez.', tabs: ['pjpf', 'stock'] },
   { id: 'viag', corNav: '#5fc2f5', nome: 'Viagens', cor: 'var(--s8)', vg: 'viagens', desc: 'Mapa de onde já foi e de onde quer ir, sorteio, comparação de destinos nas suas datas o roteiro com a rota mais barata, os custos ligados ao Meu plano e os gastos durante a viagem.', tabs: ['viagvg', 'viagens', 'viagcmp', 'viagrot', 'viagcus', 'viagdur'] },
   { id: 'neg', corNav: '#a3e05a', nome: 'Empreendimentos', cor: 'var(--s7)', vg: 'negvg', desc: 'Suas ideias e empresas: DRE com as suas linhas, fluxo de caixa, quanto pôr e quanto chega para você no Meu plano. Abrir empresa com a comparação de regimes, oportunidades de custo, pesquisa de mercado com IA, viabilidade, contabilidade fácil, preço, valuation, sócios e comparação.', tabs: ['negvg', 'negcad', 'negdre', 'negfc', 'negabr', 'negeco', 'negpesq', 'negviab', 'negcont', 'negval', 'negprec', 'negsoc', 'negcmp'] },
   { id: 'fam', corNav: '#fb7185', nome: 'Família', cor: 'var(--s6)', vg: 'famvg', desc: 'Quem mora com você e os filhos, já nascidos ou previstos (gêmeos também): quanto cada um custa em cada fase, a chegada, a licença e o efeito no Meu plano. E o orçamento da casa: meu, seu e nosso, divisão das contas, quem deve a quem e a reserva da família. No site, a família compartilha o orçamento e as metas, e cada um escolhe o que mostra.', tabs: ['famvg', 'fampes', 'famcasa', 'famcomp'] },
   { id: 'agen', corNav: '#34d399', nome: 'Agenda', cor: 'var(--s7)', vg: 'agcal', desc: 'Calendário com seus compromissos e contas, lembretes, as datas que o painel já conhece (viagens, aniversários, compras) e listas de compras.', tabs: ['agcal', 'aglis'] },
-  { id: 'indep', corNav: '#E3B848', nome: 'Independência financeira', cor: 'var(--s3)', vg: 'indvg', desc: 'Quando dá para parar de trabalhar: o seu número, a data pelo Meu plano, quanto falta para a sua meta e os marcos no caminho. Alavancas mostram o que adianta a data. Renda passiva, INSS e previdência vêm a seguir.', tabs: ['indvg', 'indnum', 'indalv'] },
-  { id: 'preco', corNav: '#f59e0b', nome: 'Radar de preços', cor: 'var(--s2)', vg: 'rdvg', desc: 'O que você quer comprar e o preço que aceita pagar: histórico, selo de preço baixo ou alto, à vista ou parcelado, quando o dinheiro fica pronto e a compra no Meu plano. A pesquisa automática todo dia e o aviso no sino vêm a seguir.', tabs: ['rdvg', 'rdprod', 'rdcomp'] },
+  { id: 'indep', corNav: '#8B7FD6', nome: 'Independência financeira', cor: 'var(--s3)', vg: 'indvg', desc: 'Quando dá para parar de trabalhar: o seu número, a data pelo Meu plano, quanto falta para a sua meta e os marcos no caminho. Alavancas mostram o que adianta a data. Renda passiva, INSS e previdência vêm a seguir.', tabs: ['indvg', 'indnum', 'indalv'] },
+  { id: 'preco', corNav: '#EF6F5E', nome: 'Radar de preços', cor: 'var(--s2)', vg: 'rdvg', desc: 'O que você quer comprar e o preço que aceita pagar: histórico, selo de preço baixo ou alto, à vista ou parcelado, quando o dinheiro fica pronto e a compra no Meu plano. A pesquisa automática todo dia e o aviso no sino vêm a seguir.', tabs: ['rdvg', 'rdprod', 'rdcomp'] },
   { id: 'edu', corNav: '#60a5fa', nome: 'Educação', cor: 'var(--s4)', breve: true, desc: 'Cursos, faculdade, pós e a escola dos filhos: quanto custam ao longo dos anos, como pagar e o retorno esperado na carreira.', tabs: [] }
 ];
 const modDe = t => (MODS.find(m => m.tabs.includes(t)) || {}).id || null;
