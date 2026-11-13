@@ -1,11 +1,11 @@
 <!doctype html>
 <html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="robots" content="noindex"><link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230F1F3D'/%3E%3Crect x='7' y='17' width='4' height='8' fill='%23D4A72C'/%3E%3Crect x='14' y='12' width='4' height='13' fill='%23D4A72C'/%3E%3Crect x='21' y='7' width='4' height='18' fill='%23A8582A'/%3E%3C/svg%3E">
+<meta name="robots" content="noindex"><link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22%3E%3Crect width=%22100%22 height=%22100%22 rx=%2222%22 fill=%22%230E1A2B%22/%3E%3Cg transform=%22translate(15 15) scale(0.7)%22%3E%3Cmask id=%22h1515%22%3E%3Crect x=%22-10%22 y=%22-10%22 width=%22120%22 height=%22120%22 fill=%22%23fff%22/%3E%3Ccircle cx=%2250%22 cy=%2250%22 r=%229%22 fill=%22%23000%22/%3E%3C/mask%3E%3Cg mask=%22url(%23h1515)%22%3E%3Cpath d=%22M50 50 L51.33 12.02 A38 38 0 0 1 85.71 37.00 Z%22 fill=%22%235B8DEF%22/%3E%3Cpath d=%22M50 50 L86.53 39.53 A38 38 0 0 1 73.40 79.94 Z%22 fill=%22%23F0A46B%22 transform=%22translate(6.66 2.16)%22/%3E%3Cpath d=%22M50 50 L71.25 81.50 A38 38 0 0 1 28.75 81.50 Z%22 fill=%22%23EE6C4D%22/%3E%3Cpath d=%22M50 50 L26.60 79.94 A38 38 0 0 1 13.47 39.53 Z%22 fill=%22%233FB58A%22/%3E%3Cpath d=%22M50 50 L14.29 37.00 A38 38 0 0 1 48.67 12.02 Z%22 fill=%22%238E7CF0%22/%3E%3C/g%3E%3C/g%3E%3C/svg%3E">
 <style>html,body{margin:0;padding:0}</style>
 <script>(function(){var P='teste:',S=Storage.prototype,g=S.getItem,s=S.setItem,r=S.removeItem;S.getItem=function(k){return g.call(this,P+k)};S.setItem=function(k,v){return s.call(this,P+k,v)};S.removeItem=function(k){return r.call(this,P+k)}})();</script>
 <style>#amb-teste{position:fixed;top:0;left:50%;transform:translateX(-50%);z-index:2147483647;background:#C62828;color:#fff;font:700 11px/1 system-ui,sans-serif;letter-spacing:.08em;padding:4px 12px;border-radius:0 0 6px 6px;pointer-events:none}</style></head><body>
 <div id="amb-teste">AMBIENTE DE TESTE</div>
-<title>Painel financeiro</title>
+<title>LifeBoard</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap">
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -4529,7 +4529,7 @@ table.sc-prem tr.sc-res2:nth-child(2) td { border-bottom: 2px solid var(--line);
     return new Promise(resolve => { const { data } = sb.auth.onAuthStateChange(async (ev) => { if (ev !== 'PASSWORD_RECOVERY') return; const s = prompt('Digite a nova senha (mínimo 8 caracteres):'); if (s && s.length >= 8) { const { error } = await sb.auth.updateUser({ password: s }); alert(error ? 'Não deu para trocar a senha: ' + error.message : 'Senha trocada.'); } }); resolve(data); });
   }
   // ---------- rodapé: compartilhar, administração e sair ----------
-  const SITE_V = 234;
+  const SITE_V = 235;
   const escH = v => String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const dataBR = v => v ? new Date(v).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' }) : '–';
   const css2 = `.side-foot .r{flex-wrap:wrap}.side-foot .lg-acoes{margin-left:auto;display:inline-flex;gap:10px}
