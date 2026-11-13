@@ -2469,7 +2469,7 @@ html[data-lb] #pt-hd .eb{font-family:var(--f-ui)}
     </div>
     <div class="nav-mobile-sub" id="navMobileSub"></div>
   </div>
-  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 335</div></div>
+  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 336</div></div>
 </nav>
 <div class="sino-pop" id="sino-pop" role="dialog" aria-label="Atualizações das bases" hidden></div>
 <div class="sino-pop" id="pess-pop" role="dialog" aria-label="Seus avisos" hidden></div>
@@ -4443,7 +4443,7 @@ html[data-lb] #pt-hd .eb{font-family:var(--f-ui)}
     return new Promise(resolve => { const { data } = sb.auth.onAuthStateChange(async (ev) => { if (ev !== 'PASSWORD_RECOVERY') return; const s = prompt('Digite a nova senha (mínimo 8 caracteres):'); if (s && s.length >= 8) { const { error } = await sb.auth.updateUser({ password: s }); alert(error ? 'Não deu para trocar a senha: ' + error.message : 'Senha trocada.'); } }); resolve(data); });
   }
   // ---------- rodapé: compartilhar, administração e sair ----------
-  const SITE_V = 221;
+  const SITE_V = 222;
   const escH = v => String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const dataBR = v => v ? new Date(v).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' }) : '–';
   const css2 = `.side-foot .r{flex-wrap:wrap}.side-foot .lg-acoes{margin-left:auto;display:inline-flex;gap:10px}
@@ -15915,9 +15915,10 @@ const modVisivel = m => modLiberado(m) && modEscolhido(m);
 function aplicarMod() {
   document.querySelectorAll('.nav [data-mod]').forEach(el => el.classList.toggle('fora-mod', el.dataset.mod !== 'all' && el.dataset.mod !== modAtual));
   const mm = MODS.find(m => m.id === modAtual) || MODS.find(m => m.id === 'fin'), bx = $('nav-modbox');
-  if (bx) { bx.style.setProperty('--mcn', mm.corNav); $('nav-mod-ic').innerHTML = MOD_SVG[mm.id]; }
+  const naHome = tab === 'modulos', icH = naHome && document.querySelector('#p-modulos .block-title .num');
+  if (bx) { bx.style.setProperty('--mcn', naHome ? '#F0A46B' : mm.corNav); $('nav-mod-ic').innerHTML = icH ? icH.innerHTML : MOD_SVG[mm.id]; }
   document.querySelectorAll('.nav-voltar').forEach(b => { if (tab === 'modulos') b.setAttribute('aria-current', 'page'); else b.removeAttribute('aria-current'); });
-  if ($('nav-mod-nome')) $('nav-mod-nome').textContent = mm.nome;
+  if ($('nav-mod-nome')) $('nav-mod-nome').textContent = naHome ? 'Módulos' : mm.nome;
   if (!$('nav-mod-pop').hidden) pintaModPop();
 }
 
