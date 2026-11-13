@@ -2402,6 +2402,15 @@ html[data-lb] #pt-hd .eb{font-family:var(--f-ui)}
 .ac-dlg fieldset { border: 0; box-shadow: none; padding: 0; background: none; }
 .ac-dlg fieldset > .ac-leg { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
 .gas-drop.sobre { border-color: #F0A46B; }
+/* ---- v342 opção: seções da tela como botões no topo ---- */
+html[data-secmenu="topo"] .nav-sub,html[data-secmenu="topo"] .nav-head .caret,html[data-secmenu="topo"] .nav-tools{display:none!important}
+html[data-secmenu="topo"] [data-nav]{scroll-margin-top:115px}
+#lb-secs{position:sticky;top:0;z-index:30;display:flex;flex-wrap:wrap;gap:6px;padding:10px 0;margin:6px 0 12px;background:var(--bg)}
+#lb-secs a{flex:none;font:600 12.5px var(--f-ui);color:var(--ink);text-decoration:none;border:1px solid var(--line);background:var(--panel);border-radius:999px;padding:6px 13px;white-space:nowrap}
+#lb-secs a:hover{border-color:#F0A46B;color:var(--accent)}
+#lb-secs a.active{background:#F0A46B;border-color:#F0A46B;color:#0E1A2B}
+@media (max-width:700px){#lb-secs{flex-wrap:nowrap;overflow-x:auto}}
+
 </style>
 
 
@@ -2492,7 +2501,7 @@ html[data-lb] #pt-hd .eb{font-family:var(--f-ui)}
     </div>
     <div class="nav-mobile-sub" id="navMobileSub"></div>
   </div>
-  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 341</div></div>
+  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 342</div></div>
 </nav>
 <div class="sino-pop" id="sino-pop" role="dialog" aria-label="Atualizações das bases" hidden></div>
 <div class="sino-pop" id="pess-pop" role="dialog" aria-label="Seus avisos" hidden></div>
@@ -4476,7 +4485,7 @@ html[data-lb] #pt-hd .eb{font-family:var(--f-ui)}
     return new Promise(resolve => { const { data } = sb.auth.onAuthStateChange(async (ev) => { if (ev !== 'PASSWORD_RECOVERY') return; const s = prompt('Digite a nova senha (mínimo 8 caracteres):'); if (s && s.length >= 8) { const { error } = await sb.auth.updateUser({ password: s }); alert(error ? 'Não deu para trocar a senha: ' + error.message : 'Senha trocada.'); } }); resolve(data); });
   }
   // ---------- rodapé: compartilhar, administração e sair ----------
-  const SITE_V = 227;
+  const SITE_V = 228;
   const escH = v => String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const dataBR = v => v ? new Date(v).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' }) : '–';
   const css2 = `.side-foot .r{flex-wrap:wrap}.side-foot .lg-acoes{margin-left:auto;display:inline-flex;gap:10px}
@@ -19729,6 +19738,10 @@ Object.keys(INT_POS).forEach(t => { const r0 = RENDER[t]; if (!r0) return; RENDE
 (function () {
   const root = document.documentElement;
   const VK = 'painel-visual';
+  const MK = 'painel-secmenu';
+  function getMenu() { try { return localStorage.getItem(MK) === 'topo' ? 'topo' : 'lado'; } catch (e) { return 'lado'; } }
+  function setMenu(m) { try { localStorage.setItem(MK, m); } catch (e) {} aplicaMenu(); }
+  function aplicaMenu() { root.setAttribute('data-secmenu', getMenu()); pintaSecs(); pintaTop(); }
   const VARS = window.__LB_VARS || [['a', 'Novo A'], ['b', 'Novo B'], ['atual', 'Antigo']];
   function getVar() { let v = VARS[0][0]; try { v = localStorage.getItem(VK) || VARS[0][0]; } catch (e) {} return VARS.some(x => x[0] === v) ? v : VARS[0][0]; }
   function setVar(v) { try { localStorage.setItem(VK, v); } catch (e) {} aplicaVar(); }
@@ -19748,15 +19761,29 @@ Object.keys(INT_POS).forEach(t => { const r0 = RENDER[t]; if (!r0) return; RENDE
     const crumb = t === 'modulos' ? '<b>Seus módulos</b>' : '<a href="#" data-lbhome>Módulos</a> › ' + (m ? m.nome + ' › ' : '') + '<b>' + (tituloTela(t) || '') + '</b>';
     top.innerHTML = '<div class="crumb">' + crumb + '</div>' +
       (VARS.length > 1 ? '<div class="modo" role="group" aria-label="Visual">' + VARS.map(x => '<button type="button" data-lbv="' + x[0] + '" aria-pressed="' + (x[0] === v) + '">' + x[1] + '</button>').join('') + '</div>' : '') +
+      '<div class="modo" role="group" aria-label="Menu das seções"><button type="button" data-lbm="lado" aria-pressed="' + (getMenu() === 'lado') + '">Menu ao lado</button><button type="button" data-lbm="topo" aria-pressed="' + (getMenu() === 'topo') + '">Menu no topo</button></div>' +
       '<div class="modo" role="group" aria-label="Aparência"><button type="button" data-lbt="escuro" aria-pressed="' + esc + '">Escuro</button><button type="button" data-lbt="claro" aria-pressed="' + !esc + '">Claro</button></div>';
   }
   top.addEventListener('click', e => {
     const b = e.target.closest('[data-lbt]'); if (b) setTema(b.dataset.lbt);
     const w = e.target.closest('[data-lbv]'); if (w) setVar(w.dataset.lbv);
+    const mn = e.target.closest('[data-lbm]'); if (mn) setMenu(mn.dataset.lbm);
     if (e.target.closest('[data-lbhome]')) { e.preventDefault(); showTab('modulos'); }
   });
   try { matchMedia('(prefers-color-scheme: dark)').addEventListener('change', pintaTop); } catch (e) {}
 
+  // seções da tela como botões logo abaixo do título (opção Menu no topo)
+  function pintaSecs() {
+    const old = document.getElementById('lb-secs'); if (old) old.remove();
+    if (getMenu() !== 'topo') return;
+    const t = typeof tab !== 'undefined' ? tab : 'modulos', sub = document.querySelector('.nav-sub[data-sub="' + t + '"]'), p = document.getElementById('p-' + t);
+    if (!sub || !p) return;
+    const as = [...sub.querySelectorAll('a[data-go]')]; if (as.length < 2) return;
+    const nav = document.createElement('nav'); nav.id = 'lb-secs'; nav.setAttribute('aria-label', 'Seções desta tela');
+    nav.innerHTML = as.map(a => '<a href="' + a.getAttribute('href') + '" data-go="' + a.dataset.go + '"' + (a.classList.contains('active') ? ' class="active"' : '') + '>' + a.innerHTML + '</a>').join('');
+    const bt = p.querySelector('.block-title');
+    if (bt && bt.parentNode) { const sb = bt.nextElementSibling && bt.nextElementSibling.matches('.block-sub, p.sub') ? bt.nextElementSibling : bt; sb.after(nav); } else p.prepend(nav);
+  }
   function marca(t) {
     const m = modDe(t);
     root.style.setProperty('--m', m ? (m.corNav || '#F0A46B') : '#F0A46B');
@@ -19764,7 +19791,7 @@ Object.keys(INT_POS).forEach(t => { const r0 = RENDER[t]; if (!r0) return; RENDE
       const p = h.closest('[role=tabpanel]'); const mm = p ? modDe(p.id.slice(2)) : null;
       if (mm) { const i = MODS.indexOf(mm) + 1; h.setAttribute('data-lbmod', 'Módulo ' + i + ' de ' + MODS.length + ' · ' + mm.nome); }
     });
-    pintaTop();
+    pintaTop(); pintaSecs();
   }
   const orig = showTab;
   showTab = function (t, k) { const r = orig.apply(this, arguments); try { marca(typeof tab !== 'undefined' ? tab : t); } catch (e) {} return r; };
@@ -19784,7 +19811,7 @@ Object.keys(INT_POS).forEach(t => { const r0 = RENDER[t]; if (!r0) return; RENDE
   }
   function pintaProto() { if (!pb) return; const v = getVar(), esc = escuroAgora(); pb.querySelectorAll('[data-lbv]').forEach(b => b.setAttribute('aria-pressed', b.dataset.lbv === v)); pb.querySelectorAll('[data-lbp]').forEach(b => b.setAttribute('aria-pressed', (b.dataset.lbp === 'escuro') === esc)); }
 
-  aplicaVar();
+  aplicaVar(); aplicaMenu();
   try { marca(typeof tab !== 'undefined' ? tab : 'modulos'); } catch (e) {}
 })();
 </script><script>
