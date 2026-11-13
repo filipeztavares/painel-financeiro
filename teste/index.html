@@ -692,7 +692,9 @@ tr.best td { background: var(--good-soft); }
 .compra .cent-lg { display: flex; gap: 14px; flex-wrap: wrap; align-items: center; font-size: 12px; }
 .compra .cent-lg i { display: inline-block; width: 10px; height: 10px; border-radius: 2px; margin-right: 5px; vertical-align: -1px; }
 .compra .cent-lg .cent-h { color: var(--muted); }
-.compra .cent-t td, .compra .cent-t th { white-space: nowrap; font-variant-numeric: tabular-nums; }
+.compra .cent-t td { white-space: nowrap; font-variant-numeric: tabular-nums; }
+.compra .cent-t th { white-space: normal; vertical-align: bottom; line-height: 1.25; }
+.compra .cent-t th .ibtn { margin-left: 3px; }
 .mm th:first-child, .mm td:first-child { position: sticky; left: 0; z-index: 1; background: var(--panel); min-width: 230px; max-width: 280px; white-space: normal; }
 .mm thead th:first-child { background: var(--field); }
 .mm tr.mm-g td, #tbl-lanc tr.lg-g td { font-weight: 600; background: var(--accent-soft); border-top: 2px solid var(--panel); }
@@ -2572,7 +2574,7 @@ html[data-lb="b"] .block-title .desc{font-size:14px;color:var(--muted);margin-to
     </div>
     <div class="nav-mobile-sub" id="navMobileSub"></div>
   </div>
-  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 368</div></div>
+  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 369</div></div>
 </nav>
 <div class="sino-pop" id="sino-pop" role="dialog" aria-label="Atualizações das bases" hidden></div>
 <div class="sino-pop" id="pess-pop" role="dialog" aria-label="Seus avisos" hidden></div>
@@ -4576,7 +4578,7 @@ html[data-lb="b"] .block-title .desc{font-size:14px;color:var(--muted);margin-to
     return new Promise(resolve => { const { data } = sb.auth.onAuthStateChange(async (ev) => { if (ev !== 'PASSWORD_RECOVERY') return; const s = prompt('Digite a nova senha (mínimo 8 caracteres):'); if (s && s.length >= 8) { const { error } = await sb.auth.updateUser({ password: s }); alert(error ? 'Não deu para trocar a senha: ' + error.message : 'Senha trocada.'); } }); resolve(data); });
   }
   // ---------- rodapé: compartilhar, administração e sair ----------
-  const SITE_V = 257;
+  const SITE_V = 258;
   const escH = v => String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const dataBR = v => v ? new Date(v).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' }) : '–';
   const css2 = `.side-foot .r{flex-wrap:wrap}.side-foot .lg-acoes{margin-left:auto;display:inline-flex;gap:10px}
@@ -12121,6 +12123,14 @@ function renderCenarios() {
    No fim do prazo, o saldo que sobrou é o resultado comparado a pagar à vista (rendimento − juros). Taxas: Meu plano e carteira atual.
    Para mudar de lugar, chame renderCustoEntrada(b, el) com outro elemento. */
 const CE_OPC = [0, 10, 20, 30, 40, 50, 60, 70, 80];
+Object.assign(INFO_TIPO, {
+  'ce:fica': 'Preço menos a entrada. É o dinheiro que você não gasta no dia da compra e que fica aplicado, rendendo, até o fim das parcelas. Ele não é usado para pagar parcela.',
+  'ce:parc': 'Primeira parcela do financiamento com esta entrada, recalculada com os mesmos juros e o mesmo prazo do card.',
+  'ce:juros': 'Soma de todas as parcelas menos o valor financiado (preço − entrada). É o que você paga ao banco a mais.',
+  'ce:ap': 'O valor que ficou aplicado (preço − entrada) depois de render todos os meses do prazo, com a taxa indicada.',
+  'ce:pc': 'As parcelas saem da sobra do mês. Se você tivesse pago à vista, essa sobra seria investida. Este é o total das parcelas com o rendimento que elas teriam tido até o fim do prazo.',
+  'ce:res': 'Aplicado no fim menos parcelas corrigidas. Positivo: financiar deixou mais dinheiro do que pagar à vista. Negativo: os juros custaram mais do que o dinheiro rendeu.'
+});
 const ceAberto = new Set();
 const ceSel = {};   // compra -> entrada (R$) escolhida para o gráfico mês a mês
 document.addEventListener('click', e => { const t = e.target.closest && e.target.closest('[data-ce-e]'); if (!t) return; const box = t.closest('[data-cent-box]'); if (!box) return;
@@ -12201,7 +12211,7 @@ function renderCustoEntrada(b, el) {
       </div>
       ${(() => { const a = linhas.find(x => !x.avista && !x.sua && x.E < V * 0.05), z = linhas.filter(x => !x.avista).slice(-1)[0]; if (!a || !z || z.E - a.E < 1) return ''; const d = (z.r[0].res - a.r[0].res) / (z.E - a.E) * 1000; return Math.abs(d) < 1 ? '' : `<p class="cent-ok">Cada <b>R$ 1.000 a mais de entrada</b> ${d > 0 ? 'evita' : 'custa'} cerca de <b>${fm(Math.abs(d))}</b> ${d > 0 ? 'de perda' : 'a mais'} no fim do prazo (pelo Meu plano).</p>`; })()}
       ${sua && melhor !== sua && melhor.r[0].res - sua.r[0].res > 1 ? `<p class="cent-ok">Pelo Meu plano, a melhor opção é <b>${melhor.avista ? 'pagar à vista' : 'entrada de ' + melhor.lab}</b>: ${fm(melhor.r[0].res - sua.r[0].res)} a mais no fim do prazo do que a sua entrada.</p>` : sua ? '<p class="cent-ok">Pelo Meu plano, a sua entrada já é a melhor opção entre as comparadas.</p>' : ''}
-      <div class="tscroll"><table class="cent-t"><thead><tr><th>Entrada</th><th>Fica aplicado</th><th>1ª parcela</th><th>Juros pagos</th>${fontes.map(fo => `<th>Aplicado no fim · ${fo.name}</th><th>Parcelas corrigidas · ${fo.name}</th><th>Resultado · ${fo.name}</th>`).join('')}</tr></thead><tbody>
+      <div class="tscroll"><table class="cent-t"><thead><tr><th>Entrada</th><th>Fica<br>aplicado${infoI('ce:fica')}</th><th>1ª<br>parcela${infoI('ce:parc')}</th><th>Juros<br>pagos${infoI('ce:juros')}</th>${fontes.map(fo => `<th>Aplicado no fim<br>${fo.name}${infoI('ce:ap')}</th><th>Parcelas corrigidas<br>${fo.name}${infoI('ce:pc')}</th><th>Resultado<br>${fo.name}${infoI('ce:res')}</th>`).join('')}</tr></thead><tbody>
       ${linhas.map(x => `<tr${x.sua ? ' class="pe-best"' : ''}${x.avista ? '' : ` data-ce-e="${x.E}" style="cursor:pointer${x === selL ? ';outline:1.5px dashed var(--ink);outline-offset:-2px' : ''}" title="Ver esta entrada mês a mês"`}><td class="name">${x.avista ? 'À vista' : `${x.lab} · ${fm(x.E)}`}${x.sua ? ' <span class="chip info">sua escolha</span>' : ''}</td><td>${fm(x.r[0].PV)}</td><td>${x.r[0].p1 ? fm(x.r[0].p1) : '—'}</td><td>${x.r[0].juros > 0.5 ? fm(x.r[0].juros) : '—'}</td>${x.r.map(r => `<td>${x.avista ? '—' : fm(r.ap)}</td><td>${x.avista ? '—' : fm(r.pc)}</td><td><b>${sinal(r.res)}</b></td>`).join('')}</tr>`).join('')}
       </tbody></table></div>
     </div></details>`;
