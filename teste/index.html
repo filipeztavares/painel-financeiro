@@ -2460,6 +2460,15 @@ html[data-lb="b"] .block-title .desc{font-size:14px;color:var(--muted);margin-to
 .tl-uso{display:inline-block;margin-left:8px;padding:1px 8px;border-radius:999px;font:700 10.5px/1.5 var(--f-ui, inherit);letter-spacing:.02em;vertical-align:1px;white-space:nowrap}
 .tl-uso.real{background:color-mix(in srgb,var(--pos, #2E8B57) 16%,transparent);color:var(--pos, #2E8B57)}
 .tl-uso.sim{background:rgba(245,196,66,.22);color:var(--ink);border:1px dashed #F5C442}
+
+/* v360: barra e confirmação das premissas do cenário */
+#cen-pend{position:fixed;left:50%;bottom:18px;transform:translateX(-50%);z-index:850;display:flex;align-items:center;gap:10px;flex-wrap:wrap;max-width:calc(100% - 32px);padding:10px 12px 10px 16px;border-radius:14px;border:1px solid #F5C442;background:#FFF8E1;color:#1B2433;box-shadow:0 10px 30px rgba(14,26,43,.18);font-size:13.5px}
+#cen-pend[hidden]{display:none}
+#cen-pend .btn{padding:6px 14px}
+.cen-pend-tb{width:100%;border-collapse:collapse;font-size:13.5px;margin:6px 0 14px}
+.cen-pend-tb th,.cen-pend-tb td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line)}
+.cen-pend-tb th{font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.cen-pend-ac{display:flex;gap:8px;justify-content:flex-end;flex-wrap:wrap}
 </style>
 
 
@@ -4554,7 +4563,7 @@ html[data-lb="b"] .block-title .desc{font-size:14px;color:var(--muted);margin-to
     return new Promise(resolve => { const { data } = sb.auth.onAuthStateChange(async (ev) => { if (ev !== 'PASSWORD_RECOVERY') return; const s = prompt('Digite a nova senha (mínimo 8 caracteres):'); if (s && s.length >= 8) { const { error } = await sb.auth.updateUser({ password: s }); alert(error ? 'Não deu para trocar a senha: ' + error.message : 'Senha trocada.'); } }); resolve(data); });
   }
   // ---------- rodapé: compartilhar, administração e sair ----------
-  const SITE_V = 248;
+  const SITE_V = 249;
   const escH = v => String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const dataBR = v => v ? new Date(v).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' }) : '–';
   const css2 = `.side-foot .r{flex-wrap:wrap}.side-foot .lg-acoes{margin-left:auto;display:inline-flex;gap:10px}
@@ -19745,7 +19754,7 @@ Object.keys(INT_POS).forEach(t => { const r0 = RENDER[t]; if (!r0) return; RENDE
 /* ---------- v321 voltar e avançar do navegador: cada tela é um passo no histórico (#tela); voltar com um pop-up aberto fecha o pop-up ---------- */
 (() => {
   if (!window.history || !history.pushState) return;
-  const POPS = ['#int-pop', '#int-lista', '#cp-pop', '#conf-pop', '#ag-pop', '#imp-pop', '#jor-modal', '#pess-pop', '#sino-pop', '#tour-pop', '#nav-mod-pop', '#vg-mpop', '#mp-pop', '#ac-pop-apl', '#ac-pop-gasto', '#ac-pop-exp'];
+  const POPS = ['#int-pop', '#int-lista', '#cp-pop', '#conf-pop', '#ag-pop', '#imp-pop', '#jor-modal', '#pess-pop', '#sino-pop', '#tour-pop', '#nav-mod-pop', '#vg-mpop', '#mp-pop', '#ac-pop-apl', '#ac-pop-gasto', '#ac-pop-exp', '#cen-pend-pop'];
   const vis = el => { if (!el || el.hidden) return false; const cs = getComputedStyle(el); return cs.display !== 'none' && cs.visibility !== 'hidden'; };
   const abertos = () => POPS.map(s => document.querySelector(s)).filter(vis);
   function fecha(el) {
@@ -19998,6 +20007,76 @@ Object.keys(INT_POS).forEach(t => { const r0 = RENDER[t]; if (!r0) return; RENDE
   setTimeout(confere, 1500);
 })();
 </script>
-
+<script>
+/* v360: premissas de um cenário só ficam valendo depois de "Salvar" → confirmar as mudanças (evita número digitado sem querer).
+   A mudança aparece na hora nos gráficos; a barra embaixo oferece Desfazer ou Salvar; trocar de cenário ou de tela com mudança pendente abre a confirmação antes. */
+(function () {
+  const ROT = { 'aj.cdi': 'Ajuste no CDI (p.p.)', 'aj.ipca': 'Ajuste no IPCA (p.p.)', extra: 'Renda extra (R$/mês)', manual: 'Taxa manual (% a.a. líquido)', custoFix: 'Aumento em Fixos (%)', custoEss: 'Aumento em Essenciais (%)', custoEst: 'Aumento em Estilo de vida (%)', custoDe: 'Custos mudam a partir de', proprio: 'Divisão própria da carteira' };
+  let pend = null;   // { id, antes }
+  const snap = c => JSON.parse(JSON.stringify({ aj: c.aj || {}, extra: c.extra ?? '', manual: c.manual ?? '', custoFix: c.custoFix ?? '', custoEss: c.custoEss ?? '', custoEst: c.custoEst ?? '', custoDe: c.custoDe ?? '', proprio: !!c.proprio, alvo: c.alvo || null, preset: c.preset ?? '' }));
+  const get = (o, k) => k.split('.').reduce((x, y) => x == null ? x : x[y], o);
+  const vazio = v => v === '' || v == null || (typeof v === 'number' && !isFinite(v));
+  const fmt = (k, v) => {
+    if (k === 'proprio') return v ? 'Sim' : 'Não';
+    if (k === 'custoDe') return vazio(v) ? 'desde já' : (/^\d{4}-\d{2}$/.test(v) ? mLabel(mIndex(v)) : String(v));
+    if (k === 'manual') return vazio(v) || +v <= 0 ? 'vazio (usa a carteira)' : num(v) + '%';
+    if (k === 'extra') return vazio(v) ? 'R$ 0' : fm(+v);
+    return vazio(v) ? '0' : num(v);
+  };
+  const igual = (k, a, b) => k === 'proprio' ? !!a === !!b : (vazio(a) ? 0 : String(a)) == (vazio(b) ? 0 : String(b)) || (!vazio(a) && !vazio(b) && +a === +b);
+  function difs() {
+    if (!pend) return [];
+    const c = state.cenarios.find(x => x.id === pend.id); if (!c) return [];
+    const ag = snap(c), out = [];
+    Object.keys(ROT).forEach(k => { const a = get(pend.antes, k), b = get(ag, k); if (!igual(k, a, b)) out.push([ROT[k], fmt(k, a), fmt(k, b)]); });
+    if (ag.proprio || pend.antes.proprio) {
+      const A = pend.antes.alvo || {}, B = ag.alvo || {};
+      (typeof CLASSES !== 'undefined' ? CLASSES : []).forEach(cl => { const a = +A[cl.id] || 0, b = +B[cl.id] || 0; if (ag.proprio && a !== b) out.push(['Carteira: ' + cl.nome, num(a) + '%', num(b) + '%']); });
+    }
+    return out;
+  }
+  const naTela = el => !!(el && el.closest && el.closest('#p-cenarios, #np-cenarios'));
+  const ehPremissa = el => { if (!naTela(el)) return false; if (el.id === 'cen-proprio') return true; const b = el.dataset && el.dataset.bind; return !!b && (/^aj::/.test(b) || (/^cen::/.test(b) && b !== 'cen::nome') || /^alvo::/.test(b)); };
+  function marca() { const c = cenAtual(); if (!c || ehCenReal(c)) return; if (!pend || pend.id !== c.id) pend = { id: c.id, antes: snap(c) }; }
+  // barra embaixo
+  const bar = document.createElement('div'); bar.id = 'cen-pend'; bar.hidden = true; bar.setAttribute('role', 'status');
+  bar.innerHTML = '<span id="cen-pend-t"></span><button type="button" class="btn ghost" data-cenpend="desfaz">Desfazer</button><button type="button" class="btn" data-cenpend="salva">Salvar</button>';
+  document.body.appendChild(bar);
+  // pop-up de confirmação
+  const pop = document.createElement('div'); pop.className = 'conf-pop ac-pop'; pop.id = 'cen-pend-pop'; pop.hidden = true;
+  pop.innerHTML = '<div class="conf-dlg ac-dlg" role="dialog" aria-modal="true" aria-labelledby="cen-pend-pt"><button type="button" class="conf-x" data-cenpend="fecha" aria-label="Fechar" title="Fechar">✕</button><h3 class="ac-t" id="cen-pend-pt">Confirmar as mudanças</h3><p class="hint" id="cen-pend-ps"></p><div class="tscroll"><table class="cen-pend-tb"><thead><tr><th>Premissa</th><th>Antes</th><th>Depois</th></tr></thead><tbody id="cen-pend-tb"></tbody></table></div><div class="cen-pend-ac"><button type="button" class="btn ghost" data-cenpend="desfaz">Desfazer tudo</button><button type="button" class="btn ghost" data-cenpend="fecha">Continuar editando</button><button type="button" class="btn" data-cenpend="confirma">Confirmar e salvar</button></div></div>';
+  document.body.appendChild(pop);
+  function pinta() {
+    const d = difs(); if (!d.length) { pend = null; }
+    const c = pend && state.cenarios.find(x => x.id === pend.id);
+    bar.hidden = !pend || !c || tab !== 'cenarios';
+    if (pend && c) document.getElementById('cen-pend-t').innerHTML = `Você mudou ${d.length} ${d.length > 1 ? 'premissas' : 'premissa'} de <b>${esc(c.nome)}</b>. Salvar?`;
+  }
+  function abrePop(motivo) {
+    const d = difs(); if (!d.length) { pend = null; pinta(); return false; }
+    const c = state.cenarios.find(x => x.id === pend.id);
+    document.getElementById('cen-pend-ps').textContent = (motivo ? motivo + ' ' : '') + 'Confira o que muda em ' + (c ? c.nome : 'este cenário') + ':';
+    document.getElementById('cen-pend-tb').innerHTML = d.map(([n, a, b]) => `<tr><td>${esc(n)}</td><td>${esc(a)}</td><td><b>${esc(b)}</b></td></tr>`).join('');
+    pop.hidden = false; const ok = pop.querySelector('[data-cenpend="confirma"]'); if (ok) ok.focus(); return true;
+  }
+  function refaz() { save(); try { buildCenarios(); } catch (e) {} try { renderTab(); } catch (e) {} }
+  function desfaz() { if (!pend) return; const c = state.cenarios.find(x => x.id === pend.id); if (c) { const a = JSON.parse(JSON.stringify(pend.antes)); c.aj = a.aj; ['extra', 'manual', 'custoFix', 'custoEss', 'custoEst', 'custoDe', 'proprio', 'preset'].forEach(k => { c[k] = a[k]; }); if (a.alvo) c.alvo = a.alvo; else delete c.alvo; } pend = null; pop.hidden = true; refaz(); pinta(); }
+  function confirma() { pend = null; pop.hidden = true; save(); pinta(); }
+  window.cenPendente = () => !!(pend && difs().length);
+  // antes de o campo mudar, guarda como estava
+  ['input', 'change'].forEach(t => document.addEventListener(t, e => { if (ehPremissa(e.target)) marca(); }, true));
+  document.addEventListener('pointerdown', e => { const b = e.target.closest && e.target.closest('[data-preset]'); if (b && naTela(b)) marca(); }, true);
+  ['input', 'change', 'click'].forEach(t => document.addEventListener(t, e => { if (pend) setTimeout(pinta, 0); }));
+  // trocar de cenário com mudança pendente: confirma antes
+  const trocaCen = el => el && el.closest && (el.closest('[data-cen], [data-npcen], [data-npcennovo], #cen-novo, #cen-dup, #cen-del'));
+  document.addEventListener('click', e => { if (!window.cenPendente()) return; const t = trocaCen(e.target); if (!t || !naTela(t) && !t.closest('#np-cenarios')) return; e.preventDefault(); e.stopImmediatePropagation(); abrePop('Antes de trocar de cenário, salve ou desfaça.'); }, true);
+  document.addEventListener('change', e => { const sl = e.target; if (!sl.dataset || sl.dataset.cenpick == null || !window.cenPendente()) return; e.stopImmediatePropagation(); sl.value = pend.id; abrePop('Antes de trocar de cenário, salve ou desfaça.'); }, true);
+  document.addEventListener('click', e => { const b = e.target.closest && e.target.closest('[data-cenpend]'); if (!b) return; const a = b.dataset.cenpend; if (a === 'salva') abrePop(''); else if (a === 'desfaz') desfaz(); else if (a === 'confirma') confirma(); else if (a === 'fecha') pop.hidden = true; });
+  pop.addEventListener('click', e => { if (e.target === pop) pop.hidden = true; });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape' && !pop.hidden) { e.stopImmediatePropagation(); pop.hidden = true; } }, true);
+  // sair da tela com mudança pendente: confirma antes
+  try { const s0 = showTab; showTab = function (t) { if (t !== 'cenarios' && typeof tab !== 'undefined' && tab === 'cenarios' && window.cenPendente()) { abrePop('Antes de sair da tela, salve ou desfaça.'); return; } const r = s0.apply(this, arguments); pinta(); return r; }; } catch (e) {}
+})();
+</script>
 
 </body></html>
