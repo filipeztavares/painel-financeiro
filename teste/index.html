@@ -684,7 +684,7 @@ tr.best td { background: var(--good-soft); }
 .compra .cent-d > summary { font-size: 11.5px; }
 .compra .cent-d .cent-sum { font-family: var(--f-body, inherit); font-weight: 600; color: var(--ink); font-variant-numeric: tabular-nums; }
 .compra .cent-b { margin-top: 8px; display: flex; flex-direction: column; gap: 8px; }
-.compra .cent-ex { margin: 0; font-size: 12.5px; line-height: 1.5; color: var(--muted); max-width: 900px; }
+.compra .cent-ex { margin: 0; font-size: 12.5px; line-height: 1.5; color: var(--muted); }
 .compra .cent-ex b { color: var(--ink); }
 .compra .cent-ok { margin: 0; font-size: 12.5px; }
 .compra .cent-lg { display: flex; gap: 14px; flex-wrap: wrap; align-items: center; font-size: 12px; }
@@ -2570,7 +2570,7 @@ html[data-lb="b"] .block-title .desc{font-size:14px;color:var(--muted);margin-to
     </div>
     <div class="nav-mobile-sub" id="navMobileSub"></div>
   </div>
-  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 365</div></div>
+  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 366</div></div>
 </nav>
 <div class="sino-pop" id="sino-pop" role="dialog" aria-label="Atualizações das bases" hidden></div>
 <div class="sino-pop" id="pess-pop" role="dialog" aria-label="Seus avisos" hidden></div>
@@ -4574,7 +4574,7 @@ html[data-lb="b"] .block-title .desc{font-size:14px;color:var(--muted);margin-to
     return new Promise(resolve => { const { data } = sb.auth.onAuthStateChange(async (ev) => { if (ev !== 'PASSWORD_RECOVERY') return; const s = prompt('Digite a nova senha (mínimo 8 caracteres):'); if (s && s.length >= 8) { const { error } = await sb.auth.updateUser({ password: s }); alert(error ? 'Não deu para trocar a senha: ' + error.message : 'Senha trocada.'); } }); resolve(data); });
   }
   // ---------- rodapé: compartilhar, administração e sair ----------
-  const SITE_V = 254;
+  const SITE_V = 255;
   const escH = v => String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const dataBR = v => v ? new Date(v).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' }) : '–';
   const css2 = `.side-foot .r{flex-wrap:wrap}.side-foot .lg-acoes{margin-left:auto;display:inline-flex;gap:10px}
@@ -12140,8 +12140,8 @@ function ceSim(b, E, i, n, taxaMes) {
   }
   return { E, PV, p1, juros: tot - PV, rend: bal - PV + tot, res: bal, acaba };
 }
-function ceGrafico(cats, series) {
-  const W = 680, H = 230, pl = 62, pr = 10, pt = 12, pb = 34;
+function ceGrafico(cats, series, Wc) {
+  const W = Math.max(520, Math.round(Wc || 680)), H = 240, pl = 62, pr = 10, pt = 12, pb = 34;
   let lo = 0, hi = 0; series.forEach(s => s.v.forEach(v => { lo = Math.min(lo, v); hi = Math.max(hi, v); })); if (hi === lo) hi = lo + 1;
   const span = hi - lo, st0 = Math.pow(10, Math.floor(Math.log10(span / 4))), step = [1, 2, 2.5, 5, 10].map(m => m * st0).find(x => span / x <= 5);
   const y0 = Math.floor(lo / step) * step, y1 = Math.ceil(hi / step) * step, Y = v => pt + (y1 - v) / (y1 - y0) * (H - pt - pb);
@@ -12153,7 +12153,7 @@ function ceGrafico(cats, series) {
     series.forEach((s, si) => { const v = s.v[j], x = x0 + cw / 2 - bw * series.length / 2 + si * bw, yb = Y(0), yv = Y(v);
       g += `<rect x="${(x + 1).toFixed(1)}" y="${Math.min(yb, yv).toFixed(1)}" width="${(bw - 2).toFixed(1)}" height="${Math.max(0.8, Math.abs(yv - yb)).toFixed(1)}" rx="2" fill="${s.c}" opacity="${v < 0 ? .62 : 1}"><title>${esc(c.nome)} · ${esc(s.name)}: ${fm(v)}</title></rect>`; });
     g += `<text x="${(x0 + cw / 2).toFixed(1)}" y="${H - pb + 15}" text-anchor="middle" font-size="10.5" fill="var(--ink)"${c.sua ? ' font-weight="700"' : ''}>${esc(c.lab)}</text>${c.sua ? `<text x="${(x0 + cw / 2).toFixed(1)}" y="${H - pb + 28}" text-anchor="middle" font-size="9.5" fill="var(--accent)" font-weight="700">sua</text>` : ''}`; });
-  return `<svg viewBox="0 0 ${W} ${H}" width="100%" style="max-width:${W}px;display:block" role="img" aria-label="Resultado de cada entrada comparado a pagar à vista">${g}</svg>`;
+  return `<svg viewBox="0 0 ${W} ${H}" width="100%" style="display:block" role="img" aria-label="Resultado de cada entrada comparado a pagar à vista">${g}</svg>`;
 }
 function renderCustoEntrada(b, el) {
   el = el || $('cent-' + b.id); if (!el) return;
@@ -12183,7 +12183,7 @@ function renderCustoEntrada(b, el) {
       As parcelas de cada entrada são recalculadas com os mesmos juros (${taxaTxt}) e o mesmo prazo do card${b.modo === 'sac' ? ', no sistema SAC' : ', em parcelas iguais'}. Rendimento: ${fTxt}.${ja0 ? ' Compra já feita: a conta mostra o que teria acontecido com cada entrada.' : ''} Valores em reais do fim do prazo (${mLabel(m0 + n)}).</p>
       ${jr.i <= 0 ? '<p class="hint">Sem juros no financiamento, financiar sempre deixa mais dinheiro: informe os juros do contrato para a comparação valer.</p>' : ''}
       <div class="cent-lg">${fontes.map(fo => `<span><i style="background:${fo.c}"></i>${fo.name}</span>`).join('')}<span class="cent-h">Resultado no fim do prazo, comparado a pagar à vista</span></div>
-      ${ceGrafico(linhas.map(x => ({ lab: x.lab, nome: x.nome, sua: x.sua })), fontes.map((fo, j) => ({ name: fo.name, c: fo.c, v: linhas.map(x => x.r[j].res) })))}
+      ${ceGrafico(linhas.map(x => ({ lab: x.lab, nome: x.nome, sua: x.sua })), fontes.map((fo, j) => ({ name: fo.name, c: fo.c, v: linhas.map(x => x.r[j].res) })), el.clientWidth)}
       ${(() => { const a = linhas.find(x => !x.avista && !x.sua && x.E < V * 0.05), z = linhas.filter(x => !x.avista).slice(-1)[0]; if (!a || !z || z.E - a.E < 1) return ''; const d = (z.r[0].res - a.r[0].res) / (z.E - a.E) * 1000; return Math.abs(d) < 1 ? '' : `<p class="cent-ok">Cada <b>R$ 1.000 a mais de entrada</b> ${d > 0 ? 'evita' : 'custa'} cerca de <b>${fm(Math.abs(d))}</b> ${d > 0 ? 'de perda' : 'a mais'} no fim do prazo (pelo Meu plano).</p>`; })()}
       ${sua && melhor !== sua && melhor.r[0].res - sua.r[0].res > 1 ? `<p class="cent-ok">Pelo Meu plano, a melhor opção é <b>${melhor.avista ? 'pagar à vista' : 'entrada de ' + melhor.lab}</b>: ${fm(melhor.r[0].res - sua.r[0].res)} a mais no fim do prazo do que a sua entrada.</p>` : sua ? '<p class="cent-ok">Pelo Meu plano, a sua entrada já é a melhor opção entre as comparadas.</p>' : ''}
       <div class="tscroll"><table class="cent-t"><thead><tr><th>Entrada</th><th>Fica aplicado</th><th>1ª parcela</th><th>Juros pagos</th>${fontes.map(fo => `<th>Rendimento · ${fo.name}</th><th>Resultado · ${fo.name}</th>`).join('')}</tr></thead><tbody>
