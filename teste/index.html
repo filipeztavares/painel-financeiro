@@ -2411,6 +2411,10 @@ html[data-secmenu="topo"] [data-nav]{scroll-margin-top:115px}
 #lb-secs a.active{background:#F0A46B;border-color:#F0A46B;color:#0E1A2B}
 @media (max-width:700px){#lb-secs{flex-wrap:nowrap;overflow-x:auto}}
 
+
+.ac-params.ac-3 { grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr) minmax(0, 1fr); }
+@media (max-width: 1100px) { .ac-params.ac-3 { grid-template-columns: 1fr 1fr; } .ac-params.ac-3 > .ac-imp { grid-column: 1 / -1; } }
+@media (max-width: 700px) { .ac-params.ac-3 { grid-template-columns: 1fr; } }
 </style>
 
 
@@ -2501,7 +2505,7 @@ html[data-secmenu="topo"] [data-nav]{scroll-margin-top:115px}
     </div>
     <div class="nav-mobile-sub" id="navMobileSub"></div>
   </div>
-  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 342</div></div>
+  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 343</div></div>
 </nav>
 <div class="sino-pop" id="sino-pop" role="dialog" aria-label="Atualizações das bases" hidden></div>
 <div class="sino-pop" id="pess-pop" role="dialog" aria-label="Seus avisos" hidden></div>
@@ -3588,20 +3592,25 @@ html[data-secmenu="topo"] [data-nav]{scroll-margin-top:115px}
         <div class="cad-div">
           <span class="cad-ico" aria-hidden="true"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 16V4M7 9l5-5 5 5"/><path d="M4 15v3a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-3"/></svg></span>
           <div class="cad-txt"><h2>Cadastrar e atualizar aplicações</h2><p>É daqui que saem todos os números da carteira. Cadastre cada aplicação ou suba os PDFs da corretora, e depois salve o total como checkpoint.</p></div>
-          <ol class="cad-passos"><li><b>1</b>Importe ou cadastre</li><li><b>2</b>Salve o checkpoint</li></ol>
+          <ol class="cad-passos"><li><b>1</b>Importe</li><li><b>2</b>Cadastre à mão</li><li><b>3</b>Salve o checkpoint</li></ol>
         </div>
-        <div class="params cad-params ac-params">
+        <div class="params cad-params ac-params ac-3">
       <fieldset class="ac-imp">
         <legend><span class="cad-n">1</span>Importe da corretora</legend>
         <div class="gas-drop" id="cor-drop" role="button" tabindex="0" aria-label="Escolher os PDFs ou CSVs da corretora"><b>Solte aqui os PDFs ou CSVs da corretora</b><span>ou clique para escolher · posição, custódia ou movimentações, vários de uma vez</span><input type="file" id="cor-file" multiple hidden accept=".pdf,.csv,.txt,application/pdf,text/csv"></div>
         <p class="hint full" id="cor-msg" role="status">Dois tipos de arquivo. <b>Posição ou custódia</b> (ex.: Extrato de Custódia do Nubank, relatório mensal do C6, posição em CSV da B3): cadastra as aplicações novas e atualiza o valor atual das que você já tem. <b>Extrato de movimentações</b> (ex.: extrato detalhado mensal da Toro/Santander): soma juros, cupons, amortizações, resgates e proventos de cada aplicação e preenche o "Já recebido". Pode mandar vários de uma vez; você confere antes de salvar.</p>
       </fieldset>
       <fieldset class="ac-lado">
-        <legend><span class="cad-n">2</span>Salve o checkpoint</legend>
-        <p class="hint full" id="cart-cp-hint"></p>
-        <div class="btns full"><button class="btn" type="button" id="cart-cp">Salvar total como checkpoint</button><button class="btn ghost" type="button" id="ac-nova-apl" data-acpop="ac-pop-apl">+ Cadastrar à mão</button></div>
+        <legend><span class="cad-n">2</span>Cadastre à mão</legend>
+        <p class="hint full">Para o que não veio no extrato, ou se preferir digitar. Uma aplicação por vez: nome, taxa, quanto aplicou e quando.</p>
+        <div class="btns full"><button class="btn" type="button" id="ac-nova-apl" data-acpop="ac-pop-apl">+ Cadastrar aplicação</button></div>
         <p class="hint full ac-ok" id="ac-apl-msg" role="status"></p>
-        <p class="hint">A carteira cadastrada preenche sozinha a coluna "Hoje (R$)" dos cenários, usada no rebalanceamento.</p>
+      </fieldset>
+      <fieldset class="ac-lado">
+        <legend><span class="cad-n">3</span>Salve o checkpoint</legend>
+        <p class="hint full" id="cart-cp-hint"></p>
+        <div class="btns full"><button class="btn ghost" type="button" id="cart-cp">Salvar total como checkpoint</button></div>
+        <p class="hint full">Atalho: o checkpoint fica em <a href="#" class="lm-ir" data-lmtab="global" data-lmsec="Checkpoint do mês">Projeção › Checkpoint do mês</a>. Daqui ele já leva o total da carteira.</p>
       </fieldset>
         </div>
         <div class="conf-pop ac-pop" id="ac-pop-apl" hidden><div class="conf-dlg ac-dlg" role="dialog" aria-modal="true" aria-labelledby="ac-pop-apl-t"><button type="button" class="conf-x" data-acfecha aria-label="Fechar" title="Fechar">✕</button><h3 class="ac-t" id="ac-pop-apl-t">Nova aplicação</h3>      <fieldset>
@@ -4485,7 +4494,7 @@ html[data-secmenu="topo"] [data-nav]{scroll-margin-top:115px}
     return new Promise(resolve => { const { data } = sb.auth.onAuthStateChange(async (ev) => { if (ev !== 'PASSWORD_RECOVERY') return; const s = prompt('Digite a nova senha (mínimo 8 caracteres):'); if (s && s.length >= 8) { const { error } = await sb.auth.updateUser({ password: s }); alert(error ? 'Não deu para trocar a senha: ' + error.message : 'Senha trocada.'); } }); resolve(data); });
   }
   // ---------- rodapé: compartilhar, administração e sair ----------
-  const SITE_V = 228;
+  const SITE_V = 229;
   const escH = v => String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const dataBR = v => v ? new Date(v).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' }) : '–';
   const css2 = `.side-foot .r{flex-wrap:wrap}.side-foot .lg-acoes{margin-left:auto;display:inline-flex;gap:10px}
