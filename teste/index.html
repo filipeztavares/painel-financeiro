@@ -4541,7 +4541,7 @@ html select.cen-pick.cen-pick:hover, html select.cen-pick.cen-pick:focus-visible
     return new Promise(resolve => { const { data } = sb.auth.onAuthStateChange(async (ev) => { if (ev !== 'PASSWORD_RECOVERY') return; const s = prompt('Digite a nova senha (mínimo 8 caracteres):'); if (s && s.length >= 8) { const { error } = await sb.auth.updateUser({ password: s }); alert(error ? 'Não deu para trocar a senha: ' + error.message : 'Senha trocada.'); } }); resolve(data); });
   }
   // ---------- rodapé: compartilhar, administração e sair ----------
-  const SITE_V = 241;
+  const SITE_V = 242;
   const escH = v => String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const dataBR = v => v ? new Date(v).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' }) : '–';
   const css2 = `.side-foot .r{flex-wrap:wrap}.side-foot .lg-acoes{margin-left:auto;display:inline-flex;gap:10px}
@@ -11701,6 +11701,8 @@ function chFoco(el, svg, series, n, W, X, Y, pl, pr, fmtR) {
 const legend = (el, items) => { el.innerHTML = items.map(s => `<span class="${s.dash ? 'dash' : ''}${s.dots ? ' dot' : ''}" style="--c:${s.c}">${esc(s.name)}</span>`).join(''); };
 const kpis = (el, list) => { el.innerHTML = list.map(([l, v, d, neg]) => `<div class="kpi"><span class="l">${l}</span><span class="v${neg ? ' neg' : ''}">${v}</span><span class="d">${d}</span></div>`).join(''); };
 const cenCor = cen => PAL[Math.max(0, state.cenarios.indexOf(cen)) % PAL.length];
+/* v353: um cenário de simulação conta como diferente do Real se mudou itens OU premissas */
+function simTemDif() { try { const its = itensModulos(); return (state.cenarios || []).some(c => { if (ehCenReal(c)) return false; if (simDifs(c, its).length) return true; const aj = c.aj || {}; return !!(+aj.cdi || +aj.ipca || +c.extra || (c.manual !== '' && c.manual != null && +c.manual > 0) || c.proprio || +c.custoFix || +c.custoEss || +c.custoEst); }); } catch (e) { return false; } }
 const cenAtual = () => state.cenarios.find(c => c.id === state.cenAtivo) || state.cenarios[0];
 function perfilHtml(risco) {
   const p = perfilDe(risco);
@@ -16177,8 +16179,8 @@ function cuPassos() {
       precisa: 'Nada aqui é obrigatório. Para ter o que comparar, cadastre itens nos outros módulos: um bem, uma viagem, um filho, uma troca de emprego. O cenário <b>Real</b> é o que vale em Finanças.',
       passos: [
         { id: 'simcen', t: 'Criar um cenário', d: 'Duplique o Real ou comece um novo para testar um caminho diferente.', ok: (state.cenarios || []).length > 1 || pul.includes('simcen'), tab: 'simcen', sec: 'Cenários', pular: 'Depois' },
-        { id: 'siminc', t: 'Incluir ou tirar itens', d: 'Em cada cenário, clique em + Incluir nos itens que entram nele.', ok: pul.includes('siminc') || (() => { try { const its = itensModulos(); return (state.cenarios || []).some(c => !ehCenReal(c) && simDifs(c, its).length); } catch (e) { return false; } })(), tab: 'simcen', sec: 'Simulação de cenários', pular: 'Depois' },
-        { id: 'simpat', t: 'Comparar o patrimônio', d: 'Veja onde cada cenário chega e escolha o horizonte, de 1 a 20 anos.', ok: pul.includes('simpat'), tab: 'simcen', sec: 'Patrimônio projetado', pular: 'Já vi' },
+        { id: 'siminc', t: 'Incluir itens ou mudar premissas', d: 'Em cada cenário, clique em + Incluir nos itens que entram nele, ou mude as premissas (rendimento, renda extra, custos) em Premissas dos cenários.', ok: pul.includes('siminc') || simTemDif(), tab: 'simcen', sec: 'Simulação de cenários', pular: 'Depois' },
+        { id: 'simpat', t: 'Comparar o patrimônio', d: 'Veja onde cada cenário chega e escolha o horizonte, de 1 a 20 anos.', ok: pul.includes('simpat') || (vis.includes('simcen') && simTemDif()), tab: 'simcen', sec: 'Patrimônio projetado', pular: 'Já vi' },
         { id: 'simdec', t: 'Tornar real o que decidir', d: 'O cenário escolhido passa a valer em Finanças. O Real de hoje fica guardado como cenário.', ok: pul.includes('simdec'), tab: 'simcen', sec: 'Decidir', pular: 'Agora não' }
       ]
     },
@@ -16689,7 +16691,7 @@ function showTab(t, keepScroll) {
   const mudou = tab !== t;
   tab = t;
   const md = modDe(t); if (md) modAtual = md; aplicarMod();
-  if ((t === 'orcamento' || t === 'pjpf') && state && state.plan) { state.passos = state.passos || { pulados: [] }; const v = state.passos.vistos = Array.isArray(state.passos.vistos) ? state.passos.vistos : []; if (!v.includes(t)) { v.push(t); save(); } }
+  if ((t === 'orcamento' || t === 'pjpf' || t === 'simcen') && state && state.plan) { state.passos = state.passos || { pulados: [] }; const v = state.passos.vistos = Array.isArray(state.passos.vistos) ? state.passos.vistos : []; if (!v.includes(t)) { v.push(t); save(); } }
   document.querySelectorAll('.nav-head').forEach(bt => { if (bt.dataset.tab === t) bt.setAttribute('aria-current', 'page'); else bt.removeAttribute('aria-current'); });
   Object.keys(RENDER).forEach(x => $('p-' + x).hidden = x !== t);
   $('navMobileSub').innerHTML = document.querySelector(`.nav-sub[data-sub="${t}"]`).innerHTML;
