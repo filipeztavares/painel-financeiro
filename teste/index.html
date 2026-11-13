@@ -2438,6 +2438,12 @@ table.sc-prem th.sc-col i { display: inline-block; width: 8px; height: 8px; bord
 table.sc-prem td.sc-dif { font-weight: 700; color: var(--accent); background: color-mix(in srgb, #F0A46B 16%, transparent); }
 table.sc-prem tr.sc-res2 td { font-variant-numeric: tabular-nums; }
 table.sc-prem tr.sc-res2:nth-child(2) td { border-bottom: 2px solid var(--line); }
+
+/* v349: escolher o cenário em cada caixa */
+html select.cen-pick.cen-pick { font-size: 13px !important; font-weight: 600 !important; line-height: 1.2 !important; font-family: var(--f-body), system-ui, sans-serif !important; color: var(--ink) !important; background-color: var(--panel) !important; border: 1px solid var(--line) !important; border-radius: 999px !important; padding: 5px 30px 5px 13px !important; height: auto !important; min-height: 0 !important; margin: 0 0 0 10px !important; vertical-align: middle; cursor: pointer; width: auto !important; max-width: 220px; text-transform: none !important; letter-spacing: 0 !important; appearance: none !important; -webkit-appearance: none !important; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M1 1l4 4 4-4' fill='none' stroke='%23888' stroke-width='1.6'/%3E%3C/svg%3E") !important; background-repeat: no-repeat !important; background-position: right 12px center !important; box-shadow: none !important; }
+html select.cen-pick.cen-pick:hover, html select.cen-pick.cen-pick:focus-visible { border-color: var(--accent, #A8582A) !important; outline: none; }
+.cen-pick-l { display: flex !important; align-items: center; gap: 0; flex-direction: row !important; }
+.cen-pick-l select.cen-pick { margin-left: 10px; flex: 0 1 auto; }
 </style>
 
 
@@ -3497,7 +3503,8 @@ table.sc-prem tr.sc-res2:nth-child(2) td { border-bottom: 2px solid var(--line);
         <div class="params">
       <fieldset>
         <legend>Cenários</legend>
-        <div class="seg" id="cenSeg" style="grid-column:1/-1"></div>
+        <label class="full cen-pick-l">Cenário aberto<select class="cen-pick" data-cenpick aria-label="Cenário"></select></label>
+        <div class="seg" id="cenSeg" style="grid-column:1/-1" hidden></div>
         <div class="btns">
           <button class="btn ghost tiny" type="button" id="cen-novo">Novo</button>
           <button class="btn ghost tiny" type="button" id="cen-dup">Duplicar</button>
@@ -3513,6 +3520,7 @@ table.sc-prem tr.sc-res2:nth-child(2) td { border-bottom: 2px solid var(--line);
       </fieldset>
       <fieldset>
         <legend>Carteira do cenário</legend>
+        <label class="cen-pick-l" style="grid-column:1/-1">Cenário<select class="cen-pick" data-cenpick aria-label="Cenário"></select></label>
         <label class="check" style="grid-column:1/-1;font-size:12.5px"><input type="checkbox" id="cen-proprio"> Usar uma divisão própria neste cenário</label>
         <div class="seg" id="presetSeg" style="grid-column:1/-1"></div>
         <p class="hint" id="presetHint"></p>
@@ -3522,7 +3530,7 @@ table.sc-prem tr.sc-res2:nth-child(2) td { border-bottom: 2px solid var(--line);
         </div>
       </section>
       <section data-nav="Custos do cenário" class="panel">
-        <h2>Custos do cenário</h2>
+        <h2>Custos do cenário <select class="cen-pick" data-cenpick aria-label="Cenário"></select></h2>
         <p class="sub">Quanto cada grupo de custos do Meu plano fica maior neste cenário, além do IPCA. Vazio ou 0 = igual ao Meu plano.</p>
         <div class="tscroll"><table id="tbl-cc"><thead><tr><th>Grupo</th><th>Hoje no Meu plano (R$/mês)</th><th>Aumento (%)</th><th>Com o aumento (R$/mês)</th></tr></thead>
         <tbody><tr><td class="name">Fixos<span class="subdet" style="display:block">moradia, contas, saúde, educação</span></td><td id="cc-hoje-fix"></td><td><input type="number" step="1" data-bind="cen::custoFix" placeholder="0" aria-label="Aumento em Fixos (%)" style="max-width:90px"></td><td id="cc-com-fix"></td></tr><tr><td class="name">Essenciais<span class="subdet" style="display:block">mercado, transporte, carro, serviços</span></td><td id="cc-hoje-ess"></td><td><input type="number" step="1" data-bind="cen::custoEss" placeholder="0" aria-label="Aumento em Essenciais (%)" style="max-width:90px"></td><td id="cc-com-ess"></td></tr><tr><td class="name">Estilo de vida<span class="subdet" style="display:block">lazer, restaurantes, viagem, roupas</span></td><td id="cc-hoje-est"></td><td><input type="number" step="1" data-bind="cen::custoEst" placeholder="0" aria-label="Aumento em Estilo de vida (%)" style="max-width:90px"></td><td id="cc-com-est"></td></tr></tbody><tfoot><tr><td class="name"><b>Total</b></td><td id="cc-hoje-tot"></td><td id="cc-pct-tot"></td><td id="cc-com-tot"></td></tr></tfoot></table></div>
@@ -3535,23 +3543,23 @@ table.sc-prem tr.sc-res2:nth-child(2) td { border-bottom: 2px solid var(--line);
         <div class="cresumo" id="comprasResumo"></div>
       </section>
       <section data-nav="Carteira por classe" class="panel">
-        <div class="row"><h2>Carteira por classe</h2><span class="sub" style="margin:0 0 0 auto;font-size:12px">premissas de retorno em Configurações</span></div>
+        <div class="row"><h2>Carteira por classe <select class="cen-pick" data-cenpick aria-label="Cenário"></select></h2><span class="sub" style="margin:0 0 0 auto;font-size:12px">premissas de retorno em Configurações</span></div>
         <div class="tscroll"><table id="tbl-alvo"></table></div>
       </section>
       <section data-nav="Patrimônio" class="panel chart">
-        <h2>Patrimônio deste cenário</h2>
+        <h2>Patrimônio deste cenário <select class="cen-pick" data-cenpick aria-label="Cenário"></select></h2>
         <div class="legend" id="lg-c"></div>
         <div id="ch-c"></div>
         <div class="readout" id="ro-c"></div>
       </section>
       <section data-nav="Sobra mensal" class="panel chart">
-        <h2>Sobra mensal</h2>
+        <h2>Sobra mensal <select class="cen-pick" data-cenpick aria-label="Cenário"></select></h2>
         <p class="sub">Renda menos gastos e parcelas. Abaixo de zero, o mês é pago com os investimentos.</p>
         <div id="ch-c2"></div>
         <div class="readout" id="ro-c2"></div>
       </section>
       <section data-nav="Rebalanceamento" class="panel">
-        <h2>Onde investir o próximo aporte</h2>
+        <h2>Onde investir o próximo aporte <select class="cen-pick" data-cenpick aria-label="Cenário"></select></h2>
         <p class="sub">Uma calculadora para o dinheiro que você vai investir agora. Diga o valor e a tabela mostra quanto pôr em cada classe para a sua carteira de hoje ficar mais perto do alvo deste cenário, sem vender nada. As classes mais abaixo do alvo recebem primeiro. Não muda a projeção nem o plano.</p>
         <div class="params" style="margin:10px 0 12px"><fieldset><legend>Quanto vai investir agora</legend><label>Valor do aporte (R$)<input type="number" step="500" data-bind="cfg::aporteReb"></label><p class="hint">O que você tem hoje em cada classe vem da Carteira (coluna "Hoje (R$)" da tabela Carteira por classe, acima).</p></fieldset></div>
         <p class="sub" id="reb-sub"></p>
@@ -4529,7 +4537,7 @@ table.sc-prem tr.sc-res2:nth-child(2) td { border-bottom: 2px solid var(--line);
     return new Promise(resolve => { const { data } = sb.auth.onAuthStateChange(async (ev) => { if (ev !== 'PASSWORD_RECOVERY') return; const s = prompt('Digite a nova senha (mínimo 8 caracteres):'); if (s && s.length >= 8) { const { error } = await sb.auth.updateUser({ password: s }); alert(error ? 'Não deu para trocar a senha: ' + error.message : 'Senha trocada.'); } }); resolve(data); });
   }
   // ---------- rodapé: compartilhar, administração e sair ----------
-  const SITE_V = 236;
+  const SITE_V = 237;
   const escH = v => String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const dataBR = v => v ? new Date(v).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' }) : '–';
   const css2 = `.side-foot .r{flex-wrap:wrap}.side-foot .lg-acoes{margin-left:auto;display:inline-flex;gap:10px}
@@ -11931,9 +11939,10 @@ function buildCenarios() {
   state.cenarios.forEach(cusMig);
   const cen = cenAtual();
   $('cenSeg').innerHTML = simOrdem().map(c => `<button type="button" data-cen="${c.id}" aria-pressed="${c.id === cen.id}" style="${c.id === cen.id ? '' : `border-color:${cenCor(c)}`}">${esc(c.nome)}${ehCenReal(c) ? ' · Real' : ''}</button>`).join('');
+  document.querySelectorAll('[data-cenpick]').forEach(sl => { sl.innerHTML = simOrdem().map(c => `<option value="${esc(c.id)}"${c.id === cen.id ? ' selected' : ''}>${esc(c.nome)}${ehCenReal(c) ? ' · Real' : ''}</option>`).join(''); });
   $('cen-del').disabled = state.cenarios.length < 2 || ehCenReal(cen);
-  { const rl = ehCenReal(cen); document.querySelectorAll('#p-cenarios [data-bind^="aj::"], #p-cenarios [data-bind="cen::extra"], #p-cenarios [data-bind="cen::manual"], #p-cenarios [data-bind^="cen::custo"]').forEach(el => { el.disabled = rl; }); $('cen-real-hint').hidden = !rl; }
-  document.querySelectorAll('#p-cenarios [data-bind]').forEach(fillBound);
+  { const rl = ehCenReal(cen); document.querySelectorAll(':is(#p-cenarios,#np-cenarios) [data-bind^="aj::"], :is(#p-cenarios,#np-cenarios) [data-bind="cen::extra"], :is(#p-cenarios,#np-cenarios) [data-bind="cen::manual"], :is(#p-cenarios,#np-cenarios) [data-bind^="cen::custo"]').forEach(el => { el.disabled = rl; }); $('cen-real-hint').hidden = !rl; }
+  document.querySelectorAll(':is(#p-cenarios,#np-cenarios) [data-bind]').forEach(fillBound);
   ccResumo(cen);
   $('cen-proprio').checked = !!cen.proprio; $('presetSeg').hidden = !cen.proprio;
   $('presetSeg').innerHTML = PRESETS.map(p => `<button type="button" data-preset="${p.id}" aria-pressed="${cen.preset === p.id}">${p.nome}</button>`).join('');
@@ -13685,7 +13694,7 @@ document.addEventListener('click', e => {
 });
 /* ========== COMPARADOR ========== */
 function buildComparador() {
-  document.querySelectorAll('#p-comparador [data-bind]').forEach(fillBound);
+  document.querySelectorAll(':is(#p-comparador,#np-comparador) [data-bind]').forEach(fillBound);
   $('tbl-rows').innerHTML = `<thead><tr><th>Produto</th><th>Tipo</th><th>Indexador</th><th>Modalidade</th><th>Taxa</th><th>Adm. (% a.a.)</th><th>Come-cotas</th><th>Gráfico</th><th></th></tr></thead><tbody>${state.comp.rows.map(r => { const tp = TIPOS[r.tipo] || TIPOS.cdb;
     return `<tr><td><div style="display:flex;align-items:center;gap:6px"><input type="text" class="name" data-bind="row:${r.id}:nome" aria-label="Nome do produto">${infoI(r.tipo)}</div></td>
     <td><select data-bind="row:${r.id}:tipo" aria-label="Tipo">${Object.entries(TIPOS).map(([id, t]) => `<option value="${id}">${t.nome}</option>`).join('')}</select></td>
@@ -13758,7 +13767,7 @@ function prodSpec(id) {
 function buildSimulador() {
   $('sim-prod').innerHTML = prodOptions();
   if (![...$('sim-prod').options].some(o => o.value === state.sim.prod)) state.sim.prod = $('sim-prod').options[0] ? $('sim-prod').options[0].value : 'b:cdi';
-  document.querySelectorAll('#p-simulador [data-bind]').forEach(fillBound);
+  document.querySelectorAll(':is(#p-simulador,#np-simulador) [data-bind]').forEach(fillBound);
 }
 function renderSimulador() {
   const s = state.sim, M = Math.max(12, Math.min(480, Math.round((+s.anos || 1) * 12))), i0 = HOJE_IDX;
@@ -15032,7 +15041,7 @@ function reajCel(scope, id, o, tipo, nome, pctDed) {
 let plFechados = null, plPer = 'prox';
 try { plFechados = JSON.parse(localStorage.getItem('painel-pl-fechados')); } catch (e) {}
 if (!Array.isArray(plFechados)) plFechados = ['custos', 'compras'];
-function buildOrcamento() { document.querySelectorAll('#p-orcamento [data-bind^="plan:"]').forEach(fillBound); }
+function buildOrcamento() { document.querySelectorAll(':is(#p-orcamento,#np-orcamento) [data-bind^="plan:"]').forEach(fillBound); }
 function renderPlano() {
   const P = state.plan, pl = calcPlano(), i0 = pl.i0;
   $('pl-ini-hint').textContent = `O plano começa no fim de ${mLabel(i0)} com patrimônio de ${fm(+P.valor || 0)}; o primeiro mês projetado é ${mLabel(i0 + 1)}. ${+P.valor > 0 ? `Esse valor é o checkpoint inicial de ${mLabel(i0)}; os próximos checkpoints, salvos no fechamento de cada mês, são comparados com o plano.` : 'Preencha o patrimônio líquido total: ele vira o checkpoint inicial do plano.'}`;
@@ -15696,13 +15705,14 @@ function onBound(el) {
   else if (scope === 'compra' && key === 'nome') { const pg = $('pg-compra').querySelector(`option[value="${id}"]`); if (pg) pg.textContent = v; const td = [...document.querySelectorAll('.incm tbody tr')][state.compras.findIndex(b => b.id === id)]; if (td) td.cells[0].textContent = v; }
   else if (scope === 'row' && key === 'tipo') { const tp = TIPOS[v]; o.idx = tp.idxs[0]; if (tp.fundo) { o.adm = o.adm ?? 0.3; o.cc = o.cc || 'lp'; } if (v === 'bolsa') o.taxa = +state.ret.acoes || 14; buildComparador(); }
   else if (scope === 'row' && key === 'idx') { buildComparador(); }
-  else if (scope === 'cen' && key === 'nome') { const b = document.querySelector(`#cenSeg [data-cen="${cenAtual().id}"]`); if (b) b.textContent = v; }
+  else if (scope === 'cen' && key === 'nome') { const b = document.querySelector(`#cenSeg [data-cen="${cenAtual().id}"]`); if (b) b.textContent = v; document.querySelectorAll(`[data-cenpick] option[value="${cenAtual().id}"]`).forEach(o => { o.textContent = v + (ehCenReal(cenAtual()) ? ' · Real' : ''); }); }
   else if (scope === 'curva') { renderConfig(); }
   else if (scope === 'alvo') { document.querySelectorAll('#presetSeg button').forEach(b => b.setAttribute('aria-pressed', 'false')); }
   // no orçamento, recalcula depois que o foco já foi para o próximo campo
   if (/^(orc|fproj|freal|plan|plmud|plev|venda|patr)/.test(scope) || (scope === 'compra' && tab === 'patrimonio')) { setTimeout(renderTab, 0); return; }
   renderTab();
 }
+document.addEventListener('change', e => { const sl = e.target; if (!sl.dataset || sl.dataset.cenpick == null) return; state.cenAtivo = sl.value; save(); buildCenarios(); renderCenarios(); });
 document.addEventListener('change', e => { if (e.target.id !== 'cen-proprio') return;
   const cen = cenAtual(); cen.proprio = e.target.checked; if (cen.proprio) { cen.alvo = Object.assign({}, state.alvoCart); cen.preset = state.alvoPreset; }
   save(); buildCenarios(); renderTab(); });
@@ -16702,7 +16712,7 @@ function bensHoje() {
 }
 function renderPatr() {
   const P = state.patr, br = s => s.split('-').reverse().join('/');
-  document.querySelectorAll('#p-patrimonio [data-bind]').forEach(fillBound);
+  document.querySelectorAll(':is(#p-patrimonio,#np-patrimonio) [data-bind]').forEach(fillBound);
   document.querySelectorAll('#pt-anos button').forEach(b => b.setAttribute('aria-pressed', +b.dataset.ptanos === ptAnos));
   const ev = ativos().map(a => ({ a, v: avaliar(a).atual })), prev = ev.filter(x => ehPrevFgts(x.a)).reduce((t, x) => t + x.v, 0), inv = ev.filter(x => !ehPrevFgts(x.a)).reduce((t, x) => t + x.v, 0);
   const B = bensHoje(), meusT = B.filter(x => x.tenho), meus = meusT.filter(x => ehBem(x.b)), bens = meus.reduce((t, x) => t + x.valor, 0), div = meusT.reduce((t, x) => t + x.divida, 0);
@@ -18396,7 +18406,7 @@ function jorSimDb(real) {
     if (!ok) return; vazio = false; const i0 = tourI; setTimeout(() => { if (tourI !== i0) return; if (tourI >= ps.length - 1) tourFecha(true); else { tourI++; tourMostra(); } }, 700); }, 60));
 
   // ---------- caixa "Rendimento, inflação e reinvestimento": explicação e guia ----------
-  const lgRend = [...document.querySelectorAll('#p-orcamento legend')].find(l => /Rendimento, inflação e reinvestimento/.test(l.textContent));
+  const lgRend = [...document.querySelectorAll(':is(#p-orcamento,#np-orcamento) legend')].find(l => /Rendimento, inflação e reinvestimento/.test(l.textContent));
   if (lgRend && !lgRend.querySelector('.jor-lgb')) {
     lgRend.insertAdjacentHTML('beforeend', ' <button type="button" class="ibtn jor-lgb" data-jorrend="info" aria-label="O que é esta caixa">i</button><button type="button" class="jor-q jor-lgb" data-jorrend="guia" title="Me guia nesta caixa" aria-label="Me guia nesta caixa">?</button>');
     lgRend.addEventListener('click', e => { const b = e.target.closest('[data-jorrend]'); if (!b) return; e.preventDefault(); e.stopPropagation();
