@@ -2415,6 +2415,10 @@ html[data-secmenu="topo"] [data-nav]{scroll-margin-top:115px}
 .ac-params.ac-3 { grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr) minmax(0, 1fr); }
 @media (max-width: 1100px) { .ac-params.ac-3 { grid-template-columns: 1fr 1fr; } .ac-params.ac-3 > .ac-imp { grid-column: 1 / -1; } }
 @media (max-width: 700px) { .ac-params.ac-3 { grid-template-columns: 1fr; } }
+
+.np-g.np-split.np-uma { grid-template-columns: minmax(0, 1fr) !important; }
+.np-g.np-split.np-medir { align-items: start !important; }
+.np-g.np-split.np-medir > .np-slot > * { height: auto !important; min-height: 0 !important; }
 </style>
 
 
@@ -2505,7 +2509,7 @@ html[data-secmenu="topo"] [data-nav]{scroll-margin-top:115px}
     </div>
     <div class="nav-mobile-sub" id="navMobileSub"></div>
   </div>
-  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 343</div></div>
+  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 344</div></div>
 </nav>
 <div class="sino-pop" id="sino-pop" role="dialog" aria-label="Atualizações das bases" hidden></div>
 <div class="sino-pop" id="pess-pop" role="dialog" aria-label="Seus avisos" hidden></div>
@@ -4494,7 +4498,7 @@ html[data-secmenu="topo"] [data-nav]{scroll-margin-top:115px}
     return new Promise(resolve => { const { data } = sb.auth.onAuthStateChange(async (ev) => { if (ev !== 'PASSWORD_RECOVERY') return; const s = prompt('Digite a nova senha (mínimo 8 caracteres):'); if (s && s.length >= 8) { const { error } = await sb.auth.updateUser({ password: s }); alert(error ? 'Não deu para trocar a senha: ' + error.message : 'Senha trocada.'); } }); resolve(data); });
   }
   // ---------- rodapé: compartilhar, administração e sair ----------
-  const SITE_V = 229;
+  const SITE_V = 230;
   const escH = v => String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const dataBR = v => v ? new Date(v).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' }) : '–';
   const css2 = `.side-foot .r{flex-wrap:wrap}.side-foot .lg-acoes{margin-left:auto;display:inline-flex;gap:10px}
@@ -19868,6 +19872,32 @@ Object.keys(INT_POS).forEach(t => { const r0 = RENDER[t]; if (!r0) return; RENDE
     });
   }
   zona('cor-drop', 'cor-file'); zona('dados-drop', 'dados-arq');
+})();
+</script>
+<script>
+/* v344: no layout novo, duas caixas lado a lado só ficam lado a lado se tiverem altura parecida; senão uma vai embaixo da outra */
+(function () {
+  const RAZAO = 1.45;
+  const alt = el => { const c = el.firstElementChild || el; if (!c) return 0; const r = c.getBoundingClientRect(); return r.height; };
+  function confere() {
+    document.querySelectorAll('.np-g.np-split').forEach(g => {
+      if (!g.offsetParent) return;
+      const sl = [...g.children].filter(x => x.offsetParent !== null || x.classList.contains('np-slot'));
+      if (sl.length !== 2) { g.classList.remove('np-uma'); return; }
+      const tinha = g.classList.contains('np-uma'); g.classList.remove('np-uma');
+      if (getComputedStyle(g).gridTemplateColumns.trim().split(/\s+/).length < 2) return;
+      g.classList.add('np-medir'); const a = alt(sl[0]), b = alt(sl[1]); g.classList.remove('np-medir');
+      const uma = a > 0 && b > 0 && Math.max(a, b) / Math.min(a, b) > RAZAO;
+      if (uma) g.classList.add('np-uma'); else if (tinha && !uma) g.classList.remove('np-uma');
+    });
+  }
+  let t = 0; const agenda = () => { clearTimeout(t); t = setTimeout(confere, 120); };
+  window.npConfere = confere;
+  try { const s0 = showTab; showTab = function () { const r = s0.apply(this, arguments); agenda(); return r; }; } catch (e) {}
+  try { const r0 = renderTab; renderTab = function () { const r = r0.apply(this, arguments); agenda(); return r; }; } catch (e) {}
+  addEventListener('resize', agenda);
+  document.addEventListener('click', e => { if (e.target.closest('button, [role=button], summary')) setTimeout(agenda, 60); });
+  setTimeout(confere, 1500);
 })();
 </script>
 
