@@ -2459,7 +2459,7 @@ html[data-lb="b"] .block-title .desc{font-size:14px;color:var(--muted);margin-to
 /* v355: marca Real / Simulação na linha do tempo */
 .tl-uso{display:inline-block;margin-left:8px;padding:1px 8px;border-radius:999px;font:700 10.5px/1.5 var(--f-ui, inherit);letter-spacing:.02em;vertical-align:1px;white-space:nowrap}
 .tl-uso.real{background:color-mix(in srgb,var(--pos, #2E8B57) 16%,transparent);color:var(--pos, #2E8B57)}
-.tl-uso.sim{background:transparent;color:var(--muted);border:1px dashed var(--line)}
+.tl-uso.sim{background:rgba(245,196,66,.22);color:var(--ink);border:1px dashed #F5C442}
 </style>
 
 
@@ -4554,7 +4554,7 @@ html[data-lb="b"] .block-title .desc{font-size:14px;color:var(--muted);margin-to
     return new Promise(resolve => { const { data } = sb.auth.onAuthStateChange(async (ev) => { if (ev !== 'PASSWORD_RECOVERY') return; const s = prompt('Digite a nova senha (mínimo 8 caracteres):'); if (s && s.length >= 8) { const { error } = await sb.auth.updateUser({ password: s }); alert(error ? 'Não deu para trocar a senha: ' + error.message : 'Senha trocada.'); } }); resolve(data); });
   }
   // ---------- rodapé: compartilhar, administração e sair ----------
-  const SITE_V = 245;
+  const SITE_V = 246;
   const escH = v => String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const dataBR = v => v ? new Date(v).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' }) : '–';
   const css2 = `.side-foot .r{flex-wrap:wrap}.side-foot .lg-acoes{margin-left:auto;display:inline-flex;gap:10px}
