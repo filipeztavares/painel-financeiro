@@ -2447,6 +2447,14 @@ html select.cen-pick.cen-pick:hover, html select.cen-pick.cen-pick:focus-visible
 
 /* v352: no cabeçalho das seções, título à esquerda e todos os controles juntos à direita */
 .panel > .row:first-child:has(> h2) > h2 { margin-right: auto; }
+
+/* v354: Novo B, cabeçalho de todas as telas no formato do layout novo (nome do módulo em cima, título grande, sem o quadradinho do número) */
+html[data-lb="b"] .block-title{padding:0 0 14px;margin:0 0 18px;border-bottom:3px solid var(--m);gap:12px;align-items:flex-end}
+html[data-lb="b"] .block-title .num{display:none}
+html[data-lb="b"] .block-title h1{font-family:var(--f-head);font-size:34px;font-weight:800;line-height:1.1;color:var(--ink)}
+html[data-lb="b"] .block-title h1::before{content:attr(data-lbmodn);font:700 12px var(--f-ui);letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin-bottom:12px}
+html[data-lb="b"] .block-title .desc{font-size:14px;color:var(--muted);margin-top:6px}
+@media (max-width:900px){html[data-lb="b"] .block-title h1{font-size:26px}}
 </style>
 
 
@@ -4541,7 +4549,7 @@ html select.cen-pick.cen-pick:hover, html select.cen-pick.cen-pick:focus-visible
     return new Promise(resolve => { const { data } = sb.auth.onAuthStateChange(async (ev) => { if (ev !== 'PASSWORD_RECOVERY') return; const s = prompt('Digite a nova senha (mínimo 8 caracteres):'); if (s && s.length >= 8) { const { error } = await sb.auth.updateUser({ password: s }); alert(error ? 'Não deu para trocar a senha: ' + error.message : 'Senha trocada.'); } }); resolve(data); });
   }
   // ---------- rodapé: compartilhar, administração e sair ----------
-  const SITE_V = 242;
+  const SITE_V = 243;
   const escH = v => String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const dataBR = v => v ? new Date(v).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' }) : '–';
   const css2 = `.side-foot .r{flex-wrap:wrap}.side-foot .lg-acoes{margin-left:auto;display:inline-flex;gap:10px}
@@ -19160,6 +19168,7 @@ function jorSimDb(real) {
   function aplicar(t) {
     guiaFechaN();
     const tem = !!NOVAS[t], usa = tem && layNovo;
+    { const eb = document.querySelector('#pt-hd .eb'), mm = MODS.find(m => (m.tabs || []).includes(t)); if (eb && eb.firstChild && eb.firstChild.nodeType === 3) eb.firstChild.textContent = (mm ? mm.nome : 'Finanças') + ' '; }
     $$('pt-lay').hidden = !tem; $$('pt-q').hidden = !usa || !GUIA[t]; $$('pt-sub').textContent = usa ? SUB[t] : '';
     document.querySelectorAll('#pt-lay button').forEach(b => b.setAttribute('aria-pressed', String((b.dataset.lay === 'novo') === layNovo)));
     Object.keys(NOVAS).forEach(x => { $$('np-' + x).hidden = !(usa && x === t); });
@@ -19876,7 +19885,7 @@ Object.keys(INT_POS).forEach(t => { const r0 = RENDER[t]; if (!r0) return; RENDE
     root.style.setProperty('--m', m ? (m.corNav || '#F0A46B') : '#F0A46B');
     document.querySelectorAll('.block-title h1').forEach(h => {
       const p = h.closest('[role=tabpanel]'); const mm = p ? modDe(p.id.slice(2)) : null;
-      if (mm) { const i = MODS.indexOf(mm) + 1; h.setAttribute('data-lbmod', 'Módulo ' + i + ' de ' + MODS.length + ' · ' + mm.nome); }
+      if (mm) { const i = MODS.indexOf(mm) + 1; h.setAttribute('data-lbmod', 'Módulo ' + i + ' de ' + MODS.length + ' · ' + mm.nome); h.setAttribute('data-lbmodn', mm.nome); }
     });
     pintaTop(); pintaSecs();
   }
