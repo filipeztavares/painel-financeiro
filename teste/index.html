@@ -2387,6 +2387,21 @@ html[data-lb="a"] #pt-hd:not(.atual) #pt-q{background:rgba(255,255,255,.5);borde
 html[data-lb="b"] #pt-hd:not(.atual){border-top:0;padding:0 0 14px;border-bottom:3px solid var(--m);margin:0 0 18px}
 html[data-lb] #pt-hd .eb{font-family:var(--f-ui)}
 .ck-acoes + .hint, .btns + .hint, .fe-acoes + .hint, .sc-acoes + .hint { margin-top: 12px; }
+
+/* v341 ações em pop-up + áreas de soltar */
+.ac-params { grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr); align-items: stretch; }
+.ac-params > .ac-larga { grid-column: 1 / -1; }
+.ac-lado { align-content: start; }
+.ac-lado .btns { display: flex; flex-wrap: wrap; gap: 8px; }
+.ac-ok:empty { display: none; }
+.ac-ok { color: var(--good, #1F7A57); font-weight: 600; }
+@media (max-width: 900px) { .ac-params { grid-template-columns: 1fr; } }
+.ac-dlg { background: var(--panel); color: var(--ink); width: min(620px, 100%); padding: 18px 20px 20px; }
+.ac-dlg .ac-t { margin: 0 40px 12px 0; font-size: 18px; }
+.ac-dlg .conf-x { color: var(--ink); border-color: var(--line); background: transparent; }
+.ac-dlg fieldset { border: 0; box-shadow: none; padding: 0; background: none; }
+.ac-dlg fieldset > .ac-leg { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+.gas-drop.sobre { border-color: #F0A46B; }
 </style>
 
 
@@ -2477,7 +2492,7 @@ html[data-lb] #pt-hd .eb{font-family:var(--f-ui)}
     </div>
     <div class="nav-mobile-sub" id="navMobileSub"></div>
   </div>
-  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 340</div></div>
+  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 341</div></div>
 </nav>
 <div class="sino-pop" id="sino-pop" role="dialog" aria-label="Atualizações das bases" hidden></div>
 <div class="sino-pop" id="pess-pop" role="dialog" aria-label="Seus avisos" hidden></div>
@@ -3564,11 +3579,24 @@ html[data-lb] #pt-hd .eb{font-family:var(--f-ui)}
         <div class="cad-div">
           <span class="cad-ico" aria-hidden="true"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 16V4M7 9l5-5 5 5"/><path d="M4 15v3a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-3"/></svg></span>
           <div class="cad-txt"><h2>Cadastrar e atualizar aplicações</h2><p>É daqui que saem todos os números da carteira. Cadastre cada aplicação ou suba os PDFs da corretora, e depois salve o total como checkpoint.</p></div>
-          <ol class="cad-passos"><li><b>1</b>Cadastre</li><li><b>2</b>Importe o extrato</li><li><b>3</b>Salve o checkpoint</li></ol>
+          <ol class="cad-passos"><li><b>1</b>Importe ou cadastre</li><li><b>2</b>Salve o checkpoint</li></ol>
         </div>
-        <div class="params cad-params">
-      <fieldset>
-        <legend><span class="cad-n">1</span><span id="af-legend">Nova aplicação</span></legend>
+        <div class="params cad-params ac-params">
+      <fieldset class="ac-imp">
+        <legend><span class="cad-n">1</span>Importe da corretora</legend>
+        <div class="gas-drop" id="cor-drop" role="button" tabindex="0" aria-label="Escolher os PDFs ou CSVs da corretora"><b>Solte aqui os PDFs ou CSVs da corretora</b><span>ou clique para escolher · posição, custódia ou movimentações, vários de uma vez</span><input type="file" id="cor-file" multiple hidden accept=".pdf,.csv,.txt,application/pdf,text/csv"></div>
+        <p class="hint full" id="cor-msg" role="status">Dois tipos de arquivo. <b>Posição ou custódia</b> (ex.: Extrato de Custódia do Nubank, relatório mensal do C6, posição em CSV da B3): cadastra as aplicações novas e atualiza o valor atual das que você já tem. <b>Extrato de movimentações</b> (ex.: extrato detalhado mensal da Toro/Santander): soma juros, cupons, amortizações, resgates e proventos de cada aplicação e preenche o "Já recebido". Pode mandar vários de uma vez; você confere antes de salvar.</p>
+      </fieldset>
+      <fieldset class="ac-lado">
+        <legend><span class="cad-n">2</span>Salve o checkpoint</legend>
+        <p class="hint full" id="cart-cp-hint"></p>
+        <div class="btns full"><button class="btn" type="button" id="cart-cp">Salvar total como checkpoint</button><button class="btn ghost" type="button" id="ac-nova-apl" data-acpop="ac-pop-apl">+ Cadastrar à mão</button></div>
+        <p class="hint full ac-ok" id="ac-apl-msg" role="status"></p>
+        <p class="hint">A carteira cadastrada preenche sozinha a coluna "Hoje (R$)" dos cenários, usada no rebalanceamento.</p>
+      </fieldset>
+        </div>
+        <div class="conf-pop ac-pop" id="ac-pop-apl" hidden><div class="conf-dlg ac-dlg" role="dialog" aria-modal="true" aria-labelledby="ac-pop-apl-t"><button type="button" class="conf-x" data-acfecha aria-label="Fechar" title="Fechar">✕</button><h3 class="ac-t" id="ac-pop-apl-t">Nova aplicação</h3>      <fieldset>
+        <legend class="ac-leg"><span id="af-legend">Nova aplicação</span></legend>
         <form id="aform" class="cpform" style="grid-template-columns:1fr 1fr">
           <label class="full">Nome<input type="text" class="name" id="af-nome" required placeholder="ex.: CDB Banco X 2028"></label>
           <label>Instituição<input type="text" class="name" id="af-inst" placeholder="ex.: Banco X"></label>
@@ -3587,18 +3615,7 @@ html[data-lb] #pt-hd .eb{font-family:var(--f-ui)}
         </form>
         <p class="hint" id="af-msg">Para renda fixa, o valor atual é estimado pela taxa e pela curva de Configurações. Se tiver o extrato, informe o valor atual e ele passa a valer. Para ações, FIIs e outros, informe o valor atual.</p>
       </fieldset>
-      <fieldset>
-        <legend><span class="cad-n">2</span>Importar extrato ou posição da corretora</legend>
-        <label class="full">PDF ou CSV (pode escolher vários)<input type="file" id="cor-file" multiple accept=".pdf,.csv,.txt,application/pdf,text/csv"></label>
-        <p class="hint" id="cor-msg" role="status">Dois tipos de arquivo. <b>Posição ou custódia</b> (ex.: Extrato de Custódia do Nubank, relatório mensal do C6, posição em CSV da B3): cadastra as aplicações novas e atualiza o valor atual das que você já tem. <b>Extrato de movimentações</b> (ex.: extrato detalhado mensal da Toro/Santander): soma juros, cupons, amortizações, resgates e proventos de cada aplicação e preenche o "Já recebido". Pode mandar vários de uma vez; você confere antes de salvar.</p>
-      </fieldset>
-      <fieldset>
-        <legend><span class="cad-n">3</span>Usar na projeção</legend>
-        <p class="hint" id="cart-cp-hint"></p>
-        <div class="btns"><button class="btn ghost" type="button" id="cart-cp">Salvar total como checkpoint</button></div>
-        <p class="hint">A carteira cadastrada preenche sozinha a coluna "Hoje (R$)" dos cenários, usada no rebalanceamento.</p>
-      </fieldset>
-        </div>
+</div></div>
         <div id="cor-prev" class="panel" hidden></div>
         <div id="pos-prev" class="panel" hidden></div>
       </section>
@@ -3754,26 +3771,8 @@ html[data-lb] #pt-hd .eb{font-family:var(--f-ui)}
       </div>
       <div class="kpis" id="kpi-x"></div>
       <section data-nav="Lançar e importar">
-        <div class="sec-band"><h2>Lançar e importar gastos do mês</h2><span class="hint">Lance um gasto à mão, importe a fatura do cartão ou o extrato da conta.</span></div>
-        <div class="params">
-      <fieldset>
-        <legend>Novo gasto</legend>
-        <form id="gform" class="cpform" style="grid-template-columns:1fr 1fr">
-          <label>Data<input type="date" id="gf-data" required></label>
-          <label>Mês de competência<input type="month" id="gf-comp" required></label>
-          <label class="full">Descrição<input type="text" class="name" id="gf-desc" required></label>
-          <label>Valor (R$)<input type="number" step="0.01" id="gf-valor" required></label>
-          <label>Categoria<select id="gf-cat"></select></label>
-          <label>Forma de pagamento<select id="gf-forma"></select></label>
-          <label>Conta ou cartão<input type="text" class="name" id="gf-conta" placeholder="ex.: Nubank"></label>
-          <label>Parcela<input type="text" id="gf-parcela" placeholder="ex.: 3/10"></label>
-          <label class="inline" style="align-self:end"><input type="checkbox" id="gf-rec"> Recorrente</label>
-          <label class="full">Observação<input type="text" class="name" id="gf-obs"></label>
-          <label class="check" hidden><input type="checkbox" id="gf-sheet"> Enviar também para a planilha</label>
-          <button class="btn" type="submit">Salvar gasto</button>
-        </form>
-        <p class="hint" id="gf-msg">Valores positivos são gastos; estornos entram negativos. A categoria é sugerida pela descrição quando já houver lançamento parecido.</p>
-      </fieldset>
+        <div class="sec-band"><h2>Lançar e importar gastos do mês</h2><span class="hint">Importe a fatura do cartão ou o extrato da conta, ou lance um gasto à mão.</span></div>
+        <div class="params ac-params">
       <fieldset hidden>
         <legend>Google Sheets</legend>
         <p class="hint" id="sh-status">Planilha Controle de Gastos, aba Lançamentos.</p>
@@ -3792,22 +3791,47 @@ html[data-lb] #pt-hd .eb{font-family:var(--f-ui)}
         <p class="pl-link">Já controla os gastos numa planilha sua? <a href="#" data-irplan>Importar minha planilha</a></p><p class="hint full" id="fat-msg" role="status">Fatura do cartão ou extrato da conta, de qualquer banco: CSV, OFX, PDF ou o ZIP com senha que o banco envia. O painel identifica sozinho o banco, se é fatura ou extrato e quais colunas são data, descrição e valor; você confere antes de importar. Na fatura, pagamentos são ignorados e cada gasto vem com categoria sugerida. No extrato, Pix, boletos e transferências viram gasto, receita (ex.: salário) ou dedução (ex.: DAS); aplicações, resgates e o pagamento da fatura não entram. Se o arquivo tiver senha, digite na primeira vez; a do ZIP o painel lembra.</p>
         <p class="hint full" id="ext-msg" role="status"></p>
       </fieldset>
-      <fieldset id="csv-box" hidden>
+      <fieldset class="ac-lado">
+        <legend>À mão e exportar</legend>
+        <div class="btns full"><button class="btn" type="button" id="ac-novo-gasto" data-acpop="ac-pop-gasto">+ Novo gasto</button><button class="btn ghost" type="button" data-acpop="ac-pop-exp">Exportar CSV</button></div>
+        <p class="hint full">Lance à mão o que não aparece na fatura nem no extrato: dinheiro vivo, Pix de outra conta, uma conta paga em outro banco.</p>
+      </fieldset>
+      <fieldset id="csv-box" class="ac-larga" hidden>
         <legend>Dizer qual coluna é qual</legend>
         <p class="hint full">O importador não identificou sozinho as colunas deste arquivo. Escolha qual coluna é a data, a descrição e o valor; o painel guarda a escolha para os próximos arquivos iguais.</p>
         <label class="full" hidden>Arquivo<input type="file" id="csv-file" accept=".csv,text/csv,text/plain"></label>
         <div id="csv-map" class="full" style="grid-column:1/-1;display:grid;grid-template-columns:1fr 1fr;gap:8px 10px"></div>
         <p class="hint" id="csv-msg"></p>
       </fieldset>
-      <fieldset>
-        <legend>Exportar</legend>
+        </div>
+        <div class="conf-pop ac-pop" id="ac-pop-gasto" hidden><div class="conf-dlg ac-dlg" role="dialog" aria-modal="true" aria-labelledby="ac-pop-gasto-t"><button type="button" class="conf-x" data-acfecha aria-label="Fechar" title="Fechar">✕</button><h3 class="ac-t" id="ac-pop-gasto-t">Novo gasto</h3>      <fieldset>
+        <legend class="ac-leg">Novo gasto</legend>
+        <form id="gform" class="cpform" style="grid-template-columns:1fr 1fr">
+          <label>Data<input type="date" id="gf-data" required></label>
+          <label>Mês de competência<input type="month" id="gf-comp" required></label>
+          <label class="full">Descrição<input type="text" class="name" id="gf-desc" required></label>
+          <label>Valor (R$)<input type="number" step="0.01" id="gf-valor" required></label>
+          <label>Categoria<select id="gf-cat"></select></label>
+          <label>Forma de pagamento<select id="gf-forma"></select></label>
+          <label>Conta ou cartão<input type="text" class="name" id="gf-conta" placeholder="ex.: Nubank"></label>
+          <label>Parcela<input type="text" id="gf-parcela" placeholder="ex.: 3/10"></label>
+          <label class="inline" style="align-self:end"><input type="checkbox" id="gf-rec"> Recorrente</label>
+          <label class="full">Observação<input type="text" class="name" id="gf-obs"></label>
+          <label class="check" hidden><input type="checkbox" id="gf-sheet"> Enviar também para a planilha</label>
+          <button class="btn" type="submit">Salvar gasto</button>
+        </form>
+        <p class="hint" id="gf-msg">Valores positivos são gastos; estornos entram negativos. A categoria é sugerida pela descrição quando já houver lançamento parecido.</p>
+      </fieldset>
+</div></div>
+        <div class="conf-pop ac-pop" id="ac-pop-exp" hidden><div class="conf-dlg ac-dlg" role="dialog" aria-modal="true" aria-labelledby="ac-pop-exp-t"><button type="button" class="conf-x" data-acfecha aria-label="Fechar" title="Fechar">✕</button><h3 class="ac-t" id="ac-pop-exp-t">Exportar</h3>      <fieldset>
+        <legend class="ac-leg">Exportar</legend>
         <div class="btns">
           <button class="btn ghost" type="button" id="exp-mes">CSV do mês</button>
           <button class="btn ghost" type="button" id="exp-all">CSV de tudo</button>
         </div>
         <p class="hint" id="exp-msg"></p>
       </fieldset>
-        </div>
+</div></div>
         <div class="conf-pop" id="cp-pop" hidden><div class="conf-dlg cp-dlg" role="dialog" aria-modal="true" aria-label="Registrar checkpoint"><button type="button" class="conf-x" id="cp-pop-x" aria-label="Fechar" title="Fechar">✕</button><div id="cp-pop-slot"></div></div></div>
       <div class="conf-pop" id="conf-pop" hidden><div class="conf-dlg" role="dialog" aria-modal="true" aria-label="Conferir antes de importar"><button type="button" class="conf-x" id="conf-x" aria-label="Fechar sem importar" title="Fechar sem importar">✕</button>
         <div id="fat-prev" class="panel"></div>
@@ -3952,7 +3976,8 @@ html[data-lb] #pt-hd .eb{font-family:var(--f-ui)}
       <section data-nav="Seus dados" class="panel" id="cfg-dados">
         <h2>Exportar e restaurar os seus dados</h2>
         <p class="sub">Baixa tudo o que esta conta guarda (plano, gastos de todos os meses, checkpoints e os itens dos módulos) num arquivo JSON. Para voltar a um backup, escolha o arquivo e clique em Restaurar: os dados atuais da conta são trocados pelos do arquivo.</p>
-        <div class="btns"><button class="btn" type="button" id="dados-exp">Exportar dados (JSON)</button><label class="btn ghost" style="cursor:pointer">Escolher arquivo para restaurar<input type="file" id="dados-arq" accept=".json,application/json" hidden></label><button class="btn ghost" type="button" id="dados-rest" disabled>Restaurar</button></div>
+        <div class="btns"><button class="btn" type="button" id="dados-exp">Exportar dados (JSON)</button><button class="btn ghost" type="button" id="dados-rest" disabled>Restaurar</button></div>
+        <div class="gas-drop" id="dados-drop" role="button" tabindex="0" aria-label="Escolher o arquivo de backup"><b>Solte aqui o arquivo de backup</b><span>ou clique para escolher · o arquivo JSON exportado pelo LifeBoard</span><input type="file" id="dados-arq" accept=".json,application/json" hidden></div>
         <p class="hint" id="dados-msg" role="status"></p>
       </section>
       <section data-nav="Importar minha planilha" class="panel" id="cfg-plan">
@@ -4451,7 +4476,7 @@ html[data-lb] #pt-hd .eb{font-family:var(--f-ui)}
     return new Promise(resolve => { const { data } = sb.auth.onAuthStateChange(async (ev) => { if (ev !== 'PASSWORD_RECOVERY') return; const s = prompt('Digite a nova senha (mínimo 8 caracteres):'); if (s && s.length >= 8) { const { error } = await sb.auth.updateUser({ password: s }); alert(error ? 'Não deu para trocar a senha: ' + error.message : 'Senha trocada.'); } }); resolve(data); });
   }
   // ---------- rodapé: compartilhar, administração e sair ----------
-  const SITE_V = 226;
+  const SITE_V = 227;
   const escH = v => String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const dataBR = v => v ? new Date(v).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' }) : '–';
   const css2 = `.side-foot .r{flex-wrap:wrap}.side-foot .lg-acoes{margin-left:auto;display:inline-flex;gap:10px}
@@ -12186,7 +12211,7 @@ $('aform').addEventListener('submit', e => {
 });
 $('tbl-ativos').addEventListener('click', e => {
   const d = e.target.dataset || {};
-  if (d.editativo) { carregarForm(ativos().find(a => a.id === d.editativo)); $('af-nome').focus(); }
+  if (d.editativo) { carregarForm(ativos().find(a => a.id === d.editativo)); if (window.acAbre) acAbre('ac-pop-apl'); $('af-nome').focus(); }
   if (d.delativo) { const a = ativos().find(x => x.id === d.delativo); if (a && confirmar(`Remover "${a.nome}"?`)) { state.ativos = ativos().filter(x => x.id !== a.id); save(); renderCarteira(); } }
   if (d.cmpativo) { const a = ativos().find(x => x.id === d.cmpativo); if (!a) return; state.comp.rows.push({ id: uid(), nome: a.nome, tipo: a.tipo, idx: a.idx, taxa: a.taxa, adm: a.adm, cc: a.cc || 'lp', graf: true }); save(); showTab('comparador'); }
 });
@@ -15194,7 +15219,7 @@ const GUIA_PLANO = 'p-orcamento|Receitas e custos';
 const GUIAS = {
   'p-gastos|Lançar e importar': { auto: true, passos: [
     { sel: '#gas-drop', up: 'fieldset', t: 'Importar fatura ou extrato', o: 'O jeito mais rápido de lançar o mês: suba o arquivo do banco (CSV, OFX, PDF ou o ZIP com senha). O painel reconhece o banco, sugere a categoria de cada gasto e mostra uma prévia antes de salvar.' },
-    { sel: '#gform', up: 'fieldset', t: 'Lançar à mão', o: 'Para o que não aparece na fatura nem no extrato: dinheiro vivo, Pix de outra conta, uma conta paga em outro banco. Valor positivo é gasto; estorno entra negativo.' }
+    { sel: '#ac-novo-gasto', up: 'fieldset', t: 'Lançar à mão', o: 'Para o que não aparece na fatura nem no extrato: dinheiro vivo, Pix de outra conta, uma conta paga em outro banco. Valor positivo é gasto; estorno entra negativo.' }
   ] },
   'p-gastos|Por categoria': { passos: [
     { sel: '#dn-cat', t: 'Para onde foi o dinheiro', o: 'A divisão do mês por categoria. As maiores fatias são onde um ajuste faz mais diferença.' },
@@ -15209,8 +15234,8 @@ const GUIAS = {
     { sel: '#fe-fechar', t: 'Feche o mês', o: 'Quando os gastos e o checkpoint do mês estiverem lançados, clique aqui. Cada mês fechado vale +100 pontos, e +150 se ficou dentro do planejado.' }
   ] },
   'p-carteira|Cadastrar aplicação': { auto: true, passos: [
-    { sel: '#cor-file', up: 'fieldset', t: 'Importe da corretora', o: 'Se você tem o extrato de custódia ou a posição da corretora (PDF ou CSV), suba aqui: o painel cadastra as aplicações e atualiza os valores de uma vez.' },
-    { sel: '#aform', up: 'fieldset', t: 'Ou cadastre à mão', o: 'Uma aplicação por vez: nome, tipo, taxa, quanto aplicou e quando. Se souber o valor atual, informe; senão o painel estima pela taxa.' },
+    { sel: '#cor-drop', up: 'fieldset', t: 'Importe da corretora', o: 'Se você tem o extrato de custódia ou a posição da corretora (PDF ou CSV), suba aqui: o painel cadastra as aplicações e atualiza os valores de uma vez.' },
+    { sel: '#ac-nova-apl', up: 'fieldset', t: 'Ou cadastre à mão', o: 'Abre o cadastro de uma aplicação por vez: nome, tipo, taxa, quanto aplicou e quando. Se souber o valor atual, informe; senão o painel estima pela taxa.' },
     { sel: '#cart-cp', up: 'fieldset', t: 'Salve o checkpoint', o: 'Com tudo cadastrado, salve o total como checkpoint. É a foto do mês que o painel compara com o plano.' }
   ] },
   'p-carteira|Carteira-alvo': { passos: [
@@ -19602,7 +19627,7 @@ Object.keys(INT_POS).forEach(t => { const r0 = RENDER[t]; if (!r0) return; RENDE
 /* ---------- v321 voltar e avançar do navegador: cada tela é um passo no histórico (#tela); voltar com um pop-up aberto fecha o pop-up ---------- */
 (() => {
   if (!window.history || !history.pushState) return;
-  const POPS = ['#int-pop', '#int-lista', '#cp-pop', '#conf-pop', '#ag-pop', '#imp-pop', '#jor-modal', '#pess-pop', '#sino-pop', '#tour-pop', '#nav-mod-pop', '#vg-mpop', '#mp-pop'];
+  const POPS = ['#int-pop', '#int-lista', '#cp-pop', '#conf-pop', '#ag-pop', '#imp-pop', '#jor-modal', '#pess-pop', '#sino-pop', '#tour-pop', '#nav-mod-pop', '#vg-mpop', '#mp-pop', '#ac-pop-apl', '#ac-pop-gasto', '#ac-pop-exp'];
   const vis = el => { if (!el || el.hidden) return false; const cs = getComputedStyle(el); return cs.display !== 'none' && cs.visibility !== 'hidden'; };
   const abertos = () => POPS.map(s => document.querySelector(s)).filter(vis);
   function fecha(el) {
@@ -19762,6 +19787,53 @@ Object.keys(INT_POS).forEach(t => { const r0 = RENDER[t]; if (!r0) return; RENDE
   aplicaVar();
   try { marca(typeof tab !== 'undefined' ? tab : 'modulos'); } catch (e) {}
 })();
+</script><script>
+/* v341: pop-ups das ações (Nova aplicação, Novo gasto, Exportar) e áreas de soltar (corretora, backup) */
+(function () {
+  const g = id => document.getElementById(id);
+  let ultimo = null;
+  window.acAbre = function (id) {
+    const p = g(id); if (!p) return;
+    if (id === 'ac-pop-apl') { const l = g('af-legend'); g('ac-pop-apl-t').textContent = l ? l.textContent : 'Nova aplicação'; }
+    ultimo = document.activeElement; p.hidden = false; document.body.style.overflow = 'hidden';
+    setTimeout(() => { const f = p.querySelector('input:not([type=hidden]):not([hidden]), select, button.btn'); if (f) try { f.focus(); } catch (e) {} }, 30);
+  };
+  window.acFecha = function (id) {
+    const p = g(id); if (!p || p.hidden) return; p.hidden = true;
+    if (!document.querySelector('.conf-pop:not([hidden])')) document.body.style.overflow = '';
+    if (id === 'ac-pop-apl' && typeof editAtivo !== 'undefined' && editAtivo) try { carregarForm(null); } catch (e) {}
+    if (ultimo && ultimo.focus) try { ultimo.focus(); } catch (e) {}
+  };
+  document.addEventListener('click', e => {
+    const b = e.target.closest('[data-acpop]'); if (b) { e.preventDefault(); if (b.dataset.acpop === 'ac-pop-apl') try { if (typeof editAtivo !== 'undefined' && editAtivo) carregarForm(null); } catch (er) {} acAbre(b.dataset.acpop); return; }
+    const x = e.target.closest('[data-acfecha]'); if (x) { acFecha(x.closest('.ac-pop').id); return; }
+    if (e.target.classList && e.target.classList.contains('ac-pop')) acFecha(e.target.id);
+  });
+  document.addEventListener('keydown', e => { if (e.key !== 'Escape') return; const p = [...document.querySelectorAll('.ac-pop')].find(x => !x.hidden); if (p) { e.preventDefault(); acFecha(p.id); } });
+  // cancelar edição fecha
+  const cc = g('af-cancel'); if (cc) cc.addEventListener('click', () => setTimeout(() => acFecha('ac-pop-apl'), 0));
+  // salvou a aplicação: fecha e mostra a mensagem do lado
+  const af = g('aform'); if (af) af.addEventListener('submit', () => setTimeout(() => {
+    const m = (g('af-msg') || {}).textContent || '';
+    if (/"(.+)" (cadastrada|atualizada)\./.test(m)) { const s = g('ac-apl-msg'); if (s) s.textContent = m.match(/".+" (cadastrada|atualizada)\./)[0]; acFecha('ac-pop-apl'); }
+  }, 0));
+  // áreas de soltar: clicar abre o seletor; soltar passa os arquivos para o campo, como se tivessem sido escolhidos
+  function zona(zid, iid) {
+    const z = g(zid), f = g(iid); if (!z || !f) return;
+    z.addEventListener('click', e => { if (e.target !== f) f.click(); });
+    z.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); f.click(); } });
+    ['dragenter', 'dragover'].forEach(ev => z.addEventListener(ev, e => { e.preventDefault(); z.classList.add('sobre'); }));
+    ['dragleave', 'dragend'].forEach(ev => z.addEventListener(ev, () => z.classList.remove('sobre')));
+    z.addEventListener('drop', e => {
+      e.preventDefault(); z.classList.remove('sobre');
+      const fs = [...((e.dataTransfer && e.dataTransfer.files) || [])]; if (!fs.length) return;
+      const dt = new DataTransfer(); (f.multiple ? fs : fs.slice(0, 1)).forEach(x => dt.items.add(x)); f.files = dt.files;
+      f.dispatchEvent(new Event('change', { bubbles: true }));
+    });
+  }
+  zona('cor-drop', 'cor-file'); zona('dados-drop', 'dados-arq');
+})();
 </script>
+
 
 </body></html>
