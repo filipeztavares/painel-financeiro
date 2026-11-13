@@ -2361,6 +2361,24 @@ html[data-lb] .side-nome>.lb-wm{display:block;color:#FFFFFF!important;opacity:1!
 html[data-lb] .side-logo .box.lb{display:none}
 #lb-top .modo button{font-family:var(--f-ui)}
 
+
+/* v335 linhas de total (Receita líquida, totais) em faixa cheia na cor do módulo */
+html[data-lb] tr.totrow td{background:color-mix(in srgb,var(--m) 24%,var(--panel));font-weight:800;color:var(--ink);border-top:0;border-bottom:0;padding-top:11px;padding-bottom:11px}
+html[data-lb] tr.totrow td:first-child{border-radius:10px 0 0 10px;font-family:var(--f-head);font-size:15px}
+html[data-lb] tr.totrow td:last-child{border-radius:0 10px 10px 0}
+html[data-lb] tr.totrow td:nth-last-child(2){font-family:var(--f-head);font-size:16px}
+/* v335 cabeçalho de Finanças do site de teste (#pt-hd) igual ao das outras telas */
+html[data-lb="a"] #pt-hd:not(.atual){background:var(--m);color:#0E1A2B;border-top:0;border-radius:16px;padding:16px 20px;gap:4px;margin:0 0 16px}
+html[data-lb="a"] #pt-hd:not(.atual) .eb{color:rgba(14,26,43,.72);font-size:11px;font-weight:800}
+html[data-lb="a"] #pt-hd:not(.atual) .eb span{background:rgba(255,255,255,.5);color:#0E1A2B}
+html[data-lb="a"] #pt-hd:not(.atual) h1{color:#0E1A2B;font-size:28px;line-height:1.05}
+html[data-lb="a"] #pt-hd:not(.atual) .sub{color:rgba(14,26,43,.78);font-size:13px;margin:4px 0 0}
+html[data-lb="a"] #pt-hd:not(.atual) #pt-lay{background:rgba(255,255,255,.45);border-color:transparent}
+html[data-lb="a"] #pt-hd:not(.atual) #pt-lay button{color:#0E1A2B}
+html[data-lb="a"] #pt-hd:not(.atual) #pt-lay button[aria-pressed="true"]{background:#0E1A2B;color:#fff}
+html[data-lb="a"] #pt-hd:not(.atual) #pt-q{background:rgba(255,255,255,.5);border-color:#0E1A2B;color:#0E1A2B}
+html[data-lb="b"] #pt-hd:not(.atual){border-top:0;padding:0 0 14px;border-bottom:3px solid var(--m);margin:0 0 18px}
+html[data-lb] #pt-hd .eb{font-family:var(--f-ui)}
 </style>
 
 
@@ -2451,7 +2469,7 @@ html[data-lb] .side-logo .box.lb{display:none}
     </div>
     <div class="nav-mobile-sub" id="navMobileSub"></div>
   </div>
-  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 334</div></div>
+  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 335</div></div>
 </nav>
 <div class="sino-pop" id="sino-pop" role="dialog" aria-label="Atualizações das bases" hidden></div>
 <div class="sino-pop" id="pess-pop" role="dialog" aria-label="Seus avisos" hidden></div>
@@ -3850,7 +3868,7 @@ html[data-lb] .side-logo .box.lb{display:none}
       <section data-nav="Receitas e custos" class="panel">
         <h2>Receitas e custos de hoje</h2>
         <p class="sub">Valores de um mês típico, em reais de hoje, e como cada linha reajusta no futuro. Contas sobem com o IPCA todo mês e aluguel uma vez por ano; o salário só muda quando você programar. Para mudar só um mês, edite o Projetado no fechamento daquele mês, em Gastos e fechamento.</p>
-        <div class="orc-modelo" id="orc-modelo-box"><span class="orc-h">Como você recebe</span><div class="seg" id="orc-modelo"><button type="button" data-modelo="pj" aria-pressed="false">PJ (empresa própria)</button><button type="button" data-modelo="clt" aria-pressed="false">CLT (carteira assinada)</button></div><div class="seg" id="orc-cltmodo" hidden><button type="button" data-cltmodo="liq" aria-pressed="false">Digito o líquido</button><button type="button" data-cltmodo="bruto" aria-pressed="false">Digito o bruto</button></div><p class="hint" id="orc-modelo-hint"></p><div class="orc-troca" id="orc-troca" hidden></div><div id="orc-regs"></div></div>
+        <div class="orc-modelo" id="orc-modelo-box"><span class="orc-h">Como você recebe</span><div class="seg" id="orc-modelo"><button type="button" data-modelo="pj" aria-pressed="false">PJ (empresa própria)</button><button type="button" data-modelo="clt" aria-pressed="false">CLT (carteira assinada)</button></div><div class="seg" id="orc-cltmodo" hidden><button type="button" data-cltmodo="liq" aria-pressed="false">Digito o líquido</button><button type="button" data-cltmodo="bruto" aria-pressed="false">Digito o bruto</button></div><p class="hint" id="orc-modelo-hint"></p><div class="orc-troca" id="orc-troca" hidden></div></div>
         <div class="orc-grid">
           <div><h3 class="orc-h">Receitas e deduções</h3><div class="tscroll"><table id="tbl-orc-rec"></table></div></div>
           <div><div class="row" style="margin-bottom:0"><h3 class="orc-h">Custos por categoria</h3><span class="btns" style="margin:0"><button class="btn ghost tiny" type="button" id="orc-sug">Usar a distribuição sugerida</button> <button type="button" class="ibtn" data-info="orc:sug" aria-label="De onde vem a sugestão">i</button><button class="btn ghost tiny" type="button" id="orc-media">Usar a média dos 3 meses mais recentes</button></span></div>
@@ -3861,6 +3879,11 @@ html[data-lb] .side-logo .box.lb{display:none}
         </div>
         <div class="sobra-box" id="orc-resumo" role="status" style="margin:16px 0 4px"></div>
               </section>
+      <section data-nav="Histórico de como você recebe" class="panel" id="orc-hist">
+        <h2>Histórico de como você recebe</h2>
+        <p class="sub">A linha do tempo de PJ, CLT e períodos sem salário, e as trocas que você programou ou está simulando.</p>
+        <div id="orc-regs"></div>
+      </section>
       <section data-nav="Mudanças e eventos" class="panel">
         <h2>Mudanças programadas e eventos</h2>
         <p class="sub">Mudança: a partir de um mês, a linha passa a ter um novo valor (e segue a regra de reajuste dali em diante). Evento: um gasto ou uma receita pontual, que pode repetir todo ano corrigido pelo IPCA.</p>
@@ -4420,7 +4443,7 @@ html[data-lb] .side-logo .box.lb{display:none}
     return new Promise(resolve => { const { data } = sb.auth.onAuthStateChange(async (ev) => { if (ev !== 'PASSWORD_RECOVERY') return; const s = prompt('Digite a nova senha (mínimo 8 caracteres):'); if (s && s.length >= 8) { const { error } = await sb.auth.updateUser({ password: s }); alert(error ? 'Não deu para trocar a senha: ' + error.message : 'Senha trocada.'); } }); resolve(data); });
   }
   // ---------- rodapé: compartilhar, administração e sair ----------
-  const SITE_V = 220;
+  const SITE_V = 221;
   const escH = v => String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const dataBR = v => v ? new Date(v).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' }) : '–';
   const css2 = `.side-foot .r{flex-wrap:wrap}.side-foot .lg-acoes{margin-left:auto;display:inline-flex;gap:10px}
@@ -14551,7 +14574,8 @@ function regTabelaHtml() {
 }
 function renderRegimes() {
   const el = $('orc-regs'), R = state.orc.regimes || [];
-  el.innerHTML = R.length ? `<h3 class="orc-h">Linha do tempo de como você recebe</h3>${regLinhaHtml()}<h3 class="orc-h">Trocas e cenários <span class="subdet">(também em Carreira › PJ e PF)</span></h3>${regTabelaHtml()}` : '';
+  el.innerHTML = R.length ? `<h3 class="orc-h">Linha do tempo</h3>${regLinhaHtml()}<h3 class="orc-h">Trocas e cenários <span class="subdet">(também em Carreira › PJ e PF)</span></h3>${regTabelaHtml()}` : '';
+  const hs = $('orc-hist'); if (hs) hs.hidden = !R.length;
 }
 function renderTrocasPj() {
   const el = $('pj-regs'); if (!el) return;
@@ -18922,7 +18946,7 @@ function jorSimDb(real) {
     carteira: [L('1fr', ['kpi-a']), L('minmax(0,1.2fr) minmax(0,1fr)', ['@alvo', 's-carteira-7']), L('1fr', ['s-carteira-1']), L('1fr', ['s-carteira-2']), L('1fr', ['s-carteira-4']), L('1fr', ['s-carteira-3']), L('minmax(0,1fr) minmax(0,1fr)', ['s-carteira-5', 's-carteira-6']), L('1fr', ['s-carteira-8']), L('1fr', ['s-carteira-0']), L('1fr', ['s-carteira-9']), L('1fr', ['s-carteira-10']), L('1fr', ['s-carteira-11'])],
     comparador: [L('1fr', ['kpi-r']), L('minmax(0,1fr) minmax(0,1.4fr)', ['s-comparador-0', 's-comparador-2']), L('1fr', ['s-comparador-1']), L('1fr', ['s-comparador-3'])],
     simulador: [L('1fr', ['kpi-s']), L('minmax(0,1fr) minmax(0,1.6fr)', ['s-simulador-0', 's-simulador-1']), L('1fr', ['s-simulador-2'])],
-    orcamento: [L('1fr', ['kpi-pl']), L('1fr', ['s-orcamento-0']), L('1fr', ['s-orcamento-1']), L('minmax(0,1fr) minmax(0,1fr)', ['s-orcamento-2', 'pl-itens']), L('1fr', ['s-orcamento-4'])],
+    orcamento: [L('1fr', ['kpi-pl']), L('1fr', ['s-orcamento-0']), L('1fr', ['s-orcamento-1']), L('1fr', ['orc-hist']), L('minmax(0,1fr) minmax(0,1fr)', ['s-orcamento-3', 'pl-itens']), L('1fr', ['s-orcamento-5'])],
     cenarios: [L('1fr', ['kpi-c']), L('1fr', ['@cens']), L('minmax(0,1fr) minmax(0,1fr)', ['s-cenarios-0', 's-cenarios-2']), L('minmax(0,1.4fr) minmax(0,1fr)', ['s-cenarios-3', 's-cenarios-4']), L('1fr', ['s-cenarios-1']), L('1fr', ['s-cenarios-5'])]
   };
   const SUB2 = { gastos: 'Lance e importe os gastos, veja por categoria e feche o mês contra o plano.', patrimonio: 'Tudo o que você tem menos o que deve, hoje e ao longo do tempo.', carteira: 'Onde seu dinheiro está, contra a carteira-alvo, e quanto rende.', comparador: 'Compare produtos de renda fixa pelo valor líquido no prazo que você escolher.', simulador: 'Simule um aporte ao longo do tempo, em reais de hoje.', orcamento: 'As regras do seu plano: renda, custos, mudanças e o que entra de cada módulo.', cenarios: 'Teste futuros diferentes: carteira, bens, patrimônio e sobra de cada cenário.' };
