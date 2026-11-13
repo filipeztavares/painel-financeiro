@@ -2559,7 +2559,7 @@ html[data-lb="b"] .block-title .desc{font-size:14px;color:var(--muted);margin-to
     </div>
     <div class="nav-mobile-sub" id="navMobileSub"></div>
   </div>
-  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 347</div></div>
+  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 362</div></div>
 </nav>
 <div class="sino-pop" id="sino-pop" role="dialog" aria-label="Atualizações das bases" hidden></div>
 <div class="sino-pop" id="pess-pop" role="dialog" aria-label="Seus avisos" hidden></div>
@@ -4563,7 +4563,7 @@ html[data-lb="b"] .block-title .desc{font-size:14px;color:var(--muted);margin-to
     return new Promise(resolve => { const { data } = sb.auth.onAuthStateChange(async (ev) => { if (ev !== 'PASSWORD_RECOVERY') return; const s = prompt('Digite a nova senha (mínimo 8 caracteres):'); if (s && s.length >= 8) { const { error } = await sb.auth.updateUser({ password: s }); alert(error ? 'Não deu para trocar a senha: ' + error.message : 'Senha trocada.'); } }); resolve(data); });
   }
   // ---------- rodapé: compartilhar, administração e sair ----------
-  const SITE_V = 250;
+  const SITE_V = 251;
   const escH = v => String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const dataBR = v => v ? new Date(v).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' }) : '–';
   const css2 = `.side-foot .r{flex-wrap:wrap}.side-foot .lg-acoes{margin-left:auto;display:inline-flex;gap:10px}
@@ -4644,7 +4644,8 @@ html[data-lb="b"] .block-title .desc{font-size:14px;color:var(--muted);margin-to
   }
   async function abrirAdmin() {
     const ov = modal(topo('Administração', 'Todas as contas do site. Você vê nome, e-mail e datas de todo mundo; os números financeiros de alguém só aparecem na sua Visão consolidada se a pessoa compartilhar com você.') +
-      `<div class="tw"><table><thead><tr><th>Pessoa</th><th>Criada</th><th>Último acesso</th><th>Dados</th><th>Compartilha</th><th>Situação</th><th></th></tr></thead><tbody id="sv-at"><tr><td colspan="7" class="vazio">carregando…</td></tr></tbody></table></div><div class="msg" id="sv-am" role="status"></div>`);
+      `<div class="tw"><table><thead><tr><th>Pessoa</th><th>Criada</th><th>Último acesso</th><th>Dados</th><th>Compartilha</th><th>Situação</th><th></th></tr></thead><tbody id="sv-at"><tr><td colspan="7" class="vazio">carregando…</td></tr></tbody></table></div><div class="msg" id="sv-am" role="status"></div><p style="margin-top:12px"><button class="bt" type="button" id="sv-sug">💬 Ver sugestões recebidas</button></p>`);
+    ov.querySelector('#sv-sug').addEventListener('click', () => { fecharModal(); if (window.abrirSugestoes) window.abrirSugestoes(true); });
     const m = ov.querySelector('#sv-am');
     const pinta = async () => {
       const { data, error } = await sb.rpc('admin_usuarios'); if (error) { m.className = 'msg err'; m.textContent = 'Não consegui listar as contas: ' + error.message; return; }
@@ -4719,6 +4720,13 @@ html[data-lb="b"] .block-title .desc{font-size:14px;color:var(--muted);margin-to
     async remover(evId, email) { await pronto; let q = sb.from('agenda_conv').delete().eq('dono', uid).eq('ev_id', evId); if (email) q = q.eq('para_email', String(email).toLowerCase()); const { error } = await q; if (error) throw error; },
     async responder(id, resp) { await pronto; const { error } = await sb.rpc('agenda_responder', { id_conv: id, resp }); if (error) throw error; },
     ouvir(cb) { pronto.then(() => { try { sb.channel('agenda').on('postgres_changes', { event: '*', schema: 'public', table: 'agenda_conv' }, () => cb()).subscribe(); } catch (e) {} }); }
+  };
+  // Sugestões: caixa no rodapé do menu; qualquer conta envia, só o admin lê (tabela sugestoes, supabase-sugestoes.sql)
+  window.__siteSugestoes = {
+    async enviar(modulo, texto) { await pronto; const { error } = await sb.from('sugestoes').insert({ modulo: String(modulo).slice(0, 60), texto: String(texto).slice(0, 2000) }); if (error) throw error; },
+    async listar() { await pronto; const { data, error } = await sb.rpc('admin_sugestoes'); if (error) throw error; return data || []; },
+    async marcar(id, lida) { await pronto; const { error } = await sb.from('sugestoes').update({ lida }).eq('id', id); if (error) throw error; },
+    async apagar(id) { await pronto; const { error } = await sb.from('sugestoes').delete().eq('id', id); if (error) throw error; }
   };
   // Família: área comum da casa editada por todos (tabelas familias e familia_membros, supabase-familia.sql)
   const meuEmail = () => String((sessao && sessao.user && sessao.user.email) || '').toLowerCase();
@@ -20076,6 +20084,119 @@ Object.keys(INT_POS).forEach(t => { const r0 = RENDER[t]; if (!r0) return; RENDE
   document.addEventListener('keydown', e => { if (e.key === 'Escape' && !pop.hidden) { e.stopImmediatePropagation(); pop.hidden = true; } }, true);
   // sair da tela com mudança pendente: confirma antes
   try { const s0 = showTab; showTab = function (t) { if (t !== 'cenarios' && typeof tab !== 'undefined' && tab === 'cenarios' && window.cenPendente()) { abrePop('Antes de sair da tela, salve ou desfaça.'); return; } const r = s0.apply(this, arguments); pinta(); return r; }; } catch (e) {}
+})();
+</script>
+<style>
+/* v362: caixa de sugestões */
+.sug-dlg { width: min(560px, 100%); }
+.sug-dlg .sug-int { margin: 0 0 14px; color: var(--muted); font-size: 13.5px; line-height: 1.5; }
+.sug-dlg label.sug-l { display: block; font-size: 12.5px; font-weight: 600; margin: 0 0 5px; }
+.sug-dlg select, .sug-dlg textarea { width: 100%; box-sizing: border-box; font: inherit; font-size: 14px; }
+.sug-dlg textarea { min-height: 130px; resize: vertical; padding: 9px 10px; border: 1px solid var(--line); border-radius: 8px; background: var(--panel); color: var(--ink); }
+.sug-dlg .sug-campo { margin-bottom: 12px; }
+.sug-dlg .sug-cont { text-align: right; font-size: 11.5px; color: var(--muted); margin-top: 3px; }
+.sug-dlg .sug-acoes { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+.sug-dlg .sug-msg { font-size: 13px; }
+.sug-dlg .sug-msg.ok { color: var(--good, #2e7d4f); } .sug-dlg .sug-msg.err { color: var(--bad, #c0392b); }
+.sug-adm { margin-top: 18px; border-top: 1px solid var(--line); padding-top: 12px; }
+.sug-adm > summary { cursor: pointer; font-weight: 700; font-size: 14px; }
+.sug-adm .sug-filtro { display: flex; gap: 8px; align-items: center; margin: 10px 0; font-size: 12.5px; flex-wrap: wrap; }
+.sug-it { border: 1px solid var(--line); border-radius: 10px; padding: 10px 12px; margin-bottom: 8px; background: var(--panel); }
+.sug-it.lida { opacity: .6; }
+.sug-it .sug-cab { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; font-size: 12px; color: var(--muted); margin-bottom: 6px; }
+.sug-it .sug-mod { display: inline-flex; align-items: center; gap: 5px; font-weight: 700; color: var(--ink); }
+.sug-it .sug-mod i { width: 9px; height: 9px; border-radius: 50%; background: var(--mc, var(--accent)); display: inline-block; }
+.sug-it .sug-txt { white-space: pre-wrap; font-size: 14px; line-height: 1.45; overflow-wrap: anywhere; }
+.sug-it .sug-bts { display: flex; gap: 6px; margin-top: 8px; }
+.nav-pe { flex-wrap: wrap; }
+html .sug-adm .btn.ghost[aria-pressed="true"], html[data-lb] .sug-adm .btn.ghost[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: #fff; }
+.sug-dlg .btn.ghost[data-sugdel] { color: var(--bad, #c0392b); }
+</style>
+<script>
+/* v362: caixa de sugestões. A pessoa escolhe o módulo e escreve; só o administrador lê.
+   Site: tabela sugestoes no Supabase (window.__siteSugestoes). Painel do Claude: db sugestoes/<id> (o dono lista). */
+(function () {
+  const g = id => document.getElementById(id);
+  const GERAL = 'O app em geral';
+  const nomeMod = id => (MODS.find(m => m.id === id) || {}).nome || GERAL;
+  const corMod = nome => (MODS.find(m => m.nome === nome) || {}).corNav || 'var(--accent)';
+  const adm = () => { try { return ehAdmin(); } catch (e) { return false; } };
+  const dt = s => { const d = new Date(s); return isNaN(d) ? '' : d.toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' }); };
+  let filtro = 'novas', lista = null;
+
+  // rodapé do menu: novo item ao lado de Leia-me e Configurações
+  const pe = document.querySelector('.nav-pe');
+  if (pe && !g('nav-sug')) pe.insertAdjacentHTML('beforeend', '<div class="nav-group mini"><button type="button" class="nav-head" id="nav-sug" aria-haspopup="dialog"><span class="ico" aria-hidden="true">💬</span>Sugestões</button></div>');
+  document.body.insertAdjacentHTML('beforeend', '<div class="conf-pop ac-pop" id="sug-pop" hidden><div class="conf-dlg ac-dlg sug-dlg" role="dialog" aria-modal="true" aria-labelledby="sug-t"><button type="button" class="conf-x" data-acfecha aria-label="Fechar" title="Fechar">✕</button><h3 class="ac-t" id="sug-t">💬 Sugestões</h3><div id="sug-corpo"></div></div></div>');
+
+  function pinta() {
+    const atual = (() => { try { return modDe(tab); } catch (e) { return null; } })();
+    const opts = [`<option value="${esc(GERAL)}">${esc(GERAL)}</option>`].concat(MODS.map(m => `<option value="${esc(m.nome)}"${m.id === atual ? ' selected' : ''}>${esc(m.nome)}</option>`)).join('');
+    g('sug-corpo').innerHTML = `<p class="sug-int">Tem uma ideia, achou algo confuso ou encontrou um erro? Escolha o módulo e conte para a gente. Só o administrador do app lê as sugestões.</p>
+      <div class="sug-campo"><label class="sug-l" for="sug-mod">Sobre qual módulo?</label><select id="sug-mod">${opts}</select></div>
+      <div class="sug-campo"><label class="sug-l" for="sug-txt">Sua sugestão</label><textarea id="sug-txt" maxlength="2000" placeholder="Escreva aqui o que você mudaria, o que faltou ou o que não funcionou."></textarea><div class="sug-cont" id="sug-cont">0 / 2000</div></div>
+      <div class="sug-acoes"><button type="button" class="btn" id="sug-env">Enviar sugestão</button><span class="sug-msg" id="sug-msg" role="status" aria-live="polite"></span></div>
+      ${adm() ? `<details class="sug-adm" id="sug-adm"><summary>Sugestões recebidas <span id="sug-qt"></span></summary><div class="sug-filtro"><span>Mostrar:</span><button type="button" class="btn tiny ghost" data-sugf="novas" aria-pressed="${filtro === 'novas'}">Não lidas</button><button type="button" class="btn tiny ghost" data-sugf="todas" aria-pressed="${filtro === 'todas'}">Todas</button></div><div id="sug-lista"><p class="sug-int">Carregando…</p></div></details>` : ''}`;
+    if (adm()) carregar();
+  }
+
+  async function carregar() {
+    const el = g('sug-lista'); if (!el) return;
+    try {
+      if (window.__siteSugestoes) lista = await window.__siteSugestoes.listar();
+      else if (db) { const sn = await db.collection('sugestoes').get(); lista = sn.docs.map(d => Object.assign({ id: d.id, base: '' }, d.data()));
+        try { const ps = await db.collection('perfis').get(); for (const p of ps.docs) { const b = 'perfis/' + p.id + '/'; const s2 = await db.collection(b + 'sugestoes').get(); s2.docs.forEach(d => lista.push(Object.assign({ id: d.id, base: b }, d.data()))); } } catch (e) {}
+        lista.sort((a, b) => String(b.criado_em).localeCompare(String(a.criado_em))); }
+      else lista = [];
+    } catch (e) { el.innerHTML = `<p class="sug-int">Não consegui carregar as sugestões: ${esc(e && (e.message || e.code) || e)}${window.__SITE ? ' (o banco precisa da tabela de sugestões; veja supabase-sugestoes.sql)' : ''}</p>`; return; }
+    lista = lista || []; desenha();
+  }
+  function desenha() {
+    const el = g('sug-lista'); if (!el || !lista) return;
+    const novas = lista.filter(x => !x.lida).length, q = g('sug-qt'); if (q) q.textContent = `(${novas} não ${novas === 1 ? 'lida' : 'lidas'} de ${lista.length})`;
+    const vis = filtro === 'novas' ? lista.filter(x => !x.lida) : lista;
+    el.innerHTML = vis.length ? vis.map(x => `<div class="sug-it${x.lida ? ' lida' : ''}"><div class="sug-cab"><span class="sug-mod" style="--mc:${esc(corMod(x.modulo))}"><i></i>${esc(x.modulo)}</span><span>${esc(dt(x.criado_em))}</span><span>${esc(x.nome || '')}${x.email ? ' · ' + esc(x.email) : ''}</span></div><div class="sug-txt">${esc(x.texto)}</div><div class="sug-bts"><button type="button" class="btn tiny ghost" data-suglida="${esc(x.id)}">${x.lida ? 'Marcar como não lida' : 'Marcar como lida'}</button><button type="button" class="btn tiny ghost" data-sugdel="${esc(x.id)}">Apagar</button></div></div>`).join('')
+      : `<p class="sug-int">${filtro === 'novas' && lista.length ? 'Nenhuma sugestão nova. Use "Todas" para ver as já lidas.' : 'Nenhuma sugestão ainda.'}</p>`;
+  }
+
+  async function enviar() {
+    const msg = g('sug-msg'), bt = g('sug-env'), txt = g('sug-txt').value.trim(), mod = g('sug-mod').value;
+    msg.className = 'sug-msg';
+    if (txt.length < 3) { msg.className = 'sug-msg err'; msg.textContent = 'Escreva a sua sugestão antes de enviar.'; g('sug-txt').focus(); return; }
+    bt.disabled = true; msg.textContent = 'Enviando…';
+    try {
+      if (window.__siteSugestoes) await window.__siteSugestoes.enviar(mod, txt);
+      else if (db) { const id = Date.now().toString(36) + Math.random().toString(36).slice(2, 7); await pdoc('sugestoes/' + id).set({ modulo: mod, texto: txt.slice(0, 2000), criado_em: new Date().toISOString(), lida: false, nome: souDono ? 'Você' : 'Outra pessoa', por: meuId || '' }); }
+      else throw new Error('não consigo salvar nesta visualização');
+      g('sug-txt').value = ''; g('sug-cont').textContent = '0 / 2000';
+      msg.className = 'sug-msg ok'; msg.textContent = 'Obrigado! Sua sugestão foi enviada.';
+      if (adm()) carregar();
+    } catch (e) { msg.className = 'sug-msg err'; msg.textContent = 'Não consegui enviar: ' + (e && (e.message || e.code) || e); }
+    bt.disabled = false;
+  }
+
+  async function marcar(id) {
+    const x = (lista || []).find(y => String(y.id) === String(id)); if (!x) return;
+    try { if (window.__siteSugestoes) await window.__siteSugestoes.marcar(x.id, !x.lida); else await db.doc((x.base || '') + 'sugestoes/' + x.id).update({ lida: !x.lida }); x.lida = !x.lida; desenha(); }
+    catch (e) { const m = g('sug-msg'); m.className = 'sug-msg err'; m.textContent = 'Não deu certo: ' + (e && (e.message || e.code) || e); }
+  }
+  async function apagar(id) {
+    const x = (lista || []).find(y => String(y.id) === String(id)); if (!x) return;
+    if (!confirmar('Apagar esta sugestão de vez?')) return;
+    try { if (window.__siteSugestoes) await window.__siteSugestoes.apagar(x.id); else await db.doc((x.base || '') + 'sugestoes/' + x.id).delete(); lista = lista.filter(y => y !== x); desenha(); }
+    catch (e) { const m = g('sug-msg'); m.className = 'sug-msg err'; m.textContent = 'Não deu certo: ' + (e && (e.message || e.code) || e); }
+  }
+
+  window.abrirSugestoes = function (soLista) { pinta(); acAbre('sug-pop'); if (soLista && g('sug-adm')) { g('sug-adm').open = true; g('sug-adm').scrollIntoView({ block: 'start' }); } };
+  document.addEventListener('click', e => {
+    if (e.target.closest('#nav-sug')) { e.preventDefault(); window.abrirSugestoes(); return; }
+    if (!e.target.closest('#sug-pop')) return;
+    if (e.target.closest('#sug-env')) { enviar(); return; }
+    const f = e.target.closest('[data-sugf]'); if (f) { filtro = f.dataset.sugf; document.querySelectorAll('[data-sugf]').forEach(b => { const on = b.dataset.sugf === filtro; b.setAttribute('aria-pressed', on); }); desenha(); return; }
+    const l = e.target.closest('[data-suglida]'); if (l) { marcar(l.dataset.suglida); return; }
+    const d = e.target.closest('[data-sugdel]'); if (d) { apagar(d.dataset.sugdel); return; }
+  });
+  document.addEventListener('input', e => { if (e.target.id === 'sug-txt') g('sug-cont').textContent = e.target.value.length + ' / 2000'; });
 })();
 </script>
 
