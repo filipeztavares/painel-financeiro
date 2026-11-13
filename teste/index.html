@@ -4425,6 +4425,8 @@ html[data-lb="b"] .block-title .desc{font-size:14px;color:var(--muted);margin-to
   const SB_URL = 'https://rcywzqbuobhmvbyemrmz.supabase.co', SB_KEY = 'sb_publishable_oFX-qls5aQr9eDMaOiUsjw_3-jPaePl';
   // link de e-mail vencido deixa #error=... no endereço; o supabase-js lê isso a cada F5 e derruba a sessão
   if (/[#&](error|error_code)=/.test(location.hash)) try { history.replaceState(null, '', location.pathname + location.search); } catch (e) {}
+  // volta do login com Google (PKCE): o supabase-js troca ?code= pela sessão; guardar antes que ele limpe o endereço
+  const VOLTA_OAUTH = /[?&]code=/.test(location.search);
   const sb = window.supabase.createClient(SB_URL, SB_KEY, { auth: { persistSession: true, autoRefreshToken: true, flowType: 'pkce' } });
   window.__SITE = true;
   const clone = v => v == null ? v : JSON.parse(JSON.stringify(v));
@@ -4607,7 +4609,7 @@ html[data-lb="b"] .block-title .desc{font-size:14px;color:var(--muted);margin-to
     return new Promise(resolve => { const { data } = sb.auth.onAuthStateChange(async (ev) => { if (ev !== 'PASSWORD_RECOVERY') return; const s = prompt('Digite a nova senha (mínimo 8 caracteres):'); if (s && s.length >= 8) { const { error } = await sb.auth.updateUser({ password: s }); alert(error ? 'Não deu para trocar a senha: ' + error.message : 'Senha trocada.'); } }); resolve(data); });
   }
   // ---------- rodapé: compartilhar, administração e sair ----------
-  const SITE_V = 263;
+  const SITE_V = 264;
   const escH = v => String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const dataBR = v => v ? new Date(v).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' }) : '–';
   const css2 = `.side-foot .r{flex-wrap:wrap}.side-foot .lg-acoes{margin-left:auto;display:inline-flex;gap:10px}
@@ -4730,6 +4732,7 @@ html[data-lb="b"] .block-title .desc{font-size:14px;color:var(--muted);margin-to
   const pronto = (async () => {
     await novaSenhaSePreciso();
     let { data } = await sb.auth.getSession(); sessao = data.session;
+    if (sessao && VOLTA_OAUTH) { lsP(K_INI, Date.now()); lsP(K_USO, Date.now()); }   // login novo pelo Google: o relógio da sessão recomeça (senão um login antigo vencido derrubava na hora)
     if (sessao && sessVencida()) { await sb.auth.signOut({ scope: 'local' }); sessao = null; }
     if (!sessao) { sessao = await telaLogin(); lsP(K_INI, Date.now()); }
     else if (!lsN(K_INI)) lsP(K_INI, Date.now());
