@@ -3516,7 +3516,7 @@ html select.cen-pick.cen-pick:hover, html select.cen-pick.cen-pick:focus-visible
         <label>Renda extra (R$/mês)<input type="number" step="500" data-bind="cen::extra"></label>
         <label>Taxa manual (% a.a. líq.)<input type="number" step="0.1" data-bind="cen::manual" placeholder="vazio = carteira"></label>
         <p class="hint">Ajustes somam às taxas de Configurações só neste cenário (ex.: −1 no CDI simula juros mais baixos). Renda extra soma ao salário todo mês (bônus, PJ, aluguel). A taxa manual ignora a carteira, como a planilha fazia com 11%. O aumento dos custos fica na seção Custos do cenário, logo abaixo. Vale no Patrimônio projetado da aba Cenários.</p>
-        <p class="hint" id="cen-real-hint" hidden>Este é o cenário Real: ele usa as premissas do Meu plano (rendimento e IPCA), então os ajustes, a renda extra e a taxa manual ficam travados aqui. Teste outras premissas num cenário de simulação.</p>
+        <p class="hint" id="cen-real-hint" hidden>Este é o cenário Real: ele usa as premissas do Meu plano (rendimento e IPCA), então os ajustes, a renda extra e a taxa manual ficam travados aqui. Teste outras premissas num cenário de simulação.<br><a href="#" class="lm-ir" data-lmtab="orcamento" data-lmsec="Premissas" data-lmsel="#pl-rend" data-lmmsg="Premissas do Real: rendimento, IPCA e reinvestimento">Mudar as premissas do Real em 01. Meu plano › Premissas →</a></p>
       </fieldset>
       <fieldset>
         <legend>Carteira do cenário</legend>
@@ -3535,7 +3535,7 @@ html select.cen-pick.cen-pick:hover, html select.cen-pick.cen-pick:focus-visible
         <div class="tscroll"><table id="tbl-cc"><thead><tr><th>Grupo</th><th>Hoje no Meu plano (R$/mês)</th><th>Aumento (%)</th><th>Com o aumento (R$/mês)</th></tr></thead>
         <tbody><tr><td class="name">Fixos<span class="subdet" style="display:block">moradia, contas, saúde, educação</span></td><td id="cc-hoje-fix"></td><td><input type="number" step="1" data-bind="cen::custoFix" placeholder="0" aria-label="Aumento em Fixos (%)" style="max-width:90px"></td><td id="cc-com-fix"></td></tr><tr><td class="name">Essenciais<span class="subdet" style="display:block">mercado, transporte, carro, serviços</span></td><td id="cc-hoje-ess"></td><td><input type="number" step="1" data-bind="cen::custoEss" placeholder="0" aria-label="Aumento em Essenciais (%)" style="max-width:90px"></td><td id="cc-com-ess"></td></tr><tr><td class="name">Estilo de vida<span class="subdet" style="display:block">lazer, restaurantes, viagem, roupas</span></td><td id="cc-hoje-est"></td><td><input type="number" step="1" data-bind="cen::custoEst" placeholder="0" aria-label="Aumento em Estilo de vida (%)" style="max-width:90px"></td><td id="cc-com-est"></td></tr></tbody><tfoot><tr><td class="name"><b>Total</b></td><td id="cc-hoje-tot"></td><td id="cc-pct-tot"></td><td id="cc-com-tot"></td></tr></tfoot></table></div>
         <div class="params" style="margin-top:12px"><fieldset><legend>Quando começa</legend><label>A partir de<input type="month" data-bind="cen::custoDe"></label><p class="hint">Mês vazio = vale desde já. Os valores de hoje são os do orçamento do Meu plano; na projeção cada linha ainda segue o próprio reajuste.</p></fieldset></div>
-        <p class="hint" id="cc-real" hidden>Este é o cenário Real: ele usa os custos do Meu plano. Escolha outro cenário para testar aumentos.</p>
+        <p class="hint" id="cc-real" hidden>Este é o cenário Real: ele usa os custos do Meu plano. Escolha outro cenário para testar aumentos. <a href="#" class="lm-ir" data-lmtab="orcamento" data-lmsec="Receitas e custos">Mudar os custos do Real em 01. Meu plano › Receitas e custos →</a></p>
       </section>
       <section data-nav="Bens do cenário" class="panel">
         <div class="row"><h2>Bens em cada cenário</h2><button class="btn tiny ghost" type="button" data-tab="compras">Cadastrar ou editar bens</button></div>
@@ -4538,7 +4538,7 @@ html select.cen-pick.cen-pick:hover, html select.cen-pick.cen-pick:focus-visible
     return new Promise(resolve => { const { data } = sb.auth.onAuthStateChange(async (ev) => { if (ev !== 'PASSWORD_RECOVERY') return; const s = prompt('Digite a nova senha (mínimo 8 caracteres):'); if (s && s.length >= 8) { const { error } = await sb.auth.updateUser({ password: s }); alert(error ? 'Não deu para trocar a senha: ' + error.message : 'Senha trocada.'); } }); resolve(data); });
   }
   // ---------- rodapé: compartilhar, administração e sair ----------
-  const SITE_V = 239;
+  const SITE_V = 240;
   const escH = v => String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const dataBR = v => v ? new Date(v).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' }) : '–';
   const css2 = `.side-foot .r{flex-wrap:wrap}.side-foot .lg-acoes{margin-left:auto;display:inline-flex;gap:10px}
