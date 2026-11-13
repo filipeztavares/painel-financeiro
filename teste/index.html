@@ -4538,7 +4538,7 @@ html select.cen-pick.cen-pick:hover, html select.cen-pick.cen-pick:focus-visible
     return new Promise(resolve => { const { data } = sb.auth.onAuthStateChange(async (ev) => { if (ev !== 'PASSWORD_RECOVERY') return; const s = prompt('Digite a nova senha (mínimo 8 caracteres):'); if (s && s.length >= 8) { const { error } = await sb.auth.updateUser({ password: s }); alert(error ? 'Não deu para trocar a senha: ' + error.message : 'Senha trocada.'); } }); resolve(data); });
   }
   // ---------- rodapé: compartilhar, administração e sair ----------
-  const SITE_V = 238;
+  const SITE_V = 239;
   const escH = v => String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const dataBR = v => v ? new Date(v).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' }) : '–';
   const css2 = `.side-foot .r{flex-wrap:wrap}.side-foot .lg-acoes{margin-left:auto;display:inline-flex;gap:10px}
@@ -19949,6 +19949,7 @@ Object.keys(INT_POS).forEach(t => { const r0 = RENDER[t]; if (!r0) return; RENDE
   const RAZAO = 1.45;
   const alt = el => { const c = el.firstElementChild || el; if (!c) return 0; const r = c.getBoundingClientRect(); return r.height; };
   function confere() {
+    const sx = scrollX, sy = scrollY;   // v350: medir mexe na altura da página e o navegador puxava a rolagem para cima
     document.querySelectorAll('.np-g.np-split').forEach(g => {
       if (!g.offsetParent) return;
       const sl = [...g.children].filter(x => x.offsetParent !== null || x.classList.contains('np-slot'));
@@ -19959,6 +19960,7 @@ Object.keys(INT_POS).forEach(t => { const r0 = RENDER[t]; if (!r0) return; RENDE
       const uma = a > 0 && b > 0 && Math.max(a, b) / Math.min(a, b) > RAZAO;
       if (uma) g.classList.add('np-uma'); else if (tinha && !uma) g.classList.remove('np-uma');
     });
+    if (scrollY !== sy || scrollX !== sx) window.scrollTo({ left: sx, top: sy, behavior: 'instant' });
   }
   let t = 0; const agenda = () => { clearTimeout(t); t = setTimeout(confere, 120); };
   window.npConfere = confere;
