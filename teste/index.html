@@ -2419,6 +2419,15 @@ html[data-secmenu="topo"] [data-nav]{scroll-margin-top:115px}
 .np-g.np-split.np-uma { grid-template-columns: minmax(0, 1fr) !important; }
 .np-g.np-split.np-medir { align-items: start !important; }
 .np-g.np-split.np-medir > .np-slot > * { height: auto !important; min-height: 0 !important; }
+
+/* v346 Novo B: cabeçalho das caixas é claro, então os controles dele usam as cores normais */
+html[data-lb="b"] .panel > .row:first-child:has(h2) .seg button:not([aria-pressed="true"]){background:var(--panel);color:var(--muted);border-color:var(--line)}
+html[data-lb="b"] .panel > .row:first-child:has(h2) .seg button:not([aria-pressed="true"]):hover{border-color:#F0A46B;color:var(--ink)}
+html[data-lb="b"] .panel > :first-child .ibtn{border-color:var(--line);color:var(--muted)}
+html[data-lb="b"] .panel > .row:first-child:has(h2) .btn.ghost:not(.cols-menu *){color:var(--ink);border-color:var(--line)}
+html[data-lb="b"] .panel > .row:first-child:has(h2) .btn.ghost:not(.cols-menu *):hover{border-color:#F0A46B}
+html[data-lb="b"] .panel > .row:first-child:has(h2) :is(.hint, .sub, label.inline, label.check, .src):not(.cols-menu *){color:var(--muted)}
+html[data-lb="b"] .panel > .row:first-child:has(h2) a:not(.cols-menu *){color:var(--accent)}
 </style>
 
 
@@ -2509,7 +2518,7 @@ html[data-secmenu="topo"] [data-nav]{scroll-margin-top:115px}
     </div>
     <div class="nav-mobile-sub" id="navMobileSub"></div>
   </div>
-  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 345</div></div>
+  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 346</div></div>
 </nav>
 <div class="sino-pop" id="sino-pop" role="dialog" aria-label="Atualizações das bases" hidden></div>
 <div class="sino-pop" id="pess-pop" role="dialog" aria-label="Seus avisos" hidden></div>
@@ -4394,7 +4403,7 @@ html[data-secmenu="topo"] [data-nav]{scroll-margin-top:115px}
   };
   // ---------- quem está vendo: cada pessoa é dona do próprio painel ----------
   let sessao = null;
-  const user = { isOwner: async () => true, canEdit: async () => true, id: async () => uid, me: async () => ({ id: uid, name: (sessao && sessao.user && (sessao.user.user_metadata && sessao.user.user_metadata.nome || sessao.user.email || '').split('@')[0]) || '' }), profiles: async ids => { const out = {}; if (!ids || !ids.length) return out; const { data } = await sb.from('perfis').select('id,nome').in('id', ids); (data || []).forEach(r => { out[r.id] = { id: r.id, name: r.nome || '' }; }); return out; } };
+  const user = { isOwner: async () => true, canEdit: async () => true, id: async () => uid, me: async () => ({ id: uid, name: (sessao && sessao.user && (sessao.user.user_metadata && (sessao.user.user_metadata.nome || sessao.user.user_metadata.full_name || sessao.user.user_metadata.name) || sessao.user.email || '').split('@')[0]) || '' }), profiles: async ids => { const out = {}; if (!ids || !ids.length) return out; const { data } = await sb.from('perfis').select('id,nome').in('id', ids); (data || []).forEach(r => { out[r.id] = { id: r.id, name: r.nome || '' }; }); return out; } };
   // ---------- tela de entrada: landing "Jogo da Vida (Real)" com o login ----------
   const ROLETA = (w, n) => { const c = ['#3FB8A6', '#F2B544', '#E8735A', '#5B9BE6', '#9B87E0'], s = 289.03 / n; let g = ''; for (let i = 0; i < n; i++) g += `<circle cx="60" cy="60" r="46" fill="none" stroke="${c[i % 5]}" stroke-width="${w}" stroke-dasharray="${s.toFixed(1)} ${(289.03 - s).toFixed(1)}" stroke-dashoffset="${(-s * i).toFixed(1)}"/>`; return `<g transform="rotate(-90 60 60)">${g}</g>`; };
   const CARRO = `<rect x="0" y="22" width="64" height="30" rx="12" fill="#E8735A"/><rect x="10" y="12" width="40" height="18" rx="8" fill="#E8735A"/><circle cx="22" cy="10" r="7" fill="#5B9BE6"/><rect x="18" y="14" width="8" height="12" rx="3" fill="#5B9BE6"/><circle cx="40" cy="10" r="7" fill="#F2B544"/><rect x="36" y="14" width="8" height="12" rx="3" fill="#F2B544"/><circle cx="15" cy="54" r="8" fill="#0E1A2B"/><circle cx="50" cy="54" r="8" fill="#0E1A2B"/>`;
@@ -4424,6 +4433,9 @@ html[data-secmenu="topo"] [data-nav]{scroll-margin-top:115px}
   #lg-ov .lnk{all:unset;cursor:pointer;font-size:13px;font-weight:700;color:#B5602A} #lg-ov .lnk:hover{text-decoration:underline}
   #lg-ov .pri{all:unset;min-height:52px;text-align:center;border-radius:999px;background:#F0A46B;color:#14202F;font:800 17px 'Plus Jakarta Sans',sans-serif;cursor:pointer}
   #lg-ov .pri:hover{background:#F5B583} #lg-ov .pri:disabled{opacity:.6;cursor:wait} #lg-ov .pri:focus-visible{outline:2px solid #14202F;outline-offset:2px}
+  #lg-ov .gg{all:unset;box-sizing:border-box;min-height:52px;display:flex;align-items:center;justify-content:center;gap:12px;border:1.5px solid #C9D1DA;border-radius:999px;background:#fff;color:#14202F;font:700 16px 'Plus Jakarta Sans',sans-serif;cursor:pointer}
+  #lg-ov .gg:hover{background:#F6F8FA;border-color:#9AA7B5} #lg-ov .gg:focus-visible{outline:2px solid #B5602A;outline-offset:2px} #lg-ov .gg:disabled{opacity:.6;cursor:wait}
+  #lg-ov .ou{display:flex;align-items:center;gap:12px;font-size:13px;color:#6B7785} #lg-ov .ou:before,#lg-ov .ou:after{content:'';flex:1;height:1px;background:#E3E7EC}
   #lg-ov .pe{border-top:1px solid #E3E7EC;padding-top:16px;text-align:center;font-size:15px;color:#4A5868}
   #lg-ov .msg{font-size:14px;min-height:1em;margin:0} #lg-ov .msg.err{color:#B42318} #lg-ov .msg.ok{color:#15803d}
   #lg-ov .tab2{background:#13243A;padding:72px 0} #lg-ov .tab2 .wrap,#lg-ov .como{display:flex;flex-direction:column;gap:28px}
@@ -4465,22 +4477,28 @@ html[data-secmenu="topo"] [data-nav]{scroll-margin-top:115px}
             <text x="204" y="36" font-family="Plus Jakarta Sans,sans-serif" font-size="15" font-weight="700" fill="#D5DDE7">No tabuleiro, a roleta decide.</text><text x="204" y="58" font-family="Plus Jakarta Sans,sans-serif" font-size="15" font-weight="500" fill="#A9B6C8">Aqui, quem decide é você, com números.</text></g>
         </svg></div></div></section>
       <section class="wrap como"><div class="cx" style="gap:10px"><p class="kick">COMO SE JOGA</p><h3 class="t dsp">Três jogadas para começar</h3></div>
-        <div class="pss">${passo(1, '#3FB8A6', 'Crie seu pino', 'Conta com e-mail e senha. Seus dados ficam só com você.')}${passo(2, '#F2B544', 'Escolha suas casas', 'Ative só os módulos que fazem sentido: Financeiro, Viagens, Trabalho e Bens.')}${passo(3, '#E8735A', 'Mova o pino todo mês', 'Feche o mês, compare com o plano e ajuste a rota até a linha de chegada.')}</div>
+        <div class="pss">${passo(1, '#3FB8A6', 'Crie seu pino', 'Conta com Google ou com e-mail e senha. Seus dados ficam só com você.')}${passo(2, '#F2B544', 'Escolha suas casas', 'Ative só os módulos que fazem sentido: Financeiro, Viagens, Trabalho e Bens.')}${passo(3, '#E8735A', 'Mova o pino todo mês', 'Feche o mês, compare com o plano e ajuste a rota até a linha de chegada.')}</div>
         <div class="cta dsp"><span>Pronto para a primeira jogada?</span><button type="button" data-m="criar" data-topo="1">Criar minha conta</button></div></section>
-      <footer><div class="wrap"><span>Jogo da Vida (Real) · ferramenta de planejamento pessoal, não é recomendação de investimento.</span></div></footer>`;
+      <footer><div class="wrap"><span>Jogo da Vida (Real) · ferramenta de planejamento pessoal, não é recomendação de investimento.</span><a href="privacidade.html">Política de privacidade</a></div></footer>`;
       const card = ov.querySelector('#lg-card');
       let modo = 'entrar';
       const pinta = () => {
         const tit = modo === 'entrar' ? 'Sua vez de jogar' : modo === 'criar' ? 'Comece a jogar' : 'Esqueci a senha';
-        const sub = modo === 'entrar' ? 'Entre com o e-mail da sua conta.' : modo === 'criar' ? 'Crie sua conta. Você começa com um tabuleiro vazio, só seu.' : 'Digite seu e-mail para receber o link de nova senha.';
+        const sub = modo === 'entrar' ? 'Entre com Google ou com o e-mail da sua conta.' : modo === 'criar' ? 'Crie sua conta. Você começa com um tabuleiro vazio, só seu.' : 'Digite seu e-mail para receber o link de nova senha.';
         card.innerHTML = `<div class="tabs"><button type="button" data-m="entrar" aria-pressed="${modo !== 'criar'}">Entrar</button><button type="button" data-m="criar" aria-pressed="${modo === 'criar'}">Começar a jogar</button></div>
         <form autocomplete="on"><div><h2 class="dsp">${tit}</h2><p class="sub">${sub}</p></div>
+        ${modo !== 'esqueci' ? `<button type="button" class="gg" data-g="1"><svg width="20" height="20" viewBox="0 0 48 48" aria-hidden="true"><path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3C33.7 32.7 29.2 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.8 1.2 7.9 3l5.7-5.7C34 6.1 29.3 4 24 4 13 4 4 13 4 24s9 20 20 20 20-9 20-20c0-1.3-.1-2.4-.4-3.5z"/><path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.7 15.1 19 12 24 12c3.1 0 5.8 1.2 7.9 3l5.7-5.7C34 6.1 29.3 4 24 4 16.3 4 9.7 8.3 6.3 14.7z"/><path fill="#4CAF50" d="M24 44c5.2 0 9.9-2 13.4-5.2l-6.2-5.2C29.2 35.1 26.7 36 24 36c-5.2 0-9.6-3.3-11.3-8l-6.5 5C9.5 39.6 16.2 44 24 44z"/><path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3c-.8 2.2-2.2 4.2-4.1 5.6l6.2 5.2C37 39.2 44 34 44 24c0-1.3-.1-2.4-.4-3.5z"/></svg><span>${modo === 'criar' ? 'Criar conta com Google' : 'Entrar com Google'}</span></button><div class="ou">ou com e-mail</div>` : ''}
         ${modo === 'criar' ? '<div class="fld"><label for="lg-nome">Seu nome</label><input id="lg-nome" name="nome" autocomplete="given-name"></div>' : ''}
         <div class="fld"><label for="lg-email">E-mail</label><input id="lg-email" name="email" type="email" required autocomplete="email" placeholder="voce@email.com"></div>
         ${modo !== 'esqueci' ? `<div class="fld"><div class="rw"><label for="lg-senha">Senha</label>${modo === 'entrar' ? '<button type="button" class="lnk" data-m="esqueci">Esqueci a senha</button>' : ''}</div><input id="lg-senha" name="senha" type="password" required minlength="8" autocomplete="${modo === 'criar' ? 'new-password' : 'current-password'}"${modo === 'criar' ? ' placeholder="mínimo 8 caracteres"' : ''}></div>` : ''}
         <button class="pri" type="submit">${modo === 'entrar' ? 'Entrar no jogo' : modo === 'criar' ? 'Criar conta' : 'Enviar link'}</button><p class="msg" role="status"></p></form>
         <div class="pe">${modo === 'entrar' ? 'Primeira vez aqui? <button type="button" class="lnk" style="font-size:15px" data-m="criar">Crie sua conta</button>' : '<button type="button" class="lnk" style="font-size:15px" data-m="entrar">Já tenho conta</button>'}</div>`; };
       pinta(); document.body.appendChild(ov);
+      { const q = new URLSearchParams((location.hash || '').replace(/^#/, '') + '&' + location.search.replace(/^\?/, '')), ed = q.get('error_description') || q.get('error');
+        if (ed) { const m = card.querySelector('.msg'); if (m) { m.className = 'msg err'; m.textContent = 'O login com Google não foi concluído: ' + ed.replace(/\+/g, ' '); } history.replaceState(null, '', location.pathname); } }
+      ov.addEventListener('click', async e => { const g = e.target.closest('[data-g]'); if (!g) return; const m = card.querySelector('.msg'); g.disabled = true; if (m) { m.className = 'msg'; m.textContent = 'abrindo o Google…'; }
+        const { error } = await sb.auth.signInWithOAuth({ provider: 'google', options: { redirectTo: location.origin + location.pathname, queryParams: { prompt: 'select_account' } } });
+        if (error) { g.disabled = false; if (m) { m.className = 'msg err'; m.textContent = /not enabled|provider/i.test(error.message) ? 'O login com Google ainda não está ativo. Use e-mail e senha por enquanto.' : 'Não deu certo: ' + error.message; } } });
       ov.addEventListener('click', e => { const a = e.target.closest('[data-m]'); if (!a) return; modo = a.dataset.m; pinta(); if (a.dataset.topo) ov.scrollTo({ top: 0, behavior: 'smooth' }); const i = card.querySelector('input'); if (i && a.dataset.topo) setTimeout(() => i.focus(), 300); });
       const sair = s => { ov.remove(); document.title = tituloAntes; resolve(s); };
       ov.addEventListener('submit', async e => { e.preventDefault(); const f = e.target, m = f.querySelector('.msg'), bt = f.querySelector('.pri'); m.className = 'msg'; m.textContent = 'aguarde…'; bt.disabled = true;
@@ -4498,7 +4516,7 @@ html[data-secmenu="topo"] [data-nav]{scroll-margin-top:115px}
     return new Promise(resolve => { const { data } = sb.auth.onAuthStateChange(async (ev) => { if (ev !== 'PASSWORD_RECOVERY') return; const s = prompt('Digite a nova senha (mínimo 8 caracteres):'); if (s && s.length >= 8) { const { error } = await sb.auth.updateUser({ password: s }); alert(error ? 'Não deu para trocar a senha: ' + error.message : 'Senha trocada.'); } }); resolve(data); });
   }
   // ---------- rodapé: compartilhar, administração e sair ----------
-  const SITE_V = 231;
+  const SITE_V = 232;
   const escH = v => String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const dataBR = v => v ? new Date(v).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' }) : '–';
   const css2 = `.side-foot .r{flex-wrap:wrap}.side-foot .lg-acoes{margin-left:auto;display:inline-flex;gap:10px}
