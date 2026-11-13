@@ -4554,7 +4554,7 @@ html[data-lb="b"] .block-title .desc{font-size:14px;color:var(--muted);margin-to
     return new Promise(resolve => { const { data } = sb.auth.onAuthStateChange(async (ev) => { if (ev !== 'PASSWORD_RECOVERY') return; const s = prompt('Digite a nova senha (mínimo 8 caracteres):'); if (s && s.length >= 8) { const { error } = await sb.auth.updateUser({ password: s }); alert(error ? 'Não deu para trocar a senha: ' + error.message : 'Senha trocada.'); } }); resolve(data); });
   }
   // ---------- rodapé: compartilhar, administração e sair ----------
-  const SITE_V = 246;
+  const SITE_V = 247;
   const escH = v => String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const dataBR = v => v ? new Date(v).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' }) : '–';
   const css2 = `.side-foot .r{flex-wrap:wrap}.side-foot .lg-acoes{margin-left:auto;display:inline-flex;gap:10px}
@@ -11638,6 +11638,7 @@ function chart(el, roEl, n, series, fmtY, xLabel, startCursor, fmtR = fm) {
   let lo = Infinity, hi = -Infinity;
   series.forEach(s => s.v.forEach(v => { if (v == null || !isFinite(v)) return; lo = Math.min(lo, v); hi = Math.max(hi, v); }));
   if (!isFinite(lo)) { lo = 0; hi = 1; }
+  if (series.some(s => s.bars)) { lo = Math.min(lo, 0); hi = Math.max(hi, 0); }
   if (lo > 0 && lo < hi * 0.45) lo = 0;
   if (hi === lo) { hi += 1; lo -= 1; }
   const span = hi - lo, step0 = Math.pow(10, Math.floor(Math.log10(span / 4)));
@@ -11671,6 +11672,7 @@ function chart(el, roEl, n, series, fmtY, xLabel, startCursor, fmtR = fm) {
   }
   const zero = y0 < 0 && y1 > 0 ? `<line class="zero" x1="${pl}" x2="${W - pr}" y1="${Y(0)}" y2="${Y(0)}"/>` : '';
   const paths = series.map((s, si) => {
+    if (s.bars) { const bw = Math.max(1, Math.min(18, pxStep * 0.72)), b0 = Y(Math.max(y0, Math.min(y1, 0))); return s.v.map((v, j) => v == null || !isFinite(v) ? '' : `<rect x="${(X(j) - bw / 2).toFixed(1)}" y="${Math.min(b0, Y(v)).toFixed(1)}" width="${bw.toFixed(1)}" height="${Math.max(0.5, Math.abs(Y(v) - b0)).toFixed(1)}" rx="${bw > 6 ? 1.5 : 0}" fill="${v < 0 ? 'var(--bad, #C62828)' : s.c}"/>`).join(''); }
     if (s.dots) return s.v.map((v, j) => v == null ? '' : `<circle cx="${X(j).toFixed(1)}" cy="${Y(v).toFixed(1)}" r="4.5" fill="${s.c}" stroke="var(--panel)" stroke-width="1.5"/>`).join('');
     let d = '', pen = false;
     s.v.forEach((v, j) => { if (v == null || !isFinite(v)) { pen = false; return; } d += (pen ? 'L' : 'M') + X(j).toFixed(1) + ' ' + Y(v).toFixed(1); pen = true; });
@@ -12078,7 +12080,7 @@ function renderCenarios() {
   const ser = [{ name: 'Patrimônio líquido', c: cenCor(cen), v: p.pat, w: 2.6 }, { name: 'Investimentos', c: 'var(--s3)', v: p.inv }, { name: 'Bens', c: 'var(--s5)', v: p.bens, dash: true }, { name: 'Dívidas', c: 'var(--bad)', v: p.divida.map(v => -v), dash: true }];
   legend($('lg-c'), ser);
   chart($('ch-c'), $('ro-c'), H + 1, ser, k, lab);
-  chart($('ch-c2'), $('ro-c2'), H, [{ name: 'Sobra', c: cenCor(cen), v: p.sobra }], k, t => lab(t + 1), 0);
+  chart($('ch-c2'), $('ro-c2'), H, [{ name: 'Sobra', c: cenCor(cen), v: p.sobra, bars: true }], k, t => lab(t + 1), 0);
   renderPagamento(cen, p, r1);
   renderReb(cen);
 }
@@ -19266,7 +19268,7 @@ function jorSimDb(real) {
     }
   }
   document.addEventListener('click', e => {
-    const c = e.target.closest('[data-npcen]'); if (c) { state.destaque = c.dataset.npcen; save(); renderTab(); return; }
+    const c = e.target.closest('[data-npcen]'); if (c) { state.destaque = c.dataset.npcen; state.cenAtivo = c.dataset.npcen; save(); try { if (typeof buildCenarios === 'function') buildCenarios(); } catch (er) { console.error(er); } renderTab(); return; }
     if (e.target.closest('[data-npcennovo]')) { const b = $$('cen-novo'); if (b) b.click(); }
   });
 
