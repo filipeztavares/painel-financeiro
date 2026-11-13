@@ -2379,6 +2379,7 @@ html[data-lb="a"] #pt-hd:not(.atual) #pt-lay button[aria-pressed="true"]{backgro
 html[data-lb="a"] #pt-hd:not(.atual) #pt-q{background:rgba(255,255,255,.5);border-color:#0E1A2B;color:#0E1A2B}
 html[data-lb="b"] #pt-hd:not(.atual){border-top:0;padding:0 0 14px;border-bottom:3px solid var(--m);margin:0 0 18px}
 html[data-lb] #pt-hd .eb{font-family:var(--f-ui)}
+.ck-acoes + .hint, .btns + .hint, .fe-acoes + .hint, .sc-acoes + .hint { margin-top: 12px; }
 </style>
 
 
@@ -2469,7 +2470,7 @@ html[data-lb] #pt-hd .eb{font-family:var(--f-ui)}
     </div>
     <div class="nav-mobile-sub" id="navMobileSub"></div>
   </div>
-  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 336</div></div>
+  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 337</div></div>
 </nav>
 <div class="sino-pop" id="sino-pop" role="dialog" aria-label="Atualizações das bases" hidden></div>
 <div class="sino-pop" id="pess-pop" role="dialog" aria-label="Seus avisos" hidden></div>
@@ -4443,7 +4444,7 @@ html[data-lb] #pt-hd .eb{font-family:var(--f-ui)}
     return new Promise(resolve => { const { data } = sb.auth.onAuthStateChange(async (ev) => { if (ev !== 'PASSWORD_RECOVERY') return; const s = prompt('Digite a nova senha (mínimo 8 caracteres):'); if (s && s.length >= 8) { const { error } = await sb.auth.updateUser({ password: s }); alert(error ? 'Não deu para trocar a senha: ' + error.message : 'Senha trocada.'); } }); resolve(data); });
   }
   // ---------- rodapé: compartilhar, administração e sair ----------
-  const SITE_V = 222;
+  const SITE_V = 223;
   const escH = v => String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const dataBR = v => v ? new Date(v).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' }) : '–';
   const css2 = `.side-foot .r{flex-wrap:wrap}.side-foot .lg-acoes{margin-left:auto;display:inline-flex;gap:10px}
@@ -15913,7 +15914,8 @@ const modLiberado = m => m.fixo || !modCfg || modCfg.liberados.includes(m.id);
 const modEscolhido = m => m.fixo || !((state.app || {}).off || []).includes(m.id);
 const modVisivel = m => modLiberado(m) && modEscolhido(m);
 function aplicarMod() {
-  document.querySelectorAll('.nav [data-mod]').forEach(el => el.classList.toggle('fora-mod', el.dataset.mod !== 'all' && el.dataset.mod !== modAtual));
+  document.querySelectorAll('.nav [data-mod]').forEach(el => el.classList.toggle('fora-mod', el.dataset.mod !== 'all' && (tab === 'modulos' || el.dataset.mod !== modAtual)));
+  document.querySelectorAll('.nav-tools').forEach(el => el.classList.toggle('fora-mod', tab === 'modulos'));
   const mm = MODS.find(m => m.id === modAtual) || MODS.find(m => m.id === 'fin'), bx = $('nav-modbox');
   const naHome = tab === 'modulos', icH = naHome && document.querySelector('#p-modulos .block-title .num');
   if (bx) { bx.style.setProperty('--mcn', naHome ? '#F0A46B' : mm.corNav); $('nav-mod-ic').innerHTML = icH ? icH.innerHTML : MOD_SVG[mm.id]; }
