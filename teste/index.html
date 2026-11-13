@@ -2455,6 +2455,11 @@ html[data-lb="b"] .block-title h1{font-family:var(--f-head);font-size:34px;font-
 html[data-lb="b"] .block-title h1::before{content:attr(data-lbmodn);font:700 12px var(--f-ui);letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin-bottom:12px}
 html[data-lb="b"] .block-title .desc{font-size:14px;color:var(--muted);margin-top:6px}
 @media (max-width:900px){html[data-lb="b"] .block-title h1{font-size:26px}}
+
+/* v355: marca Real / Simulação na linha do tempo */
+.tl-uso{display:inline-block;margin-left:8px;padding:1px 8px;border-radius:999px;font:700 10.5px/1.5 var(--f-ui, inherit);letter-spacing:.02em;vertical-align:1px;white-space:nowrap}
+.tl-uso.real{background:color-mix(in srgb,var(--pos, #2E8B57) 16%,transparent);color:var(--pos, #2E8B57)}
+.tl-uso.sim{background:transparent;color:var(--muted);border:1px dashed var(--line)}
 </style>
 
 
@@ -2592,8 +2597,8 @@ html[data-lb="b"] .block-title .desc{font-size:14px;color:var(--muted);margin-to
     </section>
     <div class="md-grid" id="md-grid"></div>
     <section data-nav="Linha do tempo" class="panel">
-      <h2>Linha do tempo da vida</h2>
-      <p class="sub">O que cada módulo planeja, no tempo. Barra cheia: Projeção real; tracejada: Só simulação. Clique no nome para abrir o item.</p>
+      <div class="row"><h2>Linha do tempo da vida</h2><div class="seg" id="md-tl-f" role="group" aria-label="O que mostrar na linha do tempo"><button type="button" data-mdtlf="tudo">Tudo</button><button type="button" data-mdtlf="real">Só o real</button></div></div>
+      <p class="sub">O que cada módulo planeja, no tempo. Barra cheia e marca <b>Real</b>: está na Projeção real; tracejada e marca <b>Simulação</b>: só entra nos cenários. Clique no nome para abrir o item.</p>
       <div id="md-tl"></div>
     </section>
     <section data-nav="Patrimônio projetado" class="panel chart">
@@ -4549,7 +4554,7 @@ html[data-lb="b"] .block-title .desc{font-size:14px;color:var(--muted);margin-to
     return new Promise(resolve => { const { data } = sb.auth.onAuthStateChange(async (ev) => { if (ev !== 'PASSWORD_RECOVERY') return; const s = prompt('Digite a nova senha (mínimo 8 caracteres):'); if (s && s.length >= 8) { const { error } = await sb.auth.updateUser({ password: s }); alert(error ? 'Não deu para trocar a senha: ' + error.message : 'Senha trocada.'); } }); resolve(data); });
   }
   // ---------- rodapé: compartilhar, administração e sair ----------
-  const SITE_V = 243;
+  const SITE_V = 244;
   const escH = v => String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const dataBR = v => v ? new Date(v).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' }) : '–';
   const css2 = `.side-foot .r{flex-wrap:wrap}.side-foot .lg-acoes{margin-left:auto;display:inline-flex;gap:10px}
@@ -16352,6 +16357,11 @@ function impactos(its) {
   its.forEach(x => { if (x.bloq || !x.ini) return; const alt = calcPlano(new Set([(x.uso === 'real' ? '-' : '') + x.id])); out[x.id] = { alt, ef: i => x.uso === 'real' ? (base.inv[i] ?? 0) - (alt.inv[i] ?? 0) : (alt.inv[i] ?? 0) - (base.inv[i] ?? 0) }; });
   return out;
 }
+/* v355: linha do tempo dos módulos com filtro Tudo / Só o real (state.plan.mdTlReal; padrão: tudo) */
+function mdTlPinta() { const so = !!(state.plan && state.plan.mdTlReal), its = itensVisiveis().filter(x => !so || x.uso !== 'sim');
+  document.querySelectorAll('#md-tl-f button').forEach(b => b.setAttribute('aria-pressed', String((b.dataset.mdtlf === 'real') === so)));
+  $('md-tl').innerHTML = its.length || !so ? tlHtml(its) : '<p class="tl-vazio">Nenhum item real com data ainda. Clique em Tudo para ver também as simulações.</p>'; }
+document.addEventListener('click', e => { const b = e.target.closest && e.target.closest('[data-mdtlf]'); if (!b) return; state.plan.mdTlReal = b.dataset.mdtlf === 'real'; save(); try { mdTlPinta(); } catch (er) { console.error(er); } });
 function tlHtml(its) {
   const ev = its.filter(x => x.ini && /^\d{4}-\d{2}$/.test(x.ini)).map(x => { const a = mIndex(x.ini); return Object.assign({ a, b: a + (x.meses || 0) }, x); });
   if (!ev.length) return '<p class="tl-vazio">Nada no tempo ainda. Cadastre compras em Bens e compromissos, eventos de stock options em Carreira ou eventos no Meu plano.</p>';
@@ -16360,14 +16370,15 @@ function tlHtml(its) {
   const W = a1 - a0, pc = i => Math.max(0, Math.min(100, (i - a0) / W * 100)), anos = W / 12, passo = anos > 16 ? 4 : anos > 8 ? 2 : 1;
   const ticks = []; for (let i = a0; i <= a1; i += 12 * passo) ticks.push(`<span style="left:${pc(i)}%">${mKey(i).slice(0, 4)}</span>`);
   const cor = id => (MODS.find(m => m.id === id) || {}).cor || 'var(--s1)', ch = x => x.chance < 100 ? `<span class="tl-ch">${x.chance}%</span>` : '';
+  const uso = x => x.uso === 'sim' ? '<span class="tl-uso sim">Simulação</span>' : '<span class="tl-uso real">Real</span>';
   const sub = x => `${esc((MODS.find(m => m.id === x.mod) || {}).nome || '')} · ${esc(x.sub)} · ${mLabel(x.a)}${x.meses ? ' a ' + mLabel(x.b) : ''}`;
   ev.sort((p, q) => p.a - q.a || p.nome.localeCompare(q.nome));
   const larga = `<div class="tl tl-wide" style="--tly:${(12 * passo / W * 100).toFixed(4)}%"><div class="tl-h"><span></span><div class="tl-ax">${ticks.join('')}</div></div>` + ev.map(x => {
     const sm = x.uso === 'sim' ? ' sim' : '', st = `--mc:${cor(x.mod)}`;
-    return `<div class="tl-r"><div class="tl-n"><a href="#" data-lmtab="${x.tab}" data-lmsec="${esc(x.sec || '')}" data-lmitem="${esc(x.id || '')}">${esc(x.nome)}</a>${ch(x)}<small>${sub(x)} · ${esc(x.resumo)}</small></div><div class="tl-b">${x.b > x.a ? `<span class="tl-bar${sm}" style="${st};left:${pc(x.a)}%;width:${Math.max(0.6, pc(x.b) - pc(x.a))}%"></span>` : ''}<span class="tl-dot${sm}" style="${st};left:${pc(x.a)}%" title="${esc(x.nome)}: ${mLabel(x.a)}"></span>${''}</div></div>`;
+    return `<div class="tl-r"><div class="tl-n"><a href="#" data-lmtab="${x.tab}" data-lmsec="${esc(x.sec || '')}" data-lmitem="${esc(x.id || '')}">${esc(x.nome)}</a>${uso(x)}${ch(x)}<small>${sub(x)} · ${esc(x.resumo)}</small></div><div class="tl-b">${x.b > x.a ? `<span class="tl-bar${sm}" style="${st};left:${pc(x.a)}%;width:${Math.max(0.6, pc(x.b) - pc(x.a))}%"></span>` : ''}<span class="tl-dot${sm}" style="${st};left:${pc(x.a)}%" title="${esc(x.nome)}: ${mLabel(x.a)}"></span>${''}</div></div>`;
   }).join('') + `<span class="tl-hoje" style="left:calc(var(--tlw) + 12px + (100% - var(--tlw) - 12px) * ${(pc(HOJE_IDX) / 100).toFixed(4)})"><span>hoje</span></span></div>`;
   const porAno = {}; ev.forEach(x => { const y = x.a < HOJE_IDX - calMonth(HOJE_IDX) ? 'Em andamento' : mKey(x.a).slice(0, 4); (porAno[y] = porAno[y] || []).push(x); });
-  const lista = `<div class="tl-list">${Object.keys(porAno).sort((p, q) => p === 'Em andamento' ? -1 : q === 'Em andamento' ? 1 : p.localeCompare(q)).map(y => `<div class="tl-ano">${y}</div>` + porAno[y].map(x => `<div class="tl-li"><i class="${x.uso === 'sim' ? 'sim' : ''}" style="--mc:${cor(x.mod)}"></i><span class="q">${mLabel(x.a)}</span><span><a href="#" data-lmtab="${x.tab}" data-lmsec="${esc(x.sec || '')}" data-lmitem="${esc(x.id || '')}">${esc(x.nome)}</a>${ch(x)}<small>${esc(x.resumo)}${x.uso === 'sim' ? ' · só simulação' : ''}</small></span></div>`).join('')).join('')}</div>`;
+  const lista = `<div class="tl-list">${Object.keys(porAno).sort((p, q) => p === 'Em andamento' ? -1 : q === 'Em andamento' ? 1 : p.localeCompare(q)).map(y => `<div class="tl-ano">${y}</div>` + porAno[y].map(x => `<div class="tl-li"><i class="${x.uso === 'sim' ? 'sim' : ''}" style="--mc:${cor(x.mod)}"></i><span class="q">${mLabel(x.a)}</span><span><a href="#" data-lmtab="${x.tab}" data-lmsec="${esc(x.sec || '')}" data-lmitem="${esc(x.id || '')}">${esc(x.nome)}</a>${uso(x)}${ch(x)}<small>${esc(x.resumo)}</small></span></div>`).join('')).join('')}</div>`;
   return larga + lista;
 }
 function renderMdChart() {
@@ -16659,7 +16670,7 @@ document.addEventListener('click', e => { const b = e.target.closest('[data-jgab
 function renderModulos() {
   try { renderCkSem(); } catch (er) { console.error(er); }
   try { renderJogo(); renderMissoes(); renderTrilha(); } catch (er) { console.error(er); }
-  setTimeout(() => { if (tab !== 'modulos') return; try { $('md-tl').innerHTML = tlHtml(itensVisiveis()); renderMdChart(); } catch (er) { console.error(er); } }, 0);
+  setTimeout(() => { if (tab !== 'modulos') return; try { mdTlPinta(); renderMdChart(); } catch (er) { console.error(er); } }, 0);
   const vis = MODS.filter(m => modLiberado(m) && (m.breve || modEscolhido(m)));
   $('md-grid').innerHTML = vis.map(m => m.breve
     ? `<div class="md-card breve" style="--mc:${m.corNav}" aria-disabled="true"><div class="md-img">${MOD_SVG[m.id]}</div><span class="chip">Em breve</span><h3>${esc(m.nome)}</h3><p>${esc(m.desc)}</p><div class="md-res">Ainda em construção</div></div>`
