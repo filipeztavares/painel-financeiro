@@ -2444,6 +2444,9 @@ html select.cen-pick.cen-pick { font-size: 13px !important; font-weight: 600 !im
 html select.cen-pick.cen-pick:hover, html select.cen-pick.cen-pick:focus-visible { border-color: var(--accent, #A8582A) !important; outline: none; }
 .cen-pick-l { display: flex !important; align-items: center; gap: 0; flex-direction: row !important; }
 .cen-pick-l select.cen-pick { margin-left: 10px; flex: 0 1 auto; }
+
+/* v352: no cabeçalho das seções, título à esquerda e todos os controles juntos à direita */
+.panel > .row:first-child:has(> h2) > h2 { margin-right: auto; }
 </style>
 
 
@@ -4538,7 +4541,7 @@ html select.cen-pick.cen-pick:hover, html select.cen-pick.cen-pick:focus-visible
     return new Promise(resolve => { const { data } = sb.auth.onAuthStateChange(async (ev) => { if (ev !== 'PASSWORD_RECOVERY') return; const s = prompt('Digite a nova senha (mínimo 8 caracteres):'); if (s && s.length >= 8) { const { error } = await sb.auth.updateUser({ password: s }); alert(error ? 'Não deu para trocar a senha: ' + error.message : 'Senha trocada.'); } }); resolve(data); });
   }
   // ---------- rodapé: compartilhar, administração e sair ----------
-  const SITE_V = 240;
+  const SITE_V = 241;
   const escH = v => String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const dataBR = v => v ? new Date(v).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' }) : '–';
   const css2 = `.side-foot .r{flex-wrap:wrap}.side-foot .lg-acoes{margin-left:auto;display:inline-flex;gap:10px}
