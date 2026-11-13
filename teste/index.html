@@ -2430,6 +2430,14 @@ html[data-lb="b"] .panel > .row:first-child:has(h2) :is(.hint, .sub, label.inlin
 html[data-lb="b"] .panel > .row:first-child:has(h2) a:not(.cols-menu *){color:var(--accent)}
 html[data-lb="b"] .sec-tog{border-color:var(--line);color:var(--muted)}
 html[data-lb="b"] .sec-tog:hover,html[data-lb="b"] .sec-tog:focus-visible{border-color:#F0A46B;color:var(--ink)}
+
+/* v347 premissas de cada cenário */
+.sc-premh { margin-top: 18px; }
+table.sc-prem td, table.sc-prem th { white-space: nowrap; }
+table.sc-prem th.sc-col i { display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: var(--c); margin-right: 6px; vertical-align: middle; }
+table.sc-prem td.sc-dif { font-weight: 700; color: var(--accent); background: color-mix(in srgb, #F0A46B 16%, transparent); }
+table.sc-prem tr.sc-res2 td { font-variant-numeric: tabular-nums; }
+table.sc-prem tr.sc-res2:nth-child(2) td { border-bottom: 2px solid var(--line); }
 </style>
 
 
@@ -2520,7 +2528,7 @@ html[data-lb="b"] .sec-tog:hover,html[data-lb="b"] .sec-tog:focus-visible{border
     </div>
     <div class="nav-mobile-sub" id="navMobileSub"></div>
   </div>
-  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 346</div></div>
+  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 347</div></div>
 </nav>
 <div class="sino-pop" id="sino-pop" role="dialog" aria-label="Atualizações das bases" hidden></div>
 <div class="sino-pop" id="pess-pop" role="dialog" aria-label="Seus avisos" hidden></div>
@@ -3473,6 +3481,9 @@ html[data-lb="b"] .sec-tog:hover,html[data-lb="b"] .sec-tog:focus-visible{border
       <div id="ch-sc" data-h="440"></div>
       <div class="readout" id="ro-sc"></div>
       <p class="sc-res" id="sc-res"></p>
+      <h3 class="orc-h sc-premh">Premissas de cada cenário</h3>
+      <div class="tscroll"><table id="tbl-scprem" class="sc-prem"></table></div>
+      <p class="hint">Em destaque, o que é diferente do Real. O rendimento é o acumulado dos próximos 12 meses, já líquido, como o Meu plano usa. Para mudar, abra o cenário em <a href="#" class="lm-ir" data-lmtab="cenarios" data-lmsec="">Premissas dos cenários</a>.</p>
     </section>
     <section data-nav="Decidir" class="panel">
       <h2>Decidir</h2>
@@ -4518,7 +4529,7 @@ html[data-lb="b"] .sec-tog:hover,html[data-lb="b"] .sec-tog:focus-visible{border
     return new Promise(resolve => { const { data } = sb.auth.onAuthStateChange(async (ev) => { if (ev !== 'PASSWORD_RECOVERY') return; const s = prompt('Digite a nova senha (mínimo 8 caracteres):'); if (s && s.length >= 8) { const { error } = await sb.auth.updateUser({ password: s }); alert(error ? 'Não deu para trocar a senha: ' + error.message : 'Senha trocada.'); } }); resolve(data); });
   }
   // ---------- rodapé: compartilhar, administração e sair ----------
-  const SITE_V = 233;
+  const SITE_V = 234;
   const escH = v => String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const dataBR = v => v ? new Date(v).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' }) : '–';
   const css2 = `.side-foot .r{flex-wrap:wrap}.side-foot .lg-acoes{margin-left:auto;display:inline-flex;gap:10px}
@@ -7710,6 +7721,33 @@ function renderSimCen(manter) {
     chart($('ch-sc'), $('ro-sc'), n, series, k, t => mLabel(st + t), 0);
   } else { $('ch-sc').innerHTML = '<p class="tl-vazio">Monte o Meu plano para ver a projeção.</p>'; $('lg-sc').innerHTML = ''; }
   $('sc-res').innerHTML = ord.filter(c => !(state.plan.scOcultos || []).includes(c.id)).map(c => `<b>${esc(c.nome)}</b>: ${k(pat(res.get(c.id), fimI))}`).join(' · ') + ` em ${mLabel(fimI)}.`;
+  // v347: premissas de cada cenário, lado a lado
+  try {
+    const PP = state.plan, csDe = c => ehCenReal(c) ? null : c;
+    const rend12 = c => { let f = 1; for (let i = st + 1; i <= st + 12; i++) f *= 1 + taxaPlanoMes(i, csDe(c)); return f - 1; };
+    const ppTxt = x => x ? `${x > 0 ? '+' : ''}${num(x)} p.p.` : '—';
+    const cart = c => { const cs = csDe(c);
+      if (cs && cs.manual !== '' && +cs.manual > 0) return 'taxa própria do cenário';
+      if (cs && cs.proprio) return 'carteira própria do cenário';
+      if (PP.rendModo === 'fixo') return 'taxa do Meu plano';
+      if (!cs && PP.rendModo === 'carteira') return 'carteira de hoje';
+      return 'carteira-alvo'; };
+    const cus = c => { if (ehCenReal(c)) return '—'; const o = cusPcts(c); return Object.keys(o).length ? Object.entries(o).map(([G, x]) => `${G} ${x > 0 ? '+' : ''}${num(x)}%`).join(', ') : '—'; };
+    const LIN = [
+      ['Rendimento líquido no ano', c => pct(rend12(c), 2) + ' a.a.', true],
+      ['Sobra média por mês (12 meses)', c => fm(sob(res.get(c.id))), true],
+      ['De onde vem o rendimento', cart],
+      ['Ajuste no CDI', c => ppTxt(ehCenReal(c) ? 0 : +((c.aj || {}).cdi) || 0)],
+      ['Ajuste no IPCA', c => ppTxt(ehCenReal(c) ? 0 : +((c.aj || {}).ipca) || 0)],
+      ['Renda extra por mês', c => !ehCenReal(c) && +c.extra ? fm(+c.extra) : '—'],
+      ['Aumento de custos', cus],
+      ['Custos mudam a partir de', c => !ehCenReal(c) && Object.keys(cusPcts(c)).length ? (/^\d{4}-\d{2}$/.test(c.custoDe || '') ? mLabel(mIndex(c.custoDe)) : 'desde já') : '—'],
+      ['Itens diferentes do Real', c => String(simDifs(c, its).length)]
+    ];
+    const rr = ord.find(c => ehCenReal(c)) || R;
+    $('tbl-scprem').innerHTML = `<thead><tr><th>Premissa</th>${ord.map(c => `<th class="sc-col${c.id === cen.id ? ' sc-cur' : ''}" style="--c:${corC(c)}"><i></i>${esc(c.nome)}${ehCenReal(c) ? ' (Real)' : ''}</th>`).join('')}</tr></thead><tbody>${LIN.map(([n, f, res2]) => { const base = f(rr);
+      return `<tr${res2 ? ' class="sc-res2"' : ''}><td class="name">${n}</td>${ord.map(c => { const t = f(c), dif = !ehCenReal(c) && t !== base; return `<td class="${c.id === cen.id ? 'sc-cur' : ''}${dif ? ' sc-dif' : ''}">${esc(t)}</td>`; }).join('')}</tr>`; }).join('')}</tbody>`;
+  } catch (e) { console.error(e); }
   // decidir
   const dif = simDifs(cen, its);
   $('sc-dec').innerHTML = real ? `<p>Este é o cenário <b>Real</b>: é o que Finanças usa no Meu plano, na Projeção e nos checkpoints. Para testar mudanças, abra outro cenário ou crie um novo.</p>`
