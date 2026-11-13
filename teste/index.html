@@ -699,6 +699,11 @@ tr.best td { background: var(--good-soft); }
 .compra .cent-ok { margin: 0; font-size: 12.5px; }
 .compra .cent-mm { display: flex; flex-direction: column; gap: 6px; border-top: 1px solid var(--line); padding-top: 10px; }
 .compra .cent-mm h4 { margin: 0; font-size: 13px; }
+.compra .amz-f { align-items: end; }
+.compra .amz-bt span { visibility: hidden; }
+.compra .amz-r { margin: 0; font-size: 12.5px; line-height: 1.5; }
+.compra .amz-l { display: flex; flex-direction: column; gap: 4px; font-size: 12.5px; }
+.compra .amz-it { display: flex; gap: 10px; align-items: center; justify-content: space-between; border: 1px solid var(--line); border-radius: 8px; padding: 6px 10px; }
 .compra .cent-lg { display: flex; gap: 14px; flex-wrap: wrap; align-items: center; font-size: 12px; }
 .compra .cent-lg i { display: inline-block; width: 10px; height: 10px; border-radius: 2px; margin-right: 5px; vertical-align: -1px; }
 .compra .cent-lg .cent-h { color: var(--muted); }
@@ -2584,7 +2589,7 @@ html[data-lb="b"] .block-title .desc{font-size:14px;color:var(--muted);margin-to
     </div>
     <div class="nav-mobile-sub" id="navMobileSub"></div>
   </div>
-  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 371</div></div>
+  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 372</div></div>
 </nav>
 <div class="sino-pop" id="sino-pop" role="dialog" aria-label="Atualizações das bases" hidden></div>
 <div class="sino-pop" id="pess-pop" role="dialog" aria-label="Seus avisos" hidden></div>
@@ -4588,7 +4593,7 @@ html[data-lb="b"] .block-title .desc{font-size:14px;color:var(--muted);margin-to
     return new Promise(resolve => { const { data } = sb.auth.onAuthStateChange(async (ev) => { if (ev !== 'PASSWORD_RECOVERY') return; const s = prompt('Digite a nova senha (mínimo 8 caracteres):'); if (s && s.length >= 8) { const { error } = await sb.auth.updateUser({ password: s }); alert(error ? 'Não deu para trocar a senha: ' + error.message : 'Senha trocada.'); } }); resolve(data); });
   }
   // ---------- rodapé: compartilhar, administração e sair ----------
-  const SITE_V = 260;
+  const SITE_V = 261;
   const escH = v => String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const dataBR = v => v ? new Date(v).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' }) : '–';
   const css2 = `.side-foot .r{flex-wrap:wrap}.side-foot .lg-acoes{margin-left:auto;display:inline-flex;gap:10px}
@@ -11423,7 +11428,29 @@ function negAnalise(b, cen) {
   const mad = negLucro(b, 1e6), fat = +b.fat || 0;
   return { pay, tir, alt, mad, marg: fat ? mad / fat : 0, inv: sch.lump + sch.PV, T, term, acum };
 }
-function schedule0(b, mode) {
+// v372: amortização antecipada. b.amort = [{ id, mes: 'AAAA-MM', valor, modo: 'prazo' | 'parcela' }], só no modo de pagamento do card
+function schedule0(b, mode, semAmort) { const s = schedule0Base(b, mode); return semAmort || mode === 'avista' || mode !== b.modo || !(b.amort && b.amort.length) || !s.parc.length ? s : aplicaAmort(b, s, b.amort).s; }
+// desconto pela taxa do contrato (parcela fixa sem juros: a taxa implícita); o saldo devedor segue a mesma regra do card
+function aplicaAmort(b, s, lista) {
+  const L = (lista || []).filter(a => +a.valor > 0 && /^\d{4}-\d{2}$/.test(a.mes || '')).slice().sort((x, y) => x.mes < y.mes ? -1 : x.mes > y.mes ? 1 : 0);
+  const m0 = mIndex(b.mes), i = ceJuros(b).i, isd = Math.pow(1 + taxaAA(b) / 100, 1 / 12) - 1;
+  const reg = s.parc.slice(), extra = [], info = [];
+  L.forEach(a => {
+    const k = mIndex(a.mes) - m0; if (k < 1 || k >= reg.length) { info.push({ a, ok: false }); return; }
+    let rest = 0; for (let j = k + 1; j <= reg.length; j++) rest += reg[j - 1] / Math.pow(1 + i, j - k);
+    const pago = Math.min(+a.valor, rest), nA = reg.length, pA = reg[k], somaA = reg.slice(k).reduce((t, v) => t + v, 0); let X = pago;
+    if (a.modo === 'parcela') { const f = rest > 0 ? Math.max(0, 1 - X / rest) : 0; for (let j = k + 1; j <= reg.length; j++) reg[j - 1] *= f; }
+    else while (X > 0.005 && reg.length > k) { const j = reg.length, v = reg[j - 1] / Math.pow(1 + i, j - k); if (X >= v - 0.005) { X -= v; reg.pop(); } else { reg[j - 1] -= X * Math.pow(1 + i, j - k); X = 0; } }
+    while (reg.length > k && reg[reg.length - 1] < 0.01) reg.pop();
+    extra[k - 1] = (extra[k - 1] || 0) + pago;
+    info.push({ a, ok: true, k, pago, quitou: pago >= rest - 0.5, nA, nD: reg.length, pA, pD: reg[k] || 0, juros: somaA - reg.slice(k).reduce((t, v) => t + v, 0) - pago });
+  });
+  const n = reg.length, parc = reg.map((v, t) => v + (extra[t] || 0)), saldo = Array(n).fill(0);
+  for (let t = n - 2; t >= 0; t--) saldo[t] = (parc[t + 1] + saldo[t + 1]) / (1 + isd);
+  const k1 = Math.min(...info.filter(x => x.ok).map(x => x.k), Infinity); for (let t = 0; t < Math.min(n, k1 - 1); t++) saldo[t] = s.saldo[t];   // antes da 1ª amortização, a dívida é a do contrato
+  return { s: Object.assign({}, s, { parc, saldo, amort: info }), info };
+}
+function schedule0Base(b, mode) {
   const V = +b.valor || 0, E = Math.min(Math.max(+b.entrada || 0, 0), V), PV = V - E, custos = (+b.custos || 0) / 100;
   const n = Math.max(1, Math.round(+b.prazo || 1));
   if (mode === 'avista') return { lump: V * (1 + custos), parc: [], saldo: [], PV: 0 };
@@ -12059,7 +12086,7 @@ function compraHtml(b, cen) {
       ${b.tipo === 'imovel' ? f('renda', 'Aluguel recebido (R$/mês)', 100) : ''}
     </div>
     <div class="res" id="cres-${b.id}"></div>
-    ${neg ? '' : `<div class="cent" id="cent-${b.id}"></div>`}
+    ${neg ? '' : `<div class="cent" id="cent-${b.id}"></div><div class="amz" id="amz-${b.id}"></div>`}
     ${neg ? '' : `<details><summary>Dados de consórcio (para a comparação de pagamento)</summary><div class="ed">
       ${f('cPrazo', 'Prazo (meses)', 12)}${f('cAdm', 'Taxa de adm. total (%)', 0.5)}${f('cFR', 'Fundo de reserva (%)', 0.5)}${f('cCorr', 'Correção da carta (% a.a.)', 0.1)}${f('cContempl', 'Mês da contemplação', 1)}${f('cLance', 'Lance (% da carta)', 5)}
     </div></details>`}`}
@@ -12110,12 +12137,12 @@ function renderCenarios() {
     const pagas = Math.max(0, Math.min(sch.parc.length, s0 - m0)); const rest = sch.parc.length - pagas;
     const jur = b.modo === 'sac' || b.modo === 'price' ? sch.parc.reduce((s, v) => s + v, 0) - sch.PV : 0;
     if (b.modo === 'fixa') {
-      const fin = (+b.valor || 0) - (+b.entrada || 0), p = +b.parcela || 0, n = sch.parc.length;
+      const fin = (+b.valor || 0) - (+b.entrada || 0), p = +b.parcela || 0, n = Math.max(1, Math.round(+b.prazo || 1));
       let txt = '';
       if (+b.taxa > 0) txt = b.taxaUn === 'am' ? `juros de ${num(b.taxa)}% a.m. (${num(taxaAA(b), 1)}% a.a.)` : `juros de ${num(b.taxa)}% a.a. (${num((Math.pow(1 + taxaAA(b) / 100, 1 / 12) - 1) * 100)}% a.m.)`;
       else if (fin > 0 && p * n > fin) { let lo = 0, hi = 0.2; for (let j = 0; j < 60; j++) { const mid = (lo + hi) / 2; if (p * (1 - Math.pow(1 + mid, -n)) / mid > fin) lo = mid; else hi = mid; } txt = `taxa implícita ≈ ${num((Math.pow(1 + lo, 12) - 1) * 100, 1)}% a.a. (${num(lo * 100)}% a.m.), calculada por preço − entrada`; }
       const saldoHoje = pagas > 0 ? (sch.saldo[pagas - 1] ?? 0) : sch.PV;
-      el.textContent = `Entrada + custos em ${mLabel(m0)}: ${fm(sch.lump)} · parcela ${fm(p)} × ${n} = ${fm(p * n)}${txt ? ' · ' + txt : ''}${m0 <= s0 ? ` · ${pagas} pagas, faltam ${rest} · saldo devedor hoje ${fm(saldoHoje)}` : ''}.`;
+      el.textContent = `Entrada + custos em ${mLabel(m0)}: ${fm(sch.lump)} · parcela ${fm(p)} × ${n} = ${fm(p * n)}${txt ? ' · ' + txt : ''}${m0 <= s0 ? ` · ${pagas} pagas, faltam ${rest} · saldo devedor hoje ${fm(saldoHoje)}` : ''}${(sch.amort || []).some(x => x.ok) ? ` · com as amortizações do plano, termina em ${mLabel(m0 + sch.parc.length)}` : ''}.`;
       return;
     }
     el.textContent = b.modo === 'avista' ? `Sai dos investimentos em ${mLabel(m0)}: ${fm(sch.lump)}.` :
@@ -12126,9 +12153,60 @@ function renderCenarios() {
   chart($('ch-c'), $('ro-c'), H + 1, ser, k, lab);
   chart($('ch-c2'), $('ro-c2'), H, [{ name: 'Sobra', c: cenCor(cen), v: p.sobra, bars: true }], k, t => lab(t + 1), 0);
   renderPagamento(cen, p, r1);
-  state.compras.forEach(b => { try { renderCustoEntrada(b); } catch (e) { console.warn('custo da entrada', e); } });
+  state.compras.forEach(b => { try { renderCustoEntrada(b); } catch (e) { console.warn('custo da entrada', e); } try { renderAmort(b); } catch (e) { console.warn('amortização', e); } });
   renderReb(cen);
 }
+/* v372: amortização antecipada no card da compra. Simula (valor, mês, reduzir prazo ou parcela) e "Colocar no plano" grava em b.amort. */
+const amzSim = {}, amzAberto = new Set();
+document.addEventListener('toggle', e => { const d = e.target; if (!d || !d.dataset || !d.dataset.amz) return; if (d.open) amzAberto.add(d.dataset.amz); else amzAberto.delete(d.dataset.amz); }, true);
+function amzOk(b) { return ['imovel', 'carro', 'outro'].includes(b.tipo) && b.modo !== 'avista' && +b.valor > 0; }
+function amzCalc(b, nova) {
+  const s0 = schedule0Base(b, b.modo), base = aplicaAmort(b, s0, b.amort || []), sim = aplicaAmort(b, s0, (b.amort || []).concat([nova]));
+  const inf = sim.info.find(x => x.a === nova), m0 = mIndex(b.mes), pb = base.s.parc, ps = sim.s.parc, T = pb.length;
+  let ganho = 0; for (let t = 1; t <= T; t++) { let d = (pb[t - 1] || 0) - (ps[t - 1] || 0); for (let u = t + 1; u <= T; u++) d *= 1 + taxaPlanoMes(m0 + u); ganho += d; }
+  return { inf, ganho, fimA: m0 + pb.length, fimD: m0 + ps.length, T };
+}
+function amzResHtml(b) {
+  const f = amzSim[b.id]; if (!f || !(+f.valor > 0)) return '<p class="hint">Informe o valor para ver o efeito.</p>';
+  const r = amzCalc(b, { id: 'sim', mes: f.mes, valor: +f.valor, modo: f.modo }), x = r.inf, m0 = mIndex(b.mes);
+  if (!x || !x.ok) return `<p class="hint">Escolha um mês entre ${mLabel(m0 + 1)} e ${mLabel(m0 + schedule0(b, b.modo).parc.length - 1)}, durante as parcelas.</p>`;
+  const quit = x.quitou ? ` <b>Esse valor quita a dívida</b> (bastam ${fm(x.pago)}).` : '';
+  const efeito = x.quitou ? `A dívida acaba em ${mLabel(m0 + x.k)}.` : f.modo === 'parcela' ? `A parcela cai de <b>${fm(x.pA)}</b> para <b>${fm(x.pD)}</b> a partir de ${mLabel(m0 + x.k + 1)}.` : `A dívida termina em <b>${mLabel(r.fimD)}</b> em vez de ${mLabel(r.fimA)}: <b>${x.nA - x.nD} parcelas a menos</b>.`;
+  return `<p class="amz-r">Pagando ${fm(x.pago)} em ${mLabel(m0 + x.k)}, você deixa de pagar <b>${fm(x.juros)} de juros</b>.${quit} ${efeito}</p>
+    <p class="amz-r">Comparado a deixar esse dinheiro aplicado pelo Meu plano, você termina ${mLabel(m0 + r.T)} com <b class="${r.ganho >= 0 ? 'pos' : 'neg'}">${fm(Math.abs(r.ganho))}</b> ${r.ganho >= 0 ? 'a mais' : 'a menos'}.</p>`;
+}
+function renderAmort(b, el) {
+  el = el || $('amz-' + b.id); if (!el) return;
+  if (!amzOk(b)) { el.innerHTML = ''; return; }
+  const m0 = mIndex(b.mes), n = schedule0(b, b.modo).parc.length, ini = Math.max(m0 + 1, HOJE_IDX + 1);
+  if (!amzSim[b.id]) amzSim[b.id] = { mes: mKey(Math.min(ini, m0 + n - 1)), valor: '', modo: 'prazo' };
+  const f = amzSim[b.id], L = (b.amort || []).slice().sort((x, y) => x.mes < y.mes ? -1 : 1), sch = schedule0(b, b.modo), inf = sch.amort || [];
+  el.innerHTML = `<details class="cent-d amz-d" data-amz="${b.id}"${amzAberto.has(b.id) ? ' open' : ''}><summary>Amortizar antes do prazo${L.length ? ` · <span class="cent-sum">${L.length} no plano</span>` : ''}</summary>
+    <div class="cent-b">
+      <p class="cent-ex"><b>Como funciona.</b> Amortizar é pagar parte da dívida antes da hora. O banco tira os juros do período antecipado (Código de Defesa do Consumidor) e não pode cobrar tarifa por isso. Reduzir o prazo quita as últimas parcelas e economiza mais juros; reduzir a parcela mantém o prazo e alivia a sobra do mês. A conta usa a taxa do contrato${b.modo === 'fixa' && !(+b.taxa > 0) ? ' (aqui, a taxa implícita)' : ''}: o valor exato o banco mostra antes de você confirmar. "Colocar no plano" faz o valor sair dos investimentos naquele mês e muda as parcelas em todos os cenários que têm esta compra.</p>
+      <div class="ed amz-f">
+        <label>Valor (R$)<input type="number" step="1000" min="0" data-amz-f="valor" data-amz-b="${b.id}" value="${esc(String(f.valor))}" placeholder="ex.: 10000"></label>
+        <label>Mês<input type="month" data-amz-f="mes" data-amz-b="${b.id}" value="${esc(f.mes)}" min="${mKey(m0 + 1)}" max="${mKey(m0 + n - 1)}"></label>
+        <label>Reduzir<select data-amz-f="modo" data-amz-b="${b.id}"><option value="prazo"${f.modo !== 'parcela' ? ' selected' : ''}>o prazo</option><option value="parcela"${f.modo === 'parcela' ? ' selected' : ''}>a parcela</option></select></label>
+        <label class="amz-bt"><span>&nbsp;</span><button type="button" class="btn tiny" data-amz-add="${b.id}">Colocar no plano</button></label>
+      </div>
+      <div id="amz-res-${b.id}">${amzResHtml(b)}</div>
+      ${L.length ? `<div class="amz-l"><b>No plano</b>${L.map(a => { const x = inf.find(y => y.a === a) || {}; return `<div class="amz-it"><span>${mLabel(mIndex(a.mes))}: ${fm(+a.valor)} · reduz ${a.modo === 'parcela' ? 'a parcela' : 'o prazo'}${x.ok ? ` · economiza ${fm(x.juros)} de juros` : ' · <span class="neg">fora do período das parcelas</span>'}</span><button type="button" class="btn ghost tiny" data-amz-del="${b.id}:${esc(a.id)}" aria-label="Tirar do plano">Tirar</button></div>`; }).join('')}</div>` : ''}
+    </div></details>`;
+}
+document.addEventListener('input', e => { const t = e.target.closest && e.target.closest('[data-amz-f]'); if (!t) return; const id = t.dataset.amzB, b = state.compras.find(x => x.id === id); if (!b) return;
+  (amzSim[id] = amzSim[id] || {})[t.dataset.amzF] = t.value; const r = $('amz-res-' + id); if (r) r.innerHTML = amzResHtml(b); });
+document.addEventListener('change', e => { const t = e.target.closest && e.target.closest('select[data-amz-f]'); if (!t) return; const id = t.dataset.amzB, b = state.compras.find(x => x.id === id); if (!b) return;
+  (amzSim[id] = amzSim[id] || {}).modo = t.value; const r = $('amz-res-' + id); if (r) r.innerHTML = amzResHtml(b); });
+document.addEventListener('click', e => {
+  const ad = e.target.closest && e.target.closest('[data-amz-add]'), dl = e.target.closest && e.target.closest('[data-amz-del]'); if (!ad && !dl) return;
+  if (ad) { const b = state.compras.find(x => x.id === ad.dataset.amzAdd), f = b && amzSim[b.id]; if (!b || !f || !(+f.valor > 0)) return;
+    const r = amzCalc(b, { id: 'sim', mes: f.mes, valor: +f.valor, modo: f.modo }); if (!r.inf || !r.inf.ok) return;
+    b.amort = (b.amort || []).concat([{ id: 'a' + Date.now().toString(36), mes: f.mes, valor: Math.round(r.inf.pago * 100) / 100, modo: f.modo === 'parcela' ? 'parcela' : 'prazo' }]);
+    amzSim[b.id] = { mes: f.mes, valor: '', modo: f.modo }; amzAberto.add(b.id); }
+  else { const [bid, aid] = dl.dataset.amzDel.split(':'), b = state.compras.find(x => x.id === bid); if (!b) return; b.amort = (b.amort || []).filter(a => a.id !== aid); amzAberto.add(b.id); }
+  planCache = null; save(); setTimeout(renderTab, 0);
+});
 /* v363: custo de oportunidade da entrada. O que não vai na entrada (preço − entrada) fica aplicado; as parcelas saem dessa aplicação mês a mês.
    No fim do prazo, o saldo que sobrou é o resultado comparado a pagar à vista (rendimento − juros). Taxas: Meu plano e carteira atual.
    Para mudar de lugar, chame renderCustoEntrada(b, el) com outro elemento. */
