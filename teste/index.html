@@ -6,6 +6,7 @@
 <style>#amb-teste{position:fixed;top:0;left:50%;transform:translateX(-50%);z-index:2147483647;background:#C62828;color:#fff;font:700 11px/1 system-ui,sans-serif;letter-spacing:.08em;padding:4px 12px;border-radius:0 0 6px 6px;pointer-events:none}</style></head><body>
 <div id="amb-teste">AMBIENTE DE TESTE</div>
 <title>Painel financeiro</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap">
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700&family=Mulish:wght@400;500;600;700&display=swap">
@@ -1644,7 +1645,7 @@ tr.rd-hit td { background: color-mix(in srgb, var(--good) 9%, transparent); }
 .jg-tema{margin-left:auto;display:inline-flex;align-items:center;gap:6px;font-size:12px;color:var(--muted)}
 .jg-tema .seg button{font-size:11px;padding:3px 10px}
 .jg-tema .seg button[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:#fff}
-.jg-home{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);gap:28px;align-items:center}
+.jg-home{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);gap:28px;align-items:start}.jg-home>.jg-info{align-self:center}
 .jg-roda{position:relative;width:100%;max-width:520px;margin-inline:auto;aspect-ratio:1}
 .jg-roda svg{width:100%;height:100%;display:block;overflow:visible}
 #jg-rot{transform-origin:250px 250px;transition:transform 1.4s cubic-bezier(.2,.8,.15,1)}
@@ -2228,6 +2229,138 @@ svg path[data-si] { transition: opacity .12s; }
 #orc-regs td input.name, #pj-regs td input.name { width: 150px; }
 #orc-regs td input[data-bind$=":das"], #pj-regs td input[data-bind$=":das"] { width: 70px; }
 #orc-regs td input[data-bind$=":contab"], #pj-regs td input[data-bind$=":contab"] { width: 100px; }
+
+/* lb-visual */
+/* ===== Lifeboard novo visual (variações A e B). Ativo só com html[data-lb] ===== */
+html[data-lb]{
+  --f-ui:"Plus Jakarta Sans",system-ui,sans-serif; --f-head:"Bricolage Grotesque","Plus Jakarta Sans",system-ui,sans-serif; --f-num:var(--f-ui);
+  --m:#7FA6E0;
+  --bg:#F7F3EC; --panel:#FFFFFF; --card2:#F1EBE0; --ink:#0E1A2B; --muted:#5A6478; --faint:#7A8496; --line:#DDD3C3; --field:#FBF8F2;
+  --kpi-bg:#FFFFFF; --kpi-line:#DDD3C3;
+  --accent:#A8582A; --accent-strong:#0E1A2B; --accent-soft:#F6E7DA; --dotc:#F0A46B;
+  --good:#1F7A57; --bad:#B4462B;
+  --side:#0E1A2B; --side2:#16263D; --side-ink:#EEF2F8; --tint:14,26,43;
+  --band:#0E1A2B; --band-dot:var(--m); --band-link:#F0A46B;
+  --shadow:0 1px 2px rgba(14,26,43,.05);
+}
+html[data-lb][data-theme="dark"]{
+  --bg:#0E1A2B; --panel:#15243A; --card2:#1E3150; --ink:#EEF2F8; --muted:#A3B1C8; --faint:#8593AA; --line:#2A3D5E; --field:#0E1A2B;
+  --accent:#F0A46B; --accent-strong:#F7F3EC; --accent-soft:rgba(240,164,107,.16);
+  --good:#7FDDB8; --bad:#F7A28C;
+  --side:#0B1522; --side2:#15243A; --band:#1E3150; --shadow:none; --kpi-bg:#1E3150; --kpi-line:transparent;
+}
+@media (prefers-color-scheme: dark){ html[data-lb]:not([data-theme="light"]){
+  --bg:#0E1A2B; --panel:#15243A; --card2:#1E3150; --ink:#EEF2F8; --muted:#A3B1C8; --faint:#8593AA; --line:#2A3D5E; --field:#0E1A2B;
+  --accent:#F0A46B; --accent-strong:#F7F3EC; --accent-soft:rgba(240,164,107,.16);
+  --good:#7FDDB8; --bad:#F7A28C; --side:#0B1522; --side2:#15243A; --band:#1E3150; --shadow:none; --kpi-bg:#1E3150; --kpi-line:transparent; } }
+
+html[data-lb] body{font-family:var(--f-ui);font-size:14px;background:var(--bg);color:var(--ink)}
+html[data-lb] h1,html[data-lb] h2,html[data-lb] h3,html[data-lb] legend{font-family:var(--f-head);letter-spacing:-.01em}
+html[data-lb] td,html[data-lb] .kpi .v{font-variant-numeric:tabular-nums}
+
+/* ---- comuns: campos, botões, tabelas, KPIs ---- */
+html[data-lb] input:not([type=checkbox]):not([type=radio]):not([type=range]),html[data-lb] select,html[data-lb] textarea{background:var(--field);border:1px solid var(--line);color:var(--ink);border-radius:9px;font-family:var(--f-ui);font-weight:600}
+html[data-lb] input:focus,html[data-lb] select:focus,html[data-lb] textarea:focus{outline:2px solid #F0A46B;outline-offset:1px;border-color:#F0A46B}
+html[data-lb] .btn{font-family:var(--f-ui);font-size:13px;font-weight:700;letter-spacing:0;text-transform:none;border-radius:999px;padding:7px 15px;background:#F0A46B;border-color:#F0A46B;color:#0E1A2B}
+html[data-lb] .btn.ghost{background:transparent;color:var(--ink);border-color:var(--line)}
+html[data-lb] .btn.ghost:hover{border-color:#F0A46B;color:var(--accent)}
+html[data-lb] .btn.tiny{font-size:12px;padding:5px 11px}
+html[data-lb] input[type=range],html[data-lb] input[type=checkbox],html[data-lb] input[type=radio]{accent-color:#F0A46B}
+html[data-lb] table th{font-family:var(--f-ui);font-size:11px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--muted)}
+html[data-lb] .kpi{background:var(--kpi-bg);border:1px solid var(--kpi-line);border-radius:12px;box-shadow:none;padding:12px 14px}
+html[data-lb] .kpi::before,html[data-lb] .kpi::after{display:none}
+html[data-lb] .kpi .l{font-family:var(--f-ui);font-size:12px;font-weight:600;letter-spacing:0;text-transform:none;color:var(--muted)}
+html[data-lb] .kpi .v{font-family:var(--f-head);font-weight:800;font-size:23px}
+html[data-lb] fieldset{border-radius:14px;border-color:var(--line);box-shadow:none;background:var(--panel)}
+html[data-lb] legend{font-size:14px;font-weight:700;color:var(--ink)}
+html[data-lb] .panel{border-radius:14px;border-color:var(--line);box-shadow:none;background:var(--panel)}
+html[data-lb] .panel h2{font-size:17px;font-weight:700;color:var(--ink)}
+html[data-lb] .panel h2::before,html[data-lb] .sec-title::before{background:var(--m)}
+
+/* ---- menu lateral (as duas) ---- */
+html[data-lb] .sidebar{background:var(--side);border-right:1px solid rgba(255,255,255,.06)}
+html[data-lb] .nav-modbox{background:var(--side2);border:0;border-radius:12px}
+html[data-lb] .nav-modbox .ic{background:var(--m);border-radius:11px;width:36px;height:36px}
+html[data-lb] .nav-head{font-family:var(--f-ui);font-size:13.5px;font-weight:600;color:#A3B1C8;letter-spacing:0;border-radius:9px}
+html[data-lb] .nav-head .ico{background:transparent!important;color:#A3B1C8!important;font-family:var(--f-ui)}
+html[data-lb] .nav-head[aria-current="page"]{background:var(--side2);color:#fff}
+html[data-lb] .nav-head[aria-current="page"] .ico{background:var(--m)!important;color:#0E1A2B!important}
+html[data-lb] .nav-sec-h{font-family:var(--f-ui);font-size:10.5px;font-weight:800;letter-spacing:.1em;color:#7F8EA8}
+html[data-lb] .nav-voltar{font-family:var(--f-ui);font-weight:600;border-radius:999px}
+
+/* ---- barra superior injetada ---- */
+#lb-top{display:flex;flex-wrap:wrap;align-items:center;gap:10px;padding:0 0 14px;margin:0 0 14px;border-bottom:1px solid var(--line)}
+#lb-top .crumb{color:var(--muted);font-size:13px;margin-right:auto;min-width:0}
+#lb-top .crumb b{color:var(--ink)}
+#lb-top .crumb a{color:var(--muted);text-decoration:none;cursor:pointer}
+#lb-top .crumb a:hover{color:var(--accent)}
+#lb-top .modo{display:inline-flex;border:1px solid var(--line);border-radius:999px;padding:3px;background:var(--panel)}
+#lb-top .modo button{font:600 12.5px var(--f-ui);border:0;background:transparent;color:var(--muted);padding:5px 12px;border-radius:999px;cursor:pointer;min-height:30px}
+#lb-top .modo button[aria-pressed="true"]{background:#F0A46B;color:#0E1A2B}
+#lb-top .pill{display:inline-flex;align-items:center;gap:7px;border:1px solid var(--line);background:var(--panel);border-radius:999px;padding:5px 11px;font-size:12.5px;font-weight:600;white-space:nowrap}
+#lb-top .pill i{width:8px;height:8px;border-radius:50%;background:var(--m)}
+
+/* ================= VARIAÇÃO A · Tabuleiro (fiel ao mockup) ================= */
+html[data-lb="a"] .block-title{background:var(--m);color:#0E1A2B;border-radius:16px;padding:16px 20px;margin:0 0 16px;gap:16px;align-items:center}
+html[data-lb="a"] .block-title .num{background:rgba(255,255,255,.5);color:#0E1A2B;width:40px;height:40px;border-radius:11px}
+html[data-lb="a"] .block-title h1{font-size:28px;font-weight:800;line-height:1.05;color:#0E1A2B}
+html[data-lb="a"] .block-title h1::before{content:attr(data-lbmod);display:block;font:800 11px var(--f-ui);letter-spacing:.12em;text-transform:uppercase;opacity:.7;margin-bottom:3px}
+html[data-lb="a"] .block-title .desc{color:rgba(14,26,43,.78);font-size:13px;font-weight:500;margin-top:4px}
+html[data-lb="a"] .sec-band{background:var(--band);border-radius:13px;padding:11px 16px;min-height:44px;align-items:center;box-shadow:none;margin:6px 0 14px}
+html[data-lb="a"] .sec-band h2{font-family:var(--f-head);font-weight:700;font-size:16px;color:#fff;letter-spacing:-.01em}
+html[data-lb="a"] .sec-band h2::before{background:var(--m);width:9px;height:9px}
+html[data-lb="a"] .sec-band .hint{color:#C9D2E0;font-size:12.5px}
+html[data-lb="a"] .guia-btn{border-radius:50%;border:1px solid rgba(255,255,255,.55)!important;background:rgba(255,255,255,.08)!important;color:#fff!important}
+html[data-lb="a"] .guia-btn:hover{background:#F0A46B!important;border-color:#F0A46B!important;color:#0E1A2B!important}
+html[data-lb="a"] .panel>h2:first-child{background:var(--band);color:#fff;margin:-16px -18px 14px;padding:11px 16px;border-radius:13px 13px 0 0;font-size:16px}
+
+/* ================= VARIAÇÃO B · Leve (sem faixas, cor só nos detalhes) ================= */
+html[data-lb="b"] .block-title{padding:4px 0 14px;margin:0 0 18px;border-bottom:3px solid var(--m);gap:14px}
+html[data-lb="b"] .block-title .num{background:var(--m);color:#0E1A2B;width:44px;height:44px;border-radius:14px}
+html[data-lb="b"] .block-title h1{font-size:30px;font-weight:800;line-height:1.05;color:var(--ink)}
+html[data-lb="b"] .block-title h1::before{content:attr(data-lbmod);display:block;font:800 11px var(--f-ui);letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin-bottom:4px}
+html[data-lb="b"] .block-title .desc{font-size:13.5px;margin-top:4px}
+html[data-lb="b"] .sec-band{background:transparent;box-shadow:none;border:0;border-left:4px solid var(--m);border-radius:0;padding:2px 0 2px 12px;margin:22px 0 12px;align-items:center}
+html[data-lb="b"] .sec-band h2{font-family:var(--f-head);font-weight:800;font-size:20px;color:var(--ink)}
+html[data-lb="b"] .sec-band h2::before{display:none}
+html[data-lb="b"] .sec-band .hint{color:var(--muted);font-size:13px}
+html[data-lb="b"] .guia-btn{border-radius:50%;border:1px solid var(--line)!important;background:var(--panel)!important;color:var(--ink)!important}
+html[data-lb="b"] .guia-btn:hover{background:#F0A46B!important;border-color:#F0A46B!important;color:#0E1A2B!important}
+html[data-lb="b"] .panel{border-top:3px solid var(--m)}
+html[data-lb] .nav-head[aria-current="page"]{box-shadow:inset 3px 0 0 var(--m)}
+
+/* ---- ajustes ---- */
+html[data-lb] .panel>h2:first-child::before,html[data-lb] .panel>.row:first-child h2::before{background:var(--m)}
+html[data-lb="a"] .panel>h2:first-child,html[data-lb="a"] .panel>.row:first-child:has(h2){border-radius:13px 13px 0 0;border-bottom:0}
+html[data-lb="a"] .panel>.row:first-child:has(h2) h2{color:#fff}
+html[data-lb="b"] .panel>h2:first-child,html[data-lb="b"] .panel>.row:first-child:has(h2){background:transparent;border-bottom:1px solid var(--line);border-radius:0}
+html[data-lb="b"] .panel>h2:first-child,html[data-lb="b"] .panel>.row:first-child:has(h2) h2{color:var(--ink);font-size:18px;font-weight:800}
+html[data-lb="b"] .panel>h2:first-child::before,html[data-lb="b"] .panel>.row:first-child h2::before{display:none}
+html[data-lb="b"] .panel>h2:first-child .guia-btn,html[data-lb="b"] .panel>.row:first-child .guia-btn{border-color:var(--line)!important}
+html[data-lb] .tour-pop .btn{background:#F0A46B;color:#0E1A2B;border-color:#F0A46B}
+html[data-lb] .tour-pop .btn.ghost{background:transparent;color:inherit;border-color:rgba(127,140,160,.55)}
+html[data-lb] .main a.voltar{display:none!important}
+html[data-lb] .main a:not(.btn){color:var(--accent)}
+html[data-lb] .nav-modpop .op .ic{background:var(--mc);color:#0E1A2B}
+html[data-lb] .nav-modpop .op[aria-current="true"]{background:color-mix(in srgb,var(--mc) 22%,var(--panel))}
+html[data-lb] .nav-modpop .op b{font-family:var(--f-head);font-weight:700}
+html[data-lb] .panel .kpi{background:var(--card2);border-color:transparent}
+/* campos lado a lado sempre alinhados, mesmo quando um rótulo quebra em duas linhas */
+html[data-lb] label:not(.check):not(.inline)>input:not([type=checkbox]):not([type=radio]),html[data-lb] label:not(.check):not(.inline)>select,html[data-lb] label:not(.check):not(.inline)>textarea{margin-top:auto}
+html[data-lb] label:not(.check):not(.inline)>input[type=month]{width:100%}
+html[data-lb] input[type=month]{width:180px;max-width:100%}
+/* subtítulo das seções alinhado com o resto do texto */
+html[data-lb] .panel>.sub{margin-left:0}
+/* logotipo LifeBoard (Pingo de cobre) no topo do menu */
+.lb-wm{display:none}
+html[data-lb] .side-nome>b{display:none}
+html[data-lb] .side-nome>.lb-wm{display:block;color:#FFFFFF!important;opacity:1!important;line-height:0;margin:2px 0 4px}
+.lb-wm svg.wm{height:19px;width:auto;display:block;fill:currentColor}
+.lb-wm svg.wm .pg{fill:#F0A46B}
+/* sem a roleta no topo do menu: só o logotipo */
+html[data-lb] .side-logo .box.lb{display:none}
+#lb-top .modo button{font-family:var(--f-ui)}
+
 </style>
 
 
@@ -2318,7 +2451,7 @@ svg path[data-si] { transition: opacity .12s; }
     </div>
     <div class="nav-mobile-sub" id="navMobileSub"></div>
   </div>
-  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 333</div></div>
+  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 334</div></div>
 </nav>
 <div class="sino-pop" id="sino-pop" role="dialog" aria-label="Atualizações das bases" hidden></div>
 <div class="sino-pop" id="pess-pop" role="dialog" aria-label="Seus avisos" hidden></div>
@@ -2352,7 +2485,7 @@ svg path[data-si] { transition: opacity .12s; }
         <div class="jg-roda"><svg viewBox="-20 -20 540 540" id="jg-svg" role="group" aria-label="Roleta de módulos"><g id="jg-rot"></g><path d="M250 -2 L236 -22 L264 -22 Z" fill="var(--accent)"/></svg><div class="jg-hub" aria-hidden="true"><div><small id="jg-hn"></small><b id="jg-ht"></b></div></div></div>
         <div class="jg-info" id="jg-info" aria-live="polite"></div>
       </div>
-      <div class="tr-curta"><div class="tr-ch"><b id="tr-tit">Próximas casas</b><a href="#" id="tr-exp" aria-expanded="false">Ver a trilha completa</a></div><div class="tr-scroll" id="tr-short-w"><svg id="tr-short" role="img"></svg></div><div class="tr-scroll" id="tr-jgfull-w" hidden><svg id="tr-jgfull" role="img"></svg></div></div>
+      <div class="tr-curta"><div class="tr-ch"><b id="tr-tit">Próximos passos</b><a href="#" id="tr-exp" aria-expanded="false">Ver a trilha completa</a></div><div class="tr-scroll" id="tr-short-w"><svg id="tr-short" role="img"></svg></div><div class="tr-scroll" id="tr-jgfull-w" hidden><svg id="tr-jgfull" role="img"></svg></div></div>
       <div class="jg-vista"><button type="button" class="btn ghost tiny" id="jg-vista"></button></div>
     </section>
     <section data-nav="Checkpoint da semana" class="panel" id="ck-sem">
@@ -2389,7 +2522,7 @@ svg path[data-si] { transition: opacity .12s; }
     <div class="block-title"><span class="num"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 4V2.8h6V4"/><path d="m8.5 10 1.6 1.6 3-3"/><path d="m8.5 16 1.6 1.6 3-3"/></svg></span><div><h1>Primeiros passos</h1><p class="desc">O que cada módulo faz, o que você precisa preencher para ele funcionar e o que é opcional. Cada passo tem um botão que leva direto ao lugar certo.</p></div></div>
     <section class="panel" id="tr-sec" hidden>
       <div class="row"><h2>Sua trilha</h2><span class="ck-sem-q" id="tr-q"></span></div>
-      <p class="sub">Cada parte configurada é uma casa andada. Toque numa casa para ir até ela.</p>
+      <p class="sub">Cada parte configurada é um passo concluído. Toque num passo para ir até ele.</p>
       <div class="tr-scroll"><svg id="tr-full" role="img"></svg></div>
       <div class="tr-leg"><span><i class="f"></i>feita</span><span><i></i>a fazer</span><span>★ completa um módulo (+300)</span></div>
     </section>
@@ -3692,7 +3825,7 @@ svg path[data-si] { transition: opacity .12s; }
   </section>
   <!-- ============ PLANO ============ -->
   <section role="tabpanel" id="p-orcamento" hidden>
-    <div class="block-title"><span class="num">01</span><div><h1>Meu plano</h1><p class="desc">Monte a projeção com as suas regras (as da aba Investimentos da planilha). Ela é a base da Projeção, dos checkpoints e do projetado no fechamento de cada mês (em Gastos).</p><button class="btn tiny" type="button" id="tour-abrir" style="margin-top:8px">Como preencher, passo a passo</button></div></div>
+    <div class="block-title"><span class="num">01</span><div><h1>Meu plano</h1><p class="desc">Monte a projeção com as suas regras. Ela é a base da Projeção, dos checkpoints e do projetado no fechamento de cada mês (em Gastos).</p><button class="btn tiny" type="button" id="tour-abrir" style="margin-top:8px">Como preencher, passo a passo</button></div></div>
       <div class="kpis" id="kpi-pl"></div>
       <section data-nav="Premissas">
         <div class="params">
@@ -3710,13 +3843,13 @@ svg path[data-si] { transition: opacity .12s; }
         <label>IPCA % a.a.<input type="number" step="0.01" id="pl-ipca" data-bind="plan::ipca"></label>
         <label>Reinvestir da sobra (%)<input type="number" step="5" min="0" max="100" data-bind="plan::reinv"></label>
         <label>Horizonte (anos)<input type="number" step="1" min="1" max="40" data-bind="plan::anos"></label>
-        <p class="hint" style="grid-column:1/-1">Como na planilha: rendimento = investido × taxa ÷ 12; a sobra do mês mais o rendimento voltam para o investimento na proporção do reinvestimento, e o resto fica parado.</p>
+        <p class="hint" style="grid-column:1/-1">Rendimento = investido × taxa ÷ 12; a sobra do mês mais o rendimento voltam para o investimento na proporção do reinvestimento, e o resto fica parado.</p>
       </fieldset>
         </div>
       </section>
       <section data-nav="Receitas e custos" class="panel">
         <h2>Receitas e custos de hoje</h2>
-        <p class="sub">Valores de um mês típico, em reais de hoje, e como cada linha reajusta no futuro. Contas sobem com o IPCA todo mês e aluguel uma vez por ano, como na planilha; o salário só muda quando você programar. Para mudar só um mês, edite o Projetado no fechamento daquele mês, em Gastos e fechamento.</p>
+        <p class="sub">Valores de um mês típico, em reais de hoje, e como cada linha reajusta no futuro. Contas sobem com o IPCA todo mês e aluguel uma vez por ano; o salário só muda quando você programar. Para mudar só um mês, edite o Projetado no fechamento daquele mês, em Gastos e fechamento.</p>
         <div class="orc-modelo" id="orc-modelo-box"><span class="orc-h">Como você recebe</span><div class="seg" id="orc-modelo"><button type="button" data-modelo="pj" aria-pressed="false">PJ (empresa própria)</button><button type="button" data-modelo="clt" aria-pressed="false">CLT (carteira assinada)</button></div><div class="seg" id="orc-cltmodo" hidden><button type="button" data-cltmodo="liq" aria-pressed="false">Digito o líquido</button><button type="button" data-cltmodo="bruto" aria-pressed="false">Digito o bruto</button></div><p class="hint" id="orc-modelo-hint"></p><div class="orc-troca" id="orc-troca" hidden></div><div id="orc-regs"></div></div>
         <div class="orc-grid">
           <div><h3 class="orc-h">Receitas e deduções</h3><div class="tscroll"><table id="tbl-orc-rec"></table></div></div>
@@ -3730,7 +3863,7 @@ svg path[data-si] { transition: opacity .12s; }
               </section>
       <section data-nav="Mudanças e eventos" class="panel">
         <h2>Mudanças programadas e eventos</h2>
-        <p class="sub">Mudança: a partir de um mês, a linha passa a ter um novo valor (e segue a regra de reajuste dali em diante), como digitar na linha 15 ou 20 da planilha. Evento: um gasto ou uma receita pontual, que pode repetir todo ano corrigido pelo IPCA.</p>
+        <p class="sub">Mudança: a partir de um mês, a linha passa a ter um novo valor (e segue a regra de reajuste dali em diante). Evento: um gasto ou uma receita pontual, que pode repetir todo ano corrigido pelo IPCA.</p>
         <div class="orc-grid">
           <div><div class="row" style="margin-bottom:0"><h3 class="orc-h">Mudanças programadas</h3><button class="btn ghost tiny" type="button" data-addpl="mud">+ Mudança</button><button class="btn ghost tiny" type="button" data-addpl="mudsim" title="Não mexe no plano: aparece na Simulação para você comparar">+ Só simulação</button></div><div class="tscroll"><table id="tbl-mud"></table></div></div>
           <div><div class="row" style="margin-bottom:0"><h3 class="orc-h">Eventos</h3><button class="btn ghost tiny" type="button" data-addpl="ev">+ Evento</button><button class="btn ghost tiny" type="button" data-addpl="evsim" title="Não mexe no plano: aparece na Simulação para você comparar">+ Só simulação</button></div><div class="tscroll"><table id="tbl-ev"></table></div></div>
@@ -4287,7 +4420,7 @@ svg path[data-si] { transition: opacity .12s; }
     return new Promise(resolve => { const { data } = sb.auth.onAuthStateChange(async (ev) => { if (ev !== 'PASSWORD_RECOVERY') return; const s = prompt('Digite a nova senha (mínimo 8 caracteres):'); if (s && s.length >= 8) { const { error } = await sb.auth.updateUser({ password: s }); alert(error ? 'Não deu para trocar a senha: ' + error.message : 'Senha trocada.'); } }); resolve(data); });
   }
   // ---------- rodapé: compartilhar, administração e sair ----------
-  const SITE_V = 219;
+  const SITE_V = 220;
   const escH = v => String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const dataBR = v => v ? new Date(v).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' }) : '–';
   const css2 = `.side-foot .r{flex-wrap:wrap}.side-foot .lg-acoes{margin-left:auto;display:inline-flex;gap:10px}
@@ -5150,7 +5283,7 @@ function renderNegVg() {
       <td data-l="Payback">${R.pay != null ? R.pay + 1 + ' meses' : '—'}</td><td data-l="Uso">${x.uso === 'real' ? '<span class="chip info">Projeção real</span>' : '<span class="subdet">Só simulação</span>'}</td></tr>`).join('')}</tbody>`;
   $('ngv-tl').innerHTML = tlHtml(itensModulos().filter(y => y.mod === 'neg'));
   const m = MODS.find(y => y.id === 'neg'), lk = [['negcad', 'Meus negócios', 'Cadastro de cada ideia ou empresa: tipo, setor, cidade, sua parte e o que vai para o plano.'], ['negdre', 'Meu DRE', 'Receitas, custos e despesas mês a mês, com linhas suas e desdobramentos.'], ['negfc', 'Fluxo de caixa', 'Investimentos, capital de giro, empréstimo, quanto pôr e quando o caixa vira.'], ['negabr', 'Abrir empresa', 'MEI, SLU ou LTDA, Simples x Presumido x Real lado a lado e o passo a passo com custos.'], ['negeco', 'Oportunidades de custo', 'Energia, maquininha, aluguel, fornecedores e mais: quanto dá para economizar e o efeito no lucro.'], ['negpesq', 'Pesquisa de mercado', 'Tamanho do mercado, concorrentes, preços, riscos e um veredito, pesquisados com IA.'], ['negviab', 'Viabilidade', 'Ponto de equilíbrio, payback, TIR, VPL e o que acontece se as vendas ou os custos mudarem.'], ['negcont', 'Contabilidade fácil', 'As obrigações de cada regime, os próximos vencimentos e um glossário dos termos.'], ['negval', 'Valuation', 'Quanto o negócio vale: múltiplos do lucro e do EBITDA e fluxo de caixa descontado.'], ['negprec', 'Precificação', 'O preço de venda pelo custo, impostos, taxas e a margem que você quer.'], ['negsoc', 'Sócios', 'Quotas, quem põe quanto, o que cada um recebe e o que combinar no acordo.'], ['negcmp', 'Comparar negócios', 'Dois a quatro negócios lado a lado: investimento, lucro, payback, TIR e valor.']];
-  $('ngv-links').innerHTML = lk.map(([t, n, d]) => `<button type="button" class="md-card" style="--mc:${m.cor}" data-tab="${t}"><div class="md-img">${MOD_SVG.neg}</div><h3>${esc(n)}</h3><p>${esc(d)}</p></button>`).join('');
+  $('ngv-links').innerHTML = lk.map(([t, n, d]) => `<button type="button" class="md-card" style="--mc:${m.corNav}" data-tab="${t}"><div class="md-img">${MOD_SVG.neg}</div><h3>${esc(n)}</h3><p>${esc(d)}</p></button>`).join('');
 }
 function renderNegCad() {
   const L = ngLista(), tb = $('tbl-ngc');
@@ -6405,7 +6538,7 @@ function renderFamVg() {
   try { famVgCasa(); } catch (er) { console.error(er); }
   $('famv-tl').innerHTML = tlHtml(itensModulos().filter(y => y.mod === 'fam'));
   const m = MODS.find(y => y.id === 'fam'), lk = [['fampes', 'Minha família', 'Quem mora com você, os filhos (inclusive os previstos, gêmeos ou trigêmeos), o custo de cada fase e a licença.'], ['famcasa', 'Orçamento da casa', 'Meu, seu e nosso, como dividir cada conta, quem deve a quem no mês e a reserva da família.'], ['famcomp', 'Compartilhar', 'A família no site: orçamento e metas em comum, o que cada um mostra e o patrimônio de vocês somado.']];
-  $('famv-links').innerHTML = lk.map(([t, n, d]) => `<button type="button" class="md-card" style="--mc:${m.cor}" data-tab="${t}"><div class="md-img">${MOD_SVG.fam}</div><h3>${esc(n)}</h3><p>${esc(d)}</p></button>`).join('');
+  $('famv-links').innerHTML = lk.map(([t, n, d]) => `<button type="button" class="md-card" style="--mc:${m.corNav}" data-tab="${t}"><div class="md-img">${MOD_SVG.fam}</div><h3>${esc(n)}</h3><p>${esc(d)}</p></button>`).join('');
 }
 function renderFamPes() {
   const L = famL(), tb = $('tbl-famp'), clt = (state.orc || {}).modelo === 'clt';
@@ -6901,7 +7034,7 @@ function renderRdVg() {
       <td data-l="Selo">${vig ? rdSeloHtml(x) : '—'}</td>
       <td data-l="Situação">${x.st === 'comp' && x.pago ? `Comprado por ${fm(x.pago.v)}` : RD_ST[x.st]}${x.ate && x.st === 'vig' ? `<small class="subdet rd-dep">até ${mLabel(mIndex(x.ate))}</small>` : ''}</td></tr>`; }).join('')}</tbody>`;
   const m = MODS.find(y => y.id === 'preco'), lk = [['rdprod', 'Meus produtos', 'O cadastro, onde procurar, os preços encontrados e o histórico com o seu alvo.'], ['rdcomp', 'Comprar ou esperar', 'Se o preço de hoje é bom, à vista ou parcelado, quando o dinheiro fica pronto e levar a compra ao Meu plano.']];
-  $('rdv-links').innerHTML = lk.map(([t, n, d]) => `<button type="button" class="md-card" style="--mc:${m.cor}" data-tab="${t}"><div class="md-img">${MOD_SVG.preco}</div><h3>${esc(n)}</h3><p>${esc(d)}</p></button>`).join('');
+  $('rdv-links').innerHTML = lk.map(([t, n, d]) => `<button type="button" class="md-card" style="--mc:${m.corNav}" data-tab="${t}"><div class="md-img">${MOD_SVG.preco}</div><h3>${esc(n)}</h3><p>${esc(d)}</p></button>`).join('');
 }
 function renderRdProd() {
   const x = rdSel();
@@ -7338,7 +7471,7 @@ function renderPess() {
   const pop = $('pess-pop'); if (pop.hidden) return;
   const grupos = MODS.filter(m => T.some(a => a.mod === m.id));
   pop.innerHTML = `<div class="sino-h"><b>Seus avisos</b>${novos ? '<button type="button" class="btn ghost tiny" id="pess-lidos">Marcar como lidos</button>' : ''}<button type="button" class="sino-x" id="pess-x" aria-label="Fechar">×</button></div>` +
-    (T.length ? grupos.map(m => `<div class="pess-g" style="--mc:${m.cor}"><i></i>${esc(m.nome)}</div>` + T.filter(a => a.mod === m.id).map(a => `<div class="sino-i${lid.includes(a.id) ? ' lido' : ''}"><p><a href="#" data-pessir="${esc(a.tab || '')}" data-pesssec="${esc(a.sec || '')}"${a.ev ? ` data-pessev="${esc(a.ev)}"` : ''}>${esc(a.msg)}</a></p></div>`).join('')).join('')
+    (T.length ? grupos.map(m => `<div class="pess-g" style="--mc:${m.corNav}"><i></i>${esc(m.nome)}</div>` + T.filter(a => a.mod === m.id).map(a => `<div class="sino-i${lid.includes(a.id) ? ' lido' : ''}"><p><a href="#" data-pessir="${esc(a.tab || '')}" data-pesssec="${esc(a.sec || '')}"${a.ev ? ` data-pessev="${esc(a.ev)}"` : ''}>${esc(a.msg)}</a></p></div>`).join('')).join('')
       : '<p class="sino-vazio">Nenhum aviso agora. Aqui aparecem o checkpoint da semana, os lembretes da Agenda e os alertas de preço do Radar.</p>');
 }
 function pessAbre(abrir) {
@@ -10667,7 +10800,7 @@ function renderViagVg() { vgAutoTodos();
     <td data-l="Status"><select data-vgvst="${x.id}" aria-label="Status da viagem">${Object.entries(VG_VST).map(([k, n]) => `<option value="${k}"${x.st === k ? ' selected' : ''}>${n}</option>`).join('')}</select></td>
     <td><div class="vg-pa"><button type="button" class="btn tiny" data-vgrabre="${x.id}">Roteiro</button><button type="button" class="btn ghost tiny" data-vgpdf="${x.id}">PDF <span class="vg-wip">Em andamento</span></button><button type="button" class="btn danger tiny" data-vgvdel="${x.id}">Remover</button></div></td></tr>`).join('')}</tbody>`;
   const m = MODS.find(x => x.id === 'viag'), lk = [['viagens', 'Mapa e lugares', 'Onde já foi, a lista de lugares, as datas e o sorteio.'], ['viagcmp', 'Comparar', 'Os lugares lado a lado nas suas datas: época, custos, visto e o melhor mês.'], ['viagrot', 'Roteiro', 'Cidades, noites, trechos, rota mais barata, hospedagem e passeios.'], ['viagcus', 'Custos', 'Hoje x projetado, seguro, como pagar, Meu plano e checklist.'], ['viagdur', 'Durante a viagem', '+ Gasto no celular, saldo do dia e resumo por país e mês.']];
-  $('vgv-links').innerHTML = lk.map(([t, n, d]) => `<button type="button" class="md-card" style="--mc:${m.cor}" data-tab="${t}"><div class="md-img">${MOD_SVG.viag}</div><h3>${esc(n)}</h3><p>${esc(d)}</p></button>`).join('');
+  $('vgv-links').innerHTML = lk.map(([t, n, d]) => `<button type="button" class="md-card" style="--mc:${m.corNav}" data-tab="${t}"><div class="md-img">${MOD_SVG.viag}</div><h3>${esc(n)}</h3><p>${esc(d)}</p></button>`).join('');
 }
 
 /* ---------- eventos ---------- */
@@ -14681,7 +14814,7 @@ function renderPlano() {
   kpis($('kpi-pl'), [
     [`Plano em ${mLabel(fimI)}`, k(patFim), `${k(patFim / defl)} em reais de hoje`],
     ['Sobra média (12 meses)', fm(media(m => m.sobra)), `receita líquida ${fm(media(m => m.liq))} − custos ${fm(media(m => m.custos))}`, media(m => m.sobra) < 0],
-    ['Rendimento médio (12 meses)', fm(media(m => m.rend)), P.rendModo === 'fixo' ? `${num(+P.rend || 0)}% a.a. ÷ 12, como na planilha` : P.rendModo === 'carteira' ? 'taxas da carteira' : 'taxa do cenário em destaque'],
+    ['Rendimento médio (12 meses)', fm(media(m => m.rend)), P.rendModo === 'fixo' ? `${num(+P.rend || 0)}% a.a. ÷ 12` : P.rendModo === 'carteira' ? 'taxas da carteira' : 'taxa do cenário em destaque'],
     cpDepoisIni() ? ['Último checkpoint x plano', planCp == null ? '—' : (cpU.valor - planCp >= 0 ? '+' : '') + k(cpU.valor - planCp), planCp == null ? 'plano não cobre esse mês' : `${mLabel(mIndex(cpU.mes))}: ${fm(cpU.valor)} real, ${fm(planCp)} no plano`, planCp != null && cpU.valor < planCp]
       : ['Checkpoint inicial', +P.valor > 0 ? k(+P.valor) : '—', +P.valor > 0 ? `${mLabel(i0)}. A comparação com o plano começa no próximo checkpoint.` : 'preencha o patrimônio líquido total']
   ]);
@@ -15902,13 +16035,13 @@ function trSvg(lista, ini, cols, svgId) {
     if (c.fim) h += `<path transform="translate(${x + S / 2 - 11} ${y - S / 2 - 11}) scale(.9)" d="M12 2l3 6.5 7 .8-5.2 4.8 1.5 7L12 17.5 5.7 21l1.5-7L2 9.3l7-.8z" fill="#F2C14E" stroke="var(--panel)" stroke-width="1.5"/>`;
     h += '</g>'; });
   sv.setAttribute('viewBox', `0 0 ${W} ${H}`); sv.innerHTML = h;
-  sv.setAttribute('aria-label', `Trilha: ${lista.filter(c => c.ok).length} de ${lista.length} casas feitas`);
+  sv.setAttribute('aria-label', `Trilha: ${lista.filter(c => c.ok).length} de ${lista.length} passos concluídos`);
 }
 function renderTrilha() {
   const L = trCasas(), feitas = L.filter(c => c.ok).length;
   if ($('tr-q')) $('tr-q').textContent = `${feitas} de ${L.length} casas`;
   if ($('tr-full')) trSvg(L, 0, 8, 'tr-full');
-  const exp = trExp(); if ($('tr-exp')) { $('tr-exp').textContent = exp ? 'Ver só as próximas' : 'Ver a trilha completa'; $('tr-exp').setAttribute('aria-expanded', String(exp)); $('tr-tit').textContent = exp ? `Trilha completa · ${feitas} de ${L.length} casas` : 'Próximas casas'; $('tr-short-w').hidden = exp; $('tr-jgfull-w').hidden = !exp; if (exp) trSvg(L, 0, 12, 'tr-jgfull'); }
+  const exp = trExp(); if ($('tr-exp')) { $('tr-exp').textContent = exp ? 'Ver só as próximas' : 'Ver a trilha completa'; $('tr-exp').setAttribute('aria-expanded', String(exp)); $('tr-tit').textContent = exp ? `Trilha completa · ${feitas} de ${L.length} passos concluídos` : 'Próximos passos'; $('tr-short-w').hidden = exp; $('tr-jgfull-w').hidden = !exp; if (exp) trSvg(L, 0, 12, 'tr-jgfull'); }
   if ($('tr-short')) { const cur = Math.max(0, L.findIndex(c => !c.ok)), i0 = Math.max(0, Math.min(cur < 0 ? L.length - 8 : cur - 2, L.length - 8)); trSvg(L.slice(i0, i0 + 8), i0, 8, 'tr-short'); }
 }
 function trExp() { try { return localStorage.getItem('painel-tr-exp') === '1'; } catch (e) { return false; } }
@@ -15919,10 +16052,10 @@ function renderComoUsar() {
   const P = cuPassos(), vis = MODS.filter(m => m.id !== 'uso' && modLiberado(m) && (m.breve || modEscolhido(m)));
   $('cu-res').innerHTML = vis.map(m => {
     const x = P[m.id], ic = `<span class="ic">${MOD_SVG[m.id]}</span>`;
-    if (!x) return `<div class="cu-card breve" style="--mc:${m.cor}"><h3>${ic}${esc(m.nome)}</h3><div class="cu-l"><span>${esc(m.desc)}</span></div><span class="chip">Em breve</span></div>`;
+    if (!x) return `<div class="cu-card breve" style="--mc:${m.corNav}"><h3>${ic}${esc(m.nome)}</h3><div class="cu-l"><span>${esc(m.desc)}</span></div><span class="chip">Em breve</span></div>`;
     const ps = x.passos, f = ps.filter(p => p.ok).length, ob = ps.filter(p => p.ob), obF = ob.filter(p => p.ok).length, prox = ps.find(p => p.ob && !p.ok) || ps.find(p => !p.ok);
     const st = ob.length ? (obF === ob.length ? '<span class="cu-st ok">Pronto para usar</span>' : `<span class="cu-st falta">Faltam ${ob.length - obF} ${ob.length - obF > 1 ? 'obrigatórios' : 'obrigatório'}</span>`) : '<span class="cu-st ok">Funciona sem nada obrigatório</span>';
-    return `<div class="cu-card" style="--mc:${m.cor}"><h3>${ic}${esc(m.nome)}</h3>${st}
+    return `<div class="cu-card" style="--mc:${m.corNav}"><h3>${ic}${esc(m.nome)}</h3>${st}
       <div class="hp-barra"><i style="width:${(f / ps.length * 100).toFixed(0)}%"></i></div>
       <div class="cu-l"><span>Obrigatórios</span><b>${ob.length ? obF + ' de ' + ob.length : 'nenhum'}</b></div>
       <div class="cu-l"><span>Opcionais</span><b>${ps.filter(p => !p.ob && p.ok).length} de ${ps.length - ob.length}</b></div>
@@ -16018,14 +16151,14 @@ function renderTrabVg() {
   ]);
   $('tv-tl').innerHTML = tlHtml(itensModulos().filter(x => x.mod === 'trab'));
   const m = MODS.find(x => x.id === 'trab'), lk = [['compras', 'Compras e bens', 'Imóveis, carros e outros bens, eventos como casamento e reforma, e dívidas a receber e a pagar.', 'trab']];
-  $('tv-links').innerHTML = lk.map(([t, n, d]) => `<button type="button" class="md-card" style="--mc:${m.cor}" data-tab="${t}"><div class="md-img">${MOD_SVG.trab}</div><h3>${esc(n)}</h3><p>${esc(d)}</p></button>`).join('');
+  $('tv-links').innerHTML = lk.map(([t, n, d]) => `<button type="button" class="md-card" style="--mc:${m.corNav}" data-tab="${t}"><div class="md-img">${MOD_SVG.trab}</div><h3>${esc(n)}</h3><p>${esc(d)}</p></button>`).join('');
 }
 // trocar de módulo: menu próprio (a lista do navegador não mostra ícone nem cor)
 function pintaModPop() {
   const ops = MODS.filter(m => modLiberado(m) && (m.breve || modVisivel(m) || m.id === modAtual));
   $('nav-mod-pop').innerHTML = ops.map(m => m.breve
     ? `<div class="op breve" style="--mc:${m.corNav}" aria-disabled="true"><span class="ic">${MOD_SVG[m.id]}</span><span class="t"><b>${esc(m.nome)}</b><small>Em breve</small></span></div>`
-    : `<button type="button" class="op" role="menuitem" data-modir="${m.id}" style="--mc:${m.cor}"${m.id === modAtual ? ' aria-current="true"' : ''}><span class="ic">${MOD_SVG[m.id]}</span><span class="t"><b>${esc(m.nome)}</b><small>${esc(m.desc.split('.')[0])}</small></span>${m.id === modAtual ? '<span class="ok" aria-label="atual">✓</span>' : ''}</button>`).join('') +
+    : `<button type="button" class="op" role="menuitem" data-modir="${m.id}" style="--mc:${m.corNav}"${m.id === modAtual ? ' aria-current="true"' : ''}><span class="ic">${MOD_SVG[m.id]}</span><span class="t"><b>${esc(m.nome)}</b><small>${esc(m.desc.split('.')[0])}</small></span>${m.id === modAtual ? '<span class="ok" aria-label="atual">✓</span>' : ''}</button>`).join('') +
     '<hr><button type="button" class="op todos" role="menuitem" data-modir="todos">‹ Ver todos os módulos</button>';
 }
 function modPop(abrir) { const p = $('nav-mod-pop'), b = $('nav-modbox'); if (abrir) pintaModPop(); p.hidden = !abrir; b.setAttribute('aria-expanded', String(abrir)); if (abrir) { const f = p.querySelector('[aria-current="true"]') || p.querySelector('button'); if (f) f.focus(); } }
@@ -16164,7 +16297,7 @@ function renderJogo() {
   $('jg-home').hidden = jgVista() !== 'roleta';
   $('jg-vista').textContent = jgVista() === 'roleta' ? 'Ver os módulos em cards' : 'Ver como roleta';
   const tm = jgTemaAtual();
-  $('jg-hud').innerHTML = `<span class="jg-pill" title="Pontos vêm de casas configuradas, checkpoints, meses fechados e meses dentro do projetado"><span class="jg-lv">${d.nivel}</span>${esc(d.nome)}</span><span class="jg-pill" style="--c:var(--s3)"><i></i>${d.total.toLocaleString('pt-BR')} pontos${d.prox ? ` <span class="subdet">· faltam ${(d.prox[0] - d.total).toLocaleString('pt-BR')} para ${esc(d.prox[1])}</span>` : ''}</span><span class="jg-pill" style="--c:var(--good)"><i></i>${seq} semana${seq === 1 ? '' : 's'} seguida${seq === 1 ? '' : 's'}</span>
+  $('jg-hud').innerHTML = `<span class="jg-pill" title="Pontos vêm de passos concluídos, checkpoints, meses fechados e meses dentro do projetado"><span class="jg-lv">${d.nivel}</span>${esc(d.nome)}</span><span class="jg-pill" style="--c:var(--s3)"><i></i>${d.total.toLocaleString('pt-BR')} pontos${d.prox ? ` <span class="subdet">· faltam ${(d.prox[0] - d.total).toLocaleString('pt-BR')} para ${esc(d.prox[1])}</span>` : ''}</span><span class="jg-pill" style="--c:var(--good)"><i></i>${seq} semana${seq === 1 ? '' : 's'} seguida${seq === 1 ? '' : 's'}</span>
     <span class="jg-tema">Aparência <span class="seg" role="group" aria-label="Aparência">${[['auto', 'Automática'], ['claro', 'Clara'], ['escuro', 'Escura']].map(([k, n]) => `<button type="button" data-jgtema="${k}" aria-pressed="${tm === k}">${n}</button>`).join('')}</span></span>`;
   if (jgVista() !== 'roleta' || !N) return;
   const CX = 250, CY = 250, R1 = 220, R0 = 74, ST = 360 / N, GAP = 1.1, f2 = n => n.toFixed(2);
@@ -16176,7 +16309,7 @@ function renderJogo() {
   let h = '';
   vis.forEach((m, i) => { const a0 = i * ST + GAP, a1 = (i + 1) * ST - GAP, mid = (a0 + a1) / 2, [ix, iy] = pt(mid, R0 + (R1 - R0) * .6), [nx, ny] = pt(mid, R0 + (R1 - R0) * .26), g = jgProg(m), cor = m.breve ? 'var(--line)' : m.corNav;
     const ic = String(MOD_SVG[m.id] || '').replace('<svg ', `<svg x="${f2(ix - 17)}" y="${f2(iy - 17)}" width="34" height="34" `).replace(/stroke="currentColor"/, `stroke="${m.breve ? 'var(--muted)' : '#0F1F3D'}"`);
-    h += `<g class="jg-sl${i === jgSel ? ' on' : ''}" data-jgi="${i}" tabindex="0" role="button" aria-label="Módulo ${i + 1}: ${esc(m.nome)}"><path class="jg-hit" d="${ann(a0, a1, R0, R1)}" fill="transparent"/><g class="jg-f"><path class="jg-shape" d="${ann(a0, a1, R0, R1)}" fill="${cor}"/><path d="${arc(a0 + 1, a1 - 1, R1 + 11)}" stroke="var(--line)" stroke-width="5" stroke-linecap="round" fill="none"/>${g && g.f ? `<path d="${arc(a0 + 1, a0 + 1 + (a1 - a0 - 2) * Math.min(1, g.f / g.n), R1 + 11)}" stroke="${cor}" stroke-width="5" stroke-linecap="round" fill="none"/>` : ''}<g class="jg-ic">${ic}</g><g class="jg-ic"><text x="${f2(nx)}" y="${f2(ny + 5)}" text-anchor="middle" font-family="Poppins, sans-serif" font-weight="700" font-size="15" fill="${m.breve ? 'var(--muted)' : '#0F1F3D'}" opacity=".7">${i + 1}</text></g></g></g>`; });
+    h += `<g class="jg-sl${i === jgSel ? ' on' : ''}" data-jgi="${i}" tabindex="0" role="button" aria-label="Módulo ${i + 1}: ${esc(m.nome)}"><path class="jg-hit" d="${ann(i * ST, (i + 1) * ST, R0 - 6, R1 + 20)}" fill="transparent"/><g class="jg-f"><path class="jg-shape" d="${ann(a0, a1, R0, R1)}" fill="${cor}"/><path d="${arc(a0 + 1, a1 - 1, R1 + 11)}" stroke="var(--line)" stroke-width="5" stroke-linecap="round" fill="none"/>${g && g.f ? `<path d="${arc(a0 + 1, a0 + 1 + (a1 - a0 - 2) * Math.min(1, g.f / g.n), R1 + 11)}" stroke="${cor}" stroke-width="5" stroke-linecap="round" fill="none"/>` : ''}<g class="jg-ic">${ic}</g><g class="jg-ic"><text x="${f2(nx)}" y="${f2(ny + 5)}" text-anchor="middle" font-family="Poppins, sans-serif" font-weight="700" font-size="15" fill="${m.breve ? 'var(--muted)' : '#0F1F3D'}" opacity=".7">${i + 1}</text></g></g></g>`; });
   h += `<circle cx="${CX}" cy="${CY}" r="${R0 - 6}" fill="var(--panel)" stroke="var(--line)"/>`;
   const g0 = $('jg-rot'); g0.innerHTML = h; g0.style.transform = `rotate(${jgRot}deg)`; g0.querySelectorAll('.jg-ic').forEach(x => x.style.transform = `rotate(${-jgRot}deg)`);
   jgGrow(jgSel, true); jgMostra(jgSel);
@@ -16188,8 +16321,8 @@ function jgMostra(i) {
   const prox = g && g.prox ? g.prox : null, pct = g ? Math.round(g.f / g.n * 100) : null;
   $('jg-info').innerHTML = `<span class="jg-casa">Módulo ${i + 1} de ${vis.length}${m.breve ? ' · em breve' : ''}${m === sug ? ' · próxima jogada sugerida' : ''}</span><h3>${esc(m.nome)}</h3><p>${esc(m.desc)}</p>
     ${m.breve ? '' : `<div class="jg-res">${modResumo(m)}</div>`}
-    ${g ? `<div><div class="jg-pl"><span>${g.f} de ${g.n} casas deste módulo</span><span>${pct}% completo</span></div><div class="jg-bar"><span style="width:${pct}%;background:${m.corNav}"></span></div></div>` : ''}
-    ${prox ? `<a href="#" class="jg-prox" data-jgir="${esc(prox.tab || '')}" data-jgsec="${esc(prox.sec || '')}"><span><b>Próxima casa: ${esc(prox.t)}</b><small>${esc(prox.d || '')}</small></span><span class="jg-pt">+${JG_PTS.casa}</span></a>` : g && g.f === g.n ? `<div class="jg-prox"><span><b>Módulo completo</b><small>Valeu +${JG_PTS.modulo} pontos.</small></span></div>` : ''}
+    ${g ? `<div><div class="jg-pl"><span>${g.f} de ${g.n} passos concluídos</span><span>${pct}% completo</span></div><div class="jg-bar"><span style="width:${pct}%;background:${m.corNav}"></span></div></div>` : ''}
+    ${prox ? `<a href="#" class="jg-prox" data-jgir="${esc(prox.tab || '')}" data-jgsec="${esc(prox.sec || '')}"><span><b>Próximo passo: ${esc(prox.t)}</b><small>${esc(prox.d || '')}</small></span><span class="jg-pt">+${JG_PTS.casa}</span></a>` : g && g.f === g.n ? `<div class="jg-prox"><span><b>Módulo completo</b><small>Valeu +${JG_PTS.modulo} pontos.</small></span></div>` : ''}
     <div class="jg-bts">${m.breve ? '<button type="button" class="btn" disabled>Em breve</button>' : `<button type="button" class="btn" data-irmod="${m.id}">Entrar no módulo</button>`}<button type="button" class="btn ghost" id="jg-girar">Próxima jogada</button></div>`;
 }
 function jgGira(i) { const vis = jgMods(), N = vis.length, mid = (i + .5) * 360 / N; let t = -mid; while (t > jgRot - 360) t -= 360; jgRot = t;
@@ -16221,7 +16354,7 @@ function jgMisLista() {
     mes: [{ ok: fechOk, t: `Fechar ${mLabel(HOJE_IDX - 1)}`, d: 'Projetado contra real, linha a linha.', pts: JG_PTS.fech, ir: ['gastos', 'Fechamento do mês'] },
       { ok: cpOk, t: 'Checkpoint de patrimônio', d: 'Salve o total da carteira do mês.', pts: JG_PTS.cp, ir: ['carteira', 'Cadastrar aplicação'] },
       { ok: dentro === true, t: 'Fechar o mês dentro do projetado', d: dentro === false ? 'Este passou do projetado. Fica para o próximo.' : 'Custos reais iguais ou menores que os projetados.', pts: JG_PTS.dentro }],
-    temporada: sug && gs ? [{ ok: false, t: `Completar ${sug.nome}`, d: `${gs.f} de ${gs.n} casas feitas.`, pts: JG_PTS.modulo, ir: [sug.vg || sug.tabs[0], ''] }] : [{ ok: true, t: 'Todos os módulos completos', d: 'Parabéns.', pts: JG_PTS.modulo }]
+    temporada: sug && gs ? [{ ok: false, t: `Completar ${sug.nome}`, d: `${gs.f} de ${gs.n} passos concluídos.`, pts: JG_PTS.modulo, ir: [sug.vg || sug.tabs[0], ''] }] : [{ ok: true, t: 'Todos os módulos completos', d: 'Parabéns.', pts: JG_PTS.modulo }]
   };
 }
 function renderMissoes() {
@@ -16253,7 +16386,7 @@ function renderJgRes() {
       <div class="jg-k" style="--c:#EE6C4D"><small>Gasto no mês</small><b class="${usado != null && D.tprev > D.tp * 1.02 ? 'neg' : ''}">${usado == null ? '–' : pct(usado, 0)}</b><span>${usado == null ? 'sem custos projetados' : `do projetado, dia ${D.dia} de ${D.dm}`}</span></div>
       <div class="jg-k" style="--c:#3FB58A"><small>Plano</small><b class="${dp == null ? '' : dp < 0 ? 'neg' : 'pos'}">${dp == null ? '–' : dp >= 0 ? 'No trilho' : 'Abaixo'}</b><span>${dp == null ? 'faça um checkpoint' : `${dp >= 0 ? '+' : '−'}${fm(Math.abs(dp))} em ${mLabel(mIndex(ult.mes))}`}</span></div>
     </div>
-    ${nx ? `<a href="#" class="jg-prox" data-jgir="${esc(nx.ir[0])}" data-jgsec="${esc(nx.ir[1])}"><span><b>Próxima casa: ${esc(nx.t)}</b><small>${esc(nx.d)}</small></span><span class="jg-pt">+${nx.pts}</span></a>` : ''}
+    ${nx ? `<a href="#" class="jg-prox" data-jgir="${esc(nx.ir[0])}" data-jgsec="${esc(nx.ir[1])}"><span><b>Próximo passo: ${esc(nx.t)}</b><small>${esc(nx.d)}</small></span><span class="jg-pt">+${nx.pts}</span></a>` : ''}
     <div class="jg-bts"><button type="button" class="btn ghost tiny" data-irtab="inicio">Abrir Finanças</button></div></div></div>`;
 }
 document.addEventListener('click', e => { const b = e.target.closest('[data-jgaba]'); if (b) { jgAba = b.dataset.jgaba; renderMissoes(); } });
@@ -16263,8 +16396,8 @@ function renderModulos() {
   setTimeout(() => { if (tab !== 'modulos') return; try { $('md-tl').innerHTML = tlHtml(itensVisiveis()); renderMdChart(); } catch (er) { console.error(er); } }, 0);
   const vis = MODS.filter(m => modLiberado(m) && (m.breve || modEscolhido(m)));
   $('md-grid').innerHTML = vis.map(m => m.breve
-    ? `<div class="md-card breve" style="--mc:${m.cor}" aria-disabled="true"><div class="md-img">${MOD_SVG[m.id]}</div><span class="chip">Em breve</span><h3>${esc(m.nome)}</h3><p>${esc(m.desc)}</p><div class="md-res">Ainda em construção</div></div>`
-    : `<button type="button" class="md-card${m.id === modAtual ? ' atual' : ''}" style="--mc:${m.cor}" data-irmod="${m.id}"><div class="md-img">${MOD_SVG[m.id]}</div><h3>${esc(m.nome)}</h3><p>${esc(m.desc)}</p><div class="md-res">${modResumo(m)}</div></button>`).join('');
+    ? `<div class="md-card breve" style="--mc:${m.corNav}" aria-disabled="true"><div class="md-img">${MOD_SVG[m.id]}</div><span class="chip">Em breve</span><h3>${esc(m.nome)}</h3><p>${esc(m.desc)}</p><div class="md-res">Ainda em construção</div></div>`
+    : `<button type="button" class="md-card${m.id === modAtual ? ' atual' : ''}" style="--mc:${m.corNav}" data-irmod="${m.id}"><div class="md-img">${MOD_SVG[m.id]}</div><h3>${esc(m.nome)}</h3><p>${esc(m.desc)}</p><div class="md-res">${modResumo(m)}</div></button>`).join('');
   const esc0 = MODS.filter(m => !m.fixo && !m.breve && modLiberado(m));
   $('md-esc-l').innerHTML = `<label class="check"><input type="checkbox" checked disabled> Finanças <span class="subdet">sempre ligado</span></label>` +
     esc0.map(m => `<label class="check"><input type="checkbox" data-modesc="${m.id}"${modEscolhido(m) ? ' checked' : ''}> ${esc(m.nome)}</label>`).join('') +
@@ -19426,6 +19559,71 @@ Object.keys(INT_POS).forEach(t => { const r0 = RENDER[t]; if (!r0) return; RENDE
   document.addEventListener('mousedown', e => { if (!pop.hidden && !pop.contains(e.target) && e.target !== alvo) fecha(false); }, true);
   addEventListener('scroll', () => { if (!pop.hidden) { if (alvo && !alvo.isConnected) fecha(false); else posiciona(); } }, true);
   addEventListener('resize', posiciona);
+})();
+</script>
+<script>window.__LB_WM = "<svg class=\"wm\" viewBox=\"-10 -784 4498 794\" role=\"img\" aria-label=\"LifeBoard\"><path d=\"M72 0V-745H208V-120H527V0Z M557 0V-544H688V0Z M825 0V-427H729V-544H825V-562Q825 -624 850.5 -667.5Q876 -711 922.0 -734.0Q968 -757 1031 -757Q1043 -757 1057.5 -755.5Q1072 -754 1082 -752V-639Q1072 -641 1063.5 -641.5Q1055 -642 1048 -642Q1004 -642 980.0 -622.5Q956 -603 956 -562V-544H1077V-427H956V0Z M1391 12Q1307 12 1244.0 -26.0Q1181 -64 1146.0 -129.0Q1111 -194 1111 -273Q1111 -355 1146.5 -418.5Q1182 -482 1243.5 -519.0Q1305 -556 1381 -556Q1445 -556 1493.5 -535.0Q1542 -514 1576.0 -477.0Q1610 -440 1628.0 -392.5Q1646 -345 1646 -290Q1646 -276 1644.5 -261.0Q1643 -246 1639 -235H1219V-335H1565L1503 -288Q1512 -334 1498.5 -370.0Q1485 -406 1454.5 -427.0Q1424 -448 1381 -448Q1340 -448 1308.0 -427.5Q1276 -407 1259.5 -367.5Q1243 -328 1247 -272Q1243 -222 1260.5 -183.5Q1278 -145 1312.5 -124.0Q1347 -103 1392 -103Q1437 -103 1468.5 -122.0Q1500 -141 1518 -173L1624 -121Q1608 -82 1574.0 -52.0Q1540 -22 1493.5 -5.0Q1447 12 1391 12Z M1721 0V-745H2035Q2109 -745 2161.5 -719.5Q2214 -694 2242.5 -647.5Q2271 -601 2271 -535Q2271 -484 2243.5 -439.5Q2216 -395 2156 -366V-429Q2211 -408 2243.0 -377.0Q2275 -346 2288.0 -308.0Q2301 -270 2301 -228Q2301 -121 2230.5 -60.5Q2160 0 2035 0ZM1857 -120H2049Q2102 -120 2133.5 -149.5Q2165 -179 2165 -228Q2165 -277 2133.5 -307.0Q2102 -337 2049 -337H1857ZM1857 -456H2042Q2084 -456 2109.0 -480.5Q2134 -505 2134 -544Q2134 -583 2109.0 -606.0Q2084 -629 2042 -629H1857Z M2632 12Q2552 12 2486.5 -25.0Q2421 -62 2382.5 -126.0Q2344 -190 2344 -272Q2344 -354 2382.5 -418.0Q2421 -482 2486.0 -519.0Q2551 -556 2632 -556Q2712 -556 2777.0 -519.0Q2842 -482 2880.5 -418.5Q2919 -355 2919 -272Q2919 -190 2880.0 -126.0Q2841 -62 2776.0 -25.0Q2711 12 2632 12ZM2632 -108Q2676 -108 2709.5 -129.0Q2743 -150 2762.5 -187.5Q2782 -225 2782 -272Q2782 -320 2762.5 -356.5Q2743 -393 2709.5 -414.5Q2676 -436 2632 -436Q2587 -436 2553.0 -414.5Q2519 -393 2499.5 -356.5Q2480 -320 2480 -272Q2480 -225 2499.5 -187.5Q2519 -150 2553.0 -129.0Q2587 -108 2632 -108Z M3148 12Q3091 12 3049.0 -7.0Q3007 -26 2984.0 -61.5Q2961 -97 2961 -144Q2961 -189 2981.0 -224.5Q3001 -260 3043.0 -284.0Q3085 -308 3149 -318L3327 -347V-247L3174 -221Q3135 -214 3116.0 -196.0Q3097 -178 3097 -149Q3097 -121 3118.5 -104.5Q3140 -88 3172 -88Q3213 -88 3244.5 -105.5Q3276 -123 3293.5 -154.0Q3311 -185 3311 -222V-362Q3311 -397 3283.5 -420.5Q3256 -444 3211 -444Q3169 -444 3136.5 -421.5Q3104 -399 3089 -362L2982 -414Q2998 -457 3032.5 -488.5Q3067 -520 3114.0 -538.0Q3161 -556 3216 -556Q3283 -556 3334.0 -531.5Q3385 -507 3413.5 -463.5Q3442 -420 3442 -362V0H3318V-93L3346 -95Q3325 -60 3296.0 -36.5Q3267 -13 3230.0 -0.5Q3193 12 3148 12Z M3528 0V-544H3651V-423L3641 -441Q3660 -502 3700.5 -526.0Q3741 -550 3798 -550H3830V-434H3783Q3727 -434 3693.0 -399.5Q3659 -365 3659 -303V0Z M4120 12Q4041 12 3979.0 -25.5Q3917 -63 3881.0 -128.0Q3845 -193 3845 -272Q3845 -352 3881.0 -416.0Q3917 -480 3979.5 -518.0Q4042 -556 4119 -556Q4181 -556 4229.5 -531.5Q4278 -507 4306 -463L4286 -436V-757H4417V0H4293V-105L4307 -79Q4279 -35 4229.0 -11.5Q4179 12 4120 12ZM4134 -108Q4179 -108 4213.0 -129.0Q4247 -150 4266.5 -187.0Q4286 -224 4286 -272Q4286 -319 4266.5 -356.5Q4247 -394 4213.0 -415.0Q4179 -436 4134 -436Q4090 -436 4055.0 -414.5Q4020 -393 4000.5 -356.5Q3981 -320 3981 -272Q3981 -224 4000.5 -187.0Q4020 -150 4055.0 -129.0Q4090 -108 4134 -108Z\" fill=\"currentColor\"/><path class=\"pg\" d=\"M634.5 -577.5 L534.9 -767.1 A212.1 212.1 0 0 1 734.1 -767.1 Z\" fill=\"#F0A46B\"/></svg>";</script>
+<script>
+/* LifeBoard: visual novo (A Tabuleiro / B Leve) com volta para o antigo. Escolha fica no aparelho (localStorage painel-visual). */
+(function () {
+  const root = document.documentElement;
+  const VK = 'painel-visual';
+  const VARS = window.__LB_VARS || [['a', 'Novo A'], ['b', 'Novo B'], ['atual', 'Antigo']];
+  function getVar() { let v = VARS[0][0]; try { v = localStorage.getItem(VK) || VARS[0][0]; } catch (e) {} return VARS.some(x => x[0] === v) ? v : VARS[0][0]; }
+  function setVar(v) { try { localStorage.setItem(VK, v); } catch (e) {} aplicaVar(); }
+  function aplicaVar() { const v = getVar(); if (v === 'atual') root.removeAttribute('data-lb'); else root.setAttribute('data-lb', v); pintaTop(); pintaProto(); }
+  function modDe(t) { try { return MODS.find(m => (m.tabs || []).includes(t)) || null; } catch (e) { return null; } }
+  function escuroAgora() { const t = root.getAttribute('data-theme'); if (t) return t === 'dark'; return matchMedia('(prefers-color-scheme: dark)').matches; }
+  function setTema(t) { try { localStorage.setItem('painel-tema', t); } catch (e) {} try { jgAplicaTema(); } catch (e) { root.setAttribute('data-theme', t === 'claro' ? 'light' : 'dark'); } try { if (typeof tab !== 'undefined' && tab === 'modulos') renderJogo(); } catch (e) {} pintaTop(); pintaProto(); }
+
+  const top = document.createElement('div');
+  top.id = 'lb-top';
+  const wrap = document.querySelector('.main > .wrap');
+  if (wrap) wrap.insertBefore(top, wrap.firstChild);
+
+  function tituloTela(t) { const h = document.querySelector('#p-' + t + ' .block-title h1'); return h ? h.textContent.trim() : ''; }
+  function pintaTop() {
+    const t = typeof tab !== 'undefined' ? tab : 'modulos', m = modDe(t), v = getVar(), esc = escuroAgora();
+    const crumb = t === 'modulos' ? '<b>Seus módulos</b>' : '<a href="#" data-lbhome>Módulos</a> › ' + (m ? m.nome + ' › ' : '') + '<b>' + (tituloTela(t) || '') + '</b>';
+    top.innerHTML = '<div class="crumb">' + crumb + '</div>' +
+      (VARS.length > 1 ? '<div class="modo" role="group" aria-label="Visual">' + VARS.map(x => '<button type="button" data-lbv="' + x[0] + '" aria-pressed="' + (x[0] === v) + '">' + x[1] + '</button>').join('') + '</div>' : '') +
+      '<div class="modo" role="group" aria-label="Aparência"><button type="button" data-lbt="escuro" aria-pressed="' + esc + '">Escuro</button><button type="button" data-lbt="claro" aria-pressed="' + !esc + '">Claro</button></div>';
+  }
+  top.addEventListener('click', e => {
+    const b = e.target.closest('[data-lbt]'); if (b) setTema(b.dataset.lbt);
+    const w = e.target.closest('[data-lbv]'); if (w) setVar(w.dataset.lbv);
+    if (e.target.closest('[data-lbhome]')) { e.preventDefault(); showTab('modulos'); }
+  });
+  try { matchMedia('(prefers-color-scheme: dark)').addEventListener('change', pintaTop); } catch (e) {}
+
+  function marca(t) {
+    const m = modDe(t);
+    root.style.setProperty('--m', m ? (m.corNav || '#F0A46B') : '#F0A46B');
+    document.querySelectorAll('.block-title h1').forEach(h => {
+      const p = h.closest('[role=tabpanel]'); const mm = p ? modDe(p.id.slice(2)) : null;
+      if (mm) { const i = MODS.indexOf(mm) + 1; h.setAttribute('data-lbmod', 'Módulo ' + i + ' de ' + MODS.length + ' · ' + mm.nome); }
+    });
+    pintaTop();
+  }
+  const orig = showTab;
+  showTab = function (t, k) { const r = orig.apply(this, arguments); try { marca(typeof tab !== 'undefined' ? tab : t); } catch (e) {} return r; };
+
+  // logotipo LifeBoard no topo do menu (o nome antigo volta no visual Antigo)
+  const nm = document.querySelector('.side-nome');
+  if (nm && !nm.querySelector('.lb-wm') && window.__LB_WM) { const w = document.createElement('span'); w.className = 'lb-wm'; w.innerHTML = window.__LB_WM; const b = nm.querySelector(':scope > b'); if (b) b.after(w); else nm.prepend(w); }
+
+  // barra do protótipo (só no protótipo)
+  let pb = null;
+  if (window.__LB_PROTO) {
+    pb = document.createElement('div');
+    pb.id = 'lb-proto';
+    pb.innerHTML = 'Visual <span class="g"><button data-lbv="atual">Atual</button><button data-lbv="a">Novo A · Tabuleiro</button><button data-lbv="b">Novo B · Leve</button></span><span class="g"><button data-lbp="escuro">Escuro</button><button data-lbp="claro">Claro</button></span>';
+    document.body.appendChild(pb);
+    pb.addEventListener('click', e => { const b = e.target.closest('button'); if (!b) return; if (b.dataset.lbv) setVar(b.dataset.lbv); if (b.dataset.lbp) setTema(b.dataset.lbp); });
+  }
+  function pintaProto() { if (!pb) return; const v = getVar(), esc = escuroAgora(); pb.querySelectorAll('[data-lbv]').forEach(b => b.setAttribute('aria-pressed', b.dataset.lbv === v)); pb.querySelectorAll('[data-lbp]').forEach(b => b.setAttribute('aria-pressed', (b.dataset.lbp === 'escuro') === esc)); }
+
+  aplicaVar();
+  try { marca(typeof tab !== 'undefined' ? tab : 'modulos'); } catch (e) {}
 })();
 </script>
 
