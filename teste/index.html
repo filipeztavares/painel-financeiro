@@ -115,14 +115,24 @@ h1, h2, h3 { font-family: var(--f-head); }
 #pj-trocas .orc-troca { margin: 10px 0; }
 #tbl-plano th .chip { display: block; margin-top: 3px; font-size: 9.5px; text-transform: none; letter-spacing: 0; }
 #tbl-plano tr.mm-reg td { font-size: 11.5px; color: var(--muted); }
-#carregando { position: fixed; inset: 0; z-index: 8000; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px; background: var(--bg, #FAF8F4); color: var(--ink); transition: opacity .3s; }
+#carregando { position: fixed; inset: 0; z-index: 8000; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 22px; background: var(--bg, #FAF8F4); color: var(--ink); transition: opacity .35s; font-family: "Plus Jakarta Sans", var(--font-body, system-ui), sans-serif; padding: 0 16px; }
 #carregando.some { opacity: 0; pointer-events: none; }
 #carregando[hidden] { display: none; }
-#carregando .cr-roda { width: 56px; height: 56px; animation: cr-gira 1.6s linear infinite; }
-#carregando b { font-size: 15px; font-weight: 700; }
-#carregando span { font-size: 13px; color: var(--muted); }
-@keyframes cr-gira { to { transform: rotate(360deg); } }
-@media (prefers-reduced-motion: reduce) { #carregando .cr-roda { animation-duration: 6s; } }
+#carregando .wm { width: 230px; max-width: 70vw; height: auto; display: block; color: var(--ink); }
+#carregando .wm .pg { fill: #F0A46B; }
+#carregando .cr-trilha { position: relative; display: flex; gap: 9px; padding-top: 30px; }
+#carregando .cr-casa { width: 30px; height: 30px; border-radius: 7px; background: var(--c); opacity: .25; transition: opacity .25s; }
+#carregando .cr-casa.on { opacity: 1; }
+#carregando .cr-pino { position: absolute; top: 0; left: 0; width: 22px; height: 25px; transition: transform .32s cubic-bezier(.3,1.4,.5,1); }
+#carregando .cr-pino svg { width: 100%; height: 100%; display: block; fill: #F0A46B; }
+#carregando .cr-txt { display: grid; gap: 10px; justify-items: center; text-align: center; }
+#carregando .cr-txt b { font-size: 15px; font-weight: 700; }
+#carregando .cr-passos { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px 16px; font-size: 13px; font-weight: 600; color: var(--muted); }
+#carregando .cr-passos span { display: flex; align-items: center; gap: 6px; transition: color .3s; }
+#carregando .cr-passos span::before { content: ""; width: 10px; height: 10px; border-radius: 50%; border: 2px solid var(--line); box-sizing: border-box; transition: background .3s, border-color .3s; }
+#carregando .cr-passos span.ok { color: var(--ink); }
+#carregando .cr-passos span.ok::before { border-color: var(--c); background: var(--c); }
+@media (prefers-reduced-motion: reduce) { #carregando .cr-pino { transition: none; } }
 .tour-pop { position: fixed; z-index: 1001; width: min(360px, calc(100vw - 32px)); background: var(--panel); color: var(--ink); border: 1px solid var(--line); border-top: 5px solid var(--accent); border-radius: 12px; padding: 14px 16px 12px; box-shadow: 0 12px 40px rgba(0,0,0,.28); }
 .tour-pop[hidden] { display: none; }
 .tour-pop .tour-n { font-size: 11px; font-weight: 600; letter-spacing: .05em; text-transform: uppercase; color: var(--accent); }
@@ -2574,11 +2584,11 @@ html[data-lb="b"] .block-title .desc{font-size:14px;color:var(--muted);margin-to
     </div>
     <div class="nav-mobile-sub" id="navMobileSub"></div>
   </div>
-  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 369</div></div>
+  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 370</div></div>
 </nav>
 <div class="sino-pop" id="sino-pop" role="dialog" aria-label="Atualizações das bases" hidden></div>
 <div class="sino-pop" id="pess-pop" role="dialog" aria-label="Seus avisos" hidden></div>
-<div id="carregando" role="status" aria-live="polite"><svg class="cr-roda" viewBox="0 0 100 100" aria-hidden="true"><path d="M50 50 L50 12 A38 38 0 0 1 86.1 38.3 Z" fill="#5B8DEF"/><path d="M50 50 L86.1 38.3 A38 38 0 0 1 72.3 80.7 Z" fill="#F2C14E"/><path d="M50 50 L72.3 80.7 A38 38 0 0 1 27.7 80.7 Z" fill="#EE6C4D"/><path d="M50 50 L27.7 80.7 A38 38 0 0 1 13.9 38.3 Z" fill="#3FB58A"/><path d="M50 50 L13.9 38.3 A38 38 0 0 1 50 12 Z" fill="#8E7CF0"/><circle cx="50" cy="50" r="9" fill="var(--bg, #FAF8F4)"/></svg><b>Carregando seus dados…</b><span>Só um instante</span></div>
+<div id="carregando" role="status" aria-live="polite"><svg class="wm" viewBox="-10 -784 4498 794" role="img" aria-label="LifeBoard"><path d="M72 0V-745H208V-120H527V0Z M557 0V-544H688V0Z M825 0V-427H729V-544H825V-562Q825 -624 850.5 -667.5Q876 -711 922.0 -734.0Q968 -757 1031 -757Q1043 -757 1057.5 -755.5Q1072 -754 1082 -752V-639Q1072 -641 1063.5 -641.5Q1055 -642 1048 -642Q1004 -642 980.0 -622.5Q956 -603 956 -562V-544H1077V-427H956V0Z M1391 12Q1307 12 1244.0 -26.0Q1181 -64 1146.0 -129.0Q1111 -194 1111 -273Q1111 -355 1146.5 -418.5Q1182 -482 1243.5 -519.0Q1305 -556 1381 -556Q1445 -556 1493.5 -535.0Q1542 -514 1576.0 -477.0Q1610 -440 1628.0 -392.5Q1646 -345 1646 -290Q1646 -276 1644.5 -261.0Q1643 -246 1639 -235H1219V-335H1565L1503 -288Q1512 -334 1498.5 -370.0Q1485 -406 1454.5 -427.0Q1424 -448 1381 -448Q1340 -448 1308.0 -427.5Q1276 -407 1259.5 -367.5Q1243 -328 1247 -272Q1243 -222 1260.5 -183.5Q1278 -145 1312.5 -124.0Q1347 -103 1392 -103Q1437 -103 1468.5 -122.0Q1500 -141 1518 -173L1624 -121Q1608 -82 1574.0 -52.0Q1540 -22 1493.5 -5.0Q1447 12 1391 12Z M1721 0V-745H2035Q2109 -745 2161.5 -719.5Q2214 -694 2242.5 -647.5Q2271 -601 2271 -535Q2271 -484 2243.5 -439.5Q2216 -395 2156 -366V-429Q2211 -408 2243.0 -377.0Q2275 -346 2288.0 -308.0Q2301 -270 2301 -228Q2301 -121 2230.5 -60.5Q2160 0 2035 0ZM1857 -120H2049Q2102 -120 2133.5 -149.5Q2165 -179 2165 -228Q2165 -277 2133.5 -307.0Q2102 -337 2049 -337H1857ZM1857 -456H2042Q2084 -456 2109.0 -480.5Q2134 -505 2134 -544Q2134 -583 2109.0 -606.0Q2084 -629 2042 -629H1857Z M2632 12Q2552 12 2486.5 -25.0Q2421 -62 2382.5 -126.0Q2344 -190 2344 -272Q2344 -354 2382.5 -418.0Q2421 -482 2486.0 -519.0Q2551 -556 2632 -556Q2712 -556 2777.0 -519.0Q2842 -482 2880.5 -418.5Q2919 -355 2919 -272Q2919 -190 2880.0 -126.0Q2841 -62 2776.0 -25.0Q2711 12 2632 12ZM2632 -108Q2676 -108 2709.5 -129.0Q2743 -150 2762.5 -187.5Q2782 -225 2782 -272Q2782 -320 2762.5 -356.5Q2743 -393 2709.5 -414.5Q2676 -436 2632 -436Q2587 -436 2553.0 -414.5Q2519 -393 2499.5 -356.5Q2480 -320 2480 -272Q2480 -225 2499.5 -187.5Q2519 -150 2553.0 -129.0Q2587 -108 2632 -108Z M3148 12Q3091 12 3049.0 -7.0Q3007 -26 2984.0 -61.5Q2961 -97 2961 -144Q2961 -189 2981.0 -224.5Q3001 -260 3043.0 -284.0Q3085 -308 3149 -318L3327 -347V-247L3174 -221Q3135 -214 3116.0 -196.0Q3097 -178 3097 -149Q3097 -121 3118.5 -104.5Q3140 -88 3172 -88Q3213 -88 3244.5 -105.5Q3276 -123 3293.5 -154.0Q3311 -185 3311 -222V-362Q3311 -397 3283.5 -420.5Q3256 -444 3211 -444Q3169 -444 3136.5 -421.5Q3104 -399 3089 -362L2982 -414Q2998 -457 3032.5 -488.5Q3067 -520 3114.0 -538.0Q3161 -556 3216 -556Q3283 -556 3334.0 -531.5Q3385 -507 3413.5 -463.5Q3442 -420 3442 -362V0H3318V-93L3346 -95Q3325 -60 3296.0 -36.5Q3267 -13 3230.0 -0.5Q3193 12 3148 12Z M3528 0V-544H3651V-423L3641 -441Q3660 -502 3700.5 -526.0Q3741 -550 3798 -550H3830V-434H3783Q3727 -434 3693.0 -399.5Q3659 -365 3659 -303V0Z M4120 12Q4041 12 3979.0 -25.5Q3917 -63 3881.0 -128.0Q3845 -193 3845 -272Q3845 -352 3881.0 -416.0Q3917 -480 3979.5 -518.0Q4042 -556 4119 -556Q4181 -556 4229.5 -531.5Q4278 -507 4306 -463L4286 -436V-757H4417V0H4293V-105L4307 -79Q4279 -35 4229.0 -11.5Q4179 12 4120 12ZM4134 -108Q4179 -108 4213.0 -129.0Q4247 -150 4266.5 -187.0Q4286 -224 4286 -272Q4286 -319 4266.5 -356.5Q4247 -394 4213.0 -415.0Q4179 -436 4134 -436Q4090 -436 4055.0 -414.5Q4020 -393 4000.5 -356.5Q3981 -320 3981 -272Q3981 -224 4000.5 -187.0Q4020 -150 4055.0 -129.0Q4090 -108 4134 -108Z" fill="currentColor"/><path class="pg" d="M634.5 -577.5 L534.9 -767.1 A212.1 212.1 0 0 1 734.1 -767.1 Z" fill="#F0A46B"/></svg><div class="cr-trilha" aria-hidden="true"><div class="cr-pino"><svg viewBox="0 0 100 115"><path d="M50 112 L4 24 A60 60 0 0 1 96 24 Z"/></svg></div><div class="cr-casa" style="--c:#5B8DEF"></div><div class="cr-casa" style="--c:#F2C14E"></div><div class="cr-casa" style="--c:#EE6C4D"></div><div class="cr-casa" style="--c:#3FB58A"></div><div class="cr-casa" style="--c:#8E7CF0"></div></div><div class="cr-txt"><b>Carregando seus dados…</b><div class="cr-passos"><span data-k="estado" style="--c:#5B8DEF">Plano</span><span data-k="cps" style="--c:#3FB58A">Checkpoints</span><span data-k="gastos" style="--c:#EE6C4D">Gastos</span></div></div></div>
 <div class="tour-pop" id="tour-pop" role="dialog" aria-labelledby="tour-tit" hidden></div>
 <div class="imp-pop" id="imp-pop" role="dialog" aria-modal="true" aria-labelledby="imp-tit" hidden><div class="imp-box" id="imp-box"></div></div>
 
@@ -4578,7 +4588,7 @@ html[data-lb="b"] .block-title .desc{font-size:14px;color:var(--muted);margin-to
     return new Promise(resolve => { const { data } = sb.auth.onAuthStateChange(async (ev) => { if (ev !== 'PASSWORD_RECOVERY') return; const s = prompt('Digite a nova senha (mínimo 8 caracteres):'); if (s && s.length >= 8) { const { error } = await sb.auth.updateUser({ password: s }); alert(error ? 'Não deu para trocar a senha: ' + error.message : 'Senha trocada.'); } }); resolve(data); });
   }
   // ---------- rodapé: compartilhar, administração e sair ----------
-  const SITE_V = 258;
+  const SITE_V = 259;
   const escH = v => String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const dataBR = v => v ? new Date(v).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' }) : '–';
   const css2 = `.side-foot .r{flex-wrap:wrap}.side-foot .lg-acoes{margin-left:auto;display:inline-flex;gap:10px}
@@ -18224,8 +18234,21 @@ if (!cps.length) cps = CP_PLANILHA.slice();
 showTab(tab); setSave('salvo só neste navegador');
 // tela de carregando: some quando o estado, os checkpoints e os gastos chegam (ou depois de 15 s)
 const CARREG = new Set(['estado', 'cps', 'gastos']);
-function carregou(k) { CARREG.delete(k); if (!CARREG.size) carregFim(); }
-function carregFim() { const el = $('carregando'); if (!el || el.hidden) return; CARREG.clear(); el.classList.add('some'); setTimeout(() => { el.hidden = true; }, 320); try { showTab(tab, true); } catch (e) {} }
+// pino de cobre anda pelas casas enquanto carrega
+let crPasso = 0, crTm = null;
+function crPino(k) {
+  const casas = document.querySelectorAll('#carregando .cr-casa'), pino = document.querySelector('#carregando .cr-pino'); if (!casas.length || !pino) return;
+  const c = casas[k]; pino.style.transform = `translateX(${c.offsetLeft + c.offsetWidth / 2 - pino.offsetWidth / 2}px)`;
+  casas.forEach((x, j) => x.classList.toggle('on', j <= k));
+}
+try { crPino(0); crTm = setInterval(() => { crPasso = (crPasso + 1) % 5; crPino(crPasso); }, 420); } catch (e) {}
+function carregou(k) { const p = document.querySelector(`#carregando .cr-passos [data-k="${k}"]`); if (p) p.classList.add('ok'); CARREG.delete(k); if (!CARREG.size) carregFim(); }
+function carregFim() {
+  const el = $('carregando'); if (!el || el.hidden || el.dataset.fim) return; el.dataset.fim = '1'; CARREG.clear();
+  clearInterval(crTm); try { crPino(4); } catch (e) {}
+  setTimeout(() => { el.classList.add('some'); setTimeout(() => { el.hidden = true; }, 360); }, 380);
+  try { showTab(tab, true); } catch (e) {}
+}
 setTimeout(carregFim, 15000);
 (async () => {
   if (window.claude && window.claude.use) {
@@ -18610,7 +18633,7 @@ function jorSimDb(real) {
   }
   { const o = carregFim; carregFim = function () { o(); setTimeout(inicia, 400); }; }
   // carregou antes deste bloco rodar (ou sem banco)
-  setTimeout(() => { if ($('carregando').hidden) inicia(); }, 1000);
+  setTimeout(() => { if ($('carregando').hidden || $('carregando').dataset.fim) inicia(); }, 1000);
   setTimeout(inicia, 16000);
 })();
 
