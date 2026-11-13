@@ -115,14 +115,24 @@ h1, h2, h3 { font-family: var(--f-head); }
 #pj-trocas .orc-troca { margin: 10px 0; }
 #tbl-plano th .chip { display: block; margin-top: 3px; font-size: 9.5px; text-transform: none; letter-spacing: 0; }
 #tbl-plano tr.mm-reg td { font-size: 11.5px; color: var(--muted); }
-#carregando { position: fixed; inset: 0; z-index: 8000; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px; background: var(--bg, #FAF8F4); color: var(--ink); transition: opacity .3s; }
+#carregando { position: fixed; inset: 0; z-index: 8000; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 22px; background: var(--bg, #FAF8F4); color: var(--ink); transition: opacity .35s; font-family: "Plus Jakarta Sans", var(--font-body, system-ui), sans-serif; padding: 0 16px; }
 #carregando.some { opacity: 0; pointer-events: none; }
 #carregando[hidden] { display: none; }
-#carregando .cr-roda { width: 56px; height: 56px; animation: cr-gira 1.6s linear infinite; }
-#carregando b { font-size: 15px; font-weight: 700; }
-#carregando span { font-size: 13px; color: var(--muted); }
-@keyframes cr-gira { to { transform: rotate(360deg); } }
-@media (prefers-reduced-motion: reduce) { #carregando .cr-roda { animation-duration: 6s; } }
+#carregando .wm { width: 230px; max-width: 70vw; height: auto; display: block; color: var(--ink); }
+#carregando .wm .pg { fill: #F0A46B; }
+#carregando .cr-trilha { position: relative; display: flex; gap: 9px; padding-top: 30px; }
+#carregando .cr-casa { width: 30px; height: 30px; border-radius: 7px; background: var(--c); opacity: .25; transition: opacity .25s; }
+#carregando .cr-casa.on { opacity: 1; }
+#carregando .cr-pino { position: absolute; top: 0; left: 0; width: 22px; height: 25px; transition: transform .32s cubic-bezier(.3,1.4,.5,1); }
+#carregando .cr-pino svg { width: 100%; height: 100%; display: block; fill: #F0A46B; }
+#carregando .cr-txt { display: grid; gap: 10px; justify-items: center; text-align: center; }
+#carregando .cr-txt b { font-size: 15px; font-weight: 700; }
+#carregando .cr-passos { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px 16px; font-size: 13px; font-weight: 600; color: var(--muted); }
+#carregando .cr-passos span { display: flex; align-items: center; gap: 6px; transition: color .3s; }
+#carregando .cr-passos span::before { content: ""; width: 10px; height: 10px; border-radius: 50%; border: 2px solid var(--line); box-sizing: border-box; transition: background .3s, border-color .3s; }
+#carregando .cr-passos span.ok { color: var(--ink); }
+#carregando .cr-passos span.ok::before { border-color: var(--c); background: var(--c); }
+@media (prefers-reduced-motion: reduce) { #carregando .cr-pino { transition: none; } }
 .tour-pop { position: fixed; z-index: 1001; width: min(360px, calc(100vw - 32px)); background: var(--panel); color: var(--ink); border: 1px solid var(--line); border-top: 5px solid var(--accent); border-radius: 12px; padding: 14px 16px 12px; box-shadow: 0 12px 40px rgba(0,0,0,.28); }
 .tour-pop[hidden] { display: none; }
 .tour-pop .tour-n { font-size: 11px; font-weight: 600; letter-spacing: .05em; text-transform: uppercase; color: var(--accent); }
@@ -680,6 +690,26 @@ tr.best td { background: var(--good-soft); }
 .compra details summary { cursor: pointer; font-family: var(--f-head); font-size: 11px; color: var(--accent); font-weight: 600; }
 .compra details .ed { margin-top: 8px; }
 .compra .res { font-size: 11.5px; color: var(--muted); font-variant-numeric: tabular-nums; }
+/* v363: custo de oportunidade da entrada */
+.compra .cent-d > summary { font-size: 11.5px; }
+.compra .cent-d .cent-sum { font-family: var(--f-body, inherit); font-weight: 600; color: var(--ink); font-variant-numeric: tabular-nums; }
+.compra .cent-b { margin-top: 8px; display: flex; flex-direction: column; gap: 8px; }
+.compra .cent-ex { margin: 0; font-size: 12.5px; line-height: 1.5; color: var(--muted); }
+.compra .cent-ex b { color: var(--ink); }
+.compra .cent-ok { margin: 0; font-size: 12.5px; }
+.compra .cent-mm { display: flex; flex-direction: column; gap: 6px; border-top: 1px solid var(--line); padding-top: 10px; }
+.compra .cent-mm h4 { margin: 0; font-size: 13px; }
+.compra .amz-f { align-items: end; }
+.compra .amz-bt span { visibility: hidden; }
+.compra .amz-r { margin: 0; font-size: 12.5px; line-height: 1.5; }
+.compra .amz-l { display: flex; flex-direction: column; gap: 4px; font-size: 12.5px; }
+.compra .amz-it { display: flex; gap: 10px; align-items: center; justify-content: space-between; border: 1px solid var(--line); border-radius: 8px; padding: 6px 10px; }
+.compra .cent-lg { display: flex; gap: 14px; flex-wrap: wrap; align-items: center; font-size: 12px; }
+.compra .cent-lg i { display: inline-block; width: 10px; height: 10px; border-radius: 2px; margin-right: 5px; vertical-align: -1px; }
+.compra .cent-lg .cent-h { color: var(--muted); }
+.compra .cent-t td { white-space: nowrap; font-variant-numeric: tabular-nums; }
+.compra .cent-t th { white-space: normal; vertical-align: bottom; line-height: 1.25; }
+.compra .cent-t th .ibtn { margin-left: 3px; }
 .mm th:first-child, .mm td:first-child { position: sticky; left: 0; z-index: 1; background: var(--panel); min-width: 230px; max-width: 280px; white-space: normal; }
 .mm thead th:first-child { background: var(--field); }
 .mm tr.mm-g td, #tbl-lanc tr.lg-g td { font-weight: 600; background: var(--accent-soft); border-top: 2px solid var(--panel); }
@@ -1653,6 +1683,20 @@ tr.rd-hit td { background: color-mix(in srgb, var(--good) 9%, transparent); }
 .jg-tema .seg button{font-size:11px;padding:3px 10px}
 .jg-tema .seg button[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:#fff}
 .jg-home{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);gap:28px;align-items:start}.jg-home>.jg-info{align-self:center}
+.jg-lado{display:flex;flex-direction:column;gap:22px;min-width:0;align-self:stretch}.jg-lado>.jg-info{margin:auto 0}
+.jg-ag{border:1px solid var(--line);border-left:4px solid var(--agm,#34d399);border-radius:12px;padding:12px 14px;background:var(--panel);display:grid;gap:10px;min-width:0}
+.jg-ag-h{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap}.jg-ag-h b{font-family:var(--f-head);font-size:15px;color:var(--ink)}
+.jg-ag-h .q{font-size:12.5px;color:var(--muted)}.jg-ag-h a{margin-left:auto;font-size:12.5px;font-weight:700;color:var(--accent);text-decoration:none;white-space:nowrap}
+.jg-ag-d{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:4px}
+.jg-ag-d button{all:unset;cursor:pointer;display:grid;justify-items:center;gap:2px;padding:5px 0 6px;border-radius:8px;border:1px solid transparent;font-size:11px;color:var(--muted);text-transform:lowercase}
+.jg-ag-d button:hover,.jg-ag-d button:focus-visible{border-color:var(--line);background:color-mix(in srgb,var(--agm,#34d399) 8%,transparent)}
+.jg-ag-d button.hj{border-color:var(--agm,#34d399)}.jg-ag-d button.pas{opacity:.55}
+.jg-ag-d button b{font-size:13px;color:var(--ink);font-variant-numeric:tabular-nums}
+.jg-ag-d button i{font-style:normal;min-width:18px;height:18px;line-height:18px;text-align:center;border-radius:99px;font-size:11px;font-weight:800;background:var(--line);color:var(--muted)}
+.jg-ag-d button i.n{background:var(--agm,#34d399);color:#0F1F3D}
+.jg-ag .ag-lst li{font-size:13px;min-width:0}.jg-ag .ag-lst li>span:last-child{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0}
+.jg-ag .ag-lst a{color:var(--ink);text-decoration:none}.jg-ag .ag-lst a:hover{text-decoration:underline}
+.jg-ag .hint{margin:0;font-size:13px}
 .jg-roda{position:relative;width:100%;max-width:520px;margin-inline:auto;aspect-ratio:1}
 .jg-roda svg{width:100%;height:100%;display:block;overflow:visible}
 #jg-rot{transform-origin:250px 250px;transition:transform 1.4s cubic-bezier(.2,.8,.15,1)}
@@ -2438,6 +2482,37 @@ table.sc-prem th.sc-col i { display: inline-block; width: 8px; height: 8px; bord
 table.sc-prem td.sc-dif { font-weight: 700; color: var(--accent); background: color-mix(in srgb, #F0A46B 16%, transparent); }
 table.sc-prem tr.sc-res2 td { font-variant-numeric: tabular-nums; }
 table.sc-prem tr.sc-res2:nth-child(2) td { border-bottom: 2px solid var(--line); }
+
+/* v349: escolher o cenário em cada caixa */
+html select.cen-pick.cen-pick { font-size: 13px !important; font-weight: 600 !important; line-height: 1.2 !important; font-family: var(--f-body), system-ui, sans-serif !important; color: var(--ink) !important; background-color: var(--panel) !important; border: 1px solid var(--line) !important; border-radius: 999px !important; padding: 5px 30px 5px 13px !important; height: auto !important; min-height: 0 !important; margin: 0 0 0 10px !important; vertical-align: middle; cursor: pointer; width: auto !important; max-width: 220px; text-transform: none !important; letter-spacing: 0 !important; appearance: none !important; -webkit-appearance: none !important; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M1 1l4 4 4-4' fill='none' stroke='%23888' stroke-width='1.6'/%3E%3C/svg%3E") !important; background-repeat: no-repeat !important; background-position: right 12px center !important; box-shadow: none !important; }
+html select.cen-pick.cen-pick:hover, html select.cen-pick.cen-pick:focus-visible { border-color: var(--accent, #A8582A) !important; outline: none; }
+.cen-pick-l { display: flex !important; align-items: center; gap: 0; flex-direction: row !important; }
+.cen-pick-l select.cen-pick { margin-left: 10px; flex: 0 1 auto; }
+
+/* v352: no cabeçalho das seções, título à esquerda e todos os controles juntos à direita */
+.panel > .row:first-child:has(> h2) > h2 { margin-right: auto; }
+
+/* v354: Novo B, cabeçalho de todas as telas no formato do layout novo (nome do módulo em cima, título grande, sem o quadradinho do número) */
+html[data-lb="b"] .block-title{padding:0 0 14px;margin:0 0 18px;border-bottom:3px solid var(--m);gap:12px;align-items:flex-end}
+html[data-lb="b"] .block-title .num{display:none}
+html[data-lb="b"] .block-title h1{font-family:var(--f-head);font-size:34px;font-weight:800;line-height:1.1;color:var(--ink)}
+html[data-lb="b"] .block-title h1::before{content:attr(data-lbmodn);font:700 12px var(--f-ui);letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin-bottom:12px}
+html[data-lb="b"] .block-title .desc{font-size:14px;color:var(--muted);margin-top:6px}
+@media (max-width:900px){html[data-lb="b"] .block-title h1{font-size:26px}}
+
+/* v355: marca Real / Simulação na linha do tempo */
+.tl-uso{display:inline-block;margin-left:8px;padding:1px 8px;border-radius:999px;font:700 10.5px/1.5 var(--f-ui, inherit);letter-spacing:.02em;vertical-align:1px;white-space:nowrap}
+.tl-uso.real{background:color-mix(in srgb,var(--pos, #2E8B57) 16%,transparent);color:var(--pos, #2E8B57)}
+.tl-uso.sim{background:rgba(245,196,66,.22);color:var(--ink);border:1px dashed #F5C442}
+
+/* v360: barra e confirmação das premissas do cenário */
+#cen-pend{position:fixed;left:50%;bottom:18px;transform:translateX(-50%);z-index:850;display:flex;align-items:center;gap:10px;flex-wrap:wrap;max-width:calc(100% - 32px);padding:10px 12px 10px 16px;border-radius:14px;border:1px solid #F5C442;background:#FFF8E1;color:#1B2433;box-shadow:0 10px 30px rgba(14,26,43,.18);font-size:13.5px}
+#cen-pend[hidden]{display:none}
+#cen-pend .btn{padding:6px 14px}
+.cen-pend-tb{width:100%;border-collapse:collapse;font-size:13.5px;margin:6px 0 14px}
+.cen-pend-tb th,.cen-pend-tb td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line)}
+.cen-pend-tb th{font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.cen-pend-ac{display:flex;gap:8px;justify-content:flex-end;flex-wrap:wrap}
 </style>
 
 
@@ -2528,11 +2603,11 @@ table.sc-prem tr.sc-res2:nth-child(2) td { border-bottom: 2px solid var(--line);
     </div>
     <div class="nav-mobile-sub" id="navMobileSub"></div>
   </div>
-  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 347</div></div>
+  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 374</div></div>
 </nav>
 <div class="sino-pop" id="sino-pop" role="dialog" aria-label="Atualizações das bases" hidden></div>
 <div class="sino-pop" id="pess-pop" role="dialog" aria-label="Seus avisos" hidden></div>
-<div id="carregando" role="status" aria-live="polite"><svg class="cr-roda" viewBox="0 0 100 100" aria-hidden="true"><path d="M50 50 L50 12 A38 38 0 0 1 86.1 38.3 Z" fill="#5B8DEF"/><path d="M50 50 L86.1 38.3 A38 38 0 0 1 72.3 80.7 Z" fill="#F2C14E"/><path d="M50 50 L72.3 80.7 A38 38 0 0 1 27.7 80.7 Z" fill="#EE6C4D"/><path d="M50 50 L27.7 80.7 A38 38 0 0 1 13.9 38.3 Z" fill="#3FB58A"/><path d="M50 50 L13.9 38.3 A38 38 0 0 1 50 12 Z" fill="#8E7CF0"/><circle cx="50" cy="50" r="9" fill="var(--bg, #FAF8F4)"/></svg><b>Carregando seus dados…</b><span>Só um instante</span></div>
+<div id="carregando" role="status" aria-live="polite" aria-label="Carregando seus dados"><svg class="wm" viewBox="-10 -784 4498 794" role="img" aria-label="LifeBoard"><path d="M72 0V-745H208V-120H527V0Z M557 0V-544H688V0Z M825 0V-427H729V-544H825V-562Q825 -624 850.5 -667.5Q876 -711 922.0 -734.0Q968 -757 1031 -757Q1043 -757 1057.5 -755.5Q1072 -754 1082 -752V-639Q1072 -641 1063.5 -641.5Q1055 -642 1048 -642Q1004 -642 980.0 -622.5Q956 -603 956 -562V-544H1077V-427H956V0Z M1391 12Q1307 12 1244.0 -26.0Q1181 -64 1146.0 -129.0Q1111 -194 1111 -273Q1111 -355 1146.5 -418.5Q1182 -482 1243.5 -519.0Q1305 -556 1381 -556Q1445 -556 1493.5 -535.0Q1542 -514 1576.0 -477.0Q1610 -440 1628.0 -392.5Q1646 -345 1646 -290Q1646 -276 1644.5 -261.0Q1643 -246 1639 -235H1219V-335H1565L1503 -288Q1512 -334 1498.5 -370.0Q1485 -406 1454.5 -427.0Q1424 -448 1381 -448Q1340 -448 1308.0 -427.5Q1276 -407 1259.5 -367.5Q1243 -328 1247 -272Q1243 -222 1260.5 -183.5Q1278 -145 1312.5 -124.0Q1347 -103 1392 -103Q1437 -103 1468.5 -122.0Q1500 -141 1518 -173L1624 -121Q1608 -82 1574.0 -52.0Q1540 -22 1493.5 -5.0Q1447 12 1391 12Z M1721 0V-745H2035Q2109 -745 2161.5 -719.5Q2214 -694 2242.5 -647.5Q2271 -601 2271 -535Q2271 -484 2243.5 -439.5Q2216 -395 2156 -366V-429Q2211 -408 2243.0 -377.0Q2275 -346 2288.0 -308.0Q2301 -270 2301 -228Q2301 -121 2230.5 -60.5Q2160 0 2035 0ZM1857 -120H2049Q2102 -120 2133.5 -149.5Q2165 -179 2165 -228Q2165 -277 2133.5 -307.0Q2102 -337 2049 -337H1857ZM1857 -456H2042Q2084 -456 2109.0 -480.5Q2134 -505 2134 -544Q2134 -583 2109.0 -606.0Q2084 -629 2042 -629H1857Z M2632 12Q2552 12 2486.5 -25.0Q2421 -62 2382.5 -126.0Q2344 -190 2344 -272Q2344 -354 2382.5 -418.0Q2421 -482 2486.0 -519.0Q2551 -556 2632 -556Q2712 -556 2777.0 -519.0Q2842 -482 2880.5 -418.5Q2919 -355 2919 -272Q2919 -190 2880.0 -126.0Q2841 -62 2776.0 -25.0Q2711 12 2632 12ZM2632 -108Q2676 -108 2709.5 -129.0Q2743 -150 2762.5 -187.5Q2782 -225 2782 -272Q2782 -320 2762.5 -356.5Q2743 -393 2709.5 -414.5Q2676 -436 2632 -436Q2587 -436 2553.0 -414.5Q2519 -393 2499.5 -356.5Q2480 -320 2480 -272Q2480 -225 2499.5 -187.5Q2519 -150 2553.0 -129.0Q2587 -108 2632 -108Z M3148 12Q3091 12 3049.0 -7.0Q3007 -26 2984.0 -61.5Q2961 -97 2961 -144Q2961 -189 2981.0 -224.5Q3001 -260 3043.0 -284.0Q3085 -308 3149 -318L3327 -347V-247L3174 -221Q3135 -214 3116.0 -196.0Q3097 -178 3097 -149Q3097 -121 3118.5 -104.5Q3140 -88 3172 -88Q3213 -88 3244.5 -105.5Q3276 -123 3293.5 -154.0Q3311 -185 3311 -222V-362Q3311 -397 3283.5 -420.5Q3256 -444 3211 -444Q3169 -444 3136.5 -421.5Q3104 -399 3089 -362L2982 -414Q2998 -457 3032.5 -488.5Q3067 -520 3114.0 -538.0Q3161 -556 3216 -556Q3283 -556 3334.0 -531.5Q3385 -507 3413.5 -463.5Q3442 -420 3442 -362V0H3318V-93L3346 -95Q3325 -60 3296.0 -36.5Q3267 -13 3230.0 -0.5Q3193 12 3148 12Z M3528 0V-544H3651V-423L3641 -441Q3660 -502 3700.5 -526.0Q3741 -550 3798 -550H3830V-434H3783Q3727 -434 3693.0 -399.5Q3659 -365 3659 -303V0Z M4120 12Q4041 12 3979.0 -25.5Q3917 -63 3881.0 -128.0Q3845 -193 3845 -272Q3845 -352 3881.0 -416.0Q3917 -480 3979.5 -518.0Q4042 -556 4119 -556Q4181 -556 4229.5 -531.5Q4278 -507 4306 -463L4286 -436V-757H4417V0H4293V-105L4307 -79Q4279 -35 4229.0 -11.5Q4179 12 4120 12ZM4134 -108Q4179 -108 4213.0 -129.0Q4247 -150 4266.5 -187.0Q4286 -224 4286 -272Q4286 -319 4266.5 -356.5Q4247 -394 4213.0 -415.0Q4179 -436 4134 -436Q4090 -436 4055.0 -414.5Q4020 -393 4000.5 -356.5Q3981 -320 3981 -272Q3981 -224 4000.5 -187.0Q4020 -150 4055.0 -129.0Q4090 -108 4134 -108Z" fill="currentColor"/><path class="pg" d="M634.5 -577.5 L534.9 -767.1 A212.1 212.1 0 0 1 734.1 -767.1 Z" fill="#F0A46B"/></svg><div class="cr-trilha" aria-hidden="true"><div class="cr-pino"><svg viewBox="0 0 100 115"><path d="M50 112 L4 24 A60 60 0 0 1 96 24 Z"/></svg></div><div class="cr-casa" style="--c:#5B8DEF"></div><div class="cr-casa" style="--c:#F2C14E"></div><div class="cr-casa" style="--c:#EE6C4D"></div><div class="cr-casa" style="--c:#3FB58A"></div><div class="cr-casa" style="--c:#8E7CF0"></div></div></div>
 <div class="tour-pop" id="tour-pop" role="dialog" aria-labelledby="tour-tit" hidden></div>
 <div class="imp-pop" id="imp-pop" role="dialog" aria-modal="true" aria-labelledby="imp-tit" hidden><div class="imp-box" id="imp-box"></div></div>
 
@@ -2560,7 +2635,7 @@ table.sc-prem tr.sc-res2:nth-child(2) td { border-bottom: 2px solid var(--line);
       <div class="jg-hud" id="jg-hud"></div>
       <div class="jg-home" id="jg-home">
         <div class="jg-roda"><svg viewBox="-20 -20 540 540" id="jg-svg" role="group" aria-label="Roleta de módulos"><g id="jg-rot"></g><path d="M250 -2 L236 -22 L264 -22 Z" fill="var(--accent)"/></svg><div class="jg-hub" aria-hidden="true"><div><small id="jg-hn"></small><b id="jg-ht"></b></div></div></div>
-        <div class="jg-info" id="jg-info" aria-live="polite"></div>
+        <div class="jg-lado"><div class="jg-ag" id="jg-ag" hidden></div><div class="jg-info" id="jg-info" aria-live="polite"></div></div>
       </div>
       <div class="tr-curta"><div class="tr-ch"><b id="tr-tit">Próximos passos</b><a href="#" id="tr-exp" aria-expanded="false">Ver a trilha completa</a></div><div class="tr-scroll" id="tr-short-w"><svg id="tr-short" role="img"></svg></div><div class="tr-scroll" id="tr-jgfull-w" hidden><svg id="tr-jgfull" role="img"></svg></div></div>
       <div class="jg-vista"><button type="button" class="btn ghost tiny" id="jg-vista"></button></div>
@@ -2575,12 +2650,12 @@ table.sc-prem tr.sc-res2:nth-child(2) td { border-bottom: 2px solid var(--line);
     </section>
     <div class="md-grid" id="md-grid"></div>
     <section data-nav="Linha do tempo" class="panel">
-      <h2>Linha do tempo da vida</h2>
-      <p class="sub">O que cada módulo planeja, no tempo. Barra cheia: Projeção real; tracejada: Só simulação. Clique no nome para abrir o item.</p>
+      <div class="row"><h2>Linha do tempo da vida</h2><div class="seg" id="md-tl-f" role="group" aria-label="O que mostrar na linha do tempo"><button type="button" data-mdtlf="tudo">Tudo</button><button type="button" data-mdtlf="real">Só o real</button></div></div>
+      <p class="sub">O que cada módulo planeja, no tempo. Barra cheia e marca <b>Real</b>: está na Projeção real; tracejada e marca <b>Simulação</b>: só entra nos cenários. Clique no nome para abrir o item.</p>
       <div id="md-tl"></div>
     </section>
     <section data-nav="Patrimônio projetado" class="panel chart">
-      <div class="row"><h2>Patrimônio projetado</h2><div class="seg" id="md-anos" role="group" aria-label="Até quando projetar"><button type="button" data-mdanos="0">Até o fim do plano</button><button type="button" data-mdanos="3">3 anos</button><button type="button" data-mdanos="5">5 anos</button><button type="button" data-mdanos="10">10 anos</button></div></div>
+      <div class="row"><h2>Patrimônio projetado</h2><div class="seg" id="md-anos" role="group" aria-label="Até quando projetar"><button type="button" data-mdanos="0">Até o fim do plano</button><button type="button" data-mdanos="3">3 anos</button><button type="button" data-mdanos="5">5 anos</button><button type="button" data-mdanos="10">10 anos</button><button type="button" data-mdanos="20">20 anos</button></div></div>
       <p class="sub">Investido no plano atual (o cenário Real). Para comparar, ligue os cenários da Simulação que quer ver no gráfico.</p>
       <div class="seg sc-seg" id="md-cens" role="group" aria-label="Cenários no gráfico"></div>
       <div class="legend" id="lg-md"></div>
@@ -3497,7 +3572,8 @@ table.sc-prem tr.sc-res2:nth-child(2) td { border-bottom: 2px solid var(--line);
         <div class="params">
       <fieldset>
         <legend>Cenários</legend>
-        <div class="seg" id="cenSeg" style="grid-column:1/-1"></div>
+        <label class="full cen-pick-l">Cenário aberto<select class="cen-pick" data-cenpick aria-label="Cenário"></select></label>
+        <div class="seg" id="cenSeg" style="grid-column:1/-1" hidden></div>
         <div class="btns">
           <button class="btn ghost tiny" type="button" id="cen-novo">Novo</button>
           <button class="btn ghost tiny" type="button" id="cen-dup">Duplicar</button>
@@ -3508,11 +3584,12 @@ table.sc-prem tr.sc-res2:nth-child(2) td { border-bottom: 2px solid var(--line);
         <label>Ajuste no IPCA (p.p.)<input type="number" step="0.25" data-bind="aj::ipca"></label>
         <label>Renda extra (R$/mês)<input type="number" step="500" data-bind="cen::extra"></label>
         <label>Taxa manual (% a.a. líq.)<input type="number" step="0.1" data-bind="cen::manual" placeholder="vazio = carteira"></label>
-        <p class="hint">Ajustes somam às taxas de Configurações só neste cenário (ex.: −1 no CDI simula juros mais baixos). Renda extra soma ao salário todo mês (bônus, PJ, aluguel). A taxa manual ignora a carteira, como a planilha fazia com 11%. O aumento dos custos fica na seção Custos do cenário, logo abaixo. Vale no Patrimônio projetado da aba Cenários.</p>
-        <p class="hint" id="cen-real-hint" hidden>Este é o cenário Real: ele usa as premissas do Meu plano (rendimento e IPCA), então os ajustes, a renda extra e a taxa manual ficam travados aqui. Teste outras premissas num cenário de simulação.</p>
+        <p class="hint" id="cen-aj-hint">Ajustes somam às taxas de Configurações só neste cenário (ex.: −1 no CDI simula juros mais baixos). Renda extra soma ao salário todo mês (bônus, PJ, aluguel). A taxa manual ignora a carteira, como a planilha fazia com 11%. O aumento dos custos fica na seção Custos do cenário, logo abaixo. Vale no Patrimônio projetado da aba Cenários.</p>
+        <p class="hint" id="cen-real-hint" hidden>Este é o cenário Real: ele usa as premissas do Meu plano (rendimento, IPCA e reinvestimento). Para testar outras premissas, escolha um cenário de simulação na lista acima (ou crie um em Novo ou Duplicar) e defina ali o ajuste no CDI e no IPCA, a renda extra e a taxa manual.<br><a href="#" class="lm-ir" data-lmtab="orcamento" data-lmsec="Premissas" data-lmsel="#pl-rend" data-lmmsg="Premissas do Real: rendimento, IPCA e reinvestimento">Mudar as premissas do Real em 01. Meu plano › Premissas →</a></p>
       </fieldset>
       <fieldset>
         <legend>Carteira do cenário</legend>
+        <label class="cen-pick-l" style="grid-column:1/-1">Cenário<select class="cen-pick" data-cenpick aria-label="Cenário"></select></label>
         <label class="check" style="grid-column:1/-1;font-size:12.5px"><input type="checkbox" id="cen-proprio"> Usar uma divisão própria neste cenário</label>
         <div class="seg" id="presetSeg" style="grid-column:1/-1"></div>
         <p class="hint" id="presetHint"></p>
@@ -3522,12 +3599,12 @@ table.sc-prem tr.sc-res2:nth-child(2) td { border-bottom: 2px solid var(--line);
         </div>
       </section>
       <section data-nav="Custos do cenário" class="panel">
-        <h2>Custos do cenário</h2>
+        <h2>Custos do cenário <select class="cen-pick" data-cenpick aria-label="Cenário"></select></h2>
         <p class="sub">Quanto cada grupo de custos do Meu plano fica maior neste cenário, além do IPCA. Vazio ou 0 = igual ao Meu plano.</p>
         <div class="tscroll"><table id="tbl-cc"><thead><tr><th>Grupo</th><th>Hoje no Meu plano (R$/mês)</th><th>Aumento (%)</th><th>Com o aumento (R$/mês)</th></tr></thead>
         <tbody><tr><td class="name">Fixos<span class="subdet" style="display:block">moradia, contas, saúde, educação</span></td><td id="cc-hoje-fix"></td><td><input type="number" step="1" data-bind="cen::custoFix" placeholder="0" aria-label="Aumento em Fixos (%)" style="max-width:90px"></td><td id="cc-com-fix"></td></tr><tr><td class="name">Essenciais<span class="subdet" style="display:block">mercado, transporte, carro, serviços</span></td><td id="cc-hoje-ess"></td><td><input type="number" step="1" data-bind="cen::custoEss" placeholder="0" aria-label="Aumento em Essenciais (%)" style="max-width:90px"></td><td id="cc-com-ess"></td></tr><tr><td class="name">Estilo de vida<span class="subdet" style="display:block">lazer, restaurantes, viagem, roupas</span></td><td id="cc-hoje-est"></td><td><input type="number" step="1" data-bind="cen::custoEst" placeholder="0" aria-label="Aumento em Estilo de vida (%)" style="max-width:90px"></td><td id="cc-com-est"></td></tr></tbody><tfoot><tr><td class="name"><b>Total</b></td><td id="cc-hoje-tot"></td><td id="cc-pct-tot"></td><td id="cc-com-tot"></td></tr></tfoot></table></div>
         <div class="params" style="margin-top:12px"><fieldset><legend>Quando começa</legend><label>A partir de<input type="month" data-bind="cen::custoDe"></label><p class="hint">Mês vazio = vale desde já. Os valores de hoje são os do orçamento do Meu plano; na projeção cada linha ainda segue o próprio reajuste.</p></fieldset></div>
-        <p class="hint" id="cc-real" hidden>Este é o cenário Real: ele usa os custos do Meu plano. Escolha outro cenário para testar aumentos.</p>
+        <p class="hint" id="cc-real" hidden>Este é o cenário Real: ele usa os custos do Meu plano. Escolha outro cenário para testar aumentos. <a href="#" class="lm-ir" data-lmtab="orcamento" data-lmsec="Receitas e custos">Mudar os custos do Real em 01. Meu plano › Receitas e custos →</a></p>
       </section>
       <section data-nav="Bens do cenário" class="panel">
         <div class="row"><h2>Bens em cada cenário</h2><button class="btn tiny ghost" type="button" data-tab="compras">Cadastrar ou editar bens</button></div>
@@ -3535,23 +3612,23 @@ table.sc-prem tr.sc-res2:nth-child(2) td { border-bottom: 2px solid var(--line);
         <div class="cresumo" id="comprasResumo"></div>
       </section>
       <section data-nav="Carteira por classe" class="panel">
-        <div class="row"><h2>Carteira por classe</h2><span class="sub" style="margin:0 0 0 auto;font-size:12px">premissas de retorno em Configurações</span></div>
+        <div class="row"><h2>Carteira por classe <select class="cen-pick" data-cenpick aria-label="Cenário"></select></h2><span class="sub" style="margin:0 0 0 auto;font-size:12px">premissas de retorno em Configurações</span></div>
         <div class="tscroll"><table id="tbl-alvo"></table></div>
       </section>
       <section data-nav="Patrimônio" class="panel chart">
-        <h2>Patrimônio deste cenário</h2>
+        <h2>Patrimônio deste cenário <select class="cen-pick" data-cenpick aria-label="Cenário"></select></h2>
         <div class="legend" id="lg-c"></div>
         <div id="ch-c"></div>
         <div class="readout" id="ro-c"></div>
       </section>
       <section data-nav="Sobra mensal" class="panel chart">
-        <h2>Sobra mensal</h2>
+        <h2>Sobra mensal <select class="cen-pick" data-cenpick aria-label="Cenário"></select></h2>
         <p class="sub">Renda menos gastos e parcelas. Abaixo de zero, o mês é pago com os investimentos.</p>
         <div id="ch-c2"></div>
         <div class="readout" id="ro-c2"></div>
       </section>
       <section data-nav="Rebalanceamento" class="panel">
-        <h2>Onde investir o próximo aporte</h2>
+        <h2>Onde investir o próximo aporte <select class="cen-pick" data-cenpick aria-label="Cenário"></select></h2>
         <p class="sub">Uma calculadora para o dinheiro que você vai investir agora. Diga o valor e a tabela mostra quanto pôr em cada classe para a sua carteira de hoje ficar mais perto do alvo deste cenário, sem vender nada. As classes mais abaixo do alvo recebem primeiro. Não muda a projeção nem o plano.</p>
         <div class="params" style="margin:10px 0 12px"><fieldset><legend>Quanto vai investir agora</legend><label>Valor do aporte (R$)<input type="number" step="500" data-bind="cfg::aporteReb"></label><p class="hint">O que você tem hoje em cada classe vem da Carteira (coluna "Hoje (R$)" da tabela Carteira por classe, acima).</p></fieldset></div>
         <p class="sub" id="reb-sub"></p>
@@ -4348,6 +4425,8 @@ table.sc-prem tr.sc-res2:nth-child(2) td { border-bottom: 2px solid var(--line);
   const SB_URL = 'https://rcywzqbuobhmvbyemrmz.supabase.co', SB_KEY = 'sb_publishable_oFX-qls5aQr9eDMaOiUsjw_3-jPaePl';
   // link de e-mail vencido deixa #error=... no endereço; o supabase-js lê isso a cada F5 e derruba a sessão
   if (/[#&](error|error_code)=/.test(location.hash)) try { history.replaceState(null, '', location.pathname + location.search); } catch (e) {}
+  // volta do login com Google (PKCE): o supabase-js troca ?code= pela sessão; guardar antes que ele limpe o endereço
+  const VOLTA_OAUTH = /[?&]code=/.test(location.search);
   const sb = window.supabase.createClient(SB_URL, SB_KEY, { auth: { persistSession: true, autoRefreshToken: true, flowType: 'pkce' } });
   window.__SITE = true;
   const clone = v => v == null ? v : JSON.parse(JSON.stringify(v));
@@ -4465,12 +4544,13 @@ table.sc-prem tr.sc-res2:nth-child(2) td { border-bottom: 2px solid var(--line);
     return new Promise(resolve => {
       const fl = document.createElement('link'); fl.rel = 'stylesheet'; fl.href = 'https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap'; document.head.appendChild(fl);
       const st = document.createElement('style'); st.textContent = css; document.head.appendChild(st);
-      const tituloAntes = document.title; document.title = 'Jogo da Vida (Real)';
+      const tituloAntes = document.title; document.title = 'LifeBoard';
       const ov = document.createElement('div'); ov.id = 'lg-ov';
       const ic = (cor, d) => `<span class="ic" style="background:${cor}"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0E1A2B" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${d}</svg></span>`;
       const passo = (n, cor, t, p) => `<div class="ps"><span class="dsp" style="background:${cor}">${n}</span><h4>${t}</h4><p>${p}</p></div>`;
       ov.innerHTML = `<section class="wrap hero"><div class="hl">
-        <div class="logo dsp"><svg width="44" height="44" viewBox="0 0 120 120" aria-hidden="true">${ROLETA(28, 5)}<circle cx="60" cy="60" r="18" fill="#0E1A2B"/><path d="M60 2 L70 20 L50 20 Z" fill="#F4F1EA"/></svg><span>Jogo da Vida <span class="cob">(Real)</span></span></div>
+        <div class="logo dsp"><svg class="lb-logo" height="38" style="height:38px;width:auto;display:block" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 5842 904" role="img" aria-label="LifeBoard"><g transform="translate(60.0 -4.6) scale(9.3125)"><mask id="lbfh"><rect x="-10" y="-10" width="120" height="120" fill="#fff"/><circle cx="50" cy="50" r="9" fill="#000"/></mask><g mask="url(#lbfh)"><path d="M50 50 L51.33 12.02 A38 38 0 0 1 85.71 37.00 Z" fill="#5B8DEF"/><path d="M50 50 L86.53 39.53 A38 38 0 0 1 73.40 79.94 Z" fill="#F0A46B" transform="translate(6.66 2.16)"/><path d="M50 50 L71.25 81.50 A38 38 0 0 1 28.75 81.50 Z" fill="#EE6C4D"/><path d="M50 50 L26.60 79.94 A38 38 0 0 1 13.47 39.53 Z" fill="#3FB58A"/><path d="M50 50 L14.29 37.00 A38 38 0 0 1 48.67 12.02 Z" fill="#8E7CF0"/></g></g><g transform="translate(1304.2 833.5)"><path d="M72 0V-745H208V-120H527V0Z M557 0V-544H688V0Z M825 0V-427H729V-544H825V-562Q825 -624 850.5 -667.5Q876 -711 922.0 -734.0Q968 -757 1031 -757Q1043 -757 1057.5 -755.5Q1072 -754 1082 -752V-639Q1072 -641 1063.5 -641.5Q1055 -642 1048 -642Q1004 -642 980.0 -622.5Q956 -603 956 -562V-544H1077V-427H956V0Z M1391 12Q1307 12 1244.0 -26.0Q1181 -64 1146.0 -129.0Q1111 -194 1111 -273Q1111 -355 1146.5 -418.5Q1182 -482 1243.5 -519.0Q1305 -556 1381 -556Q1445 -556 1493.5 -535.0Q1542 -514 1576.0 -477.0Q1610 -440 1628.0 -392.5Q1646 -345 1646 -290Q1646 -276 1644.5 -261.0Q1643 -246 1639 -235H1219V-335H1565L1503 -288Q1512 -334 1498.5 -370.0Q1485 -406 1454.5 -427.0Q1424 -448 1381 -448Q1340 -448 1308.0 -427.5Q1276 -407 1259.5 -367.5Q1243 -328 1247 -272Q1243 -222 1260.5 -183.5Q1278 -145 1312.5 -124.0Q1347 -103 1392 -103Q1437 -103 1468.5 -122.0Q1500 -141 1518 -173L1624 -121Q1608 -82 1574.0 -52.0Q1540 -22 1493.5 -5.0Q1447 12 1391 12Z M1721 0V-745H2035Q2109 -745 2161.5 -719.5Q2214 -694 2242.5 -647.5Q2271 -601 2271 -535Q2271 -484 2243.5 -439.5Q2216 -395 2156 -366V-429Q2211 -408 2243.0 -377.0Q2275 -346 2288.0 -308.0Q2301 -270 2301 -228Q2301 -121 2230.5 -60.5Q2160 0 2035 0ZM1857 -120H2049Q2102 -120 2133.5 -149.5Q2165 -179 2165 -228Q2165 -277 2133.5 -307.0Q2102 -337 2049 -337H1857ZM1857 -456H2042Q2084 -456 2109.0 -480.5Q2134 -505 2134 -544Q2134 -583 2109.0 -606.0Q2084 -629 2042 -629H1857Z M2632 12Q2552 12 2486.5 -25.0Q2421 -62 2382.5 -126.0Q2344 -190 2344 -272Q2344 -354 2382.5 -418.0Q2421 -482 2486.0 -519.0Q2551 -556 2632 -556Q2712 -556 2777.0 -519.0Q2842 -482 2880.5 -418.5Q2919 -355 2919 -272Q2919 -190 2880.0 -126.0Q2841 -62 2776.0 -25.0Q2711 12 2632 12ZM2632 -108Q2676 -108 2709.5 -129.0Q2743 -150 2762.5 -187.5Q2782 -225 2782 -272Q2782 -320 2762.5 -356.5Q2743 -393 2709.5 -414.5Q2676 -436 2632 -436Q2587 -436 2553.0 -414.5Q2519 -393 2499.5 -356.5Q2480 -320 2480 -272Q2480 -225 2499.5 -187.5Q2519 -150 2553.0 -129.0Q2587 -108 2632 -108Z M3148 12Q3091 12 3049.0 -7.0Q3007 -26 2984.0 -61.5Q2961 -97 2961 -144Q2961 -189 2981.0 -224.5Q3001 -260 3043.0 -284.0Q3085 -308 3149 -318L3327 -347V-247L3174 -221Q3135 -214 3116.0 -196.0Q3097 -178 3097 -149Q3097 -121 3118.5 -104.5Q3140 -88 3172 -88Q3213 -88 3244.5 -105.5Q3276 -123 3293.5 -154.0Q3311 -185 3311 -222V-362Q3311 -397 3283.5 -420.5Q3256 -444 3211 -444Q3169 -444 3136.5 -421.5Q3104 -399 3089 -362L2982 -414Q2998 -457 3032.5 -488.5Q3067 -520 3114.0 -538.0Q3161 -556 3216 -556Q3283 -556 3334.0 -531.5Q3385 -507 3413.5 -463.5Q3442 -420 3442 -362V0H3318V-93L3346 -95Q3325 -60 3296.0 -36.5Q3267 -13 3230.0 -0.5Q3193 12 3148 12Z M3528 0V-544H3651V-423L3641 -441Q3660 -502 3700.5 -526.0Q3741 -550 3798 -550H3830V-434H3783Q3727 -434 3693.0 -399.5Q3659 -365 3659 -303V0Z M4120 12Q4041 12 3979.0 -25.5Q3917 -63 3881.0 -128.0Q3845 -193 3845 -272Q3845 -352 3881.0 -416.0Q3917 -480 3979.5 -518.0Q4042 -556 4119 -556Q4181 -556 4229.5 -531.5Q4278 -507 4306 -463L4286 -436V-757H4417V0H4293V-105L4307 -79Q4279 -35 4229.0 -11.5Q4179 12 4120 12ZM4134 -108Q4179 -108 4213.0 -129.0Q4247 -150 4266.5 -187.0Q4286 -224 4286 -272Q4286 -319 4266.5 -356.5Q4247 -394 4213.0 -415.0Q4179 -436 4134 -436Q4090 -436 4055.0 -414.5Q4020 -393 4000.5 -356.5Q3981 -320 3981 -272Q3981 -224 4000.5 -187.0Q4020 -150 4055.0 -129.0Q4090 -108 4134 -108Z" fill="#F7F3EC"/><path d="M634.5 -577.5 L534.9 -767.1 A212.1 212.1 0 0 1 734.1 -767.1 Z" fill="#F0A46B"/></g></svg>
+</div>
         <div class="cx" style="gap:18px"><p class="kick">SEU TABULEIRO · DINHEIRO, PLANOS E SONHOS</p>
           <h1 class="dsp">Na vida real não tem roleta.<br><span class="cob">Mas dá pra planejar a jogada.</span></h1>
           <p class="lead">Gastos, investimentos, viagens, carro, casa, empresa: cada decisão é uma casa do tabuleiro. Veja onde você está hoje e onde vai chegar em cada caminho, antes de mover o pino.</p></div></div>
@@ -4492,7 +4572,7 @@ table.sc-prem tr.sc-res2:nth-child(2) td { border-bottom: 2px solid var(--line);
       <section class="wrap como"><div class="cx" style="gap:10px"><p class="kick">COMO SE JOGA</p><h3 class="t dsp">Três jogadas para começar</h3></div>
         <div class="pss">${passo(1, '#3FB8A6', 'Crie seu pino', 'Conta com Google ou com e-mail e senha. Seus dados ficam só com você.')}${passo(2, '#F2B544', 'Escolha suas casas', 'Ative só os módulos que fazem sentido: Financeiro, Viagens, Trabalho e Bens.')}${passo(3, '#E8735A', 'Mova o pino todo mês', 'Feche o mês, compare com o plano e ajuste a rota até a linha de chegada.')}</div>
         <div class="cta dsp"><span>Pronto para a primeira jogada?</span><button type="button" data-m="criar" data-topo="1">Criar minha conta</button></div></section>
-      <footer><div class="wrap"><span>Jogo da Vida (Real) · ferramenta de planejamento pessoal, não é recomendação de investimento.</span><a href="privacidade.html">Política de privacidade</a></div></footer>`;
+      <footer><div class="wrap"><span>LifeBoard · ferramenta de planejamento pessoal, não é recomendação de investimento.</span><a href="privacidade.html">Política de privacidade</a></div></footer>`;
       const card = ov.querySelector('#lg-card');
       let modo = 'entrar';
       const pinta = () => {
@@ -4529,7 +4609,7 @@ table.sc-prem tr.sc-res2:nth-child(2) td { border-bottom: 2px solid var(--line);
     return new Promise(resolve => { const { data } = sb.auth.onAuthStateChange(async (ev) => { if (ev !== 'PASSWORD_RECOVERY') return; const s = prompt('Digite a nova senha (mínimo 8 caracteres):'); if (s && s.length >= 8) { const { error } = await sb.auth.updateUser({ password: s }); alert(error ? 'Não deu para trocar a senha: ' + error.message : 'Senha trocada.'); } }); resolve(data); });
   }
   // ---------- rodapé: compartilhar, administração e sair ----------
-  const SITE_V = 236;
+  const SITE_V = 264;
   const escH = v => String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const dataBR = v => v ? new Date(v).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' }) : '–';
   const css2 = `.side-foot .r{flex-wrap:wrap}.side-foot .lg-acoes{margin-left:auto;display:inline-flex;gap:10px}
@@ -4610,7 +4690,8 @@ table.sc-prem tr.sc-res2:nth-child(2) td { border-bottom: 2px solid var(--line);
   }
   async function abrirAdmin() {
     const ov = modal(topo('Administração', 'Todas as contas do site. Você vê nome, e-mail e datas de todo mundo; os números financeiros de alguém só aparecem na sua Visão consolidada se a pessoa compartilhar com você.') +
-      `<div class="tw"><table><thead><tr><th>Pessoa</th><th>Criada</th><th>Último acesso</th><th>Dados</th><th>Compartilha</th><th>Situação</th><th></th></tr></thead><tbody id="sv-at"><tr><td colspan="7" class="vazio">carregando…</td></tr></tbody></table></div><div class="msg" id="sv-am" role="status"></div>`);
+      `<div class="tw"><table><thead><tr><th>Pessoa</th><th>Criada</th><th>Último acesso</th><th>Dados</th><th>Compartilha</th><th>Situação</th><th></th></tr></thead><tbody id="sv-at"><tr><td colspan="7" class="vazio">carregando…</td></tr></tbody></table></div><div class="msg" id="sv-am" role="status"></div><p style="margin-top:12px"><button class="bt" type="button" id="sv-sug">Ver sugestões recebidas</button></p>`);
+    ov.querySelector('#sv-sug').addEventListener('click', () => { fecharModal(); if (window.abrirSugestoes) window.abrirSugestoes(true); });
     const m = ov.querySelector('#sv-am');
     const pinta = async () => {
       const { data, error } = await sb.rpc('admin_usuarios'); if (error) { m.className = 'msg err'; m.textContent = 'Não consegui listar as contas: ' + error.message; return; }
@@ -4651,6 +4732,7 @@ table.sc-prem tr.sc-res2:nth-child(2) td { border-bottom: 2px solid var(--line);
   const pronto = (async () => {
     await novaSenhaSePreciso();
     let { data } = await sb.auth.getSession(); sessao = data.session;
+    if (sessao && VOLTA_OAUTH) { lsP(K_INI, Date.now()); lsP(K_USO, Date.now()); }   // login novo pelo Google: o relógio da sessão recomeça (senão um login antigo vencido derrubava na hora)
     if (sessao && sessVencida()) { await sb.auth.signOut({ scope: 'local' }); sessao = null; }
     if (!sessao) { sessao = await telaLogin(); lsP(K_INI, Date.now()); }
     else if (!lsN(K_INI)) lsP(K_INI, Date.now());
@@ -4685,6 +4767,14 @@ table.sc-prem tr.sc-res2:nth-child(2) td { border-bottom: 2px solid var(--line);
     async remover(evId, email) { await pronto; let q = sb.from('agenda_conv').delete().eq('dono', uid).eq('ev_id', evId); if (email) q = q.eq('para_email', String(email).toLowerCase()); const { error } = await q; if (error) throw error; },
     async responder(id, resp) { await pronto; const { error } = await sb.rpc('agenda_responder', { id_conv: id, resp }); if (error) throw error; },
     ouvir(cb) { pronto.then(() => { try { sb.channel('agenda').on('postgres_changes', { event: '*', schema: 'public', table: 'agenda_conv' }, () => cb()).subscribe(); } catch (e) {} }); }
+  };
+  // Sugestões: caixa no rodapé do menu; qualquer conta envia, só o admin lê (tabela sugestoes, supabase-sugestoes.sql)
+  window.__siteSugestoes = {
+    async enviar(modulo, texto) { await pronto; const { error } = await sb.from('sugestoes').insert({ modulo: String(modulo).slice(0, 60), texto: String(texto).slice(0, 2000) }); if (error) throw error; },
+    async avaliar(r) { await pronto; const { error } = await sb.from('sugestoes').insert({ tipo: 'avaliacao', nota: Math.max(0, Math.min(10, Math.round(+r.nota))), modulo: String(r.modulo || 'O app em geral').slice(0, 60), texto: String(r.texto || '').slice(0, 2000), ajuda: String(r.ajuda || '').slice(0, 2000) }); if (error) throw error; },
+    async listar() { await pronto; const { data, error } = await sb.rpc('admin_sugestoes'); if (error) throw error; return data || []; },
+    async marcar(id, lida) { await pronto; const { error } = await sb.from('sugestoes').update({ lida }).eq('id', id); if (error) throw error; },
+    async apagar(id) { await pronto; const { error } = await sb.from('sugestoes').delete().eq('id', id); if (error) throw error; }
   };
   // Família: área comum da casa editada por todos (tabelas familias e familia_membros, supabase-familia.sql)
   const meuEmail = () => String((sessao && sessao.user && sessao.user.email) || '').toLowerCase();
@@ -11355,7 +11445,29 @@ function negAnalise(b, cen) {
   const mad = negLucro(b, 1e6), fat = +b.fat || 0;
   return { pay, tir, alt, mad, marg: fat ? mad / fat : 0, inv: sch.lump + sch.PV, T, term, acum };
 }
-function schedule0(b, mode) {
+// v372: amortização antecipada. b.amort = [{ id, mes: 'AAAA-MM', valor, modo: 'prazo' | 'parcela' }], só no modo de pagamento do card
+function schedule0(b, mode, semAmort) { const s = schedule0Base(b, mode); return semAmort || mode === 'avista' || mode !== b.modo || !(b.amort && b.amort.length) || !s.parc.length ? s : aplicaAmort(b, s, b.amort).s; }
+// desconto pela taxa do contrato (parcela fixa sem juros: a taxa implícita); o saldo devedor segue a mesma regra do card
+function aplicaAmort(b, s, lista) {
+  const L = (lista || []).filter(a => +a.valor > 0 && /^\d{4}-\d{2}$/.test(a.mes || '')).slice().sort((x, y) => x.mes < y.mes ? -1 : x.mes > y.mes ? 1 : 0);
+  const m0 = mIndex(b.mes), i = ceJuros(b).i, isd = Math.pow(1 + taxaAA(b) / 100, 1 / 12) - 1;
+  const reg = s.parc.slice(), extra = [], info = [];
+  L.forEach(a => {
+    const k = mIndex(a.mes) - m0; if (k < 1 || k >= reg.length) { info.push({ a, ok: false }); return; }
+    let rest = 0; for (let j = k + 1; j <= reg.length; j++) rest += reg[j - 1] / Math.pow(1 + i, j - k);
+    const pago = Math.min(+a.valor, rest), nA = reg.length, pA = reg[k], somaA = reg.slice(k).reduce((t, v) => t + v, 0); let X = pago;
+    if (a.modo === 'parcela') { const f = rest > 0 ? Math.max(0, 1 - X / rest) : 0; for (let j = k + 1; j <= reg.length; j++) reg[j - 1] *= f; }
+    else while (X > 0.005 && reg.length > k) { const j = reg.length, v = reg[j - 1] / Math.pow(1 + i, j - k); if (X >= v - 0.005) { X -= v; reg.pop(); } else { reg[j - 1] -= X * Math.pow(1 + i, j - k); X = 0; } }
+    while (reg.length > k && reg[reg.length - 1] < 0.01) reg.pop();
+    extra[k - 1] = (extra[k - 1] || 0) + pago;
+    info.push({ a, ok: true, k, pago, quitou: pago >= rest - 0.5, nA, nD: reg.length, pA, pD: reg[k] || 0, juros: somaA - reg.slice(k).reduce((t, v) => t + v, 0) - pago });
+  });
+  const n = reg.length, parc = reg.map((v, t) => v + (extra[t] || 0)), saldo = Array(n).fill(0);
+  for (let t = n - 2; t >= 0; t--) saldo[t] = (parc[t + 1] + saldo[t + 1]) / (1 + isd);
+  const k1 = Math.min(...info.filter(x => x.ok).map(x => x.k), Infinity); for (let t = 0; t < Math.min(n, k1 - 1); t++) saldo[t] = s.saldo[t];   // antes da 1ª amortização, a dívida é a do contrato
+  return { s: Object.assign({}, s, { parc, saldo, amort: info }), info };
+}
+function schedule0Base(b, mode) {
   const V = +b.valor || 0, E = Math.min(Math.max(+b.entrada || 0, 0), V), PV = V - E, custos = (+b.custos || 0) / 100;
   const n = Math.max(1, Math.round(+b.prazo || 1));
   if (mode === 'avista') return { lump: V * (1 + custos), parc: [], saldo: [], PV: 0 };
@@ -11613,6 +11725,7 @@ function chart(el, roEl, n, series, fmtY, xLabel, startCursor, fmtR = fm) {
   let lo = Infinity, hi = -Infinity;
   series.forEach(s => s.v.forEach(v => { if (v == null || !isFinite(v)) return; lo = Math.min(lo, v); hi = Math.max(hi, v); }));
   if (!isFinite(lo)) { lo = 0; hi = 1; }
+  if (series.some(s => s.bars)) { lo = Math.min(lo, 0); hi = Math.max(hi, 0); }
   if (lo > 0 && lo < hi * 0.45) lo = 0;
   if (hi === lo) { hi += 1; lo -= 1; }
   const span = hi - lo, step0 = Math.pow(10, Math.floor(Math.log10(span / 4)));
@@ -11646,6 +11759,7 @@ function chart(el, roEl, n, series, fmtY, xLabel, startCursor, fmtR = fm) {
   }
   const zero = y0 < 0 && y1 > 0 ? `<line class="zero" x1="${pl}" x2="${W - pr}" y1="${Y(0)}" y2="${Y(0)}"/>` : '';
   const paths = series.map((s, si) => {
+    if (s.bars) { const bw = Math.max(1, Math.min(18, pxStep * 0.72)), b0 = Y(Math.max(y0, Math.min(y1, 0))); return s.v.map((v, j) => v == null || !isFinite(v) ? '' : `<rect x="${(X(j) - bw / 2).toFixed(1)}" y="${Math.min(b0, Y(v)).toFixed(1)}" width="${bw.toFixed(1)}" height="${Math.max(0.5, Math.abs(Y(v) - b0)).toFixed(1)}" rx="${bw > 6 ? 1.5 : 0}" fill="${v < 0 ? 'var(--bad, #C62828)' : s.c}" fill-opacity="${s.op || .55}"/>`).join(''); }
     if (s.dots) return s.v.map((v, j) => v == null ? '' : `<circle cx="${X(j).toFixed(1)}" cy="${Y(v).toFixed(1)}" r="4.5" fill="${s.c}" stroke="var(--panel)" stroke-width="1.5"/>`).join('');
     let d = '', pen = false;
     s.v.forEach((v, j) => { if (v == null || !isFinite(v)) { pen = false; return; } d += (pen ? 'L' : 'M') + X(j).toFixed(1) + ' ' + Y(v).toFixed(1); pen = true; });
@@ -11689,6 +11803,8 @@ function chFoco(el, svg, series, n, W, X, Y, pl, pr, fmtR) {
 const legend = (el, items) => { el.innerHTML = items.map(s => `<span class="${s.dash ? 'dash' : ''}${s.dots ? ' dot' : ''}" style="--c:${s.c}">${esc(s.name)}</span>`).join(''); };
 const kpis = (el, list) => { el.innerHTML = list.map(([l, v, d, neg]) => `<div class="kpi"><span class="l">${l}</span><span class="v${neg ? ' neg' : ''}">${v}</span><span class="d">${d}</span></div>`).join(''); };
 const cenCor = cen => PAL[Math.max(0, state.cenarios.indexOf(cen)) % PAL.length];
+/* v353: um cenário de simulação conta como diferente do Real se mudou itens OU premissas */
+function simTemDif() { try { const its = itensModulos(); return (state.cenarios || []).some(c => { if (ehCenReal(c)) return false; if (simDifs(c, its).length) return true; const aj = c.aj || {}; return !!(+aj.cdi || +aj.ipca || +c.extra || (c.manual !== '' && c.manual != null && +c.manual > 0) || c.proprio || +c.custoFix || +c.custoEss || +c.custoEst); }); } catch (e) { return false; } }
 const cenAtual = () => state.cenarios.find(c => c.id === state.cenAtivo) || state.cenarios[0];
 function perfilHtml(risco) {
   const p = perfilDe(risco);
@@ -11931,9 +12047,10 @@ function buildCenarios() {
   state.cenarios.forEach(cusMig);
   const cen = cenAtual();
   $('cenSeg').innerHTML = simOrdem().map(c => `<button type="button" data-cen="${c.id}" aria-pressed="${c.id === cen.id}" style="${c.id === cen.id ? '' : `border-color:${cenCor(c)}`}">${esc(c.nome)}${ehCenReal(c) ? ' · Real' : ''}</button>`).join('');
+  document.querySelectorAll('[data-cenpick]').forEach(sl => { sl.innerHTML = simOrdem().map(c => `<option value="${esc(c.id)}"${c.id === cen.id ? ' selected' : ''}>${esc(c.nome)}${ehCenReal(c) ? ' · Real' : ''}</option>`).join(''); });
   $('cen-del').disabled = state.cenarios.length < 2 || ehCenReal(cen);
-  { const rl = ehCenReal(cen); document.querySelectorAll('#p-cenarios [data-bind^="aj::"], #p-cenarios [data-bind="cen::extra"], #p-cenarios [data-bind="cen::manual"], #p-cenarios [data-bind^="cen::custo"]').forEach(el => { el.disabled = rl; }); $('cen-real-hint').hidden = !rl; }
-  document.querySelectorAll('#p-cenarios [data-bind]').forEach(fillBound);
+  { const rl = ehCenReal(cen); document.querySelectorAll(':is(#p-cenarios,#np-cenarios) [data-bind^="aj::"], :is(#p-cenarios,#np-cenarios) [data-bind="cen::extra"], :is(#p-cenarios,#np-cenarios) [data-bind="cen::manual"], :is(#p-cenarios,#np-cenarios) [data-bind^="cen::custo"]').forEach(el => { el.disabled = rl; const lb = el.closest('label'); if (lb && lb.closest('fieldset') && !lb.closest('#tbl-cc') && /^(aj::|cen::extra|cen::manual)/.test(el.dataset.bind)) lb.hidden = rl; }); $('cen-real-hint').hidden = !rl; const ah = $('cen-aj-hint'); if (ah) ah.hidden = rl; }
+  document.querySelectorAll(':is(#p-cenarios,#np-cenarios) [data-bind]').forEach(fillBound);
   ccResumo(cen);
   $('cen-proprio').checked = !!cen.proprio; $('presetSeg').hidden = !cen.proprio;
   $('presetSeg').innerHTML = PRESETS.map(p => `<button type="button" data-preset="${p.id}" aria-pressed="${cen.preset === p.id}">${p.nome}</button>`).join('');
@@ -11986,6 +12103,7 @@ function compraHtml(b, cen) {
       ${b.tipo === 'imovel' ? f('renda', 'Aluguel recebido (R$/mês)', 100) : ''}
     </div>
     <div class="res" id="cres-${b.id}"></div>
+    ${neg ? '' : `<div class="cent" id="cent-${b.id}"></div><div class="amz" id="amz-${b.id}"></div>`}
     ${neg ? '' : `<details><summary>Dados de consórcio (para a comparação de pagamento)</summary><div class="ed">
       ${f('cPrazo', 'Prazo (meses)', 12)}${f('cAdm', 'Taxa de adm. total (%)', 0.5)}${f('cFR', 'Fundo de reserva (%)', 0.5)}${f('cCorr', 'Correção da carta (% a.a.)', 0.1)}${f('cContempl', 'Mês da contemplação', 1)}${f('cLance', 'Lance (% da carta)', 5)}
     </div></details>`}`}
@@ -12036,12 +12154,12 @@ function renderCenarios() {
     const pagas = Math.max(0, Math.min(sch.parc.length, s0 - m0)); const rest = sch.parc.length - pagas;
     const jur = b.modo === 'sac' || b.modo === 'price' ? sch.parc.reduce((s, v) => s + v, 0) - sch.PV : 0;
     if (b.modo === 'fixa') {
-      const fin = (+b.valor || 0) - (+b.entrada || 0), p = +b.parcela || 0, n = sch.parc.length;
+      const fin = (+b.valor || 0) - (+b.entrada || 0), p = +b.parcela || 0, n = Math.max(1, Math.round(+b.prazo || 1));
       let txt = '';
       if (+b.taxa > 0) txt = b.taxaUn === 'am' ? `juros de ${num(b.taxa)}% a.m. (${num(taxaAA(b), 1)}% a.a.)` : `juros de ${num(b.taxa)}% a.a. (${num((Math.pow(1 + taxaAA(b) / 100, 1 / 12) - 1) * 100)}% a.m.)`;
       else if (fin > 0 && p * n > fin) { let lo = 0, hi = 0.2; for (let j = 0; j < 60; j++) { const mid = (lo + hi) / 2; if (p * (1 - Math.pow(1 + mid, -n)) / mid > fin) lo = mid; else hi = mid; } txt = `taxa implícita ≈ ${num((Math.pow(1 + lo, 12) - 1) * 100, 1)}% a.a. (${num(lo * 100)}% a.m.), calculada por preço − entrada`; }
       const saldoHoje = pagas > 0 ? (sch.saldo[pagas - 1] ?? 0) : sch.PV;
-      el.textContent = `Entrada + custos em ${mLabel(m0)}: ${fm(sch.lump)} · parcela ${fm(p)} × ${n} = ${fm(p * n)}${txt ? ' · ' + txt : ''}${m0 <= s0 ? ` · ${pagas} pagas, faltam ${rest} · saldo devedor hoje ${fm(saldoHoje)}` : ''}.`;
+      el.textContent = `Entrada + custos em ${mLabel(m0)}: ${fm(sch.lump)} · parcela ${fm(p)} × ${n} = ${fm(p * n)}${txt ? ' · ' + txt : ''}${m0 <= s0 ? ` · ${pagas} pagas, faltam ${rest} · saldo devedor hoje ${fm(saldoHoje)}` : ''}${(sch.amort || []).some(x => x.ok) ? ` · com as amortizações do plano, termina em ${mLabel(m0 + sch.parc.length)}` : ''}.`;
       return;
     }
     el.textContent = b.modo === 'avista' ? `Sai dos investimentos em ${mLabel(m0)}: ${fm(sch.lump)}.` :
@@ -12050,9 +12168,190 @@ function renderCenarios() {
   const ser = [{ name: 'Patrimônio líquido', c: cenCor(cen), v: p.pat, w: 2.6 }, { name: 'Investimentos', c: 'var(--s3)', v: p.inv }, { name: 'Bens', c: 'var(--s5)', v: p.bens, dash: true }, { name: 'Dívidas', c: 'var(--bad)', v: p.divida.map(v => -v), dash: true }];
   legend($('lg-c'), ser);
   chart($('ch-c'), $('ro-c'), H + 1, ser, k, lab);
-  chart($('ch-c2'), $('ro-c2'), H, [{ name: 'Sobra', c: cenCor(cen), v: p.sobra }], k, t => lab(t + 1), 0);
+  chart($('ch-c2'), $('ro-c2'), H, [{ name: 'Sobra', c: cenCor(cen), v: p.sobra, bars: true }], k, t => lab(t + 1), 0);
   renderPagamento(cen, p, r1);
+  state.compras.forEach(b => { try { renderCustoEntrada(b); } catch (e) { console.warn('custo da entrada', e); } try { renderAmort(b); } catch (e) { console.warn('amortização', e); } });
   renderReb(cen);
+}
+/* v372: amortização antecipada no card da compra. Simula (valor, mês, reduzir prazo ou parcela) e "Colocar no plano" grava em b.amort. */
+const amzSim = {}, amzAberto = new Set();
+document.addEventListener('toggle', e => { const d = e.target; if (!d || !d.dataset || !d.dataset.amz) return; if (d.open) amzAberto.add(d.dataset.amz); else amzAberto.delete(d.dataset.amz); }, true);
+function amzOk(b) { return ['imovel', 'carro', 'outro'].includes(b.tipo) && b.modo !== 'avista' && +b.valor > 0; }
+function amzCalc(b, nova) {
+  const s0 = schedule0Base(b, b.modo), base = aplicaAmort(b, s0, b.amort || []), sim = aplicaAmort(b, s0, (b.amort || []).concat([nova]));
+  const inf = sim.info.find(x => x.a === nova), m0 = mIndex(b.mes), pb = base.s.parc, ps = sim.s.parc, T = pb.length;
+  let ganho = 0; for (let t = 1; t <= T; t++) { let d = (pb[t - 1] || 0) - (ps[t - 1] || 0); for (let u = t + 1; u <= T; u++) d *= 1 + taxaPlanoMes(m0 + u); ganho += d; }
+  return { inf, ganho, fimA: m0 + pb.length, fimD: m0 + ps.length, T };
+}
+// séries mês a mês até o fim do contrato original: aplicado (preço − entrada rendendo; a amortização sai dele) e parcelas corrigidas
+function amzSeries(b, lista) {
+  const s0 = schedule0Base(b, b.modo), V = +b.valor || 0, PV = Math.max(0, V - Math.min(Math.max(+b.entrada || 0, 0), V)), m0 = mIndex(b.mes), T = s0.parc.length;
+  const r = aplicaAmort(b, s0, lista), ext = []; r.info.filter(x => x.ok).forEach(x => { ext[x.k] = (ext[x.k] || 0) + x.pago; });
+  const ap = [PV], pc = [0];
+  for (let t = 1; t <= T; t++) { const g = 1 + taxaPlanoMes(m0 + t), reg = (r.s.parc[t - 1] || 0) - (ext[t] || 0); ap.push(ap[t - 1] * g - (ext[t] || 0)); pc.push(pc[t - 1] * g + reg); }
+  return { ap, pc, T, m0 };
+}
+function amzDraw(b) {
+  const ch = $('amzch-' + b.id); if (!ch) return;
+  const f = amzSim[b.id] || {}, nova = +f.valor > 0 ? [{ id: 'sim', mes: f.mes, valor: +f.valor, modo: f.modo }] : [];
+  const A = amzSeries(b, []), B = amzSeries(b, (b.amort || []).concat(nova));
+  const ser = [{ name: 'Aplicado · sem amortizar', c: 'var(--muted)', v: A.ap, w: 2 }, { name: 'Parcelas corrigidas · sem amortizar', c: 'var(--muted)', v: A.pc, dash: true },
+    { name: 'Aplicado · amortizado', c: 'var(--accent)', v: B.ap, w: 2.6 }, { name: 'Parcelas corrigidas · amortizado', c: 'var(--accent)', v: B.pc, dash: true, w: 2.2 }];
+  legend($('amzlg-' + b.id), ser);
+  chart(ch, $('amzro-' + b.id), A.T + 1, ser, k, t => mLabel(A.m0 + t), A.T);
+  const rA = A.ap[A.T] - A.pc[A.T], rB = B.ap[B.T] - B.pc[B.T], el = $('amzsum-' + b.id);
+  if (el) el.innerHTML = `No fim (${mLabel(A.m0 + A.T)}), pelo Meu plano: sem amortizar <b>${fm(rA)}</b> · amortizado <b>${fm(rB)}</b> · diferença <b class="${rB - rA >= 0 ? 'pos' : 'neg'}">${rB - rA >= 0 ? '+' : '−'}${fm(Math.abs(rB - rA))}</b>.`;
+}
+function amzGrafHtml(b) {
+  const L = (b.amort || []).length, f = amzSim[b.id] || {};
+  return `<div class="cent-mm"><h4>Mês a mês: sem amortizar × amortizado${+f.valor > 0 ? (L ? ' (o que já está no plano + esta simulação)' : ' (esta simulação)') : L ? ' (o que está no plano)' : ''}</h4>
+    <p class="cent-ex">Mesma leitura do gráfico de "Quanto a entrada custa", pelo Meu plano. Linha cheia: o que ficou aplicado (preço − entrada) rendendo; no mês da amortização, o valor sai dele. Tracejada: as parcelas pagas com a sobra, corrigidas pelo rendimento. Em cinza, sem amortizar; em cobre, amortizado. A distância entre a cheia e a tracejada de cada cor é o resultado.</p>
+    <div class="legend" id="amzlg-${b.id}"></div><div id="amzch-${b.id}" data-h="240"></div><div class="readout" id="amzro-${b.id}"></div><p class="amz-r" id="amzsum-${b.id}"></p></div>`;
+}
+function amzResHtml(b) {
+  const f = amzSim[b.id]; if (!f || !(+f.valor > 0)) return '<p class="hint">Informe o valor para ver o efeito.</p>';
+  const r = amzCalc(b, { id: 'sim', mes: f.mes, valor: +f.valor, modo: f.modo }), x = r.inf, m0 = mIndex(b.mes);
+  if (!x || !x.ok) return `<p class="hint">Escolha um mês entre ${mLabel(m0 + 1)} e ${mLabel(m0 + schedule0(b, b.modo).parc.length - 1)}, durante as parcelas.</p>`;
+  const quit = x.quitou ? ` <b>Esse valor quita a dívida</b> (bastam ${fm(x.pago)}).` : '';
+  const efeito = x.quitou ? `A dívida acaba em ${mLabel(m0 + x.k)}.` : f.modo === 'parcela' ? `A parcela cai de <b>${fm(x.pA)}</b> para <b>${fm(x.pD)}</b> a partir de ${mLabel(m0 + x.k + 1)}.` : `A dívida termina em <b>${mLabel(r.fimD)}</b> em vez de ${mLabel(r.fimA)}: <b>${x.nA - x.nD} parcelas a menos</b>.`;
+  return `<p class="amz-r">Pagando ${fm(x.pago)} em ${mLabel(m0 + x.k)}, você deixa de pagar <b>${fm(x.juros)} de juros</b>.${quit} ${efeito}</p>
+    <p class="amz-r">Comparado a deixar esse dinheiro aplicado pelo Meu plano, você termina ${mLabel(m0 + r.T)} com <b class="${r.ganho >= 0 ? 'pos' : 'neg'}">${fm(Math.abs(r.ganho))}</b> ${r.ganho >= 0 ? 'a mais' : 'a menos'}.</p>`;
+}
+function renderAmort(b, el) {
+  el = el || $('amz-' + b.id); if (!el) return;
+  if (!amzOk(b)) { el.innerHTML = ''; return; }
+  const m0 = mIndex(b.mes), n = schedule0(b, b.modo).parc.length, ini = Math.max(m0 + 1, HOJE_IDX + 1);
+  if (!amzSim[b.id]) amzSim[b.id] = { mes: mKey(Math.min(ini, m0 + n - 1)), valor: '', modo: 'prazo' };
+  const f = amzSim[b.id], L = (b.amort || []).slice().sort((x, y) => x.mes < y.mes ? -1 : 1), sch = schedule0(b, b.modo), inf = sch.amort || [];
+  el.innerHTML = `<details class="cent-d amz-d" data-amz="${b.id}"${amzAberto.has(b.id) ? ' open' : ''}><summary>Amortizar antes do prazo${L.length ? ` · <span class="cent-sum">${L.length} no plano</span>` : ''}</summary>
+    <div class="cent-b">
+      <p class="cent-ex"><b>Como funciona.</b> Amortizar é pagar parte da dívida antes da hora. O banco tira os juros do período antecipado (Código de Defesa do Consumidor) e não pode cobrar tarifa por isso. Reduzir o prazo quita as últimas parcelas e economiza mais juros; reduzir a parcela mantém o prazo e alivia a sobra do mês. A conta usa a taxa do contrato${b.modo === 'fixa' && !(+b.taxa > 0) ? ' (aqui, a taxa implícita)' : ''}: o valor exato o banco mostra antes de você confirmar. "Colocar no plano" faz o valor sair dos investimentos naquele mês e muda as parcelas em todos os cenários que têm esta compra.</p>
+      <div class="ed amz-f">
+        <label>Valor (R$)<input type="number" step="1000" min="0" data-amz-f="valor" data-amz-b="${b.id}" value="${esc(String(f.valor))}" placeholder="ex.: 10000"></label>
+        <label>Mês<input type="month" data-amz-f="mes" data-amz-b="${b.id}" value="${esc(f.mes)}" min="${mKey(m0 + 1)}" max="${mKey(m0 + n - 1)}"></label>
+        <label>Reduzir<select data-amz-f="modo" data-amz-b="${b.id}"><option value="prazo"${f.modo !== 'parcela' ? ' selected' : ''}>o prazo</option><option value="parcela"${f.modo === 'parcela' ? ' selected' : ''}>a parcela</option></select></label>
+        <label class="amz-bt"><span>&nbsp;</span><button type="button" class="btn tiny" data-amz-add="${b.id}">Colocar no plano</button></label>
+      </div>
+      <div id="amz-res-${b.id}">${amzResHtml(b)}</div>
+      ${amzGrafHtml(b)}
+      ${L.length ? `<div class="amz-l"><b>No plano</b>${L.map(a => { const x = inf.find(y => y.a === a) || {}; return `<div class="amz-it"><span>${mLabel(mIndex(a.mes))}: ${fm(+a.valor)} · reduz ${a.modo === 'parcela' ? 'a parcela' : 'o prazo'}${x.ok ? ` · economiza ${fm(x.juros)} de juros` : ' · <span class="neg">fora do período das parcelas</span>'}</span><button type="button" class="btn ghost tiny" data-amz-del="${b.id}:${esc(a.id)}" aria-label="Tirar do plano">Tirar</button></div>`; }).join('')}</div>` : ''}
+    </div></details>`;
+  amzDraw(b);
+}
+document.addEventListener('input', e => { const t = e.target.closest && e.target.closest('[data-amz-f]'); if (!t) return; const id = t.dataset.amzB, b = state.compras.find(x => x.id === id); if (!b) return;
+  (amzSim[id] = amzSim[id] || {})[t.dataset.amzF] = t.value; const r = $('amz-res-' + id); if (r) r.innerHTML = amzResHtml(b); amzDraw(b); });
+document.addEventListener('change', e => { const t = e.target.closest && e.target.closest('select[data-amz-f]'); if (!t) return; const id = t.dataset.amzB, b = state.compras.find(x => x.id === id); if (!b) return;
+  (amzSim[id] = amzSim[id] || {}).modo = t.value; const r = $('amz-res-' + id); if (r) r.innerHTML = amzResHtml(b); amzDraw(b); });
+document.addEventListener('click', e => {
+  const ad = e.target.closest && e.target.closest('[data-amz-add]'), dl = e.target.closest && e.target.closest('[data-amz-del]'); if (!ad && !dl) return;
+  if (ad) { const b = state.compras.find(x => x.id === ad.dataset.amzAdd), f = b && amzSim[b.id]; if (!b || !f || !(+f.valor > 0)) return;
+    const r = amzCalc(b, { id: 'sim', mes: f.mes, valor: +f.valor, modo: f.modo }); if (!r.inf || !r.inf.ok) return;
+    b.amort = (b.amort || []).concat([{ id: 'a' + Date.now().toString(36), mes: f.mes, valor: Math.round(r.inf.pago * 100) / 100, modo: f.modo === 'parcela' ? 'parcela' : 'prazo' }]);
+    amzSim[b.id] = { mes: f.mes, valor: '', modo: f.modo }; amzAberto.add(b.id); }
+  else { const [bid, aid] = dl.dataset.amzDel.split(':'), b = state.compras.find(x => x.id === bid); if (!b) return; b.amort = (b.amort || []).filter(a => a.id !== aid); amzAberto.add(b.id); }
+  planCache = null; save(); setTimeout(renderTab, 0);
+});
+/* v363: custo de oportunidade da entrada. O que não vai na entrada (preço − entrada) fica aplicado; as parcelas saem dessa aplicação mês a mês.
+   No fim do prazo, o saldo que sobrou é o resultado comparado a pagar à vista (rendimento − juros). Taxas: Meu plano e carteira atual.
+   Para mudar de lugar, chame renderCustoEntrada(b, el) com outro elemento. */
+const CE_OPC = [0, 10, 20, 30, 40, 50, 60, 70, 80];
+Object.assign(INFO_TIPO, {
+  'ce:fica': 'Preço menos a entrada. É o dinheiro que você não gasta no dia da compra e que fica aplicado, rendendo, até o fim das parcelas. Ele não é usado para pagar parcela.',
+  'ce:parc': 'Primeira parcela do financiamento com esta entrada, recalculada com os mesmos juros e o mesmo prazo do card.',
+  'ce:juros': 'Soma de todas as parcelas menos o valor financiado (preço − entrada). É o que você paga ao banco a mais.',
+  'ce:ap': 'O valor que ficou aplicado (preço − entrada) depois de render todos os meses do prazo, com a taxa indicada.',
+  'ce:pc': 'As parcelas saem da sobra do mês. Se você tivesse pago à vista, essa sobra seria investida. Este é o total das parcelas com o rendimento que elas teriam tido até o fim do prazo.',
+  'ce:res': 'Aplicado no fim menos parcelas corrigidas. Positivo: financiar deixou mais dinheiro do que pagar à vista. Negativo: os juros custaram mais do que o dinheiro rendeu.'
+});
+const ceAberto = new Set();
+const ceSel = {};   // compra -> entrada (R$) escolhida para o gráfico mês a mês
+document.addEventListener('click', e => { const t = e.target.closest && e.target.closest('[data-ce-e]'); if (!t) return; const box = t.closest('[data-cent-box]'); if (!box) return;
+  const b = state.compras.find(x => x.id === box.dataset.centBox); if (!b) return; ceSel[b.id] = +t.dataset.ceE; renderCustoEntrada(b); });
+document.addEventListener('toggle', e => { const d = e.target; if (!d || !d.dataset || !d.dataset.cent) return; if (d.open) ceAberto.add(d.dataset.cent); else ceAberto.delete(d.dataset.cent); }, true);
+// juros do financiamento ao mês: os do card; em parcela fixa sem juros, a taxa implícita (preço − entrada)
+function ceJuros(b) {
+  const V = +b.valor || 0, E = Math.min(Math.max(+b.entrada || 0, 0), V), n = Math.max(1, Math.round(+b.prazo || 1));
+  if (+b.taxa > 0) return { i: Math.pow(1 + taxaAA(b) / 100, 1 / 12) - 1, impl: false };
+  if (b.modo === 'fixa') { const p = +b.parcela || 0, fin = V - E; if (fin > 0 && p * n > fin) { let lo = 0, hi = 0.2; for (let j = 0; j < 60; j++) { const mid = (lo + hi) / 2; if (p * (1 - Math.pow(1 + mid, -n)) / mid > fin) lo = mid; else hi = mid; } return { i: lo, impl: true }; } }
+  return { i: 0, impl: false };
+}
+function ceSim(b, E, i, n, taxaMes) {
+  const V = +b.valor || 0, PV = Math.max(0, V - E), sac = b.modo === 'sac';
+  const doCard = b.modo === 'fixa' && +b.parcela > 0 && Math.abs(E - (+b.entrada || 0)) < 0.5;
+  const pmt = PV <= 0 ? 0 : i > 0 ? PV * i / (1 - Math.pow(1 + i, -n)) : PV / n;
+  // ap = o que não foi na entrada, só rendendo; pc = parcelas pagas com a sobra, corrigidas pelo rendimento que teriam tido se investidas
+  let sd = PV, ap = PV, pc = 0, tot = 0, p1 = 0; const apA = [PV], pcA = [0];
+  for (let t = 1; t <= n; t++) {
+    const j = sd * i, p = PV <= 0 ? 0 : doCard ? +b.parcela : sac ? PV / n + j : pmt, r = taxaMes(t);
+    if (t === 1) p1 = p; sd = Math.max(0, sd - (p - j));
+    ap *= 1 + r; pc = pc * (1 + r) + p; tot += p; apA.push(ap); pcA.push(pc);
+  }
+  return { E, PV, p1, juros: tot - PV, ap, pc, res: ap - pc, apA, pcA };
+}
+function ceGrafico(cats, series, Wc) {  // cats[j].E = entrada (clique troca o gráfico mês a mês); cats[j].sel = escolhida
+  const W = Math.max(520, Math.round(Wc || 680)), H = 240, pl = 62, pr = 10, pt = 12, pb = 34;
+  let lo = 0, hi = 0; series.forEach(s => s.v.forEach(v => { lo = Math.min(lo, v); hi = Math.max(hi, v); })); if (hi === lo) hi = lo + 1;
+  const span = hi - lo, st0 = Math.pow(10, Math.floor(Math.log10(span / 4))), step = [1, 2, 2.5, 5, 10].map(m => m * st0).find(x => span / x <= 5);
+  const y0 = Math.floor(lo / step) * step, y1 = Math.ceil(hi / step) * step, Y = v => pt + (y1 - v) / (y1 - y0) * (H - pt - pb);
+  const cw = (W - pl - pr) / cats.length, bw = Math.min(22, cw * 0.78 / series.length);
+  let g = '';
+  for (let v = y0; v <= y1 + step / 2; v += step) g += `<line x1="${pl}" x2="${W - pr}" y1="${Y(v).toFixed(1)}" y2="${Y(v).toFixed(1)}" stroke="var(--line)" ${Math.abs(v) < step / 2 ? 'stroke-width="1.4" stroke="var(--muted)"' : ''}/><text x="${pl - 6}" y="${(Y(v) + 3.5).toFixed(1)}" text-anchor="end" font-size="10.5" fill="var(--muted)">${k(v)}</text>`;
+  cats.forEach((c, j) => { const x0 = pl + j * cw;
+    if (c.sua) g += `<rect x="${(x0 + 1).toFixed(1)}" y="${pt}" width="${(cw - 2).toFixed(1)}" height="${H - pt - pb}" fill="var(--accent)" opacity=".09" rx="4"/>`;
+    if (c.sel) g += `<rect x="${(x0 + 1.5).toFixed(1)}" y="${pt}" width="${(cw - 3).toFixed(1)}" height="${H - pt - pb}" fill="none" stroke="var(--ink)" stroke-width="1.4" stroke-dasharray="4 3" rx="4"/>`;
+    series.forEach((s, si) => { const v = s.v[j], x = x0 + cw / 2 - bw * series.length / 2 + si * bw, yb = Y(0), yv = Y(v);
+      g += `<rect x="${(x + 1).toFixed(1)}" y="${Math.min(yb, yv).toFixed(1)}" width="${(bw - 2).toFixed(1)}" height="${Math.max(0.8, Math.abs(yv - yb)).toFixed(1)}" rx="2" fill="${s.c}" opacity="${v < 0 ? .62 : 1}"><title>${esc(c.nome)} · ${esc(s.name)}: ${fm(v)}</title></rect>`; });
+    g += `<text x="${(x0 + cw / 2).toFixed(1)}" y="${H - pb + 15}" text-anchor="middle" font-size="10.5" fill="var(--ink)"${c.sua ? ' font-weight="700"' : ''}>${esc(c.lab)}</text>${c.sua ? `<text x="${(x0 + cw / 2).toFixed(1)}" y="${H - pb + 28}" text-anchor="middle" font-size="9.5" fill="var(--accent)" font-weight="700">sua</text>` : ''}${c.E != null ? `<rect data-ce-e="${c.E}" x="${x0.toFixed(1)}" y="${pt}" width="${cw.toFixed(1)}" height="${H - pt}" fill="transparent" style="cursor:pointer"><title>Ver ${esc(c.nome)} mês a mês</title></rect>` : ''}`; });
+  return `<svg viewBox="0 0 ${W} ${H}" width="100%" style="display:block" role="img" aria-label="Resultado de cada entrada comparado a pagar à vista">${g}</svg>`;
+}
+function renderCustoEntrada(b, el) {
+  el = el || $('cent-' + b.id); if (!el) return;
+  const V = +b.valor || 0, n = Math.max(1, Math.round(+b.prazo || 1));
+  if (!['imovel', 'carro', 'outro'].includes(b.tipo) || b.modo === 'avista' || !(V > 0)) { el.innerHTML = ''; return; }
+  const m0 = mIndex(b.mes), jr = ceJuros(b), Eu = Math.min(Math.max(+b.entrada || 0, 0), V);
+  const P = state.plan || {}, taxaP = t => taxaPlanoMes(m0 + t);
+  const pc = pesosCarteira(), taxaC = pc.length ? (t => { const x = carteiraNetA(pc, rates(m0 + t)); return x == null || !isFinite(x) ? 0 : Math.pow(1 + x, 1 / 12) - 1; }) : null;
+  const anual = f => { let a = 1; for (let t = 1; t <= n; t++) a *= 1 + f(t); return Math.pow(a, 12 / n) - 1; };
+  const aP = anual(taxaP), aC = taxaC ? anual(taxaC) : null, mesma = aC != null && (P.rendModo === 'carteira' || Math.abs(aC - aP) < 1e-6);
+  const fontes = [{ id: 'p', name: 'Meu plano', c: 'var(--s3)', f: taxaP, a: aP }].concat(taxaC && !mesma ? [{ id: 'c', name: 'Carteira atual', c: 'var(--s2)', f: taxaC, a: aC }] : []);
+  let Es = CE_OPC.map(x => ({ E: V * x / 100, lab: x + '%' }));
+  const ja = Es.find(x => Math.abs(x.E - Eu) < Math.max(1, V * 0.005));
+  if (ja) { ja.sua = true; ja.E = Eu; } else Es.push({ E: Eu, lab: num(Eu / V * 100, 0) + '%', sua: true });
+  Es.sort((a, c) => a.E - c.E); Es.push({ E: V, lab: 'À vista', avista: true, sua: Eu >= V - 0.5 });
+  if (Es.filter(x => x.sua).length > 1) Es = Es.filter(x => !(x.sua && !x.avista && x.E >= V - 0.5));
+  const linhas = Es.map(x => ({ ...x, nome: x.avista ? 'À vista' : `Entrada de ${x.lab} (${fm(x.E)})`, r: fontes.map(fo => x.avista ? { E: V, PV: 0, p1: 0, juros: 0, ap: 0, pc: 0, res: 0 } : ceSim(b, x.E, jr.i, n, fo.f)) }));
+  const selL = linhas.find(x => !x.avista && ceSel[b.id] != null && Math.abs(x.E - ceSel[b.id]) < 0.5) || linhas.find(x => x.sua && !x.avista) || linhas.find(x => !x.avista);
+  const sua = linhas.find(x => x.sua), melhor = linhas.reduce((a, x) => x.r[0].res > a.r[0].res ? x : a), ja0 = m0 <= mIndex(lastCp().mes);
+  const sinal = v => `<span class="${v < -0.5 ? 'neg' : v > 0.5 ? 'pos' : ''}">${v > 0.5 ? '+' : ''}${fm(v)}</span>`;
+  const resumo = sua ? `com a sua entrada: ${fm(sua.r[0].res)}${fontes.length > 1 ? ` (plano) · ${fm(sua.r[1].res)} (carteira)` : ''}` : '';
+  const taxaTxt = jr.i > 0 ? `${num(jr.i * 100)}% a.m. (${num((Math.pow(1 + jr.i, 12) - 1) * 100, 1)}% a.a.)${jr.impl ? ', a taxa implícita do seu contrato' : ''}` : 'sem juros';
+  const fTxt = fontes.map(fo => `<b style="color:${fo.c}">${fo.name}</b>: ${pct(fo.a, 2)} a.a.${fo.id === 'p' ? (P.rendModo === 'fixo' ? ' (o % fixo das premissas)' : P.rendModo === 'carteira' ? ' (taxas da carteira, como nas premissas)' : ' (taxa do cenário em destaque)') : ' (líquida de IR, pelo que está cadastrado em Carteira)'}`).join(' · ');
+  const aberto = ceAberto.has(b.id);
+  el.dataset.centBox = b.id;
+  el.innerHTML = `<details class="cent-d" data-cent="${b.id}"${aberto ? ' open' : ''}><summary>Quanto a entrada custa: rendimento × juros${resumo ? ` · <span class="cent-sum">${resumo}</span>` : ''}</summary>
+    <div class="cent-b">
+      <p class="cent-ex"><b>Como a conta é feita.</b> Financiando: no dia da compra, o que não vai para a entrada (preço − entrada) fica aplicado e só rende, todo mês, sem ser usado para pagar parcela. A parcela sai da sobra do mês, então a sobra que você investe fica menor nesse valor. À vista: o bem é pago inteiro no dia e não sobra nada aplicado, mas, sem parcela, a sobra investida é maior todo mês, e esse dinheiro também rende.
+      No fim das ${n} parcelas, o <b>resultado</b> é o valor aplicado com o rendimento menos as parcelas que você deixou de investir, com o rendimento que teriam tido. Positivo: financiar deixou mais dinheiro do que pagar à vista. Negativo: os juros custaram mais do que o dinheiro rendeu. No Meu plano nada muda, porque a sobra já vem com a parcela descontada.
+      As parcelas de cada entrada são recalculadas com os mesmos juros (${taxaTxt}) e o mesmo prazo do card${b.modo === 'sac' ? ', no sistema SAC' : ', em parcelas iguais'}. Rendimento: ${fTxt}.${ja0 ? ' Compra já feita: a conta mostra o que teria acontecido com cada entrada.' : ''} Valores em reais do fim do prazo (${mLabel(m0 + n)}).</p>
+      ${jr.i <= 0 ? '<p class="hint">Sem juros no financiamento, financiar sempre deixa mais dinheiro: informe os juros do contrato para a comparação valer.</p>' : ''}
+      <div class="cent-lg">${fontes.map(fo => `<span><i style="background:${fo.c}"></i>${fo.name}</span>`).join('')}<span class="cent-h">Resultado no fim do prazo, comparado a pagar à vista</span></div>
+      ${ceGrafico(linhas.map(x => ({ lab: x.lab, nome: x.nome, sua: x.sua, sel: x === selL, E: x.avista ? null : x.E })), fontes.map((fo, j) => ({ name: fo.name, c: fo.c, v: linhas.map(x => x.r[j].res) })), el.clientWidth)}
+      <div class="cent-mm">
+        <h4>Mês a mês: ${selL ? `${selL.sua ? 'a sua entrada' : 'entrada'} de ${selL.lab} (${fm(selL.E)})` : ''}</h4>
+        <p class="cent-ex">A linha cheia são os ${selL ? fm(selL.r[0].PV) : ''} aplicados (preço − entrada) crescendo com o rendimento. A tracejada é o total das parcelas pagas com a sobra, corrigido pelo rendimento que esse dinheiro teria se fosse investido. A distância entre as duas é o resultado em cada mês: com a cheia por cima, financiar está ganhando; com a tracejada por cima, está perdendo. Clique numa coluna do gráfico acima ou numa linha da tabela para ver outra entrada.</p>
+        <div class="legend" id="celg-${b.id}"></div><div id="cech-${b.id}" data-h="240"></div><div class="readout" id="cero-${b.id}"></div>
+      </div>
+      ${(() => { const a = linhas.find(x => !x.avista && !x.sua && x.E < V * 0.05), z = linhas.filter(x => !x.avista).slice(-1)[0]; if (!a || !z || z.E - a.E < 1) return ''; const d = (z.r[0].res - a.r[0].res) / (z.E - a.E) * 1000; return Math.abs(d) < 1 ? '' : `<p class="cent-ok">Cada <b>R$ 1.000 a mais de entrada</b> ${d > 0 ? 'evita' : 'custa'} cerca de <b>${fm(Math.abs(d))}</b> ${d > 0 ? 'de perda' : 'a mais'} no fim do prazo (pelo Meu plano).</p>`; })()}
+      ${sua && melhor !== sua && melhor.r[0].res - sua.r[0].res > 1 ? `<p class="cent-ok">Pelo Meu plano, a melhor opção é <b>${melhor.avista ? 'pagar à vista' : 'entrada de ' + melhor.lab}</b>: ${fm(melhor.r[0].res - sua.r[0].res)} a mais no fim do prazo do que a sua entrada.</p>` : sua ? '<p class="cent-ok">Pelo Meu plano, a sua entrada já é a melhor opção entre as comparadas.</p>' : ''}
+      <div class="tscroll"><table class="cent-t"><thead><tr><th>Entrada</th><th>Fica<br>aplicado${infoI('ce:fica')}</th><th>1ª<br>parcela${infoI('ce:parc')}</th><th>Juros<br>pagos${infoI('ce:juros')}</th>${fontes.map(fo => `<th>Aplicado no fim<br>${fo.name}${infoI('ce:ap')}</th><th>Parcelas corrigidas<br>${fo.name}${infoI('ce:pc')}</th><th>Resultado<br>${fo.name}${infoI('ce:res')}</th>`).join('')}</tr></thead><tbody>
+      ${linhas.map(x => `<tr${x.sua ? ' class="pe-best"' : ''}${x.avista ? '' : ` data-ce-e="${x.E}" style="cursor:pointer${x === selL ? ';outline:1.5px dashed var(--ink);outline-offset:-2px' : ''}" title="Ver esta entrada mês a mês"`}><td class="name">${x.avista ? 'À vista' : `${x.lab} · ${fm(x.E)}`}${x.sua ? ' <span class="chip info">sua escolha</span>' : ''}</td><td>${fm(x.r[0].PV)}</td><td>${x.r[0].p1 ? fm(x.r[0].p1) : '—'}</td><td>${x.r[0].juros > 0.5 ? fm(x.r[0].juros) : '—'}</td>${x.r.map(r => `<td>${x.avista ? '—' : fm(r.ap)}</td><td>${x.avista ? '—' : fm(r.pc)}</td><td><b>${sinal(r.res)}</b></td>`).join('')}</tr>`).join('')}
+      </tbody></table></div>
+    </div></details>`;
+  if (selL && $('cech-' + b.id)) {
+    const ser = fontes.flatMap((fo, j) => [{ name: 'Aplicado · ' + fo.name, c: fo.c, v: selL.r[j].apA, w: 2.4 }, { name: 'Parcelas corrigidas · ' + fo.name, c: fo.c, v: selL.r[j].pcA, dash: true }]);
+    legend($('celg-' + b.id), ser);
+    chart($('cech-' + b.id), $('cero-' + b.id), n + 1, ser, k, t => mLabel(m0 + t), n);
+  }
 }
 const SC = [{ id: 'avista', name: 'À vista', c: 'var(--s3)' }, { id: 'sac', name: 'Financ. SAC', c: 'var(--s5)' }, { id: 'price', name: 'Financ. Price', c: 'var(--s2)' }, { id: 'cons', name: 'Consórcio', c: 'var(--s4)' }];
 function renderPagamento(cen, p, r1) {
@@ -13685,7 +13984,7 @@ document.addEventListener('click', e => {
 });
 /* ========== COMPARADOR ========== */
 function buildComparador() {
-  document.querySelectorAll('#p-comparador [data-bind]').forEach(fillBound);
+  document.querySelectorAll(':is(#p-comparador,#np-comparador) [data-bind]').forEach(fillBound);
   $('tbl-rows').innerHTML = `<thead><tr><th>Produto</th><th>Tipo</th><th>Indexador</th><th>Modalidade</th><th>Taxa</th><th>Adm. (% a.a.)</th><th>Come-cotas</th><th>Gráfico</th><th></th></tr></thead><tbody>${state.comp.rows.map(r => { const tp = TIPOS[r.tipo] || TIPOS.cdb;
     return `<tr><td><div style="display:flex;align-items:center;gap:6px"><input type="text" class="name" data-bind="row:${r.id}:nome" aria-label="Nome do produto">${infoI(r.tipo)}</div></td>
     <td><select data-bind="row:${r.id}:tipo" aria-label="Tipo">${Object.entries(TIPOS).map(([id, t]) => `<option value="${id}">${t.nome}</option>`).join('')}</select></td>
@@ -13758,7 +14057,7 @@ function prodSpec(id) {
 function buildSimulador() {
   $('sim-prod').innerHTML = prodOptions();
   if (![...$('sim-prod').options].some(o => o.value === state.sim.prod)) state.sim.prod = $('sim-prod').options[0] ? $('sim-prod').options[0].value : 'b:cdi';
-  document.querySelectorAll('#p-simulador [data-bind]').forEach(fillBound);
+  document.querySelectorAll(':is(#p-simulador,#np-simulador) [data-bind]').forEach(fillBound);
 }
 function renderSimulador() {
   const s = state.sim, M = Math.max(12, Math.min(480, Math.round((+s.anos || 1) * 12))), i0 = HOJE_IDX;
@@ -14941,7 +15240,7 @@ function taxaPlanoMes(i, cs) {
 }
 // extra = Set de ids de itens ("compra:<id>", "so:<id>") somados ao plano só para comparar; sem extra, é o plano de verdade (com cache)
 // gráfico "Patrimônio projetado" (Primeiros passos): 0 = até o fim do plano; 3, 5 ou 10 anos a partir de hoje
-const mdAnos = () => [3, 5, 10].includes(+(state.plan || {}).anosMd) ? +state.plan.anosMd : 0;
+const mdAnos = () => [3, 5, 10, 20].includes(+(state.plan || {}).anosMd) ? +state.plan.anosMd : 0;
 const scAnos = () => +((state.plan || {}).anosSim) || 0, scFimIdx = () => scAnos() ? Math.max(mIndex((state.plan || {}).inicio), HOJE_IDX) + scAnos() * 12 : 0;
 const mdFimIdx = () => mdAnos() ? Math.max(mIndex((state.plan || {}).inicio), HOJE_IDX) + mdAnos() * 12 : 0;
 function calcPlano(extra, cenSim) {
@@ -15032,7 +15331,7 @@ function reajCel(scope, id, o, tipo, nome, pctDed) {
 let plFechados = null, plPer = 'prox';
 try { plFechados = JSON.parse(localStorage.getItem('painel-pl-fechados')); } catch (e) {}
 if (!Array.isArray(plFechados)) plFechados = ['custos', 'compras'];
-function buildOrcamento() { document.querySelectorAll('#p-orcamento [data-bind^="plan:"]').forEach(fillBound); }
+function buildOrcamento() { document.querySelectorAll(':is(#p-orcamento,#np-orcamento) [data-bind^="plan:"]').forEach(fillBound); }
 function renderPlano() {
   const P = state.plan, pl = calcPlano(), i0 = pl.i0;
   $('pl-ini-hint').textContent = `O plano começa no fim de ${mLabel(i0)} com patrimônio de ${fm(+P.valor || 0)}; o primeiro mês projetado é ${mLabel(i0 + 1)}. ${+P.valor > 0 ? `Esse valor é o checkpoint inicial de ${mLabel(i0)}; os próximos checkpoints, salvos no fechamento de cada mês, são comparados com o plano.` : 'Preencha o patrimônio líquido total: ele vira o checkpoint inicial do plano.'}`;
@@ -15696,13 +15995,14 @@ function onBound(el) {
   else if (scope === 'compra' && key === 'nome') { const pg = $('pg-compra').querySelector(`option[value="${id}"]`); if (pg) pg.textContent = v; const td = [...document.querySelectorAll('.incm tbody tr')][state.compras.findIndex(b => b.id === id)]; if (td) td.cells[0].textContent = v; }
   else if (scope === 'row' && key === 'tipo') { const tp = TIPOS[v]; o.idx = tp.idxs[0]; if (tp.fundo) { o.adm = o.adm ?? 0.3; o.cc = o.cc || 'lp'; } if (v === 'bolsa') o.taxa = +state.ret.acoes || 14; buildComparador(); }
   else if (scope === 'row' && key === 'idx') { buildComparador(); }
-  else if (scope === 'cen' && key === 'nome') { const b = document.querySelector(`#cenSeg [data-cen="${cenAtual().id}"]`); if (b) b.textContent = v; }
+  else if (scope === 'cen' && key === 'nome') { const b = document.querySelector(`#cenSeg [data-cen="${cenAtual().id}"]`); if (b) b.textContent = v; document.querySelectorAll(`[data-cenpick] option[value="${cenAtual().id}"]`).forEach(o => { o.textContent = v + (ehCenReal(cenAtual()) ? ' · Real' : ''); }); }
   else if (scope === 'curva') { renderConfig(); }
   else if (scope === 'alvo') { document.querySelectorAll('#presetSeg button').forEach(b => b.setAttribute('aria-pressed', 'false')); }
   // no orçamento, recalcula depois que o foco já foi para o próximo campo
   if (/^(orc|fproj|freal|plan|plmud|plev|venda|patr)/.test(scope) || (scope === 'compra' && tab === 'patrimonio')) { setTimeout(renderTab, 0); return; }
   renderTab();
 }
+document.addEventListener('change', e => { const sl = e.target; if (!sl.dataset || sl.dataset.cenpick == null) return; state.cenAtivo = sl.value; save(); buildCenarios(); renderCenarios(); });
 document.addEventListener('change', e => { if (e.target.id !== 'cen-proprio') return;
   const cen = cenAtual(); cen.proprio = e.target.checked; if (cen.proprio) { cen.alvo = Object.assign({}, state.alvoCart); cen.preset = state.alvoPreset; }
   save(); buildCenarios(); renderTab(); });
@@ -16163,8 +16463,8 @@ function cuPassos() {
       precisa: 'Nada aqui é obrigatório. Para ter o que comparar, cadastre itens nos outros módulos: um bem, uma viagem, um filho, uma troca de emprego. O cenário <b>Real</b> é o que vale em Finanças.',
       passos: [
         { id: 'simcen', t: 'Criar um cenário', d: 'Duplique o Real ou comece um novo para testar um caminho diferente.', ok: (state.cenarios || []).length > 1 || pul.includes('simcen'), tab: 'simcen', sec: 'Cenários', pular: 'Depois' },
-        { id: 'siminc', t: 'Incluir ou tirar itens', d: 'Em cada cenário, clique em + Incluir nos itens que entram nele.', ok: pul.includes('siminc') || (() => { try { const its = itensModulos(); return (state.cenarios || []).some(c => !ehCenReal(c) && simDifs(c, its).length); } catch (e) { return false; } })(), tab: 'simcen', sec: 'Simulação de cenários', pular: 'Depois' },
-        { id: 'simpat', t: 'Comparar o patrimônio', d: 'Veja onde cada cenário chega e escolha o horizonte, de 1 a 20 anos.', ok: pul.includes('simpat'), tab: 'simcen', sec: 'Patrimônio projetado', pular: 'Já vi' },
+        { id: 'siminc', t: 'Incluir itens ou mudar premissas', d: 'Em cada cenário, clique em + Incluir nos itens que entram nele, ou mude as premissas (rendimento, renda extra, custos) em Premissas dos cenários.', ok: pul.includes('siminc') || simTemDif(), tab: 'simcen', sec: 'Simulação de cenários', pular: 'Depois' },
+        { id: 'simpat', t: 'Comparar o patrimônio', d: 'Veja onde cada cenário chega e escolha o horizonte, de 1 a 20 anos.', ok: pul.includes('simpat') || (vis.includes('simcen') && simTemDif()), tab: 'simcen', sec: 'Patrimônio projetado', pular: 'Já vi' },
         { id: 'simdec', t: 'Tornar real o que decidir', d: 'O cenário escolhido passa a valer em Finanças. O Real de hoje fica guardado como cenário.', ok: pul.includes('simdec'), tab: 'simcen', sec: 'Decidir', pular: 'Agora não' }
       ]
     },
@@ -16328,6 +16628,11 @@ function impactos(its) {
   its.forEach(x => { if (x.bloq || !x.ini) return; const alt = calcPlano(new Set([(x.uso === 'real' ? '-' : '') + x.id])); out[x.id] = { alt, ef: i => x.uso === 'real' ? (base.inv[i] ?? 0) - (alt.inv[i] ?? 0) : (alt.inv[i] ?? 0) - (base.inv[i] ?? 0) }; });
   return out;
 }
+/* v355: linha do tempo dos módulos com filtro Tudo / Só o real (state.plan.mdTlReal; padrão: tudo) */
+function mdTlPinta() { const so = !!(state.plan && state.plan.mdTlReal), its = itensVisiveis().filter(x => !so || x.uso !== 'sim');
+  document.querySelectorAll('#md-tl-f button').forEach(b => b.setAttribute('aria-pressed', String((b.dataset.mdtlf === 'real') === so)));
+  $('md-tl').innerHTML = its.length || !so ? tlHtml(its) : '<p class="tl-vazio">Nenhum item real com data ainda. Clique em Tudo para ver também as simulações.</p>'; }
+document.addEventListener('click', e => { const b = e.target.closest && e.target.closest('[data-mdtlf]'); if (!b) return; state.plan.mdTlReal = b.dataset.mdtlf === 'real'; save(); try { mdTlPinta(); } catch (er) { console.error(er); } });
 function tlHtml(its) {
   const ev = its.filter(x => x.ini && /^\d{4}-\d{2}$/.test(x.ini)).map(x => { const a = mIndex(x.ini); return Object.assign({ a, b: a + (x.meses || 0) }, x); });
   if (!ev.length) return '<p class="tl-vazio">Nada no tempo ainda. Cadastre compras em Bens e compromissos, eventos de stock options em Carreira ou eventos no Meu plano.</p>';
@@ -16336,14 +16641,15 @@ function tlHtml(its) {
   const W = a1 - a0, pc = i => Math.max(0, Math.min(100, (i - a0) / W * 100)), anos = W / 12, passo = anos > 16 ? 4 : anos > 8 ? 2 : 1;
   const ticks = []; for (let i = a0; i <= a1; i += 12 * passo) ticks.push(`<span style="left:${pc(i)}%">${mKey(i).slice(0, 4)}</span>`);
   const cor = id => (MODS.find(m => m.id === id) || {}).cor || 'var(--s1)', ch = x => x.chance < 100 ? `<span class="tl-ch">${x.chance}%</span>` : '';
+  const uso = x => x.uso === 'sim' ? '<span class="tl-uso sim">Simulação</span>' : '<span class="tl-uso real">Real</span>';
   const sub = x => `${esc((MODS.find(m => m.id === x.mod) || {}).nome || '')} · ${esc(x.sub)} · ${mLabel(x.a)}${x.meses ? ' a ' + mLabel(x.b) : ''}`;
   ev.sort((p, q) => p.a - q.a || p.nome.localeCompare(q.nome));
   const larga = `<div class="tl tl-wide" style="--tly:${(12 * passo / W * 100).toFixed(4)}%"><div class="tl-h"><span></span><div class="tl-ax">${ticks.join('')}</div></div>` + ev.map(x => {
     const sm = x.uso === 'sim' ? ' sim' : '', st = `--mc:${cor(x.mod)}`;
-    return `<div class="tl-r"><div class="tl-n"><a href="#" data-lmtab="${x.tab}" data-lmsec="${esc(x.sec || '')}" data-lmitem="${esc(x.id || '')}">${esc(x.nome)}</a>${ch(x)}<small>${sub(x)} · ${esc(x.resumo)}</small></div><div class="tl-b">${x.b > x.a ? `<span class="tl-bar${sm}" style="${st};left:${pc(x.a)}%;width:${Math.max(0.6, pc(x.b) - pc(x.a))}%"></span>` : ''}<span class="tl-dot${sm}" style="${st};left:${pc(x.a)}%" title="${esc(x.nome)}: ${mLabel(x.a)}"></span>${''}</div></div>`;
+    return `<div class="tl-r"><div class="tl-n"><a href="#" data-lmtab="${x.tab}" data-lmsec="${esc(x.sec || '')}" data-lmitem="${esc(x.id || '')}">${esc(x.nome)}</a>${uso(x)}${ch(x)}<small>${sub(x)} · ${esc(x.resumo)}</small></div><div class="tl-b">${x.b > x.a ? `<span class="tl-bar${sm}" style="${st};left:${pc(x.a)}%;width:${Math.max(0.6, pc(x.b) - pc(x.a))}%"></span>` : ''}<span class="tl-dot${sm}" style="${st};left:${pc(x.a)}%" title="${esc(x.nome)}: ${mLabel(x.a)}"></span>${''}</div></div>`;
   }).join('') + `<span class="tl-hoje" style="left:calc(var(--tlw) + 12px + (100% - var(--tlw) - 12px) * ${(pc(HOJE_IDX) / 100).toFixed(4)})"><span>hoje</span></span></div>`;
   const porAno = {}; ev.forEach(x => { const y = x.a < HOJE_IDX - calMonth(HOJE_IDX) ? 'Em andamento' : mKey(x.a).slice(0, 4); (porAno[y] = porAno[y] || []).push(x); });
-  const lista = `<div class="tl-list">${Object.keys(porAno).sort((p, q) => p === 'Em andamento' ? -1 : q === 'Em andamento' ? 1 : p.localeCompare(q)).map(y => `<div class="tl-ano">${y}</div>` + porAno[y].map(x => `<div class="tl-li"><i class="${x.uso === 'sim' ? 'sim' : ''}" style="--mc:${cor(x.mod)}"></i><span class="q">${mLabel(x.a)}</span><span><a href="#" data-lmtab="${x.tab}" data-lmsec="${esc(x.sec || '')}" data-lmitem="${esc(x.id || '')}">${esc(x.nome)}</a>${ch(x)}<small>${esc(x.resumo)}${x.uso === 'sim' ? ' · só simulação' : ''}</small></span></div>`).join('')).join('')}</div>`;
+  const lista = `<div class="tl-list">${Object.keys(porAno).sort((p, q) => p === 'Em andamento' ? -1 : q === 'Em andamento' ? 1 : p.localeCompare(q)).map(y => `<div class="tl-ano">${y}</div>` + porAno[y].map(x => `<div class="tl-li"><i class="${x.uso === 'sim' ? 'sim' : ''}" style="--mc:${cor(x.mod)}"></i><span class="q">${mLabel(x.a)}</span><span><a href="#" data-lmtab="${x.tab}" data-lmsec="${esc(x.sec || '')}" data-lmitem="${esc(x.id || '')}">${esc(x.nome)}</a>${uso(x)}${ch(x)}<small>${esc(x.resumo)}</small></span></div>`).join('')).join('')}</div>`;
   return larga + lista;
 }
 function renderMdChart() {
@@ -16555,7 +16861,27 @@ function renderJogo() {
   h += `<circle cx="${CX}" cy="${CY}" r="${R0 - 6}" fill="var(--panel)" stroke="var(--line)"/>`;
   const g0 = $('jg-rot'); g0.innerHTML = h; g0.style.transform = `rotate(${jgRot}deg)`; g0.querySelectorAll('.jg-ic').forEach(x => x.style.transform = `rotate(${-jgRot}deg)`);
   jgGrow(jgSel, true); jgMostra(jgSel);
+  try { jgAgenda(); } catch (e) { console.error(e); }
 }
+function jgAgenda() {
+  const box = $('jg-ag'); if (!box) return;
+  const m = MODS.find(x => x.id === 'agen');
+  if (!m || !state || !state.agenda || jgVista() !== 'roleta' || !jgMods().includes(m)) { box.hidden = true; return; }
+  box.hidden = false; box.style.setProperty('--agm', m.corNav);
+  const h = agHoje(), n0 = agDiaN(h), dw = (new Date(h + 'T12:00:00').getDay() + 6) % 7, iso = n => new Date(n * 864e5).toISOString().slice(0, 10);
+  const seg = iso(n0 - dw), dom = iso(n0 - dw + 6);
+  let sem = []; try { sem = agDoDia(seg, dom); } catch (e) {}
+  const porDia = {}; sem.forEach(o => { porDia[o.data] = (porDia[o.data] || 0) + 1; });
+  const falta = sem.filter(o => o.data >= h).length, NS = ['seg', 'ter', 'qua', 'qui', 'sex', 'sáb', 'dom'];
+  const dias = NS.map((nm, k) => { const d = iso(n0 - dw + k), c = porDia[d] || 0;
+    return `<button type="button" data-jgagd="${d}" class="${d === h ? 'hj' : d < h ? 'pas' : ''}" title="${new Date(d + 'T12:00:00').toLocaleDateString('pt-BR', { weekday: 'long', day: 'numeric', month: 'long' })}: ${c ? c + (c > 1 ? ' itens' : ' item') : 'nada'}">${nm}<b>${+d.slice(8, 10)}</b><i class="${c ? 'n' : ''}">${c || '·'}</i></button>`; }).join('');
+  let prox = []; try { prox = agDoDia(h, iso(n0 + 60)).slice(0, 5); } catch (e) {}
+  const li = o => `<li><i style="--agc:${agCor(o)}"></i><span class="q">${o.data === h ? 'hoje' : agBr(o.data)}${o.hora ? ' ' + o.hora : ''}</span><span>${o.auto ? `<a href="#" data-tab="${o.tab}">${esc(o.titulo)}</a>` : `<a href="#" data-agev="${o.id}">${esc(o.titulo)}</a>`}</span></li>`;
+  box.innerHTML = `<div class="jg-ag-h"><b>Agenda</b><span class="q">${sem.length ? `${sem.length} ${sem.length > 1 ? 'compromissos' : 'compromisso'} nesta semana${falta !== sem.length ? ` · ${falta ? falta + (falta > 1 ? ' ainda por vir' : ' ainda por vir') : 'todos já passaram'}` : ''}` : 'Semana livre'}</span><a href="#" data-irmod="agen">Abrir a Agenda ›</a></div>
+    <div class="jg-ag-d" role="group" aria-label="Esta semana">${dias}</div>
+    ${prox.length ? `<ul class="ag-lst">${prox.map(li).join('')}</ul>` : `<p class="hint">Nada nos próximos 60 dias. <a href="#" data-jgagd="${h}">+ Compromisso</a></p>`}`;
+}
+document.addEventListener('click', e => { const b = e.target.closest && e.target.closest('[data-jgagd]'); if (!b) return; e.preventDefault(); agDia = b.dataset.jgagd; agMes = agDia.slice(0, 7); showTab('agcal'); });
 function jgGrow(i, on) { const el = document.querySelector(`#jg-rot .jg-sl[data-jgi="${i}"] .jg-f`); if (!el) return; const N = jgMods().length, t = ((i + .5) * 360 / N - 90) * Math.PI / 180; el.style.transform = on ? `translate(${(15 * Math.cos(t)).toFixed(1)}px,${(15 * Math.sin(t)).toFixed(1)}px) scale(1.06)` : ''; }
 function jgMostra(i) {
   const vis = jgMods(), m = vis[i]; if (!m) return; const g = jgProg(m), sug = jgSugestao(vis);
@@ -16635,7 +16961,7 @@ document.addEventListener('click', e => { const b = e.target.closest('[data-jgab
 function renderModulos() {
   try { renderCkSem(); } catch (er) { console.error(er); }
   try { renderJogo(); renderMissoes(); renderTrilha(); } catch (er) { console.error(er); }
-  setTimeout(() => { if (tab !== 'modulos') return; try { $('md-tl').innerHTML = tlHtml(itensVisiveis()); renderMdChart(); } catch (er) { console.error(er); } }, 0);
+  setTimeout(() => { if (tab !== 'modulos') return; try { mdTlPinta(); renderMdChart(); } catch (er) { console.error(er); } }, 0);
   const vis = MODS.filter(m => modLiberado(m) && (m.breve || modEscolhido(m)));
   $('md-grid').innerHTML = vis.map(m => m.breve
     ? `<div class="md-card breve" style="--mc:${m.corNav}" aria-disabled="true"><div class="md-img">${MOD_SVG[m.id]}</div><span class="chip">Em breve</span><h3>${esc(m.nome)}</h3><p>${esc(m.desc)}</p><div class="md-res">Ainda em construção</div></div>`
@@ -16675,7 +17001,7 @@ function showTab(t, keepScroll) {
   const mudou = tab !== t;
   tab = t;
   const md = modDe(t); if (md) modAtual = md; aplicarMod();
-  if ((t === 'orcamento' || t === 'pjpf') && state && state.plan) { state.passos = state.passos || { pulados: [] }; const v = state.passos.vistos = Array.isArray(state.passos.vistos) ? state.passos.vistos : []; if (!v.includes(t)) { v.push(t); save(); } }
+  if ((t === 'orcamento' || t === 'pjpf' || t === 'simcen') && state && state.plan) { state.passos = state.passos || { pulados: [] }; const v = state.passos.vistos = Array.isArray(state.passos.vistos) ? state.passos.vistos : []; if (!v.includes(t)) { v.push(t); save(); } }
   document.querySelectorAll('.nav-head').forEach(bt => { if (bt.dataset.tab === t) bt.setAttribute('aria-current', 'page'); else bt.removeAttribute('aria-current'); });
   Object.keys(RENDER).forEach(x => $('p-' + x).hidden = x !== t);
   $('navMobileSub').innerHTML = document.querySelector(`.nav-sub[data-sub="${t}"]`).innerHTML;
@@ -16702,7 +17028,7 @@ function bensHoje() {
 }
 function renderPatr() {
   const P = state.patr, br = s => s.split('-').reverse().join('/');
-  document.querySelectorAll('#p-patrimonio [data-bind]').forEach(fillBound);
+  document.querySelectorAll(':is(#p-patrimonio,#np-patrimonio) [data-bind]').forEach(fillBound);
   document.querySelectorAll('#pt-anos button').forEach(b => b.setAttribute('aria-pressed', +b.dataset.ptanos === ptAnos));
   const ev = ativos().map(a => ({ a, v: avaliar(a).atual })), prev = ev.filter(x => ehPrevFgts(x.a)).reduce((t, x) => t + x.v, 0), inv = ev.filter(x => !ehPrevFgts(x.a)).reduce((t, x) => t + x.v, 0);
   const B = bensHoje(), meusT = B.filter(x => x.tenho), meus = meusT.filter(x => ehBem(x.b)), bens = meus.reduce((t, x) => t + x.valor, 0), div = meusT.reduce((t, x) => t + x.divida, 0);
@@ -18050,8 +18376,21 @@ if (!cps.length) cps = CP_PLANILHA.slice();
 showTab(tab); setSave('salvo só neste navegador');
 // tela de carregando: some quando o estado, os checkpoints e os gastos chegam (ou depois de 15 s)
 const CARREG = new Set(['estado', 'cps', 'gastos']);
-function carregou(k) { CARREG.delete(k); if (!CARREG.size) carregFim(); }
-function carregFim() { const el = $('carregando'); if (!el || el.hidden) return; CARREG.clear(); el.classList.add('some'); setTimeout(() => { el.hidden = true; }, 320); try { showTab(tab, true); } catch (e) {} }
+// pino de cobre anda pelas casas enquanto carrega
+let crPasso = 0, crTm = null;
+function crPino(k) {
+  const casas = document.querySelectorAll('#carregando .cr-casa'), pino = document.querySelector('#carregando .cr-pino'); if (!casas.length || !pino) return;
+  const c = casas[k]; pino.style.transform = `translateX(${c.offsetLeft + c.offsetWidth / 2 - pino.offsetWidth / 2}px)`;
+  casas.forEach((x, j) => x.classList.toggle('on', j <= k));
+}
+try { crPino(0); crTm = setInterval(() => { crPasso = (crPasso + 1) % 5; crPino(crPasso); }, 420); } catch (e) {}
+function carregou(k) { const p = document.querySelector(`#carregando .cr-passos [data-k="${k}"]`); if (p) p.classList.add('ok'); CARREG.delete(k); if (!CARREG.size) carregFim(); }
+function carregFim() {
+  const el = $('carregando'); if (!el || el.hidden || el.dataset.fim) return; el.dataset.fim = '1'; CARREG.clear();
+  clearInterval(crTm); try { crPino(4); } catch (e) {}
+  setTimeout(() => { el.classList.add('some'); setTimeout(() => { el.hidden = true; }, 360); }, 380);
+  try { showTab(tab, true); } catch (e) {}
+}
 setTimeout(carregFim, 15000);
 (async () => {
   if (window.claude && window.claude.use) {
@@ -18396,7 +18735,7 @@ function jorSimDb(real) {
     if (!ok) return; vazio = false; const i0 = tourI; setTimeout(() => { if (tourI !== i0) return; if (tourI >= ps.length - 1) tourFecha(true); else { tourI++; tourMostra(); } }, 700); }, 60));
 
   // ---------- caixa "Rendimento, inflação e reinvestimento": explicação e guia ----------
-  const lgRend = [...document.querySelectorAll('#p-orcamento legend')].find(l => /Rendimento, inflação e reinvestimento/.test(l.textContent));
+  const lgRend = [...document.querySelectorAll(':is(#p-orcamento,#np-orcamento) legend')].find(l => /Rendimento, inflação e reinvestimento/.test(l.textContent));
   if (lgRend && !lgRend.querySelector('.jor-lgb')) {
     lgRend.insertAdjacentHTML('beforeend', ' <button type="button" class="ibtn jor-lgb" data-jorrend="info" aria-label="O que é esta caixa">i</button><button type="button" class="jor-q jor-lgb" data-jorrend="guia" title="Me guia nesta caixa" aria-label="Me guia nesta caixa">?</button>');
     lgRend.addEventListener('click', e => { const b = e.target.closest('[data-jorrend]'); if (!b) return; e.preventDefault(); e.stopPropagation();
@@ -18436,7 +18775,7 @@ function jorSimDb(real) {
   }
   { const o = carregFim; carregFim = function () { o(); setTimeout(inicia, 400); }; }
   // carregou antes deste bloco rodar (ou sem banco)
-  setTimeout(() => { if ($('carregando').hidden) inicia(); }, 1000);
+  setTimeout(() => { if ($('carregando').hidden || $('carregando').dataset.fim) inicia(); }, 1000);
   setTimeout(inicia, 16000);
 })();
 
@@ -19144,6 +19483,7 @@ function jorSimDb(real) {
   function aplicar(t) {
     guiaFechaN();
     const tem = !!NOVAS[t], usa = tem && layNovo;
+    { const eb = document.querySelector('#pt-hd .eb'), mm = MODS.find(m => (m.tabs || []).includes(t)); if (eb && eb.firstChild && eb.firstChild.nodeType === 3) eb.firstChild.textContent = (mm ? mm.nome : 'Finanças') + ' '; }
     $$('pt-lay').hidden = !tem; $$('pt-q').hidden = !usa || !GUIA[t]; $$('pt-sub').textContent = usa ? SUB[t] : '';
     document.querySelectorAll('#pt-lay button').forEach(b => b.setAttribute('aria-pressed', String((b.dataset.lay === 'novo') === layNovo)));
     Object.keys(NOVAS).forEach(x => { $$('np-' + x).hidden = !(usa && x === t); });
@@ -19230,7 +19570,7 @@ function jorSimDb(real) {
     }
   }
   document.addEventListener('click', e => {
-    const c = e.target.closest('[data-npcen]'); if (c) { state.destaque = c.dataset.npcen; save(); renderTab(); return; }
+    const c = e.target.closest('[data-npcen]'); if (c) { state.destaque = c.dataset.npcen; state.cenAtivo = c.dataset.npcen; save(); try { if (typeof buildCenarios === 'function') buildCenarios(); } catch (er) { console.error(er); } renderTab(); return; }
     if (e.target.closest('[data-npcennovo]')) { const b = $$('cen-novo'); if (b) b.click(); }
   });
 
@@ -19707,7 +20047,7 @@ Object.keys(INT_POS).forEach(t => { const r0 = RENDER[t]; if (!r0) return; RENDE
 /* ---------- v321 voltar e avançar do navegador: cada tela é um passo no histórico (#tela); voltar com um pop-up aberto fecha o pop-up ---------- */
 (() => {
   if (!window.history || !history.pushState) return;
-  const POPS = ['#int-pop', '#int-lista', '#cp-pop', '#conf-pop', '#ag-pop', '#imp-pop', '#jor-modal', '#pess-pop', '#sino-pop', '#tour-pop', '#nav-mod-pop', '#vg-mpop', '#mp-pop', '#ac-pop-apl', '#ac-pop-gasto', '#ac-pop-exp'];
+  const POPS = ['#int-pop', '#int-lista', '#cp-pop', '#conf-pop', '#ag-pop', '#imp-pop', '#jor-modal', '#pess-pop', '#sino-pop', '#tour-pop', '#nav-mod-pop', '#vg-mpop', '#mp-pop', '#ac-pop-apl', '#ac-pop-gasto', '#ac-pop-exp', '#cen-pend-pop'];
   const vis = el => { if (!el || el.hidden) return false; const cs = getComputedStyle(el); return cs.display !== 'none' && cs.visibility !== 'hidden'; };
   const abertos = () => POPS.map(s => document.querySelector(s)).filter(vis);
   function fecha(el) {
@@ -19860,7 +20200,7 @@ Object.keys(INT_POS).forEach(t => { const r0 = RENDER[t]; if (!r0) return; RENDE
     root.style.setProperty('--m', m ? (m.corNav || '#F0A46B') : '#F0A46B');
     document.querySelectorAll('.block-title h1').forEach(h => {
       const p = h.closest('[role=tabpanel]'); const mm = p ? modDe(p.id.slice(2)) : null;
-      if (mm) { const i = MODS.indexOf(mm) + 1; h.setAttribute('data-lbmod', 'Módulo ' + i + ' de ' + MODS.length + ' · ' + mm.nome); }
+      if (mm) { const i = MODS.indexOf(mm) + 1; h.setAttribute('data-lbmod', 'Módulo ' + i + ' de ' + MODS.length + ' · ' + mm.nome); h.setAttribute('data-lbmodn', mm.nome); }
     });
     pintaTop(); pintaSecs();
   }
@@ -19938,6 +20278,7 @@ Object.keys(INT_POS).forEach(t => { const r0 = RENDER[t]; if (!r0) return; RENDE
   const RAZAO = 1.45;
   const alt = el => { const c = el.firstElementChild || el; if (!c) return 0; const r = c.getBoundingClientRect(); return r.height; };
   function confere() {
+    const sx = scrollX, sy = scrollY;   // v350: medir mexe na altura da página e o navegador puxava a rolagem para cima
     document.querySelectorAll('.np-g.np-split').forEach(g => {
       if (!g.offsetParent) return;
       const sl = [...g.children].filter(x => x.offsetParent !== null || x.classList.contains('np-slot'));
@@ -19948,6 +20289,7 @@ Object.keys(INT_POS).forEach(t => { const r0 = RENDER[t]; if (!r0) return; RENDE
       const uma = a > 0 && b > 0 && Math.max(a, b) / Math.min(a, b) > RAZAO;
       if (uma) g.classList.add('np-uma'); else if (tinha && !uma) g.classList.remove('np-uma');
     });
+    if (scrollY !== sy || scrollX !== sx) window.scrollTo({ left: sx, top: sy, behavior: 'instant' });
   }
   let t = 0; const agenda = () => { clearTimeout(t); t = setTimeout(confere, 120); };
   window.npConfere = confere;
@@ -19958,6 +20300,321 @@ Object.keys(INT_POS).forEach(t => { const r0 = RENDER[t]; if (!r0) return; RENDE
   setTimeout(confere, 1500);
 })();
 </script>
+<script>
+/* v360: premissas de um cenário só ficam valendo depois de "Salvar" → confirmar as mudanças (evita número digitado sem querer).
+   A mudança aparece na hora nos gráficos; a barra embaixo oferece Desfazer ou Salvar; trocar de cenário ou de tela com mudança pendente abre a confirmação antes. */
+(function () {
+  const ROT = { 'aj.cdi': 'Ajuste no CDI (p.p.)', 'aj.ipca': 'Ajuste no IPCA (p.p.)', extra: 'Renda extra (R$/mês)', manual: 'Taxa manual (% a.a. líquido)', custoFix: 'Aumento em Fixos (%)', custoEss: 'Aumento em Essenciais (%)', custoEst: 'Aumento em Estilo de vida (%)', custoDe: 'Custos mudam a partir de', proprio: 'Divisão própria da carteira' };
+  let pend = null;   // { id, antes }
+  const snap = c => JSON.parse(JSON.stringify({ aj: c.aj || {}, extra: c.extra ?? '', manual: c.manual ?? '', custoFix: c.custoFix ?? '', custoEss: c.custoEss ?? '', custoEst: c.custoEst ?? '', custoDe: c.custoDe ?? '', proprio: !!c.proprio, alvo: c.alvo || null, preset: c.preset ?? '' }));
+  const get = (o, k) => k.split('.').reduce((x, y) => x == null ? x : x[y], o);
+  const vazio = v => v === '' || v == null || (typeof v === 'number' && !isFinite(v));
+  const fmt = (k, v) => {
+    if (k === 'proprio') return v ? 'Sim' : 'Não';
+    if (k === 'custoDe') return vazio(v) ? 'desde já' : (/^\d{4}-\d{2}$/.test(v) ? mLabel(mIndex(v)) : String(v));
+    if (k === 'manual') return vazio(v) || +v <= 0 ? 'vazio (usa a carteira)' : num(v) + '%';
+    if (k === 'extra') return vazio(v) ? 'R$ 0' : fm(+v);
+    return vazio(v) ? '0' : num(v);
+  };
+  const igual = (k, a, b) => k === 'proprio' ? !!a === !!b : (vazio(a) ? 0 : String(a)) == (vazio(b) ? 0 : String(b)) || (!vazio(a) && !vazio(b) && +a === +b);
+  function difs() {
+    if (!pend) return [];
+    const c = state.cenarios.find(x => x.id === pend.id); if (!c) return [];
+    const ag = snap(c), out = [];
+    Object.keys(ROT).forEach(k => { const a = get(pend.antes, k), b = get(ag, k); if (!igual(k, a, b)) out.push([ROT[k], fmt(k, a), fmt(k, b)]); });
+    if (ag.proprio || pend.antes.proprio) {
+      const A = pend.antes.alvo || {}, B = ag.alvo || {};
+      (typeof CLASSES !== 'undefined' ? CLASSES : []).forEach(cl => { const a = +A[cl.id] || 0, b = +B[cl.id] || 0; if (ag.proprio && a !== b) out.push(['Carteira: ' + cl.nome, num(a) + '%', num(b) + '%']); });
+    }
+    return out;
+  }
+  const naTela = el => !!(el && el.closest && el.closest('#p-cenarios, #np-cenarios'));
+  const ehPremissa = el => { if (!naTela(el)) return false; if (el.id === 'cen-proprio') return true; const b = el.dataset && el.dataset.bind; return !!b && (/^aj::/.test(b) || (/^cen::/.test(b) && b !== 'cen::nome') || /^alvo::/.test(b)); };
+  function marca() { const c = cenAtual(); if (!c || ehCenReal(c)) return; if (!pend || pend.id !== c.id) pend = { id: c.id, antes: snap(c) }; }
+  // barra embaixo
+  const bar = document.createElement('div'); bar.id = 'cen-pend'; bar.hidden = true; bar.setAttribute('role', 'status');
+  bar.innerHTML = '<span id="cen-pend-t"></span><button type="button" class="btn ghost" data-cenpend="desfaz">Desfazer</button><button type="button" class="btn" data-cenpend="salva">Salvar</button>';
+  document.body.appendChild(bar);
+  // pop-up de confirmação
+  const pop = document.createElement('div'); pop.className = 'conf-pop ac-pop'; pop.id = 'cen-pend-pop'; pop.hidden = true;
+  pop.innerHTML = '<div class="conf-dlg ac-dlg" role="dialog" aria-modal="true" aria-labelledby="cen-pend-pt"><button type="button" class="conf-x" data-cenpend="fecha" aria-label="Fechar" title="Fechar">✕</button><h3 class="ac-t" id="cen-pend-pt">Confirmar as mudanças</h3><p class="hint" id="cen-pend-ps"></p><div class="tscroll"><table class="cen-pend-tb"><thead><tr><th>Premissa</th><th>Antes</th><th>Depois</th></tr></thead><tbody id="cen-pend-tb"></tbody></table></div><div class="cen-pend-ac"><button type="button" class="btn ghost" data-cenpend="desfaz">Desfazer tudo</button><button type="button" class="btn ghost" data-cenpend="fecha">Continuar editando</button><button type="button" class="btn" data-cenpend="confirma">Confirmar e salvar</button></div></div>';
+  document.body.appendChild(pop);
+  function pinta() {
+    const d = difs(); if (!d.length) { pend = null; }
+    const c = pend && state.cenarios.find(x => x.id === pend.id);
+    bar.hidden = !pend || !c || tab !== 'cenarios';
+    if (pend && c) document.getElementById('cen-pend-t').innerHTML = `Você mudou ${d.length} ${d.length > 1 ? 'premissas' : 'premissa'} de <b>${esc(c.nome)}</b>. Salvar?`;
+  }
+  function abrePop(motivo) {
+    const d = difs(); if (!d.length) { pend = null; pinta(); return false; }
+    const c = state.cenarios.find(x => x.id === pend.id);
+    document.getElementById('cen-pend-ps').textContent = (motivo ? motivo + ' ' : '') + 'Confira o que muda em ' + (c ? c.nome : 'este cenário') + ':';
+    document.getElementById('cen-pend-tb').innerHTML = d.map(([n, a, b]) => `<tr><td>${esc(n)}</td><td>${esc(a)}</td><td><b>${esc(b)}</b></td></tr>`).join('');
+    pop.hidden = false; const ok = pop.querySelector('[data-cenpend="confirma"]'); if (ok) ok.focus(); return true;
+  }
+  function refaz() { save(); try { buildCenarios(); } catch (e) {} try { renderTab(); } catch (e) {} }
+  function desfaz() { if (!pend) return; const c = state.cenarios.find(x => x.id === pend.id); if (c) { const a = JSON.parse(JSON.stringify(pend.antes)); c.aj = a.aj; ['extra', 'manual', 'custoFix', 'custoEss', 'custoEst', 'custoDe', 'proprio', 'preset'].forEach(k => { c[k] = a[k]; }); if (a.alvo) c.alvo = a.alvo; else delete c.alvo; } pend = null; pop.hidden = true; refaz(); pinta(); }
+  function confirma() { pend = null; pop.hidden = true; save(); pinta(); }
+  window.cenPendente = () => !!(pend && difs().length);
+  // antes de o campo mudar, guarda como estava
+  ['input', 'change'].forEach(t => document.addEventListener(t, e => { if (ehPremissa(e.target)) marca(); }, true));
+  document.addEventListener('pointerdown', e => { const b = e.target.closest && e.target.closest('[data-preset]'); if (b && naTela(b)) marca(); }, true);
+  ['input', 'change', 'click'].forEach(t => document.addEventListener(t, e => { if (pend) setTimeout(pinta, 0); }));
+  // trocar de cenário com mudança pendente: confirma antes
+  const trocaCen = el => el && el.closest && (el.closest('[data-cen], [data-npcen], [data-npcennovo], #cen-novo, #cen-dup, #cen-del'));
+  document.addEventListener('click', e => { if (!window.cenPendente()) return; const t = trocaCen(e.target); if (!t || !naTela(t) && !t.closest('#np-cenarios')) return; e.preventDefault(); e.stopImmediatePropagation(); abrePop('Antes de trocar de cenário, salve ou desfaça.'); }, true);
+  document.addEventListener('change', e => { const sl = e.target; if (!sl.dataset || sl.dataset.cenpick == null || !window.cenPendente()) return; e.stopImmediatePropagation(); sl.value = pend.id; abrePop('Antes de trocar de cenário, salve ou desfaça.'); }, true);
+  document.addEventListener('click', e => { const b = e.target.closest && e.target.closest('[data-cenpend]'); if (!b) return; const a = b.dataset.cenpend; if (a === 'salva') abrePop(''); else if (a === 'desfaz') desfaz(); else if (a === 'confirma') confirma(); else if (a === 'fecha') pop.hidden = true; });
+  pop.addEventListener('click', e => { if (e.target === pop) pop.hidden = true; });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape' && !pop.hidden) { e.stopImmediatePropagation(); pop.hidden = true; } }, true);
+  // sair da tela com mudança pendente: confirma antes
+  try { const s0 = showTab; showTab = function (t) { if (t !== 'cenarios' && typeof tab !== 'undefined' && tab === 'cenarios' && window.cenPendente()) { abrePop('Antes de sair da tela, salve ou desfaça.'); return; } const r = s0.apply(this, arguments); pinta(); return r; }; } catch (e) {}
+})();
+</script>
+<style>
+/* v362: caixa de sugestões */
+.sug-dlg { width: min(560px, 100%); }
+.sug-dlg .sug-int { margin: 0 0 14px; color: var(--muted); font-size: 13.5px; line-height: 1.5; }
+.sug-dlg label.sug-l { display: block; font-size: 12.5px; font-weight: 600; margin: 0 0 5px; }
+.sug-dlg select, .sug-dlg textarea { width: 100%; box-sizing: border-box; font: inherit; font-size: 14px; }
+.sug-dlg textarea { min-height: 130px; resize: vertical; padding: 9px 10px; border: 1px solid var(--line); border-radius: 8px; background: var(--panel); color: var(--ink); }
+.sug-dlg .sug-campo { margin-bottom: 12px; }
+.sug-dlg .sug-cont { text-align: right; font-size: 11.5px; color: var(--muted); margin-top: 3px; }
+.sug-dlg .sug-acoes { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+.sug-dlg .sug-msg { font-size: 13px; }
+.sug-dlg .sug-msg.ok { color: var(--good, #2e7d4f); } .sug-dlg .sug-msg.err { color: var(--bad, #c0392b); }
+.sug-adm { margin-top: 18px; border-top: 1px solid var(--line); padding-top: 12px; }
+.sug-adm > summary { cursor: pointer; font-weight: 700; font-size: 14px; }
+.sug-adm .sug-filtro { display: flex; gap: 8px; align-items: center; margin: 10px 0; font-size: 12.5px; flex-wrap: wrap; }
+.sug-it { border: 1px solid var(--line); border-radius: 10px; padding: 10px 12px; margin-bottom: 8px; background: var(--panel); }
+.sug-it.lida { opacity: .6; }
+.sug-it .sug-cab { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; font-size: 12px; color: var(--muted); margin-bottom: 6px; }
+.sug-it .sug-mod { display: inline-flex; align-items: center; gap: 5px; font-weight: 700; color: var(--ink); }
+.sug-it .sug-mod i { width: 9px; height: 9px; border-radius: 50%; background: var(--mc, var(--accent)); display: inline-block; }
+.sug-it .sug-txt { white-space: pre-wrap; font-size: 14px; line-height: 1.45; overflow-wrap: anywhere; }
+.sug-it .sug-bts { display: flex; gap: 6px; margin-top: 8px; }
+.nav-pe { flex-wrap: wrap; }
+html .sug-adm .btn.ghost[aria-pressed="true"], html[data-lb] .sug-adm .btn.ghost[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: #fff; }
+.sug-dlg .btn.ghost[data-sugdel] { color: var(--bad, #c0392b); }
+</style>
+<script>
+/* v362: caixa de sugestões. A pessoa escolhe o módulo e escreve; só o administrador lê.
+   Site: tabela sugestoes no Supabase (window.__siteSugestoes). Painel do Claude: db sugestoes/<id> (o dono lista). */
+(function () {
+  const g = id => document.getElementById(id);
+  const GERAL = 'O app em geral';
+  const nomeMod = id => (MODS.find(m => m.id === id) || {}).nome || GERAL;
+  const corMod = nome => (MODS.find(m => m.nome === nome) || {}).corNav || 'var(--accent)';
+  const adm = () => { try { return ehAdmin(); } catch (e) { return false; } };
+  const dt = s => { const d = new Date(s); return isNaN(d) ? '' : d.toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' }); };
+  let filtro = 'novas', lista = null;
 
+  // rodapé do menu: novo item ao lado de Leia-me e Configurações
+  const pe = document.querySelector('.nav-pe');
+  if (pe && !g('nav-sug')) pe.insertAdjacentHTML('beforeend', '<div class="nav-group mini"><button type="button" class="nav-head" id="nav-sug" aria-haspopup="dialog"><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 12.5a7.5 7.5 0 0 1-10.9 6.7L4 20.5l1.4-4.4A7.5 7.5 0 1 1 20 12.5z"/></svg></span>Sugestões</button></div>');
+  document.body.insertAdjacentHTML('beforeend', '<div class="conf-pop ac-pop" id="sug-pop" hidden><div class="conf-dlg ac-dlg sug-dlg" role="dialog" aria-modal="true" aria-labelledby="sug-t"><button type="button" class="conf-x" data-acfecha aria-label="Fechar" title="Fechar">✕</button><h3 class="ac-t" id="sug-t">Sugestões</h3><div id="sug-corpo"></div></div></div>');
+
+  function pinta() {
+    const atual = (() => { try { return modDe(tab); } catch (e) { return null; } })();
+    const opts = [`<option value="${esc(GERAL)}">${esc(GERAL)}</option>`].concat(MODS.map(m => `<option value="${esc(m.nome)}"${m.id === atual ? ' selected' : ''}>${esc(m.nome)}</option>`)).join('');
+    g('sug-corpo').innerHTML = `<p class="sug-int">Tem uma ideia, achou algo confuso ou encontrou um erro? Escolha o módulo e conte para a gente. Só o administrador do app lê as sugestões.</p>
+      <div class="sug-campo"><label class="sug-l" for="sug-mod">Sobre qual módulo?</label><select id="sug-mod">${opts}</select></div>
+      <div class="sug-campo"><label class="sug-l" for="sug-txt">Sua sugestão</label><textarea id="sug-txt" maxlength="2000" placeholder="Escreva aqui o que você mudaria, o que faltou ou o que não funcionou."></textarea><div class="sug-cont" id="sug-cont">0 / 2000</div></div>
+      <div class="sug-acoes"><button type="button" class="btn" id="sug-env">Enviar sugestão</button><span class="sug-msg" id="sug-msg" role="status" aria-live="polite"></span></div>
+      ${adm() ? `<details class="sug-adm" id="sug-adm"><summary>Sugestões recebidas <span id="sug-qt"></span></summary><div class="sug-filtro"><span>Mostrar:</span><button type="button" class="btn tiny ghost" data-sugf="novas" aria-pressed="${filtro === 'novas'}">Não lidas</button><button type="button" class="btn tiny ghost" data-sugf="todas" aria-pressed="${filtro === 'todas'}">Todas</button><button type="button" class="btn tiny ghost" data-sugf="aval" aria-pressed="${filtro === 'aval'}">Pesquisa de nota</button></div><p class="sug-res" id="sug-res" hidden></p><div id="sug-lista"><p class="sug-int">Carregando…</p></div></details>` : ''}`;
+    if (adm()) carregar();
+  }
+
+  async function carregar() {
+    const el = g('sug-lista'); if (!el) return;
+    try {
+      if (window.__siteSugestoes) lista = await window.__siteSugestoes.listar();
+      else if (db) { const sn = await db.collection('sugestoes').get(); lista = sn.docs.map(d => Object.assign({ id: d.id, base: '' }, d.data()));
+        try { const ps = await db.collection('perfis').get(); for (const p of ps.docs) { const b = 'perfis/' + p.id + '/'; const s2 = await db.collection(b + 'sugestoes').get(); s2.docs.forEach(d => lista.push(Object.assign({ id: d.id, base: b }, d.data()))); } } catch (e) {}
+        lista.sort((a, b) => String(b.criado_em).localeCompare(String(a.criado_em))); }
+      else lista = [];
+    } catch (e) { el.innerHTML = `<p class="sug-int">Não consegui carregar as sugestões: ${esc(e && (e.message || e.code) || e)}${window.__SITE ? ' (o banco precisa da tabela de sugestões; veja supabase-sugestoes.sql)' : ''}</p>`; return; }
+    lista = lista || []; desenha();
+  }
+  function desenha() {
+    const el = g('sug-lista'); if (!el || !lista) return;
+    const novas = lista.filter(x => !x.lida).length, q = g('sug-qt'); if (q) q.textContent = `(${novas} não ${novas === 1 ? 'lida' : 'lidas'} de ${lista.length})`;
+    const av = lista.filter(x => x.tipo === 'avaliacao' && x.nota != null && isFinite(+x.nota)), rs = g('sug-res');
+    if (rs) { if (av.length) { const n = av.map(x => +x.nota), med = n.reduce((a, b) => a + b, 0) / n.length, pro = n.filter(v => v >= 9).length, det = n.filter(v => v <= 6).length, nps = Math.round((pro - det) / n.length * 100);
+        rs.innerHTML = `<b>Nota média ${med.toLocaleString('pt-BR', { maximumFractionDigits: 1 })}</b> de 10 em ${n.length} ${n.length === 1 ? 'avaliação' : 'avaliações'} · NPS ${nps > 0 ? '+' : ''}${nps} <span class="sug-nps" title="NPS = % de notas 9 e 10 menos % de notas de 0 a 6">(${pro} deram 9 ou 10, ${det} deram de 0 a 6)</span>`; rs.hidden = false; }
+      else rs.hidden = true; }
+    const vis = filtro === 'novas' ? lista.filter(x => !x.lida) : filtro === 'aval' ? lista.filter(x => x.tipo === 'avaliacao') : lista;
+    const notaCls = v => v >= 9 ? 'boa' : v >= 7 ? 'media' : 'baixa';
+    el.innerHTML = vis.length ? vis.map(x => { const ehAv = x.tipo === 'avaliacao';
+      return `<div class="sug-it${x.lida ? ' lida' : ''}"><div class="sug-cab">${ehAv && x.nota != null ? `<span class="sug-nota ${notaCls(+x.nota)}">Nota ${esc(x.nota)}</span>` : ''}<span class="sug-mod" style="--mc:${esc(corMod(x.modulo))}"><i></i>${esc(x.modulo)}</span><span>${ehAv ? 'Pesquisa · ' : ''}${esc(dt(x.criado_em))}</span><span>${esc(x.nome || '')}${x.email ? ' · ' + esc(x.email) : ''}</span></div>${ehAv && x.ajuda ? `<div class="sug-txt"><b>O que mais ajuda:</b> ${esc(x.ajuda)}</div>` : ''}${x.texto ? `<div class="sug-txt">${ehAv ? '<b>O que melhorar:</b> ' : ''}${esc(x.texto)}</div>` : ''}${ehAv && !x.ajuda && !x.texto ? '<div class="sug-txt sug-sem">Só deu a nota.</div>' : ''}<div class="sug-bts"><button type="button" class="btn tiny ghost" data-suglida="${esc(x.id)}">${x.lida ? 'Marcar como não lida' : 'Marcar como lida'}</button><button type="button" class="btn tiny ghost" data-sugdel="${esc(x.id)}">Apagar</button></div></div>`; }).join('')
+      : `<p class="sug-int">${filtro === 'novas' && lista.length ? 'Nenhuma sugestão nova. Use "Todas" para ver as já lidas.' : filtro === 'aval' ? 'Nenhuma resposta da pesquisa ainda.' : 'Nenhuma sugestão ainda.'}</p>`;
+  }
+
+  async function enviar() {
+    const msg = g('sug-msg'), bt = g('sug-env'), txt = g('sug-txt').value.trim(), mod = g('sug-mod').value;
+    msg.className = 'sug-msg';
+    if (txt.length < 3) { msg.className = 'sug-msg err'; msg.textContent = 'Escreva a sua sugestão antes de enviar.'; g('sug-txt').focus(); return; }
+    bt.disabled = true; msg.textContent = 'Enviando…';
+    try {
+      if (window.__siteSugestoes) await window.__siteSugestoes.enviar(mod, txt);
+      else if (db) { const id = Date.now().toString(36) + Math.random().toString(36).slice(2, 7); await pdoc('sugestoes/' + id).set({ modulo: mod, texto: txt.slice(0, 2000), criado_em: new Date().toISOString(), lida: false, nome: souDono ? 'Você' : 'Outra pessoa', por: meuId || '' }); }
+      else throw new Error('não consigo salvar nesta visualização');
+      g('sug-txt').value = ''; g('sug-cont').textContent = '0 / 2000';
+      msg.className = 'sug-msg ok'; msg.textContent = 'Obrigado! Sua sugestão foi enviada.';
+      if (adm()) carregar();
+    } catch (e) { msg.className = 'sug-msg err'; msg.textContent = 'Não consegui enviar: ' + (e && (e.message || e.code) || e); }
+    bt.disabled = false;
+  }
+
+  async function marcar(id) {
+    const x = (lista || []).find(y => String(y.id) === String(id)); if (!x) return;
+    try { if (window.__siteSugestoes) await window.__siteSugestoes.marcar(x.id, !x.lida); else await db.doc((x.base || '') + 'sugestoes/' + x.id).update({ lida: !x.lida }); x.lida = !x.lida; desenha(); }
+    catch (e) { const m = g('sug-msg'); m.className = 'sug-msg err'; m.textContent = 'Não deu certo: ' + (e && (e.message || e.code) || e); }
+  }
+  async function apagar(id) {
+    const x = (lista || []).find(y => String(y.id) === String(id)); if (!x) return;
+    if (!confirmar('Apagar esta sugestão de vez?')) return;
+    try { if (window.__siteSugestoes) await window.__siteSugestoes.apagar(x.id); else await db.doc((x.base || '') + 'sugestoes/' + x.id).delete(); lista = lista.filter(y => y !== x); desenha(); }
+    catch (e) { const m = g('sug-msg'); m.className = 'sug-msg err'; m.textContent = 'Não deu certo: ' + (e && (e.message || e.code) || e); }
+  }
+
+  window.__sugRecarrega = () => { if (adm() && g('sug-lista')) carregar(); };
+  window.abrirSugestoes = function (soLista) { pinta(); acAbre('sug-pop'); if (soLista && g('sug-adm')) { g('sug-adm').open = true; g('sug-adm').scrollIntoView({ block: 'start' }); } };
+  document.addEventListener('click', e => {
+    if (e.target.closest('#nav-sug')) { e.preventDefault(); window.abrirSugestoes(); return; }
+    if (!e.target.closest('#sug-pop')) return;
+    if (e.target.closest('#sug-env')) { enviar(); return; }
+    const f = e.target.closest('[data-sugf]'); if (f) { filtro = f.dataset.sugf; document.querySelectorAll('[data-sugf]').forEach(b => { const on = b.dataset.sugf === filtro; b.setAttribute('aria-pressed', on); }); desenha(); return; }
+    const l = e.target.closest('[data-suglida]'); if (l) { marcar(l.dataset.suglida); return; }
+    const d = e.target.closest('[data-sugdel]'); if (d) { apagar(d.dataset.sugdel); return; }
+  });
+  document.addEventListener('input', e => { if (e.target.id === 'sug-txt') g('sug-cont').textContent = e.target.value.length + ' / 2000'; });
+})();
+</script>
+<style>
+/* v365: pesquisa de nota */
+.sug-res { margin: 0 0 10px; font-size: 13px; padding: 8px 10px; border-radius: 8px; background: var(--accent-soft); }
+.sug-res .sug-nps { color: var(--muted); font-size: 12px; }
+.sug-nota { font-weight: 800; font-size: 11.5px; padding: 1px 8px; border-radius: 99px; color: #fff; background: var(--muted); }
+.sug-nota.boa { background: var(--good, #15803d); } .sug-nota.media { background: #C8902A; } .sug-nota.baixa { background: var(--bad, #B42318); }
+.sug-it .sug-txt + .sug-txt { margin-top: 4px; }
+.sug-it .sug-sem { color: var(--muted); font-style: italic; }
+.aval-dlg { width: min(560px, 100%); }
+.aval-dlg .sug-int { margin: 0 0 14px; color: var(--muted); font-size: 13.5px; line-height: 1.5; }
+.aval-escala { display: grid; grid-template-columns: repeat(11, minmax(0, 1fr)); gap: 4px; margin: 6px 0 4px; }
+.aval-escala button { font: inherit; font-weight: 700; font-size: 14px; padding: 8px 0; border-radius: 8px; border: 1px solid var(--line); background: var(--field); color: var(--ink); cursor: pointer; min-width: 0; }
+.aval-escala button:hover { border-color: var(--accent); }
+.aval-escala button[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: #fff; }
+.aval-pontas { display: flex; justify-content: space-between; font-size: 11.5px; color: var(--muted); margin-bottom: 14px; }
+.aval-dlg label.sug-l { display: block; font-size: 12.5px; font-weight: 600; margin: 0 0 5px; text-transform: none; letter-spacing: 0; color: var(--ink); }
+.aval-dlg textarea, .aval-dlg select { width: 100%; box-sizing: border-box; font: inherit; font-size: 14px; }
+.aval-dlg textarea { min-height: 70px; resize: vertical; padding: 8px 10px; border: 1px solid var(--line); border-radius: 8px; background: var(--panel); color: var(--ink); }
+.aval-dlg .sug-campo { margin-bottom: 12px; }
+.aval-dlg .aval-lado { display: grid; grid-template-columns: 1fr 190px; gap: 8px; align-items: end; }
+.aval-dlg .sug-acoes { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.aval-dlg .sug-msg.err { color: var(--bad, #c0392b); } .aval-dlg .sug-msg.ok { color: var(--good, #2e7d4f); }
+@media (max-width: 520px) { .aval-escala { grid-template-columns: repeat(6, minmax(0, 1fr)); } .aval-dlg .aval-lado { grid-template-columns: 1fr; } }
+#cfg-aval .ng-form { display: flex; flex-wrap: wrap; gap: 12px; align-items: end; }
+#cfg-aval .ng-form label { width: 220px; }
+</style>
+<script>
+/* v365: pesquisa de nota a cada N dias (config/avaliacao {dias, adiar, pausada}, só o administrador muda em Configurações).
+   Aparece logo depois de uma ação que salva (save), nunca no primeiro acesso, nem com guia, jornada ou janela aberta, nem com o cursor num campo.
+   Estado por pessoa em state.aval {ini, ult, adiadoAte} (ISO). Resposta vai para as sugestões (tipo 'avaliacao'). */
+(function () {
+  const g = id => document.getElementById(id), DIA = 864e5, GERAL = 'O app em geral';
+  let cfg = { dias: 30, adiar: 15, pausada: false }, ouvindo = false, mostrouSessao = false, timer = null, nota = null;
+  const san = x => { const d = Math.round(+(x && x.dias)), a = Math.round(+(x && x.adiar)); return { dias: d >= 1 && d <= 365 ? d : 30, adiar: a >= 1 && a <= 365 ? a : 15, pausada: !!(x && x.pausada) }; };
+  function ouvir() { if (ouvindo || !db) return; ouvindo = true; try { db.doc('config/avaliacao').onSnapshot(d => { cfg = san(d && d.exists ? d.data() : null); if (tab === 'config') pintaCfg(); }, () => { ouvindo = false; }); } catch (e) { ouvindo = false; } }
+  const st = () => { if (!state.aval || typeof state.aval !== 'object') state.aval = {}; return state.aval; };
+  const quando = () => { const a = st(), base = Date.parse(a.ult || a.ini || ''), adi = Date.parse(a.adiadoAte || ''); if (!isFinite(base)) return null; return Math.max(base + cfg.dias * DIA, isFinite(adi) ? adi : 0); };
+  function podeMostrar() {
+    if (!state || cfg.pausada || mostrouSessao) return false;
+    if (state.jornada === 'ativa' || (typeof JOR_SIM !== 'undefined' && JOR_SIM)) return false;
+    if ((typeof gK !== 'undefined' && gK) || (typeof tourI !== 'undefined' && tourI >= 0)) return false;
+    if (document.querySelector('.conf-pop:not([hidden]), #jor-modal:not([hidden]), .tour-pop:not([hidden])')) return false;
+    const ae = document.activeElement; if (ae && /^(INPUT|TEXTAREA|SELECT)$/.test(ae.tagName)) return false;
+    const q = quando(); return q != null && Date.now() >= q;
+  }
+  function checar() {
+    if (!state) return; ouvir(); const a = st();
+    if (!a.ini) { a.ini = new Date().toISOString(); salvarAval(); return; }   // primeira vez: começa a contar agora
+    if (podeMostrar()) abrir();
+  }
+  function salvarAval() { try { save0(); } catch (e) {} }
+  // depois de uma ação que salva, espera 3 s e confere
+  const save0 = save;
+  save = function () { const r = save0.apply(this, arguments); clearTimeout(timer); timer = setTimeout(checar, 3000); return r; };
+
+  document.body.insertAdjacentHTML('beforeend', '<div class="conf-pop ac-pop" id="aval-pop" hidden><div class="conf-dlg ac-dlg aval-dlg" role="dialog" aria-modal="true" aria-labelledby="aval-t"><button type="button" class="conf-x" data-avalfecha aria-label="Agora não" title="Agora não">✕</button><h3 class="ac-t" id="aval-t">Como está sendo usar o app?</h3><div id="aval-corpo"></div></div></div>');
+  function abrir(forcar) {
+    mostrouSessao = true; nota = null;
+    const atual = (() => { try { return modDe(tab); } catch (e) { return null; } })();
+    const opts = [`<option value="${esc(GERAL)}">${esc(GERAL)}</option>`].concat(MODS.map(m => `<option value="${esc(m.nome)}"${m.id === atual ? ' selected' : ''}>${esc(m.nome)}</option>`)).join('');
+    g('aval-corpo').innerHTML = `<p class="sug-int">Leva menos de um minuto e ajuda a decidir o que melhorar primeiro. Só o administrador do app lê as respostas.${forcar ? ' <b>(pré-visualização: nada é salvo)</b>' : ''}</p>
+      <label class="sug-l" id="aval-l">De 0 a 10, quanto você recomendaria o app para um amigo?</label>
+      <div class="aval-escala" role="group" aria-labelledby="aval-l">${Array.from({ length: 11 }, (_, i) => `<button type="button" data-avaln="${i}" aria-pressed="false">${i}</button>`).join('')}</div>
+      <div class="aval-pontas"><span>0 = de jeito nenhum</span><span>10 = com certeza</span></div>
+      <div class="sug-campo"><label class="sug-l" for="aval-ajuda">O que mais te ajuda no app? <small>(opcional)</small></label><textarea id="aval-ajuda" maxlength="2000"></textarea></div>
+      <div class="sug-campo aval-lado"><div><label class="sug-l" for="aval-txt">O que podemos melhorar? <small>(opcional)</small></label><textarea id="aval-txt" maxlength="2000"></textarea></div><div><label class="sug-l" for="aval-mod">Sobre qual módulo?</label><select id="aval-mod">${opts}</select></div></div>
+      <div class="sug-acoes"><button type="button" class="btn" id="aval-env"${forcar ? ' data-prev="1"' : ''}>Enviar</button><button type="button" class="btn ghost" data-avalfecha>Agora não</button><span class="sug-msg" id="aval-msg" role="status" aria-live="polite"></span></div>`;
+    g('aval-pop').dataset.prev = forcar ? '1' : '';
+    acAbre('aval-pop');
+  }
+  function fechar(adiar) {
+    const p = g('aval-pop'); if (!p || p.hidden) return; const prev = p.dataset.prev === '1'; acFecha('aval-pop');
+    if (adiar && !prev) { st().adiadoAte = new Date(Date.now() + cfg.adiar * DIA).toISOString(); salvarAval(); }
+  }
+  async function enviar() {
+    const msg = g('aval-msg'), bt = g('aval-env'); msg.className = 'sug-msg';
+    if (nota == null) { msg.className = 'sug-msg err'; msg.textContent = 'Escolha uma nota de 0 a 10.'; return; }
+    const r = { modulo: g('aval-mod').value, nota, ajuda: g('aval-ajuda').value.trim().slice(0, 2000), texto: g('aval-txt').value.trim().slice(0, 2000) };
+    if (g('aval-pop').dataset.prev === '1') { msg.className = 'sug-msg ok'; msg.textContent = 'Pré-visualização: nada foi salvo.'; return; }
+    bt.disabled = true; msg.textContent = 'Enviando…';
+    try {
+      if (window.__siteSugestoes && window.__siteSugestoes.avaliar) await window.__siteSugestoes.avaliar(r);
+      else if (db) { const id = Date.now().toString(36) + Math.random().toString(36).slice(2, 7); await pdoc('sugestoes/' + id).set(Object.assign({ tipo: 'avaliacao', criado_em: new Date().toISOString(), lida: false, nome: souDono ? 'Você' : 'Outra pessoa', por: meuId || '' }, r)); }
+      else throw new Error('não consigo salvar nesta visualização');
+      const a = st(); a.ult = new Date().toISOString(); delete a.adiadoAte; salvarAval();
+      msg.className = 'sug-msg ok'; msg.textContent = 'Obrigado! Sua resposta foi enviada.';
+      try { window.__sugRecarrega && window.__sugRecarrega(); } catch (e) {}
+      setTimeout(() => acFecha('aval-pop'), 1400);
+    } catch (e) { msg.className = 'sug-msg err'; msg.textContent = 'Não consegui enviar: ' + (e && (e.message || e.code) || e); bt.disabled = false; }
+  }
+  document.addEventListener('click', e => {
+    if (!e.target.closest('#aval-pop')) return;
+    if (e.target.id === 'aval-pop' || e.target.closest('[data-avalfecha]')) { e.stopPropagation(); fechar(true); return; }
+    const n = e.target.closest('[data-avaln]'); if (n) { nota = +n.dataset.avaln; document.querySelectorAll('[data-avaln]').forEach(b => b.setAttribute('aria-pressed', b === n)); return; }
+    if (e.target.closest('#aval-env')) enviar();
+  }, true);
+  document.addEventListener('keydown', e => { if (e.key === 'Escape' && g('aval-pop') && !g('aval-pop').hidden) { e.stopImmediatePropagation(); fechar(true); } }, true);
+
+  // Configurações › Pesquisa de nota (só o administrador)
+  const sec = g('cfg-pesq');
+  if (sec && !g('cfg-aval')) sec.insertAdjacentHTML('afterend', `<section data-nav="Pesquisa de nota" class="panel" id="cfg-aval" hidden>
+        <h2>Pesquisa de nota</h2>
+        <p class="sub">Só o administrador vê esta parte. De tempos em tempos o app pergunta a nota (0 a 10) e o que melhorar, logo depois de a pessoa salvar alguma coisa. Nunca aparece no primeiro acesso. Vale para todas as contas. As respostas aparecem em Sugestões › Sugestões recebidas.</p>
+        <div class="ng-form"><label>Perguntar a cada (dias)<input type="number" min="1" max="365" step="1" id="cfg-aval-dias" value="30"></label><label>Depois de "Agora não", voltar em (dias)<input type="number" min="1" max="365" step="1" id="cfg-aval-adiar" value="15"></label><label class="check"><input type="checkbox" id="cfg-aval-pausa"> Pausar a pesquisa</label><button type="button" class="btn ghost" id="cfg-aval-ver">Ver como aparece</button></div>
+        <p class="hint" id="cfg-aval-msg"></p>
+      </section>`);
+  function pintaCfg() {
+    const box = g('cfg-aval'); if (!box) return; box.hidden = !ehAdmin(); if (box.hidden) return; ouvir();
+    const d = g('cfg-aval-dias'), a = g('cfg-aval-adiar'); if (document.activeElement !== d) d.value = cfg.dias; if (document.activeElement !== a) a.value = cfg.adiar; g('cfg-aval-pausa').checked = cfg.pausada;
+  }
+  try { const r0 = renderCfgPesq; renderCfgPesq = function () { const r = r0.apply(this, arguments); try { pintaCfg(); } catch (e) {} return r; }; } catch (e) {}
+  document.addEventListener('change', async e => {
+    if (!/^cfg-aval-(dias|adiar|pausa)$/.test(e.target.id) || !ehAdmin()) return;
+    const msg = g('cfg-aval-msg'), d = Math.round(+g('cfg-aval-dias').value), a = Math.round(+g('cfg-aval-adiar').value);
+    if (!(d >= 1 && d <= 365) || !(a >= 1 && a <= 365)) { msg.textContent = 'Use um número de 1 a 365 dias.'; return; }
+    cfg = { dias: d, adiar: a, pausada: g('cfg-aval-pausa').checked };
+    if (!db) { msg.textContent = 'Sem conexão com o banco: a mudança vale só nesta tela.'; return; }
+    msg.textContent = 'salvando…';
+    try { await db.doc('config/avaliacao').set(Object.assign({ em: new Date().toISOString() }, cfg)); msg.textContent = cfg.pausada ? 'Salvo. A pesquisa está pausada para todas as contas.' : `Salvo. A pesquisa aparece a cada ${d} dias; depois de "Agora não", volta em ${a}.`; }
+    catch (er) { msg.textContent = 'Não consegui salvar: ' + (er && (er.message || er.code) || er) + (window.__SITE ? ' (o banco precisa da tabela de configuração; veja supabase-config.sql)' : ''); }
+  });
+  document.addEventListener('click', e => { if (e.target.closest('#cfg-aval-ver')) abrir(true); });
+  window.__avalDebug = { abrir, checar, quando: () => quando(), cfg: () => cfg };
+})();
+</script>
 
 </body></html>
