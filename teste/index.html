@@ -3531,8 +3531,8 @@ html[data-lb="b"] .block-title .desc{font-size:14px;color:var(--muted);margin-to
         <label>Ajuste no IPCA (p.p.)<input type="number" step="0.25" data-bind="aj::ipca"></label>
         <label>Renda extra (R$/mês)<input type="number" step="500" data-bind="cen::extra"></label>
         <label>Taxa manual (% a.a. líq.)<input type="number" step="0.1" data-bind="cen::manual" placeholder="vazio = carteira"></label>
-        <p class="hint">Ajustes somam às taxas de Configurações só neste cenário (ex.: −1 no CDI simula juros mais baixos). Renda extra soma ao salário todo mês (bônus, PJ, aluguel). A taxa manual ignora a carteira, como a planilha fazia com 11%. O aumento dos custos fica na seção Custos do cenário, logo abaixo. Vale no Patrimônio projetado da aba Cenários.</p>
-        <p class="hint" id="cen-real-hint" hidden>Este é o cenário Real: ele usa as premissas do Meu plano (rendimento e IPCA), então os ajustes, a renda extra e a taxa manual ficam travados aqui. Teste outras premissas num cenário de simulação.<br><a href="#" class="lm-ir" data-lmtab="orcamento" data-lmsec="Premissas" data-lmsel="#pl-rend" data-lmmsg="Premissas do Real: rendimento, IPCA e reinvestimento">Mudar as premissas do Real em 01. Meu plano › Premissas →</a></p>
+        <p class="hint" id="cen-aj-hint">Ajustes somam às taxas de Configurações só neste cenário (ex.: −1 no CDI simula juros mais baixos). Renda extra soma ao salário todo mês (bônus, PJ, aluguel). A taxa manual ignora a carteira, como a planilha fazia com 11%. O aumento dos custos fica na seção Custos do cenário, logo abaixo. Vale no Patrimônio projetado da aba Cenários.</p>
+        <p class="hint" id="cen-real-hint" hidden>Este é o cenário Real: ele usa as premissas do Meu plano (rendimento, IPCA e reinvestimento). Para testar outras premissas, escolha um cenário de simulação na lista acima (ou crie um em Novo ou Duplicar) e defina ali o ajuste no CDI e no IPCA, a renda extra e a taxa manual.<br><a href="#" class="lm-ir" data-lmtab="orcamento" data-lmsec="Premissas" data-lmsel="#pl-rend" data-lmmsg="Premissas do Real: rendimento, IPCA e reinvestimento">Mudar as premissas do Real em 01. Meu plano › Premissas →</a></p>
       </fieldset>
       <fieldset>
         <legend>Carteira do cenário</legend>
@@ -4554,7 +4554,7 @@ html[data-lb="b"] .block-title .desc{font-size:14px;color:var(--muted);margin-to
     return new Promise(resolve => { const { data } = sb.auth.onAuthStateChange(async (ev) => { if (ev !== 'PASSWORD_RECOVERY') return; const s = prompt('Digite a nova senha (mínimo 8 caracteres):'); if (s && s.length >= 8) { const { error } = await sb.auth.updateUser({ password: s }); alert(error ? 'Não deu para trocar a senha: ' + error.message : 'Senha trocada.'); } }); resolve(data); });
   }
   // ---------- rodapé: compartilhar, administração e sair ----------
-  const SITE_V = 244;
+  const SITE_V = 245;
   const escH = v => String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const dataBR = v => v ? new Date(v).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' }) : '–';
   const css2 = `.side-foot .r{flex-wrap:wrap}.side-foot .lg-acoes{margin-left:auto;display:inline-flex;gap:10px}
@@ -11960,7 +11960,7 @@ function buildCenarios() {
   $('cenSeg').innerHTML = simOrdem().map(c => `<button type="button" data-cen="${c.id}" aria-pressed="${c.id === cen.id}" style="${c.id === cen.id ? '' : `border-color:${cenCor(c)}`}">${esc(c.nome)}${ehCenReal(c) ? ' · Real' : ''}</button>`).join('');
   document.querySelectorAll('[data-cenpick]').forEach(sl => { sl.innerHTML = simOrdem().map(c => `<option value="${esc(c.id)}"${c.id === cen.id ? ' selected' : ''}>${esc(c.nome)}${ehCenReal(c) ? ' · Real' : ''}</option>`).join(''); });
   $('cen-del').disabled = state.cenarios.length < 2 || ehCenReal(cen);
-  { const rl = ehCenReal(cen); document.querySelectorAll(':is(#p-cenarios,#np-cenarios) [data-bind^="aj::"], :is(#p-cenarios,#np-cenarios) [data-bind="cen::extra"], :is(#p-cenarios,#np-cenarios) [data-bind="cen::manual"], :is(#p-cenarios,#np-cenarios) [data-bind^="cen::custo"]').forEach(el => { el.disabled = rl; }); $('cen-real-hint').hidden = !rl; }
+  { const rl = ehCenReal(cen); document.querySelectorAll(':is(#p-cenarios,#np-cenarios) [data-bind^="aj::"], :is(#p-cenarios,#np-cenarios) [data-bind="cen::extra"], :is(#p-cenarios,#np-cenarios) [data-bind="cen::manual"], :is(#p-cenarios,#np-cenarios) [data-bind^="cen::custo"]').forEach(el => { el.disabled = rl; const lb = el.closest('label'); if (lb && lb.closest('fieldset') && !lb.closest('#tbl-cc') && /^(aj::|cen::extra|cen::manual)/.test(el.dataset.bind)) lb.hidden = rl; }); $('cen-real-hint').hidden = !rl; const ah = $('cen-aj-hint'); if (ah) ah.hidden = rl; }
   document.querySelectorAll(':is(#p-cenarios,#np-cenarios) [data-bind]').forEach(fillBound);
   ccResumo(cen);
   $('cen-proprio').checked = !!cen.proprio; $('presetSeg').hidden = !cen.proprio;
