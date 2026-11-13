@@ -2611,7 +2611,7 @@ html[data-lb="b"] .block-title .desc{font-size:14px;color:var(--muted);margin-to
       <div id="md-tl"></div>
     </section>
     <section data-nav="Patrimônio projetado" class="panel chart">
-      <div class="row"><h2>Patrimônio projetado</h2><div class="seg" id="md-anos" role="group" aria-label="Até quando projetar"><button type="button" data-mdanos="0">Até o fim do plano</button><button type="button" data-mdanos="3">3 anos</button><button type="button" data-mdanos="5">5 anos</button><button type="button" data-mdanos="10">10 anos</button></div></div>
+      <div class="row"><h2>Patrimônio projetado</h2><div class="seg" id="md-anos" role="group" aria-label="Até quando projetar"><button type="button" data-mdanos="0">Até o fim do plano</button><button type="button" data-mdanos="3">3 anos</button><button type="button" data-mdanos="5">5 anos</button><button type="button" data-mdanos="10">10 anos</button><button type="button" data-mdanos="20">20 anos</button></div></div>
       <p class="sub">Investido no plano atual (o cenário Real). Para comparar, ligue os cenários da Simulação que quer ver no gráfico.</p>
       <div class="seg sc-seg" id="md-cens" role="group" aria-label="Cenários no gráfico"></div>
       <div class="legend" id="lg-md"></div>
@@ -4563,7 +4563,7 @@ html[data-lb="b"] .block-title .desc{font-size:14px;color:var(--muted);margin-to
     return new Promise(resolve => { const { data } = sb.auth.onAuthStateChange(async (ev) => { if (ev !== 'PASSWORD_RECOVERY') return; const s = prompt('Digite a nova senha (mínimo 8 caracteres):'); if (s && s.length >= 8) { const { error } = await sb.auth.updateUser({ password: s }); alert(error ? 'Não deu para trocar a senha: ' + error.message : 'Senha trocada.'); } }); resolve(data); });
   }
   // ---------- rodapé: compartilhar, administração e sair ----------
-  const SITE_V = 249;
+  const SITE_V = 250;
   const escH = v => String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const dataBR = v => v ? new Date(v).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' }) : '–';
   const css2 = `.side-foot .r{flex-wrap:wrap}.side-foot .lg-acoes{margin-left:auto;display:inline-flex;gap:10px}
@@ -14980,7 +14980,7 @@ function taxaPlanoMes(i, cs) {
 }
 // extra = Set de ids de itens ("compra:<id>", "so:<id>") somados ao plano só para comparar; sem extra, é o plano de verdade (com cache)
 // gráfico "Patrimônio projetado" (Primeiros passos): 0 = até o fim do plano; 3, 5 ou 10 anos a partir de hoje
-const mdAnos = () => [3, 5, 10].includes(+(state.plan || {}).anosMd) ? +state.plan.anosMd : 0;
+const mdAnos = () => [3, 5, 10, 20].includes(+(state.plan || {}).anosMd) ? +state.plan.anosMd : 0;
 const scAnos = () => +((state.plan || {}).anosSim) || 0, scFimIdx = () => scAnos() ? Math.max(mIndex((state.plan || {}).inicio), HOJE_IDX) + scAnos() * 12 : 0;
 const mdFimIdx = () => mdAnos() ? Math.max(mIndex((state.plan || {}).inicio), HOJE_IDX) + mdAnos() * 12 : 0;
 function calcPlano(extra, cenSim) {
