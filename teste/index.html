@@ -2428,6 +2428,8 @@ html[data-lb="b"] .panel > .row:first-child:has(h2) .btn.ghost:not(.cols-menu *)
 html[data-lb="b"] .panel > .row:first-child:has(h2) .btn.ghost:not(.cols-menu *):hover{border-color:#F0A46B}
 html[data-lb="b"] .panel > .row:first-child:has(h2) :is(.hint, .sub, label.inline, label.check, .src):not(.cols-menu *){color:var(--muted)}
 html[data-lb="b"] .panel > .row:first-child:has(h2) a:not(.cols-menu *){color:var(--accent)}
+html[data-lb="b"] .sec-tog{border-color:var(--line);color:var(--muted)}
+html[data-lb="b"] .sec-tog:hover,html[data-lb="b"] .sec-tog:focus-visible{border-color:#F0A46B;color:var(--ink)}
 </style>
 
 
@@ -4516,7 +4518,7 @@ html[data-lb="b"] .panel > .row:first-child:has(h2) a:not(.cols-menu *){color:va
     return new Promise(resolve => { const { data } = sb.auth.onAuthStateChange(async (ev) => { if (ev !== 'PASSWORD_RECOVERY') return; const s = prompt('Digite a nova senha (mínimo 8 caracteres):'); if (s && s.length >= 8) { const { error } = await sb.auth.updateUser({ password: s }); alert(error ? 'Não deu para trocar a senha: ' + error.message : 'Senha trocada.'); } }); resolve(data); });
   }
   // ---------- rodapé: compartilhar, administração e sair ----------
-  const SITE_V = 232;
+  const SITE_V = 233;
   const escH = v => String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const dataBR = v => v ? new Date(v).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' }) : '–';
   const css2 = `.side-foot .r{flex-wrap:wrap}.side-foot .lg-acoes{margin-left:auto;display:inline-flex;gap:10px}
