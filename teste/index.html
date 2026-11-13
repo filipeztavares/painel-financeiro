@@ -2603,7 +2603,7 @@ html[data-lb="b"] .block-title .desc{font-size:14px;color:var(--muted);margin-to
     </div>
     <div class="nav-mobile-sub" id="navMobileSub"></div>
   </div>
-  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 373</div></div>
+  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 374</div></div>
 </nav>
 <div class="sino-pop" id="sino-pop" role="dialog" aria-label="Atualizações das bases" hidden></div>
 <div class="sino-pop" id="pess-pop" role="dialog" aria-label="Seus avisos" hidden></div>
@@ -4607,7 +4607,7 @@ html[data-lb="b"] .block-title .desc{font-size:14px;color:var(--muted);margin-to
     return new Promise(resolve => { const { data } = sb.auth.onAuthStateChange(async (ev) => { if (ev !== 'PASSWORD_RECOVERY') return; const s = prompt('Digite a nova senha (mínimo 8 caracteres):'); if (s && s.length >= 8) { const { error } = await sb.auth.updateUser({ password: s }); alert(error ? 'Não deu para trocar a senha: ' + error.message : 'Senha trocada.'); } }); resolve(data); });
   }
   // ---------- rodapé: compartilhar, administração e sair ----------
-  const SITE_V = 262;
+  const SITE_V = 263;
   const escH = v => String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const dataBR = v => v ? new Date(v).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' }) : '–';
   const css2 = `.side-foot .r{flex-wrap:wrap}.side-foot .lg-acoes{margin-left:auto;display:inline-flex;gap:10px}
@@ -12180,6 +12180,31 @@ function amzCalc(b, nova) {
   let ganho = 0; for (let t = 1; t <= T; t++) { let d = (pb[t - 1] || 0) - (ps[t - 1] || 0); for (let u = t + 1; u <= T; u++) d *= 1 + taxaPlanoMes(m0 + u); ganho += d; }
   return { inf, ganho, fimA: m0 + pb.length, fimD: m0 + ps.length, T };
 }
+// séries mês a mês até o fim do contrato original: aplicado (preço − entrada rendendo; a amortização sai dele) e parcelas corrigidas
+function amzSeries(b, lista) {
+  const s0 = schedule0Base(b, b.modo), V = +b.valor || 0, PV = Math.max(0, V - Math.min(Math.max(+b.entrada || 0, 0), V)), m0 = mIndex(b.mes), T = s0.parc.length;
+  const r = aplicaAmort(b, s0, lista), ext = []; r.info.filter(x => x.ok).forEach(x => { ext[x.k] = (ext[x.k] || 0) + x.pago; });
+  const ap = [PV], pc = [0];
+  for (let t = 1; t <= T; t++) { const g = 1 + taxaPlanoMes(m0 + t), reg = (r.s.parc[t - 1] || 0) - (ext[t] || 0); ap.push(ap[t - 1] * g - (ext[t] || 0)); pc.push(pc[t - 1] * g + reg); }
+  return { ap, pc, T, m0 };
+}
+function amzDraw(b) {
+  const ch = $('amzch-' + b.id); if (!ch) return;
+  const f = amzSim[b.id] || {}, nova = +f.valor > 0 ? [{ id: 'sim', mes: f.mes, valor: +f.valor, modo: f.modo }] : [];
+  const A = amzSeries(b, []), B = amzSeries(b, (b.amort || []).concat(nova));
+  const ser = [{ name: 'Aplicado · sem amortizar', c: 'var(--muted)', v: A.ap, w: 2 }, { name: 'Parcelas corrigidas · sem amortizar', c: 'var(--muted)', v: A.pc, dash: true },
+    { name: 'Aplicado · amortizado', c: 'var(--accent)', v: B.ap, w: 2.6 }, { name: 'Parcelas corrigidas · amortizado', c: 'var(--accent)', v: B.pc, dash: true, w: 2.2 }];
+  legend($('amzlg-' + b.id), ser);
+  chart(ch, $('amzro-' + b.id), A.T + 1, ser, k, t => mLabel(A.m0 + t), A.T);
+  const rA = A.ap[A.T] - A.pc[A.T], rB = B.ap[B.T] - B.pc[B.T], el = $('amzsum-' + b.id);
+  if (el) el.innerHTML = `No fim (${mLabel(A.m0 + A.T)}), pelo Meu plano: sem amortizar <b>${fm(rA)}</b> · amortizado <b>${fm(rB)}</b> · diferença <b class="${rB - rA >= 0 ? 'pos' : 'neg'}">${rB - rA >= 0 ? '+' : '−'}${fm(Math.abs(rB - rA))}</b>.`;
+}
+function amzGrafHtml(b) {
+  const L = (b.amort || []).length, f = amzSim[b.id] || {};
+  return `<div class="cent-mm"><h4>Mês a mês: sem amortizar × amortizado${+f.valor > 0 ? (L ? ' (o que já está no plano + esta simulação)' : ' (esta simulação)') : L ? ' (o que está no plano)' : ''}</h4>
+    <p class="cent-ex">Mesma leitura do gráfico de "Quanto a entrada custa", pelo Meu plano. Linha cheia: o que ficou aplicado (preço − entrada) rendendo; no mês da amortização, o valor sai dele. Tracejada: as parcelas pagas com a sobra, corrigidas pelo rendimento. Em cinza, sem amortizar; em cobre, amortizado. A distância entre a cheia e a tracejada de cada cor é o resultado.</p>
+    <div class="legend" id="amzlg-${b.id}"></div><div id="amzch-${b.id}" data-h="240"></div><div class="readout" id="amzro-${b.id}"></div><p class="amz-r" id="amzsum-${b.id}"></p></div>`;
+}
 function amzResHtml(b) {
   const f = amzSim[b.id]; if (!f || !(+f.valor > 0)) return '<p class="hint">Informe o valor para ver o efeito.</p>';
   const r = amzCalc(b, { id: 'sim', mes: f.mes, valor: +f.valor, modo: f.modo }), x = r.inf, m0 = mIndex(b.mes);
@@ -12205,13 +12230,15 @@ function renderAmort(b, el) {
         <label class="amz-bt"><span>&nbsp;</span><button type="button" class="btn tiny" data-amz-add="${b.id}">Colocar no plano</button></label>
       </div>
       <div id="amz-res-${b.id}">${amzResHtml(b)}</div>
+      ${amzGrafHtml(b)}
       ${L.length ? `<div class="amz-l"><b>No plano</b>${L.map(a => { const x = inf.find(y => y.a === a) || {}; return `<div class="amz-it"><span>${mLabel(mIndex(a.mes))}: ${fm(+a.valor)} · reduz ${a.modo === 'parcela' ? 'a parcela' : 'o prazo'}${x.ok ? ` · economiza ${fm(x.juros)} de juros` : ' · <span class="neg">fora do período das parcelas</span>'}</span><button type="button" class="btn ghost tiny" data-amz-del="${b.id}:${esc(a.id)}" aria-label="Tirar do plano">Tirar</button></div>`; }).join('')}</div>` : ''}
     </div></details>`;
+  amzDraw(b);
 }
 document.addEventListener('input', e => { const t = e.target.closest && e.target.closest('[data-amz-f]'); if (!t) return; const id = t.dataset.amzB, b = state.compras.find(x => x.id === id); if (!b) return;
-  (amzSim[id] = amzSim[id] || {})[t.dataset.amzF] = t.value; const r = $('amz-res-' + id); if (r) r.innerHTML = amzResHtml(b); });
+  (amzSim[id] = amzSim[id] || {})[t.dataset.amzF] = t.value; const r = $('amz-res-' + id); if (r) r.innerHTML = amzResHtml(b); amzDraw(b); });
 document.addEventListener('change', e => { const t = e.target.closest && e.target.closest('select[data-amz-f]'); if (!t) return; const id = t.dataset.amzB, b = state.compras.find(x => x.id === id); if (!b) return;
-  (amzSim[id] = amzSim[id] || {}).modo = t.value; const r = $('amz-res-' + id); if (r) r.innerHTML = amzResHtml(b); });
+  (amzSim[id] = amzSim[id] || {}).modo = t.value; const r = $('amz-res-' + id); if (r) r.innerHTML = amzResHtml(b); amzDraw(b); });
 document.addEventListener('click', e => {
   const ad = e.target.closest && e.target.closest('[data-amz-add]'), dl = e.target.closest && e.target.closest('[data-amz-del]'); if (!ad && !dl) return;
   if (ad) { const b = state.compras.find(x => x.id === ad.dataset.amzAdd), f = b && amzSim[b.id]; if (!b || !f || !(+f.valor > 0)) return;
