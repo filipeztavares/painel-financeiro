@@ -1683,6 +1683,20 @@ tr.rd-hit td { background: color-mix(in srgb, var(--good) 9%, transparent); }
 .jg-tema .seg button{font-size:11px;padding:3px 10px}
 .jg-tema .seg button[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:#fff}
 .jg-home{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);gap:28px;align-items:start}.jg-home>.jg-info{align-self:center}
+.jg-lado{display:flex;flex-direction:column;gap:22px;min-width:0;align-self:stretch}.jg-lado>.jg-info{margin:auto 0}
+.jg-ag{border:1px solid var(--line);border-left:4px solid var(--agm,#34d399);border-radius:12px;padding:12px 14px;background:var(--panel);display:grid;gap:10px;min-width:0}
+.jg-ag-h{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap}.jg-ag-h b{font-family:var(--f-head);font-size:15px;color:var(--ink)}
+.jg-ag-h .q{font-size:12.5px;color:var(--muted)}.jg-ag-h a{margin-left:auto;font-size:12.5px;font-weight:700;color:var(--accent);text-decoration:none;white-space:nowrap}
+.jg-ag-d{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:4px}
+.jg-ag-d button{all:unset;cursor:pointer;display:grid;justify-items:center;gap:2px;padding:5px 0 6px;border-radius:8px;border:1px solid transparent;font-size:11px;color:var(--muted);text-transform:lowercase}
+.jg-ag-d button:hover,.jg-ag-d button:focus-visible{border-color:var(--line);background:color-mix(in srgb,var(--agm,#34d399) 8%,transparent)}
+.jg-ag-d button.hj{border-color:var(--agm,#34d399)}.jg-ag-d button.pas{opacity:.55}
+.jg-ag-d button b{font-size:13px;color:var(--ink);font-variant-numeric:tabular-nums}
+.jg-ag-d button i{font-style:normal;min-width:18px;height:18px;line-height:18px;text-align:center;border-radius:99px;font-size:11px;font-weight:800;background:var(--line);color:var(--muted)}
+.jg-ag-d button i.n{background:var(--agm,#34d399);color:#0F1F3D}
+.jg-ag .ag-lst li{font-size:13px;min-width:0}.jg-ag .ag-lst li>span:last-child{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0}
+.jg-ag .ag-lst a{color:var(--ink);text-decoration:none}.jg-ag .ag-lst a:hover{text-decoration:underline}
+.jg-ag .hint{margin:0;font-size:13px}
 .jg-roda{position:relative;width:100%;max-width:520px;margin-inline:auto;aspect-ratio:1}
 .jg-roda svg{width:100%;height:100%;display:block;overflow:visible}
 #jg-rot{transform-origin:250px 250px;transition:transform 1.4s cubic-bezier(.2,.8,.15,1)}
@@ -2589,7 +2603,7 @@ html[data-lb="b"] .block-title .desc{font-size:14px;color:var(--muted);margin-to
     </div>
     <div class="nav-mobile-sub" id="navMobileSub"></div>
   </div>
-  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 372</div></div>
+  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 373</div></div>
 </nav>
 <div class="sino-pop" id="sino-pop" role="dialog" aria-label="Atualizações das bases" hidden></div>
 <div class="sino-pop" id="pess-pop" role="dialog" aria-label="Seus avisos" hidden></div>
@@ -2621,7 +2635,7 @@ html[data-lb="b"] .block-title .desc{font-size:14px;color:var(--muted);margin-to
       <div class="jg-hud" id="jg-hud"></div>
       <div class="jg-home" id="jg-home">
         <div class="jg-roda"><svg viewBox="-20 -20 540 540" id="jg-svg" role="group" aria-label="Roleta de módulos"><g id="jg-rot"></g><path d="M250 -2 L236 -22 L264 -22 Z" fill="var(--accent)"/></svg><div class="jg-hub" aria-hidden="true"><div><small id="jg-hn"></small><b id="jg-ht"></b></div></div></div>
-        <div class="jg-info" id="jg-info" aria-live="polite"></div>
+        <div class="jg-lado"><div class="jg-ag" id="jg-ag" hidden></div><div class="jg-info" id="jg-info" aria-live="polite"></div></div>
       </div>
       <div class="tr-curta"><div class="tr-ch"><b id="tr-tit">Próximos passos</b><a href="#" id="tr-exp" aria-expanded="false">Ver a trilha completa</a></div><div class="tr-scroll" id="tr-short-w"><svg id="tr-short" role="img"></svg></div><div class="tr-scroll" id="tr-jgfull-w" hidden><svg id="tr-jgfull" role="img"></svg></div></div>
       <div class="jg-vista"><button type="button" class="btn ghost tiny" id="jg-vista"></button></div>
@@ -4593,7 +4607,7 @@ html[data-lb="b"] .block-title .desc{font-size:14px;color:var(--muted);margin-to
     return new Promise(resolve => { const { data } = sb.auth.onAuthStateChange(async (ev) => { if (ev !== 'PASSWORD_RECOVERY') return; const s = prompt('Digite a nova senha (mínimo 8 caracteres):'); if (s && s.length >= 8) { const { error } = await sb.auth.updateUser({ password: s }); alert(error ? 'Não deu para trocar a senha: ' + error.message : 'Senha trocada.'); } }); resolve(data); });
   }
   // ---------- rodapé: compartilhar, administração e sair ----------
-  const SITE_V = 261;
+  const SITE_V = 262;
   const escH = v => String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const dataBR = v => v ? new Date(v).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' }) : '–';
   const css2 = `.side-foot .r{flex-wrap:wrap}.side-foot .lg-acoes{margin-left:auto;display:inline-flex;gap:10px}
@@ -16817,7 +16831,27 @@ function renderJogo() {
   h += `<circle cx="${CX}" cy="${CY}" r="${R0 - 6}" fill="var(--panel)" stroke="var(--line)"/>`;
   const g0 = $('jg-rot'); g0.innerHTML = h; g0.style.transform = `rotate(${jgRot}deg)`; g0.querySelectorAll('.jg-ic').forEach(x => x.style.transform = `rotate(${-jgRot}deg)`);
   jgGrow(jgSel, true); jgMostra(jgSel);
+  try { jgAgenda(); } catch (e) { console.error(e); }
 }
+function jgAgenda() {
+  const box = $('jg-ag'); if (!box) return;
+  const m = MODS.find(x => x.id === 'agen');
+  if (!m || !state || !state.agenda || jgVista() !== 'roleta' || !jgMods().includes(m)) { box.hidden = true; return; }
+  box.hidden = false; box.style.setProperty('--agm', m.corNav);
+  const h = agHoje(), n0 = agDiaN(h), dw = (new Date(h + 'T12:00:00').getDay() + 6) % 7, iso = n => new Date(n * 864e5).toISOString().slice(0, 10);
+  const seg = iso(n0 - dw), dom = iso(n0 - dw + 6);
+  let sem = []; try { sem = agDoDia(seg, dom); } catch (e) {}
+  const porDia = {}; sem.forEach(o => { porDia[o.data] = (porDia[o.data] || 0) + 1; });
+  const falta = sem.filter(o => o.data >= h).length, NS = ['seg', 'ter', 'qua', 'qui', 'sex', 'sáb', 'dom'];
+  const dias = NS.map((nm, k) => { const d = iso(n0 - dw + k), c = porDia[d] || 0;
+    return `<button type="button" data-jgagd="${d}" class="${d === h ? 'hj' : d < h ? 'pas' : ''}" title="${new Date(d + 'T12:00:00').toLocaleDateString('pt-BR', { weekday: 'long', day: 'numeric', month: 'long' })}: ${c ? c + (c > 1 ? ' itens' : ' item') : 'nada'}">${nm}<b>${+d.slice(8, 10)}</b><i class="${c ? 'n' : ''}">${c || '·'}</i></button>`; }).join('');
+  let prox = []; try { prox = agDoDia(h, iso(n0 + 60)).slice(0, 5); } catch (e) {}
+  const li = o => `<li><i style="--agc:${agCor(o)}"></i><span class="q">${o.data === h ? 'hoje' : agBr(o.data)}${o.hora ? ' ' + o.hora : ''}</span><span>${o.auto ? `<a href="#" data-tab="${o.tab}">${esc(o.titulo)}</a>` : `<a href="#" data-agev="${o.id}">${esc(o.titulo)}</a>`}</span></li>`;
+  box.innerHTML = `<div class="jg-ag-h"><b>Agenda</b><span class="q">${sem.length ? `${sem.length} ${sem.length > 1 ? 'compromissos' : 'compromisso'} nesta semana${falta !== sem.length ? ` · ${falta ? falta + (falta > 1 ? ' ainda por vir' : ' ainda por vir') : 'todos já passaram'}` : ''}` : 'Semana livre'}</span><a href="#" data-irmod="agen">Abrir a Agenda ›</a></div>
+    <div class="jg-ag-d" role="group" aria-label="Esta semana">${dias}</div>
+    ${prox.length ? `<ul class="ag-lst">${prox.map(li).join('')}</ul>` : `<p class="hint">Nada nos próximos 60 dias. <a href="#" data-jgagd="${h}">+ Compromisso</a></p>`}`;
+}
+document.addEventListener('click', e => { const b = e.target.closest && e.target.closest('[data-jgagd]'); if (!b) return; e.preventDefault(); agDia = b.dataset.jgagd; agMes = agDia.slice(0, 7); showTab('agcal'); });
 function jgGrow(i, on) { const el = document.querySelector(`#jg-rot .jg-sl[data-jgi="${i}"] .jg-f`); if (!el) return; const N = jgMods().length, t = ((i + .5) * 360 / N - 90) * Math.PI / 180; el.style.transform = on ? `translate(${(15 * Math.cos(t)).toFixed(1)}px,${(15 * Math.sin(t)).toFixed(1)}px) scale(1.06)` : ''; }
 function jgMostra(i) {
   const vis = jgMods(), m = vis[i]; if (!m) return; const g = jgProg(m), sug = jgSugestao(vis);
