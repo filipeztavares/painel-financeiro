@@ -2572,7 +2572,7 @@ html[data-lb="b"] .block-title .desc{font-size:14px;color:var(--muted);margin-to
     </div>
     <div class="nav-mobile-sub" id="navMobileSub"></div>
   </div>
-  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 367</div></div>
+  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 368</div></div>
 </nav>
 <div class="sino-pop" id="sino-pop" role="dialog" aria-label="Atualizações das bases" hidden></div>
 <div class="sino-pop" id="pess-pop" role="dialog" aria-label="Seus avisos" hidden></div>
@@ -4576,7 +4576,7 @@ html[data-lb="b"] .block-title .desc{font-size:14px;color:var(--muted);margin-to
     return new Promise(resolve => { const { data } = sb.auth.onAuthStateChange(async (ev) => { if (ev !== 'PASSWORD_RECOVERY') return; const s = prompt('Digite a nova senha (mínimo 8 caracteres):'); if (s && s.length >= 8) { const { error } = await sb.auth.updateUser({ password: s }); alert(error ? 'Não deu para trocar a senha: ' + error.message : 'Senha trocada.'); } }); resolve(data); });
   }
   // ---------- rodapé: compartilhar, administração e sair ----------
-  const SITE_V = 256;
+  const SITE_V = 257;
   const escH = v => String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const dataBR = v => v ? new Date(v).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' }) : '–';
   const css2 = `.side-foot .r{flex-wrap:wrap}.side-foot .lg-acoes{margin-left:auto;display:inline-flex;gap:10px}
@@ -12137,13 +12137,14 @@ function ceSim(b, E, i, n, taxaMes) {
   const V = +b.valor || 0, PV = Math.max(0, V - E), sac = b.modo === 'sac';
   const doCard = b.modo === 'fixa' && +b.parcela > 0 && Math.abs(E - (+b.entrada || 0)) < 0.5;
   const pmt = PV <= 0 ? 0 : i > 0 ? PV * i / (1 - Math.pow(1 + i, -n)) : PV / n;
-  let sd = PV, bal = PV, tot = 0, acaba = null, p1 = 0; const balA = [PV], sdA = [PV];
+  // ap = o que não foi na entrada, só rendendo; pc = parcelas pagas com a sobra, corrigidas pelo rendimento que teriam tido se investidas
+  let sd = PV, ap = PV, pc = 0, tot = 0, p1 = 0; const apA = [PV], pcA = [0];
   for (let t = 1; t <= n; t++) {
-    const j = sd * i, p = PV <= 0 ? 0 : doCard ? +b.parcela : sac ? PV / n + j : pmt;
+    const j = sd * i, p = PV <= 0 ? 0 : doCard ? +b.parcela : sac ? PV / n + j : pmt, r = taxaMes(t);
     if (t === 1) p1 = p; sd = Math.max(0, sd - (p - j));
-    bal = bal * (1 + taxaMes(t)) - p; tot += p; if (acaba == null && bal < -0.5) acaba = t; balA.push(bal); sdA.push(sd);
+    ap *= 1 + r; pc = pc * (1 + r) + p; tot += p; apA.push(ap); pcA.push(pc);
   }
-  return { E, PV, p1, juros: tot - PV, rend: bal - PV + tot, res: bal, acaba, balA, sdA };
+  return { E, PV, p1, juros: tot - PV, ap, pc, res: ap - pc, apA, pcA };
 }
 function ceGrafico(cats, series, Wc) {  // cats[j].E = entrada (clique troca o gráfico mês a mês); cats[j].sel = escolhida
   const W = Math.max(520, Math.round(Wc || 680)), H = 240, pl = 62, pr = 10, pt = 12, pb = 34;
@@ -12176,7 +12177,7 @@ function renderCustoEntrada(b, el) {
   if (ja) { ja.sua = true; ja.E = Eu; } else Es.push({ E: Eu, lab: num(Eu / V * 100, 0) + '%', sua: true });
   Es.sort((a, c) => a.E - c.E); Es.push({ E: V, lab: 'À vista', avista: true, sua: Eu >= V - 0.5 });
   if (Es.filter(x => x.sua).length > 1) Es = Es.filter(x => !(x.sua && !x.avista && x.E >= V - 0.5));
-  const linhas = Es.map(x => ({ ...x, nome: x.avista ? 'À vista' : `Entrada de ${x.lab} (${fm(x.E)})`, r: fontes.map(fo => x.avista ? { E: V, PV: 0, p1: 0, juros: 0, rend: 0, res: 0, acaba: null } : ceSim(b, x.E, jr.i, n, fo.f)) }));
+  const linhas = Es.map(x => ({ ...x, nome: x.avista ? 'À vista' : `Entrada de ${x.lab} (${fm(x.E)})`, r: fontes.map(fo => x.avista ? { E: V, PV: 0, p1: 0, juros: 0, ap: 0, pc: 0, res: 0 } : ceSim(b, x.E, jr.i, n, fo.f)) }));
   const selL = linhas.find(x => !x.avista && ceSel[b.id] != null && Math.abs(x.E - ceSel[b.id]) < 0.5) || linhas.find(x => x.sua && !x.avista) || linhas.find(x => !x.avista);
   const sua = linhas.find(x => x.sua), melhor = linhas.reduce((a, x) => x.r[0].res > a.r[0].res ? x : a), ja0 = m0 <= mIndex(lastCp().mes);
   const sinal = v => `<span class="${v < -0.5 ? 'neg' : v > 0.5 ? 'pos' : ''}">${v > 0.5 ? '+' : ''}${fm(v)}</span>`;
@@ -12187,26 +12188,27 @@ function renderCustoEntrada(b, el) {
   el.dataset.centBox = b.id;
   el.innerHTML = `<details class="cent-d" data-cent="${b.id}"${aberto ? ' open' : ''}><summary>Quanto a entrada custa: rendimento × juros${resumo ? ` · <span class="cent-sum">${resumo}</span>` : ''}</summary>
     <div class="cent-b">
-      <p class="cent-ex"><b>Como a conta é feita.</b> Imagine que você tem o preço inteiro (${fm(V)}) no dia da compra. Em cada opção, o que não vai para a entrada fica aplicado, e as parcelas saem dessa aplicação todo mês. No fim das ${n} parcelas, o que sobrou aplicado é o <b>resultado</b> comparado a pagar à vista: é o rendimento que o dinheiro teve menos os juros pagos ao banco. Positivo: financiar deixou mais dinheiro do que pagar à vista. Negativo: os juros custaram mais do que o dinheiro rendeu.
+      <p class="cent-ex"><b>Como a conta é feita.</b> Financiando: no dia da compra, o que não vai para a entrada (preço − entrada) fica aplicado e só rende, todo mês, sem ser usado para pagar parcela. A parcela sai da sobra do mês, então a sobra que você investe fica menor nesse valor. À vista: o bem é pago inteiro no dia e não sobra nada aplicado, mas, sem parcela, a sobra investida é maior todo mês, e esse dinheiro também rende.
+      No fim das ${n} parcelas, o <b>resultado</b> é o valor aplicado com o rendimento menos as parcelas que você deixou de investir, com o rendimento que teriam tido. Positivo: financiar deixou mais dinheiro do que pagar à vista. Negativo: os juros custaram mais do que o dinheiro rendeu. No Meu plano nada muda, porque a sobra já vem com a parcela descontada.
       As parcelas de cada entrada são recalculadas com os mesmos juros (${taxaTxt}) e o mesmo prazo do card${b.modo === 'sac' ? ', no sistema SAC' : ', em parcelas iguais'}. Rendimento: ${fTxt}.${ja0 ? ' Compra já feita: a conta mostra o que teria acontecido com cada entrada.' : ''} Valores em reais do fim do prazo (${mLabel(m0 + n)}).</p>
       ${jr.i <= 0 ? '<p class="hint">Sem juros no financiamento, financiar sempre deixa mais dinheiro: informe os juros do contrato para a comparação valer.</p>' : ''}
       <div class="cent-lg">${fontes.map(fo => `<span><i style="background:${fo.c}"></i>${fo.name}</span>`).join('')}<span class="cent-h">Resultado no fim do prazo, comparado a pagar à vista</span></div>
       ${ceGrafico(linhas.map(x => ({ lab: x.lab, nome: x.nome, sua: x.sua, sel: x === selL, E: x.avista ? null : x.E })), fontes.map((fo, j) => ({ name: fo.name, c: fo.c, v: linhas.map(x => x.r[j].res) })), el.clientWidth)}
       <div class="cent-mm">
         <h4>Mês a mês: ${selL ? `${selL.sua ? 'a sua entrada' : 'entrada'} de ${selL.lab} (${fm(selL.E)})` : ''}</h4>
-        <p class="cent-ex">Começa com ${selL ? fm(selL.r[0].PV) : ''} aplicados (preço − entrada). Todo mês o valor rende e a parcela sai dele. Abaixo de zero, as parcelas já estão saindo de outro dinheiro. A linha tracejada é o que ainda falta pagar ao banco. Clique numa coluna do gráfico acima ou numa linha da tabela para ver outra entrada.</p>
+        <p class="cent-ex">A linha cheia são os ${selL ? fm(selL.r[0].PV) : ''} aplicados (preço − entrada) crescendo com o rendimento. A tracejada é o total das parcelas pagas com a sobra, corrigido pelo rendimento que esse dinheiro teria se fosse investido. A distância entre as duas é o resultado em cada mês: com a cheia por cima, financiar está ganhando; com a tracejada por cima, está perdendo. Clique numa coluna do gráfico acima ou numa linha da tabela para ver outra entrada.</p>
         <div class="legend" id="celg-${b.id}"></div><div id="cech-${b.id}" data-h="240"></div><div class="readout" id="cero-${b.id}"></div>
       </div>
       ${(() => { const a = linhas.find(x => !x.avista && !x.sua && x.E < V * 0.05), z = linhas.filter(x => !x.avista).slice(-1)[0]; if (!a || !z || z.E - a.E < 1) return ''; const d = (z.r[0].res - a.r[0].res) / (z.E - a.E) * 1000; return Math.abs(d) < 1 ? '' : `<p class="cent-ok">Cada <b>R$ 1.000 a mais de entrada</b> ${d > 0 ? 'evita' : 'custa'} cerca de <b>${fm(Math.abs(d))}</b> ${d > 0 ? 'de perda' : 'a mais'} no fim do prazo (pelo Meu plano).</p>`; })()}
       ${sua && melhor !== sua && melhor.r[0].res - sua.r[0].res > 1 ? `<p class="cent-ok">Pelo Meu plano, a melhor opção é <b>${melhor.avista ? 'pagar à vista' : 'entrada de ' + melhor.lab}</b>: ${fm(melhor.r[0].res - sua.r[0].res)} a mais no fim do prazo do que a sua entrada.</p>` : sua ? '<p class="cent-ok">Pelo Meu plano, a sua entrada já é a melhor opção entre as comparadas.</p>' : ''}
-      <div class="tscroll"><table class="cent-t"><thead><tr><th>Entrada</th><th>Fica aplicado</th><th>1ª parcela</th><th>Juros pagos</th>${fontes.map(fo => `<th>Rendimento · ${fo.name}</th><th>Resultado · ${fo.name}</th>`).join('')}</tr></thead><tbody>
-      ${linhas.map(x => `<tr${x.sua ? ' class="pe-best"' : ''}${x.avista ? '' : ` data-ce-e="${x.E}" style="cursor:pointer${x === selL ? ';outline:1.5px dashed var(--ink);outline-offset:-2px' : ''}" title="Ver esta entrada mês a mês"`}><td class="name">${x.avista ? 'À vista' : `${x.lab} · ${fm(x.E)}`}${x.sua ? ' <span class="chip info">sua escolha</span>' : ''}${x.r.some(r => r.acaba) ? ` <span class="chip warn" title="Daí em diante as parcelas saem de outro dinheiro; a conta trata como se ele rendesse a mesma taxa">aplicação acaba em ${mLabel(m0 + Math.min(...x.r.filter(r => r.acaba).map(r => r.acaba)))}</span>` : ''}</td><td>${fm(x.r[0].PV)}</td><td>${x.r[0].p1 ? fm(x.r[0].p1) : '—'}</td><td>${x.r[0].juros > 0.5 ? fm(x.r[0].juros) : '—'}</td>${x.r.map(r => `<td>${x.avista ? '—' : fm(r.rend)}</td><td><b>${sinal(r.res)}</b></td>`).join('')}</tr>`).join('')}
+      <div class="tscroll"><table class="cent-t"><thead><tr><th>Entrada</th><th>Fica aplicado</th><th>1ª parcela</th><th>Juros pagos</th>${fontes.map(fo => `<th>Aplicado no fim · ${fo.name}</th><th>Parcelas corrigidas · ${fo.name}</th><th>Resultado · ${fo.name}</th>`).join('')}</tr></thead><tbody>
+      ${linhas.map(x => `<tr${x.sua ? ' class="pe-best"' : ''}${x.avista ? '' : ` data-ce-e="${x.E}" style="cursor:pointer${x === selL ? ';outline:1.5px dashed var(--ink);outline-offset:-2px' : ''}" title="Ver esta entrada mês a mês"`}><td class="name">${x.avista ? 'À vista' : `${x.lab} · ${fm(x.E)}`}${x.sua ? ' <span class="chip info">sua escolha</span>' : ''}</td><td>${fm(x.r[0].PV)}</td><td>${x.r[0].p1 ? fm(x.r[0].p1) : '—'}</td><td>${x.r[0].juros > 0.5 ? fm(x.r[0].juros) : '—'}</td>${x.r.map(r => `<td>${x.avista ? '—' : fm(r.ap)}</td><td>${x.avista ? '—' : fm(r.pc)}</td><td><b>${sinal(r.res)}</b></td>`).join('')}</tr>`).join('')}
       </tbody></table></div>
     </div></details>`;
   if (selL && $('cech-' + b.id)) {
-    const ser = fontes.map((fo, j) => ({ name: 'Aplicado · ' + fo.name, c: fo.c, v: selL.r[j].balA, w: 2.4 })).concat([{ name: 'Falta pagar ao banco', c: 'var(--bad)', v: selL.r[0].sdA, dash: true }]);
+    const ser = fontes.flatMap((fo, j) => [{ name: 'Aplicado · ' + fo.name, c: fo.c, v: selL.r[j].apA, w: 2.4 }, { name: 'Parcelas corrigidas · ' + fo.name, c: fo.c, v: selL.r[j].pcA, dash: true }]);
     legend($('celg-' + b.id), ser);
-    chart($('cech-' + b.id), $('cero-' + b.id), n + 1, ser, k, t => mLabel(m0 + t), 0);
+    chart($('cech-' + b.id), $('cero-' + b.id), n + 1, ser, k, t => mLabel(m0 + t), n);
   }
 }
 const SC = [{ id: 'avista', name: 'À vista', c: 'var(--s3)' }, { id: 'sac', name: 'Financ. SAC', c: 'var(--s5)' }, { id: 'price', name: 'Financ. Price', c: 'var(--s2)' }, { id: 'cons', name: 'Consórcio', c: 'var(--s4)' }];
