@@ -2559,7 +2559,7 @@ html[data-lb="b"] .block-title .desc{font-size:14px;color:var(--muted);margin-to
     </div>
     <div class="nav-mobile-sub" id="navMobileSub"></div>
   </div>
-  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 362</div></div>
+  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 363</div></div>
 </nav>
 <div class="sino-pop" id="sino-pop" role="dialog" aria-label="Atualizações das bases" hidden></div>
 <div class="sino-pop" id="pess-pop" role="dialog" aria-label="Seus avisos" hidden></div>
@@ -4563,7 +4563,7 @@ html[data-lb="b"] .block-title .desc{font-size:14px;color:var(--muted);margin-to
     return new Promise(resolve => { const { data } = sb.auth.onAuthStateChange(async (ev) => { if (ev !== 'PASSWORD_RECOVERY') return; const s = prompt('Digite a nova senha (mínimo 8 caracteres):'); if (s && s.length >= 8) { const { error } = await sb.auth.updateUser({ password: s }); alert(error ? 'Não deu para trocar a senha: ' + error.message : 'Senha trocada.'); } }); resolve(data); });
   }
   // ---------- rodapé: compartilhar, administração e sair ----------
-  const SITE_V = 251;
+  const SITE_V = 252;
   const escH = v => String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const dataBR = v => v ? new Date(v).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' }) : '–';
   const css2 = `.side-foot .r{flex-wrap:wrap}.side-foot .lg-acoes{margin-left:auto;display:inline-flex;gap:10px}
@@ -4644,7 +4644,7 @@ html[data-lb="b"] .block-title .desc{font-size:14px;color:var(--muted);margin-to
   }
   async function abrirAdmin() {
     const ov = modal(topo('Administração', 'Todas as contas do site. Você vê nome, e-mail e datas de todo mundo; os números financeiros de alguém só aparecem na sua Visão consolidada se a pessoa compartilhar com você.') +
-      `<div class="tw"><table><thead><tr><th>Pessoa</th><th>Criada</th><th>Último acesso</th><th>Dados</th><th>Compartilha</th><th>Situação</th><th></th></tr></thead><tbody id="sv-at"><tr><td colspan="7" class="vazio">carregando…</td></tr></tbody></table></div><div class="msg" id="sv-am" role="status"></div><p style="margin-top:12px"><button class="bt" type="button" id="sv-sug">💬 Ver sugestões recebidas</button></p>`);
+      `<div class="tw"><table><thead><tr><th>Pessoa</th><th>Criada</th><th>Último acesso</th><th>Dados</th><th>Compartilha</th><th>Situação</th><th></th></tr></thead><tbody id="sv-at"><tr><td colspan="7" class="vazio">carregando…</td></tr></tbody></table></div><div class="msg" id="sv-am" role="status"></div><p style="margin-top:12px"><button class="bt" type="button" id="sv-sug">Ver sugestões recebidas</button></p>`);
     ov.querySelector('#sv-sug').addEventListener('click', () => { fecharModal(); if (window.abrirSugestoes) window.abrirSugestoes(true); });
     const m = ov.querySelector('#sv-am');
     const pinta = async () => {
@@ -20126,8 +20126,8 @@ html .sug-adm .btn.ghost[aria-pressed="true"], html[data-lb] .sug-adm .btn.ghost
 
   // rodapé do menu: novo item ao lado de Leia-me e Configurações
   const pe = document.querySelector('.nav-pe');
-  if (pe && !g('nav-sug')) pe.insertAdjacentHTML('beforeend', '<div class="nav-group mini"><button type="button" class="nav-head" id="nav-sug" aria-haspopup="dialog"><span class="ico" aria-hidden="true">💬</span>Sugestões</button></div>');
-  document.body.insertAdjacentHTML('beforeend', '<div class="conf-pop ac-pop" id="sug-pop" hidden><div class="conf-dlg ac-dlg sug-dlg" role="dialog" aria-modal="true" aria-labelledby="sug-t"><button type="button" class="conf-x" data-acfecha aria-label="Fechar" title="Fechar">✕</button><h3 class="ac-t" id="sug-t">💬 Sugestões</h3><div id="sug-corpo"></div></div></div>');
+  if (pe && !g('nav-sug')) pe.insertAdjacentHTML('beforeend', '<div class="nav-group mini"><button type="button" class="nav-head" id="nav-sug" aria-haspopup="dialog"><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 12.5a7.5 7.5 0 0 1-10.9 6.7L4 20.5l1.4-4.4A7.5 7.5 0 1 1 20 12.5z"/></svg></span>Sugestões</button></div>');
+  document.body.insertAdjacentHTML('beforeend', '<div class="conf-pop ac-pop" id="sug-pop" hidden><div class="conf-dlg ac-dlg sug-dlg" role="dialog" aria-modal="true" aria-labelledby="sug-t"><button type="button" class="conf-x" data-acfecha aria-label="Fechar" title="Fechar">✕</button><h3 class="ac-t" id="sug-t">Sugestões</h3><div id="sug-corpo"></div></div></div>');
 
   function pinta() {
     const atual = (() => { try { return modDe(tab); } catch (e) { return null; } })();
