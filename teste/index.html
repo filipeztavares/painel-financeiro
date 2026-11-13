@@ -2477,7 +2477,7 @@ html[data-lb] #pt-hd .eb{font-family:var(--f-ui)}
     </div>
     <div class="nav-mobile-sub" id="navMobileSub"></div>
   </div>
-  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 338</div></div>
+  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 339</div></div>
 </nav>
 <div class="sino-pop" id="sino-pop" role="dialog" aria-label="Atualizações das bases" hidden></div>
 <div class="sino-pop" id="pess-pop" role="dialog" aria-label="Seus avisos" hidden></div>
@@ -4451,7 +4451,7 @@ html[data-lb] #pt-hd .eb{font-family:var(--f-ui)}
     return new Promise(resolve => { const { data } = sb.auth.onAuthStateChange(async (ev) => { if (ev !== 'PASSWORD_RECOVERY') return; const s = prompt('Digite a nova senha (mínimo 8 caracteres):'); if (s && s.length >= 8) { const { error } = await sb.auth.updateUser({ password: s }); alert(error ? 'Não deu para trocar a senha: ' + error.message : 'Senha trocada.'); } }); resolve(data); });
   }
   // ---------- rodapé: compartilhar, administração e sair ----------
-  const SITE_V = 224;
+  const SITE_V = 225;
   const escH = v => String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const dataBR = v => v ? new Date(v).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' }) : '–';
   const css2 = `.side-foot .r{flex-wrap:wrap}.side-foot .lg-acoes{margin-left:auto;display:inline-flex;gap:10px}
@@ -19054,7 +19054,7 @@ function jorSimDb(real) {
   // ---------- outras 7 telas: as seções do painel (com a faixa e o recolher) rearrumadas no grid dos mockups, mais os visuais novos ----------
   const L = (cols, itens) => ({ cols, itens });
   const LAYOUT = {
-    gastos: [L('1fr', ['=gm-sel', 'kpi-x']), L('1fr', ['s-gastos-0']), L('1fr', ['s-gastos-1']), L('minmax(0,1fr) minmax(0,1fr)', ['s-gastos-4', 's-gastos-5']), L('1fr', ['s-gastos-2']), L('1fr', ['s-gastos-3'])],
+    gastos: [L('1fr', ['=gm-sel', 'kpi-x']), L('1fr', ['s-gastos-0']), L('1fr', ['s-gastos-1']), L('1fr', ['s-gastos-4']), L('1fr', ['s-gastos-5']), L('1fr', ['s-gastos-2']), L('1fr', ['s-gastos-3'])],
     patrimonio: [L('1fr', ['kpi-pt']), L('minmax(0,1fr) minmax(0,1.5fr)', ['@donut', 's-patrimonio-0']), L('1fr', ['s-patrimonio-1']), L('1fr', ['s-patrimonio-2'])],
     carteira: [L('1fr', ['kpi-a']), L('minmax(0,1.2fr) minmax(0,1fr)', ['@alvo', 's-carteira-7']), L('1fr', ['s-carteira-1']), L('1fr', ['s-carteira-2']), L('1fr', ['s-carteira-4']), L('1fr', ['s-carteira-3']), L('minmax(0,1fr) minmax(0,1fr)', ['s-carteira-5', 's-carteira-6']), L('1fr', ['s-carteira-8']), L('1fr', ['s-carteira-0']), L('1fr', ['s-carteira-9']), L('1fr', ['s-carteira-10']), L('1fr', ['s-carteira-11'])],
     comparador: [L('1fr', ['kpi-r']), L('minmax(0,1fr) minmax(0,1.4fr)', ['s-comparador-0', 's-comparador-2']), L('1fr', ['s-comparador-1']), L('1fr', ['s-comparador-3'])],
