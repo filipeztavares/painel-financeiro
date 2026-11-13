@@ -2348,7 +2348,7 @@ html[data-lb] .tour-pop .btn{background:#F0A46B;color:#0E1A2B;border-color:#F0A4
 html[data-lb] .tour-pop .btn.ghost{background:transparent;color:inherit;border-color:rgba(127,140,160,.55)}
 html[data-lb] .main a.voltar{display:none!important}
 html[data-lb] .main a:not(.btn){color:var(--accent)}
-html[data-lb] .nav-modpop .op .ic{background:var(--mc);color:#0E1A2B}
+html[data-lb] .nav-modpop .op .ic{background:color-mix(in srgb,var(--mc) 42%,#fff);color:color-mix(in srgb,var(--mc) 55%,#0E1A2B)}
 html[data-lb] .nav-modpop .op[aria-current="true"]{background:color-mix(in srgb,var(--mc) 22%,var(--panel))}
 html[data-lb] .nav-modpop .op b{font-family:var(--f-head);font-weight:700}
 html[data-lb] .panel .kpi{background:var(--card2);border-color:transparent}
@@ -2477,7 +2477,7 @@ html[data-lb] #pt-hd .eb{font-family:var(--f-ui)}
     </div>
     <div class="nav-mobile-sub" id="navMobileSub"></div>
   </div>
-  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 339</div></div>
+  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 340</div></div>
 </nav>
 <div class="sino-pop" id="sino-pop" role="dialog" aria-label="Atualizações das bases" hidden></div>
 <div class="sino-pop" id="pess-pop" role="dialog" aria-label="Seus avisos" hidden></div>
@@ -4451,7 +4451,7 @@ html[data-lb] #pt-hd .eb{font-family:var(--f-ui)}
     return new Promise(resolve => { const { data } = sb.auth.onAuthStateChange(async (ev) => { if (ev !== 'PASSWORD_RECOVERY') return; const s = prompt('Digite a nova senha (mínimo 8 caracteres):'); if (s && s.length >= 8) { const { error } = await sb.auth.updateUser({ password: s }); alert(error ? 'Não deu para trocar a senha: ' + error.message : 'Senha trocada.'); } }); resolve(data); });
   }
   // ---------- rodapé: compartilhar, administração e sair ----------
-  const SITE_V = 225;
+  const SITE_V = 226;
   const escH = v => String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const dataBR = v => v ? new Date(v).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' }) : '–';
   const css2 = `.side-foot .r{flex-wrap:wrap}.side-foot .lg-acoes{margin-left:auto;display:inline-flex;gap:10px}
