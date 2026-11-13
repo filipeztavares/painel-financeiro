@@ -2570,7 +2570,7 @@ html[data-lb="b"] .block-title .desc{font-size:14px;color:var(--muted);margin-to
     </div>
     <div class="nav-mobile-sub" id="navMobileSub"></div>
   </div>
-  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 364</div></div>
+  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 365</div></div>
 </nav>
 <div class="sino-pop" id="sino-pop" role="dialog" aria-label="Atualizações das bases" hidden></div>
 <div class="sino-pop" id="pess-pop" role="dialog" aria-label="Seus avisos" hidden></div>
@@ -4574,7 +4574,7 @@ html[data-lb="b"] .block-title .desc{font-size:14px;color:var(--muted);margin-to
     return new Promise(resolve => { const { data } = sb.auth.onAuthStateChange(async (ev) => { if (ev !== 'PASSWORD_RECOVERY') return; const s = prompt('Digite a nova senha (mínimo 8 caracteres):'); if (s && s.length >= 8) { const { error } = await sb.auth.updateUser({ password: s }); alert(error ? 'Não deu para trocar a senha: ' + error.message : 'Senha trocada.'); } }); resolve(data); });
   }
   // ---------- rodapé: compartilhar, administração e sair ----------
-  const SITE_V = 253;
+  const SITE_V = 254;
   const escH = v => String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const dataBR = v => v ? new Date(v).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' }) : '–';
   const css2 = `.side-foot .r{flex-wrap:wrap}.side-foot .lg-acoes{margin-left:auto;display:inline-flex;gap:10px}
@@ -4735,6 +4735,7 @@ html[data-lb="b"] .block-title .desc{font-size:14px;color:var(--muted);margin-to
   // Sugestões: caixa no rodapé do menu; qualquer conta envia, só o admin lê (tabela sugestoes, supabase-sugestoes.sql)
   window.__siteSugestoes = {
     async enviar(modulo, texto) { await pronto; const { error } = await sb.from('sugestoes').insert({ modulo: String(modulo).slice(0, 60), texto: String(texto).slice(0, 2000) }); if (error) throw error; },
+    async avaliar(r) { await pronto; const { error } = await sb.from('sugestoes').insert({ tipo: 'avaliacao', nota: Math.max(0, Math.min(10, Math.round(+r.nota))), modulo: String(r.modulo || 'O app em geral').slice(0, 60), texto: String(r.texto || '').slice(0, 2000), ajuda: String(r.ajuda || '').slice(0, 2000) }); if (error) throw error; },
     async listar() { await pronto; const { data, error } = await sb.rpc('admin_sugestoes'); if (error) throw error; return data || []; },
     async marcar(id, lida) { await pronto; const { error } = await sb.from('sugestoes').update({ lida }).eq('id', id); if (error) throw error; },
     async apagar(id) { await pronto; const { error } = await sb.from('sugestoes').delete().eq('id', id); if (error) throw error; }
@@ -20225,7 +20226,7 @@ html .sug-adm .btn.ghost[aria-pressed="true"], html[data-lb] .sug-adm .btn.ghost
       <div class="sug-campo"><label class="sug-l" for="sug-mod">Sobre qual módulo?</label><select id="sug-mod">${opts}</select></div>
       <div class="sug-campo"><label class="sug-l" for="sug-txt">Sua sugestão</label><textarea id="sug-txt" maxlength="2000" placeholder="Escreva aqui o que você mudaria, o que faltou ou o que não funcionou."></textarea><div class="sug-cont" id="sug-cont">0 / 2000</div></div>
       <div class="sug-acoes"><button type="button" class="btn" id="sug-env">Enviar sugestão</button><span class="sug-msg" id="sug-msg" role="status" aria-live="polite"></span></div>
-      ${adm() ? `<details class="sug-adm" id="sug-adm"><summary>Sugestões recebidas <span id="sug-qt"></span></summary><div class="sug-filtro"><span>Mostrar:</span><button type="button" class="btn tiny ghost" data-sugf="novas" aria-pressed="${filtro === 'novas'}">Não lidas</button><button type="button" class="btn tiny ghost" data-sugf="todas" aria-pressed="${filtro === 'todas'}">Todas</button></div><div id="sug-lista"><p class="sug-int">Carregando…</p></div></details>` : ''}`;
+      ${adm() ? `<details class="sug-adm" id="sug-adm"><summary>Sugestões recebidas <span id="sug-qt"></span></summary><div class="sug-filtro"><span>Mostrar:</span><button type="button" class="btn tiny ghost" data-sugf="novas" aria-pressed="${filtro === 'novas'}">Não lidas</button><button type="button" class="btn tiny ghost" data-sugf="todas" aria-pressed="${filtro === 'todas'}">Todas</button><button type="button" class="btn tiny ghost" data-sugf="aval" aria-pressed="${filtro === 'aval'}">Pesquisa de nota</button></div><p class="sug-res" id="sug-res" hidden></p><div id="sug-lista"><p class="sug-int">Carregando…</p></div></details>` : ''}`;
     if (adm()) carregar();
   }
 
@@ -20243,9 +20244,15 @@ html .sug-adm .btn.ghost[aria-pressed="true"], html[data-lb] .sug-adm .btn.ghost
   function desenha() {
     const el = g('sug-lista'); if (!el || !lista) return;
     const novas = lista.filter(x => !x.lida).length, q = g('sug-qt'); if (q) q.textContent = `(${novas} não ${novas === 1 ? 'lida' : 'lidas'} de ${lista.length})`;
-    const vis = filtro === 'novas' ? lista.filter(x => !x.lida) : lista;
-    el.innerHTML = vis.length ? vis.map(x => `<div class="sug-it${x.lida ? ' lida' : ''}"><div class="sug-cab"><span class="sug-mod" style="--mc:${esc(corMod(x.modulo))}"><i></i>${esc(x.modulo)}</span><span>${esc(dt(x.criado_em))}</span><span>${esc(x.nome || '')}${x.email ? ' · ' + esc(x.email) : ''}</span></div><div class="sug-txt">${esc(x.texto)}</div><div class="sug-bts"><button type="button" class="btn tiny ghost" data-suglida="${esc(x.id)}">${x.lida ? 'Marcar como não lida' : 'Marcar como lida'}</button><button type="button" class="btn tiny ghost" data-sugdel="${esc(x.id)}">Apagar</button></div></div>`).join('')
-      : `<p class="sug-int">${filtro === 'novas' && lista.length ? 'Nenhuma sugestão nova. Use "Todas" para ver as já lidas.' : 'Nenhuma sugestão ainda.'}</p>`;
+    const av = lista.filter(x => x.tipo === 'avaliacao' && x.nota != null && isFinite(+x.nota)), rs = g('sug-res');
+    if (rs) { if (av.length) { const n = av.map(x => +x.nota), med = n.reduce((a, b) => a + b, 0) / n.length, pro = n.filter(v => v >= 9).length, det = n.filter(v => v <= 6).length, nps = Math.round((pro - det) / n.length * 100);
+        rs.innerHTML = `<b>Nota média ${med.toLocaleString('pt-BR', { maximumFractionDigits: 1 })}</b> de 10 em ${n.length} ${n.length === 1 ? 'avaliação' : 'avaliações'} · NPS ${nps > 0 ? '+' : ''}${nps} <span class="sug-nps" title="NPS = % de notas 9 e 10 menos % de notas de 0 a 6">(${pro} deram 9 ou 10, ${det} deram de 0 a 6)</span>`; rs.hidden = false; }
+      else rs.hidden = true; }
+    const vis = filtro === 'novas' ? lista.filter(x => !x.lida) : filtro === 'aval' ? lista.filter(x => x.tipo === 'avaliacao') : lista;
+    const notaCls = v => v >= 9 ? 'boa' : v >= 7 ? 'media' : 'baixa';
+    el.innerHTML = vis.length ? vis.map(x => { const ehAv = x.tipo === 'avaliacao';
+      return `<div class="sug-it${x.lida ? ' lida' : ''}"><div class="sug-cab">${ehAv && x.nota != null ? `<span class="sug-nota ${notaCls(+x.nota)}">Nota ${esc(x.nota)}</span>` : ''}<span class="sug-mod" style="--mc:${esc(corMod(x.modulo))}"><i></i>${esc(x.modulo)}</span><span>${ehAv ? 'Pesquisa · ' : ''}${esc(dt(x.criado_em))}</span><span>${esc(x.nome || '')}${x.email ? ' · ' + esc(x.email) : ''}</span></div>${ehAv && x.ajuda ? `<div class="sug-txt"><b>O que mais ajuda:</b> ${esc(x.ajuda)}</div>` : ''}${x.texto ? `<div class="sug-txt">${ehAv ? '<b>O que melhorar:</b> ' : ''}${esc(x.texto)}</div>` : ''}${ehAv && !x.ajuda && !x.texto ? '<div class="sug-txt sug-sem">Só deu a nota.</div>' : ''}<div class="sug-bts"><button type="button" class="btn tiny ghost" data-suglida="${esc(x.id)}">${x.lida ? 'Marcar como não lida' : 'Marcar como lida'}</button><button type="button" class="btn tiny ghost" data-sugdel="${esc(x.id)}">Apagar</button></div></div>`; }).join('')
+      : `<p class="sug-int">${filtro === 'novas' && lista.length ? 'Nenhuma sugestão nova. Use "Todas" para ver as já lidas.' : filtro === 'aval' ? 'Nenhuma resposta da pesquisa ainda.' : 'Nenhuma sugestão ainda.'}</p>`;
   }
 
   async function enviar() {
@@ -20276,6 +20283,7 @@ html .sug-adm .btn.ghost[aria-pressed="true"], html[data-lb] .sug-adm .btn.ghost
     catch (e) { const m = g('sug-msg'); m.className = 'sug-msg err'; m.textContent = 'Não deu certo: ' + (e && (e.message || e.code) || e); }
   }
 
+  window.__sugRecarrega = () => { if (adm() && g('sug-lista')) carregar(); };
   window.abrirSugestoes = function (soLista) { pinta(); acAbre('sug-pop'); if (soLista && g('sug-adm')) { g('sug-adm').open = true; g('sug-adm').scrollIntoView({ block: 'start' }); } };
   document.addEventListener('click', e => {
     if (e.target.closest('#nav-sug')) { e.preventDefault(); window.abrirSugestoes(); return; }
@@ -20286,6 +20294,131 @@ html .sug-adm .btn.ghost[aria-pressed="true"], html[data-lb] .sug-adm .btn.ghost
     const d = e.target.closest('[data-sugdel]'); if (d) { apagar(d.dataset.sugdel); return; }
   });
   document.addEventListener('input', e => { if (e.target.id === 'sug-txt') g('sug-cont').textContent = e.target.value.length + ' / 2000'; });
+})();
+</script>
+<style>
+/* v365: pesquisa de nota */
+.sug-res { margin: 0 0 10px; font-size: 13px; padding: 8px 10px; border-radius: 8px; background: var(--accent-soft); }
+.sug-res .sug-nps { color: var(--muted); font-size: 12px; }
+.sug-nota { font-weight: 800; font-size: 11.5px; padding: 1px 8px; border-radius: 99px; color: #fff; background: var(--muted); }
+.sug-nota.boa { background: var(--good, #15803d); } .sug-nota.media { background: #C8902A; } .sug-nota.baixa { background: var(--bad, #B42318); }
+.sug-it .sug-txt + .sug-txt { margin-top: 4px; }
+.sug-it .sug-sem { color: var(--muted); font-style: italic; }
+.aval-dlg { width: min(560px, 100%); }
+.aval-dlg .sug-int { margin: 0 0 14px; color: var(--muted); font-size: 13.5px; line-height: 1.5; }
+.aval-escala { display: grid; grid-template-columns: repeat(11, minmax(0, 1fr)); gap: 4px; margin: 6px 0 4px; }
+.aval-escala button { font: inherit; font-weight: 700; font-size: 14px; padding: 8px 0; border-radius: 8px; border: 1px solid var(--line); background: var(--field); color: var(--ink); cursor: pointer; min-width: 0; }
+.aval-escala button:hover { border-color: var(--accent); }
+.aval-escala button[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: #fff; }
+.aval-pontas { display: flex; justify-content: space-between; font-size: 11.5px; color: var(--muted); margin-bottom: 14px; }
+.aval-dlg label.sug-l { display: block; font-size: 12.5px; font-weight: 600; margin: 0 0 5px; text-transform: none; letter-spacing: 0; color: var(--ink); }
+.aval-dlg textarea, .aval-dlg select { width: 100%; box-sizing: border-box; font: inherit; font-size: 14px; }
+.aval-dlg textarea { min-height: 70px; resize: vertical; padding: 8px 10px; border: 1px solid var(--line); border-radius: 8px; background: var(--panel); color: var(--ink); }
+.aval-dlg .sug-campo { margin-bottom: 12px; }
+.aval-dlg .aval-lado { display: grid; grid-template-columns: 1fr 190px; gap: 8px; align-items: end; }
+.aval-dlg .sug-acoes { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.aval-dlg .sug-msg.err { color: var(--bad, #c0392b); } .aval-dlg .sug-msg.ok { color: var(--good, #2e7d4f); }
+@media (max-width: 520px) { .aval-escala { grid-template-columns: repeat(6, minmax(0, 1fr)); } .aval-dlg .aval-lado { grid-template-columns: 1fr; } }
+#cfg-aval .ng-form { display: flex; flex-wrap: wrap; gap: 12px; align-items: end; }
+#cfg-aval .ng-form label { width: 220px; }
+</style>
+<script>
+/* v365: pesquisa de nota a cada N dias (config/avaliacao {dias, adiar, pausada}, só o administrador muda em Configurações).
+   Aparece logo depois de uma ação que salva (save), nunca no primeiro acesso, nem com guia, jornada ou janela aberta, nem com o cursor num campo.
+   Estado por pessoa em state.aval {ini, ult, adiadoAte} (ISO). Resposta vai para as sugestões (tipo 'avaliacao'). */
+(function () {
+  const g = id => document.getElementById(id), DIA = 864e5, GERAL = 'O app em geral';
+  let cfg = { dias: 30, adiar: 15, pausada: false }, ouvindo = false, mostrouSessao = false, timer = null, nota = null;
+  const san = x => { const d = Math.round(+(x && x.dias)), a = Math.round(+(x && x.adiar)); return { dias: d >= 1 && d <= 365 ? d : 30, adiar: a >= 1 && a <= 365 ? a : 15, pausada: !!(x && x.pausada) }; };
+  function ouvir() { if (ouvindo || !db) return; ouvindo = true; try { db.doc('config/avaliacao').onSnapshot(d => { cfg = san(d && d.exists ? d.data() : null); if (tab === 'config') pintaCfg(); }, () => { ouvindo = false; }); } catch (e) { ouvindo = false; } }
+  const st = () => { if (!state.aval || typeof state.aval !== 'object') state.aval = {}; return state.aval; };
+  const quando = () => { const a = st(), base = Date.parse(a.ult || a.ini || ''), adi = Date.parse(a.adiadoAte || ''); if (!isFinite(base)) return null; return Math.max(base + cfg.dias * DIA, isFinite(adi) ? adi : 0); };
+  function podeMostrar() {
+    if (!state || cfg.pausada || mostrouSessao) return false;
+    if (state.jornada === 'ativa' || (typeof JOR_SIM !== 'undefined' && JOR_SIM)) return false;
+    if ((typeof gK !== 'undefined' && gK) || (typeof tourI !== 'undefined' && tourI >= 0)) return false;
+    if (document.querySelector('.conf-pop:not([hidden]), #jor-modal:not([hidden]), .tour-pop:not([hidden])')) return false;
+    const ae = document.activeElement; if (ae && /^(INPUT|TEXTAREA|SELECT)$/.test(ae.tagName)) return false;
+    const q = quando(); return q != null && Date.now() >= q;
+  }
+  function checar() {
+    if (!state) return; ouvir(); const a = st();
+    if (!a.ini) { a.ini = new Date().toISOString(); salvarAval(); return; }   // primeira vez: começa a contar agora
+    if (podeMostrar()) abrir();
+  }
+  function salvarAval() { try { save0(); } catch (e) {} }
+  // depois de uma ação que salva, espera 3 s e confere
+  const save0 = save;
+  save = function () { const r = save0.apply(this, arguments); clearTimeout(timer); timer = setTimeout(checar, 3000); return r; };
+
+  document.body.insertAdjacentHTML('beforeend', '<div class="conf-pop ac-pop" id="aval-pop" hidden><div class="conf-dlg ac-dlg aval-dlg" role="dialog" aria-modal="true" aria-labelledby="aval-t"><button type="button" class="conf-x" data-avalfecha aria-label="Agora não" title="Agora não">✕</button><h3 class="ac-t" id="aval-t">Como está sendo usar o app?</h3><div id="aval-corpo"></div></div></div>');
+  function abrir(forcar) {
+    mostrouSessao = true; nota = null;
+    const atual = (() => { try { return modDe(tab); } catch (e) { return null; } })();
+    const opts = [`<option value="${esc(GERAL)}">${esc(GERAL)}</option>`].concat(MODS.map(m => `<option value="${esc(m.nome)}"${m.id === atual ? ' selected' : ''}>${esc(m.nome)}</option>`)).join('');
+    g('aval-corpo').innerHTML = `<p class="sug-int">Leva menos de um minuto e ajuda a decidir o que melhorar primeiro. Só o administrador do app lê as respostas.${forcar ? ' <b>(pré-visualização: nada é salvo)</b>' : ''}</p>
+      <label class="sug-l" id="aval-l">De 0 a 10, quanto você recomendaria o app para um amigo?</label>
+      <div class="aval-escala" role="group" aria-labelledby="aval-l">${Array.from({ length: 11 }, (_, i) => `<button type="button" data-avaln="${i}" aria-pressed="false">${i}</button>`).join('')}</div>
+      <div class="aval-pontas"><span>0 = de jeito nenhum</span><span>10 = com certeza</span></div>
+      <div class="sug-campo"><label class="sug-l" for="aval-ajuda">O que mais te ajuda no app? <small>(opcional)</small></label><textarea id="aval-ajuda" maxlength="2000"></textarea></div>
+      <div class="sug-campo aval-lado"><div><label class="sug-l" for="aval-txt">O que podemos melhorar? <small>(opcional)</small></label><textarea id="aval-txt" maxlength="2000"></textarea></div><div><label class="sug-l" for="aval-mod">Sobre qual módulo?</label><select id="aval-mod">${opts}</select></div></div>
+      <div class="sug-acoes"><button type="button" class="btn" id="aval-env"${forcar ? ' data-prev="1"' : ''}>Enviar</button><button type="button" class="btn ghost" data-avalfecha>Agora não</button><span class="sug-msg" id="aval-msg" role="status" aria-live="polite"></span></div>`;
+    g('aval-pop').dataset.prev = forcar ? '1' : '';
+    acAbre('aval-pop');
+  }
+  function fechar(adiar) {
+    const p = g('aval-pop'); if (!p || p.hidden) return; const prev = p.dataset.prev === '1'; acFecha('aval-pop');
+    if (adiar && !prev) { st().adiadoAte = new Date(Date.now() + cfg.adiar * DIA).toISOString(); salvarAval(); }
+  }
+  async function enviar() {
+    const msg = g('aval-msg'), bt = g('aval-env'); msg.className = 'sug-msg';
+    if (nota == null) { msg.className = 'sug-msg err'; msg.textContent = 'Escolha uma nota de 0 a 10.'; return; }
+    const r = { modulo: g('aval-mod').value, nota, ajuda: g('aval-ajuda').value.trim().slice(0, 2000), texto: g('aval-txt').value.trim().slice(0, 2000) };
+    if (g('aval-pop').dataset.prev === '1') { msg.className = 'sug-msg ok'; msg.textContent = 'Pré-visualização: nada foi salvo.'; return; }
+    bt.disabled = true; msg.textContent = 'Enviando…';
+    try {
+      if (window.__siteSugestoes && window.__siteSugestoes.avaliar) await window.__siteSugestoes.avaliar(r);
+      else if (db) { const id = Date.now().toString(36) + Math.random().toString(36).slice(2, 7); await pdoc('sugestoes/' + id).set(Object.assign({ tipo: 'avaliacao', criado_em: new Date().toISOString(), lida: false, nome: souDono ? 'Você' : 'Outra pessoa', por: meuId || '' }, r)); }
+      else throw new Error('não consigo salvar nesta visualização');
+      const a = st(); a.ult = new Date().toISOString(); delete a.adiadoAte; salvarAval();
+      msg.className = 'sug-msg ok'; msg.textContent = 'Obrigado! Sua resposta foi enviada.';
+      try { window.__sugRecarrega && window.__sugRecarrega(); } catch (e) {}
+      setTimeout(() => acFecha('aval-pop'), 1400);
+    } catch (e) { msg.className = 'sug-msg err'; msg.textContent = 'Não consegui enviar: ' + (e && (e.message || e.code) || e); bt.disabled = false; }
+  }
+  document.addEventListener('click', e => {
+    if (!e.target.closest('#aval-pop')) return;
+    if (e.target.id === 'aval-pop' || e.target.closest('[data-avalfecha]')) { e.stopPropagation(); fechar(true); return; }
+    const n = e.target.closest('[data-avaln]'); if (n) { nota = +n.dataset.avaln; document.querySelectorAll('[data-avaln]').forEach(b => b.setAttribute('aria-pressed', b === n)); return; }
+    if (e.target.closest('#aval-env')) enviar();
+  }, true);
+  document.addEventListener('keydown', e => { if (e.key === 'Escape' && g('aval-pop') && !g('aval-pop').hidden) { e.stopImmediatePropagation(); fechar(true); } }, true);
+
+  // Configurações › Pesquisa de nota (só o administrador)
+  const sec = g('cfg-pesq');
+  if (sec && !g('cfg-aval')) sec.insertAdjacentHTML('afterend', `<section data-nav="Pesquisa de nota" class="panel" id="cfg-aval" hidden>
+        <h2>Pesquisa de nota</h2>
+        <p class="sub">Só o administrador vê esta parte. De tempos em tempos o app pergunta a nota (0 a 10) e o que melhorar, logo depois de a pessoa salvar alguma coisa. Nunca aparece no primeiro acesso. Vale para todas as contas. As respostas aparecem em Sugestões › Sugestões recebidas.</p>
+        <div class="ng-form"><label>Perguntar a cada (dias)<input type="number" min="1" max="365" step="1" id="cfg-aval-dias" value="30"></label><label>Depois de "Agora não", voltar em (dias)<input type="number" min="1" max="365" step="1" id="cfg-aval-adiar" value="15"></label><label class="check"><input type="checkbox" id="cfg-aval-pausa"> Pausar a pesquisa</label><button type="button" class="btn ghost" id="cfg-aval-ver">Ver como aparece</button></div>
+        <p class="hint" id="cfg-aval-msg"></p>
+      </section>`);
+  function pintaCfg() {
+    const box = g('cfg-aval'); if (!box) return; box.hidden = !ehAdmin(); if (box.hidden) return; ouvir();
+    const d = g('cfg-aval-dias'), a = g('cfg-aval-adiar'); if (document.activeElement !== d) d.value = cfg.dias; if (document.activeElement !== a) a.value = cfg.adiar; g('cfg-aval-pausa').checked = cfg.pausada;
+  }
+  try { const r0 = renderCfgPesq; renderCfgPesq = function () { const r = r0.apply(this, arguments); try { pintaCfg(); } catch (e) {} return r; }; } catch (e) {}
+  document.addEventListener('change', async e => {
+    if (!/^cfg-aval-(dias|adiar|pausa)$/.test(e.target.id) || !ehAdmin()) return;
+    const msg = g('cfg-aval-msg'), d = Math.round(+g('cfg-aval-dias').value), a = Math.round(+g('cfg-aval-adiar').value);
+    if (!(d >= 1 && d <= 365) || !(a >= 1 && a <= 365)) { msg.textContent = 'Use um número de 1 a 365 dias.'; return; }
+    cfg = { dias: d, adiar: a, pausada: g('cfg-aval-pausa').checked };
+    if (!db) { msg.textContent = 'Sem conexão com o banco: a mudança vale só nesta tela.'; return; }
+    msg.textContent = 'salvando…';
+    try { await db.doc('config/avaliacao').set(Object.assign({ em: new Date().toISOString() }, cfg)); msg.textContent = cfg.pausada ? 'Salvo. A pesquisa está pausada para todas as contas.' : `Salvo. A pesquisa aparece a cada ${d} dias; depois de "Agora não", volta em ${a}.`; }
+    catch (er) { msg.textContent = 'Não consegui salvar: ' + (er && (er.message || er.code) || er) + (window.__SITE ? ' (o banco precisa da tabela de configuração; veja supabase-config.sql)' : ''); }
+  });
+  document.addEventListener('click', e => { if (e.target.closest('#cfg-aval-ver')) abrir(true); });
+  window.__avalDebug = { abrir, checar, quando: () => quando(), cfg: () => cfg };
 })();
 </script>
 
