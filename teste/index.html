@@ -2608,7 +2608,7 @@ html[data-lb="b"] .block-title .desc{font-size:14px;color:var(--muted);margin-to
     </div>
     <div class="nav-mobile-sub" id="navMobileSub"></div>
   </div>
-  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 374</div></div>
+  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span><button type="button" id="demoBtn" aria-pressed="false">Modo demonstração</button></div><div class="src">Focus atualizado toda segunda · versão 375</div></div>
 </nav>
 <div class="sino-pop" id="sino-pop" role="dialog" aria-label="Atualizações das bases" hidden></div>
 <div class="sino-pop" id="pess-pop" role="dialog" aria-label="Seus avisos" hidden></div>
@@ -4417,6 +4417,13 @@ html[data-lb="b"] .block-title .desc{font-size:14px;color:var(--muted);margin-to
   </section>
 </div></div>
 
+<style>
+#demoBtn { margin-left: auto; font: inherit; font-size: 11px; padding: 3px 8px; border-radius: 999px; border: 1px solid currentColor; background: transparent; color: inherit; opacity: .7; cursor: pointer; white-space: nowrap; }
+#demoBtn:hover { opacity: 1; }
+#demoBtn.on { opacity: 1; background: #F0A46B; border-color: #F0A46B; color: #0E1A2B; font-weight: 700; }
+html.lb-demo input[type="number"], html.lb-demo input[inputmode="decimal"] { filter: blur(5px); }
+html.lb-demo body::after { content: 'DEMONSTRAÇÃO · valores fictícios'; position: fixed; top: 24px; left: 50%; transform: translateX(-50%); z-index: 2147483646; background: #F0A46B; color: #0E1A2B; font: 700 11px/1 system-ui, sans-serif; letter-spacing: .06em; padding: 5px 12px; border-radius: 999px; pointer-events: none; box-shadow: 0 2px 8px rgba(0,0,0,.2); }
+</style>
 <style>html:not(.site-fam) .nav-group:has([data-tab="familia"]),html:not(.site-fam) .lm-mod:has([data-lmtab="familia"]),html:not(.site-fam) tr:has([data-lmtab="familia"]){display:none!important}</style>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
 <script>
@@ -4614,7 +4621,7 @@ html[data-lb="b"] .block-title .desc{font-size:14px;color:var(--muted);margin-to
     return new Promise(resolve => { const { data } = sb.auth.onAuthStateChange(async (ev) => { if (ev !== 'PASSWORD_RECOVERY') return; const s = prompt('Digite a nova senha (mínimo 8 caracteres):'); if (s && s.length >= 8) { const { error } = await sb.auth.updateUser({ password: s }); alert(error ? 'Não deu para trocar a senha: ' + error.message : 'Senha trocada.'); } }); resolve(data); });
   }
   // ---------- rodapé: compartilhar, administração e sair ----------
-  const SITE_V = 265;
+  const SITE_V = 266;
   const escH = v => String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const dataBR = v => v ? new Date(v).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' }) : '–';
   const css2 = `.side-foot .r{flex-wrap:wrap}.side-foot .lg-acoes{margin-left:auto;display:inline-flex;gap:10px}
@@ -20619,6 +20626,90 @@ html .sug-adm .btn.ghost[aria-pressed="true"], html[data-lb] .sug-adm .btn.ghost
   });
   document.addEventListener('click', e => { if (e.target.closest('#cfg-aval-ver')) abrir(true); });
   window.__avalDebug = { abrir, checar, quando: () => quando(), cfg: () => cfg };
+})();
+</script>
+<script>
+/* ---------- modo demonstração (v375): troca na tela todos os valores em dinheiro por fictícios ----------
+   Só a exibição muda: nenhum dado salvo é alterado. Um fator sorteado multiplica todos os valores
+   (R$, US$, €, e "mil/mi/bi"), então totais e gráficos continuam coerentes entre si.
+   Campos numéricos ficam borrados. Liga/desliga no botão do rodapé; lembra neste navegador. */
+(function () {
+  const KEY = 'painel-demo';
+  let F = 0, on = false;
+  const txt = new Map(), att = new Map();
+  const N = '\\d{1,3}(?:\\.\\d{3})+(?:,\\d+)?|\\d+(?:,\\d+)?';
+  const RE = new RegExp('((?:R|US)\\$|€)([\\s\\u00a0]*)([−-]?)(' + N + ')(?:([\\s\\u00a0])(mil|mi|bi)(?![A-Za-zÀ-ÿ]))?|(^|[^\\w$€,.])([−-]?)(' + N + ')([\\s\\u00a0])(mil|mi|bi)(?![A-Za-zÀ-ÿ])', 'g');
+  const MUL = { mil: 1e3, mi: 1e6, bi: 1e9 };
+  const parse = s => +s.replace(/\./g, '').replace(',', '.');
+  const dec = s => { const i = s.indexOf(','); return i < 0 ? 0 : s.length - i - 1; };
+  const loc = (v, d) => v.toLocaleString('pt-BR', { minimumFractionDigits: d, maximumFractionDigits: d });
+  const curto = (v, sp) => v >= 1e9 ? (v / 1e9).toLocaleString('pt-BR', { maximumFractionDigits: 1 }) + sp + 'bi'
+    : v >= 1e6 ? (v / 1e6).toLocaleString('pt-BR', { maximumFractionDigits: 2 }) + sp + 'mi'
+    : v >= 1e3 ? (v < 1e4 ? Math.round(v / 100) / 10 : Math.round(v / 1e3)).toLocaleString('pt-BR') + sp + 'mil'
+    : String(Math.round(v));
+  function troca(s) {
+    if (!s || !/\d/.test(s)) return s;
+    return s.replace(RE, (m, cur, esp, sg, n, esp2, suf, pre, sg2, n2, esp3, suf2) => {
+      if (cur) {
+        if (suf) return cur + esp + sg + curto(parse(n) * MUL[suf] * F, esp2);
+        return cur + esp + sg + loc(parse(n) * F, dec(n));
+      }
+      return pre + sg2 + curto(parse(n2) * MUL[suf2] * F, esp3);
+    });
+  }
+  const pula = n => { const p = n.parentNode; return !p || /^(SCRIPT|STYLE|TEXTAREA|NOSCRIPT)$/.test(p.nodeName) || (p.closest && p.closest('#demoBtn')); };
+  function fazTexto(n) {
+    if (pula(n)) return;
+    const r = txt.get(n), v = n.nodeValue;
+    if (r && v === r.s) return;
+    const s = troca(v);
+    if (s !== v) { txt.set(n, { o: v, s }); n.nodeValue = s; } else if (r) txt.delete(n);
+  }
+  function fazAttr(el) {
+    const r = att.get(el), v = el.getAttribute('title');
+    if (v == null || (r && v === r.s)) return;
+    const s = troca(v);
+    if (s !== v) { att.set(el, { o: v, s }); el.setAttribute('title', s); } else if (r) att.delete(el);
+  }
+  function varre(raiz) {
+    if (raiz.nodeType === 3) return fazTexto(raiz);
+    if (raiz.nodeType !== 1 && raiz.nodeType !== 9) return;
+    const w = document.createTreeWalker(raiz, NodeFilter.SHOW_TEXT); let n;
+    while ((n = w.nextNode())) fazTexto(n);
+    if (raiz.nodeType === 1 && raiz.hasAttribute('title')) fazAttr(raiz);
+    if (raiz.querySelectorAll) raiz.querySelectorAll('[title]').forEach(fazAttr);
+  }
+  const obs = new MutationObserver(rs => {
+    if (!on) return;
+    for (const r of rs) {
+      if (r.type === 'characterData') fazTexto(r.target);
+      else if (r.type === 'attributes') fazAttr(r.target);
+      else r.addedNodes.forEach(varre);
+    }
+  });
+  function limpa() {
+    txt.forEach((r, n) => { if (n.nodeValue === r.s) n.nodeValue = r.o; }); txt.clear();
+    att.forEach((r, el) => { if (el.getAttribute('title') === r.s) el.setAttribute('title', r.o); }); att.clear();
+  }
+  function sorteia() { const a = Math.random(); return a < 0.5 ? 0.35 + a * 0.8 : 1.4 + (a - 0.5) * 2.4; } // 0,35–0,75 ou 1,4–2,6
+  function aplica(liga) {
+    on = liga;
+    document.documentElement.classList.toggle('lb-demo', on);
+    const b = document.getElementById('demoBtn');
+    if (b) { b.classList.toggle('on', on); b.setAttribute('aria-pressed', on); b.textContent = on ? 'Demonstração ligada' : 'Modo demonstração'; b.title = on ? 'Valores na tela são fictícios. Toque para voltar aos valores reais.' : 'Troca na tela os valores por números fictícios, para mostrar a outras pessoas. Nada salvo é alterado.'; }
+    if (on) { obs.observe(document.documentElement, { subtree: true, childList: true, characterData: true, attributes: true, attributeFilter: ['title'] }); varre(document.body); }
+    else { obs.disconnect(); limpa(); }
+  }
+  let salvo = null; try { salvo = JSON.parse(localStorage.getItem(KEY)); } catch (e) {}
+  if (salvo && salvo.f > 0) F = salvo.f;
+  window.lbDemo = function (liga) {
+    if (liga === undefined) liga = !on;
+    if (liga) { F = sorteia(); try { localStorage.setItem(KEY, JSON.stringify({ f: F })); } catch (e) {} }
+    else { try { localStorage.removeItem(KEY); } catch (e) {} }
+    aplica(liga);
+  };
+  document.addEventListener('click', e => { if (e.target.closest && e.target.closest('#demoBtn')) window.lbDemo(); });
+  aplica(F > 0);
 })();
 </script>
 
