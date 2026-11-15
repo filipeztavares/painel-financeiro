@@ -4630,7 +4630,7 @@ html[data-lb="b"] .block-title .desc{font-size:14px;color:var(--muted);margin-to
     return new Promise(resolve => { const { data } = sb.auth.onAuthStateChange(async (ev) => { if (ev !== 'PASSWORD_RECOVERY') return; const s = prompt('Digite a nova senha (mínimo 8 caracteres):'); if (s && s.length >= 8) { const { error } = await sb.auth.updateUser({ password: s }); alert(error ? 'Não deu para trocar a senha: ' + error.message : 'Senha trocada.'); } }); resolve(data); });
   }
   // ---------- rodapé: compartilhar, administração e sair ----------
-  const SITE_V = 267;
+  const SITE_V = 268;
   const escH = v => String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const dataBR = v => v ? new Date(v).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' }) : '–';
   const css2 = `.side-foot .r{flex-wrap:wrap}.side-foot .lg-acoes{margin-left:auto;display:inline-flex;gap:10px}
@@ -20715,16 +20715,19 @@ html .sug-adm .btn.ghost[aria-pressed="true"], html[data-lb] .sug-adm .btn.ghost
     if (on) { obs.observe(document.documentElement, { subtree: true, childList: true, characterData: true, attributes: true, attributeFilter: ['title'] }); varre(document.body); }
     else { obs.disconnect(); limpa(); }
   }
+  // Ligado por padrão (Filipe, 15/11): cada vez que o site/app abre, começa em demonstração.
+  // Desligar vale só até fechar a aba ou o app (sessionStorage).
   let salvo = null; try { salvo = JSON.parse(localStorage.getItem(KEY)); } catch (e) {}
-  if (salvo && salvo.f > 0) F = salvo.f;
+  if (salvo && salvo.f > 0) F = salvo.f; else { F = sorteia(); try { localStorage.setItem(KEY, JSON.stringify({ f: F })); } catch (e) {} }
+  let desl = false; try { desl = sessionStorage.getItem(KEY + '-off') === '1'; } catch (e) {}
   window.lbDemo = function (liga) {
     if (liga === undefined) liga = !on;
-    if (liga) { F = sorteia(); try { localStorage.setItem(KEY, JSON.stringify({ f: F })); } catch (e) {} }
-    else { try { localStorage.removeItem(KEY); } catch (e) {} }
+    if (liga) { F = sorteia(); try { localStorage.setItem(KEY, JSON.stringify({ f: F })); sessionStorage.removeItem(KEY + '-off'); } catch (e) {} }
+    else { try { sessionStorage.setItem(KEY + '-off', '1'); } catch (e) {} }
     aplica(liga);
   };
   document.addEventListener('click', e => { if (e.target.closest && e.target.closest('#demoBtn')) window.lbDemo(); });
-  aplica(F > 0);
+  aplica(!desl);
 })();
 </script>
 
