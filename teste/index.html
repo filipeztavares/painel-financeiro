@@ -4083,7 +4083,7 @@ html[data-lb="b"] .block-title .desc{font-size:14px;color:var(--muted);margin-to
       <section data-nav="Exemplos de demonstração" id="ex-demo">
         <div class="params" style="display:block"><fieldset style="display:block;max-width:none">
           <legend>Exemplos de demonstração (só no site de teste)</legend>
-          <p class="hint">Cria exemplos fictícios em Família, Empreendimentos e Bens e compromissos, para mostrar o app. Eles ficam gravados na sua conta do teste com "(exemplo)" no nome e começam como só simulação. Em cada um dá para deixar real, voltar para simulação, manter como seu ou apagar.</p>
+          <p class="hint">Exemplos fictícios em Família, Empreendimentos, Bens e compromissos e Radar de preços, para mostrar o app. Eles são criados sozinhos na primeira vez que a conta abre o teste; o botão cria de novo se você tiver apagado. Eles ficam gravados na sua conta do teste com "(exemplo)" no nome e começam como só simulação. Em cada um dá para deixar real, voltar para simulação, manter como seu ou apagar.</p>
           <p><button type="button" class="btn" id="ex-demo-criar">Criar exemplos</button> <button type="button" class="btn ghost" id="ex-demo-apagar" hidden>Apagar todos os exemplos</button></p>
           <div id="ex-demo-lista"></div>
         </fieldset></div>
@@ -4745,7 +4745,7 @@ html.cel .gd-pop,html.cel .guia-pop{z-index:960}
     return new Promise(resolve => { const { data } = sb.auth.onAuthStateChange(async (ev) => { if (ev !== 'PASSWORD_RECOVERY') return; const s = prompt('Digite a nova senha (mínimo 8 caracteres):'); if (s && s.length >= 8) { const { error } = await sb.auth.updateUser({ password: s }); alert(error ? 'Não deu para trocar a senha: ' + error.message : 'Senha trocada.'); } }); resolve(data); });
   }
   // ---------- rodapé: compartilhar, administração e sair ----------
-  const SITE_V = 270;
+  const SITE_V = 271;
   const escH = v => String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const dataBR = v => v ? new Date(v).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' }) : '–';
   const css2 = `.side-foot .r{flex-wrap:wrap}.side-foot .lg-acoes{margin-left:auto;display:inline-flex;gap:10px}
@@ -21176,6 +21176,7 @@ html .sug-adm .btn.ghost[aria-pressed="true"], html[data-lb] .sug-adm .btn.ghost
     (((state.fam || {}).casa || {}).contas || []).filter(c => c.ex).forEach(c => out.push({ k: 'conta', o: c, nome: c.nome, mod: 'Família › Orçamento da casa', item: null }));
     ((state.neg || {}).negocios || []).filter(x => x.ex).forEach(x => out.push({ k: 'neg', o: x, nome: x.nome, mod: 'Empreendimentos', item: 'neg:' + x.id }));
     (state.compras || []).filter(b => b.ex).forEach(b => out.push({ k: 'compra', o: b, nome: b.nome, mod: 'Bens e compromissos', item: 'compra:' + b.id }));
+    (((state.radar || {}).itens) || []).filter(x => x.ex).forEach(x => out.push({ k: 'radar', o: x, nome: x.nome, mod: 'Radar de preços', item: null }));
     return out;
   }
   const usoDe = id => { try { const x = itensModulos().find(y => y.id === id); return x ? x.uso : null; } catch (e) { return null; } };
@@ -21212,6 +21213,21 @@ html .sug-adm .btn.ghost[aria-pressed="true"], html[data-lb] .sug-adm .btn.ghost
     const rf = novaCompra('evento'); Object.assign(rf, { nome: 'Reforma da cozinha' + SUF, evTipo: 'outro', valor: 45000, entrada: 45000, mes: mKey(H + 5), ex: true });
     const rc = novaCompra('receber'); Object.assign(rc, { nome: 'Empréstimo ao irmão' + SUF, quem: 'Irmão', parcela: 1500, prazo: 12, ex: true });
     state.compras = (state.compras || []).concat([ap, rf, rc]);
+    // Radar de preços: três produtos com histórico de preços de vários meses
+    try { rdNormalizar(state); } catch (e) {}
+    if (state.radar && Array.isArray(state.radar.itens)) {
+      const dia = n => { const d = new Date(Date.now() - n * 864e5); return d.toISOString().slice(0, 10); };
+      const hist = (base, lojas, pts) => { const P = []; pts.forEach(([dias, f]) => lojas.forEach(([loja, k], j) => P.push({ id: uid(), d: dia(dias + j), loja, v: Math.round(base * f * k), n: 10, fonte: 'manual', est: true }))); return P; };
+      const R = [
+        { nome: 'iPhone 16 128 GB' + SUF, dept: 'eletr', alvo: 4800, prio: 'alta', ate: mKey(H + 3), termo: 'iPhone 16 128 GB, qualquer cor, novo', perto: true,
+          precos: hist(5600, [['Magalu', 1], ['Kabum', 0.98], ['Fast Shop', 1.03]], [[150, 1.12], [120, 1.08], [90, 1.05], [60, 1.02], [30, 0.97], [7, 0.93], [1, 0.9]]) },
+        { nome: 'Air fryer 5 litros' + SUF, dept: 'eletro', alvo: 420, prio: 'media', ate: mKey(H + 2), termo: 'Air fryer de 5 a 6 litros, 220V',
+          precos: hist(520, [['Casas Bahia', 1], ['Carrefour', 1.05], ['Magalu', 0.97]], [[120, 1.1], [80, 1.0], [45, 0.94], [20, 1.03], [3, 0.92]]) },
+        { nome: 'Sofá retrátil 3 lugares' + SUF, dept: 'casa', alvo: 3200, prio: 'baixa', ate: mKey(H + 6), termo: 'Sofá retrátil e reclinável, 3 lugares, tecido',
+          precos: hist(3900, [['Mobly', 1], ['Tok&Stok', 1.12], ['MadeiraMadeira', 0.95]], [[100, 1.04], [60, 1.0], [25, 1.06], [5, 0.98]]) }
+      ];
+      R.forEach(o => { const x = rdNormItem(Object.assign({ id: uid(), criado: dia(160), st: 'vig', cond: 'novo', ex: true }, o)); x.ex = true; state.radar.itens.push(x); });
+    }
     try { ngCache.v = {}; } catch (e) {} try { famPeC.k = null; } catch (e) {}
     planCache = null; save(); setTimeout(renderTab, 0);
   }
@@ -21219,6 +21235,7 @@ html .sug-adm .btn.ghost[aria-pressed="true"], html[data-lb] .sug-adm .btn.ghost
     if (r.k === 'fam') state.fam.pessoas = state.fam.pessoas.filter(p => p !== r.o);
     else if (r.k === 'conta') state.fam.casa.contas = state.fam.casa.contas.filter(c => c !== r.o);
     else if (r.k === 'neg') { state.neg.negocios = state.neg.negocios.filter(x => x !== r.o); if (state.neg.sel === r.o.id) state.neg.sel = ''; state.neg.cmp = (state.neg.cmp || []).filter(id => id !== r.o.id); }
+    else if (r.k === 'radar') { state.radar.itens = state.radar.itens.filter(x => x !== r.o); if (state.radar.sel === r.o.id) state.radar.sel = ''; }
     else if (r.k === 'compra') { state.compras = state.compras.filter(b => b !== r.o); const P = state.plan || {}; P.inc = (P.inc || []).filter(id => id !== r.o.id); (state.cenarios || []).forEach(c => { if (Array.isArray(c.inc)) c.inc = c.inc.filter(id => id !== r.o.id); }); }
     if (r.item) (state.cenarios || []).forEach(c => { if (c.on) delete c.on[r.item]; });
   }
@@ -21238,7 +21255,7 @@ html .sug-adm .btn.ghost[aria-pressed="true"], html[data-lb] .sug-adm .btn.ghost
   }
   document.addEventListener('click', e => {
     const b = e.target.closest && e.target.closest('#ex-demo-criar,#ex-demo-apagar,[data-exd]'); if (!b) return; e.preventDefault();
-    if (b.id === 'ex-demo-criar') { criar(); setTimeout(render, 50); return; }
+    if (b.id === 'ex-demo-criar') { criar(); state.exDemo = true; setTimeout(render, 50); return; }
     if (b.id === 'ex-demo-apagar') { const L = lista(); if (!confirmar(`Apagar os ${L.length} exemplos? O que você marcou como "manter como meu" fica.`)) return; L.forEach(remover); fim(); setTimeout(render, 50); return; }
     const r = lista()[+b.dataset.exi]; if (!r) return; const d = b.dataset.exd;
     if (d === 'real' || d === 'sim') { setUsoItem(r.item, d); try { ngCache.v = {}; famPeC.k = null; } catch (er) {} setTimeout(renderTab, 0); }
@@ -21250,6 +21267,14 @@ html .sug-adm .btn.ghost[aria-pressed="true"], html[data-lb] .sug-adm .btn.ghost
   const alvo = () => document.getElementById('p-config');
   const iv = setInterval(() => { const p = alvo(); if (!p) return; clearInterval(iv);
     new MutationObserver(() => { if (!p.hidden) render(); }).observe(p, { attributes: true, attributeFilter: ['hidden'] }); render(); }, 300);
+  // Padrão no teste (Filipe, 15/11): cria os exemplos sozinho uma vez por conta, logo depois que os dados da conta carregam.
+  // state.exDemo marca que já foi feito; apagar os exemplos não traz de volta (dá para criar de novo no botão).
+  try {
+    const orig = carregou;
+    carregou = function (k) { const r = orig.apply(this, arguments);
+      try { if (k === 'estado' && db && /^salvo$/.test(($('saveState') || {}).textContent || '') && !state.exDemo) { criar(); state.exDemo = true; save(); setTimeout(render, 80); } } catch (e) { console.error(e); }
+      return r; };
+  } catch (e) {}
   window.__exDemo = { lista, criar, render };
 })();
 </script>
