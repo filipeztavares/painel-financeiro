@@ -8,7 +8,12 @@
 <link rel="apple-touch-icon" href="icons/apple-touch-icon.png"><link rel="apple-touch-startup-image" media="(device-width: 430px) and (device-height: 932px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)" href="splash/splash-1290x2796.png"><link rel="apple-touch-startup-image" media="(device-width: 393px) and (device-height: 852px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)" href="splash/splash-1179x2556.png"><link rel="apple-touch-startup-image" media="(device-width: 402px) and (device-height: 874px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)" href="splash/splash-1206x2622.png"><link rel="apple-touch-startup-image" media="(device-width: 440px) and (device-height: 956px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)" href="splash/splash-1320x2868.png"><link rel="apple-touch-startup-image" media="(device-width: 428px) and (device-height: 926px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)" href="splash/splash-1284x2778.png"><link rel="apple-touch-startup-image" media="(device-width: 390px) and (device-height: 844px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)" href="splash/splash-1170x2532.png"><link rel="apple-touch-startup-image" media="(device-width: 375px) and (device-height: 812px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)" href="splash/splash-1125x2436.png"><link rel="apple-touch-startup-image" media="(device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)" href="splash/splash-1242x2688.png"><link rel="apple-touch-startup-image" media="(device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)" href="splash/splash-828x1792.png"><link rel="apple-touch-startup-image" media="(device-width: 375px) and (device-height: 667px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)" href="splash/splash-750x1334.png">
 <script>if('serviceWorker' in navigator)addEventListener('load',function(){navigator.serviceWorker.register('sw.js').catch(function(){})});</script>
 <script>(function(){var P='teste:',S=Storage.prototype,g=S.getItem,s=S.setItem,r=S.removeItem;S.getItem=function(k){return g.call(this,P+k)};S.setItem=function(k,v){return s.call(this,P+k,v)};S.removeItem=function(k){return r.call(this,P+k)}})();</script>
-<style>#amb-teste{position:fixed;top:0;left:50%;transform:translateX(-50%);z-index:2147483647;background:#C62828;color:#fff;font:700 11px/1 system-ui,sans-serif;letter-spacing:.08em;padding:4px 12px;border-radius:0 0 6px 6px;pointer-events:none}</style></head><body>
+<style>#amb-teste{position:fixed;top:0;left:50%;transform:translateX(-50%);z-index:2147483647;background:#C62828;color:#fff;font:700 11px/1 system-ui,sans-serif;letter-spacing:.08em;padding:4px 12px;border-radius:0 0 6px 6px;pointer-events:none}</style><style>#demoBtn { margin-left: auto; font: inherit; font-size: 11px; padding: 3px 8px; border-radius: 999px; border: 1px solid currentColor; background: transparent; color: inherit; opacity: .7; cursor: pointer; white-space: nowrap; }
+#demoBtn:hover { opacity: 1; }
+#demoBtn.on { opacity: 1; background: #F0A46B; border-color: #F0A46B; color: #0E1A2B; font-weight: 700; }
+html.lb-demo input[type="number"], html.lb-demo input[inputmode="decimal"] { filter: blur(5px); }
+html.lb-demo body::after { content: 'DEMONSTRAÇÃO · valores fictícios'; position: fixed; top: 24px; left: 50%; transform: translateX(-50%); z-index: 2147483646; background: #F0A46B; color: #0E1A2B; font: 700 11px/1 system-ui, sans-serif; letter-spacing: .06em; padding: 5px 12px; border-radius: 999px; pointer-events: none; box-shadow: 0 2px 8px rgba(0,0,0,.2); }
+</style></head><body>
 <div id="amb-teste">AMBIENTE DE TESTE</div>
 <title>LifeBoard</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap">
@@ -2353,6 +2358,11 @@ html[data-lb] .nav-voltar{font-family:var(--f-ui);font-weight:600;border-radius:
 #lb-top .modo{display:inline-flex;border:1px solid var(--line);border-radius:999px;padding:3px;background:var(--panel)}
 #lb-top .modo button{font:600 12.5px var(--f-ui);border:0;background:transparent;color:var(--muted);padding:5px 12px;border-radius:999px;cursor:pointer;min-height:30px}
 #lb-top .modo button[aria-pressed="true"]{background:#F0A46B;color:#0E1A2B}
+#cfg-apar .apar-l{display:flex;flex-wrap:wrap;align-items:center;gap:8px 14px;margin:10px 0}
+#cfg-apar .apar-l>span{min-width:130px;font-weight:600}
+#cfg-apar .modo{display:inline-flex;border:1px solid var(--line);border-radius:999px;padding:3px;background:var(--panel)}
+#cfg-apar .modo button{font:600 13px var(--f-ui);border:0;background:transparent;color:var(--muted);padding:6px 16px;border-radius:999px;cursor:pointer;min-height:34px}
+#cfg-apar .modo button[aria-pressed="true"]{background:#F0A46B;color:#0E1A2B}
 #lb-top .pill{display:inline-flex;align-items:center;gap:7px;border:1px solid var(--line);background:var(--panel);border-radius:999px;padding:5px 11px;font-size:12.5px;font-weight:600;white-space:nowrap}
 #lb-top .pill i{width:8px;height:8px;border-radius:50%;background:var(--m)}
 
@@ -2608,7 +2618,7 @@ html[data-lb="b"] .block-title .desc{font-size:14px;color:var(--muted);margin-to
     </div>
     <div class="nav-mobile-sub" id="navMobileSub"></div>
   </div>
-  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span><button type="button" id="demoBtn" aria-pressed="false">Modo demonstração</button></div><div class="src">Focus atualizado toda segunda · versão 375</div></div>
+  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span><button type="button" id="demoBtn" aria-pressed="false">Modo demonstração</button></div><div class="src">Focus atualizado toda segunda · versão 376</div></div>
 </nav>
 <div class="sino-pop" id="sino-pop" role="dialog" aria-label="Atualizações das bases" hidden></div>
 <div class="sino-pop" id="pess-pop" role="dialog" aria-label="Seus avisos" hidden></div>
@@ -4085,6 +4095,12 @@ html[data-lb="b"] .block-title .desc{font-size:14px;color:var(--muted);margin-to
       </fieldset>
         </div>
       </section>
+      <section data-nav="Aparência" class="panel" id="cfg-apar">
+        <h2>Aparência</h2>
+        <p class="sub">Tema e posição do menu das seções. A escolha fica guardada neste aparelho.</p>
+        <div class="apar-l"><span>Tema</span><div class="modo" role="group" aria-label="Tema"><button type="button" data-lbt="escuro" aria-pressed="false">Escuro</button><button type="button" data-lbt="claro" aria-pressed="false">Claro</button></div></div>
+        <div class="apar-l"><span>Menu das seções</span><div class="modo" role="group" aria-label="Menu das seções"><button type="button" data-lbm="lado" aria-pressed="false">Menu ao lado</button><button type="button" data-lbm="topo" aria-pressed="false">Menu no topo</button></div></div>
+      </section>
       <section data-nav="Guias" class="panel">
         <h2>Guias passo a passo</h2>
         <p class="sub">Toda seção com algo para preencher tem o botão <b>?</b>, com um guia que acende um campo por vez e explica o que preencher. Ele abre sozinho na primeira visita de cada tela; depois, é só clicar no <b>?</b> da seção.</p>
@@ -4417,13 +4433,6 @@ html[data-lb="b"] .block-title .desc{font-size:14px;color:var(--muted);margin-to
   </section>
 </div></div>
 
-<style>
-#demoBtn { margin-left: auto; font: inherit; font-size: 11px; padding: 3px 8px; border-radius: 999px; border: 1px solid currentColor; background: transparent; color: inherit; opacity: .7; cursor: pointer; white-space: nowrap; }
-#demoBtn:hover { opacity: 1; }
-#demoBtn.on { opacity: 1; background: #F0A46B; border-color: #F0A46B; color: #0E1A2B; font-weight: 700; }
-html.lb-demo input[type="number"], html.lb-demo input[inputmode="decimal"] { filter: blur(5px); }
-html.lb-demo body::after { content: 'DEMONSTRAÇÃO · valores fictícios'; position: fixed; top: 24px; left: 50%; transform: translateX(-50%); z-index: 2147483646; background: #F0A46B; color: #0E1A2B; font: 700 11px/1 system-ui, sans-serif; letter-spacing: .06em; padding: 5px 12px; border-radius: 999px; pointer-events: none; box-shadow: 0 2px 8px rgba(0,0,0,.2); }
-</style>
 <style>html:not(.site-fam) .nav-group:has([data-tab="familia"]),html:not(.site-fam) .lm-mod:has([data-lmtab="familia"]),html:not(.site-fam) tr:has([data-lmtab="familia"]){display:none!important}</style>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
 <script>
@@ -4621,7 +4630,7 @@ html.lb-demo body::after { content: 'DEMONSTRAÇÃO · valores fictícios'; posi
     return new Promise(resolve => { const { data } = sb.auth.onAuthStateChange(async (ev) => { if (ev !== 'PASSWORD_RECOVERY') return; const s = prompt('Digite a nova senha (mínimo 8 caracteres):'); if (s && s.length >= 8) { const { error } = await sb.auth.updateUser({ password: s }); alert(error ? 'Não deu para trocar a senha: ' + error.message : 'Senha trocada.'); } }); resolve(data); });
   }
   // ---------- rodapé: compartilhar, administração e sair ----------
-  const SITE_V = 266;
+  const SITE_V = 267;
   const escH = v => String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const dataBR = v => v ? new Date(v).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' }) : '–';
   const css2 = `.side-foot .r{flex-wrap:wrap}.side-foot .lg-acoes{margin-left:auto;display:inline-flex;gap:10px}
@@ -4758,7 +4767,7 @@ html.lb-demo body::after { content: 'DEMONSTRAÇÃO · valores fictícios'; posi
     try { sb.rpc('registrar_acesso').then(() => {}, () => {}); } catch (e) {}
     try { const { data: eu } = await sb.from('perfis').select('ativo').eq('id', uid).maybeSingle(); if (eu && eu.ativo === false) { contaDesativada(); await new Promise(() => {}); } } catch (e) {}
     try { const r = await sb.rpc('sou_admin'); souAdmin = r && r.data === true; } catch (e) {}
-    window.__SITE_ADMIN = souAdmin;
+    window.__SITE_ADMIN = souAdmin; try { dispatchEvent(new Event("lb-admin")); } catch (e) {}
     try { await lerCompart(); } catch (e) {}
     mostrarFamilia();
     const pe = document.querySelector('.side-foot .r');
@@ -16308,6 +16317,7 @@ const INFO_SEC = {
   'orcamento:Receitas e custos': 'O orçamento de hoje: receitas, deduções e custos por categoria, e como cada linha é reajustada (IPCA todo mês, IPCA 1 vez por ano, % fixo ou sem reajuste).',
   'orcamento:Mudanças e eventos': 'Mudanças programadas (uma linha muda de valor a partir de um mês) e eventos (gastos ou receitas pontuais ou anuais, como férias e bônus).',
   'orcamento:Plano mês a mês': 'O plano calculado mês a mês, linha por linha. É a base da linha Plano na Projeção e do projetado no fechamento. Meses fechados ficam congelados: mudar algo hoje não reescreve o passado. Em Passado, cada mês que já foi, desde o primeiro checkpoint: receita, custos, sobra e rendimento reais contra o plano, e o patrimônio real contra o previsto.',
+  'config:Aparência': 'Tema escuro ou claro e menu das seções ao lado ou no topo. Vale só para este aparelho.',
   'config:Renda e projeção': 'Valores gerais usados pelos cenários: horizonte da projeção, alíquota de IR e reajuste do salário.',
   'config:Curva de juros': 'Selic, CDI e IPCA esperados para cada ano, pelo Boletim Focus (atualizado toda segunda) ou digitados à mão. Alimentam todas as projeções.',
   'config:Classes de ativo': 'O retorno esperado de cada classe de ativo (por exemplo, 100% do CDI ou IPCA + 7,2%). Os cenários usam esses números.',
@@ -18036,7 +18046,7 @@ document.querySelectorAll('table').forEach(alinharTabela);
 // quem está vendo: o dono (Filipe) fica na raiz; outra pessoa com acesso ao painel ganha perfis/<id>/ e começa do zero
 async function entrarPerfil() {
   try { userCap = await window.claude.use('user'); } catch (e) { userCap = null; }
-  if (userCap) { souDono = await userCap.isOwner(); meuId = await userCap.id(); }
+  if (userCap) { souDono = await userCap.isOwner(); meuId = await userCap.id(); try { dispatchEvent(new Event("lb-admin")); } catch (e) {} }
   if (!souDono) {
     if (!meuId) { db = null; setSave('salvo só neste navegador'); return; }
     PFX = 'perfis/' + meuId + '/';
@@ -20166,7 +20176,8 @@ Object.keys(INT_POS).forEach(t => { const r0 = RENDER[t]; if (!r0) return; RENDE
   function setMenu(m) { try { localStorage.setItem(MK, m); } catch (e) {} aplicaMenu(); }
   function aplicaMenu() { root.setAttribute('data-secmenu', getMenu()); pintaSecs(); pintaTop(); }
   const VARS = window.__LB_VARS || [['a', 'Novo A'], ['b', 'Novo B'], ['atual', 'Antigo']];
-  function getVar() { let v = VARS[0][0]; try { v = localStorage.getItem(VK) || VARS[0][0]; } catch (e) {} return VARS.some(x => x[0] === v) ? v : VARS[0][0]; }
+  function admin() { try { return !!ehAdmin(); } catch (e) { return false; } }
+  function getVar() { if (!admin()) return VARS[0][0]; let v = VARS[0][0]; try { v = localStorage.getItem(VK) || VARS[0][0]; } catch (e) {} return VARS.some(x => x[0] === v) ? v : VARS[0][0]; }
   function setVar(v) { try { localStorage.setItem(VK, v); } catch (e) {} aplicaVar(); }
   function aplicaVar() { const v = getVar(); if (v === 'atual') root.removeAttribute('data-lb'); else root.setAttribute('data-lb', v); pintaTop(); pintaProto(); }
   function modDe(t) { try { return MODS.find(m => (m.tabs || []).includes(t)) || null; } catch (e) { return null; } }
@@ -20183,10 +20194,14 @@ Object.keys(INT_POS).forEach(t => { const r0 = RENDER[t]; if (!r0) return; RENDE
     const t = typeof tab !== 'undefined' ? tab : 'modulos', m = modDe(t), v = getVar(), esc = escuroAgora();
     const crumb = t === 'modulos' ? '<b>Seus módulos</b>' : '<a href="#" data-lbhome>Módulos</a> › ' + (m ? m.nome + ' › ' : '') + '<b>' + (tituloTela(t) || '') + '</b>';
     top.innerHTML = '<div class="crumb">' + crumb + '</div>' +
-      (VARS.length > 1 ? '<div class="modo" role="group" aria-label="Visual">' + VARS.map(x => '<button type="button" data-lbv="' + x[0] + '" aria-pressed="' + (x[0] === v) + '">' + x[1] + '</button>').join('') + '</div>' : '') +
-      '<div class="modo" role="group" aria-label="Menu das seções"><button type="button" data-lbm="lado" aria-pressed="' + (getMenu() === 'lado') + '">Menu ao lado</button><button type="button" data-lbm="topo" aria-pressed="' + (getMenu() === 'topo') + '">Menu no topo</button></div>' +
-      '<div class="modo" role="group" aria-label="Aparência"><button type="button" data-lbt="escuro" aria-pressed="' + esc + '">Escuro</button><button type="button" data-lbt="claro" aria-pressed="' + !esc + '">Claro</button></div>';
+      (VARS.length > 1 && admin() ? '<div class="modo" role="group" aria-label="Visual">' + VARS.map(x => '<button type="button" data-lbv="' + x[0] + '" aria-pressed="' + (x[0] === v) + '">' + x[1] + '</button>').join('') + '</div>' : '');
+    document.querySelectorAll('#cfg-apar [data-lbt]').forEach(b => b.setAttribute('aria-pressed', (b.dataset.lbt === 'escuro') === esc));
+    document.querySelectorAll('#cfg-apar [data-lbm]').forEach(b => b.setAttribute('aria-pressed', b.dataset.lbm === getMenu()));
   }
+  const ap = document.getElementById('cfg-apar');
+  if (ap) ap.addEventListener('click', e => { const b = e.target.closest('[data-lbt]'); if (b) setTema(b.dataset.lbt); const m = e.target.closest('[data-lbm]'); if (m) setMenu(m.dataset.lbm); });
+  // no site, quem é admin só se sabe depois do login
+  addEventListener('lb-admin', () => { try { aplicaVar(); } catch (e) {} });
   top.addEventListener('click', e => {
     const b = e.target.closest('[data-lbt]'); if (b) setTema(b.dataset.lbt);
     const w = e.target.closest('[data-lbv]'); if (w) setVar(w.dataset.lbv);
