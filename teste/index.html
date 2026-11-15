@@ -4080,6 +4080,15 @@ html[data-lb="b"] .block-title .desc{font-size:14px;color:var(--muted);margin-to
   <!-- ============ CONFIGURAÇÕES ============ -->
   <section role="tabpanel" id="p-config" hidden>
     <div class="block-title"><span class="num">⚙</span><div><h1>Configurações</h1><p class="desc">Curva Focus, premissas das classes, renda e gastos fixos.</p></div></div>
+      <section data-nav="Exemplos de demonstração" id="ex-demo">
+        <div class="params" style="display:block"><fieldset style="display:block;max-width:none">
+          <legend>Exemplos de demonstração (só no site de teste)</legend>
+          <p class="hint">Cria exemplos fictícios em Família, Empreendimentos e Bens e compromissos, para mostrar o app. Eles ficam gravados na sua conta do teste com "(exemplo)" no nome e começam como só simulação. Em cada um dá para deixar real, voltar para simulação, manter como seu ou apagar.</p>
+          <p><button type="button" class="btn" id="ex-demo-criar">Criar exemplos</button> <button type="button" class="btn ghost" id="ex-demo-apagar" hidden>Apagar todos os exemplos</button></p>
+          <div id="ex-demo-lista"></div>
+        </fieldset></div>
+      </section>
+
       <section data-nav="Renda e projeção">
         <div class="params">
       <fieldset>
@@ -4630,7 +4639,7 @@ html[data-lb="b"] .block-title .desc{font-size:14px;color:var(--muted);margin-to
     return new Promise(resolve => { const { data } = sb.auth.onAuthStateChange(async (ev) => { if (ev !== 'PASSWORD_RECOVERY') return; const s = prompt('Digite a nova senha (mínimo 8 caracteres):'); if (s && s.length >= 8) { const { error } = await sb.auth.updateUser({ password: s }); alert(error ? 'Não deu para trocar a senha: ' + error.message : 'Senha trocada.'); } }); resolve(data); });
   }
   // ---------- rodapé: compartilhar, administração e sair ----------
-  const SITE_V = 268;
+  const SITE_V = 269;
   const escH = v => String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const dataBR = v => v ? new Date(v).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' }) : '–';
   const css2 = `.side-foot .r{flex-wrap:wrap}.side-foot .lg-acoes{margin-left:auto;display:inline-flex;gap:10px}
@@ -20728,6 +20737,97 @@ html .sug-adm .btn.ghost[aria-pressed="true"], html[data-lb] .sug-adm .btn.ghost
   };
   document.addEventListener('click', e => { if (e.target.closest && e.target.closest('#demoBtn')) window.lbDemo(); });
   aplica(!desl);
+})();
+</script>
+<script>
+/* ---------- Exemplos de demonstração (só no site de teste; Filipe, 15/11/2026) ----------
+   Cria itens fictícios nos módulos (Família, Empreendimentos, Bens e compromissos), gravados na conta do teste
+   com a marca ex:true e " (exemplo)" no nome. Todos começam como "só simulação"; aqui dá para deixar real,
+   voltar para simulação, manter como seu (tira a marca) ou apagar. */
+(function () {
+  const SUF = ' (exemplo)';
+  const tira = n => String(n || '').replace(/ \(exemplo\)$/, '');
+  function lista() {
+    const out = [];
+    ((state.fam || {}).pessoas || []).filter(p => p.ex).forEach(p => out.push({ k: 'fam', o: p, nome: p.nome, mod: 'Família', item: p.tipo === 'filho' ? 'fam:' + p.id : null }));
+    (((state.fam || {}).casa || {}).contas || []).filter(c => c.ex).forEach(c => out.push({ k: 'conta', o: c, nome: c.nome, mod: 'Família › Orçamento da casa', item: null }));
+    ((state.neg || {}).negocios || []).filter(x => x.ex).forEach(x => out.push({ k: 'neg', o: x, nome: x.nome, mod: 'Empreendimentos', item: 'neg:' + x.id }));
+    (state.compras || []).filter(b => b.ex).forEach(b => out.push({ k: 'compra', o: b, nome: b.nome, mod: 'Bens e compromissos', item: 'compra:' + b.id }));
+    return out;
+  }
+  const usoDe = id => { try { const x = itensModulos().find(y => y.id === id); return x ? x.uso : null; } catch (e) { return null; } };
+  function criar() {
+    const H = HOJE_IDX;
+    // Família
+    famNormalizar(state); const F = state.fam;
+    if (!F.pessoas.some(p => p.tipo === 'eu')) F.pessoas.unshift(famNorm({ id: uid(), tipo: 'eu', nome: 'Você' }));
+    const conj = famNorm({ id: uid(), tipo: 'conjuge', nome: 'Ana' + SUF, renda: 9000, ex: true });
+    const filho = famNorm({ id: uid(), tipo: 'filho', nome: 'Lucas' + SUF, nasc: mKey(H - 26), dep: true, uso: 'sim', ex: true });
+    const bebe = famNorm({ id: uid(), tipo: 'filho', nome: 'Bebê' + SUF, nasc: mKey(H + 16), dep: true, uso: 'sim', ex: true });
+    bebe.lic.on = true; bebe.lic.meses = 4;
+    F.pessoas.push(conj, filho, bebe);
+    try { famCasaNormalizar(state); } catch (e) {}
+    if (!F.casa || typeof F.casa !== 'object') F.casa = {}; if (!Array.isArray(F.casa.contas)) F.casa.contas = [];
+    F.casa.contas.push({ id: uid(), nome: 'Aluguel' + SUF, valor: 4200, dono: 'nosso', div: 'renda', fixo: {}, paga: '', ex: true },
+      { id: uid(), nome: 'Mercado' + SUF, valor: 2300, dono: 'nosso', div: 'igual', fixo: {}, paga: '', ex: true },
+      { id: uid(), nome: 'Escola do Lucas' + SUF, valor: 1900, dono: 'nosso', div: 'renda', fixo: {}, paga: '', ex: true });
+    // Empreendimentos: uma cafeteria
+    ngNormalizar(state);
+    const x = ngNovo('Cafeteria' + SUF); x.ex = true; x.setor = 'Alimentação'; x.cidade = 'São Paulo'; x.tipo = 'ideia'; x.ini = mKey(H + 8); x.rampa = 12; x.fatIni = 35; x.part = 60; x.dist = 70;
+    const L = x.linhas, l = n => L.find(y => y.nome === n), set = (n, o) => { const y = l(n); if (y) Object.assign(y, o); };
+    set('Vendas', { v: 68000 }); set('Impostos sobre a venda', { v: 8 }); set('Taxas de cartão', { v: 2.5 }); set('Custo do que foi vendido', { v: 32 });
+    set('Salários', { v: 12500 }); set('Encargos e benefícios', { v: 4200 }); set('Pró-labore', { v: 6000 }); set('Aluguel', { v: 9000 }); set('Marketing', { v: 2000 });
+    set('Contabilidade', { v: 650 }); set('Softwares e internet', { v: 450 }); set('Tarifas bancárias', { v: 120 });
+    x.inv = [{ id: uid(), nome: 'Reforma e equipamentos', valor: 220000, mes: mKey(H + 6), vida: 10 }, { id: uid(), nome: 'Capital de giro', valor: 60000, mes: mKey(H + 7), vida: 0 }];
+    x.socios = [{ id: uid(), nome: 'Sócio operador (exemplo)', quota: 40, aporte: 40 }];
+    x.pesq = { produto: 'Café especial e brunch', regiao: 'Pinheiros, São Paulo', publico: 'Profissionais de 25 a 45 anos', ticket: 48, obs: '' };
+    x.nota = 'Exemplo fictício para demonstração.';
+    try { ngNorm(x); } catch (e) {}
+    state.neg.negocios.push(x);
+    // Bens e compromissos
+    const ap = novaCompra('imovel'); Object.assign(ap, { nome: 'Apartamento' + SUF, valor: 950000, entrada: 240000, mes: mKey(H + 18), ex: true });
+    const rf = novaCompra('evento'); Object.assign(rf, { nome: 'Reforma da cozinha' + SUF, evTipo: 'outro', valor: 45000, entrada: 45000, mes: mKey(H + 5), ex: true });
+    const rc = novaCompra('receber'); Object.assign(rc, { nome: 'Empréstimo ao irmão' + SUF, quem: 'Irmão', parcela: 1500, prazo: 12, ex: true });
+    state.compras = (state.compras || []).concat([ap, rf, rc]);
+    try { ngCache.v = {}; } catch (e) {} try { famPeC.k = null; } catch (e) {}
+    planCache = null; save(); setTimeout(renderTab, 0);
+  }
+  function remover(r) {
+    if (r.k === 'fam') state.fam.pessoas = state.fam.pessoas.filter(p => p !== r.o);
+    else if (r.k === 'conta') state.fam.casa.contas = state.fam.casa.contas.filter(c => c !== r.o);
+    else if (r.k === 'neg') { state.neg.negocios = state.neg.negocios.filter(x => x !== r.o); if (state.neg.sel === r.o.id) state.neg.sel = ''; state.neg.cmp = (state.neg.cmp || []).filter(id => id !== r.o.id); }
+    else if (r.k === 'compra') { state.compras = state.compras.filter(b => b !== r.o); const P = state.plan || {}; P.inc = (P.inc || []).filter(id => id !== r.o.id); (state.cenarios || []).forEach(c => { if (Array.isArray(c.inc)) c.inc = c.inc.filter(id => id !== r.o.id); }); }
+    if (r.item) (state.cenarios || []).forEach(c => { if (c.on) delete c.on[r.item]; });
+  }
+  function fim() { try { ngCache.v = {}; } catch (e) {} try { famPeC.k = null; } catch (e) {} planCache = null; save(); setTimeout(renderTab, 0); }
+  function render() {
+    const box = document.getElementById('ex-demo-lista'); if (!box) return;
+    const L = lista();
+    document.getElementById('ex-demo-criar').hidden = L.length > 0;
+    document.getElementById('ex-demo-apagar').hidden = !L.length;
+    if (!L.length) { box.innerHTML = '<p class="hint">Nenhum exemplo na sua conta agora.</p>'; return; }
+    box.innerHTML = '<table class="tbl"><thead><tr><th>Exemplo</th><th>Módulo</th><th>No plano</th><th></th></tr></thead><tbody>' + L.map((r, i) => {
+      const u = r.item ? usoDe(r.item) : null;
+      const est = !r.item ? '<span class="subdet">não entra no plano</span>' : u === 'real' ? '<span class="chip best">Real</span>' : '<span class="chip info">Só simulação</span>';
+      const bt = (r.item ? (u === 'real' ? `<button type="button" class="btn ghost tiny" data-exd="sim" data-exi="${i}">Voltar para simulação</button>` : `<button type="button" class="btn tiny" data-exd="real" data-exi="${i}">Deixar real</button>`) : '') +
+        ` <button type="button" class="btn ghost tiny" data-exd="meu" data-exi="${i}" title="Tira a marca de exemplo: o item fica como seu e não some ao apagar os exemplos">Manter como meu</button> <button type="button" class="btn ghost tiny" data-exd="del" data-exi="${i}">Apagar</button>`;
+      return `<tr><td class="name">${esc(r.nome)}</td><td>${esc(r.mod)}</td><td>${est}</td><td style="white-space:nowrap">${bt}</td></tr>`; }).join('') + '</tbody></table>';
+  }
+  document.addEventListener('click', e => {
+    const b = e.target.closest && e.target.closest('#ex-demo-criar,#ex-demo-apagar,[data-exd]'); if (!b) return; e.preventDefault();
+    if (b.id === 'ex-demo-criar') { criar(); setTimeout(render, 50); return; }
+    if (b.id === 'ex-demo-apagar') { const L = lista(); if (!confirmar(`Apagar os ${L.length} exemplos? O que você marcou como "manter como meu" fica.`)) return; L.forEach(remover); fim(); setTimeout(render, 50); return; }
+    const r = lista()[+b.dataset.exi]; if (!r) return; const d = b.dataset.exd;
+    if (d === 'real' || d === 'sim') { setUsoItem(r.item, d); try { ngCache.v = {}; famPeC.k = null; } catch (er) {} setTimeout(renderTab, 0); }
+    else if (d === 'meu') { delete r.o.ex; r.o.nome = tira(r.o.nome); fim(); }
+    else if (d === 'del') { if (!confirmar(`Apagar "${r.nome}"?`)) return; remover(r); fim(); }
+    setTimeout(render, 50);
+  });
+  // atualiza a lista sempre que a aba Configurações aparece
+  const alvo = () => document.getElementById('p-config');
+  const iv = setInterval(() => { const p = alvo(); if (!p) return; clearInterval(iv);
+    new MutationObserver(() => { if (!p.hidden) render(); }).observe(p, { attributes: true, attributeFilter: ['hidden'] }); render(); }, 300);
+  window.__exDemo = { lista, criar, render };
 })();
 </script>
 
