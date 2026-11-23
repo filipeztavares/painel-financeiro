@@ -4792,6 +4792,21 @@ html.onb-on,html.onb-on body{overflow:hidden!important}
   const CARRO = `<rect x="0" y="22" width="64" height="30" rx="12" fill="#E8735A"/><rect x="10" y="12" width="40" height="18" rx="8" fill="#E8735A"/><circle cx="22" cy="10" r="7" fill="#5B9BE6"/><rect x="18" y="14" width="8" height="12" rx="3" fill="#5B9BE6"/><circle cx="40" cy="10" r="7" fill="#F2B544"/><rect x="36" y="14" width="8" height="12" rx="3" fill="#F2B544"/><circle cx="15" cy="54" r="8" fill="#0E1A2B"/><circle cx="50" cy="54" r="8" fill="#0E1A2B"/>`;
   const CASAS = [[70, 300, '#F4F1EA', 'Início'], [190, 250, '#3FB8A6', 'Primeiro salário'], [320, 205, '#3FB8A6', 'Reserva'], [450, 195, '#3FB8A6', 'Carteira'], [580, 235, '#5B9BE6', 'Viagem'], [710, 285, '#F2B544', 'Carro'], [840, 270, '#9B87E0', 'Empresa'], [970, 210, '#E8735A', 'Casa própria']];
   const TRILHA = 'M70 300 L190 250 L320 205 L450 195 L580 235 L710 285 L840 270 L970 210 L1110 140';
+  // tabuleiro em pé para o celular (Filipe, 23/11/2026): a trilha desce acompanhando o scroll
+  const TAB_V = () => {
+    const pts = CASAS.map((c, i) => [i % 2 ? 228 : 152, 200 + i * 104]), fim = [190, 200 + 8 * 104 + 10];
+    const tr = 'M' + pts.concat([fim]).map(p => p.join(' ')).join(' L');
+    const lin = t => t.length > 9 && t.includes(' ') ? [t.slice(0, t.indexOf(' ')), t.slice(t.indexOf(' ') + 1)] : [t];
+    const rot = (x, y, t, esq) => { const l = lin(t), y0 = y + 6 - (l.length - 1) * 10; return l.map((u, j) => `<text x="${esq ? x - 50 : x + 50}" y="${y0 + j * 20}" text-anchor="${esq ? 'end' : 'start'}">${u}</text>`).join(''); };
+    return `<svg class="v" viewBox="0 0 380 ${fim[1] + 96}" role="img" aria-label="Tabuleiro com casas: início, primeiro salário, reserva, carteira, viagem, carro, empresa, casa própria e liberdade financeira">
+      <path d="${tr}" fill="none" stroke="#2B4160" stroke-width="54" stroke-linecap="round" stroke-linejoin="round"/><path d="${tr}" fill="none" stroke="#F4F1EA" stroke-opacity=".35" stroke-width="2" stroke-dasharray="10 12"/>
+      <g transform="translate(4 14) scale(.9)">${ROLETA(40, 10)}<circle cx="60" cy="60" r="20" fill="#13243A" stroke="#F4F1EA" stroke-width="3"/><path d="M60 -6 L71 14 L49 14 Z" fill="#F4F1EA"/></g>
+      <g font-family="Plus Jakarta Sans,sans-serif" font-size="14"><text x="134" y="58" font-weight="700" fill="#D5DDE7">No tabuleiro, a roleta decide.</text><text x="134" y="80" font-weight="500" fill="#A9B6C8">Aqui, quem decide é você,</text><text x="134" y="99" font-weight="500" fill="#A9B6C8">com números.</text></g>
+      <g font-family="Plus Jakarta Sans,sans-serif" font-weight="800" font-size="20" text-anchor="middle" fill="#0E1A2B">${CASAS.map((c, i) => `<circle cx="${pts[i][0]}" cy="${pts[i][1]}" r="34" fill="${c[2]}"/><text x="${pts[i][0]}" y="${pts[i][1] + 7}">${i + 1}</text>`).join('')}<circle cx="${fim[0]}" cy="${fim[1]}" r="44" fill="#F0A46B"/><path d="M${fim[0] - 18} ${fim[1] + 8} l10 -22 l8 14 l8 -14 l10 22 z" fill="#0E1A2B"/></g>
+      <g font-family="Plus Jakarta Sans,sans-serif" font-weight="600" font-size="16" fill="#D5DDE7">${CASAS.map((c, i) => rot(pts[i][0], pts[i][1], c[3], !(i % 2))).join('')}<text x="${fim[0]}" y="${fim[1] + 70}" text-anchor="middle">Liberdade financeira</text></g>
+      <g transform="translate(200 378) rotate(-8)">${CARRO}</g>
+    </svg>`;
+  };
   const css = `#lg-ov{position:fixed;inset:0;z-index:9999;overflow-y:auto;overflow-x:hidden;background:#0E1A2B;color:#F4F1EA;font-family:'Plus Jakarta Sans',system-ui,sans-serif;-webkit-font-smoothing:antialiased}
   #lg-ov *{box-sizing:border-box} #lg-ov a{color:#F0A46B} #lg-ov .dsp{font-family:'Bricolage Grotesque','Plus Jakarta Sans',sans-serif;font-weight:800}
   #lg-ov .wrap{max-width:1200px;margin:0 auto;padding:0 24px} #lg-ov .kick{margin:0;font-size:13px;font-weight:700;letter-spacing:2px;color:#6FD3C3}
@@ -4823,7 +4838,7 @@ html.onb-on,html.onb-on body{overflow:hidden!important}
   #lg-ov .msg{font-size:14px;min-height:1em;margin:0} #lg-ov .msg.err{color:#B42318} #lg-ov .msg.ok{color:#15803d}
   #lg-ov .tab2{background:#13243A;padding:72px 0} #lg-ov .tab2 .wrap,#lg-ov .como{display:flex;flex-direction:column;gap:28px}
   #lg-ov h3.t{margin:0;font-size:clamp(28px,3.6vw,44px);line-height:1.08;letter-spacing:-1px} #lg-ov .p2{margin:0;font-size:17px;line-height:1.6;color:#B9C4D3;max-width:720px}
-  #lg-ov .brd{width:100%;overflow-x:auto} #lg-ov .brd svg{width:100%;min-width:760px;height:auto;display:block}
+  #lg-ov .brd{width:100%;overflow-x:auto} #lg-ov .brd svg{width:100%;min-width:760px;height:auto;display:block} #lg-ov .brd svg.v{display:none;min-width:0;max-width:420px;margin:0 auto} @media (max-width:700px){#lg-ov .brd svg.h{display:none} #lg-ov .brd svg.v{display:block}}
   #lg-ov .como{padding-top:80px;padding-bottom:80px} #lg-ov .pss{display:flex;flex-wrap:wrap;gap:20px}
   #lg-ov .ps{flex:1 1 280px;background:#13243A;border:1px solid #22385A;border-radius:20px;padding:28px;display:flex;flex-direction:column;gap:12px}
   #lg-ov .ps span{width:48px;height:48px;border-radius:50%;color:#0E1A2B;font-size:22px;display:flex;align-items:center;justify-content:center} #lg-ov .ps h4{margin:0;font-size:20px} #lg-ov .ps p{margin:0;font-size:15px;line-height:1.6;color:#A9B6C8}
@@ -4852,14 +4867,14 @@ html.onb-on,html.onb-on body{overflow:hidden!important}
           <div class="breve"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="margin:0 7px"><path d="M6 2h12M6 22h12M7 2c0 6 10 6 10 10S7 16 7 22M17 2c0 6-10 6-10 10s10 4 10 10"/></svg>Em breve: Negócios (pesquisa de mercado, DRE e abrir empresa).</div></div>
       <div class="card" id="lg-card"></div></section>
       <section class="tab2"><div class="wrap"><div class="cx" style="gap:10px"><p class="kick">O TABULEIRO</p><h3 class="t dsp">Cada casa é uma decisão. Você vê o efeito antes de cair nela.</h3><p class="p2">Simule o carro, o apartamento ou o ano sabático e veja na hora como fica o seu patrimônio lá na frente.</p></div>
-        <div class="brd"><svg viewBox="0 0 1200 420" role="img" aria-label="Tabuleiro com casas: início, primeiro salário, reserva, carteira, viagem, carro, empresa, casa própria e liberdade financeira">
+        <div class="brd"><svg class="h" viewBox="0 0 1200 420" role="img" aria-label="Tabuleiro com casas: início, primeiro salário, reserva, carteira, viagem, carro, empresa, casa própria e liberdade financeira">
           <path d="${TRILHA}" fill="none" stroke="#2B4160" stroke-width="54" stroke-linecap="round" stroke-linejoin="round"/><path d="${TRILHA}" fill="none" stroke="#F4F1EA" stroke-opacity=".35" stroke-width="2" stroke-dasharray="10 12"/>
           <g font-family="Plus Jakarta Sans,sans-serif" font-weight="800" font-size="20" text-anchor="middle" fill="#0E1A2B">${CASAS.map(([x, y, c], i) => `<circle cx="${x}" cy="${y}" r="34" fill="${c}"/><text x="${x}" y="${y + 7}">${i + 1}</text>`).join('')}<circle cx="1110" cy="140" r="44" fill="#F0A46B"/><path d="M1092 148 l10 -22 l8 14 l8 -14 l10 22 z" fill="#0E1A2B"/></g>
           <g font-family="Plus Jakarta Sans,sans-serif" font-weight="600" font-size="16" text-anchor="middle" fill="#D5DDE7">${CASAS.map(([x, y, , t]) => `<text x="${x}" y="${y + 62}">${t}</text>`).join('')}<text x="1110" y="210">Liberdade</text><text x="1110" y="230">financeira</text></g>
           <g transform="translate(296 118) rotate(-8)">${CARRO}</g>
           <g transform="translate(40 30)">${ROLETA(40, 10)}<circle cx="60" cy="60" r="20" fill="#13243A" stroke="#F4F1EA" stroke-width="3"/><path d="M60 -6 L71 14 L49 14 Z" fill="#F4F1EA"/><line x1="140" y1="40" x2="196" y2="40" stroke="#6E8199" stroke-width="2" stroke-dasharray="4 6"/>
             <text x="204" y="36" font-family="Plus Jakarta Sans,sans-serif" font-size="15" font-weight="700" fill="#D5DDE7">No tabuleiro, a roleta decide.</text><text x="204" y="58" font-family="Plus Jakarta Sans,sans-serif" font-size="15" font-weight="500" fill="#A9B6C8">Aqui, quem decide é você, com números.</text></g>
-        </svg></div></div></section>
+        </svg>${TAB_V()}</div></div></section>
       <section class="wrap como"><div class="cx" style="gap:10px"><p class="kick">COMO SE JOGA</p><h3 class="t dsp">Três jogadas para começar</h3></div>
         <div class="pss">${passo(1, '#3FB8A6', 'Crie seu pino', 'Conta com Google ou com e-mail e senha. Seus dados ficam só com você.')}${passo(2, '#F2B544', 'Escolha suas casas', 'Ative só os módulos que fazem sentido: Financeiro, Viagens, Trabalho e Bens.')}${passo(3, '#E8735A', 'Mova o pino todo mês', 'Feche o mês, compare com o plano e ajuste a rota até a linha de chegada.')}</div>
         <div class="cta dsp"><span>Pronto para a primeira jogada?</span><button type="button" data-m="criar" data-topo="1">Criar minha conta</button></div></section>
@@ -4900,7 +4915,7 @@ html.onb-on,html.onb-on body{overflow:hidden!important}
     return new Promise(resolve => { const { data } = sb.auth.onAuthStateChange(async (ev) => { if (ev !== 'PASSWORD_RECOVERY') return; const s = prompt('Digite a nova senha (mínimo 8 caracteres):'); if (s && s.length >= 8) { const { error } = await sb.auth.updateUser({ password: s }); alert(error ? 'Não deu para trocar a senha: ' + error.message : 'Senha trocada.'); } }); resolve(data); });
   }
   // ---------- rodapé: compartilhar, administração e sair ----------
-  const SITE_V = 274;
+  const SITE_V = 275;
   const escH = v => String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const dataBR = v => v ? new Date(v).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' }) : '–';
   const css2 = `.side-foot .r{flex-wrap:wrap}.side-foot .lg-acoes{margin-left:auto;display:inline-flex;gap:10px}
