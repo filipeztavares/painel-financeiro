@@ -2618,7 +2618,7 @@ html[data-lb="b"] .block-title .desc{font-size:14px;color:var(--muted);margin-to
     </div>
     <div class="nav-mobile-sub" id="navMobileSub"></div>
   </div>
-  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span><button type="button" id="demoBtn" aria-pressed="false">Modo demonstração</button></div><div class="src">Focus atualizado toda segunda · versão 380</div></div>
+  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span><button type="button" id="demoBtn" aria-pressed="false">Modo demonstração</button></div><div class="src">Focus atualizado toda segunda · versão 381</div></div>
 </nav>
 <div class="sino-pop" id="sino-pop" role="dialog" aria-label="Atualizações das bases" hidden></div>
 <div class="sino-pop" id="pess-pop" role="dialog" aria-label="Seus avisos" hidden></div>
@@ -4142,6 +4142,9 @@ html[data-lb="b"] .block-title .desc{font-size:14px;color:var(--muted);margin-to
         <h2>Configuração inicial</h2>
         <p class="sub">As perguntas do primeiro acesso: nome, nascimento, patrimônio, perfil, como você recebe, salário, benefícios e custos. Ao salvar, as respostas trocam o patrimônio, o salário e os custos do Meu plano.</p>
         <div class="btns"><button class="btn" type="button" data-onbrefaz>Refazer configuração inicial</button></div>
+        <h3 style="margin-top:18px">Primeiro acesso de cada módulo</h3>
+        <p class="sub">Carteira e Independência financeira perguntam na primeira vez que você entra. Os outros podem ficar para depois. Configure ou refaça por aqui.</p>
+        <div class="btns" id="cfg-onb-mods"></div>
       </section>
       <section data-nav="Primeiro acesso" class="panel" id="cfg-jor" hidden>
         <h2>Simular primeiro acesso</h2>
@@ -4702,6 +4705,10 @@ html.onb-on,html.onb-on body{overflow:hidden!important}
 #onb .cta{width:auto;min-width:240px;min-height:50px;padding:0 32px;border-radius:12px;font-size:16px}
 #onb .why{text-align:left}
 }
+/* v381: aviso rápido fora da janela (módulos) */
+#onb-aviso{position:fixed;left:50%;bottom:calc(84px + env(safe-area-inset-bottom,0px));transform:translate(-50%,12px);z-index:6100;max-width:min(440px,calc(100% - 32px));padding:12px 16px;border-radius:14px;background:#0E1A2B;color:#EEF2F8;font:600 14px/1.4 "Plus Jakarta Sans",system-ui,sans-serif;box-shadow:0 12px 32px rgba(0,0,0,.3);opacity:0;pointer-events:none;transition:opacity .2s,transform .2s}
+#onb-aviso.on{opacity:1;transform:translate(-50%,0)}
+@media (min-width:701px){#onb-aviso{bottom:28px}}
 </style>
 <style>html:not(.site-fam) .nav-group:has([data-tab="familia"]),html:not(.site-fam) .lm-mod:has([data-lmtab="familia"]),html:not(.site-fam) tr:has([data-lmtab="familia"]){display:none!important}</style>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
@@ -4915,7 +4922,7 @@ html.onb-on,html.onb-on body{overflow:hidden!important}
     return new Promise(resolve => { const { data } = sb.auth.onAuthStateChange(async (ev) => { if (ev !== 'PASSWORD_RECOVERY') return; const s = prompt('Digite a nova senha (mínimo 8 caracteres):'); if (s && s.length >= 8) { const { error } = await sb.auth.updateUser({ password: s }); alert(error ? 'Não deu para trocar a senha: ' + error.message : 'Senha trocada.'); } }); resolve(data); });
   }
   // ---------- rodapé: compartilhar, administração e sair ----------
-  const SITE_V = 275;
+  const SITE_V = 276;
   const escH = v => String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const dataBR = v => v ? new Date(v).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' }) : '–';
   const css2 = `.side-foot .r{flex-wrap:wrap}.side-foot .lg-acoes{margin-left:auto;display:inline-flex;gap:10px}
@@ -21606,6 +21613,297 @@ html .sug-adm .btn.ghost[aria-pressed="true"], html[data-lb] .sug-adm .btn.ghost
       renderTab(); setTimeout(() => T(renderTab), 1500);
     });
   }
+  /* ---------- primeiro acesso de cada módulo (v380) ----------
+     Abre na primeira vez que a pessoa entra no módulo, só em contas que fizeram a configuração inicial.
+     Carteira e Independência são obrigatórios (sem "Configurar depois"; se sair, volta na próxima entrada).
+     Os outros têm "Configurar depois", que adia 7 dias. state.onb.mods[id] = 'feito' | { depois: ISO }.
+     Viagens e Empreendimentos ficam de fora por enquanto (pedido do Filipe, 23/11). */
+  if (!D) D = null;
+  const MV = (m, k) => ((D.m || {})[m] || {})[k];
+  const MS = (m, k, v) => { D.m = D.m || {}; (D.m[m] = D.m[m] || {})[k] = v; };
+  const yrs = () => idade() || 34;
+  const sobraMes = () => Math.max(0, liquido().liq - D.custos);
+  const pctTxt = n => (Math.round(n * 10) / 10).toLocaleString('pt-BR') + '%';
+  const ano0 = () => new Date().getFullYear();
+  function sOpts(mod, key, qq, lead, opts, extra = {}) {
+    return { id: mod + ':' + key, sec: 1, so: extra.so,
+      render() { const v = MV(mod, key); return `<div><h1>${typeof qq === 'function' ? qq() : qq}</h1></div>${lead ? `<p class="lead">${typeof lead === 'function' ? lead() : lead}</p>` : ''}
+        <div class="opts" role="radiogroup">${(typeof opts === 'function' ? opts() : opts).map(([k, t, sub]) => `<button type="button" class="opt" role="radio" aria-checked="${v === k}" data-k="${k}"><span class="rd"></span><span><span class="t">${t}</span>${sub ? `<span class="s">${sub}</span>` : ''}</span></button>`).join('')}</div>${extra.after ? extra.after() : ''}`; },
+      bind() { qa('.opt[data-k]').forEach(b => b.onclick = () => { MS(mod, key, b.dataset.k); render(); }); },
+      ok: () => MV(mod, key) != null, falta: 'Escolha uma opção' };
+  }
+  function sMulti(mod, key, qq, lead, opts, extra = {}) {
+    return { id: mod + ':' + key, sec: 1, so: extra.so,
+      render() { const v = MV(mod, key) || []; return `<div><h1>${qq}</h1></div>${lead ? `<p class="lead">${lead}</p>` : ''}
+        <div style="display:flex;flex-wrap:wrap;gap:8px">${opts.map(([k, t]) => `<button type="button" class="chip" aria-pressed="${v.includes(k)}" data-k="${k}">${t}</button>`).join('')}</div>${extra.after ? extra.after() : ''}`; },
+      bind() { qa('.chip[data-k]').forEach(b => b.onclick = () => { let v = [...(MV(mod, key) || [])]; const k = b.dataset.k, so = extra.solo || [];
+          if (v.includes(k)) v = v.filter(x => x !== k); else v = so.includes(k) ? [k] : v.filter(x => !so.includes(x)).concat(k); MS(mod, key, v); render(); }); if (extra.bind) extra.bind(); },
+      ok: () => (MV(mod, key) || []).length > 0 && (!extra.ok || extra.ok()), falta: extra.falta || 'Marque pelo menos uma opção' };
+  }
+  function sMoney(mod, key, qq, lead, extra = {}) {
+    return { id: mod + ':' + key, sec: 1, so: extra.so,
+      render() { const v = MV(mod, key); return `<div class="field"><label for="mi"><h1>${typeof qq === 'function' ? qq() : qq}</h1></label>${lead ? `<p class="lead">${typeof lead === 'function' ? lead() : lead}</p>` : ''}
+        ${extra.suf ? `<label class="sufbox"><input id="mi" inputmode="numeric" placeholder="0" maxlength="3" value="${v != null && v !== '' ? v : ''}"><span>${extra.suf}</span></label>` : `<div class="money"><b>R$</b><input class="inp" id="mi" inputmode="numeric" placeholder="0" value="${v != null && v !== '' ? (+v).toLocaleString('pt-BR') : ''}"></div>`}
+        <div class="hint" id="mh">${extra.hint ? extra.hint(v) : ' '}</div></div>
+        ${extra.chips ? `<div style="display:flex;gap:8px;flex-wrap:wrap">${extra.chips().map(([t, val]) => `<button type="button" class="chip" data-val="${val}" aria-pressed="${v != null && v === +val}">${t}</button>`).join('')}</div>` : ''}${extra.after ? extra.after() : ''}`; },
+      bind() { const i = q('#mi'); i.oninput = () => { fmtIn(i); MS(mod, key, i.value === '' ? null : num(i.value)); if (extra.hint) q('#mh').innerHTML = extra.hint(MV(mod, key)); qa('[data-val]').forEach(b => b.setAttribute('aria-pressed', MV(mod, key) === +b.dataset.val)); upd(); };
+        qa('[data-val]').forEach(b => b.onclick = () => { MS(mod, key, +b.dataset.val); render(); }); },
+      ok: () => { const v = MV(mod, key); return v != null && (extra.min == null || v >= (typeof extra.min === 'function' ? extra.min() : extra.min)) && (extra.max == null || v <= extra.max); },
+      falta: extra.falta || 'Digite um valor para continuar' };
+  }
+  function sText(mod, key, qq, lead, extra = {}) {
+    return { id: mod + ':' + key, sec: 1, so: extra.so,
+      render() { const v = MV(mod, key) || ''; return `<div class="field"><label for="mt"><h1>${typeof qq === 'function' ? qq() : qq}</h1></label>${lead ? `<p class="lead">${lead}</p>` : ''}
+        <input class="inp" id="mt" placeholder="${extra.ph || ''}" value="${E(v)}" maxlength="60"></div>
+        ${extra.chips ? `<div style="display:flex;gap:8px;flex-wrap:wrap">${extra.chips.map(t => `<button type="button" class="chip" data-t="${t}" aria-pressed="${v === t}">${t}</button>`).join('')}</div>` : ''}`; },
+      bind() { q('#mt').oninput = e => { MS(mod, key, e.target.value.trim()); qa('[data-t]').forEach(b => b.setAttribute('aria-pressed', b.dataset.t === MV(mod, key))); upd(); };
+        qa('[data-t]').forEach(b => b.onclick = () => { MS(mod, key, b.dataset.t); render(); }); },
+      ok: () => (MV(mod, key) || '').length >= 2, falta: 'Escreva para continuar' };
+  }
+  const CONTAS = ['Aluguel', 'Condomínio', 'Cartão de crédito', 'Luz', 'Água', 'Gás', 'Internet e celular', 'Escola', 'Financiamento'];
+  const ALOC = { cons: { rf: 80 }, mod: { rf: 55 }, arr: { rf: 30 } };
+  const CLASSES = [['rf', 'Renda fixa', 'CDB, Tesouro, LCI e LCA, poupança'], ['acoes', 'Ações', 'Na bolsa brasileira'], ['fii', 'Fundos imobiliários', 'FIIs'], ['ext', 'Exterior', 'Ações, ETFs e dólar lá fora'], ['cripto', 'Cripto', 'Bitcoin e outras'], ['prev', 'Previdência', 'PGBL e VGBL']];
+  const CORES = { rf: '#7FA6E0', acoes: '#F0A46B', fii: '#3FB8AF', ext: '#B39DDB', cripto: '#F2D06B', prev: '#fb7185' };
+  const PLANOS = { casa: 'Comprar imóvel', carro: 'Trocar de carro', casamento: 'Casamento', reforma: 'Reforma', estudo: 'Curso ou pós' };
+  // patrimônio informado no primeiro acesso, para a Carteira bater
+  function alvoCart() { if (D.soma && (D.soma.inv || D.soma.conta)) return { v: (D.soma.inv || 0) + (D.soma.conta || 0), d: 'investimentos + dinheiro em conta, da sua soma' }; return { v: Math.max(0, D.pl || 0), d: 'seu patrimônio líquido total' }; }
+  function alvoBox(t, id) { id = id || 'alvo'; const a = alvoCart(); if (!a.v) return `<div id="${id}"></div>`; const f = a.v - t, p = Math.min(100, t / a.v * 100);
+    return `<div class="kpi" id="${id}"><span>Informado no primeiro acesso</span><b>${brl(a.v)}</b><small>${a.d[0].toUpperCase() + a.d.slice(1)}</small><div style="height:8px;border-radius:9px;background:var(--line);margin:6px 0 2px;overflow:hidden"><i style="display:block;height:100%;width:${p}%;background:${f < 0 ? 'var(--alt)' : 'var(--ok)'}"></i></div><small style="${f < 0 ? 'color:var(--alt);font-weight:700' : f === 0 ? 'color:var(--ok);font-weight:700' : ''}">${f > 0 ? `Falta distribuir ${brl(f)}${D.soma ? '' : '. Se parte é imóvel ou carro, essa parte fica para Bens.'}` : f === 0 ? '✓ Bateu com o valor informado' : `Passou ${brl(-f)} do valor informado.`}</small>${f < 0 || (f > 0 && D.soma) ? `<button class="link" type="button" data-ajalvo="${t}" style="padding-top:8px">${f < 0 ? 'O certo é o que coloquei aqui: atualizar para ' + brl(t) : 'Tenho menos do que informei: atualizar para ' + brl(t)}</button>` : ''}</div>`; }
+  function ajAlvo(t) { const a = alvoCart(), dif = t - a.v; if (D.soma) D.soma.inv = Math.max(0, (D.soma.inv || 0) + dif); D.pl = (D.pl || 0) + dif; D.plMudou = true; render(); toast(`Patrimônio atualizado para ${sbrl(D.pl)}.`); }
+  const resHead = (m, t) => `<div class="eyebrow" style="color:${m.cor}">${m.nome} configurado</div><h1>${t}</h1>`;
+  function rosca(parts) { let a = 0; const tot = parts.reduce((x, p) => x + p[1], 0) || 1; const g = parts.map(([k, v]) => { const s0 = a; a += v / tot * 360; return `${CORES[k]} ${s0}deg ${a}deg`; }).join(','); return `<div style="width:120px;height:120px;border-radius:50%;background:conic-gradient(${g || 'var(--line) 0 360deg'});display:grid;place-items:center;flex:none"><div style="width:72px;height:72px;border-radius:50%;background:var(--card)"></div></div>`; }
+  const mesesAte = a => Math.max(1, (a - ano0()) * 12 + 6 - new Date().getMonth());
+
+  const MODULOS = [
+   { id: 'cart', nome: 'Carteira', letra: 'C', cor: '#7FA6E0', obrig: true, tabs: ['carteira'], desc: 'Onde está o seu dinheiro investido, se a divisão combina com o seu perfil e quanto você investe por mês.',
+     steps: () => [
+      sMulti('cart', 'onde', 'Onde você tem dinheiro investido?', 'Marque todos os bancos e corretoras.',
+        [['Nubank', 'Nubank'], ['Itaú', 'Itaú'], ['Banco do Brasil', 'Banco do Brasil'], ['Bradesco', 'Bradesco'], ['Caixa', 'Caixa'], ['Santander', 'Santander'], ['Inter', 'Inter'], ['C6', 'C6'], ['XP', 'XP'], ['BTG', 'BTG'], ['Rico', 'Rico'], ['Outro', 'Outro'], ['nada', 'Ainda não invisto']], { solo: ['nada'] }),
+      { id: 'cart:classes', sec: 1, so: () => !(MV('cart', 'onde') || []).includes('nada'),
+        render() { const v = MV('cart', 'cl') || {}, t = Object.values(v).reduce((a, b) => a + b, 0);
+          return `<div><h1>Quanto você tem em cada tipo?</h1></div><p class="lead">Somando todos os bancos. Valor aproximado serve.</p>${alvoBox(t)}
+          <div class="cats">${CLASSES.map(([k, n, d]) => `<div class="cat" style="padding:10px 12px"><label for="c_${k}" style="display:flex;flex-direction:column">${n}<small class="hint" style="font-weight:500;font-size:12px">${d}</small></label><input id="c_${k}" inputmode="numeric" placeholder="0" value="${v[k] ? v[k].toLocaleString('pt-BR') : ''}"></div>`).join('')}</div>
+          <div class="est"><span class="tt" style="border:0;padding:0">Total investido</span><b id="c_tot" style="border:0;padding:0;color:var(--ink)">${brl(t)}</b></div>${alvoBox(t, 'alvo2')}`; },
+        bind() { CLASSES.forEach(([k]) => q('#c_' + k).oninput = e => { fmtIn(e.target); const v = { ...(MV('cart', 'cl') || {}) }; v[k] = num(e.target.value); MS('cart', 'cl', v); const t = Object.values(v).reduce((a, b) => a + b, 0); q('#c_tot').textContent = brl(t); q('#alvo').outerHTML = alvoBox(t); q('#alvo2').outerHTML = alvoBox(t, 'alvo2'); upd(); }); },
+        ok: () => Object.values(MV('cart', 'cl') || {}).some(x => x > 0), falta: 'Preencha pelo menos um tipo' },
+      sMoney('cart', 'res', 'Quanto disso é a sua reserva de emergência?', () => `O dinheiro para imprevistos, que você tira a qualquer hora. O ideal são 6 meses de custos: <b style="color:var(--ink)">${brl(D.custos * 6)}</b>.`,
+        { so: () => !(MV('cart', 'onde') || []).includes('nada'), chips: () => [['Não tenho reserva', 0]], max: 1e12, hint: v => v ? (v > ((MV('cart', 'cl') || {}).rf || 0) ? '<span style="color:var(--alt);font-weight:700">Mais do que você pôs em renda fixa. Confira.</span>' : `Cobre ${(v / Math.max(1, D.custos)).toFixed(1).replace('.', ',')} meses dos seus custos.`) : ' ' }),
+      sMoney('cart', 'aporte', 'Quanto você investe por mês?', 'Uma média. Se varia muito, pense no que sobrou nos últimos meses.',
+        { chips: () => sobraMes() ? [[`Usar a sobra do mês: ${brl(sobraMes())}`, Math.round(sobraMes())]] : [], hint: v => v && sobraMes() ? (v > sobraMes() * 1.05 ? `<span style="color:var(--alt);font-weight:700">Mais do que sobra hoje (${brl(sobraMes())}). Confira os custos.</span>` : `${Math.round(v / Math.max(1, liquido().liq) * 100)}% do que cai na conta.`) : ' ' }),
+      { id: 'cart:fim', fim: true, render: resCart, cta: 'Salvar e ir para a Carteira' }] },
+   { id: 'indep', nome: 'Independência financeira', letra: 'I', cor: '#8B7FD6', obrig: true, tabs: ['indvg', 'indnum', 'indalv'], desc: 'Quando dá para parar de trabalhar: o seu número, a sua data e o que adianta essa data.',
+     steps: () => [
+      sMoney('indep', 'idade', 'Com que idade você quer parar de trabalhar?', () => `Você tem ${yrs()} anos. Parar quer dizer viver dos investimentos, trabalhando só se quiser.`,
+        { suf: 'anos', min: () => yrs() + 1, max: 90, falta: 'Escolha uma idade maior que a sua', chips: () => [45, 50, 55, 60, 65].filter(x => x > yrs()).map(x => [x + ' anos', x]), hint: v => v && v > yrs() ? `Daqui a ${v - yrs()} anos.` : ' ' }),
+      sOpts('indep', 'custo', 'Depois de parar, o seu custo de vida vai ser...', 'Pense em filhos já criados, casa quitada, mais viagens.',
+        () => [['igual', 'Igual ao de hoje', brl(D.custos) + ' por mês'], ['menor', 'Menor', 'Uns 20% a menos: ' + brl(D.custos * .8) + ' por mês'], ['maior', 'Maior', 'Uns 30% a mais: ' + brl(D.custos * 1.3) + ' por mês']]),
+      sMulti('indep', 'renda', 'Vai ter alguma renda depois de parar?', 'Fora os investimentos. Marque o que vale para você.',
+        [['inss', 'INSS'], ['aluguel', 'Aluguel de imóvel'], ['prev', 'Previdência privada'], ['empresa', 'Lucro de empresa'], ['outros', 'Outros'], ['nenhuma', 'Nenhuma']], { solo: ['nenhuma'],
+        after: () => `${(MV('indep', 'renda') || []).includes('outros') ? `<div class="field"><label class="hint" for="io_n">Qual renda?</label><input class="inp" id="io_n" placeholder="Ex.: pensão, direitos autorais" value="${E(MV('indep', 'outN') || '')}" style="font-size:17px;min-height:52px"><label class="hint" for="io_v">Quanto por mês, em dinheiro de hoje?</label><div class="money"><b>R$</b><input class="inp" id="io_v" inputmode="numeric" placeholder="0" value="${MV('indep', 'outV') ? MV('indep', 'outV').toLocaleString('pt-BR') : ''}"></div></div>` : ''}<div class="por">${ICO_I}<span>INSS, aluguel e previdência você coloca depois, dentro do módulo.${(MV('indep', 'renda') || []).includes('outros') ? ' A renda de "Outros" já abate do custo.' : ''}</span></div>`,
+        bind: () => { if (q('#io_n')) { q('#io_n').oninput = e => { MS('indep', 'outN', e.target.value.trim()); upd(); }; q('#io_v').oninput = e => { fmtIn(e.target); MS('indep', 'outV', num(e.target.value)); upd(); }; } },
+        ok: () => !(MV('indep', 'renda') || []).includes('outros') || ((MV('indep', 'outN') || '').length > 1 && MV('indep', 'outV') > 0), falta: 'Diga qual é a renda e quanto por mês' }),
+      { id: 'indep:fim', fim: true, render: resIndep, cta: 'Salvar e ir para Independência' }] },
+   { id: 'bens', nome: 'Bens e compromissos', letra: 'B', cor: '#3FB8AF', tabs: ['trabvg', 'compras'], desc: 'Imóveis, carros, financiamentos e os planos grandes dos próximos anos.',
+     steps: () => [
+      sOpts('bens', 'imo', 'Você tem imóvel?', 'Casa, apartamento, terreno ou sala.', [['nao', 'Não'], ['quit', 'Sim, quitado'], ['fin', 'Sim, financiado']]),
+      sMoney('bens', 'imoV', 'Quanto vale o imóvel hoje?', 'O preço que você conseguiria vendendo hoje.', { so: () => MV('bens', 'imo') && MV('bens', 'imo') !== 'nao', min: 1 }),
+      sMoney('bens', 'imoS', 'Quanto falta pagar do financiamento?', 'O saldo devedor aparece no app do banco.', { so: () => MV('bens', 'imo') === 'fin', min: 1 }),
+      sMoney('bens', 'imoP', 'Qual o valor da parcela?', 'A deste mês já serve.', { so: () => MV('bens', 'imo') === 'fin', min: 1 }),
+      sOpts('bens', 'car', 'Você tem carro ou moto?', '', [['nao', 'Não'], ['quit', 'Sim, quitado'], ['fin', 'Sim, financiado']]),
+      sMoney('bens', 'carV', 'Quanto vale pela tabela FIPE?', 'Procure o modelo e o ano no site da FIPE.', { so: () => MV('bens', 'car') && MV('bens', 'car') !== 'nao', min: 1 }),
+      sMoney('bens', 'carP', 'Qual a parcela do carro?', '', { so: () => MV('bens', 'car') === 'fin', min: 1 }),
+      sMoney('bens', 'carN', 'Quantas parcelas faltam?', '', { so: () => MV('bens', 'car') === 'fin', suf: 'parcelas', min: 1, max: 120 }),
+      sMulti('bens', 'planos', 'Algum plano grande nos próximos 5 anos?', 'Coisas que pedem guardar dinheiro antes.',
+        [['casa', 'Comprar imóvel'], ['carro', 'Trocar de carro'], ['casamento', 'Casamento'], ['reforma', 'Reforma'], ['estudo', 'Curso ou pós'], ['nenhum', 'Nenhum por enquanto']], { solo: ['nenhum'] }),
+      { id: 'bens:pd', sec: 1, so: () => (MV('bens', 'planos') || []).some(x => x !== 'nenhum'),
+        render() { const v = MV('bens', 'pd') || {}, a0 = ano0();
+          return `<div><h1>Quanto e quando?</h1></div><p class="lead">Valor aproximado e o ano em que você quer fazer.</p>
+          <div class="cats">${(MV('bens', 'planos') || []).map(k => `<div class="cat" style="flex-wrap:wrap;padding:10px 12px"><label style="flex-basis:100%">${PLANOS[k]}</label> <input data-pv="${k}" inputmode="numeric" placeholder="R$ valor" value="${v[k] && v[k].v ? v[k].v.toLocaleString('pt-BR') : ''}" aria-label="${PLANOS[k]}, valor" style="flex:1"><div style="flex-basis:100%;display:flex;gap:6px;flex-wrap:wrap;margin-top:4px" role="radiogroup" aria-label="${PLANOS[k]}, ano">${[0, 1, 2, 3, 4, 5].map(i => `<button type="button" class="chip" style="padding:6px 11px;font-size:13px" data-pa="${k}" data-ano="${a0 + i}" aria-pressed="${(v[k] && v[k].a || a0) == a0 + i}">${a0 + i}</button>`).join('')}</div></div>`).join('')}</div>`; },
+        bind() { const set = (k, f, x) => { const v = { ...(MV('bens', 'pd') || {}) }; v[k] = { ...(v[k] || { a: ano0() }), [f]: x }; MS('bens', 'pd', v); upd(); };
+          qa('[data-pv]').forEach(i => i.oninput = () => { fmtIn(i); set(i.dataset.pv, 'v', num(i.value)); });
+          qa('[data-pa]').forEach(b => { if (!(MV('bens', 'pd') || {})[b.dataset.pa]) set(b.dataset.pa, 'a', ano0()); b.onclick = () => { set(b.dataset.pa, 'a', +b.dataset.ano); render(); }; }); },
+        ok: () => (MV('bens', 'planos') || []).every(k => k === 'nenhum' || ((MV('bens', 'pd') || {})[k] || {}).v > 0), falta: 'Coloque o valor de cada plano' },
+      { id: 'bens:fim', fim: true, render: resBens, cta: 'Salvar e ir para Bens' }] },
+   { id: 'fam', nome: 'Família', letra: 'F', cor: '#fb7185', tabs: ['famvg', 'fampes', 'famcasa', 'famcomp'], desc: 'Quem mora com você, os filhos (já nascidos ou planejados) e como a casa divide as contas.',
+     steps: () => [
+      sOpts('fam', 'mora', 'Com quem você mora?', '', [['so', 'Sozinho(a)'], ['par', 'Com cônjuge ou parceiro(a)'], ['parf', 'Com cônjuge e filhos'], ['filhos', 'Só com os filhos'], ['pais', 'Com pais ou outras pessoas']]),
+      sOpts('fam', 'tem', 'Você tem filhos?', '', [['nao', 'Não'], ['sim', 'Sim']], { so: () => !['parf', 'filhos'].includes(MV('fam', 'mora')) }),
+      { id: 'fam:idades', sec: 1, so: () => ['parf', 'filhos'].includes(MV('fam', 'mora')) || MV('fam', 'tem') === 'sim',
+        render() { const v = MV('fam', 'idades') || [null]; return `<div><h1>Quantos anos eles têm?</h1></div><p class="lead">Cada fase (creche, escola, faculdade) tem um custo diferente.</p>
+          <div class="cats">${v.map((x, i) => `<div class="cat"><label for="fi_${i}">${i + 1}º filho</label><input id="fi_${i}" inputmode="numeric" placeholder="idade" value="${x != null ? x : ''}" style="width:90px"></div>`).join('')}</div>
+          <div style="display:flex;gap:8px"><button type="button" class="chip" id="fiMais">+ Mais um filho</button>${v.length > 1 ? '<button type="button" class="chip" id="fiMenos">− Tirar o último</button>' : ''}</div>`; },
+        bind() { const v = [...(MV('fam', 'idades') || [null])]; v.forEach((_, i) => q('#fi_' + i).oninput = e => { const n = e.target.value.replace(/\D/g, ''); e.target.value = n; v[i] = n === '' ? null : Math.min(40, +n); MS('fam', 'idades', [...v]); upd(); });
+          q('#fiMais').onclick = () => { MS('fam', 'idades', [...v, null]); render(); }; if (q('#fiMenos')) q('#fiMenos').onclick = () => { MS('fam', 'idades', v.slice(0, -1)); render(); }; },
+        ok: () => (MV('fam', 'idades') || [null]).every(x => x != null), falta: 'Coloque a idade de cada filho' },
+      sOpts('fam', 'plano', () => ['parf', 'filhos'].includes(MV('fam', 'mora')) || MV('fam', 'tem') === 'sim' ? 'Pensa em ter mais filhos?' : 'Pensa em ter filhos?', 'Entra como simulação, para você ver o efeito antes de decidir.',
+        [['nao', 'Não'], ['2', 'Sim, nos próximos 2 anos'], ['depois', 'Sim, mais para frente'], ['talvez', 'Talvez']]),
+      { id: 'fam:fim', fim: true, render: resFam, cta: 'Salvar e ir para Família' }] },
+   { id: 'carr', nome: 'Carreira', letra: 'C', cor: '#B39DDB', tabs: ['pjpf', 'stock'], desc: 'CLT contra PJ, quanto pedir numa proposta e as ações da empresa.',
+     steps: () => [
+      sOpts('carr', 'obj', 'O que você quer ver na Carreira?', () => `Hoje você é ${D.regime === 'pj' ? 'PJ' : 'CLT'}, com ${brl(D.bruto)} ${D.regime === 'pj' ? 'de faturamento' : 'de salário bruto'}. Os benefícios do primeiro acesso já estão lá.`,
+        [['cmp', 'Comparar CLT e PJ', 'Quanto sobra no bolso em cada um'], ['prop', 'Avaliar uma proposta', 'Uma oferta que você recebeu'], ['acoes', 'As ações da empresa', 'Stock options, RSU, vesting'], ['nada', 'Só estou olhando', '']]),
+      sOpts('carr', 'propT', 'A proposta é CLT ou PJ?', '', [['clt', 'CLT'], ['pj', 'PJ']], { so: () => MV('carr', 'obj') === 'prop' }),
+      sMoney('carr', 'propV', () => MV('carr', 'propT') === 'pj' ? 'Qual o faturamento mensal proposto?' : 'Qual o salário bruto proposto?', '', { so: () => MV('carr', 'obj') === 'prop', min: 500 }),
+      { id: 'carr:acoes', sec: 1, so: () => MV('carr', 'obj') === 'acoes' || 'stock' in (D.ben || {}),
+        render() { const v = MV('carr', 'ac') || {}; return `<div><h1>Conte sobre as ações da empresa</h1></div><p class="lead">O essencial. O resto (preço de exercício, vesting) você completa no módulo.</p>${'stock' in (D.ben || {}) ? `<div class="por">${ICO_I}<span>Você marcou <b>ações da empresa</b> nos benefícios do primeiro acesso.</span></div>` : ''}
+          <div class="field"><label for="ac_e" class="hint">Empresa</label><input class="inp" id="ac_e" value="${E(v.e || '')}" placeholder="Nome da empresa" style="font-size:18px;min-height:52px"></div>
+          <div class="hint">Tipo</div><div style="display:flex;gap:8px;flex-wrap:wrap">${[['opcao', 'Stock options'], ['rsu', 'RSU'], ['phantom', 'Phantom']].map(([k, t]) => `<button type="button" class="chip" data-ac="${k}" aria-pressed="${v.t === k}">${t}</button>`).join('')}</div>
+          <div class="field"><label for="ac_q" class="hint">Quantidade (aproximada)</label><input class="inp" id="ac_q" inputmode="numeric" value="${v.q ? v.q.toLocaleString('pt-BR') : ''}" placeholder="0" style="font-size:18px;min-height:52px"></div>`; },
+        bind() { const set = (k, x) => { MS('carr', 'ac', { ...(MV('carr', 'ac') || {}), [k]: x }); upd(); };
+          q('#ac_e').oninput = e => set('e', e.target.value.trim()); q('#ac_q').oninput = e => { fmtIn(e.target); set('q', num(e.target.value)); };
+          qa('[data-ac]').forEach(b => b.onclick = () => { set('t', b.dataset.ac); render(); }); },
+        ok: () => { const v = MV('carr', 'ac') || {}; return (v.e || '').length > 1 && !!v.t && v.q > 0; }, falta: 'Preencha empresa, tipo e quantidade' },
+      { id: 'carr:fim', fim: true, render: resCarr, cta: 'Salvar e ir para Carreira' }] },
+   { id: 'agen', nome: 'Agenda', letra: 'A', cor: '#34d399', tabs: ['agcal', 'aglis'], desc: 'Contas do mês, datas importantes e lembretes num calendário só.',
+     steps: () => [
+      { id: 'agen:contas', sec: 1,
+        render() { const v = MV('agen', 'c') || {}; return `<div><h1>Em que dia vencem as suas contas?</h1></div><p class="lead">Marque as que você tem e o dia do vencimento.</p>
+          <div class="bn">${CONTAS.map((n, i) => `<div><label><input type="checkbox" data-c="${i}" ${n in v ? 'checked' : ''}>${n}</label>${n in v ? `<div style="margin:0 0 12px 34px;display:flex;align-items:center;gap:8px"><span class="hint">Dia</span><input class="inp" data-d="${i}" inputmode="numeric" maxlength="2" value="${v[n] || ''}" placeholder="?" aria-label="${n}, dia do vencimento" style="width:80px;min-height:44px;font-size:17px;padding:8px 12px;border-width:1px"></div>` : ''}</div>`).join('')}</div>
+          <button type="button" class="opt" role="checkbox" aria-checked="${!!MV('agen', 'nenhuma')}" id="agN" style="padding:12px 16px"><span class="rd"></span><span class="t" style="font-size:15.5px">Pago tudo no débito automático</span></button>`; },
+        bind() { qa('[data-c]').forEach(c => c.onchange = () => { const v = { ...(MV('agen', 'c') || {}) }, n = CONTAS[c.dataset.c]; if (c.checked) { v[n] = null; MS('agen', 'nenhuma', false); } else delete v[n]; MS('agen', 'c', v); render(); });
+          qa('[data-d]').forEach(i => i.oninput = () => { const v = { ...(MV('agen', 'c') || {}) }, d = Math.min(31, +i.value.replace(/\D/g, '')) || null; i.value = d || ''; v[CONTAS[i.dataset.d]] = d; MS('agen', 'c', v); upd(); });
+          q('#agN').onclick = () => { const x = !MV('agen', 'nenhuma'); MS('agen', 'nenhuma', x); if (x) MS('agen', 'c', {}); render(); }; },
+        ok: () => MV('agen', 'nenhuma') || (Object.keys(MV('agen', 'c') || {}).length > 0 && Object.values(MV('agen', 'c')).every(Boolean)), falta: 'Marque as contas e o dia de cada uma' },
+      sOpts('agen', 'av', 'Quando quer ser avisado?', 'O aviso aparece no sino do app.', [['0', 'No dia'], ['1', 'Um dia antes'], ['3', 'Três dias antes']], { so: () => !MV('agen', 'nenhuma') }),
+      { id: 'agen:fim', fim: true, render: resAgen, cta: 'Salvar e ir para a Agenda' }] },
+   { id: 'preco', nome: 'Radar de preços', letra: 'R', cor: '#EF6F5E', tabs: null, desc: 'O que você quer comprar, o preço que aceita pagar e o aviso quando ficar barato.',
+     steps: () => [
+      sText('preco', 'prod', 'O que você quer comprar?', 'Uma coisa de cada vez. Depois dá para colocar mais.', { ph: 'Ex.: iPhone 17', chips: ['Celular novo', 'TV', 'Notebook', 'Geladeira', 'Bicicleta', 'Sofá'] }),
+      sMoney('preco', 'max', () => `Até quanto você pagaria${MV('preco', 'prod') ? ' no ' + E(MV('preco', 'prod')) : ''}?`, 'O radar avisa quando aparecer por esse preço ou menos.', { min: 1 }),
+      sOpts('preco', 'pr', 'Para quando?', '', [['sem', 'Sem pressa', 'Espero o melhor preço'], ['3', 'Em até 3 meses'], ['6', 'Em até 6 meses'], ['ano', 'Até o fim do ano']]),
+      { id: 'preco:fim', fim: true, render: resPreco, cta: 'Salvar e ir para o Radar' }] }
+  ];
+  // abas do Radar vêm do MODS do painel
+  T(() => { const m = MODS.find(x => x.id === 'preco'); MODULOS.find(x => x.id === 'preco').tabs = m ? m.tabs : []; });
+
+  /* --- resultados --- */
+  function resCart() { const m = modAtual, cl = MV('cart', 'cl') || {}, tot = Object.values(cl).reduce((a, b) => a + b, 0), al = ALOC[D.perfil] || ALOC.mod, res = MV('cart', 'res') || 0, mes = res / Math.max(1, D.custos);
+    if (!tot) return resHead(m, 'Vamos começar do zero') + `<div class="insight"><span>Você ainda não investe. Com ${brl(MV('cart', 'aporte') || 0)} por mês, o primeiro passo é a reserva de emergência: ${brl(D.custos * 6)}.</span></div>`;
+    const parts = CLASSES.map(([k]) => [k, cl[k] || 0]).filter(p => p[1] > 0);
+    return resHead(m, `${brl(tot)} investidos`) + `<div class="kpi" style="flex-direction:row;gap:16px;align-items:center">${rosca(parts)}<div style="display:flex;flex-direction:column;gap:4px;min-width:0;font-size:13px">${parts.map(([k, v]) => `<span style="display:flex;gap:6px;align-items:center"><i style="width:9px;height:9px;border-radius:3px;background:${CORES[k]};flex:none"></i>${CLASSES.find(c => c[0] === k)[1]} <b style="margin-left:auto;font-variant-numeric:tabular-nums">${Math.round(v / tot * 100)}%</b></span>`).join('')}</div></div>
+     <div class="est"><span>Renda fixa hoje</span><b>${Math.round((cl.rf || 0) / tot * 100)}%</b><span>Sugerido para perfil ${(PERF[D.perfil] || PERF.mod).t.toLowerCase()}</span><b>${al.rf}%</b></div>
+     <div class="insight"><span>Reserva de emergência: <b class="v" style="${mes < 6 ? 'color:var(--alt)' : ''}">${mes.toFixed(1).replace('.', ',')} meses</b> de custos${mes < 6 ? `. Faltam ${brl(D.custos * 6 - res)} para chegar a 6 meses.` : '. Está completa.'}</span></div>
+     <p class="hint">Cada tipo entra na Carteira como uma aplicação. Depois você separa por banco e produto, ou importa o extrato da corretora.</p>`; }
+  function indepCalc() { const al = { menor: .8, igual: 1, maior: 1.3 }[MV('indep', 'custo') || 'igual'], custo = D.custos * al, outV = (MV('indep', 'renda') || []).includes('outros') ? (MV('indep', 'outV') || 0) : 0, numero = Math.max(0, custo - outV) * 12 / .04, r = (PERF[D.perfil] || PERF.mod).r, ap = MV('cart', 'aporte') != null ? MV('cart', 'aporte') : sobraMes();
+    let pat = Math.max(0, D.pl || 0), m = 0; while (pat < numero && m < 720) { pat = pat * Math.pow(1 + r, 1 / 12) + ap; m++; } return { custo, outV, numero, m, ap }; }
+  function resIndep() { const m = modAtual, c = indepCalc(), meta = MV('indep', 'idade'), a = yrs(), y = Math.floor(c.m / 12), mm = c.m % 12, aos = a + y, ok = aos <= meta, pct = c.numero ? Math.min(100, Math.max(0, D.pl || 0) / c.numero * 100) : 100;
+    return resHead(m, c.m >= 720 ? 'Com o ritmo de hoje, a data fica longe' : `Você pode parar aos ${aos} anos`) + `
+     <div class="kpis"><div class="kpi"><span>O seu número</span><b>${brl(c.numero)}</b><small>${brl(c.custo)} por mês${c.outV ? `, menos ${brl(c.outV)} de ${E(MV('indep', 'outN'))}` : ''}, sacando 4% ao ano</small></div><div class="kpi"><span>A sua data</span><b>${c.m >= 720 ? '+60 anos' : `${y} anos e ${mm} meses`}</b><small>investindo ${brl(c.ap)} por mês</small></div></div>
+     <div class="kpi"><span>Você já tem</span><b>${pctTxt(pct)} do número</b><div style="height:10px;border-radius:9px;background:var(--line);margin-top:6px;overflow:hidden"><i style="display:block;height:100%;width:${pct}%;background:${m.cor}"></i></div></div>
+     <div class="insight"><span>${ok ? `Dá para chegar antes da meta de ${meta} anos.` : `A sua meta é ${meta} anos. O módulo mostra o que adianta a data: investir mais, gastar menos ou mudar a carteira.`}</span><span class="hint">Conta aproximada, em dinheiro de hoje, com ${pctTxt((PERF[D.perfil] || PERF.mod).r * 100)} ao ano acima da inflação. O módulo refaz com o seu Meu plano.</span></div>`; }
+  function resBens() { const m = modAtual, imo = (MV('bens', 'imoV') || 0) - (MV('bens', 'imo') === 'fin' ? MV('bens', 'imoS') || 0 : 0), car = MV('bens', 'carV') || 0, parc = (MV('bens', 'imo') === 'fin' ? MV('bens', 'imoP') || 0 : 0) + (MV('bens', 'car') === 'fin' ? MV('bens', 'carP') || 0 : 0), pd = (MV('bens', 'planos') || []).includes('nenhum') ? {} : MV('bens', 'pd') || {}, ap = MV('cart', 'aporte') != null ? MV('cart', 'aporte') : sobraMes();
+    return resHead(m, `${brl(imo + car)} em bens`) + `<div class="kpis"><div class="kpi"><span>Imóvel (sem a dívida)</span><b>${brl(imo)}</b></div><div class="kpi"><span>Veículo</span><b>${brl(car)}</b></div></div>
+     ${parc ? `<div class="insight"><span>Parcelas: <b>${brl(parc)}</b> por mês, ${Math.round(parc / Math.max(1, liquido().liq) * 100)}% do que cai na conta.</span><span class="hint">Se a parcela já está nos seus custos (Moradia ou Carro), deixe lá: o financiamento fica cadastrado em Bens, fora do plano, para não contar duas vezes.</span></div>` : ''}
+     ${Object.keys(pd).length ? `<div class="est">${Object.entries(pd).sort((a, b) => a[1].a - b[1].a).map(([k, p]) => { const junta = ap * mesesAte(p.a), ok = junta >= p.v; return `<span>${PLANOS[k]} · ${p.a}<br><small class="hint">${brl(p.v)}</small></span><b style="color:${ok ? 'var(--ok)' : 'var(--alt)'};font-size:13px">${ok ? 'Dá tempo' : 'Falta ' + brl(p.v - junta)}</b>`; }).join('')}</div><p class="hint">Aproximado, guardando ${brl(ap)} por mês só para isso. Os planos entram na Simulação, para você testar cada um.</p>` : ''}`; }
+  function resFam() { const m = modAtual, id = MV('fam', 'idades') || [], tem = ['parf', 'filhos'].includes(MV('fam', 'mora')) || MV('fam', 'tem') === 'sim', fase = x => x < 4 ? 'Creche' : x < 15 ? 'Escola' : x < 18 ? 'Ensino médio' : x < 23 ? 'Faculdade' : 'Adulto';
+    return resHead(m, tem ? `${id.length} ${id.length > 1 ? 'filhos' : 'filho'} no seu plano` : 'Família no plano') + (tem ? `<div class="est">${id.map((x, i) => `<span>${i + 1}º filho · ${x} anos</span><b>${fase(x)}</b>`).join('')}</div><p class="hint">Os custos de cada fase vêm com valores médios. Como os custos de hoje já estão no seu orçamento, o plano só soma o que muda nas próximas fases.</p>` : '') +
+     (MV('fam', 'plano') && MV('fam', 'plano') !== 'nao' ? `<div class="insight"><span>O filho planejado entra como <b>simulação</b>, com chegada, licença e custos por fase, para você ver o efeito antes de decidir.</span></div>` : '') +
+     (['par', 'parf'].includes(MV('fam', 'mora')) ? `<div class="por">${ICO_I}<span>No módulo, vocês montam o orçamento da casa e a divisão das contas.</span></div>` : ''); }
+  function resCarr() { const m = modAtual, o = MV('carr', 'obj');
+    let topo = '';
+    if (o === 'prop') { const bk = { regime: D.regime, bruto: D.bruto, tipo: D.tipo }, hoje = liquido().liq; D.regime = MV('carr', 'propT'); D.bruto = MV('carr', 'propV'); if (D.regime === 'pj' && !D.tipo) D.tipo = 'simples'; const prop = liquido().liq; Object.assign(D, bk); const dif = prop - hoje;
+      return resHead(m, dif >= 0 ? `A proposta põe ${brl(dif)} a mais no bolso` : `A proposta tira ${brl(-dif)} do bolso`) + `<div class="kpis"><div class="kpi"><span>Hoje (${D.regime === 'pj' ? 'PJ' : 'CLT'})</span><b>${brl(hoje)}</b><small>por mês, aproximado</small></div><div class="kpi"><span>Proposta (${MV('carr', 'propT') === 'pj' ? 'PJ' : 'CLT'})</span><b style="color:${dif >= 0 ? 'var(--ok)' : 'var(--alt)'}">${brl(prop)}</b><small>por mês, aproximado</small></div></div><p class="hint">Sem benefícios, 13º e férias. O módulo compara o pacote completo, com os benefícios que você já informou.</p>`; }
+    if (MV('carr', 'ac')) { const a = MV('carr', 'ac'), tn = { opcao: 'stock options', rsu: 'RSU', phantom: 'phantom shares' }[a.t]; topo = resHead(m, `${a.q.toLocaleString('pt-BR')} ${tn} da ${E(a.e)}`) + `<div class="insight"><span>No módulo você coloca o vesting, o preço de exercício e simula quanto valem num evento de venda da empresa.</span></div>`; }
+    return (topo || resHead(m, 'Tudo pronto para comparar')) + `<div class="insight"><span>Com o seu ${D.regime === 'pj' ? 'faturamento' : 'salário'} de ${brl(D.bruto)} e os benefícios do primeiro acesso, o módulo mostra o equivalente do outro lado e quanto pedir numa proposta. Ajuste lá o que quiser.</span></div>`; }
+  function resAgen() { const m = modAtual, c = MV('agen', 'c') || {}, hoje = new Date().getDate(), tem = d => Object.entries(c).filter(([, x]) => x === d).map(([n]) => n);
+    return resHead(m, MV('agen', 'nenhuma') ? 'Agenda pronta' : `${Object.keys(c).length} contas na agenda`) + `<div class="kpi"><div style="display:grid;grid-template-columns:repeat(7,1fr);gap:4px;font-size:12px;text-align:center">${Array.from({ length: 31 }, (_, i) => i + 1).map(d => `<span title="${tem(d).join(', ')}" style="padding:6px 0;border-radius:8px;${tem(d).length ? `background:${m.cor};color:#0E1A2B;font-weight:800` : d === hoje ? 'border:1px solid var(--acc)' : ''}">${d}</span>`).join('')}</div></div>
+     ${Object.keys(c).length ? `<div class="est">${Object.entries(c).sort((a, b) => a[1] - b[1]).map(([n, d]) => `<span>${n}</span><b>dia ${d}</b>`).join('')}</div><div class="insight"><span>Aviso ${{ '0': 'no dia', '1': 'um dia antes', '3': 'três dias antes' }[MV('agen', 'av')] || ''} de cada vencimento, no sino do app.</span></div>` : '<div class="insight"><span>A Agenda já lembra de fechar o mês todo dia 1. Compromissos e listas de compras você coloca lá.</span></div>'}`; }
+  function resPreco() { const m = modAtual, mx = MV('preco', 'max') || 0, sm = sobraMes();
+    return resHead(m, `Radar ligado: ${E(MV('preco', 'prod') || '')}`) + `<div class="kpi"><span>Você paga até</span><b>${brl(mx)}</b><small>O radar acompanha o preço e avisa no sino quando aparecer por isso ou menos.</small></div>
+     <div class="insight"><span>${sm ? `Com a sua sobra, o dinheiro fica pronto em cerca de <b>${Math.max(1, Math.ceil(mx / sm))} ${Math.ceil(mx / sm) > 1 ? 'meses' : 'mês'}</b>. O módulo mostra se vale mais à vista ou parcelado.` : 'O módulo mostra se vale mais à vista ou parcelado.'}</span></div>`; }
+
+  /* --- grava cada módulo no painel --- */
+  const hojeISO = () => { const d = new Date(); return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0'); };
+  const semOnb = L => (L || []).filter(x => !(x && /^onb-/.test(String(x.id))));
+  const APLICA = {
+    cart() { const st = state, cl = MV('cart', 'cl') || {}, res = Math.min(MV('cart', 'res') || 0, cl.rf || 0), inst = (MV('cart', 'onde') || []).filter(x => x !== 'nada' && x !== 'Outro').join(', ').slice(0, 60), d = hojeISO();
+      const nova = (id, nome, tipo, v, extra) => ({ id: 'onb-' + id, nome, inst, tipo, idx: ATIVO_RV[tipo] ? '' : 'pos', taxa: ATIVO_RV[tipo] ? '' : 100, adm: '', cc: 'lp', data: d, venc: '', aplic: v, atual: v, receb: 0, liq: 'Diária', classe: '', ...(extra || {}) });
+      const L = []; if (res > 0) L.push(nova('res', 'Reserva de emergência', 'cdb', res)); if ((cl.rf || 0) - res > 0) L.push(nova('rf', 'Renda fixa', 'cdb', cl.rf - res));
+      if (cl.acoes) L.push(nova('acoes', 'Ações', 'acoes', cl.acoes)); if (cl.fii) L.push(nova('fii', 'Fundos imobiliários', 'fii', cl.fii)); if (cl.ext) L.push(nova('ext', 'Exterior', 'intl', cl.ext));
+      if (cl.cripto) L.push(nova('cripto', 'Cripto', 'outro', cl.cripto)); if (cl.prev) L.push(nova('prev', 'Previdência', 'prev', cl.prev));
+      st.ativos = semOnb(st.ativos).concat(L);
+      if (MV('cart', 'aporte') != null && st.sim) st.sim.aporte = MV('cart', 'aporte');
+      if (D.plMudou) { st.plan.valor = Math.round(D.pl || 0); T(() => cpInicial()); } },
+    indep() { const I = state.indep; I.meta = Math.max(18, Math.min(100, +MV('indep', 'idade') || I.meta)); I.nivel = { menor: 'enxuto', igual: 'atual', maior: 'conf' }[MV('indep', 'custo') || 'igual'];
+      if (D.nasc && !I.nasc) I.nasc = D.nasc.slice(0, 7);
+      I.extras = semOnb(I.extras); if ((MV('indep', 'renda') || []).includes('outros') && MV('indep', 'outV') > 0) I.extras.push({ id: 'onb-renda', nome: 'Renda: ' + (MV('indep', 'outN') || 'outros') + ' (abate do custo)', valor: -Math.round(MV('indep', 'outV')) }); },
+    bens() { const st = state, L = [], cen = st.cenarios.find(x => x.id === 'base') || st.cenarios[0], m0 = mKey(HOJE_IDX);
+      const meu = (tipo, nome, v) => { const b = novaCompra(tipo); Object.assign(b, { id: 'onb-' + tipo + '-meu', nome, valor: v, entrada: v, mes: m0, modo: 'avista', custos: 0, mudanca: 0, economia: 0, posse: 0 }); if (tipo === 'imovel') b.valorizModo = 'ipca'; return b; };
+      const divida = (id, nome, parc, n) => { const b = novaCompra('pagar'); Object.assign(b, { id: 'onb-' + id, nome, quem: 'banco', parcela: parc, prazo: Math.max(1, Math.round(n)), taxa: 0, mes: mKey(HOJE_IDX + 1) }); return b; };
+      if (MV('bens', 'imo') && MV('bens', 'imo') !== 'nao') { L.push(meu('imovel', 'Meu imóvel', MV('bens', 'imoV'))); if (MV('bens', 'imo') === 'fin' && MV('bens', 'imoP') > 0) L.push(divida('imofin', 'Financiamento do imóvel', MV('bens', 'imoP'), Math.ceil((MV('bens', 'imoS') || 0) / MV('bens', 'imoP')))); }
+      if (MV('bens', 'car') && MV('bens', 'car') !== 'nao') { L.push(meu('carro', 'Meu carro', MV('bens', 'carV'))); if (MV('bens', 'car') === 'fin' && MV('bens', 'carP') > 0) L.push(divida('carfin', 'Financiamento do carro', MV('bens', 'carP'), MV('bens', 'carN') || 12)); }
+      const pd = (MV('bens', 'planos') || []).includes('nenhum') ? {} : MV('bens', 'pd') || {}, sim = [];
+      Object.entries(pd).forEach(([k, p]) => { if (!(p.v > 0)) return; const mes = p.a + '-06', tipo = k === 'casa' ? 'imovel' : k === 'carro' ? 'carro' : 'evento', b = novaCompra(tipo);
+        Object.assign(b, { id: 'onb-plano-' + k, nome: PLANOS[k], valor: p.v, mes }); if (tipo === 'evento') { b.evTipo = k === 'estudo' ? 'estudo' : k; b.entrada = p.v; } else b.entrada = Math.round(p.v * (tipo === 'imovel' ? .25 : .3));
+        L.push(b); sim.push(b.id); });
+      const ids = new Set(L.map(b => b.id)); st.cenarios.forEach(c => { c.inc = (c.inc || []).filter(id => !/^onb-/.test(id) || ids.has(id)); });
+      st.compras = semOnb(st.compras).concat(L); if (cen) sim.forEach(id => { if (!cen.inc.includes(id)) cen.inc.push(id); }); },
+    fam() { const st = state; famNormalizar(st); const F = st.fam; F.pessoas = F.pessoas.filter(p => !/^onb-/.test(p.id)); T(() => famEu());
+      if (['par', 'parf'].includes(MV('fam', 'mora'))) F.pessoas.push(famNorm({ id: 'onb-conj', tipo: 'conjuge', nome: 'Cônjuge' }));
+      const tem = ['parf', 'filhos'].includes(MV('fam', 'mora')) || MV('fam', 'tem') === 'sim';
+      if (tem) (MV('fam', 'idades') || []).forEach((x, i) => F.pessoas.push(famNorm({ id: 'onb-f' + i, tipo: 'filho', nome: 'Filho ' + (i + 1), nasc: mKey(HOJE_IDX - x * 12 - 6), dep: true, uso: 'real' })));
+      const pl = MV('fam', 'plano'), em = { '2': 18, depois: 48, talvez: 36 }[pl];
+      if (em) F.pessoas.push(famNorm({ id: 'onb-prev', tipo: 'filho', nome: 'Bebê (planejado)', nasc: mKey(HOJE_IDX + em), dep: true, uso: 'sim' }));
+      T(() => { famPeC.k = null; }); },
+    carr() { const p = state.pj, o = MV('carr', 'obj');
+      if (o === 'prop') { const pt = MV('carr', 'propT'), v = MV('carr', 'propV');
+        if (D.regime === 'clt' && pt === 'pj') { p.dir = 'cltpj'; p.clt = D.bruto; p.fat = v; } else if (D.regime === 'pj' && pt === 'clt') { p.dir = 'pjclt'; p.fat = D.bruto; p.clt = v; }
+        else if (pt === 'pj') { p.dir = 'cltpj'; p.fat = v; } else { p.dir = 'pjclt'; p.clt = v; } }
+      const a = MV('carr', 'ac'); if (a && a.e) { const S = state.so; S.empresas = S.empresas.filter(e => e.id !== 'onb-emp'); const e = soNovaEmpresa(S.empresas.length + 1); Object.assign(e, { id: 'onb-emp', nome: a.e });
+        e.grants.push({ id: 'onb-g', data: mKey(HOJE_IDX), tipo: a.t || 'opcao', qtd: a.q || null, strike: null, anos: 4, cliff: 12, freq: 'mensal', acel: 'nenhuma', exerc: 0, expira: 10 }); S.empresas.push(e); S.sel = e.id; } },
+    agen() { const A = state.agenda; A.evs = semOnb(A.evs); if (MV('agen', 'nenhuma')) return; const av = +MV('agen', 'av') || 0, h = new Date();
+      Object.entries(MV('agen', 'c') || {}).forEach(([n, dia], i) => { if (!dia) return; let y = h.getFullYear(), mo = h.getMonth(); if (dia < h.getDate()) mo++; if (mo > 11) { mo = 0; y++; } const dm = new Date(y, mo + 1, 0).getDate();
+        A.evs.push(agNormEv({ id: 'onb-ag' + i, titulo: n, data: `${y}-${String(mo + 1).padStart(2, '0')}-${String(Math.min(dia, dm)).padStart(2, '0')}`, hora: '', rep: 'mes', cat: 'conta', quem: '', aviso: av, nota: 'Do primeiro acesso da Agenda.', ir: '', com: [] })); }); },
+    preco() { const R = state.radar; R.itens = semOnb(R.itens); const pr = MV('preco', 'pr'), ate = pr === '3' ? mKey(HOJE_IDX + 3) : pr === '6' ? mKey(HOJE_IDX + 6) : pr === 'ano' ? new Date().getFullYear() + '-12' : '';
+      const x = rdNormItem({ id: 'onb-rd', nome: MV('preco', 'prod'), termo: MV('preco', 'prod'), alvo: MV('preco', 'max'), ate, prio: pr === '3' ? 'alta' : 'media', st: 'vig', precos: [] }); R.itens.push(x); R.sel = x.id; }
+  };
+
+  /* --- entrar e sair de um módulo --- */
+  const modSt = () => { const o = state && state.onb; if (!o || typeof o !== 'object') return null; if (!o.mods || typeof o.mods !== 'object') o.mods = {}; return o.mods; };
+  function modIntro(m) { const n = m.steps().filter(x => x.sec && vis(x)).length;
+    return { id: m.id + ':oi', render() { return `<div class="hero fade" style="gap:16px"><span style="width:56px;height:56px;border-radius:16px;background:${m.cor};display:grid;place-items:center;color:#0E1A2B;font:800 24px var(--f-d)">${m.letra}</span>
+       ${m.obrig ? '<span class="eyebrow" style="color:var(--acc)">Obrigatório · base dos seus números</span>' : ''}
+       <h1>${m.nome}</h1><p class="lead">${m.desc}</p>
+       <div class="por">${ICO_I}<span>${n} ${n > 1 ? 'perguntas rápidas' : 'pergunta rápida'}. Já usamos o que você respondeu na configuração inicial.</span></div>
+       ${m.obrig ? '' : '<button class="link" type="button" id="depois">Configurar depois</button>'}</div>`; },
+      bind() { if (q('#depois')) q('#depois').onclick = () => sairMod(true); }, cta: 'Começar' }; }
+  function abrirMod(id, forca) {
+    if (typeof state === 'undefined' || !state || !state.onb || !state.onb.resp) return false;
+    const m = MODULOS.find(x => x.id === id); if (!m) return false; if (!root) monta();
+    D = Object.assign(novoD(), JSON.parse(JSON.stringify(state.onb.resp))); D.m = D.m || {}; D.plMudou = false;
+    if (id === 'bens' && D.soma) { if (MV('bens', 'imoV') == null && D.soma.imo) MS('bens', 'imoV', D.soma.imo); if (MV('bens', 'carV') == null && D.soma.vei) MS('bens', 'carV', D.soma.vei); }
+    modAtual = m; refazer = false;
+    const st = m.steps(); st.forEach(x => { if (x.fim) x.ok = () => true; });
+    F = [modIntro(m), ...st]; cur = 0; ultima = '';
+    const sa = q('#sair'); sa.hidden = false; sa.textContent = m.obrig ? 'Agora não' : 'Sair';
+    root.hidden = false; aberto = true; document.documentElement.classList.add('onb-on');
+    T(() => { if (typeof tourI !== 'undefined' && tourI >= 0) tourFecha(false); if (typeof gK !== 'undefined' && gK) guiaFecha(false); });
+    render(); return true;
+  }
+  function sairMod(depois) { const m = modAtual, ms = modSt(); if (m && ms && !m.obrig && ms[m.id] !== 'feito') ms[m.id] = { depois: new Date().toISOString() };
+    modAtual = null; fecha(); if (ms) T(() => save());
+    if (m && !m.obrig) T(() => toast2(`${m.nome}: dá para configurar depois em Configurações › Configuração inicial.`));
+    if (m && m.obrig) T(irHome); }
+  function fimMod() { const m = modAtual, ms = modSt();
+    T(() => APLICA[m.id]()); if (ms) ms[m.id] = 'feito';
+    // as respostas do módulo ficam junto das do primeiro acesso
+    if (state.onb.resp) { state.onb.resp.m = Object.assign({}, state.onb.resp.m || {}, { [m.id]: (D.m || {})[m.id] || {} }); if (D.plMudou) { state.onb.resp.pl = D.pl; state.onb.resp.soma = D.soma; } }
+    modAtual = null; fecha(); save(); T(() => { planCache = null; }); T(() => renderTab()); T(() => toast2(`${m.nome} configurado.`)); }
+  // aviso curto fora da janela (o toast da janela some junto com ela)
+  function toast2(msg) { let t = document.getElementById('onb-aviso'); if (!t) { t = document.createElement('div'); t.id = 'onb-aviso'; t.setAttribute('role', 'status'); document.body.append(t); }
+    t.textContent = msg; t.className = 'on'; clearTimeout(toast2.h); toast2.h = setTimeout(() => { t.className = ''; }, 3200); }
+  const modDaTab = t => MODULOS.find(m => (m.tabs || []).includes(t));
+  function deveAbrir(m) { const ms = modSt(); if (!ms || !state.onb.feito || aberto) return false; const s = ms[m.id]; if (s === 'feito') return false;
+    if (s && s.depois) { if (m.obrig) return true; return Date.now() - Date.parse(s.depois) > 7 * 864e5; } return true; }
+  { const o = window.showTab; if (typeof o === 'function') window.showTab = function (t) { const r = o.apply(this, arguments); T(() => { const m = modDaTab(t); if (m && deveAbrir(m)) setTimeout(() => { if (!aberto && typeof tab !== 'undefined' && modDaTab(tab) === m) abrirMod(m.id); }, 250); }); return r; }; }
+  // Configurações › Configuração inicial: lista dos módulos com Configurar / Refazer
+  function pintaCfg() { const el = document.getElementById('cfg-onb-mods'); if (!el) return; const ms = modSt();
+    if (!ms || !state.onb.resp) { el.innerHTML = '<p class="hint">Disponível depois da configuração inicial.</p>'; return; }
+    el.innerHTML = MODULOS.map(m => { const s = ms[m.id]; return `<button type="button" class="btn ghost tiny" data-onbmod="${m.id}">${s === 'feito' ? '✓ ' : ''}${m.nome}${s === 'feito' ? ' · refazer' : ''}</button>`; }).join(' '); }
+  document.addEventListener('click', e => { const b = e.target.closest && e.target.closest('#onb [data-ajalvo]'); if (!b) return; e.preventDefault(); ajAlvo(+b.dataset.ajalvo); });
+  document.addEventListener('click', e => { const b = e.target.closest && e.target.closest('[data-onbmod]'); if (!b) return; e.preventDefault(); abrirMod(b.dataset.onbmod, true); });
+  { const p = document.getElementById('p-config'); if (p) new MutationObserver(() => { if (!p.hidden) T(pintaCfg); }).observe(p, { attributes: true, attributeFilter: ['hidden'] }); }
+  window.onbModulo = abrirMod;
   window.onbAbrir = abrir;
   // Configurações › Configuração inicial, e a linha em Mais no celular
   document.addEventListener('click', e => { const b = e.target.closest && e.target.closest('[data-onbrefaz]'); if (!b) return; e.preventDefault(); abrir({ refazer: true }); });
