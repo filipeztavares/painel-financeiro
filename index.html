@@ -2610,7 +2610,7 @@ html[data-lb="b"] .block-title .desc{font-size:14px;color:var(--muted);margin-to
     </div>
     <div class="nav-mobile-sub" id="navMobileSub"></div>
   </div>
-  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 376</div></div>
+  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 377</div></div>
 </nav>
 <div class="sino-pop" id="sino-pop" role="dialog" aria-label="Atualizações das bases" hidden></div>
 <div class="sino-pop" id="pess-pop" role="dialog" aria-label="Seus avisos" hidden></div>
@@ -4425,6 +4425,112 @@ html[data-lb="b"] .block-title .desc{font-size:14px;color:var(--muted);margin-to
   </section>
 </div></div>
 
+<style>
+/* ---------- v377: layout do celular (casca LifeBoard). Só vale com html.cel (telas até 700px). ---------- */
+#cel-top,#cel-nav,#cel-view,#cel-lemb{display:none}
+html.cel body{padding-bottom:0}
+html.cel .sidebar,html.cel #lb-top,html.cel .side-foot,html.cel #voltar{display:none!important}
+html.cel[data-celv="painel"] #pt-hd{display:none!important}
+html.cel #amb-teste{top:auto!important;bottom:calc(74px + env(safe-area-inset-bottom));left:10px!important;transform:none!important;border-radius:6px!important;font-size:9.5px!important;padding:3px 7px!important;opacity:.9}
+html.cel.lb-demo body::after{top:auto!important;bottom:calc(96px + env(safe-area-inset-bottom))!important;left:10px!important;transform:none!important;font-size:9.5px!important;padding:3px 7px!important}
+html.cel .main{margin:0!important;padding:0!important}
+html.cel .main>.wrap{padding:66px 14px 104px!important;max-width:none!important}
+html.cel[data-celv="shell"] .main>.wrap>:not(#cel-view){display:none!important}
+html.cel[data-celv="painel"] #cel-view{display:none!important}
+html.cel [data-celoculto]{display:none!important}
+html.cel[data-celv="painel"] .main>.wrap>section>.block-title{display:none}
+html.cel #cel-top{display:flex;position:fixed;top:0;left:0;right:0;z-index:900;height:58px;align-items:center;gap:2px;padding:0 4px 0 6px;background:var(--bg);border-bottom:1px solid var(--line);font-family:var(--f-ui);padding-top:env(safe-area-inset-top)}
+html.cel #cel-nav{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));position:fixed;left:0;right:0;bottom:0;z-index:900;height:calc(66px + env(safe-area-inset-bottom));padding-bottom:env(safe-area-inset-bottom);background:var(--panel);border-top:1px solid var(--line);font-family:var(--f-ui)}
+html.cel #cel-view{display:flex;flex-direction:column;gap:14px;font-family:var(--f-ui);color:var(--ink)}
+html.cel #cel-view>*{flex-shrink:0}
+html.cel #cel-lemb{display:flex;position:fixed;right:14px;bottom:calc(80px + env(safe-area-inset-bottom));z-index:901;flex-direction:column;align-items:flex-end;gap:8px}
+html.cel #cel-lemb[hidden]{display:none}
+#cel-top .cb{width:44px;height:44px;flex:none;border:0;background:none;color:var(--ink);display:grid;place-items:center;border-radius:12px;cursor:pointer;position:relative;padding:0}
+#cel-top .cb .dot{position:absolute;top:9px;right:10px;min-width:16px;height:16px;border-radius:99px;background:#D9483B;color:#fff;font:800 10px/16px var(--f-ui);text-align:center;padding:0 3px;border:2px solid var(--bg)}
+#cel-top .tt{flex:1;min-width:0;display:flex;flex-direction:column;padding-left:6px}
+#cel-top .tt small{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);display:flex;align-items:center;gap:6px;white-space:nowrap;overflow:hidden}
+#cel-top .tt small i{width:8px;height:8px;border-radius:50%;background:var(--celm,#F0A46B);flex:none}
+#cel-top .tt b{font-family:var(--f-head);font-weight:800;font-size:19px;line-height:1.15;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#cel-top .logo{font-family:var(--f-head);font-weight:800;font-size:22px;letter-spacing:-.02em;padding-left:8px}
+#cel-top .logo em{font-style:normal;color:#C9772F}
+#cel-nav button{border:0;background:none;color:var(--muted);font:600 11px var(--f-ui);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;cursor:pointer;padding:0;min-width:0}
+#cel-nav .nb{width:50px;height:30px;border-radius:999px;display:grid;place-items:center}
+#cel-nav button[aria-current]{color:var(--ink);font-weight:800}
+#cel-nav button[aria-current] .nb{background:var(--accent-soft,rgba(168,88,42,.12));color:var(--accent)}
+#cel-view .c-card{background:var(--panel);border:1px solid var(--line);border-radius:18px}
+#cel-view .c-hero{padding:20px 18px 18px;display:flex;flex-direction:column;gap:10px;position:relative;overflow:hidden}
+#cel-view .c-hero::before{content:"";position:absolute;left:0;right:0;top:0;height:5px;background:var(--celm,#7FA6E0)}
+#cel-view .c-lab{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+#cel-view .c-big{font-family:var(--f-head);font-weight:800;font-size:32px;line-height:1.08;font-variant-numeric:tabular-nums;overflow-wrap:anywhere}
+#cel-view .c-h2{font-family:var(--f-head);font-weight:800;font-size:21px;line-height:1.15}
+#cel-view .c-sub{font-size:13px;color:var(--muted);line-height:1.4}
+#cel-view .c-trk{height:8px;border-radius:99px;background:var(--field);overflow:hidden;flex:1;min-width:0}
+#cel-view .c-trk i{display:block;height:100%;border-radius:99px;background:var(--celm,#7FA6E0)}
+#cel-view .c-trk i.acima{background:var(--bad)}
+#cel-view .c-barl{display:flex;align-items:center;gap:10px}
+#cel-view .c-chips{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+#cel-view .c-chips.c2{grid-template-columns:repeat(2,minmax(0,1fr))}
+#cel-view .c-chip{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:14px 10px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:2px;min-width:0;color:inherit;text-decoration:none;font:inherit;cursor:pointer}
+#cel-view .c-chip .v{font-family:var(--f-head);font-weight:800;font-size:18px;line-height:1.15;font-variant-numeric:tabular-nums}
+#cel-view .c-chip .l{font-size:11.5px;color:var(--muted);line-height:1.3}
+#cel-view .c-gt{font-size:12px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);padding:6px 2px 0}
+#cel-view .c-list{background:var(--panel);border:1px solid var(--line);border-radius:18px;overflow:hidden}
+#cel-view .c-it+.c-it{border-top:1px solid var(--line)}
+#cel-view .c-rw{display:flex;align-items:center;gap:12px;width:100%;min-height:62px;padding:10px 10px 10px 14px;border:0;background:none;color:inherit;font:inherit;text-align:left;cursor:pointer}
+#cel-view .c-nm{width:38px;height:38px;border-radius:11px;background:var(--mc,var(--celm,#7FA6E0));color:#0E1A2B;display:grid;place-items:center;font-weight:800;font-size:12px;flex:none;text-align:center;line-height:1.05}
+#cel-view .c-nm svg{width:24px;height:24px}
+#cel-view .c-rt{flex:1;min-width:0;display:flex;flex-direction:column}
+#cel-view .c-rt b{font-weight:700;font-size:15px;line-height:1.25}
+#cel-view .c-rt span{font-size:13px;color:var(--muted);line-height:1.35}
+#cel-view .c-rt span b{font-size:13px;color:var(--ink)}
+#cel-view .c-chev{color:var(--muted);flex:none;width:26px;display:grid;place-items:center;transition:transform .2s}
+#cel-view .c-chev.up{transform:rotate(180deg)}
+#cel-view .c-body{padding:4px 16px 18px;display:flex;flex-direction:column;gap:10px}
+#cel-view .c-kv{display:flex;align-items:center;gap:10px;font-size:13.5px}
+#cel-view .c-kv .k{flex:1;min-width:0}
+#cel-view .c-kv .v{font-weight:700;font-variant-numeric:tabular-nums;white-space:nowrap}
+#cel-view .c-kv.cbar{display:grid;grid-template-columns:minmax(0,1fr) 84px 82px;gap:12px}
+#cel-view .c-kv.cbar .v{text-align:right}
+#cel-view .c-kv .k small{display:block;color:var(--muted);font-size:12px}
+#cel-view .c-btn{min-height:44px;border-radius:12px;border:0;font:700 14px var(--f-ui);padding:0 16px;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:8px;width:100%}
+#cel-view .c-btn.p{background:var(--ink);color:var(--bg)}
+#cel-view .c-btn.s{background:var(--field);color:var(--ink)}
+#cel-view .c-alert{background:#FBEFD9;color:#0E1A2B;border-radius:14px;padding:10px 12px;display:flex;gap:10px;align-items:center;font-size:13.5px;line-height:1.35}
+#cel-view .c-alert .ai{width:28px;height:28px;border-radius:50%;background:#E8A33A;display:grid;place-items:center;flex:none;font-weight:800}
+#cel-view .c-tiles{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+#cel-view .c-tile{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:14px 12px;display:flex;flex-direction:column;gap:8px;min-height:116px;text-align:left;color:inherit;font:inherit;cursor:pointer}
+#cel-view .c-tile .ic{width:46px;height:46px;border-radius:13px;background:var(--mc);color:#0E1A2B;display:grid;place-items:center}
+#cel-view .c-tile .ic svg{width:30px;height:30px}
+#cel-view .c-tile b{font-weight:800;font-size:15px;line-height:1.2}
+#cel-view .c-tile span{font-size:12.5px;color:var(--muted);line-height:1.3}
+#cel-view .c-tile span b{font-size:12.5px;color:var(--ink);font-weight:700}
+#cel-view .c-tile.breve{opacity:.6;cursor:default}
+#cel-view .c-who{display:flex;align-items:center;gap:12px}
+#cel-view .c-av{width:48px;height:48px;border-radius:50%;background:#F0A46B;color:#0E1A2B;display:grid;place-items:center;font:800 19px var(--f-head);flex:none}
+#cel-view .neg{color:var(--bad)}#cel-view .pos{color:var(--good)}
+#cel-view .c-tag{font-size:11px;font-weight:800;border-radius:6px;padding:2px 7px;flex:none;align-self:flex-start}
+#cel-view .c-tag.ok{background:#DDF1E7;color:#155C40}
+#cel-view .c-tag.al{background:#FBE3DE;color:#8A2C1B}
+#cel-view .c-tag.rev{background:#FBEFD9;color:#7A4A0C}
+#cel-view .c-vazio{font-size:13.5px;color:var(--muted);padding:14px}
+#cel-lemb .bola{width:56px;height:56px;border-radius:50%;border:0;background:#0E1A2B;color:#fff;display:grid;place-items:center;box-shadow:0 6px 18px rgba(14,26,43,.3);cursor:pointer;position:relative}
+#cel-lemb .bola .q{position:absolute;top:-2px;right:-2px;min-width:20px;height:20px;border-radius:99px;background:#34D399;color:#0E1A2B;font:800 11px/16px var(--f-ui);text-align:center;border:2px solid var(--bg);padding:0 3px}
+#cel-lemb .lc{width:min(300px,calc(100vw - 28px));background:var(--panel);color:var(--ink);border:1px solid var(--line);border-radius:16px;box-shadow:0 10px 28px rgba(14,26,43,.25);padding:10px 12px 12px 14px;display:flex;flex-direction:column;gap:8px;font-family:var(--f-ui)}
+#cel-lemb .lc .h{display:flex;align-items:center;justify-content:space-between;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+#cel-lemb .lc .x{width:40px;height:40px;border:0;background:none;color:var(--ink);display:grid;place-items:center;cursor:pointer;border-radius:10px}
+#cel-lemb .lc a{display:flex;gap:10px;align-items:flex-start;font-size:13.5px;line-height:1.35;color:inherit;text-decoration:none;padding:4px 0}
+#cel-lemb .lc .dia{flex:none;width:42px;border-radius:9px;background:#DDF5EA;color:#155C40;text-align:center;font:800 11.5px/1.15 var(--f-ui);padding:5px 0}
+#cel-lemb .lc .bts{display:flex;gap:8px}
+#cel-lemb .lc .bts button{flex:1;min-height:40px;border-radius:11px;border:0;font:700 13px var(--f-ui);cursor:pointer;background:var(--field);color:var(--ink)}
+#cel-lemb .lc .bts button.p{background:var(--ink);color:var(--bg)}
+/* conteúdo atual dentro da casca: tabelas rolam no próprio quadro, avisos não ficam atrás das barras */
+html.cel .main table{font-size:13px}
+html.cel .main .tbl-wrap,html.cel .main .tw{overflow-x:auto}
+html.cel[data-celv="painel"] .main table{display:block;max-width:100%;overflow-x:auto}
+html.cel #pess-pop,html.cel #sino-pop{position:fixed!important;top:64px!important;left:8px!important;right:8px!important;width:auto!important;max-height:70vh;overflow:auto;z-index:950}
+html.cel #tour-pop{z-index:960}
+html.cel .gd-pop,html.cel .guia-pop{z-index:960}
+</style>
 <style>html:not(.site-fam) .nav-group:has([data-tab="familia"]),html:not(.site-fam) .lm-mod:has([data-lmtab="familia"]),html:not(.site-fam) tr:has([data-lmtab="familia"]){display:none!important}</style>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
 <script>
@@ -4622,7 +4728,7 @@ html[data-lb="b"] .block-title .desc{font-size:14px;color:var(--muted);margin-to
     return new Promise(resolve => { const { data } = sb.auth.onAuthStateChange(async (ev) => { if (ev !== 'PASSWORD_RECOVERY') return; const s = prompt('Digite a nova senha (mínimo 8 caracteres):'); if (s && s.length >= 8) { const { error } = await sb.auth.updateUser({ password: s }); alert(error ? 'Não deu para trocar a senha: ' + error.message : 'Senha trocada.'); } }); resolve(data); });
   }
   // ---------- rodapé: compartilhar, administração e sair ----------
-  const SITE_V = 267;
+  const SITE_V = 271;
   const escH = v => String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const dataBR = v => v ? new Date(v).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' }) : '–';
   const css2 = `.side-foot .r{flex-wrap:wrap}.side-foot .lg-acoes{margin-left:auto;display:inline-flex;gap:10px}
@@ -20633,6 +20739,323 @@ html .sug-adm .btn.ghost[aria-pressed="true"], html[data-lb] .sug-adm .btn.ghost
   });
   document.addEventListener('click', e => { if (e.target.closest('#cfg-aval-ver')) abrir(true); });
   window.__avalDebug = { abrir, checar, quando: () => quando(), cfg: () => cfg };
+})();
+</script>
+<script>
+/* ---------- v377: layout do celular (casca LifeBoard) ----------
+   Em telas até 700px: topo de uma linha, barra fixa embaixo (Início, Resumo, Finanças, Missões, Mais),
+   resumo primeiro e lista de seções; tocar numa seção mostra uma prévia e "Abrir" mostra só aquela seção.
+   O conteúdo de cada seção é o do painel (nada duplicado). Desliga em Mais › "Usar o layout antigo no celular". */
+(function () {
+  const MQ = matchMedia('(max-width: 700px)'), root = document.documentElement, KOFF = 'painel-cel', KLEMB = 'painel-cel-lemb';
+  const E = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  const T = (f, d) => { try { const v = f(); return v === undefined ? d : v; } catch (e) { return d === undefined ? null : d; } };
+  const lsG = k => T(() => localStorage.getItem(k)), lsS = (k, v) => T(() => localStorage.setItem(k, v));
+  let V = 'inicio', hist = [], abertos = {}, lembAberto = false, ocultos = [], interno = false;
+  const ligado = () => MQ.matches && lsG(KOFF) !== 'off';
+  const pronto = () => typeof state !== 'undefined' && !!state;
+  const parte = v => { const i = v.indexOf(':'); return i < 0 ? [v, ''] : [v.slice(0, i), v.slice(i + 1)]; };
+  const ico = d => `<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${d}</svg>`;
+  const I = {
+    voltar: '<path d="M15 6l-6 6 6 6"/>', guia: '<circle cx="12" cy="12" r="9"/><path d="M9.6 9.3a2.5 2.5 0 0 1 4.8.9c0 1.7-2.4 2.2-2.4 3.6M12 17h.01"/>',
+    sino: '<path d="M6 8a6 6 0 1 1 12 0c0 7 3 9 3 9H3s3-2 3-9M10 21h4"/>', casa: '<path d="M4 11l8-7 8 7v9h-5v-6H9v6H4z"/>',
+    res: '<rect x="4" y="4" width="7" height="7" rx="2"/><rect x="13" y="4" width="7" height="7" rx="2"/><rect x="4" y="13" width="7" height="7" rx="2"/><path d="M13 16.5h7M16.5 13v7"/>',
+    fin: '<path d="M4 20h16M7 16v-4M12 16V7M17 16v-6"/>', mis: '<path d="M5 21V4M5 4h12l-2 4 2 4H5"/>', mais: '<path d="M4 7h16M4 12h16M4 17h16"/>',
+    dir: '<path d="M9 6l6 6-6 6"/>', baixo: '<path d="M6 9l6 6 6-6"/>', cal: '<rect x="4" y="5" width="16" height="15" rx="3"/><path d="M8 3v4M16 3v4M4 10h16"/>', x: '<path d="M6 6l12 12M18 6L6 18"/>',
+    sobe: '<path d="M12 16V4M7 9l5-5 5 5M5 20h14"/>'
+  };
+
+  // ---------- elementos ----------
+  const top = document.createElement('header'); top.id = 'cel-top';
+  const nav = document.createElement('nav'); nav.id = 'cel-nav'; nav.setAttribute('aria-label', 'Menu principal');
+  const view = document.createElement('div'); view.id = 'cel-view';
+  const lemb = document.createElement('div'); lemb.id = 'cel-lemb';
+  document.body.appendChild(top); document.body.appendChild(nav); document.body.appendChild(lemb);
+  const wrap = document.querySelector('.main > .wrap'); if (wrap) wrap.insertBefore(view, wrap.firstChild);
+
+  // ---------- dados ----------
+  const fmx = v => T(() => fm(v), 'R$ ' + Math.round(v).toLocaleString('pt-BR'));
+  const kx = v => T(() => k(v), fmx(v)), px = (v, d) => T(() => pct(v, d), Math.round(v * 100) + '%');
+  const mod = id => T(() => MODS.find(m => m.id === id));
+  const modDeTab = t => T(() => MODS.find(m => (m.tabs || []).includes(t)) || (t === 'modulos' ? null : null));
+  const visivel = m => T(() => modLiberado(m) && (m.breve || modEscolhido(m)), true);
+  const painel = t => document.getElementById('p-' + t);
+  const tituloTab = t => { const h = document.querySelector('#p-' + t + ' .block-title h1'); if (h) return h.textContent.trim(); const n = document.querySelector('.nav-head[data-tab="' + t + '"]'); return n ? n.textContent.replace(/▾/g, '').replace(/^\s*\d+\s*/, '').trim() : t; };
+  const subTab = t => { const p = document.querySelector('#p-' + t + ' .block-title p'); return p ? p.textContent.trim() : ''; };
+  const numTab = t => { const n = document.querySelector('.nav-head[data-tab="' + t + '"] .ico'); return n ? n.textContent.trim() : ''; };
+  const tabOk = t => { const h = document.querySelector('.nav-head[data-tab="' + t + '"]'); return !!painel(t) && (!h || !h.closest('[hidden]')); };
+  // no visual novo as seções de algumas abas são movidas para #np-<aba>; procura nos dois lugares
+  const caixas = t => [document.getElementById('np-' + t), painel(t)].filter(Boolean);
+  function secEls(t) {
+    const cs = caixas(t), out = [];
+    cs.forEach(c => c.querySelectorAll('[data-nav]').forEach(el => { let n = el.parentElement, ok = !el.hidden; while (ok && n && !cs.includes(n)) { if (n.hidden) ok = false; n = n.parentElement; } if (ok && !out.some(x => x.dataset.nav === el.dataset.nav)) out.push(el); }));
+    const ordem = T(() => [...document.querySelectorAll('.nav-sub[data-sub="' + t + '"] a')].map(a => a.textContent.trim()), []);
+    return ordem.length ? out.sort((a, b) => { const ia = ordem.indexOf(a.dataset.nav), ib = ordem.indexOf(b.dataset.nav); return (ia < 0 ? 99 : ia) - (ib < 0 ? 99 : ib); }) : out;
+  }
+  const secoes = t => secEls(t).map(el => el.dataset.nav);
+  function dPatr() { return T(() => { const P = state.patr || { fgts: true }, ev = ativos().map(a => ({ a, v: avaliar(a).atual })), prev = ev.filter(x => ehPrevFgts(x.a)).reduce((t, x) => t + x.v, 0), inv = ev.filter(x => !ehPrevFgts(x.a)).reduce((t, x) => t + x.v, 0);
+    const B = bensHoje(), meus = B.filter(x => x.tenho), bens = meus.reduce((t, x) => t + x.valor, 0), div = meus.reduce((t, x) => t + x.divida, 0);
+    return { pl: inv + (P.fgts ? prev : 0) + bens - div, inv, prev: P.fgts ? prev : 0, bens, div, tem: ev.length > 0 || meus.length > 0 }; }); }
+  function dGastos() { return T(() => { const D = ckDados(); const ms = Object.keys(gastos).filter(m => (gastos[m] || []).length).sort();
+    const atual = (gastos[mKey(HOJE_IDX)] || []).length ? mKey(HOJE_IDX) : ms[ms.length - 1]; if (!atual) return { D, vazio: true };
+    const idx = mIndex(atual), t = totaisMes(atual), orcs = Object.fromEntries(cats().map(c => [c.nome, +c.orc || 0])), orcTot = Object.values(orcs).reduce((s, x) => s + x, 0);
+    const prev3 = [1, 2, 3].map(j => totaisMes(mKey(idx - j))).filter(x => x.n), media3 = prev3.length ? prev3.reduce((s, x) => s + x.tot, 0) / prev3.length : null;
+    const top = Object.entries(t.porCat).sort((a, b) => b[1] - a[1]);
+    const meses = []; for (let i = idx - 5; i <= idx; i++) meses.push([mLabel(i), totaisMes(mKey(i)).tot]);
+    return { D, idx, mes: atual, tot: t.tot, n: t.n, orcs, orcTot, media3, top, meses }; }); }
+  function dCart() { return T(() => { const list = ativos(); if (!list.length) return null; const ev = list.map(a => ({ a, v: avaliar(a) })), tot = ev.reduce((s, x) => s + x.v.atual, 0), liq = ev.reduce((s, x) => s + x.v.liq, 0);
+    const S = T(saudeCarteira), R = T(() => rentCarteira('tudo')), prox = list.filter(a => a.venc && a.venc >= hojeISO()).sort((a, b) => a.venc < b.venc ? -1 : 1)[0];
+    const ops = T(() => oportunidades().filter(o => o.nivel !== 'info'), []);
+    const maiores = ev.slice().sort((a, b) => b.v.atual - a.v.atual).slice(0, 3);
+    let r12 = null; if (R && R.meses && R.meses.length > 1) { const ms = R.meses.slice(-12); let ic = 1, iC = 1; ms.forEach(m => { ic *= 1 + m.r; iC *= 1 + m.cdi; }); r12 = { n: ms.length, c: ic - 1, cdi: iC - 1 }; }
+    return { n: list.length, tot, liq, S, R, prox, ops, maiores, r12 }; }); }
+  function dPlano() { return T(() => { const P = state.plan; if (!P) return null; const pl = calcPlano(), i0 = pl.i0, fimI = i0 + Math.round((+P.anos || 10) * 12), ms = [];
+    for (let i = Math.max(i0 + 1, HOJE_IDX); i < Math.max(i0 + 1, HOJE_IDX) + 12; i++) if (pl.meses[i]) ms.push(pl.meses[i]);
+    if (!ms.length) return null; const media = f => ms.reduce((s, m) => s + f(m), 0) / ms.length; let defl = 1; for (let i = HOJE_IDX + 1; i <= fimI; i++) defl *= 1 + ipcaPlano(i) / 12;
+    const patFim = (pl.inv[fimI] ?? 0) + (pl.parado[fimI] ?? 0), v = []; for (let i = Math.max(i0, HOJE_IDX - 1); i <= fimI; i++) v.push(pl.inv[i] ?? null);
+    return { fimI, patFim, hoje: patFim / defl, sobra: media(m => m.sobra), rend: media(m => m.rend), v }; }); }
+  function dCp() { return T(() => { const cp = lastCp(); if (!cp) return null; const s0 = mIndex(cp.mes), pn = cpDepoisIni() ? planoAt(s0) : null; return { cp, s0, pn, diff: pn != null ? cp.valor - pn : null, pend: T(cpPendente, false) }; }); }
+  function dInd() { return T(() => { if (!visivel(mod('indep'))) return null; const r = indCalc(); if (r.C <= 0) return null; const P0 = r.P[r.st] || 0;
+    return { quando: r.cruz == null ? 'fora do horizonte' : r.cruz <= r.st ? 'já' : mLabel(r.cruz), tem: r.Nref > 0 ? P0 / r.Nref : null, nref: r.Nref }; }); }
+  function dJogo() { return T(() => { const d = jgPontos(), L = jgMisLista(); return { d, L }; }); }
+  function lembretes() { const fech = T(() => JSON.parse(lsG(KLEMB)) || [], []); return T(() => pessTodos(), []).filter(a => !fech.includes(a.id)); }
+
+  // ---------- pedaços de html ----------
+  const chev = (up) => `<span class="c-chev${up ? ' up' : ''}">${ico(I.baixo)}</span>`, seta = `<span class="c-chev">${ico(I.dir)}</span>`;
+  const kv = (k, v, cls) => `<div class="c-kv"><span class="k">${k}</span><span class="v ${cls || ''}">${v}</span></div>`;
+  const kvBar = (k, v, w, cor, cls) => `<div class="c-kv cbar"><span class="k">${k}</span><span class="c-trk"><i class="${cls || ''}" style="width:${Math.max(2, Math.min(100, w)).toFixed(1)}%${cor ? ';background:' + cor : ''}"></i></span><span class="v">${v}</span></div>`;
+  const linha = (attrs, nm, t, s, extra, mc) => `<div class="c-it"><button type="button" class="c-rw" ${attrs}${mc ? ` style="--mc:${mc}"` : ''}><span class="c-nm">${nm}</span><span class="c-rt"><b>${t}</b>${s ? `<span>${s}</span>` : ''}</span>${extra || seta}</button></div>`;
+  const chip = (l, v, s, attrs, cls) => `<a href="#" class="c-chip" ${attrs || ''}><span class="l">${l}</span><span class="v ${cls || ''}">${v}</span>${s ? `<span class="l">${s}</span>` : ''}</a>`;
+
+  // prévias das seções (quando há dado); o resto abre direto
+  function previa(t, s) {
+    if (t === 'gastos') { const G = dGastos(); if (!G || G.vazio) return null;
+      if (s === 'Por categoria') { const mx = Math.max(1, ...G.top.slice(0, 4).map(([c, v]) => Math.max(v, G.orcs[c] || 0))); return { s: G.top[0] ? `${E(G.top[0][0])} lidera com ${fmx(G.top[0][1])}` : 'Sem lançamentos', h: G.top.slice(0, 4).map(([c, v]) => kvBar(E(c), fmx(v), v / mx * 100, T(() => corCat(c)), G.orcs[c] && v > G.orcs[c] ? 'acima' : '')).join('') }; }
+      if (s === 'Últimos 12 meses') { const mx = Math.max(1, ...G.meses.map(x => x[1])); return { s: `média dos 3 meses antes: ${G.media3 == null ? '—' : fmx(G.media3)}`, h: G.meses.map(([l, v]) => kvBar(E(l), fmx(v), v / mx * 100)).join('') }; }
+      if (s === 'Lançamentos') return { s: `${G.n} lançamento${G.n === 1 ? '' : 's'} em ${E(mLabel(G.idx))}`, h: '' };
+      if (s === 'Fechamento do mês') { const fo = T(() => !!(state.fech[mKey(HOJE_IDX - 1)] || {}).fechado, false); return { s: fo ? `${E(mLabel(HOJE_IDX - 1))} fechado` : `Falta fechar ${E(mLabel(HOJE_IDX - 1))}`, h: '' }; }
+    }
+    if (t === 'carteira') { const C = dCart(); if (!C) return null;
+      if (s === 'Oportunidades') { const nome = { warn: 'Atenção', amber: 'Revisar', best: 'Oportunidade' }; return { s: C.ops.length ? `${C.ops.length} ponto${C.ops.length > 1 ? 's' : ''} para olhar` : 'Nada urgente', h: C.ops.slice(0, 4).map(o => `<div class="c-kv"><span class="k"><small>${nome[o.nivel] || ''}</small>${E(o.titulo)}</span></div>`).join('') }; }
+      if (s === 'Saúde da carteira' && C.S) { const ex = (C.S.eixos || C.S.itens || []); return { s: `${C.S.nota} · ${E(C.S.faixa)}`, h: Array.isArray(ex) ? ex.slice(0, 5).map(x => x && x.nome != null && x.pts != null ? kvBar(E(x.nome), `${x.pts}/200`, x.pts / 2, x.pts < 80 ? 'var(--bad)' : '') : '').join('') : '' }; }
+      if (s === 'Rentabilidade x CDI' && C.r12) return { s: `${C.r12.n} meses: ${px(C.r12.c)} contra ${px(C.r12.cdi)} do CDI`, h: kv('Carteira', px(C.r12.c), C.r12.c < C.r12.cdi ? 'neg' : 'pos') + kv('CDI', px(C.r12.cdi)) + (C.R && C.R.pctLiq != null ? kv('Desde cada aplicação, líquido', px(C.R.pctLiq, 0) + ' do CDI') : '') };
+      if (s === 'Aplicações') return { s: `${C.n} aplicações`, h: C.maiores.map(x => kv(E(x.a.nome), kx(x.v.atual))).join('') };
+      if (s === 'Vencimentos' && C.prox) return { s: `Próximo: ${E(C.prox.venc.split('-').reverse().join('/'))}`, h: kv(E(C.prox.nome), E(C.prox.venc.split('-').reverse().join('/'))) };
+    }
+    if (t === 'global') {
+      if (s === 'Checkpoint do mês' || s === 'Checkpoints') { const c = dCp(); if (!c) return { s: 'Ainda não há checkpoint', h: '' }; return { s: c.pend ? 'Falta o checkpoint deste mês' : `Último: ${fmx(c.cp.valor)} em ${E(mLabel(c.s0))}`, h: kv('Último checkpoint', `${fmx(c.cp.valor)} · ${E(mLabel(c.s0))}`) + kv('Contra o plano', c.diff == null ? '—' : (c.diff >= 0 ? '+' : '−') + fmx(Math.abs(c.diff)), c.diff == null ? '' : c.diff < 0 ? 'neg' : 'pos') }; }
+      if (s === 'Mês a mês') { const p = dPlano(); if (!p) return null; return { s: `Plano até ${E(mLabel(p.fimI))}`, h: kv('Sobra média', fmx(p.sobra) + '/mês', p.sobra < 0 ? 'neg' : '') + kv('Rendimento médio', fmx(p.rend) + '/mês') }; }
+    }
+    return null;
+  }
+
+  // ---------- telas ----------
+  function heroFin() {
+    const P = dPatr(), G = dGastos(), p = dPlano();
+    return `<div class="c-card c-hero" style="--celm:#7FA6E0"><span class="c-lab">Patrimônio líquido</span><span class="c-big">${P && P.tem ? fmx(P.pl) : '–'}</span>
+      <span class="c-sub">${P && P.tem ? `Investimentos ${kx(P.inv)}${P.prev ? ` · FGTS e prev. ${kx(P.prev)}` : ''} · Bens ${kx(P.bens)}${P.div ? ` · Dívidas −${kx(P.div)}` : ''}` : 'Cadastre a carteira para ver o total.'}</span></div>
+      <div class="c-chips c2">${chip(G && !G.vazio ? `Gasto em ${E(mLabel(G.idx))}` : 'Gastos', G && !G.vazio ? fmx(G.tot) : '–', G && !G.vazio && G.orcTot ? `${px(G.tot / G.orcTot, 0)} do planejado` : 'sem lançamentos', 'data-cel="tab:gastos"')}
+      ${chip(p ? `Plano em ${E(mLabel(p.fimI))}` : 'Meu plano', p ? kx(p.patFim) : '–', p ? `sobra média ${fmx(p.sobra)}/mês` : 'monte o plano', 'data-cel="tab:orcamento"')}</div>`;
+  }
+  function heroTab(t) {
+    if (t === 'gastos') { const G = dGastos(); if (!G || G.vazio) return `<div class="c-card c-hero"><span class="c-lab">Gastos</span><span class="c-h2">Nenhum gasto lançado ainda</span><span class="c-sub">Importe a fatura do cartão ou o extrato da conta.</span><button type="button" class="c-btn p" data-cel="foco:gastos|Lançar e importar">${ico(I.sobe)}Importar fatura ou extrato</button></div>`;
+      const u = G.orcTot ? G.tot / G.orcTot : null, acima = G.D && G.D.tprev > G.D.tp * 1.02;
+      return `<div class="c-card c-hero"><div style="display:flex;justify-content:space-between;align-items:center;gap:8px"><span class="c-lab">${E(mLabel(G.idx))}</span>${G.D && G.D.tp ? `<span class="c-tag ${acima ? 'al' : 'ok'}">${acima ? 'acima do ritmo' : 'dentro do plano'}</span>` : ''}</div>
+        <span class="c-big">${fmx(G.tot)}</span>${u != null ? `<div class="c-barl"><span class="c-trk"><i class="${u > 1 ? 'acima' : ''}" style="width:${Math.min(100, u * 100).toFixed(1)}%"></i></span><span class="c-sub" style="font-weight:700">${px(u, 0)}</span></div>` : ''}
+        <span class="c-sub">${G.orcTot ? `de ${kx(G.orcTot)} planejados` : 'sem orçamento por categoria'}${G.media3 != null ? ` · média dos 3 meses antes: ${fmx(G.media3)}` : ''}</span>
+        <button type="button" class="c-btn p" data-cel="foco:gastos|Lançar e importar">${ico(I.sobe)}Importar fatura ou extrato</button></div>`; }
+    if (t === 'carteira') { const C = dCart(); if (!C) return `<div class="c-card c-hero"><span class="c-lab">Carteira</span><span class="c-h2">Nenhuma aplicação cadastrada</span><button type="button" class="c-btn p" data-cel="foco:carteira|Cadastrar aplicação">Cadastrar ou importar da corretora</button></div>`;
+      return `<div class="c-card c-hero"><span class="c-lab">Total investido hoje</span><span class="c-big">${fmx(C.tot)}</span><span class="c-sub">${C.n} aplicações · ${fmx(C.liq)} se resgatasse tudo hoje</span></div>
+        <div class="c-chips">${chip('Contra o CDI', C.R && C.R.pctLiq != null ? px(C.R.pctLiq, 0) : '—', 'líquido', 'data-cel="foco:carteira|Rentabilidade x CDI"', C.R && C.R.pctLiq != null ? (C.R.pctLiq < 0.98 ? 'neg' : 'pos') : '')}
+        ${chip('Saúde', C.S ? C.S.nota : '—', C.S ? E(C.S.faixa) : '', 'data-cel="foco:carteira|Saúde da carteira"')}
+        ${chip('Vence', C.prox ? E(C.prox.venc.split('-').reverse().slice(0, 2).join('/')) : '—', C.prox ? E(C.prox.nome) : 'nenhum', 'data-cel="foco:carteira|Vencimentos"')}</div>`; }
+    if (t === 'global') { const p = dPlano(), c = dCp();
+      return `<div class="c-card c-hero"><span class="c-lab">${p ? `Em ${E(mLabel(p.fimI))} você terá` : 'Projeção'}</span><span class="c-big">${p ? kx(p.patFim) : '–'}</span><span class="c-sub">${p ? `${kx(p.hoje)} em reais de hoje · cenário Real` : 'Monte o Meu plano para ver a projeção.'}</span>${p ? spark(p.v) : ''}</div>
+        <div class="c-chips c2">${chip('Último checkpoint', c ? kx(c.cp.valor) : '—', c ? E(mLabel(c.s0)) : 'nenhum', 'data-cel="foco:global|Checkpoint do mês"')}${chip('Contra o plano', c && c.diff != null ? (c.diff >= 0 ? '+' : '−') + kx(Math.abs(c.diff)) : '—', c && c.diff == null ? 'compara no próximo checkpoint' : '', 'data-cel="foco:global|Checkpoints"', c && c.diff != null ? (c.diff < 0 ? 'neg' : 'pos') : '')}</div>`; }
+    if (t === 'patrimonio') { const P = dPatr(); if (!P) return ''; return `<div class="c-card c-hero"><span class="c-lab">Patrimônio líquido hoje</span><span class="c-big">${fmx(P.pl)}</span><span class="c-sub">Investimentos ${kx(P.inv)} · Bens ${kx(P.bens)} · Dívidas −${kx(P.div)}</span></div>`; }
+    if (t === 'orcamento') { const p = dPlano(); if (!p) return ''; return `<div class="c-card c-hero"><span class="c-lab">Em ${E(mLabel(p.fimI))}</span><span class="c-big">${kx(p.patFim)}</span><span class="c-sub">${kx(p.hoje)} em reais de hoje</span></div><div class="c-chips c2">${chip('Sobra média', fmx(p.sobra), 'por mês, próximos 12', '', p.sobra < 0 ? 'neg' : '')}${chip('Rendimento médio', fmx(p.rend), 'por mês, próximos 12')}</div>`; }
+    const s = subTab(t); return s ? `<p class="c-sub" style="margin:0 2px">${E(s)}</p>` : '';
+  }
+  function spark(v) { const w = 320, h = 80, vs = v.filter(x => x != null); if (vs.length < 2) return ''; const mn = Math.min(...vs), mx = Math.max(...vs), r = mx - mn || 1;
+    const pts = v.map((x, i) => x == null ? null : `${(i / (v.length - 1) * (w - 8) + 4).toFixed(1)},${(h - 6 - (x - mn) / r * (h - 14)).toFixed(1)}`).filter(Boolean).join(' ');
+    return `<svg viewBox="0 0 ${w} ${h}" width="100%" role="img" aria-label="Linha do plano até o fim"><polyline points="${pts}" fill="none" stroke="#7FA6E0" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>`; }
+
+  function telaInicio() {
+    const J = dJogo(), P = dPatr(), G = dGastos(), Ii = dInd(), nome = T(() => (document.getElementById('side-quem') || {}).textContent.trim(), '') || '';
+    const prox = J ? [...(J.L.semana || []), ...(J.L.mes || [])].find(x => !x.ok && x.ir) : null;
+    const mods = T(() => MODS.filter(visivel), []);
+    return `<div class="c-who"><div class="c-av">${E((nome || 'V').charAt(0).toUpperCase())}</div><div style="display:flex;flex-direction:column;gap:3px;min-width:0"><span class="c-h2">${nome ? 'Oi, ' + E(nome.split(' ')[0]) : 'Oi'}</span>${J ? `<span class="c-sub">Nível ${J.d.nivel} · ${E(J.d.nome)} · ${J.d.total.toLocaleString('pt-BR')} pts</span>` : ''}</div></div>
+      ${prox ? `<button type="button" class="c-card c-hero" style="--celm:#F0A46B;text-align:left;font:inherit;color:inherit;cursor:pointer" data-cel="${E(alvo(prox.ir[0], prox.ir[1]))}"><span class="c-lab">Próxima missão${prox.pts ? ' · +' + prox.pts + ' pts' : ''}</span><span class="c-h2">${E(prox.t)}</span><span class="c-sub">${E(prox.d)}</span></button>` : ''}
+      <div class="c-chips">${chip('Patrimônio', P && P.tem ? kx(P.pl) : '–', '', 'data-cel="tab:patrimonio"')}${chip(G && !G.vazio ? 'Gasto em ' + E(mLabel(G.idx)) : 'Gastos', G && !G.vazio ? kx(G.tot) : '–', '', 'data-cel="tab:gastos"')}${chip('Independência', Ii ? E(Ii.quando) : '–', '', 'data-cel="mod:indep"')}</div>
+      <div class="c-gt">Seus módulos</div>
+      <div class="c-tiles">${mods.filter(m => m.id !== 'uso').concat(mods.filter(m => m.id === 'uso')).map(m => m.breve
+        ? `<div class="c-tile breve" style="--mc:${m.corNav}" aria-disabled="true"><span class="ic">${T(() => MOD_SVG[m.id], '')}</span><b>${E(m.nome)}</b><span>Em breve</span></div>`
+        : `<button type="button" class="c-tile" style="--mc:${m.corNav}" data-cel="mod:${m.id}"><span class="ic">${T(() => MOD_SVG[m.id], '')}</span><b>${E(m.nome)}</b><span>${T(() => modResumo(m), '')}</span></button>`).join('')}</div>
+      <button type="button" class="c-btn s" data-cel="full:modulos">Ver tabuleiro, linha do tempo e escolher módulos</button>`;
+  }
+  function telaResumo() {
+    const P = dPatr(), G = dGastos(), C = dCart(), Ii = dInd(), L = lembretes().slice(0, 4), hoje = new Date();
+    const dia = hoje.toLocaleDateString('pt-BR', { weekday: 'long', day: 'numeric', month: 'long' });
+    const acima = G && G.D && G.D.tp && G.D.tprev > G.D.tp * 1.02, u = G && !G.vazio && G.orcTot ? G.tot / G.orcTot : null;
+    const frase = !G || G.vazio ? 'Lance os gastos do mês para acompanhar' : acima ? 'Os gastos estão acima do ritmo' : 'O mês está dentro do plano';
+    const al = []; if (C) C.ops.filter(o => o.nivel === 'warn' || o.nivel === 'amber').slice(0, 2).forEach(o => al.push(linha('data-cel="foco:carteira|Oportunidades"', 'R', E(o.titulo), 'Carteira', '', '#E8C66A')));
+    T(() => { const ps = passosConta().filter(x => !x.ok).slice(0, 2); ps.forEach(x => al.push(linha(`data-cel="${E(alvo(x.tab, x.sec))}"`, '!', E(x.t), E(x.d), '', '#F0A46B'))); });
+    return `<div class="c-card c-hero" style="--celm:#F0A46B"><span class="c-lab">${E(dia)}</span><span class="c-h2">${frase}</span>${u != null ? `<span class="c-sub">Você gastou ${px(u, 0)} do planejado para ${E(mLabel(G.idx))}.</span>` : ''}</div>
+      <div class="c-chips c2">${chip('Patrimônio', P && P.tem ? kx(P.pl) : '–', 'líquido', 'data-cel="tab:patrimonio"')}${chip(G && !G.vazio ? 'Gasto em ' + E(mLabel(G.idx)) : 'Gastos', G && !G.vazio ? fmx(G.tot) : '–', u != null ? px(u, 0) + ' do plano' : '', 'data-cel="tab:gastos"', acima ? 'neg' : '')}
+      ${chip('Carteira', C && C.R && C.R.pctLiq != null ? px(C.R.pctLiq, 0) + ' CDI' : C ? kx(C.tot) : '–', C && C.S ? `saúde ${C.S.nota} · ${E(C.S.faixa)}` : '', 'data-cel="tab:carteira"', C && C.R && C.R.pctLiq != null && C.R.pctLiq < 0.98 ? 'neg' : '')}${chip('Independência', Ii ? E(Ii.quando) : '–', Ii && Ii.tem != null ? `você já tem ${px(Ii.tem, 0)}` : '', 'data-cel="mod:indep"')}</div>
+      <div class="c-gt">Próximos na agenda</div>
+      <div class="c-list">${L.length ? L.map(a => linha(`data-cel="${E(alvo(a.tab || 'agcal', a.sec || ''))}"`, ico(I.cal), E(a.msg), /^\d{4}-\d{2}-\d{2}/.test(a.quando || '') ? E(String(a.quando).slice(0, 10).split('-').reverse().join('/')) : '', '', '#34D399')).join('') : '<p class="c-vazio">Nada nos próximos dias. Os lembretes da Agenda aparecem aqui.</p>'}</div>
+      ${al.length ? `<div class="c-gt">Atenção</div><div class="c-list">${al.join('')}</div>` : ''}`;
+  }
+  const GRUPOS_FIN = [['Dia a dia', ['gastos', 'orcamento']], ['O que você tem', ['carteira', 'patrimonio', 'comparador']], ['Para onde vai', ['global', 'familia']]];
+  function resumoTab(t) {
+    if (t === 'gastos') { const G = dGastos(); return G && !G.vazio ? `${E(mLabel(G.idx))}: <b>${fmx(G.tot)}</b>${G.orcTot ? ` de ${kx(G.orcTot)}` : ''}` : 'Lançar e fechar o mês'; }
+    if (t === 'carteira') { const C = dCart(); return C ? `<b>${kx(C.tot)}</b>${C.R && C.R.pctLiq != null ? ` · ${px(C.R.pctLiq, 0)} do CDI` : ''}${C.S ? ` · saúde ${E(C.S.faixa)}` : ''}` : 'Cadastre suas aplicações'; }
+    if (t === 'patrimonio') { const P = dPatr(); return P && P.tem ? `<b>${fmx(P.pl)}</b> líquido` : 'Tudo o que você tem menos o que deve'; }
+    if (t === 'orcamento') { const p = dPlano(); return p ? `Sobra média <b>${fmx(p.sobra)}</b>/mês` : 'Monte o seu plano'; }
+    if (t === 'global') { const p = dPlano(); return p ? `${E(mLabel(p.fimI))}: <b>${kx(p.patFim)}</b>` : 'Plano contra real'; }
+    return E(subTab(t)).slice(0, 80);
+  }
+  function telaMod(id) {
+    const m = mod(id); if (!m) return telaInicio();
+    const tabs = (m.tabs || []).filter(tabOk);
+    const row = t => linha(`data-cel="tab:${t}"`, E(numTab(t) || '•'), E(tituloTab(t)), resumoTab(t), '', m.corNav);
+    let corpo = '';
+    if (id === 'fin') { const usados = []; corpo = heroFin() + GRUPOS_FIN.map(([g, ts]) => { const v = ts.filter(t => tabs.includes(t)); v.forEach(t => usados.push(t)); return v.length ? `<div class="c-gt">${g}</div><div class="c-list">${v.map(row).join('')}</div>` : ''; }).join('');
+      const resto = tabs.filter(t => !usados.includes(t) && t !== 'inicio'); if (resto.length) corpo += `<div class="c-gt">Mais</div><div class="c-list">${resto.map(row).join('')}</div>`;
+      corpo += `<button type="button" class="c-btn s" data-cel="full:inicio">Ver o resumo completo das Finanças</button>`; }
+    else corpo = `<div class="c-card c-hero" style="--celm:${m.corNav}"><span class="c-lab">${E(m.nome)}</span><span class="c-sub" style="font-size:14px;color:var(--ink)">${E(m.desc || '')}</span>${T(() => `<span class="c-sub">${modResumo(m)}</span>`, '')}</div><div class="c-gt">Escolha o que ver</div><div class="c-list">${tabs.map(row).join('')}</div>`;
+    return corpo;
+  }
+  function telaTab(t) {
+    const ss = secoes(t), m = modDeTab(t);
+    const itens = ss.map((s, i) => { const pv = previa(t, s), id = t + '|' + s, op = !!abertos[id];
+      if (!pv) return linha(`data-cel="foco:${E(id)}"`, String(i + 1), E(s), '', '', m && m.corNav);
+      return `<div class="c-it"><button type="button" class="c-rw" data-celtog="${E(id)}" aria-expanded="${op}"${m ? ` style="--mc:${m.corNav}"` : ''}><span class="c-nm">${i + 1}</span><span class="c-rt"><b>${E(s)}</b>${pv.s ? `<span>${pv.s}</span>` : ''}</span>${chev(op)}</button>
+        ${op ? `<div class="c-body">${pv.h || ''}<button type="button" class="c-btn s" data-cel="foco:${E(id)}">Abrir ${E(s.toLowerCase())} ›</button></div>` : ''}</div>`; });
+    return heroTab(t) + (itens.length ? `<div class="c-gt">Escolha o que ver</div><div class="c-list">${itens.join('')}</div>` : '') + `<button type="button" class="c-btn s" data-cel="full:${t}">Ver a tela inteira</button>`;
+  }
+  function telaMissoes() {
+    const J = dJogo(); if (!J) return '<p class="c-vazio">Carregando…</p>';
+    const d = J.d, base = T(() => JG_NIVEIS[d.nivel - 1][0], 0), alvoP = d.prox ? d.prox[0] : base, fr = d.prox ? (d.total - base) / (alvoP - base) : 1;
+    const bloco = (tit, xs) => xs && xs.length ? `<div class="c-gt">${tit}</div><div class="c-list">${xs.map(x => linha(x.ir && x.ir[0] && !x.ok ? `data-cel="${E(alvo(x.ir[0], x.ir[1]))}"` : 'disabled', x.ok ? '✓' : (x.pts ? '+' + x.pts : '•'), E(x.t), E(x.d), x.ok ? '' : undefined, x.ok ? '#BFE8D2' : '#F0A46B')).join('')}</div>` : '';
+    return `<div class="c-card c-hero" style="--celm:#F0A46B"><span class="c-lab">Seu nível</span><span class="c-h2">Nível ${d.nivel} · ${E(d.nome)}</span><div class="c-barl"><span class="c-trk"><i style="width:${Math.max(2, Math.min(100, fr * 100)).toFixed(1)}%;background:#F0A46B"></i></span><span class="c-sub" style="font-weight:700">${d.total.toLocaleString('pt-BR')} pts</span></div>${d.prox ? `<span class="c-sub">${(alvoP - d.total).toLocaleString('pt-BR')} pontos para ${E(d.prox[1])}</span>` : ''}</div>
+      ${bloco('Hoje', J.L.hoje)}${bloco('Esta semana', J.L.semana)}${bloco('Este mês', J.L.mes)}${bloco('Temporada', J.L.temporada)}`;
+  }
+  function telaMais() {
+    const nome = T(() => (document.getElementById('side-quem') || {}).textContent.trim(), '') || 'Você', salvo = T(() => document.getElementById('saveState').textContent.trim(), '');
+    const contas = [...document.querySelectorAll('.side-foot .lg-acoes .lg-link, .side-foot .lg-link')].filter((a, i, arr) => arr.indexOf(a) === i);
+    const ver = T(() => (document.querySelector('.side-foot .src') || {}).textContent.trim(), '');
+    return `<div class="c-card" style="padding:14px;display:flex;align-items:center;gap:12px"><div class="c-av">${E(nome.charAt(0).toUpperCase())}</div><div class="c-rt"><b>${E(nome)}</b><span>${E(salvo)}</span></div></div>
+      <div class="c-gt">Painel</div><div class="c-list">${[['config', 'Configurações', 'Aparência, tema e módulos'], ['leia', 'Leia-me', 'Como o painel funciona'], ['comousar', 'Primeiros passos', 'O que preencher em cada módulo']].filter(x => painel(x[0])).map(x => linha(`data-cel="full:${x[0]}"`, ico(x[0] === 'config' ? '<circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M5 5l2 2M17 17l2 2M5 19l2-2M17 7l2-2"/>' : x[0] === 'leia' ? I.guia : I.mis), x[1], x[2], '', 'var(--field)')).join('')}</div>
+      ${contas.length ? `<div class="c-gt">Conta</div><div class="c-list">${contas.map((a, i) => linha(`data-celconta="${i}"`, ico('<circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"/>'), E(a.textContent.trim().replace(/^./, c => c.toUpperCase())), '', '', 'var(--field)')).join('')}</div>` : ''}
+      <button type="button" class="c-btn s" data-celoff>Usar o layout antigo no celular</button>
+      ${ver ? `<p class="c-sub" style="text-align:center">${E(ver)}</p>` : ''}`;
+  }
+
+  // alvo: aba + seção → tela da casca
+  function alvo(t, sec) { if (!t) return 'inicio'; if (t === 'modulos' && !sec) return 'inicio'; if (sec) return 'foco:' + t + '|' + sec; const m = T(() => MODS.find(x => x.vg === t)); return (m && (m.tabs || []).length > 1 && t !== 'inicio') ? 'tab:' + t : 'tab:' + t; }
+  function pai(v) { const [k, a] = parte(v); if (k === 'foco' || k === 'full') { const t = a.split('|')[0]; return t === 'modulos' || t === 'config' || t === 'leia' || t === 'comousar' ? (t === 'modulos' ? 'inicio' : 'mais') : 'tab:' + t; }
+    if (k === 'tab') { const m = modDeTab(a); return m ? 'mod:' + m.id : 'inicio'; } if (k === 'mod') return m0(a); return 'inicio'; }
+  const m0 = id => id === 'fin' ? 'inicio' : 'inicio';
+  function aba() { const [k, a] = parte(V); if (k === 'inicio' || k === 'resumo' || k === 'missoes' || k === 'mais') return k; const t = k === 'mod' ? null : a.split('|')[0], id = k === 'mod' ? a : (modDeTab(t) || {}).id;
+    if (id === 'fin') return 'fin'; if (['config', 'leia', 'comousar'].includes(t)) return 'mais'; return 'inicio'; }
+
+  // ---------- foco numa seção ----------
+  function limpaFoco() { ocultos.forEach(n => n.removeAttribute('data-celoculto')); ocultos = []; }
+  function focar(t, sec) {
+    limpaFoco(); const cs = caixas(t); if (!cs.length) return false;
+    const el = secEls(t).find(x => x.dataset.nav === sec); if (!el) return false;
+    T(() => abrirSecao(el));
+    const wrapEl = document.querySelector('.main > .wrap');
+    let n = el; while (n && n !== wrapEl) { const pr = n.parentElement; if (!pr) break; [...pr.children].forEach(s => { if (s !== n && s.id !== 'cel-view' && !s.hasAttribute('data-celoculto')) { s.setAttribute('data-celoculto', ''); ocultos.push(s); } }); n = pr; }
+    return true;
+  }
+
+  // ---------- pintura ----------
+  function titulo() { const [k, a] = parte(V);
+    if (k === 'resumo') return ['LifeBoard', 'Resumo', '#F0A46B']; if (k === 'missoes') return ['LifeBoard', 'Missões', '#F0A46B']; if (k === 'mais') return ['LifeBoard', 'Mais', '#F0A46B'];
+    if (k === 'mod') { const m = mod(a) || {}; return ['Módulos', m.nome || '', m.corNav]; }
+    const t = a.split('|')[0], sec = a.split('|')[1], m = modDeTab(t) || {};
+    if (k === 'foco') return [tituloTab(t), sec, m.corNav]; return [m.nome || 'LifeBoard', tituloTab(t), m.corNav]; }
+  function guiaChave() { const [k, a] = parte(V); if (k !== 'foco' && k !== 'tab' && k !== 'full') return null; const t = a.split('|')[0], sec = a.split('|')[1];
+    return T(() => { const ks = Object.keys(GUIAS).filter(x => x.startsWith('p-' + t + '|')); return sec ? (ks.find(x => x === 'p-' + t + '|' + sec) || null) : ks[0] || null; }); }
+  function pintaTop() {
+    const [k] = parte(V), [crumb, tit, cor] = titulo(), n = T(() => { const e = document.getElementById('pess-n'); return e && !e.hidden ? e.textContent : ''; }, ''), raiz = ['inicio', 'resumo', 'missoes', 'mais'].includes(k);
+    top.style.setProperty('--celm', cor || '#F0A46B');
+    top.innerHTML = (raiz ? '' : `<button type="button" class="cb" data-celvoltar aria-label="Voltar">${ico(I.voltar)}</button>`) +
+      (k === 'inicio' ? '<div class="tt"><span class="logo">Life<em>Board</em></span></div>' : `<div class="tt"><small><i></i>${E(crumb)}</small><b>${E(tit)}</b></div>`) +
+      (guiaChave() ? `<button type="button" class="cb" data-celguia aria-label="Guia desta tela">${ico(I.guia)}</button>` : '') +
+      `<button type="button" class="cb" data-celsino aria-label="${n ? 'Seus avisos: ' + E(n) + ' novos' : 'Seus avisos'}">${ico(I.sino)}${n ? `<span class="dot">${E(n)}</span>` : ''}</button>`;
+  }
+  function pintaNav() { const a = aba(); nav.innerHTML = [['inicio', 'Início', I.casa], ['resumo', 'Resumo', I.res], ['fin', 'Finanças', I.fin], ['missoes', 'Missões', I.mis], ['mais', 'Mais', I.mais]]
+    .map(([id, l, ic]) => `<button type="button" data-celnav="${id}"${a === id ? ' aria-current="page"' : ''}><span class="nb">${ico(ic)}</span>${l}</button>`).join(''); }
+  function pintaLemb() {
+    const L = lembretes(); if (!L.length || parte(V)[0] === 'foco') { lemb.hidden = true; lemb.innerHTML = ''; return; } lemb.hidden = false;
+    lemb.innerHTML = (lembAberto ? `<div class="lc" role="dialog" aria-label="Lembretes da agenda"><div class="h"><span>Agenda · próximos dias</span><button type="button" class="x" data-cellemb="fecha" aria-label="Fechar lembretes">${ico(I.x)}</button></div>
+      ${L.slice(0, 3).map(a => { const q = /^\d{4}-\d{2}-\d{2}/.test(a.quando || '') ? String(a.quando).slice(0, 10).split('-') : null; return `<a href="#" data-cel="${E(alvo(a.tab || 'agcal', a.sec || ''))}"><span class="dia">${q ? E(q[2] + '/' + q[1]) : '•'}</span><span>${E(a.msg)}</span></a>`; }).join('')}
+      <div class="bts"><button type="button" data-cellemb="depois">Depois</button><button type="button" class="p" data-cel="tab:agcal">Abrir agenda</button></div></div>` : '') +
+      `<button type="button" class="bola" data-cellemb="abre" aria-label="${L.length} lembrete${L.length > 1 ? 's' : ''} da agenda" aria-expanded="${lembAberto}">${ico(I.cal)}<span class="q">${L.length > 9 ? '9+' : L.length}</span></button>`;
+  }
+  let ultV = null;
+  function aplicar() {
+    const on = ligado(); root.classList.toggle('cel', on);
+    if (!on) { limpaFoco(); root.removeAttribute('data-celv'); return; }
+    if (!pronto()) { root.setAttribute('data-celv', 'shell'); view.innerHTML = '<p class="c-vazio">Carregando…</p>'; pintaTop(); pintaNav(); return; }
+    const [k, a] = parte(V), shell = k !== 'foco' && k !== 'full';
+    root.setAttribute('data-celv', shell ? 'shell' : 'painel');
+    if (shell) { limpaFoco(); view.innerHTML = T(() => k === 'resumo' ? telaResumo() : k === 'missoes' ? telaMissoes() : k === 'mais' ? telaMais() : k === 'mod' ? telaMod(a) : k === 'tab' ? telaTab(a) : telaInicio(), '<p class="c-vazio">Não consegui montar esta tela.</p>'); }
+    else { const [t, sec] = a.split('|'); if (typeof tab === 'undefined' || tab !== t) { interno = true; T(() => window.showTab(t)); interno = false; } if (k === 'foco') { if (!focar(t, sec)) limpaFoco(); } else limpaFoco(); }
+    pintaTop(); pintaNav(); pintaLemb();
+    if (ultV !== V) { window.scrollTo(0, 0); ultV = V; }
+  }
+  function ir(v, raiz) { if (v === V) return; if (raiz) hist = []; else hist.push(V); V = v; abertos = {}; lembAberto = false; aplicar(); }
+  function voltar() { V = hist.pop() || pai(V); lembAberto = false; aplicar(); }
+
+  // ---------- cliques ----------
+  // links do próprio painel que levam a outra aba viram telas da casca
+  document.addEventListener('click', e => {
+    if (!ligado()) return;
+    const a = e.target.closest('[data-lmtab],[data-jgir],[data-pessir],[data-irmod],[data-irtab],.hm-card [data-tab],[data-tab].nav-voltar'); if (!a || a.closest('#cel-view,#cel-top,#cel-nav,#cel-lemb')) return;
+    let v = null;
+    if (a.dataset.lmtab != null) v = alvo(a.dataset.lmtab, a.dataset.lmsec);
+    else if (a.dataset.jgir != null) v = alvo(a.dataset.jgir, a.dataset.jgsec);
+    else if (a.dataset.pessir != null && !a.dataset.pessev) v = alvo(a.dataset.pessir, a.dataset.pesssec);
+    else if (a.dataset.irmod) v = 'mod:' + a.dataset.irmod;
+    else if (a.dataset.irtab) v = 'tab:' + a.dataset.irtab;
+    else if (a.dataset.tab) v = a.dataset.tab === 'modulos' ? 'inicio' : 'tab:' + a.dataset.tab;
+    if (!v) return; e.preventDefault(); e.stopImmediatePropagation(); T(() => pessAbre(false)); ir(v);
+  }, true);
+  document.addEventListener('click', e => {
+    if (!ligado()) return;
+    const b = e.target.closest('[data-cel],[data-celnav],[data-celvoltar],[data-celtog],[data-celguia],[data-celsino],[data-cellemb],[data-celconta],[data-celoff]'); if (!b) return;
+    e.preventDefault();
+    if (b.dataset.celnav) { const id = b.dataset.celnav; ir(id === 'fin' ? 'mod:fin' : id, true); return; }
+    if (b.hasAttribute('data-celvoltar')) { voltar(); return; }
+    if (b.dataset.celtog) { abertos[b.dataset.celtog] = !abertos[b.dataset.celtog]; const y = window.scrollY; aplicar(); window.scrollTo(0, y); return; }
+    if (b.hasAttribute('data-celguia')) { const k = guiaChave(); if (k) { if (parte(V)[0] === 'tab') { const s = k.split('|')[1]; ir('foco:' + parte(V)[1] + '|' + s); } setTimeout(() => T(() => guiaAbre(k)), 60); } return; }
+    if (b.hasAttribute('data-celsino')) { const s = document.getElementById('pess-sino'); if (s) s.click(); return; }
+    if (b.dataset.cellemb) { const c = b.dataset.cellemb; if (c === 'abre') lembAberto = !lembAberto; else if (c === 'depois') lembAberto = false; else if (c === 'fecha') { lsS(KLEMB, JSON.stringify(T(() => JSON.parse(lsG(KLEMB)) || [], []).concat(lembretes().map(a => a.id)).slice(-300))); lembAberto = false; } pintaLemb(); return; }
+    if (b.dataset.celconta != null) { const cs = [...document.querySelectorAll('.side-foot .lg-acoes .lg-link, .side-foot .lg-link')].filter((a, i, arr) => arr.indexOf(a) === i); const a = cs[+b.dataset.celconta]; if (a) a.click(); return; }
+    if (b.hasAttribute('data-celoff')) { lsS(KOFF, 'off'); aplicar(); window.scrollTo(0, 0); return; }
+    if (b.dataset.cel) ir(b.dataset.cel);
+  });
+
+  // mudanças de aba feitas pelo próprio painel (depois de salvar, importar etc.)
+  const orig = window.showTab;
+  if (typeof orig === 'function') window.showTab = function (t) { const r = orig.apply(this, arguments); if (!interno && ligado()) { const [k, a] = parte(V); if ((k === 'foco' || k === 'full') && a.split('|')[0] !== t) { hist.push(V); V = t === 'modulos' ? 'inicio' : 'full:' + t; aplicar(); } } return r; };
+
+  // no layout antigo, um botão no rodapé para voltar ao novo
+  function botaoVolta() { const f = document.querySelector('.side-foot .r'); if (!f || document.getElementById('cel-on')) return; const b = document.createElement('button'); b.type = 'button'; b.id = 'cel-on'; b.className = 'lg-link'; b.textContent = 'layout novo do celular'; b.style.cssText = 'all:unset;font-size:10.5px;opacity:.7;cursor:pointer;border-bottom:1px solid currentColor;margin-left:8px'; b.addEventListener('click', () => { lsS(KOFF, 'on'); aplicar(); }); f.appendChild(b); }
+  const pintaOn = () => { const b = document.getElementById('cel-on'); if (b) b.hidden = !MQ.matches || ligado(); };
+
+  // atualiza quando os dados chegam ou mudam
+  let tm = null; const refaz = () => { clearTimeout(tm); tm = setTimeout(() => { if (ligado() && parte(V)[0] !== 'foco' && parte(V)[0] !== 'full') { const y = window.scrollY; aplicar(); window.scrollTo(0, y); } else if (ligado()) { pintaTop(); pintaLemb(); } }, 400); };
+  const ss = document.getElementById('saveState'); if (ss) new MutationObserver(refaz).observe(ss, { childList: true, characterData: true, subtree: true });
+  const pn = document.getElementById('pess-n'); if (pn) new MutationObserver(() => { if (ligado()) { pintaTop(); pintaLemb(); } }).observe(pn, { attributes: true, childList: true });
+  (MQ.addEventListener ? MQ.addEventListener('change', () => { aplicar(); pintaOn(); }) : MQ.addListener(() => { aplicar(); pintaOn(); }));
+  let tent = 0; (function espera() { if (pronto() || tent++ > 120) { aplicar(); botaoVolta(); pintaOn(); return; } aplicar(); setTimeout(espera, 250); })();
+  window.celLayout = { ir, aplicar, get v() { return V; } };
 })();
 </script>
 
