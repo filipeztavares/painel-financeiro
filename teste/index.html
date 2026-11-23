@@ -2618,7 +2618,7 @@ html[data-lb="b"] .block-title .desc{font-size:14px;color:var(--muted);margin-to
     </div>
     <div class="nav-mobile-sub" id="navMobileSub"></div>
   </div>
-  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span><button type="button" id="demoBtn" aria-pressed="false">Modo demonstração</button></div><div class="src">Focus atualizado toda segunda · versão 378</div></div>
+  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span><button type="button" id="demoBtn" aria-pressed="false">Modo demonstração</button></div><div class="src">Focus atualizado toda segunda · versão 379</div></div>
 </nav>
 <div class="sino-pop" id="sino-pop" role="dialog" aria-label="Atualizações das bases" hidden></div>
 <div class="sino-pop" id="pess-pop" role="dialog" aria-label="Seus avisos" hidden></div>
@@ -4138,9 +4138,14 @@ html[data-lb="b"] .block-title .desc{font-size:14px;color:var(--muted);margin-to
         <p class="hint" id="pl-st" role="status"></p>
         <div id="pl-prev"></div>
       </section>
+      <section data-nav="Configuração inicial" class="panel" id="cfg-onb">
+        <h2>Configuração inicial</h2>
+        <p class="sub">As perguntas do primeiro acesso: nome, nascimento, patrimônio, perfil, como você recebe, salário, benefícios e custos. Ao salvar, as respostas trocam o patrimônio, o salário e os custos do Meu plano.</p>
+        <div class="btns"><button class="btn" type="button" data-onbrefaz>Refazer configuração inicial</button></div>
+      </section>
       <section data-nav="Primeiro acesso" class="panel" id="cfg-jor" hidden>
         <h2>Simular primeiro acesso</h2>
-        <p class="sub">Só o administrador vê esta parte. Abre o painel como uma conta recém-criada, vazia, com a jornada por etapas. Os seus dados não aparecem e nada do que você fizer na simulação é gravado. Vale só para esta aba do navegador.</p>
+        <p class="sub">Só o administrador vê esta parte. Abre o painel como uma conta recém-criada, vazia, com a configuração inicial. Os seus dados não aparecem e nada do que você fizer na simulação é gravado. Vale só para esta aba do navegador.</p>
         <div class="btns"><button class="btn" type="button" data-jorsim="1">Simular primeiro acesso</button></div>
       </section>
       <section data-nav="Módulos" class="panel" id="cfg-mods" hidden>
@@ -4548,6 +4553,146 @@ html.cel #pess-pop,html.cel #sino-pop{position:fixed!important;top:64px!importan
 html.cel #tour-pop{z-index:960}
 html.cel .gd-pop,html.cel .guia-pop{z-index:960}
 </style>
+<style>
+/* v379: configuração inicial (primeiro acesso). Celular: tela cheia. Computador: janela no centro que não fecha na parte obrigatória. */
+#onb{position:fixed;inset:0;z-index:6000;display:grid;place-items:center;background:rgba(5,10,20,.72);
+  --bg:#0E1A2B;--card:#15243A;--card2:#1E3150;--line:#2A3D5E;--ink:#EEF2F8;--muted:#A3B1C8;
+  --acc:#F0A46B;--accink:#0E1A2B;--ok:#7FDDB8;--alt:#F7A28C;--sheet:#132138;--scrim:rgba(5,10,20,.62);
+  --f-d:"Bricolage Grotesque",system-ui,sans-serif;--f-t:"Plus Jakarta Sans",system-ui,sans-serif;color-scheme:dark;
+  font-family:var(--f-t);font-size:15px;line-height:1.5;color:var(--ink);-webkit-font-smoothing:antialiased;text-align:left}
+@media (prefers-color-scheme: light){:root:not([data-theme="dark"]) #onb{--bg:#F7F3EC;--card:#FFFFFF;--card2:#F1EBE0;--line:#DDD3C3;--ink:#0E1A2B;--muted:#5A6478;
+  --acc:#A8582A;--accink:#FFFFFF;--ok:#1F7A57;--alt:#B4462B;--sheet:#FFFFFF;--scrim:rgba(14,26,43,.45);color-scheme:light;background:rgba(14,26,43,.55)}}
+:root[data-theme="light"] #onb{--bg:#F7F3EC;--card:#FFFFFF;--card2:#F1EBE0;--line:#DDD3C3;--ink:#0E1A2B;--muted:#5A6478;
+  --acc:#A8582A;--accink:#FFFFFF;--ok:#1F7A57;--alt:#B4462B;--sheet:#FFFFFF;--scrim:rgba(14,26,43,.45);color-scheme:light;background:rgba(14,26,43,.55)}
+#onb[hidden],#onb [hidden]{display:none!important}
+#onb *{box-sizing:border-box}
+#onb button,#onb input{font:inherit;color:inherit}
+#onb :focus-visible{outline:2px solid var(--acc);outline-offset:2px}
+#onb p{margin:0}
+#onb h1,#onb h2,#onb label,#onb small{text-transform:none;letter-spacing:normal;color:inherit}
+#onb label{font-size:inherit;font-weight:inherit;display:block;margin:0}
+#onb input{box-shadow:none}
+#onb .app{position:relative;width:100%;height:100%;display:flex;flex-direction:column;overflow:hidden;background:var(--bg)}
+@media (min-width:701px){#onb .app{width:460px;height:min(860px,calc(100% - 48px));border-radius:28px;border:1px solid var(--line);box-shadow:0 24px 70px rgba(0,0,0,.4)}}
+#onb .sair{font:700 12px var(--f-t);border:1px solid var(--line);background:none;border-radius:99px;padding:7px 12px;cursor:pointer;color:var(--muted);white-space:nowrap}
+#onb .sair:hover{color:var(--ink);border-color:var(--muted)}
+#onb .aviso{padding:12px 14px;border-radius:14px;border:1px solid var(--acc);background:color-mix(in srgb,var(--acc) 10%,var(--card));font-size:13.5px}
+#onb .num{font-variant-numeric:tabular-nums}
+html.onb-on,html.onb-on body{overflow:hidden!important}
+#onb .top{flex:none;display:flex;align-items:center;gap:8px;padding:10px max(12px,env(safe-area-inset-right,0px)) 6px max(8px,env(safe-area-inset-left,0px));min-height:56px}
+#onb .ib{width:44px;height:44px;flex:none;border:0;background:none;border-radius:12px;display:grid;place-items:center;cursor:pointer;color:var(--ink)}
+#onb .ib:hover{background:var(--card)}
+#onb .ib[disabled]{visibility:hidden}
+#onb .prog{flex:1;display:flex;gap:4px}
+#onb .prog i{flex:1;height:5px;border-radius:9px;background:var(--line);overflow:hidden;position:relative}
+#onb .prog i.on::after{content:"";position:absolute;inset:0;background:var(--acc);border-radius:9px}
+#onb .prog i.cur::after{content:"";position:absolute;inset:0;width:50%;background:var(--acc);border-radius:9px}
+#onb .body{flex:1;overflow-y:auto;padding:8px max(20px,env(safe-area-inset-right,0px)) 24px max(20px,env(safe-area-inset-left,0px));display:flex;flex-direction:column;gap:18px}
+#onb .body>*{flex-shrink:0}
+#onb .eyebrow{font:800 11.5px var(--f-t);letter-spacing:.1em;text-transform:uppercase;color:var(--acc);display:flex;gap:8px;align-items:center}
+#onb .eyebrow span{color:var(--muted);font-weight:700}
+#onb h1{font:800 29px/1.12 var(--f-d);letter-spacing:-.02em;margin:0;text-wrap:balance}
+#onb h2{font:800 20px/1.2 var(--f-d);margin:0}
+#onb .lead{color:var(--muted);margin:0;font-size:15.5px;max-width:34em}
+#onb .field{display:flex;flex-direction:column;gap:8px}
+#onb .inp{width:100%;min-height:60px;border-radius:16px;border:2px solid var(--line);background:var(--card);padding:14px 16px;font:700 22px var(--f-t);outline:none;transition:border-color .15s}
+#onb .inp:focus{border-color:var(--acc)}
+#onb .money{position:relative}
+#onb .money .inp{padding-left:52px;font-variant-numeric:tabular-nums}
+#onb .money b{position:absolute;left:18px;top:50%;transform:translateY(-50%);font:700 18px var(--f-t);color:var(--muted)}
+#onb .hint{font-size:13.5px;color:var(--muted)}
+#onb .hint.ok{color:var(--ok);font-weight:700}
+#onb .hint.err{color:var(--alt);font-weight:700}
+#onb .por{display:flex;gap:10px;align-items:flex-start;padding:12px 14px;border-radius:14px;background:var(--card);border:1px solid var(--line);font-size:13.5px;color:var(--muted)}
+#onb .por svg{flex:none;margin-top:2px;color:var(--acc)}
+#onb .por b{color:var(--ink)}
+#onb .link{background:none;border:0;padding:6px 0;color:var(--acc);font-weight:800;cursor:pointer;text-align:left;display:inline-flex;gap:6px;align-items:center;font-size:14.5px}
+#onb .opts{display:flex;flex-direction:column;gap:10px}
+#onb .opt{display:flex;gap:14px;align-items:flex-start;text-align:left;width:100%;padding:16px;border-radius:18px;border:2px solid var(--line);background:var(--card);cursor:pointer;transition:border-color .15s,background .15s}
+#onb .opt:hover{border-color:var(--muted)}
+#onb .opt[aria-checked="true"]{border-color:var(--acc);background:var(--card2)}
+#onb .opt .rd{width:22px;height:22px;flex:none;border-radius:50%;border:2px solid var(--line);margin-top:2px;display:grid;place-items:center}
+#onb .opt[aria-checked="true"] .rd{border-color:var(--acc)}
+#onb .opt[aria-checked="true"] .rd::after{content:"";width:11px;height:11px;border-radius:50%;background:var(--acc)}
+#onb .opt .t{font:800 17px var(--f-d);display:block}
+#onb .opt .s{font-size:13.5px;color:var(--muted);display:block;margin-top:2px}
+#onb .opt .tag{display:inline-block;margin-top:8px;font-size:12px;font-weight:700;padding:3px 9px;border-radius:99px;background:var(--bg);color:var(--muted);border:1px solid var(--line)}
+#onb .bar{display:flex;gap:4px;margin-top:8px}
+#onb .bar i{height:6px;width:22px;border-radius:9px;background:var(--line)}
+#onb .bar i.f{background:var(--acc)}
+#onb .foot{flex:none;padding:12px max(20px,env(safe-area-inset-right,0px)) calc(16px + env(safe-area-inset-bottom,0px)) max(20px,env(safe-area-inset-left,0px));border-top:1px solid var(--line);background:var(--bg);display:flex;flex-direction:column;gap:8px}
+#onb .cta{width:100%;min-height:56px;border:0;border-radius:16px;background:var(--acc);color:var(--accink);font:800 17px var(--f-t);cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px}
+#onb .cta[disabled]{background:var(--card2);color:var(--muted);cursor:not-allowed}
+#onb .why{font-size:12.5px;color:var(--muted);text-align:center;min-height:18px}
+#onb .est{display:grid;grid-template-columns:1fr auto;gap:6px 12px;padding:14px 16px;border-radius:16px;background:var(--card);border:1px solid var(--line);font-size:14px}
+#onb .est span{color:var(--muted)}
+#onb .est b{font-variant-numeric:tabular-nums;text-align:right}
+#onb .est .tt{border-top:1px solid var(--line);padding-top:8px;font-weight:800}
+#onb .est .tt+b{border-top:1px solid var(--line);padding-top:8px;color:var(--ok);font-size:17px}
+#onb .chip{border:1px solid var(--line);background:var(--card);border-radius:99px;padding:9px 14px;font-weight:700;font-size:14px;cursor:pointer;display:inline-flex;gap:6px;align-items:center}
+#onb .chip:hover{border-color:var(--acc)}
+#onb .cats{display:flex;flex-direction:column;border:1px solid var(--line);border-radius:16px;background:var(--card);overflow:hidden}
+#onb .bn{display:flex;flex-direction:column;border:1px solid var(--line);border-radius:16px;background:var(--card);overflow:hidden}
+#onb .bn>div{border-top:1px solid var(--line);padding:4px 14px}
+#onb .bn>div:first-child{border-top:0}
+#onb .bn label{display:flex;gap:12px;align-items:center;min-height:48px;cursor:pointer;font-weight:600;font-size:14.5px}
+#onb .bn input[type=checkbox]{width:22px;height:22px;flex:none;accent-color:var(--acc);margin:0}
+#onb .bn .money{margin:0 0 12px 34px}
+#onb .bn .money .inp{min-height:46px;font-size:17px;padding:8px 12px 8px 44px;border-width:1px;border-radius:12px}
+#onb .bn .money b{font-size:15px;left:14px}
+#onb .bn .pv .money{margin:0}
+#onb .cat{display:flex;align-items:center;gap:10px;padding:8px 12px;border-top:1px solid var(--line)}
+#onb .cat:first-child{border-top:0}
+#onb .cat label{flex:1;min-width:0;font-size:14px;font-weight:600}
+#onb .cat input{width:110px;text-align:right;border:1px solid var(--line);background:var(--bg);border-radius:10px;padding:8px 10px;font-weight:700;font-variant-numeric:tabular-nums;outline:none}
+#onb .cat input:focus{border-color:var(--acc)}
+#onb .hero{display:flex;flex-direction:column;align-items:flex-start;gap:18px;padding-top:12px}
+#onb .wm{height:26px;width:auto;color:var(--ink);flex:none}
+#onb .wm .pg{fill:#F0A46B}
+#onb .passos{display:flex;flex-direction:column;gap:0;border-left:2px solid var(--line);margin-left:9px}
+#onb .passos div{position:relative;padding:4px 0 14px 20px;font-size:14.5px}
+#onb .passos div::before{content:"";position:absolute;left:-7px;top:9px;width:12px;height:12px;border-radius:50%;background:var(--bg);border:2px solid var(--acc)}
+#onb .passos small{display:block;color:var(--muted);font-size:13px}
+#onb .big{font:800 34px/1.1 var(--f-d);font-variant-numeric:tabular-nums;letter-spacing:-.02em}
+#onb .kpis{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+#onb .kpi{padding:14px;border-radius:16px;background:var(--card);border:1px solid var(--line);display:flex;flex-direction:column;gap:2px;min-width:0}
+#onb .kpi span{font-size:12px;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:.05em}
+#onb .kpi b{font:800 19px var(--f-d);font-variant-numeric:tabular-nums}
+#onb .kpi small{font-size:12.5px;color:var(--muted)}
+#onb .insight{padding:16px;border-radius:18px;background:var(--card2);border:1px solid var(--line);display:flex;flex-direction:column;gap:6px}
+#onb .insight b.v{color:var(--ok)}
+#onb .scrim{position:absolute;inset:0;background:var(--scrim);z-index:20;opacity:0;pointer-events:none;transition:opacity .2s}
+#onb .scrim.on{opacity:1;pointer-events:auto}
+#onb .sheet{position:absolute;left:0;right:0;bottom:0;z-index:21;max-height:88%;background:var(--sheet);border-radius:24px 24px 0 0;border-top:1px solid var(--line);transform:translateY(102%);transition:transform .25s ease;display:flex;flex-direction:column}
+#onb .sheet.on{transform:none}
+#onb .sheet .grab{width:44px;height:5px;border-radius:9px;background:var(--line);margin:10px auto 0;flex:none}
+#onb .sheet .sh-hd{display:flex;align-items:center;gap:8px;padding:8px 12px 4px 20px;flex:none}
+#onb .sheet .sh-hd h2{flex:1}
+#onb .sheet .sh-bd{overflow-y:auto;padding:4px 20px calc(20px + env(safe-area-inset-bottom,0px));display:flex;flex-direction:column;gap:14px;font-size:14.5px}
+#onb .sheet .sh-bd>*{flex-shrink:0}
+#onb .sheet p{margin:0}
+#onb .sheet ul{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:6px}
+#onb .soma{display:grid;grid-template-columns:1fr 130px;gap:8px 10px;align-items:center}
+#onb .soma input{width:100%;text-align:right;border:1px solid var(--line);background:var(--bg);border-radius:10px;padding:10px;font-weight:700;font-variant-numeric:tabular-nums;outline:none}
+#onb .soma .neg{color:var(--alt);font-weight:700}
+#onb .soma .res{font:800 18px var(--f-d);text-align:right;font-variant-numeric:tabular-nums}
+#onb .qz{display:flex;flex-direction:column;gap:8px}
+#onb .qz p{font-weight:700}
+#onb .qz .row{display:flex;flex-wrap:wrap;gap:8px}
+#onb .chip[aria-pressed="true"]{border-color:var(--acc);background:color-mix(in srgb,var(--acc) 18%,var(--card));box-shadow:inset 0 0 0 1px var(--acc)}
+#onb .chip[aria-pressed="true"]::before{content:"✓";color:var(--acc);font-weight:800}
+#onb .bn>div:has(input[type=checkbox]:checked){background:color-mix(in srgb,var(--acc) 9%,var(--card))}
+#onb .opt[aria-checked="true"]{background:color-mix(in srgb,var(--acc) 12%,var(--card))!important}
+#onb .sufbox{display:flex;align-items:center;gap:10px;min-height:60px;border-radius:16px;border:2px solid var(--line);background:var(--card);padding:0 16px;cursor:text}
+#onb .sufbox:focus-within{border-color:var(--acc)}
+#onb .sufbox input{border:0;background:none;outline:none;font:700 22px var(--f-t);width:3.2ch;padding:0;font-variant-numeric:tabular-nums}
+#onb .sufbox span{font:700 18px var(--f-t);color:var(--muted)}
+#onb .toast{position:absolute;left:16px;right:16px;bottom:96px;z-index:30;background:var(--ink);color:var(--bg);padding:12px 14px;border-radius:14px;font-size:14px;font-weight:600;opacity:0;transform:translateY(8px);transition:all .2s;pointer-events:none}
+#onb .toast.on{opacity:1;transform:none}
+@media (prefers-reduced-motion:reduce){#onb *{transition:none!important;animation:none!important}}
+#onb .fade{animation:onbfd .25s ease}
+@keyframes onbfd{from{opacity:.35;transform:translateX(10px)}to{opacity:1;transform:none}}
+</style>
 <style>html:not(.site-fam) .nav-group:has([data-tab="familia"]),html:not(.site-fam) .lm-mod:has([data-lmtab="familia"]),html:not(.site-fam) tr:has([data-lmtab="familia"]){display:none!important}</style>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
 <script>
@@ -4745,7 +4890,7 @@ html.cel .gd-pop,html.cel .guia-pop{z-index:960}
     return new Promise(resolve => { const { data } = sb.auth.onAuthStateChange(async (ev) => { if (ev !== 'PASSWORD_RECOVERY') return; const s = prompt('Digite a nova senha (mínimo 8 caracteres):'); if (s && s.length >= 8) { const { error } = await sb.auth.updateUser({ password: s }); alert(error ? 'Não deu para trocar a senha: ' + error.message : 'Senha trocada.'); } }); resolve(data); });
   }
   // ---------- rodapé: compartilhar, administração e sair ----------
-  const SITE_V = 272;
+  const SITE_V = 273;
   const escH = v => String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const dataBR = v => v ? new Date(v).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' }) : '–';
   const css2 = `.side-foot .r{flex-wrap:wrap}.side-foot .lg-acoes{margin-left:auto;display:inline-flex;gap:10px}
@@ -18896,9 +19041,11 @@ function jorSimDb(real) {
   function inicia() {
     if (iniciou || !state) return; iniciou = true;
     if (!state.jornada) {
-      const vazio = !(+(state.plan && state.plan.valor) > 0) && !temGastos() && !ativos().length && !cps.length && !(state.compras || []).length;
-      state.jornada = vazio ? 'ativa' : 'livre'; save();
+      const vazio = !(+(state.plan && state.plan.valor) > 0) && !temGastos() && !ativos().length && !cps.length && !(state.compras || []).filter(b => !b.ex).length;
+      state.jornada = vazio ? 'onb' : 'livre'; save();
     }
+    if (state.jornada === 'ativa') { state.jornada = +(state.plan && state.plan.valor) > 0 || pm().liq > 0 ? 'livre' : 'onb'; save(); }
+    if (state.jornada === 'onb') { renderOrcamento.tourVisto = true; decorar(); if (window.onbAbrir) window.onbAbrir(); return; }
     if (ativa()) renderOrcamento.tourVisto = true;   // o tour do Plano abre pelo pop-up, não sozinho
     antes = situacao().filter((x, i, S) => x.feita && S.slice(0, i).every(y => y.feita)).map(x => x.e.id);
     if (trancada(tab)) showTab('modulos'); else decorar();
@@ -19102,7 +19249,7 @@ function jorSimDb(real) {
     let mostra = false, txt = '';
     try {
       const hoje = new Date(), f = ckSt().feitos, esta = f.includes(ckSemana(hoje)), ant = f.includes(ckSemana(new Date(hoje.getTime() - 7 * 864e5)));
-      const jor = state.jornada === 'ativa';
+      const jor = state.jornada === 'ativa' || state.jornada === 'onb';
       if (!esta && !jor) {
         if (hoje.getDay() === 0) { mostra = true; txt = '<b>Hoje é dia do checkpoint da semana.</b> Importe a fatura ou o extrato e veja quanto já foi do projetado em cada categoria. Leva uns 5 minutos.'; }
         else if (!ant) { mostra = true; txt = '<b>O checkpoint da semana ficou para trás.</b> Faça agora para saber se o mês está dentro do projetado e não perder a sequência.'; }
@@ -20672,7 +20819,7 @@ html .sug-adm .btn.ghost[aria-pressed="true"], html[data-lb] .sug-adm .btn.ghost
   const quando = () => { const a = st(), base = Date.parse(a.ult || a.ini || ''), adi = Date.parse(a.adiadoAte || ''); if (!isFinite(base)) return null; return Math.max(base + cfg.dias * DIA, isFinite(adi) ? adi : 0); };
   function podeMostrar() {
     if (!state || cfg.pausada || mostrouSessao) return false;
-    if (state.jornada === 'ativa' || (typeof JOR_SIM !== 'undefined' && JOR_SIM)) return false;
+    if (state.jornada === 'ativa' || state.jornada === 'onb' || (typeof JOR_SIM !== 'undefined' && JOR_SIM)) return false;
     if ((typeof gK !== 'undefined' && gK) || (typeof tourI !== 'undefined' && tourI >= 0)) return false;
     if (document.querySelector('.conf-pop:not([hidden]), #jor-modal:not([hidden]), .tour-pop:not([hidden])')) return false;
     const ae = document.activeElement; if (ae && /^(INPUT|TEXTAREA|SELECT)$/.test(ae.tagName)) return false;
@@ -20967,6 +21114,7 @@ html .sug-adm .btn.ghost[aria-pressed="true"], html[data-lb] .sug-adm .btn.ghost
     return `<div class="c-card" style="padding:14px;display:flex;align-items:center;gap:12px"><div class="c-av">${E(nome.charAt(0).toUpperCase())}</div><div class="c-rt"><b>${E(nome)}</b><span>${E(salvo)}</span></div></div>
       <div class="c-gt">Painel</div><div class="c-list">${[['config', 'Configurações', 'Aparência, tema e módulos'], ['leia', 'Leia-me', 'Como o painel funciona'], ['comousar', 'Primeiros passos', 'O que preencher em cada módulo']].filter(x => painel(x[0])).map(x => linha(`data-cel="full:${x[0]}"`, ico(x[0] === 'config' ? '<circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M5 5l2 2M17 17l2 2M5 19l2-2M17 7l2-2"/>' : x[0] === 'leia' ? I.guia : I.mis), x[1], x[2], '', 'var(--field)')).join('')}</div>
       ${contas.length ? `<div class="c-gt">Conta</div><div class="c-list">${contas.map((a, i) => linha(`data-celconta="${i}"`, ico('<circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"/>'), E(a.textContent.trim().replace(/^./, c => c.toUpperCase())), '', '', 'var(--field)')).join('')}</div>` : ''}
+      <div class="c-gt">Configuração</div><div class="c-list">${linha('data-onbrefaz', ico('<path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/>'), 'Refazer configuração inicial', 'Nome, patrimônio, salário e custos', '', 'var(--field)')}</div>
       <button type="button" class="c-btn s" data-celoff>Usar o layout antigo no celular</button>
       ${ver ? `<p class="c-sub" style="text-align:center">${E(ver)}</p>` : ''}`;
   }
@@ -21074,6 +21222,355 @@ html .sug-adm .btn.ghost[aria-pressed="true"], html[data-lb] .sug-adm .btn.ghost
   (MQ.addEventListener ? MQ.addEventListener('change', () => { aplicar(); pintaOn(); }) : MQ.addListener(() => { aplicar(); pintaOn(); }));
   let tent = 0; (function espera() { if (pronto() || tent++ > 120) { aplicar(); botaoVolta(); pintaOn(); return; } aplicar(); setTimeout(espera, 250); })();
   window.celLayout = { ir, aplicar, get v() { return V; } };
+})();
+</script>
+<script>
+/* ---------- v379: configuração inicial (primeiro acesso), no lugar da jornada por etapas ----------
+   Uma pergunta por tela; só avança com a resposta. Celular: tela cheia. Computador: janela no centro que não fecha.
+   Retoma de onde parou: state.onb = { feito, passo, resp, quando }. As respostas viram o Meu plano de verdade no fim.
+   Refazer: Configurações › Configuração inicial (aí dá para sair sem salvar). Fonte: painel/onboarding/onb.js */
+(function () {
+  if (window.onbAbrir) return;
+  const WM = `<svg class="wm" viewBox="-10 -784 4498 794" role="img" aria-label="LifeBoard"><path d="M72 0V-745H208V-120H527V0Z M557 0V-544H688V0Z M825 0V-427H729V-544H825V-562Q825 -624 850.5 -667.5Q876 -711 922.0 -734.0Q968 -757 1031 -757Q1043 -757 1057.5 -755.5Q1072 -754 1082 -752V-639Q1072 -641 1063.5 -641.5Q1055 -642 1048 -642Q1004 -642 980.0 -622.5Q956 -603 956 -562V-544H1077V-427H956V0Z M1391 12Q1307 12 1244.0 -26.0Q1181 -64 1146.0 -129.0Q1111 -194 1111 -273Q1111 -355 1146.5 -418.5Q1182 -482 1243.5 -519.0Q1305 -556 1381 -556Q1445 -556 1493.5 -535.0Q1542 -514 1576.0 -477.0Q1610 -440 1628.0 -392.5Q1646 -345 1646 -290Q1646 -276 1644.5 -261.0Q1643 -246 1639 -235H1219V-335H1565L1503 -288Q1512 -334 1498.5 -370.0Q1485 -406 1454.5 -427.0Q1424 -448 1381 -448Q1340 -448 1308.0 -427.5Q1276 -407 1259.5 -367.5Q1243 -328 1247 -272Q1243 -222 1260.5 -183.5Q1278 -145 1312.5 -124.0Q1347 -103 1392 -103Q1437 -103 1468.5 -122.0Q1500 -141 1518 -173L1624 -121Q1608 -82 1574.0 -52.0Q1540 -22 1493.5 -5.0Q1447 12 1391 12Z M1721 0V-745H2035Q2109 -745 2161.5 -719.5Q2214 -694 2242.5 -647.5Q2271 -601 2271 -535Q2271 -484 2243.5 -439.5Q2216 -395 2156 -366V-429Q2211 -408 2243.0 -377.0Q2275 -346 2288.0 -308.0Q2301 -270 2301 -228Q2301 -121 2230.5 -60.5Q2160 0 2035 0ZM1857 -120H2049Q2102 -120 2133.5 -149.5Q2165 -179 2165 -228Q2165 -277 2133.5 -307.0Q2102 -337 2049 -337H1857ZM1857 -456H2042Q2084 -456 2109.0 -480.5Q2134 -505 2134 -544Q2134 -583 2109.0 -606.0Q2084 -629 2042 -629H1857Z M2632 12Q2552 12 2486.5 -25.0Q2421 -62 2382.5 -126.0Q2344 -190 2344 -272Q2344 -354 2382.5 -418.0Q2421 -482 2486.0 -519.0Q2551 -556 2632 -556Q2712 -556 2777.0 -519.0Q2842 -482 2880.5 -418.5Q2919 -355 2919 -272Q2919 -190 2880.0 -126.0Q2841 -62 2776.0 -25.0Q2711 12 2632 12ZM2632 -108Q2676 -108 2709.5 -129.0Q2743 -150 2762.5 -187.5Q2782 -225 2782 -272Q2782 -320 2762.5 -356.5Q2743 -393 2709.5 -414.5Q2676 -436 2632 -436Q2587 -436 2553.0 -414.5Q2519 -393 2499.5 -356.5Q2480 -320 2480 -272Q2480 -225 2499.5 -187.5Q2519 -150 2553.0 -129.0Q2587 -108 2632 -108Z M3148 12Q3091 12 3049.0 -7.0Q3007 -26 2984.0 -61.5Q2961 -97 2961 -144Q2961 -189 2981.0 -224.5Q3001 -260 3043.0 -284.0Q3085 -308 3149 -318L3327 -347V-247L3174 -221Q3135 -214 3116.0 -196.0Q3097 -178 3097 -149Q3097 -121 3118.5 -104.5Q3140 -88 3172 -88Q3213 -88 3244.5 -105.5Q3276 -123 3293.5 -154.0Q3311 -185 3311 -222V-362Q3311 -397 3283.5 -420.5Q3256 -444 3211 -444Q3169 -444 3136.5 -421.5Q3104 -399 3089 -362L2982 -414Q2998 -457 3032.5 -488.5Q3067 -520 3114.0 -538.0Q3161 -556 3216 -556Q3283 -556 3334.0 -531.5Q3385 -507 3413.5 -463.5Q3442 -420 3442 -362V0H3318V-93L3346 -95Q3325 -60 3296.0 -36.5Q3267 -13 3230.0 -0.5Q3193 12 3148 12Z M3528 0V-544H3651V-423L3641 -441Q3660 -502 3700.5 -526.0Q3741 -550 3798 -550H3830V-434H3783Q3727 -434 3693.0 -399.5Q3659 -365 3659 -303V0Z M4120 12Q4041 12 3979.0 -25.5Q3917 -63 3881.0 -128.0Q3845 -193 3845 -272Q3845 -352 3881.0 -416.0Q3917 -480 3979.5 -518.0Q4042 -556 4119 -556Q4181 -556 4229.5 -531.5Q4278 -507 4306 -463L4286 -436V-757H4417V0H4293V-105L4307 -79Q4279 -35 4229.0 -11.5Q4179 12 4120 12ZM4134 -108Q4179 -108 4213.0 -129.0Q4247 -150 4266.5 -187.0Q4286 -224 4286 -272Q4286 -319 4266.5 -356.5Q4247 -394 4213.0 -415.0Q4179 -436 4134 -436Q4090 -436 4055.0 -414.5Q4020 -393 4000.5 -356.5Q3981 -320 3981 -272Q3981 -224 4000.5 -187.0Q4020 -150 4055.0 -129.0Q4090 -108 4134 -108Z" fill="currentColor"/><path class="pg" d="M634.5 -577.5 L534.9 -767.1 A212.1 212.1 0 0 1 734.1 -767.1 Z" fill="#F0A46B"/></svg>`;
+  const ICO_I = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="12" cy="12" r="9.5"/><path d="M12 11v6M12 7.5v.01"/></svg>';
+  let root = null, D = null, cur = 0, ultima = '', refazer = false, aberto = false;
+  const q = s => root.querySelector(s), qa = s => [...root.querySelectorAll(s)];
+  const brl = n => 'R$ ' + Math.round(n || 0).toLocaleString('pt-BR');
+  const sbrl = n => (n < 0 ? '− ' : '') + brl(Math.abs(n || 0));
+  const num = s => +(String(s || '').replace(/\D/g, '')) || 0;
+  const fmtIn = el => { const v = num(el.value); el.value = v ? v.toLocaleString('pt-BR') : ''; };
+  const E = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  const T = (f, d) => { try { return f(); } catch (e) { return d; } };
+  const novoD = () => ({ nome: '', nasc: '', pl: null, soma: null, perfil: '', regime: '', tipo: '', ben: {}, semBen: false, prev: { eu: 0, emp: 'igual', empPct: 0 }, reg: { ess: 50, est: 30, inv: 20 }, bruto: 0, custos: 0, mesReal: null, mesFech: 0, depois: '' });
+
+  /* ---- cálculos aproximados (o Meu plano refaz com as regras completas depois) ---- */
+  function inss(b) { const f = [[1518, .075], [2793.88, .09], [4190.83, .12], [8157.41, .14]]; let r = 0, a = 0; for (const [t, p] of f) { if (b > a) { r += (Math.min(b, t) - a) * p; a = t; } } return r; }
+  function irrf(base, bruto) { const t = [[2428.8, 0, 0], [2826.65, .075, 182.16], [3751.05, .15, 394.16], [4664.68, .225, 675.49], [1e12, .275, 908.73]]; let ir = 0; for (const [l, p, d] of t) { if (base <= l) { ir = Math.max(0, base * p - d); break; } }
+    if (bruto <= 5000) ir = 0; else if (bruto <= 7350) ir = Math.max(0, ir - (978.62 - 0.133145 * bruto)); return ir; }
+  const BENS = [['vr', 'Vale-refeição ou alimentação', 'mês'], ['saude', 'Plano de saúde', 'mês'], ['odonto', 'Plano odontológico', 'mês'], ['vt', 'Vale-transporte', 'mês'], ['prev', 'Previdência privada da empresa', 'pct'], ['plr', 'PLR ou bônus', 'ano'], ['stock', 'Ações da empresa (stock options, RSU)', 'fut'], ['outros', 'Outros (academia, home office, seguro de vida)', 'mês']];
+  const prevEu = () => 'prev' in D.ben ? D.bruto * D.prev.eu / 100 : 0, prevEmp = () => 'prev' in D.ben ? D.bruto * (D.prev.emp === 'igual' ? D.prev.eu : D.prev.empPct) / 100 : 0;
+  const benMes = () => BENS.filter(b => b[2] === 'mês' && b[0] in D.ben).reduce((a, b) => a + (D.ben[b[0]] || 0), 0) + prevEmp(), benAno = () => D.ben.plr || 0;
+  const vtDesc = () => D.regime === 'clt' && 'vt' in D.ben ? Math.min(D.bruto * .06, D.ben.vt || D.bruto * .06) : 0;
+  const vtTxt = () => `Na CLT, a empresa desconta até 6% do salário pelo vale-transporte: cerca de ${brl(vtDesc())} por mês. Já tiramos do seu líquido.`;
+  const prevTxt = () => D.prev.eu || D.prev.empPct ? `Você: <b style="color:var(--ink)">${brl(prevEu())}</b> por mês (sai do líquido). Empresa: <b style="color:var(--ink)">${brl(prevEmp())}</b> por mês (entra no pacote).` : 'Em muitas empresas, a parte delas acompanha a sua.';
+  function benExtra(k, n, f) {
+    if (k === 'prev') return `<div class="pv" style="margin:0 0 12px 34px;display:flex;flex-direction:column;gap:10px">
+      <label for="p_eu" style="min-height:0;font-size:13.5px;color:var(--muted)">Quanto você coloca? (% do salário)</label>
+      <div class="money"><b>%</b><input class="inp" id="p_eu" inputmode="decimal" placeholder="Ex.: 5" value="${D.prev.eu || ''}"></div>
+      <span style="font-size:13.5px;color:var(--muted)">A empresa coloca quanto?</span>
+      <div style="display:flex;gap:8px;flex-wrap:wrap"><button class="chip" type="button" data-pe="igual" aria-pressed="${D.prev.emp === 'igual'}">Igual ao meu</button><button class="chip" type="button" data-pe="outro" aria-pressed="${D.prev.emp === 'outro'}">Outro %</button></div>
+      ${D.prev.emp === 'outro' ? `<div class="money"><b>%</b><input class="inp" id="p_emp" inputmode="decimal" placeholder="% da empresa" aria-label="Percentual da empresa" value="${D.prev.empPct || ''}"></div>` : ''}
+      <p class="hint" id="h_prev">${prevTxt()}</p></div>`;
+    if (k === 'plr') return `<div class="money"><b>R$</b><input class="inp" data-v="plr" inputmode="numeric" placeholder="Valor por ano" aria-label="${n}, valor por ano" value="${D.ben.plr ? D.ben.plr.toLocaleString('pt-BR') : ''}"></div><p class="hint" style="margin:-4px 0 12px 34px">Valor <b style="color:var(--ink)">por ano</b>, antes do imposto.</p>`;
+    if (k === 'stock') return `<p class="hint" style="margin:0 0 12px 34px">Você cadastra os detalhes depois, no módulo <b style="color:var(--ink)">Carreira</b>.</p>`;
+    return `<div class="money"><b>R$</b><input class="inp" data-v="${k}" inputmode="numeric" placeholder="Valor por ${f}" aria-label="${n}, valor por ${f}" value="${D.ben[k] ? D.ben[k].toLocaleString('pt-BR') : ''}"></div>` + (k === 'vt' && D.regime === 'clt' ? `<p class="hint" id="h_vt" style="margin:-4px 0 12px 34px">${vtTxt()}</p>` : '');
+  }
+  function pacoteTxt() { const pj = D.regime === 'pj', m = benMes(), a = benAno(); if (!m && !a) return ' ';
+    return `Seu pacote: <b style="color:var(--ink)">${brl(D.bruto + m)} por mês</b>${a ? `, mais ${brl(a)} por ano de PLR ou bônus` : ''}. Em um ano, cerca de <b style="color:var(--ink)">${brl((D.bruto + m) * 12 + (pj ? 0 : D.bruto * 4 / 3) + a)}</b>${pj ? '' : ', contando 13º e terço de férias'}.`; }
+  const ANEXO3 = [[180e3, .06, 0], [360e3, .112, 9360], [720e3, .135, 17640], [1.8e6, .16, 35640], [3.6e6, .21, 125640], [4.8e6, .33, 648000]];
+  const ANEXO5 = [[180e3, .155, 0], [360e3, .18, 4500], [720e3, .195, 9900], [1.8e6, .205, 17100], [3.6e6, .23, 62100], [4.8e6, .305, 540000]];
+  function simplesAliq(f) { const a = f * 12; if (!a) return .06; const x = ANEXO3.find(r => a <= r[0]) || ANEXO3[5]; return Math.max(.06, (a * x[1] - x[2]) / a); }
+  const TIPOS = { mei: { t: 'MEI', s: 'Fatura até R$ 6.750 por mês. Paga um boleto fixo, o DAS.', tag: 'DAS fixo de R$ 86 por mês' },
+    simples: { t: 'Simples Nacional', s: 'O mais comum para quem presta serviço.', tag: 'A partir de 6% do faturamento' },
+    presumido: { t: 'Lucro Presumido', s: 'Para quem fatura mais ou não pode entrar no Simples.', tag: 'Cerca de 16% do faturamento' },
+    naosei: { t: 'Não sei', s: 'Usamos o Simples, o mais comum. Você confirma depois com o contador.', tag: 'Dá para trocar depois' } };
+  const PL_MIN = 1621;
+  function liquido() {
+    if (D.regime === 'clt') { const pi = typeof dedCLT === 'function', i = pi ? T(() => dedCLT('inss', D.bruto), 0) : inss(D.bruto), ir = pi ? T(() => dedCLT('irrf', D.bruto), 0) : irrf(D.bruto - i, D.bruto), vt = vtDesc(), L = [['INSS', i], ['Imposto de renda', ir]]; if (vt) L.push(['Vale-transporte', vt]); const pv = prevEu(); if (pv) L.push(['Previdência (sua parte)', pv]); return { liq: D.bruto - i - ir - vt - pv, linhas: L }; }
+    const f = D.bruto, t = D.tipo || 'naosei'; let L;
+    if (t === 'mei') L = [['DAS do MEI', f ? 86 : 0]];
+    else if (t === 'presumido') L = [['Impostos sobre a nota (16,3%)', f * .1633], ['INSS do pró-labore', f ? PL_MIN * .31 : 0], ['Contador (sugestão)', f ? 600 : 0]];
+    else { const al = simplesAliq(f), pl = Math.min(Math.max(f * .28, PL_MIN), 8475.55); L = [[`DAS do Simples (${(al * 100).toFixed(1).replace('.', ',')}%)`, f * al], ['INSS do pró-labore', f ? pl * .11 : 0], ['Contador (sugestão)', f ? 350 : 0]]; }
+    const pv = prevEu(); if (pv) L.push(['Previdência (sua parte)', pv]); return { liq: Math.max(0, f - L.reduce((a, x) => a + x[1], 0)), linhas: L };
+  }
+  // custos por categoria do painel: essenciais (Fixos + Essenciais) e estilo de vida, com os pesos do CUSTO_SUG
+  const catsP = () => T(() => cats(), []).map(c => ({ nome: c.nome, grupo: c.grupo }));
+  function distrib(tot) {
+    const cs = catsP(), o = {}, fe = D.reg.ess / ((D.reg.ess + D.reg.est) || 1);
+    let A = cs.filter(c => c.grupo !== 'Estilo de vida'), B = cs.filter(c => c.grupo === 'Estilo de vida'), ta = tot * fe, tb = tot - ta;
+    if (!B.length) { ta = tot; tb = 0; } if (!A.length) { tb = tot; ta = 0; }
+    const g = (L, t) => { if (!L.length) return; const w = L.map(c => T(() => CUSTO_SUG[c.nome], 0) || 1), s = w.reduce((a, b) => a + b, 0);
+      L.forEach((c, i) => { o[c.nome] = Math.round(t * w[i] / s / 10) * 10; }); const big = L[w.indexOf(Math.max(...w))]; o[big.nome] += Math.round(t) - L.reduce((a, c) => a + o[c.nome], 0); };
+    g(A, ta); g(B, tb); return o;
+  }
+  function idade() { if (!D.nasc) return null; const n = new Date(D.nasc + 'T12:00'), h = new Date(); if (isNaN(n)) return null; let a = h.getFullYear() - n.getFullYear(); if (h.getMonth() < n.getMonth() || (h.getMonth() === n.getMonth() && h.getDate() < n.getDate())) a--; return a; }
+  const PERF = { cons: { t: 'Conservador', s: 'Prefiro segurança, mesmo ganhando menos.', ex: 'Tesouro Selic, CDB, LCI', n: 1, r: .04 },
+    mod: { t: 'Moderado', s: 'Aceito algumas quedas para ganhar mais no longo prazo.', ex: 'Renda fixa + um pouco de ações e FIIs', n: 2, r: .055 },
+    arr: { t: 'Arrojado', s: 'Penso no longo prazo e aguento quedas grandes.', ex: 'Boa parte em ações, ETFs e exterior', n: 3, r: .07 } };
+  const mesAnt = () => { const d = new Date(); d.setDate(1); d.setMonth(d.getMonth() - 1); return d.toLocaleDateString('pt-BR', { month: 'long' }); };
+  const plHint = () => D.pl == null ? 'Não sabe? Use o <b>Me ajude a somar</b>.' : `<span style="${D.pl < 0 ? 'color:var(--alt);font-weight:700' : ''}">Patrimônio líquido: ${sbrl(D.pl)}</span>`;
+  const estHtml = L => `<span>${D.regime === 'pj' ? 'Faturamento' : 'Salário bruto'}</span><b>${brl(D.bruto)}</b>${L.linhas.map(x => `<span>− ${x[0]}</span><b>${brl(x[1])}</b>`).join('')}<span class="tt">Cai na conta (aproximado)</span><b>${brl(L.liq)}</b>`;
+  const cusHint = liq => { if (!D.custos || !liq) return ' '; const s = liq - D.custos; return s >= 0 ? `<span style="color:var(--ok);font-weight:700">Sobram ${brl(s)} por mês (${Math.round(s / liq * 100)}%).</span>` : `<span style="color:var(--alt);font-weight:700">Passa ${brl(-s)} do que você recebe.</span>`; };
+  const D_falta = () => D.regime === 'pj' && D.tipo === 'mei' && D.bruto > 6750 ? 'Acima do limite do MEI. Volte e escolha outro tipo.' : 'Digite o valor para continuar';
+
+  /* ---- telas ---- */
+  const S = [
+    { id: 'oi', render() { return `<div class="hero fade">${WM}
+      <h1>${refazer ? 'Refazer a configuração inicial' : 'Vamos montar o seu painel'}</h1>
+      <p class="lead">${refazer ? 'As mesmas perguntas do primeiro acesso, já com as suas respostas. Mude o que quiser.' : 'São 8 perguntas rápidas (9 se você tiver empresa). Leva uns 3 minutos e o app já fica configurado para você.'}</p>
+      <div class="passos"><div>Sobre você<small>Nome e data de nascimento</small></div><div>Seu dinheiro hoje<small>Patrimônio e perfil de investimento</small></div><div>Seu mês<small>Como você recebe, quanto ganha e quanto gasta</small></div></div>
+      ${refazer ? `<div class="aviso">No fim, as respostas trocam o patrimônio, o salário e os custos do <b>Meu plano</b>. Para sair sem mudar nada, use "Sair sem salvar".</div>` : `<div class="por">${ICO_I}<span>Dá para mudar tudo depois, em Configurações. Se sair no meio, você continua de onde parou.</span></div>`}</div>`; },
+      cta: 'Começar' },
+    { id: 'nome', sec: 1, render() { return `<div class="field"><label for="i_nome"><h1>Como você quer ser chamado?</h1></label>
+      <input class="inp" id="i_nome" autocomplete="given-name" placeholder="Seu primeiro nome" value="${E(D.nome)}" maxlength="30"></div>`; },
+      bind() { q('#i_nome').oninput = e => { D.nome = e.target.value.trim(); upd(); }; }, ok: () => D.nome.length >= 2, falta: 'Digite seu nome para continuar' },
+    { id: 'nasc', sec: 1, render() { const a = idade(), v = a != null && a >= 14 && a <= 100; return `<div class="field"><label for="i_nasc"><h1>${D.nome ? E(D.nome) + ', quando' : 'Quando'} você nasceu?</h1></label>
+      <p class="lead">Usado no módulo Independência financeira.</p>
+      <input class="inp" id="i_nasc" type="date" max="${new Date().toISOString().slice(0, 10)}" min="1920-01-01" value="${E(D.nasc)}">
+      <div class="hint ${v ? 'ok' : ''}" id="h_nasc">${v ? `Você tem ${a} anos.` : a != null ? 'Confira a data.' : ' '}</div></div>`; },
+      bind() { q('#i_nasc').oninput = e => { D.nasc = e.target.value; const a = idade(), h = q('#h_nasc'), v = a != null && a >= 14 && a <= 100; h.className = 'hint ' + (v ? 'ok' : 'err'); h.textContent = v ? `Você tem ${a} anos.` : 'Confira a data.'; upd(); }; },
+      ok: () => { const a = idade(); return a != null && a >= 14 && a <= 100; }, falta: 'Escolha a data para continuar' },
+    { id: 'pl', sec: 2, render() { return `<div class="field"><label for="i_pl"><h1>Quanto você tem hoje, somando tudo?</h1></label>
+      <p class="lead">O que você tem (investimentos, conta, imóveis, carro) menos o que deve. Um valor aproximado serve, e 0 também vale.</p>
+      <div class="money"><b>R$</b><input class="inp" id="i_pl" inputmode="numeric" placeholder="0" value="${D.pl != null && D.pl >= 0 ? D.pl.toLocaleString('pt-BR') : ''}"></div>
+      <div class="hint" id="h_pl">${plHint()}</div></div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap"><button class="chip" type="button" id="ajuda">Me ajude a somar</button><button class="chip" type="button" id="vermais">${ICO_I} Ver mais</button></div>`; },
+      bind() { const i = q('#i_pl'); i.oninput = () => { fmtIn(i); D.pl = i.value === '' ? null : num(i.value); D.soma = null; q('#h_pl').innerHTML = plHint(); upd(); };
+        q('#vermais').onclick = shPL; q('#ajuda').onclick = shSoma; },
+      ok: () => D.pl != null, falta: 'Digite um valor (pode ser 0)' },
+    { id: 'perfil', sec: 2, render() { return `<div><h1>Qual frase parece mais com você?</h1></div>
+      <p class="lead">Define o seu perfil de investimento.</p>
+      <div class="opts" role="radiogroup">${Object.entries(PERF).map(([k, p]) => `<button type="button" class="opt" role="radio" aria-checked="${D.perfil === k}" data-k="${k}"><span class="rd"></span><span><span class="t">${p.t}</span><span class="s">${p.s}</span><span class="bar">${[1, 2, 3].map(i => `<i class="${i <= p.n ? 'f' : ''}"></i>`).join('')}</span><span class="tag">Ex.: ${p.ex}</span></span></button>`).join('')}</div>
+      <button class="link" type="button" id="quiz">Não sei. Me ajude a descobrir</button>`; },
+      bind() { qa('.opt').forEach(b => b.onclick = () => { D.perfil = b.dataset.k; render(); }); q('#quiz').onclick = shQuiz; }, ok: () => !!D.perfil, falta: 'Escolha uma opção' },
+    { id: 'regime', sec: 3, render() { return `<div><h1>Como você recebe hoje?</h1></div>
+      <div class="opts" role="radiogroup">
+       <button type="button" class="opt" role="radio" aria-checked="${D.regime === 'clt'}" data-k="clt"><span class="rd"></span><span><span class="t">CLT (carteira assinada)</span><span class="s">INSS e imposto de renda saem na folha.</span></span></button>
+       <button type="button" class="opt" role="radio" aria-checked="${D.regime === 'pj'}" data-k="pj"><span class="rd"></span><span><span class="t">PJ (empresa própria)</span><span class="s">Você emite nota e paga os impostos da empresa.</span></span></button></div>
+      <div class="por">${ICO_I}<span>Vai mudar em breve? Depois você agenda a troca no <b>Meu plano</b>.</span></div>`; },
+      bind() { qa('.opt').forEach(b => b.onclick = () => { D.regime = b.dataset.k; render(); }); }, ok: () => !!D.regime, falta: 'Escolha uma opção' },
+    { id: 'tipo', sec: 3, so: () => D.regime === 'pj', render() { return `<div><h1>Qual o tipo da sua empresa?</h1></div>
+      <p class="lead">Cada tipo paga imposto de um jeito.</p>
+      <div class="opts" role="radiogroup">${Object.entries(TIPOS).map(([k, p]) => `<button type="button" class="opt" role="radio" aria-checked="${D.tipo === k}" data-k="${k}"><span class="rd"></span><span><span class="t">${p.t}</span><span class="s">${p.s}</span><span class="tag">${p.tag}</span></span></button>`).join('')}</div>`; },
+      bind() { qa('.opt').forEach(b => b.onclick = () => { D.tipo = b.dataset.k; render(); }); }, ok: () => !!D.tipo, falta: 'Escolha uma opção' },
+    { id: 'sal', sec: 3, render() { const pj = D.regime === 'pj', L = liquido(); return `<div class="field"><label for="i_sal"><h1>${pj ? 'Quanto a sua empresa fatura por mês?' : 'Qual o seu salário bruto?'}</h1></label>
+      <p class="lead">${pj ? 'O valor das notas de um mês normal.' + (D.tipo === 'mei' ? ' No MEI, o limite é R$ 6.750.' : '') : 'O valor antes dos descontos.'}</p>
+      <div class="money"><b>R$</b><input class="inp" id="i_sal" inputmode="numeric" placeholder="0" value="${D.bruto ? D.bruto.toLocaleString('pt-BR') : ''}"></div></div>
+      <div class="est" id="est" ${D.bruto ? '' : 'hidden'}>${estHtml(L)}</div>
+      ${pj && D.tipo !== 'mei' ? '<button class="link" id="porInss" type="button">Por que tem INSS do pró-labore? Ver mais</button>' : ''}
+      <div class="hint">Cálculo aproximado. No Meu plano dá para ajustar ${pj ? (D.tipo === 'mei' ? 'o DAS' : 'o anexo, o pró-labore e o contador') : 'dependentes, 13º e férias'}.</div>`; },
+      bind() { if (q('#porInss')) q('#porInss').onclick = shInss; const i = q('#i_sal'); i.oninput = () => { fmtIn(i); D.bruto = num(i.value); const e = q('#est'); e.hidden = !D.bruto; e.innerHTML = estHtml(liquido()); upd(); }; },
+      ok: () => D.bruto >= 500 && !(D.regime === 'pj' && D.tipo === 'mei' && D.bruto > 6750), falta: D_falta },
+    { id: 'benef', sec: 3, render() { const pj = D.regime === 'pj'; return `<div><h1>Quais benefícios você recebe?</h1></div>
+      <p class="lead">${pj ? 'Marque o que o contrato te dá, além do faturamento.' : 'Marque o que a empresa te dá, além do salário.'} O valor é opcional.</p>
+      <div class="bn">${BENS.map(([k, n, f]) => `<div><label><input type="checkbox" data-k="${k}" ${k in D.ben ? 'checked' : ''}>${n}</label>${k in D.ben ? benExtra(k, n, f) : ''}</div>`).join('')}</div>
+      <button type="button" class="opt" role="checkbox" aria-checked="${D.semBen}" id="semBen" style="padding:12px 16px"><span class="rd"></span><span class="t" style="font-size:15.5px">Não recebo benefícios</span></button>
+      <div class="hint" id="h_ben">${pacoteTxt()}</div>`; },
+      bind() { qa('.bn input[type=checkbox]').forEach(c => c.onchange = () => { const k = c.dataset.k; if (c.checked) { D.ben[k] = 0; D.semBen = false; } else delete D.ben[k]; render(); });
+        qa('.bn input[data-v]').forEach(i => i.oninput = () => { fmtIn(i); D.ben[i.dataset.v] = num(i.value); q('#h_ben').innerHTML = pacoteTxt(); if (q('#h_vt')) q('#h_vt').textContent = vtTxt(); });
+        const pq = () => { q('#h_prev').innerHTML = prevTxt(); q('#h_ben').innerHTML = pacoteTxt(); }, pn = v => Math.min(100, +(String(v).replace(',', '.').replace(/[^0-9.]/g, '')) || 0);
+        if (q('#p_eu')) q('#p_eu').oninput = e => { D.prev.eu = pn(e.target.value); pq(); }; if (q('#p_emp')) q('#p_emp').oninput = e => { D.prev.empPct = pn(e.target.value); pq(); };
+        qa('[data-pe]').forEach(b => b.onclick = () => { D.prev.emp = b.dataset.pe; render(); });
+        q('#semBen').onclick = () => { D.semBen = !D.semBen; if (D.semBen) D.ben = {}; render(); }; },
+      ok: () => D.semBen || Object.keys(D.ben).length > 0, falta: 'Marque um benefício ou "Não recebo benefícios"' },
+    { id: 'custos', sec: 3, render() { const liq = liquido().liq, r = D.reg, sug = Math.round(liq * (r.ess + r.est) / 100 / 10) * 10;
+      return `<div class="field"><label for="i_cus"><h1>Quanto você gasta por mês, mais ou menos?</h1></label>
+      <p class="lead">Conte tudo: aluguel, contas, mercado, cartão, lazer.</p>
+      <div class="money"><b>R$</b><input class="inp" id="i_cus" inputmode="numeric" placeholder="0" value="${D.custos ? D.custos.toLocaleString('pt-BR') : ''}"></div>
+      <div class="hint" id="h_cus">${cusHint(liq)}</div></div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap">${liq ? `<button class="chip" type="button" id="usaSug">Não sei. Usar sugestão: ${brl(sug)}</button>` : ''}</div>
+      ${liq ? `<div class="por">${ICO_I}<span>A sugestão separa ${r.ess}% do que cai na conta para o essencial, ${r.est}% para o estilo de vida e ${r.inv}% para investir. Dá para mudar os percentuais.</span></div>` : ''}`; },
+      bind() { const liq = liquido().liq, i = q('#i_cus'); i.oninput = () => { fmtIn(i); D.custos = num(i.value); D.mesReal = null; D.mesFech = 0; q('#h_cus').innerHTML = cusHint(liq); upd(); };
+        if (q('#usaSug')) q('#usaSug').onclick = () => shRegra(liq); },
+      ok: () => D.custos > 0, falta: 'Digite um valor ou use a sugestão' },
+    { id: 'pronto', render() { const L = liquido(), sobra = L.liq - D.custos, pc = L.liq ? sobra / L.liq : 0, p = PERF[D.perfil] || PERF.mod, a = idade();
+      let pat = D.pl || 0; for (let m = 0; m < 120; m++) pat = pat * Math.pow(1 + p.r, 1 / 12) + Math.max(0, sobra);
+      return `<div class="eyebrow">Quase pronto</div><h1>${E(D.nome || 'Você')}, seu painel está montado</h1>
+      <div class="kpis">
+       <div class="kpi"><span>Patrimônio hoje</span><b>${sbrl(D.pl || 0)}</b></div>
+       <div class="kpi"><span>Perfil</span><b>${p.t}</b></div>
+       <div class="kpi"><span>Entra por mês</span><b>${brl(L.liq)}</b><small>${D.regime === 'pj' ? 'PJ' : 'CLT'}, aproximado</small></div>
+       <div class="kpi"><span>Sai por mês</span><b>${brl(D.custos)}</b><small>${D.mesFech ? 'gastos de ' + mesAnt() : 'estimativa'}</small></div></div>
+      <div class="insight">${sobra > 0 ? `<span>Sobram <b class="v">${brl(sobra)}</b> por mês, ${Math.round(pc * 100)}% do que você recebe.</span>
+        <span class="hint">Investindo essa sobra no perfil ${p.t.toLowerCase()}, em 10 anos${a ? ` (aos ${a + 10})` : ''} você pode chegar a cerca de <b style="color:var(--ink)">${brl(pat)}</b> em dinheiro de hoje.</span>`
+        : `<span>Hoje você gasta <b style="color:var(--alt)">${brl(-sobra)}</b> a mais do que recebe.</span><span class="hint">O primeiro passo vai ser achar onde cortar, em Gastos.</span>`}</div>
+      <p class="hint">Números aproximados. No próximo passo dá para acertar com os gastos de verdade.</p>`; } },
+    { id: 'mes', render() { const m = mesAnt(); return `<div class="eyebrow">Último passo, opcional</div><h1>Comece com os gastos de ${m}</h1>
+      <p class="lead">Até aqui os custos são uma estimativa. Com os gastos de ${m}, o app já abre com o valor real.</p>
+      <div class="opts">
+       <button type="button" class="opt" id="mFech" aria-checked="${!!D.mesFech}" role="checkbox"><span class="rd"></span><span><span class="t">Fechar ${m} por categoria</span><span class="s">Já vem com a estimativa de cada categoria. Você só corrige.</span><span class="tag">${D.mesFech ? '✓ ' + m + ': ' + brl(D.mesFech) : 'Uns 3 minutos'}</span></span></button>
+       <button type="button" class="opt" id="mUp" aria-checked="${!!D.depois}" role="checkbox"><span class="rd"></span><span><span class="t">Subir planilha, fatura ou extrato</span><span class="s">O app lê o arquivo e separa por categoria.</span><span class="tag">${D.depois === 'plan' ? '✓ Abre a importação da planilha' : D.depois === 'fat' ? '✓ Abre a importação de fatura ou extrato' : 'Excel, CSV, PDF ou OFX'}</span></span></button></div>
+      <div class="por">${ICO_I}<span>Pode fazer depois. O lembrete de fechar o mês aparece todo começo de mês em <b>Gastos</b>.</span></div>`; },
+      bind() { q('#mFech').onclick = shFech; q('#mUp').onclick = shUp; }, cta: () => D.depois ? 'Salvar e importar o arquivo' : refazer ? 'Salvar configuração' : 'Entrar no LifeBoard', fim: true }
+  ];
+  const vis = t => !t.so || t.so();
+  const steps = () => S.filter(t => t.sec && vis(t));
+
+  /* ---- motor ---- */
+  function render() {
+    const t = S[cur], tela = q('#ob-tela'), mesma = ultima === t.id, y = tela.scrollTop; ultima = t.id;
+    tela.innerHTML = t.render();
+    if (mesma) tela.scrollTop = y; else { tela.classList.remove('fade'); void tela.offsetWidth; tela.classList.add('fade'); tela.scrollTop = 0; }
+    if (t.bind) t.bind();
+    const ST = steps(), si = ST.indexOf(t);
+    q('#prog').innerHTML = t.sec ? ST.map((s, i) => `<i class="${i < si ? 'on' : i === si ? 'cur' : ''}"></i>`).join('') : '';
+    q('#prog').style.visibility = t.sec ? 'visible' : 'hidden';
+    q('#ob-voltar').disabled = cur === 0;
+    upd();
+    const f = tela.querySelector('.inp'); if (f && !mesma && matchMedia('(min-width:701px)').matches) f.focus({ preventScroll: true });
+  }
+  function upd() {
+    const t = S[cur], ok = t.ok ? t.ok() : true, b = q('#cta'); b.disabled = !ok; b.textContent = (typeof t.cta === 'function' ? t.cta() : t.cta) || 'Continuar';
+    const ST = steps(), si = ST.indexOf(t); q('#why').textContent = !ok ? (typeof t.falta === 'function' ? t.falta() : t.falta || '') : t.sec ? `Pergunta ${si + 1} de ${ST.length}` : '';
+  }
+  function guarda() {   // retoma de onde parou (só no primeiro acesso; no refazer, sair não salva nada)
+    if (refazer || typeof state === 'undefined' || !state) return;
+    state.onb = { feito: false, passo: S[cur].id, resp: JSON.parse(JSON.stringify(D)) }; T(() => save());
+  }
+  function go(i) { const d = i < cur ? -1 : 1; i = Math.max(0, Math.min(S.length - 1, i)); while (!vis(S[i]) && i > 0 && i < S.length - 1) i += d; cur = i; closeSh(); render(); guarda(); }
+
+  /* ---- folhas ---- */
+  function openSh(t, h, bind) { q('#shT').textContent = t; q('#shB').innerHTML = h; q('#shB').scrollTop = 0; q('#sheet').classList.add('on'); q('#scrim').classList.add('on'); if (bind) bind(); }
+  function closeSh() { if (!root) return; q('#sheet').classList.remove('on'); q('#scrim').classList.remove('on'); }
+  const okBtn = () => q('#shOk').onclick = closeSh;
+  function shPL() { openSh('O que é patrimônio líquido', `<p>É uma foto do seu dinheiro hoje: <b>tudo o que você tem, menos tudo o que você deve</b>.</p>
+    <div><h2 style="font-size:16px;margin-bottom:6px">Entra na conta</h2><ul><li>Investimentos: renda fixa, ações, fundos, previdência, cripto</li><li>Dinheiro em conta e poupança</li><li>Imóveis, pelo valor de venda hoje</li><li>Carro ou moto, pela tabela FIPE</li><li>Valores a receber</li></ul></div>
+    <div><h2 style="font-size:16px;margin-bottom:6px">Sai da conta</h2><ul><li>O que falta pagar de financiamentos</li><li>Empréstimos e cheque especial</li><li>Fatura fechada e parcelas que faltam</li></ul></div>
+    <div class="est"><span>Exemplo: apartamento</span><b>R$ 500.000</b><span>+ investimentos e conta</span><b>R$ 80.000</b><span>+ carro (FIPE)</span><b>R$ 60.000</b><span>− financiamento que falta</span><b>R$ 320.000</b><span class="tt">Patrimônio líquido</span><b>R$ 320.000</b></div>
+    <p class="hint">Não precisa ser exato. Todo fim de mês você atualiza com um novo checkpoint.</p><button class="cta" type="button" id="shOk">Entendi</button>`, okBtn); }
+  function shSoma() { const L = [['inv', 'Investimentos', 1], ['conta', 'Conta e poupança', 1], ['imo', 'Imóveis', 1], ['vei', 'Veículos (FIPE)', 1], ['out', 'Outros bens e a receber', 1], ['div', 'Dívidas e financiamentos', -1]], s0 = D.soma || {};
+    openSh('Me ajude a somar', `<p class="hint">Preencha o que tiver. Deixe em branco o que não se aplica.</p><div class="soma">${L.map(([k, n, s]) => `<label for="s_${k}" class="${s < 0 ? 'neg' : ''}">${s < 0 ? '− ' : ''}${n}</label><input id="s_${k}" class="${s < 0 ? 'neg' : ''}" inputmode="numeric" placeholder="0" value="${s0[k] ? s0[k].toLocaleString('pt-BR') : ''}">`).join('')}<span style="font-weight:800">Patrimônio líquido</span><span class="res" id="s_res">R$ 0</span></div><button class="cta" type="button" id="s_ok">Usar este valor</button>`, () => {
+      let tot = 0; const calc = () => { tot = L.reduce((a, [k, , s]) => a + s * num(q('#s_' + k).value), 0); const r = q('#s_res'); r.textContent = sbrl(tot); r.style.color = tot < 0 ? 'var(--alt)' : ''; };
+      L.forEach(([k]) => q('#s_' + k).oninput = e => { fmtIn(e.target); calc(); }); calc();
+      q('#s_ok').onclick = () => { D.pl = tot; D.soma = Object.fromEntries(L.map(([k]) => [k, num(q('#s_' + k).value)])); closeSh(); render(); }; }); }
+  function shQuiz() { const Q = [['Se seus investimentos caíssem 20% em um mês, você...', ['Venderia tudo', 1], ['Esperaria passar', 2], ['Compraria mais', 3]], ['Quando vai precisar desse dinheiro?', ['Em até 2 anos', 1], ['De 2 a 5 anos', 2], ['Daqui a mais de 5 anos', 3]], ['O que você já investiu? Pode marcar mais de um.', ['Poupança ou CDB', 1], ['Tesouro e fundos', 2], ['Ações, FIIs ou exterior', 3]]], r = [0, 0, 0];
+    openSh('Descobrir meu perfil', Q.map((x, i) => `<div class="qz"><p>${i + 1}. ${x[0]}</p><div class="row">${x.slice(1).map(([t, v]) => `<button class="chip" type="button" aria-pressed="false" data-q="${i}" data-v="${v}">${t}</button>`).join('')}</div></div>`).join('') + `<div class="hint" id="qzr">Responda as 3 para ver o resultado.</div><button class="cta" type="button" id="qzok" disabled>Usar este perfil</button>`, () => {
+      let res = ''; qa('.qz .chip').forEach(b => b.onclick = () => { const k = +b.dataset.q, qs = qa(`.qz .chip[data-q="${k}"]`);
+        if (k === 2) { b.setAttribute('aria-pressed', b.getAttribute('aria-pressed') !== 'true'); r[2] = Math.max(0, ...qs.filter(x => x.getAttribute('aria-pressed') === 'true').map(x => +x.dataset.v)); }
+        else { r[k] = +b.dataset.v; qs.forEach(x => x.setAttribute('aria-pressed', x === b)); }
+        if (!r.every(Boolean)) { q('#qzr').textContent = 'Responda as 3 para ver o resultado.'; q('#qzok').disabled = true; }
+        else { const m = (r[0] * 2 + r[1] + r[2]) / 4; res = m < 1.7 ? 'cons' : m < 2.4 ? 'mod' : 'arr'; q('#qzr').innerHTML = `Resultado: <b style="color:var(--ink)">${PERF[res].t}</b>. ${PERF[res].s}`; q('#qzok').disabled = false; } });
+      q('#qzok').onclick = () => { D.perfil = res; closeSh(); render(); }; }); }
+  function shRegra(liq) { const r = { ...D.reg }, L = [['ess', 'Essenciais', 'Moradia, contas, mercado, saúde, transporte'], ['est', 'Estilo de vida', 'Restaurantes, lazer, viagens, roupas'], ['inv', 'Investir', 'Vai para o seu futuro']];
+    const val = () => { const t = r.ess + r.est + r.inv; L.forEach(([k]) => q('#rv_' + k).textContent = brl(liq * r[k] / 100)); const ok = t === 100;
+      q('#r_tot').innerHTML = ok ? `Seus custos ficam em <b style="color:var(--ink)">${brl(Math.round(liq * (r.ess + r.est) / 100 / 10) * 10)}</b> por mês.` : `<span style="color:var(--alt);font-weight:700">A soma está em ${t}%. Ajuste para fechar 100%.</span>`; q('#r_ok').disabled = !ok; };
+    openSh('Dividir o que cai na conta', `<p>Do que cai na conta (<b>${brl(liq)}</b>, aproximado), a sugestão é a regra <b>50/30/20</b>. Mude os percentuais se a sua vida for diferente.</p>
+      <div class="cats">${L.map(([k, n, d]) => `<div class="cat" style="padding:10px 12px"><label for="r_${k}" style="display:flex;flex-direction:column">${n}<small class="hint" style="font-weight:500;font-size:12px">${d}</small></label><div style="display:flex;flex-direction:column;align-items:flex-end;gap:2px"><span style="display:flex;align-items:center;gap:4px"><input id="r_${k}" inputmode="numeric" value="${r[k]}" style="width:64px">%</span><small class="hint num" id="rv_${k}"></small></div></div>`).join('')}</div>
+      <div class="hint" id="r_tot"></div><div style="display:flex;gap:8px;flex-wrap:wrap"><button class="chip" type="button" id="r_pad">Voltar para 50/30/20</button></div>
+      <button class="cta" type="button" id="r_ok">Usar esta divisão</button>`, () => {
+      L.forEach(([k]) => q('#r_' + k).oninput = e => { r[k] = Math.min(100, num(e.target.value)); val(); }); val();
+      q('#r_pad').onclick = () => { Object.assign(r, { ess: 50, est: 30, inv: 20 }); L.forEach(([k]) => q('#r_' + k).value = r[k]); val(); };
+      q('#r_ok').onclick = () => { D.reg = { ...r }; D.custos = Math.round(liq * (r.ess + r.est) / 100 / 10) * 10; D.mesReal = null; D.mesFech = 0; closeSh(); render(); }; }); }
+  function shInss() { const f = D.bruto || 20000, ex = !D.bruto, a = f * 12;
+    if (D.tipo === 'presumido') { openSh('Por que tem INSS do pró-labore', `<p>Sócio que trabalha na empresa precisa tirar um <b>pró-labore</b>, o "salário" do sócio. A Receita costuma cobrar quem só distribui lucro.</p>
+      <p>No Lucro Presumido, sobre o pró-labore saem 11% de INSS seu e 20% da empresa. Por isso a conta usa o pró-labore mínimo, de um salário mínimo (${brl(PL_MIN)}). O resto vem como lucro, sem imposto para você.</p>
+      <p class="hint">No Meu plano dá para mudar o pró-labore.</p><button class="cta" type="button" id="shOk">Entendi</button>`, okBtn); return; }
+    const x3 = ANEXO3.find(r => a <= r[0]) || ANEXO3[5], x5 = ANEXO5.find(r => a <= r[0]) || ANEXO5[5], al3 = Math.max(.06, (a * x3[1] - x3[2]) / a), al5 = Math.max(.155, (a * x5[1] - x5[2]) / a),
+      pl = Math.min(Math.max(f * .28, PL_MIN), 8475.55), ins = pl * .11, c3 = f * al3 + ins, c5 = f * al5;
+    openSh('Por que tem INSS do pró-labore', `<p>Sócio que trabalha na empresa precisa tirar um <b>pró-labore</b>, o "salário" do sócio. Sobre ele você paga 11% de INSS.</p>
+      <p>No Simples, o pró-labore de pelo menos <b>28% do faturamento</b> (o "fator R") deixa a empresa no <b>Anexo III</b>, que começa em 6%. Sem isso, ela cai no <b>Anexo V</b>, que começa em 15,5%.</p>
+      <div class="est"><span>${ex ? 'Exemplo com R$ 20.000 por mês' : 'Com o seu faturamento'}</span><b></b>
+       <span>Com pró-labore de ${brl(pl)} (Anexo III)</span><b>${brl(c3)}</b><span class="hint" style="grid-column:1/-1;margin-top:-4px">DAS de ${brl(f * al3)} + INSS de ${brl(ins)}</span>
+       <span>Sem pró-labore (Anexo V)</span><b style="color:var(--alt)">${brl(c5)}</b><span class="tt">Você economiza por mês</span><b>${brl(c5 - c3)}</b></div>
+      <p class="hint">Por isso a conta já parte do pró-labore em 28%. O INSS ainda conta para a sua aposentadoria.</p><button class="cta" type="button" id="shOk">Entendi</button>`, okBtn); }
+  function shFech() { const m = mesAnt(), est = distrib(D.custos), ks = Object.keys(est), real = { ...(D.mesReal || {}) };
+    const tot = () => ks.reduce((a, k) => a + (k in real ? real[k] : est[k]), 0);
+    openSh('Fechar ' + m, `<p class="hint">O valor cinza é a estimativa. Troque pelo que você gastou de verdade; o que ficar em branco fica com a estimativa. Esses valores viram os seus custos por categoria no Meu plano.</p><div class="cats">${ks.map((k, i) => `<div class="cat"><label for="f_${i}">${E(k)}</label><input id="f_${i}" inputmode="numeric" placeholder="${est[k].toLocaleString('pt-BR')}" value="${k in real ? real[k].toLocaleString('pt-BR') : ''}"></div>`).join('')}</div>
+      <div class="est"><span>Estimativa</span><b>${brl(ks.reduce((a, k) => a + est[k], 0))}</b><span class="tt">Gasto em ${m}</span><b id="f_tot">${brl(tot())}</b></div><button class="cta" type="button" id="f_ok">Salvar ${m}</button>`, () => {
+      ks.forEach((k, i) => q('#f_' + i).oninput = e => { fmtIn(e.target); if (e.target.value === '') delete real[k]; else real[k] = num(e.target.value); q('#f_tot').textContent = brl(tot()); });
+      q('#f_ok').onclick = () => { const full = {}; ks.forEach(k => { full[k] = k in real ? real[k] : est[k]; }); D.mesReal = full; D.mesFech = tot(); D.custos = D.mesFech; closeSh(); render(); guarda(); toast(`${m[0].toUpperCase() + m.slice(1)} fechado: ${brl(D.mesFech)}. Vira o seu custo do mês no plano.`); }; }); }
+  function shUp() { openSh('Subir planilha, fatura ou extrato', `<p>O que você quer trazer? Ao salvar a configuração, o app abre a tela certa para escolher o arquivo e mostra uma prévia antes de importar.</p>
+    <div class="opts" role="radiogroup">
+     <button type="button" class="opt" role="radio" data-dp="plan" aria-checked="${D.depois === 'plan'}"><span class="rd"></span><span><span class="t">A planilha que eu já uso</span><span class="s">Excel ou CSV. Do Google Sheets, baixe como Excel.</span></span></button>
+     <button type="button" class="opt" role="radio" data-dp="fat" aria-checked="${D.depois === 'fat'}"><span class="rd"></span><span><span class="t">Fatura do cartão ou extrato do banco</span><span class="s">CSV, OFX, PDF ou o ZIP que o banco envia.</span></span></button></div>
+    ${D.depois ? '<button class="link" type="button" id="dp_n">Não quero importar agora</button>' : ''}<button class="cta" type="button" id="shOk">Pronto</button>`, () => {
+      qa('[data-dp]').forEach(b => b.onclick = () => { D.depois = b.dataset.dp; qa('[data-dp]').forEach(x => x.setAttribute('aria-checked', x === b)); });
+      if (q('#dp_n')) q('#dp_n').onclick = () => { D.depois = ''; closeSh(); render(); };
+      q('#shOk').onclick = () => { closeSh(); render(); guarda(); }; }); }
+  function toast(m) { const t = q('#toast'); t.textContent = m; t.classList.add('on'); clearTimeout(toast.h); toast.h = setTimeout(() => t.classList.remove('on'), 2800); }
+
+  /* ---- grava no painel ---- */
+  function aplicar() {
+    const st = state, L = liquido();
+    // nome e nascimento: Família › Você (Independência lê dali)
+    T(() => { if (typeof famEu === 'function' && st.fam && Array.isArray(st.fam.pessoas)) { const eu = famEu(); eu.nome = D.nome; eu.nasc = D.nasc; } });
+    if (!st.indep || typeof st.indep !== 'object') st.indep = {}; st.indep.nasc = String(D.nasc || '').slice(0, 7);
+    // patrimônio de hoje = ponto de partida do Meu plano
+    st.plan.valor = Math.round(D.pl || 0); st.plan.inicio = mKey(HOJE_IDX); T(() => cpInicial());
+    // perfil: carteira-alvo da projeção
+    T(() => { const p = PRESETS.find(x => x.id === D.perfil), c = st.cenarios.find(x => x.id === 'base') || st.cenarios[0]; if (p && c) { c.preset = p.id; c.alvo = JSON.parse(JSON.stringify(p.a)); } });
+    // renda e deduções
+    if (!st.orc) st.orc = orcInicial(st.cfg || {});
+    const o = st.orc; o.deducoes = o.deducoes.filter(d => !/^onb-/.test(d.id));
+    setModelo(D.regime === 'pj' ? 'pj' : 'clt', 'bruto', true);
+    const sal = o.receitas.find(r => r.id === 'sal'); if (sal) sal.valor = D.bruto;
+    const ded = (id, nome, valor) => { if (valor > 0) o.deducoes.push({ id, nome, modo: 'fixo', valor: Math.round(valor * 100) / 100, reaj: 'nenhum' }); };
+    if (D.regime === 'pj') {
+      const t = D.tipo || 'naosei', f = D.bruto, das = o.deducoes.find(d => d.id === 'das'), ct = o.deducoes.find(d => d.id === 'contab');
+      const aliq = t === 'mei' ? (f ? 86 / f * 100 : 0) : t === 'presumido' ? 16.33 : simplesAliq(f) * 100;
+      if (das) { das.modo = 'pct'; das.valor = Math.round(aliq * 100) / 100; das.nome = t === 'mei' ? 'DAS do MEI' : t === 'presumido' ? 'Impostos (Lucro Presumido)' : 'DAS (Simples Nacional)'; }
+      if (ct) ct.valor = t === 'mei' ? 0 : t === 'presumido' ? 600 : 350;
+      if (t !== 'mei') ded('onb-inss', 'INSS do pró-labore', t === 'presumido' ? PL_MIN * .31 : Math.min(Math.max(f * .28, PL_MIN), 8475.55) * .11);
+    } else ded('onb-vt', 'Vale-transporte (desconto)', vtDesc());
+    ded('onb-prev', 'Previdência privada (sua parte)', prevEu());
+    // custos por categoria
+    const cs = catsEditaveis(), est = D.mesReal || distrib(D.custos); cs.forEach(c => { c.orc = Math.max(0, Math.round(+est[c.nome] || 0)); });
+    st.onb = { feito: true, quando: new Date().toISOString(), passo: '', resp: JSON.parse(JSON.stringify(D)), liq: Math.round(L.liq) };
+    st.jornada = 'feita';
+    save();
+  }
+
+  /* ---- abrir e fechar ---- */
+  function monta() {
+    root = document.createElement('div'); root.id = 'onb'; root.setAttribute('role', 'dialog'); root.setAttribute('aria-modal', 'true'); root.setAttribute('aria-label', 'Configuração inicial');
+    root.innerHTML = `<div class="app">
+      <div class="top"><button class="ib" type="button" id="ob-voltar" aria-label="Voltar"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg></button>
+        <div class="prog" id="prog" aria-hidden="true"></div><button class="sair" type="button" id="sair" hidden>Sair sem salvar</button></div>
+      <div class="body" id="ob-tela"></div>
+      <div class="foot"><button class="cta" type="button" id="cta">Continuar</button><div class="why" id="why" aria-live="polite"></div></div>
+      <div class="scrim" id="scrim"></div>
+      <div class="sheet" id="sheet" role="dialog" aria-modal="true" aria-labelledby="shT"><div class="grab"></div>
+        <div class="sh-hd"><h2 id="shT"></h2><button class="ib" type="button" id="shX" aria-label="Fechar"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
+        <div class="sh-bd" id="shB"></div></div>
+      <div class="toast" id="toast" role="status"></div></div>`;
+    document.body.append(root);
+    q('#cta').onclick = () => { if (q('#cta').disabled) return; if (S[cur].fim) termina(); else go(cur + 1); };
+    q('#ob-voltar').onclick = () => go(cur - 1);
+    q('#shX').onclick = closeSh; q('#scrim').onclick = closeSh;
+    q('#sair').onclick = () => fecha();
+    root.addEventListener('keydown', e => {
+      if (e.key === 'Escape') { e.stopPropagation(); if (q('#sheet').classList.contains('on')) closeSh(); return; }
+      if (e.key === 'Enter' && !q('#sheet').classList.contains('on') && e.target.tagName === 'INPUT') { e.preventDefault(); q('#cta').click(); }
+    });
+    // nada do painel atrás recebe o foco enquanto a janela está aberta
+    document.addEventListener('focusin', e => { if (aberto && root && !root.contains(e.target)) { const f = root.querySelector('.inp, .cta:not([disabled]), button'); if (f) f.focus({ preventScroll: true }); } });
+  }
+  function fecha() { aberto = false; if (root) root.hidden = true; document.documentElement.classList.remove('onb-on'); }
+  function abrir(op) {
+    op = op || {}; if (typeof state === 'undefined' || !state) return;
+    refazer = !!op.refazer; if (!root) monta();
+    const o = state.onb && typeof state.onb === 'object' ? state.onb : null;
+    D = Object.assign(novoD(), o && o.resp ? JSON.parse(JSON.stringify(o.resp)) : {});
+    if (refazer && !(o && o.resp)) T(() => {   // conta antiga, sem respostas guardadas: parte do que já está no Meu plano
+      const pm = projMes(mKey(HOJE_IDX)), sal = state.orc.receitas.find(r => r.id === 'sal'), eu = (state.fam && state.fam.pessoas || []).find(p => p.tipo === 'eu');
+      D.pl = +(state.plan && state.plan.valor) || 0; D.regime = state.orc.modelo === 'pj' ? 'pj' : state.orc.modelo === 'clt' ? 'clt' : ''; if (D.regime === 'pj') D.tipo = 'simples';
+      D.bruto = Math.round(+(sal && sal.valor) || 0); D.custos = Math.round(pm.custos || 0);
+      if (eu) { if (eu.nome && eu.nome !== 'Você') D.nome = eu.nome; if (/^\d{4}-\d{2}-\d{2}$/.test(eu.nasc || '')) D.nasc = eu.nasc; }
+      const nm = T(() => document.getElementById('side-quem').textContent.trim().split(' ')[0], ''); if (!D.nome && nm) D.nome = nm;
+    });
+    cur = 0; ultima = '';
+    if (!refazer && o && o.passo) { const i = S.findIndex(t => t.id === o.passo); if (i > 0) cur = i; }
+    q('#sair').hidden = !refazer;
+    root.hidden = false; aberto = true; document.documentElement.classList.add('onb-on');
+    T(() => { if (typeof tourI !== 'undefined' && tourI >= 0) tourFecha(false); if (typeof gK !== 'undefined' && gK) guiaFecha(false); });
+    render();
+    if (!refazer && cur > 0) setTimeout(() => toast('Continuando de onde você parou.'), 300);
+  }
+  function termina() {
+    const dep = D.depois; aplicar(); fecha();
+    const cel = document.documentElement.classList.contains('cel');
+    const clica = attr => { const b = document.createElement('button'); b.type = 'button'; b.hidden = true; const [k, v] = attr; b.setAttribute(k, v); document.body.append(b); b.click(); b.remove(); };
+    T(() => {
+      if (dep === 'fat') { if (cel) clica(['data-cel', 'foco:gastos|Lançar e importar']); else showTab('gastos');
+        setTimeout(() => { const z = document.getElementById('gas-drop'); if (z) { z.scrollIntoView({ block: 'center', behavior: 'smooth' }); z.classList.add('sobre'); setTimeout(() => z.classList.remove('sobre'), 2400); } }, 350); }
+      else if (dep === 'plan') { if (cel) { clica(['data-cel', 'full:config']); setTimeout(() => { const s = document.getElementById('cfg-plan'); if (s) { T(() => abrirSecao(s)); s.scrollIntoView({ block: 'start', behavior: 'smooth' }); } }, 350); } else clica(['data-irplan', '']); }
+      else if (cel) clica(['data-cel', 'inicio']); else showTab('inicio');
+      renderTab(); setTimeout(() => T(renderTab), 1500);
+    });
+  }
+  window.onbAbrir = abrir;
+  // Configurações › Configuração inicial, e a linha em Mais no celular
+  document.addEventListener('click', e => { const b = e.target.closest && e.target.closest('[data-onbrefaz]'); if (!b) return; e.preventDefault(); abrir({ refazer: true }); });
 })();
 </script>
 <script>
