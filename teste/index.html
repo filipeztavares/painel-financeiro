@@ -2619,7 +2619,7 @@ html[data-lb="b"] .block-title .desc{font-size:14px;color:var(--muted);margin-to
     </div>
     <div class="nav-mobile-sub" id="navMobileSub"></div>
   </div>
-  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span><button type="button" id="demoBtn" aria-pressed="false">Modo demonstração</button></div><div class="src">Focus atualizado toda segunda · versão 387</div></div>
+  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span><button type="button" id="demoBtn" aria-pressed="false">Modo demonstração</button></div><div class="src">Focus atualizado toda segunda · versão 388</div></div>
 </nav>
 <div class="sino-pop" id="sino-pop" role="dialog" aria-label="Atualizações das bases" hidden></div>
 <div class="sino-pop" id="pess-pop" role="dialog" aria-label="Seus avisos" hidden></div>
@@ -4689,9 +4689,9 @@ html.onb-on,html.onb-on body{overflow:hidden!important}
 #onb .chip[aria-pressed="true"]::before{content:"✓";color:var(--acc);font-weight:800}
 #onb .bn>div:has(input[type=checkbox]:checked){background:color-mix(in srgb,var(--acc) 9%,var(--card))}
 #onb .opt[aria-checked="true"]{background:color-mix(in srgb,var(--acc) 12%,var(--card))!important}
-#onb .sufbox{display:flex;align-items:center;gap:10px;min-height:60px;border-radius:16px;border:2px solid var(--line);background:var(--card);padding:0 16px;cursor:text}
+#onb .sufbox{display:flex;flex-direction:row;justify-content:flex-start;align-items:center;gap:6px;min-height:60px;border-radius:16px;border:2px solid var(--line);background:var(--card);padding:0 16px;cursor:text}
 #onb .sufbox:focus-within{border-color:var(--acc)}
-#onb .sufbox input{border:0;background:none;outline:none;font:700 22px var(--f-t);width:3.2ch;padding:0;font-variant-numeric:tabular-nums}
+#onb .sufbox input{flex:none;text-align:left;margin:0;box-shadow:none;min-height:0;border:0;background:none;outline:none;font:700 22px var(--f-t);width:2.3ch;padding:0;font-variant-numeric:tabular-nums}
 #onb .sufbox span{font:700 18px var(--f-t);color:var(--muted)}
 #onb .toast{position:absolute;left:16px;right:16px;bottom:96px;z-index:30;background:var(--ink);color:var(--bg);padding:12px 14px;border-radius:14px;font-size:14px;font-weight:600;opacity:0;transform:translateY(8px);transition:all .2s;pointer-events:none}
 #onb .toast.on{opacity:1;transform:none}
@@ -5024,7 +5024,7 @@ html.onb-on,html.onb-on body{overflow:hidden!important}
     return new Promise(resolve => { const { data } = sb.auth.onAuthStateChange(async (ev) => { if (ev !== 'PASSWORD_RECOVERY') return; const s = prompt('Digite a nova senha (mínimo 8 caracteres):'); if (s && s.length >= 8) { const { error } = await sb.auth.updateUser({ password: s }); alert(error ? 'Não deu para trocar a senha: ' + error.message : 'Senha trocada.'); } }); resolve(data); });
   }
   // ---------- rodapé: compartilhar, administração e sair ----------
-  const SITE_V = 285;
+  const SITE_V = 287;
   const escH = v => String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const dataBR = v => v ? new Date(v).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' }) : '–';
   const css2 = `.side-foot .r{flex-wrap:wrap}.side-foot .lg-acoes{margin-left:auto;display:inline-flex;gap:10px}
@@ -21749,7 +21749,7 @@ html .sug-adm .btn.ghost[aria-pressed="true"], html[data-lb] .sug-adm .btn.ghost
         ${extra.suf ? `<label class="sufbox"><input id="mi" inputmode="numeric" placeholder="0" maxlength="3" value="${v != null && v !== '' ? v : ''}"><span>${extra.suf}</span></label>` : `<div class="money"><b>R$</b><input class="inp" id="mi" inputmode="numeric" placeholder="0" value="${v != null && v !== '' ? (+v).toLocaleString('pt-BR') : ''}"></div>`}
         <div class="hint" id="mh">${extra.hint ? extra.hint(v) : ' '}</div></div>
         ${extra.chips ? `<div style="display:flex;gap:8px;flex-wrap:wrap">${extra.chips().map(([t, val]) => `<button type="button" class="chip" data-val="${val}" aria-pressed="${v != null && v === +val}">${t}</button>`).join('')}</div>` : ''}${extra.after ? extra.after() : ''}`; },
-      bind() { const i = q('#mi'); i.oninput = () => { fmtIn(i); MS(mod, key, i.value === '' ? null : num(i.value)); if (extra.hint) q('#mh').innerHTML = extra.hint(MV(mod, key)); qa('[data-val]').forEach(b => b.setAttribute('aria-pressed', MV(mod, key) === +b.dataset.val)); upd(); };
+      bind() { const i = q('#mi'), larg = () => { if (extra.suf) i.style.width = Math.max(1, i.value.length) + 0.3 + 'ch'; }; larg(); i.oninput = () => { fmtIn(i); larg(); MS(mod, key, i.value === '' ? null : num(i.value)); if (extra.hint) q('#mh').innerHTML = extra.hint(MV(mod, key)); qa('[data-val]').forEach(b => b.setAttribute('aria-pressed', MV(mod, key) === +b.dataset.val)); upd(); };
         qa('[data-val]').forEach(b => b.onclick = () => { MS(mod, key, +b.dataset.val); render(); }); },
       ok: () => { const v = MV(mod, key); return v != null && (extra.min == null || v >= (typeof extra.min === 'function' ? extra.min() : extra.min)) && (extra.max == null || v <= extra.max); },
       falta: extra.falta || 'Digite um valor para continuar' };
