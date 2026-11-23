@@ -2618,7 +2618,7 @@ html[data-lb="b"] .block-title .desc{font-size:14px;color:var(--muted);margin-to
     </div>
     <div class="nav-mobile-sub" id="navMobileSub"></div>
   </div>
-  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span><button type="button" id="demoBtn" aria-pressed="false">Modo demonstração</button></div><div class="src">Focus atualizado toda segunda · versão 377</div></div>
+  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span><button type="button" id="demoBtn" aria-pressed="false">Modo demonstração</button></div><div class="src">Focus atualizado toda segunda · versão 378</div></div>
 </nav>
 <div class="sino-pop" id="sino-pop" role="dialog" aria-label="Atualizações das bases" hidden></div>
 <div class="sino-pop" id="pess-pop" role="dialog" aria-label="Seus avisos" hidden></div>
@@ -4745,7 +4745,7 @@ html.cel .gd-pop,html.cel .guia-pop{z-index:960}
     return new Promise(resolve => { const { data } = sb.auth.onAuthStateChange(async (ev) => { if (ev !== 'PASSWORD_RECOVERY') return; const s = prompt('Digite a nova senha (mínimo 8 caracteres):'); if (s && s.length >= 8) { const { error } = await sb.auth.updateUser({ password: s }); alert(error ? 'Não deu para trocar a senha: ' + error.message : 'Senha trocada.'); } }); resolve(data); });
   }
   // ---------- rodapé: compartilhar, administração e sair ----------
-  const SITE_V = 271;
+  const SITE_V = 272;
   const escH = v => String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const dataBR = v => v ? new Date(v).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' }) : '–';
   const css2 = `.side-foot .r{flex-wrap:wrap}.side-foot .lg-acoes{margin-left:auto;display:inline-flex;gap:10px}
@@ -20693,7 +20693,7 @@ html .sug-adm .btn.ghost[aria-pressed="true"], html[data-lb] .sug-adm .btn.ghost
     mostrouSessao = true; nota = null;
     const atual = (() => { try { return modDe(tab); } catch (e) { return null; } })();
     const opts = [`<option value="${esc(GERAL)}">${esc(GERAL)}</option>`].concat(MODS.map(m => `<option value="${esc(m.nome)}"${m.id === atual ? ' selected' : ''}>${esc(m.nome)}</option>`)).join('');
-    g('aval-corpo').innerHTML = `<p class="sug-int">Leva menos de um minuto e ajuda a decidir o que melhorar primeiro. Só o administrador do app lê as respostas.${forcar ? ' <b>(pré-visualização: nada é salvo)</b>' : ''}</p>
+    g('aval-corpo').innerHTML = `<p class="sug-int">Leva menos de um minuto e ajuda a decidir o que melhorar primeiro. Só o administrador do app lê as respostas.${forcar ? (ehAdmin() ? ' <b class="aval-teste">(teste do administrador: a resposta é salva de verdade e aparece em Sugestões recebidas, mas não muda quando a pesquisa volta para você)</b>' : ' <b class="aval-teste">(pré-visualização: nada é salvo)</b>') : ''}</p>
       <label class="sug-l" id="aval-l">De 0 a 10, quanto você recomendaria o app para um amigo?</label>
       <div class="aval-escala" role="group" aria-labelledby="aval-l">${Array.from({ length: 11 }, (_, i) => `<button type="button" data-avaln="${i}" aria-pressed="false">${i}</button>`).join('')}</div>
       <div class="aval-pontas"><span>0 = de jeito nenhum</span><span>10 = com certeza</span></div>
@@ -20711,13 +20711,14 @@ html .sug-adm .btn.ghost[aria-pressed="true"], html[data-lb] .sug-adm .btn.ghost
     const msg = g('aval-msg'), bt = g('aval-env'); msg.className = 'sug-msg';
     if (nota == null) { msg.className = 'sug-msg err'; msg.textContent = 'Escolha uma nota de 0 a 10.'; return; }
     const r = { modulo: g('aval-mod').value, nota, ajuda: g('aval-ajuda').value.trim().slice(0, 2000), texto: g('aval-txt').value.trim().slice(0, 2000) };
-    if (g('aval-pop').dataset.prev === '1') { msg.className = 'sug-msg ok'; msg.textContent = 'Pré-visualização: nada foi salvo.'; return; }
+    const prev = g('aval-pop').dataset.prev === '1';
+    if (prev && !ehAdmin()) { msg.className = 'sug-msg ok'; msg.textContent = 'Pré-visualização: nada foi salvo.'; return; }
     bt.disabled = true; msg.textContent = 'Enviando…';
     try {
       if (window.__siteSugestoes && window.__siteSugestoes.avaliar) await window.__siteSugestoes.avaliar(r);
       else if (db) { const id = Date.now().toString(36) + Math.random().toString(36).slice(2, 7); await pdoc('sugestoes/' + id).set(Object.assign({ tipo: 'avaliacao', criado_em: new Date().toISOString(), lida: false, nome: souDono ? 'Você' : 'Outra pessoa', por: meuId || '' }, r)); }
       else throw new Error('não consigo salvar nesta visualização');
-      const a = st(); a.ult = new Date().toISOString(); delete a.adiadoAte; salvarAval();
+      if (!prev) { const a = st(); a.ult = new Date().toISOString(); delete a.adiadoAte; salvarAval(); }
       msg.className = 'sug-msg ok'; msg.textContent = 'Obrigado! Sua resposta foi enviada.';
       try { window.__sugRecarrega && window.__sugRecarrega(); } catch (e) {}
       setTimeout(() => acFecha('aval-pop'), 1400);
