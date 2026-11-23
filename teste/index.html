@@ -1861,6 +1861,7 @@ body.jor-sim-on .main { padding-top: 44px; }
 #tour-pop .jor-reaj { margin: 0 0 8px; padding-left: 18px; font-size: 13px; line-height: 1.45; }
 #tour-pop .jor-reaj li { margin: 3px 0; }
 .gas-drop { grid-column: 1 / -1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; text-align: center; min-height: 104px; padding: 18px 16px; border: 2px dashed var(--line); border-radius: 12px; background: var(--field); cursor: pointer; transition: border-color .15s, background .15s; }
+.btns + .gas-drop { margin-top: 14px; }
 .gas-drop b { font-size: 14px; color: var(--accent-strong); }
 .gas-drop span { font-size: 12.5px; color: var(--muted); }
 .gas-drop:hover, .gas-drop:focus-visible, .gas-drop.sobre { border-color: var(--accent); background: var(--accent-soft); }
@@ -2618,7 +2619,7 @@ html[data-lb="b"] .block-title .desc{font-size:14px;color:var(--muted);margin-to
     </div>
     <div class="nav-mobile-sub" id="navMobileSub"></div>
   </div>
-  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span><button type="button" id="demoBtn" aria-pressed="false">Modo demonstração</button></div><div class="src">Focus atualizado toda segunda · versão 383</div></div>
+  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span><button type="button" id="demoBtn" aria-pressed="false">Modo demonstração</button></div><div class="src">Focus atualizado toda segunda · versão 384</div></div>
 </nav>
 <div class="sino-pop" id="sino-pop" role="dialog" aria-label="Atualizações das bases" hidden></div>
 <div class="sino-pop" id="pess-pop" role="dialog" aria-label="Seus avisos" hidden></div>
@@ -5021,7 +5022,7 @@ html.onb-on,html.onb-on body{overflow:hidden!important}
     return new Promise(resolve => { const { data } = sb.auth.onAuthStateChange(async (ev) => { if (ev !== 'PASSWORD_RECOVERY') return; const s = prompt('Digite a nova senha (mínimo 8 caracteres):'); if (s && s.length >= 8) { const { error } = await sb.auth.updateUser({ password: s }); alert(error ? 'Não deu para trocar a senha: ' + error.message : 'Senha trocada.'); } }); resolve(data); });
   }
   // ---------- rodapé: compartilhar, administração e sair ----------
-  const SITE_V = 281;
+  const SITE_V = 282;
   const escH = v => String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const dataBR = v => v ? new Date(v).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' }) : '–';
   const css2 = `.side-foot .r{flex-wrap:wrap}.side-foot .lg-acoes{margin-left:auto;display:inline-flex;gap:10px}
