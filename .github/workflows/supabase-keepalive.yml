@@ -1,0 +1,32 @@
+# Evita que os projetos Supabase do plano gratuito sejam pausados por inatividade
+# (o Supabase pausa após 7 dias sem uso). Faz uma consulta leve a cada 3 dias.
+# As chaves abaixo são as chaves públicas (publishable) que o próprio site já usa.
+name: Supabase keep-alive
+
+on:
+  schedule:
+    - cron: "17 9 */3 * *"   # a cada 3 dias, 06:17 de Brasília
+  workflow_dispatch: {}
+
+permissions: {}
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - name: teste
+            url: https://rcywzqbuobhmvbyemrmz.supabase.co
+            key: sb_publishable_oFX-qls5aQr9eDMaOiUsjw_3-jPaePl
+          - name: producao
+            url: https://dxblmslfsbknimwkzbga.supabase.co
+            key: sb_publishable_TWtgoO-ihCoxjFrrwi7ohA_acLMM3Cg
+    steps:
+      - name: Consulta leve (${{ matrix.name }})
+        run: |
+          curl -fsS --retry 3 --retry-delay 10 -o /dev/null -w "HTTP %{http_code}\n" \
+            "${{ matrix.url }}/rest/v1/docs?select=*&limit=0" \
+            -H "apikey: ${{ matrix.key }}"
