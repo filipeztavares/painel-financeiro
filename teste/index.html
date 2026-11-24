@@ -2776,7 +2776,7 @@ body.ct-modal { overflow: hidden; }
     </div>
     <div class="nav-mobile-sub" id="navMobileSub"></div>
   </div>
-  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span><button type="button" id="demoBtn" aria-pressed="false">Modo demonstração</button></div><div class="src">Focus atualizado toda segunda · versão 397</div></div>
+  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span><button type="button" id="demoBtn" aria-pressed="false">Modo demonstração</button></div><div class="src">Focus atualizado toda segunda · versão 398</div></div>
 </nav>
 <div class="sino-pop" id="sino-pop" role="dialog" aria-label="Atualizações das bases" hidden></div>
 <div class="sino-pop" id="pess-pop" role="dialog" aria-label="Seus avisos" hidden></div>
@@ -5205,7 +5205,7 @@ html.onb-on,html.onb-on body{overflow:hidden!important}
     return new Promise(resolve => { const { data } = sb.auth.onAuthStateChange(async (ev) => { if (ev !== 'PASSWORD_RECOVERY') return; const s = prompt('Digite a nova senha (mínimo 8 caracteres):'); if (s && s.length >= 8) { const { error } = await sb.auth.updateUser({ password: s }); alert(error ? 'Não deu para trocar a senha: ' + error.message : 'Senha trocada.'); } }); resolve(data); });
   }
   // ---------- rodapé: compartilhar, administração e sair ----------
-  const SITE_V = 297;
+  const SITE_V = 298;
   const escH = v => String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const dataBR = v => v ? new Date(v).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' }) : '–';
   const css2 = `.side-foot .r{flex-wrap:wrap}.side-foot .lg-acoes{margin-left:auto;display:inline-flex;gap:10px}
@@ -21867,10 +21867,14 @@ html .sug-adm .btn.ghost[aria-pressed="true"], html[data-lb] .sug-adm .btn.ghost
       <div class="c-chips c2">${chip(G && !G.vazio ? `Gasto em ${E(mLabel(G.idx))}` : 'Gastos', G && !G.vazio ? fmx(G.tot) : '–', G && !G.vazio && G.orcTot ? `${px(G.tot / G.orcTot, 0)} do planejado` : 'sem lançamentos', 'data-cel="tab:gastos"')}
       ${chip(p ? `Plano em ${E(mLabel(p.fimI))}` : 'Meu plano', p ? kx(p.patFim) : '–', p ? `sobra média ${fmx(p.sobra)}/mês` : 'monte o plano', 'data-cel="tab:orcamento"')}</div>`;
   }
+  // v398: o ritmo (ckDados) é do mês atual; se o cartão mostra um mês encerrado, vale o total contra o planejado
+  function gAcima(G) { if (!G || G.vazio) return { acima: false, fech: false, tem: false };
+    const u = G.orcTot ? G.tot / G.orcTot : null, atual = G.D && G.D.mk === G.mes, ritmo = atual && G.D.tp && G.D.tprev > G.D.tp * 1.02;
+    return { acima: !!(ritmo || (u != null && u > 1)), fech: !atual, tem: u != null || !!(atual && G.D.tp), u }; }
   function heroTab(t) {
     if (t === 'gastos') { const G = dGastos(); if (!G || G.vazio) return `<div class="c-card c-hero"><span class="c-lab">Gastos</span><span class="c-h2">Nenhum gasto lançado ainda</span><span class="c-sub">Importe a fatura do cartão ou o extrato da conta.</span><button type="button" class="c-btn p" data-cel="foco:gastos|Lançar e importar">${ico(I.sobe)}Importar fatura ou extrato</button></div>`;
-      const u = G.orcTot ? G.tot / G.orcTot : null, acima = G.D && G.D.tprev > G.D.tp * 1.02;
-      return `<div class="c-card c-hero"><div style="display:flex;justify-content:space-between;align-items:center;gap:8px"><span class="c-lab">${E(mLabel(G.idx))}</span>${G.D && G.D.tp ? `<span class="c-tag ${acima ? 'al' : 'ok'}">${acima ? 'acima do ritmo' : 'dentro do plano'}</span>` : ''}</div>
+      const u = G.orcTot ? G.tot / G.orcTot : null, GA = gAcima(G), acima = GA.acima;
+      return `<div class="c-card c-hero"><div style="display:flex;justify-content:space-between;align-items:center;gap:8px"><span class="c-lab">${E(mLabel(G.idx))}</span>${GA.tem ? `<span class="c-tag ${acima ? 'al' : 'ok'}">${acima ? (GA.fech || u > 1 ? 'acima do plano' : 'acima do ritmo') : GA.fech ? 'ficou no plano' : 'dentro do plano'}</span>` : ''}</div>
         <span class="c-big">${fmx(G.tot)}</span>${u != null ? `<div class="c-barl"><span class="c-trk"><i class="${u > 1 ? 'acima' : ''}" style="width:${Math.min(100, u * 100).toFixed(1)}%"></i></span><span class="c-sub" style="font-weight:700">${px(u, 0)}</span></div>` : ''}
         <span class="c-sub">${G.orcTot ? `de ${kx(G.orcTot)} planejados` : 'sem orçamento por categoria'}${G.media3 != null ? ` · média dos 3 meses antes: ${fmx(G.media3)}` : ''}</span>
         <button type="button" class="c-btn p" data-cel="foco:gastos|Lançar e importar">${ico(I.sobe)}Importar fatura ou extrato</button></div>`; }
@@ -21906,8 +21910,8 @@ html .sug-adm .btn.ghost[aria-pressed="true"], html[data-lb] .sug-adm .btn.ghost
   function telaResumo() {
     const P = dPatr(), G = dGastos(), C = dCart(), Ii = dInd(), L = lembretes().slice(0, 4), hoje = new Date();
     const dia = hoje.toLocaleDateString('pt-BR', { weekday: 'long', day: 'numeric', month: 'long' });
-    const acima = G && G.D && G.D.tp && G.D.tprev > G.D.tp * 1.02, u = G && !G.vazio && G.orcTot ? G.tot / G.orcTot : null;
-    const frase = !G || G.vazio ? 'Lance os gastos do mês para acompanhar' : acima ? 'Os gastos estão acima do ritmo' : 'O mês está dentro do plano';
+    const GA = gAcima(G), acima = GA.acima, u = G && !G.vazio && G.orcTot ? G.tot / G.orcTot : null;
+    const frase = !G || G.vazio ? 'Lance os gastos do mês para acompanhar' : GA.fech ? (acima ? `Os gastos de ${E(mLabel(G.idx))} passaram do plano` : `${E(mLabel(G.idx))} ficou dentro do plano`) : acima ? (u > 1 ? 'Os gastos já passaram do plano' : 'Os gastos estão acima do ritmo') : 'O mês está dentro do plano';
     const al = []; if (C) C.ops.filter(o => o.nivel === 'warn' || o.nivel === 'amber').slice(0, 2).forEach(o => al.push(linha('data-cel="foco:carteira|Oportunidades"', 'R', E(o.titulo), 'Carteira', '', '#E8C66A')));
     T(() => { const ps = passosConta().filter(x => !x.ok).slice(0, 2); ps.forEach(x => al.push(linha(`data-cel="${E(alvo(x.tab, x.sec))}"`, '!', E(x.t), E(x.d), '', '#F0A46B'))); });
     return `<div class="c-card c-hero" style="--celm:#F0A46B"><span class="c-lab">${E(dia)}</span><span class="c-h2">${frase}</span>${u != null ? `<span class="c-sub">Você gastou ${px(u, 0)} do planejado para ${E(mLabel(G.idx))}.</span>` : ''}</div>
