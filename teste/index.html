@@ -1668,8 +1668,8 @@ tr.rd-hit td { background: color-mix(in srgb, var(--good) 9%, transparent); }
 .ck-kp small{display:block;font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:700}
 .ck-kp b{font-size:18px;font-variant-numeric:tabular-nums}
 .ck-kp b.neg{color:var(--red)} .ck-kp b.pos{color:var(--good)}
-.ck-l{display:grid;gap:10px}
-.ck-c{display:grid;grid-template-columns:minmax(0,170px) minmax(0,1fr) auto;gap:4px 12px;align-items:center;font-size:13px}
+.ck-l{display:grid;gap:10px 12px;grid-template-columns:minmax(0,170px) minmax(0,1fr) auto}
+.ck-c{display:grid;grid-column:1/-1;grid-template-columns:minmax(0,170px) minmax(0,1fr) auto;grid-template-columns:subgrid;gap:4px 12px;align-items:center;font-size:13px}
 .ck-c .n{font-weight:600;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .ck-t{position:relative;height:12px;border-radius:6px;background:var(--line)}
 .ck-t>span{position:absolute;inset:0 auto 0 0;border-radius:6px;background:var(--good)}
@@ -2606,12 +2606,27 @@ html[data-lb="b"] .block-title .desc{font-size:14px;color:var(--muted);margin-to
 .ct-form .seg button[disabled] { opacity: .5; border-style: dashed; cursor: default; }
 .ct-form .hint { margin: 0; }
 .ct-msg { color: var(--bad); font-size: 12.5px; }
+/* pop-up de edição */
+.ct-dlg { width: min(780px, 100%); }
+.ct-dlg .ct-form { border: 0; background: none; padding: 0; margin: 0; gap: 16px; }
+.ct-sec { display: grid; gap: 10px; }
+.ct-sec + .ct-sec { border-top: 1px solid var(--line); padding-top: 14px; }
+.ct-sec h3 { margin: 0; font: 600 13px var(--f-head); letter-spacing: .04em; text-transform: uppercase; color: var(--muted); }
+.ct-cks { display: flex; flex-wrap: wrap; gap: 6px 18px; }
+.ct-bens { display: grid; gap: 6px; }
+.ct-bem { display: grid; grid-template-columns: minmax(0, 1fr) 120px 110px 24px; gap: 8px; align-items: center; }
+.ct-benl { font-size: 12.5px; color: var(--ink); }
+body.ct-modal { overflow: hidden; }
+@media (max-width: 560px) { .ct-bem { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) 24px; padding-bottom: 8px; border-bottom: 1px solid var(--line); } .ct-bem input[type="text"] { grid-column: 1 / -1; } }
 /* opções */
 .ct-opts { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
 .ct-opt { border: 1px solid var(--line); border-radius: 12px; padding: 14px; display: grid; gap: 10px; align-content: start; border-top: 4px solid var(--ctc); min-width: 0; background: var(--panel); }
 .ct-opt.esc { box-shadow: 0 0 0 2px var(--ctc); }
 .ct-opt .tag { font: 600 10px var(--f-head); color: var(--muted); text-transform: uppercase; letter-spacing: .06em; display: flex; gap: 6px; align-items: center; }
-.ct-opt input.nome { font: 600 15px var(--f-head); border: 0; border-bottom: 1px dashed var(--line); background: transparent; color: var(--ink); padding: 2px 0; width: 100%; }
+#p-carrtraj .ct-del { margin-left: auto; font: 600 11px var(--f-head); text-transform: none; letter-spacing: 0; color: var(--bad); background: none; border: 1px solid var(--line); border-radius: 14px; padding: 3px 10px; cursor: pointer; }
+#p-carrtraj .ct-del:hover { border-color: var(--bad); }
+#p-carrtraj .ct-del.armado { background: var(--bad); color: #fff; border-color: var(--bad); }
+#p-carrtraj .ct-opt input.nome { font: 600 15px var(--f-head); border: 1px solid var(--line); border-radius: 8px; background: var(--field); color: var(--ink); padding: 7px 12px; width: 100%; box-sizing: border-box; }
 .ct-opt > *, .ct-opt ol, .ct-opt li { min-width: 0; }
 .ct-opt .ct-card { margin-top: 8px; }
 .ct-opt ol { margin: 0; padding-left: 18px; display: grid; gap: 6px; font-size: 12.5px; }
@@ -2756,7 +2771,7 @@ html[data-lb="b"] .block-title .desc{font-size:14px;color:var(--muted);margin-to
     </div>
     <div class="nav-mobile-sub" id="navMobileSub"></div>
   </div>
-  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span><button type="button" id="demoBtn" aria-pressed="false">Modo demonstração</button></div><div class="src">Focus atualizado toda segunda · versão 391</div></div>
+  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span><button type="button" id="demoBtn" aria-pressed="false">Modo demonstração</button></div><div class="src">Focus atualizado toda segunda · versão 394</div></div>
 </nav>
 <div class="sino-pop" id="sino-pop" role="dialog" aria-label="Atualizações das bases" hidden></div>
 <div class="sino-pop" id="pess-pop" role="dialog" aria-label="Seus avisos" hidden></div>
@@ -5185,7 +5200,7 @@ html.onb-on,html.onb-on body{overflow:hidden!important}
     return new Promise(resolve => { const { data } = sb.auth.onAuthStateChange(async (ev) => { if (ev !== 'PASSWORD_RECOVERY') return; const s = prompt('Digite a nova senha (mínimo 8 caracteres):'); if (s && s.length >= 8) { const { error } = await sb.auth.updateUser({ password: s }); alert(error ? 'Não deu para trocar a senha: ' + error.message : 'Senha trocada.'); } }); resolve(data); });
   }
   // ---------- rodapé: compartilhar, administração e sair ----------
-  const SITE_V = 292;
+  const SITE_V = 294;
   const escH = v => String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const dataBR = v => v ? new Date(v).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' }) : '–';
   const css2 = `.side-foot .r{flex-wrap:wrap}.side-foot .lg-acoes{margin-left:auto;display:inline-flex;gap:10px}
@@ -11823,7 +11838,11 @@ function ctNormPer(p) {
   ['das', 'contab', 'ben', 'resc', 'fgts', 'seg'].forEach(k => { p[k] = Math.max(0, +p[k] || 0); });
   p.cltModo = p.cltModo === 'liq' ? 'liq' : 'bruto';
   p.reajs = (Array.isArray(p.reajs) ? p.reajs : []).filter(r => r && typeof r === 'object').map(r => ({ id: r.id || uid(), mes: ctMes(r.mes) ? r.mes : '', valor: Math.max(0, +r.valor || 0), lucro: Math.max(0, +r.lucro || 0), motivo: String(r.motivo || '').slice(0, 80) }));
-  if (p.tipo === 'sem') p.reajs = [];
+  p.bens = (Array.isArray(p.bens) ? p.bens : []).filter(b => b && typeof b === 'object').map(b => ({ id: b.id || uid(), nome: String(b.nome || '').slice(0, 60), valor: Math.max(0, +b.valor || 0), freq: b.freq === 'ano' ? 'ano' : 'mes' }));
+  if (!p.bens.length && p.ben > 0 && !p.benLista) p.bens = [{ id: uid(), nome: 'Benefícios', valor: p.ben, freq: 'mes' }];
+  p.benLista = true;
+  if (p.tipo === 'sem') { p.reajs = []; p.bens = []; }
+  p.ben = Math.round(p.bens.reduce((x, b) => x + (+b.valor || 0) / (b.freq === 'ano' ? 12 : 1), 0) * 100) / 100;
   ctOrdReajs(p);
   return p;
 }
@@ -11868,7 +11887,7 @@ function carrNormalizar(s) {
     else if (h.valor > 0 && (h.tipo === 'pj' || h.tipo === 'clt' || h.tipo === 'socio')) {
       c.semeou = true;
       const ini = ctMes((s.plan || {}).inicio) ? s.plan.inicio : mKey(HOJE_IDX);
-      c.emps.push(ctNormPer({ emp: 'Emprego atual', tipo: h.tipo, ini, cltModo: h.cltModo, das: h.tipo === 'pj' ? h.das : 0, contab: h.contab, x13: false, xFer: false, xFgts: false, reajs: [{ mes: ini, valor: h.valor, lucro: h.lucro, motivo: 'Valor de hoje no Meu plano' }] }));
+      c.emps.push(ctNormPer({ emp: 'Emprego atual', tipo: h.tipo, ini, cltModo: h.cltModo, das: h.tipo === 'pj' ? h.das : 0, contab: h.contab, x13: false, xFer: false, xFgts: false, bens: clone(h.tipo === 'clt' ? ((s.pj || {}).bens || []) : h.tipo === 'pj' ? ((s.pj || {}).bensPJ || []) : []), reajs: [{ mes: ini, valor: h.valor, lucro: h.lucro, motivo: 'Valor de hoje no Meu plano' }] }));
     }
   }
   ctSync(s);
@@ -11968,7 +11987,7 @@ function renderCarrTraj() {
   if (!state.carr.semeou) { carrNormalizar(state); if (state.carr.semeou) save(); }
   ctEfetivar();
   if (!ctAbertos) { ctAbertos = new Set(); const a = ctEmpAtual(); if (a) ctAbertos.add(a.id); state.carr.opcs.filter(o => !o.escolhida).slice(0, 3).forEach(o => ctCmpSel.add(o.id)); }
-  ctKpis(); ctLinha(); ctHist(); ctOpcs(); ctComparar();
+  ctKpis(); ctLinha(); ctHist(); ctOpcs(); ctComparar(); ctPop();
 }
 function ctKpis() {
   const c = state.carr, a = ctEmpAtual(), r = a ? ctValEm(a, HOJE_IDX) : null;
@@ -11999,14 +12018,24 @@ function ctLinha() {
     <div class="ct-tlm"><div class="bar">${barra}</div><div class="row"><span>${mLabel(i1)}</span><span>hoje</span></div>${O.length ? `<p class="hint">Opções em estudo: ${O.map(o => `<b style="color:${ctCorOp(o)}">${esc(o.nome)}</b>`).join(', ')}.</p>` : ''}</div>
     <div class="ct-leg"><span><i style="background:var(--s1)"></i>CLT</span><span><i style="background:var(--accent)"></i>PJ</span><span><i style="background:var(--dotc)"></i>Sócio</span><span><i style="background:repeating-linear-gradient(45deg,var(--line) 0 3px,transparent 3px 6px);border:1px solid var(--line)"></i>Sem emprego</span><span><i style="border:2px dashed var(--muted)"></i>Opção em estudo</span></div>`;
 }
+const CT_BEN_SUG = { clt: [['VR / VA', 'mes'], ['Plano de saúde', 'mes'], ['Vale-transporte', 'mes'], ['Auxílio home office', 'mes'], ['Seguro de vida', 'mes'], ['PLR / bônus', 'ano']], pj: [['Plano de saúde', 'mes'], ['Auxílio', 'mes'], ['Bônus', 'ano']], socio: [['Plano de saúde', 'mes'], ['Distribuição extra de lucros', 'ano']] };
+const ctBenMes = b => (+b.valor || 0) / (b.freq === 'ano' ? 12 : 1);
 function ctFormHtml() {
   const f = ctForm; if (!f) return '';
   const p = f.p, t = p.tipo, r0 = p.reajs[0] || { valor: '', lucro: '' }, ed = !!f.id, op = f.dono !== 'emp' ? state.carr.opcs.find(o => o.id === f.dono) : null;
   const tb = (k, rot, sub) => `<button type="button" data-ctft="${k}" aria-pressed="${t === k}">${rot}${sub ? `<small>${sub}</small>` : ''}</button>`;
   const inp = (k, lab, v, typ, extra) => `<label>${lab}<input type="${typ || 'text'}" data-ctf="${k}" value="${esc(v ?? '')}"${extra || ''}></label>`;
-  const ck = (k, rot) => `<label class="inline"><input type="checkbox" data-ctf="${k}"${p[k] ? ' checked' : ''}> ${rot}</label>`;
+  const ck = (k, rot, dica) => `<label class="inline"><input type="checkbox" data-ctf="${k}"${p[k] ? ' checked' : ''}> ${rot}${dica ? ` <span class="subdet">${dica}</span>` : ''}</label>`;
   const vLab = t === 'pj' ? 'Faturamento' : t === 'socio' ? 'Pró-labore' : 'Salário';
-  return `<div class="ct-form" id="ct-form"><b>${ed ? 'Editar período' : op ? 'Novo período em ' + esc(op.nome) : t === 'sem' ? 'Período sem emprego' : 'Novo emprego'}</b>
+  const r1 = ed ? ctValEm(p, Math.max(HOJE_IDX, mIndex(p.ini || mKey(HOJE_IDX)))) : r0;
+  const B = p.bens || [], totB = B.reduce((x, b) => x + ctBenMes(b), 0), sug = (CT_BEN_SUG[t] || []).filter(([n]) => !B.some(b => b.nome === n));
+  const ben = t === 'sem' ? '' : `<div class="ct-sec"><h3>Benefícios</h3>
+    ${t === 'clt' ? `<div class="ct-cks">${ck('x13', '13º salário', 'em dezembro')}${ck('xFer', 'Férias: o 1/3 a mais', 'a cada 12 meses')}${ck('xFgts', 'FGTS', '8% do bruto, dinheiro seu guardado')}</div>` : ''}
+    ${B.length ? `<div class="ct-bens">${B.map((b, k) => `<div class="ct-bem"><input type="text" data-ctb="${k}:nome" value="${esc(b.nome)}" placeholder="Nome" aria-label="Nome do benefício"><input type="number" step="50" min="0" data-ctb="${k}:valor" value="${+b.valor || ''}" placeholder="R$" aria-label="Valor"><select data-ctb="${k}:freq" aria-label="Frequência"><option value="mes"${b.freq !== 'ano' ? ' selected' : ''}>por mês</option><option value="ano"${b.freq === 'ano' ? ' selected' : ''}>por ano</option></select><button type="button" class="ct-lnk" data-ct="bemdel" data-i="${k}" aria-label="Tirar ${esc(b.nome)}">✕</button></div>`).join('')}</div>` : `<p class="hint">${t === 'pj' ? 'Benefícios que o contratante paga, além do faturamento.' : 'Nenhum benefício ainda.'}</p>`}
+    <div class="ct-btns" style="margin:0">${sug.map(([n, fq]) => `<button type="button" class="btn ghost tiny" data-ct="bemadd" data-n="${esc(n)}" data-f="${fq}">+ ${esc(n)}</button>`).join('')}<button type="button" class="btn ghost tiny" data-ct="bemadd" data-n="" data-f="mes">+ Outro</button></div>
+    ${B.length ? `<p class="hint">Total: <b>${fm(totB)} por mês</b> (os anuais divididos por 12). Entra no Meu plano junto com o ${t === 'pj' ? 'faturamento' : 'salário'}.</p>` : ''}</div>`;
+  return `<div class="ct-form" id="ct-form">
+    <div class="ct-sec"><h3>Dados principais</h3>
     <div class="seg" role="group" aria-label="Tipo">${tb('clt', 'CLT')}${tb('pj', 'PJ')}${tb('socio', 'Sócio de empresa', 'pró-labore + lucros')}${tb('sem', 'Sem emprego')}<button type="button" disabled title="Em breve: liga o período a um negócio real de Empreendimentos">Dono de empresa<small>em breve</small></button></div>
     <div class="ct-grid">
       ${t !== 'sem' ? inp('emp', 'Empresa', p.emp, 'text', ' placeholder="Ex.: Empresa X"') + inp('cargo', 'Cargo', p.cargo, 'text', ' placeholder="Opcional"') : inp('emp', 'Nome', p.emp, 'text', ' placeholder="Ex.: sabático"')}
@@ -12016,18 +12045,30 @@ function ctFormHtml() {
       ${t === 'socio' && !ed ? inp('lucro', 'Lucros por mês no início (R$)', r0.lucro || '', 'number', ' step="100" min="0"') : ''}
       ${t === 'clt' ? `<label>O valor é<select data-ctf="cltModo"><option value="bruto"${p.cltModo !== 'liq' ? ' selected' : ''}>Bruto</option><option value="liq"${p.cltModo === 'liq' ? ' selected' : ''}>Líquido</option></select></label>` : ''}
       ${t === 'pj' ? inp('das', 'Impostos e DAS (% do faturamento)', p.das, 'number', ' step="0.1" min="0"') + inp('contab', 'Contabilidade (R$/mês)', p.contab, 'number', ' step="10" min="0"') : ''}
-      ${t === 'clt' || t === 'pj' ? inp('ben', t === 'clt' ? 'Benefícios (R$/mês)' : 'Benefícios pagos pelo contratante (R$/mês)', p.ben, 'number', ' step="50" min="0"') : ''}
       ${t === 'sem' ? inp('resc', 'Rescisão (R$, uma vez)', p.resc || '', 'number', ' step="500" min="0"') + inp('fgts', 'Saque do FGTS (R$, uma vez)', p.fgts || '', 'number', ' step="500" min="0"') + inp('seg', 'Seguro-desemprego (R$/mês)', p.seg || '', 'number', ' step="50" min="0"') + inp('segDe', 'Seguro de', p.segDe, 'month') + inp('segAte', 'Seguro até', p.segAte, 'month') + inp('contab', 'Custos do CNPJ parado (R$/mês)', p.contab || '', 'number', ' step="10" min="0"') : ''}
     </div>
-    ${t === 'clt' ? `<div class="ct-btns">${ck('x13', '13º salário')}${ck('xFer', 'Férias (o 1/3 a mais)')}${ck('xFgts', 'FGTS (8% do bruto)')}</div>` : ''}
-    <p class="hint">${t === 'socio' ? 'Pró-labore com INSS de 11% e IR na fonte; lucros isentos (retenção de 10% só acima de R$ 50 mil por mês, Lei 15.270). ' : ''}${t === 'sem' ? 'Rescisão e FGTS entram uma vez, no primeiro mês. O seguro entra todo mês no intervalo escolhido. ' : ''}${ed ? 'Os valores e reajustes você muda na tabela de reajustes do cartão.' : 'Os reajustes você coloca depois, dentro do período.'}</p>
+    ${ed && t !== 'sem' && r1 ? `<p class="hint">Valor atual: <b>${fm(ctTot(r1))}</b> ${ctLabV(p)} desde ${mLabel(mIndex(r1.mes))}. Os valores e reajustes você muda na tabela de reajustes do cartão.</p>` : ''}
+    <p class="hint">${t === 'socio' ? 'Pró-labore com INSS de 11% e IR na fonte; lucros isentos (retenção de 10% só acima de R$ 50 mil por mês, Lei 15.270). ' : ''}${t === 'sem' ? 'Rescisão e FGTS entram uma vez, no primeiro mês. O seguro entra todo mês no intervalo escolhido. ' : ''}${ed ? '' : 'Os reajustes você coloca depois, dentro do período.'}</p></div>
+    ${ben}
     <div class="ct-btns"><button class="btn tiny" type="button" data-ct="fsalvar">Salvar</button><button class="btn ghost tiny" type="button" data-ct="fcancelar">Cancelar</button><span class="ct-msg" id="ct-fmsg" role="status">${esc(f.msg || '')}</span></div></div>`;
+}
+// o formulário abre num pop-up por cima da tela
+function ctPop() {
+  let pop = $('ct-pop');
+  if (!pop) { document.body.insertAdjacentHTML('beforeend', '<div class="conf-pop" id="ct-pop" hidden><div class="conf-dlg ct-dlg" role="dialog" aria-modal="true" aria-labelledby="ct-pop-t"><button type="button" class="conf-x" data-ct="fcancelar" aria-label="Fechar sem salvar" title="Fechar sem salvar">✕</button><section class="panel"><h2 id="ct-pop-t"></h2><div id="ct-pop-b"></div></section></div></div>'); pop = $('ct-pop'); }
+  if (!ctForm || tab !== 'carrtraj') { pop.hidden = true; $('ct-pop-b').innerHTML = ''; document.body.classList.remove('ct-modal'); return; }
+  const f = ctForm, op = f.dono !== 'emp' ? state.carr.opcs.find(o => o.id === f.dono) : null, ab = pop.hidden;
+  const foco = document.activeElement && document.activeElement.closest && document.activeElement.closest('#ct-pop') ? (document.activeElement.dataset.ctf || document.activeElement.dataset.ctb || '') : '';
+  $('ct-pop-t').textContent = f.id ? `Editar ${f.p.emp || CT_TIPOS[f.p.tipo]}` : op ? 'Novo período em ' + op.nome : f.p.tipo === 'sem' ? 'Período sem emprego' : 'Novo emprego';
+  $('ct-pop-b').innerHTML = ctFormHtml(); pop.hidden = false; document.body.classList.add('ct-modal');
+  if (ab) { const el = pop.querySelector('[data-ctf="emp"]'); if (el) el.focus(); }
+  else if (foco) { const el = pop.querySelector(`[data-ctf="${foco}"],[data-ctb="${foco}"]`); if (el) el.focus(); }
 }
 function ctCardHtml(p, op) {
   const atual = !op && ctAtual(p), fut = p.ini && mIndex(p.ini) > HOJE_IDX, sem = p.tipo === 'sem', ab = ctAbertos.has(p.id);
   const R = p.reajs, rU = R.length ? R[R.length - 1] : null, rA = R.length ? R[0] : null, ev = rA && rU && ctTot(rA) > 0 && R.length > 1 ? ctTot(rU) / ctTot(rA) - 1 : null;
   const mx = Math.max(1, ...R.map(ctTot)), cargo = p.cargo ? esc(p.cargo) : '';
-  const hd = `<div class="ct-jh"><b>${esc(p.emp || (sem ? 'Sem emprego' : 'Sem nome'))}</b>${sem ? '' : `<span class="ct-chip ${p.tipo}">${CT_TIPOS[p.tipo]}</span>`}${atual ? '<span class="ct-chip now">atual</span>' : ''}${!op && fut ? '<span class="ct-chip fut">a partir de ' + mLabel(mIndex(p.ini)) + '</span>' : ''}<span class="per">${ctPerTxt(p)}${p.ini && !fut ? ' · ' + ctDur(p.ini, p.fim) : ''}</span><span class="r"><button type="button" class="ct-lnk" data-ct="editar" data-id="${p.id}">editar</button><button type="button" class="ct-lnk" data-ct="apagar" data-id="${p.id}">apagar</button></span></div>`;
+  const hd = `<div class="ct-jh"><b>${esc(p.emp || (sem ? 'Sem emprego' : 'Sem nome'))}</b>${sem ? '' : `<span class="ct-chip ${p.tipo}">${CT_TIPOS[p.tipo]}</span>`}${atual ? '<span class="ct-chip now">atual</span>' : ''}${!op && fut ? '<span class="ct-chip fut">a partir de ' + mLabel(mIndex(p.ini)) + '</span>' : ''}<span class="per">${ctPerTxt(p)}${p.ini && !fut ? ' · ' + ctDur(p.ini, p.fim) : ''}</span><span class="r"><button type="button" class="btn ghost tiny" data-ct="editar" data-id="${p.id}">✎ Editar</button><button type="button" class="ct-lnk" data-ct="apagar" data-id="${p.id}">apagar</button></span></div>`;
   if (sem) return `<div class="ct-card semc">${hd}<span class="hint">${[+p.resc ? 'Rescisão ' + fm(p.resc) : '', +p.fgts ? 'FGTS ' + fm(p.fgts) : '', +p.seg ? `seguro-desemprego ${fm(p.seg)}/mês${p.segDe ? ' de ' + mLabel(mIndex(p.segDe)) : ''}${p.segAte ? ' a ' + mLabel(mIndex(p.segAte)) : ''}` : '', +p.contab ? 'CNPJ parado ' + fm(p.contab) + '/mês' : ''].filter(Boolean).join(' · ') || 'Sem salário nesses meses; os custos seguem normais.'}</span></div>`;
   let aviso = '';
   if (atual) { const h = ctPlanoHoje(state), r = ctValEm(p, HOJE_IDX);
@@ -12038,23 +12079,22 @@ function ctCardHtml(p, op) {
     <div class="ct-btns" style="margin-top:8px"><button class="btn ghost tiny" type="button" data-ct="addreaj" data-id="${p.id}">+ Reajuste</button><span class="hint">Data, novo valor e o motivo. Pode ser um reajuste futuro já combinado${op ? '' : ': ele entra no Meu plano no mês'}.</span></div></div>`;
   return `<div class="ct-card${atual ? ' atual' : ''}">${hd}
     <div class="ct-evo">${cargo ? `<span>${cargo}</span>` : ''}<span class="big">${rU ? fm(ctTot(rU)) : '—'}</span><span>${ctLabV(p)}${p.tipo === 'socio' ? ' com lucros' : ''}${atual || fut ? '' : ' no fim'}</span>${ev != null ? `<span class="ct-pos">${ev > 0 ? '+' : ''}${(ev * 100).toFixed(1).replace('.', ',')}% ${op ? 'no período' : 'na empresa'}</span>` : ''}${R.length > 1 ? `<span class="ct-steps" aria-hidden="true">${R.map(r => `<i style="height:${Math.max(8, Math.round(ctTot(r) / mx * 100))}%"></i>`).join('')}</span>` : ''}</div>
+    ${p.bens.length || (p.tipo === 'clt' && (p.x13 || p.xFer || p.xFgts)) ? `<div class="ct-benl"><span class="hint">Benefícios:</span> ${[p.tipo === 'clt' && p.x13 ? '13º' : '', p.tipo === 'clt' && p.xFer ? 'férias' : '', p.tipo === 'clt' && p.xFgts ? 'FGTS' : ''].filter(Boolean).concat(p.bens.map(b => `${esc(b.nome || 'benefício')} ${fm(+b.valor || 0)}${b.freq === 'ano' ? '/ano' : ''}`)).join(' · ')}${p.bens.length ? ` <b>= ${fm(p.ben)}/mês</b>` : ''}</div>` : ''}
     ${aviso}<button class="ct-lnk ac" type="button" data-ct="tog" data-id="${p.id}" aria-expanded="${ab}">${ab ? '▾ Esconder' : '▸ Ver'} reajustes (${R.length})</button>${ab ? tab : ''}</div>`;
 }
 function ctHist() {
-  const c = state.carr, E = c.emps.slice().sort((a, b) => (a.ini || '9') < (b.ini || '9') ? 1 : -1), emForm = ctForm && ctForm.dono === 'emp';
+  const c = state.carr, E = c.emps.slice().sort((a, b) => (a.ini || '9') < (b.ini || '9') ? 1 : -1);
   $('ct-hist').innerHTML = `<div class="ct-btns"><button class="btn tiny" type="button" data-ct="novo" data-tipo="${ctEmpAtual() ? 'clt' : (ctPlanoHoje(state).tipo || 'clt')}">+ Emprego</button><button class="btn ghost tiny" type="button" data-ct="novo" data-tipo="sem">+ Período sem emprego</button><span class="hint">${E.length ? 'Os empregos antigos são opcionais: servem para ver sua evolução.' : 'Comece pelo emprego de hoje. Os antigos são opcionais, servem para ver sua evolução.'}</span></div>
-    ${emForm ? ctFormHtml() : ''}
     ${E.length ? `<div class="ct-jobs">${E.map(p => `<div class="ct-job"><div class="rail"><span class="dot ${p.tipo}"></span></div>${ctCardHtml(p, null)}</div>`).join('')}</div>` : '<p class="ct-vazio">Nenhum emprego cadastrado ainda.</p>'}`;
 }
 function ctOpcs() {
   const c = state.carr, O = c.opcs;
   $('ct-opcs').innerHTML = `${O.length ? `<div class="ct-opts">${O.map(op => { const cor = ctCorOp(op), P = op.per.slice().sort((a, b) => (a.ini || '9') < (b.ini || '9') ? -1 : 1), m = op.escolhida ? null : ctMetr(op.id);
-    return `<div class="ct-opt${op.escolhida ? ' esc' : ''}" style="--ctc:${cor}"><span class="tag"><i style="width:9px;height:9px;border-radius:50%;background:${cor};display:inline-block"></i>${op.escolhida ? `Escolhida · no Meu plano desde ${mLabel(mIndex(op.desde))}` : 'Opção · só simulação'}</span>
+    return `<div class="ct-opt${op.escolhida ? ' esc' : ''}" style="--ctc:${cor}"><span class="tag"><i style="width:9px;height:9px;border-radius:50%;background:${cor};display:inline-block"></i>${op.escolhida ? `Escolhida · no Meu plano desde ${mLabel(mIndex(op.desde))}` : 'Opção · só simulação'}<button type="button" class="ct-del" data-ct="apagarop" data-op="${op.id}" title="Excluir esta opção">Excluir</button></span>
       <input class="nome" type="text" data-cto="${op.id}" value="${esc(op.nome)}" aria-label="Nome da opção">
-      ${P.length ? `<ol>${P.map(p => `<li><div><b>${esc(p.tipo === 'sem' ? (p.emp || 'Sem emprego') : (p.emp || 'Sem nome') + ' · ' + CT_TIPOS[p.tipo])}</b><span class="hint">${ctPerTxt(p)}</span></div><div>${p.tipo === 'sem' ? '<span class="hint">sem salário</span>' : `<span>${fm(ctTot(p.reajs[0] || {}))} ${ctLabV(p)}</span>${p.reajs.length > 1 ? `<span class="hint">+${p.reajs.length - 1} reajuste${p.reajs.length > 2 ? 's' : ''}</span>` : ''}`}${op.escolhida ? '' : `<button type="button" class="ct-lnk" data-ct="editar" data-id="${p.id}">editar</button><button type="button" class="ct-lnk" data-ct="tog" data-id="${p.id}">reajustes</button><button type="button" class="ct-lnk" data-ct="apagar" data-id="${p.id}">apagar</button>`}</div>${!op.escolhida && ctAbertos.has(p.id) ? ctCardHtml(p, op) : ''}</li>`).join('')}</ol>` : '<p class="ct-vazio">Sem períodos ainda.</p>'}
-      ${ctForm && ctForm.dono === op.id ? ctFormHtml() : ''}
+      ${P.length ? `<ol>${P.map(p => `<li><div><b>${esc(p.tipo === 'sem' ? (p.emp || 'Sem emprego') : (p.emp || 'Sem nome') + ' · ' + CT_TIPOS[p.tipo])}</b><span class="hint">${ctPerTxt(p)}</span></div><div>${p.tipo === 'sem' ? '<span class="hint">sem salário</span>' : `<span>${fm(ctTot(p.reajs[0] || {}))} ${ctLabV(p)}</span>${p.reajs.length > 1 ? `<span class="hint">+${p.reajs.length - 1} reajuste${p.reajs.length > 2 ? 's' : ''}</span>` : ''}`}${op.escolhida ? '' : `<button type="button" class="ct-lnk ac" data-ct="editar" data-id="${p.id}">✎ editar</button><button type="button" class="ct-lnk" data-ct="tog" data-id="${p.id}">reajustes</button><button type="button" class="ct-lnk" data-ct="apagar" data-id="${p.id}">apagar</button>`}</div>${!op.escolhida && ctAbertos.has(p.id) ? ctCardHtml(p, op) : ''}</li>`).join('')}</ol>` : '<p class="ct-vazio">Sem períodos ainda.</p>'}
       ${op.escolhida ? `<p class="hint">Os períodos desta opção estão no Meu histórico. Para mudar valores, edite lá.</p><button class="btn ghost tiny" type="button" data-ct="desfazer" data-op="${op.id}">Desfazer a escolha</button>` : `
-      <div class="ct-btns" style="margin:0"><button class="btn ghost tiny" type="button" data-ct="novoper" data-op="${op.id}">+ Período</button><button class="ct-lnk" type="button" data-ct="copiar" data-op="${op.id}">copiar</button><button class="ct-lnk" type="button" data-ct="apagarop" data-op="${op.id}">apagar opção</button></div>
+      <div class="ct-btns" style="margin:0"><button class="btn ghost tiny" type="button" data-ct="novoper" data-op="${op.id}">+ Período</button><button class="ct-lnk" type="button" data-ct="copiar" data-op="${op.id}">copiar</button></div>
       ${m ? `<div class="num"><span>No bolso por mês, próximos 12 meses</span><span>${fm(m.m12)}</span><span>No bolso em 5 anos</span><span>${ctMi(m.s60)}</span><span>Patrimônio em ${mKey(m.iP).slice(0, 4)}</span><span>${ctMi(m.pat)}</span></div>` : ''}
       <label class="cmp"><input type="checkbox" data-ctcmp="${op.id}"${ctCmpSel.has(op.id) ? ' checked' : ''}> Comparar</label>
       ${ctUsarPend && ctUsarPend.id === op.id ? ctUsarHtml(op) : `<button class="btn tiny" type="button" data-ct="usar" data-op="${op.id}"${P.some(p => p.ini) ? '' : ' disabled'}>Usar a partir de…</button>`}`}
@@ -12114,6 +12154,7 @@ function ctLerForm() {
     if (el.type === 'checkbox') p[k] = el.checked;
     else if (k === 'valor' || k === 'lucro') { if (!p.reajs[0]) p.reajs[0] = { id: uid(), mes: p.ini, valor: 0, lucro: 0, motivo: 'Entrada' }; p.reajs[0][k] = el.value; }
     else p[k] = el.value; });
+  document.querySelectorAll('#ct-form [data-ctb]').forEach(el => { const [k, campo] = el.dataset.ctb.split(':'), b = (p.bens || [])[+k]; if (b) b[campo] = el.value; });
 }
 function ctSalvarForm() {
   ctLerForm(); const f = ctForm, p = f.p, c = state.carr, op = f.dono !== 'emp' ? c.opcs.find(o => o.id === f.dono) : null, msg = t => { f.msg = t; renderCarrTraj(); };
@@ -12144,8 +12185,8 @@ function ctNovaOp() {
 function ctOpcaoDoCalculo() {
   const p = state.pj || {}, o = pjOpts(), clt = p.dir === 'pjclt', mes = mKey(HOJE_IDX + 1);
   let per;
-  if (!clt && o.fat) { const r = pjCalc(o.fat, o), contab = Math.round(o.contab + o.outros); per = ctNormPer({ emp: 'Proposta PJ', tipo: 'pj', ini: mes, das: Math.round(Math.max(0, (o.fat - r.liq - contab) / o.fat * 100) * 10) / 10, contab, ben: Math.round(o.benPJ || 0), reajs: [{ mes, valor: o.fat, motivo: 'Entrada' }] }); }
-  else if (clt && o.clt) { let ben = 0; try { ben = Math.round(cltAnual(o.clt, o).ben / 12); } catch (er) {} per = ctNormPer({ emp: 'Proposta CLT', tipo: 'clt', ini: mes, cltModo: 'bruto', ben, reajs: [{ mes, valor: o.clt, motivo: 'Entrada' }] }); }
+  if (!clt && o.fat) { const r = pjCalc(o.fat, o), contab = Math.round(o.contab + o.outros); per = ctNormPer({ emp: 'Proposta PJ', tipo: 'pj', ini: mes, das: Math.round(Math.max(0, (o.fat - r.liq - contab) / o.fat * 100) * 10) / 10, contab, bens: clone((state.pj || {}).bensPJ || []), reajs: [{ mes, valor: o.fat, motivo: 'Entrada' }] }); }
+  else if (clt && o.clt) { per = ctNormPer({ emp: 'Proposta CLT', tipo: 'clt', ini: mes, cltModo: 'bruto', bens: clone((state.pj || {}).bens || []), reajs: [{ mes, valor: o.clt, motivo: 'Entrada' }] }); }
   else return 'Preencha a proposta acima para usar o cálculo.';
   const op = { id: uid(), nome: per.emp, per: [per], escolhida: false, desde: '', fimAnt: null }; state.carr.opcs.push(op); ctCmpSel.add(op.id);
   ctSync(); save(); return '';
@@ -12161,8 +12202,10 @@ document.addEventListener('click', e => {
     ctForm = { dono: op.id, id: null, p: ctNormPer({ tipo: 'clt', ini }) }; return renderCarrTraj(); }
   if (k === 'novaop') { ctNovaOp(); return renderCarrTraj(); }
   if (k === 'fcancelar') { ctForm = null; return renderCarrTraj(); }
+  if (k === 'bemadd') { ctLerForm(); ctForm.p.bens = ctForm.p.bens || []; ctForm.p.bens.push({ id: uid(), nome: b.dataset.n || '', valor: '', freq: b.dataset.f === 'ano' ? 'ano' : 'mes' }); ctPop(); const L = document.querySelectorAll('#ct-pop [data-ctb$=":valor"]'); if (L.length) L[L.length - 1].focus(); return; }
+  if (k === 'bemdel') { ctLerForm(); ctForm.p.bens.splice(+b.dataset.i, 1); return ctPop(); }
   if (k === 'fsalvar') return ctSalvarForm();
-  if (k === 'editar') { const a = ctAcha(id); if (!a) return; ctForm = { dono: a.op ? a.op.id : 'emp', id, p: ctNormPer(clone(a.p)) }; renderCarrTraj(); const f = $('ct-form'); if (f) f.scrollIntoView({ block: 'nearest' }); return; }
+  if (k === 'editar') { const a = ctAcha(id); if (!a) return; ctForm = { dono: a.op ? a.op.id : 'emp', id, p: ctNormPer(clone(a.p)) }; return renderCarrTraj(); }
   if (k === 'apagar') { const a = ctAcha(id); if (!a || !confirmar(`Apagar ${a.p.emp || CT_TIPOS[a.p.tipo]} (${ctPerTxt(a.p)})?`)) return; a.lista.splice(a.lista.indexOf(a.p), 1); ctSync(); save(); return renderCarrTraj(); }
   if (k === 'tog') { if (ctAbertos.has(id)) ctAbertos.delete(id); else ctAbertos.add(id); return renderCarrTraj(); }
   if (k === 'addreaj') { const a = ctAcha(id); if (!a) return; const u = a.p.reajs[a.p.reajs.length - 1], mes = a.op ? mKey(Math.max(mIndex(a.p.ini) + 12, u && u.mes ? mIndex(u.mes) + 12 : 0)) : mKey(Math.max(HOJE_IDX + 1, u && u.mes ? mIndex(u.mes) + 1 : 0));
@@ -12171,14 +12214,18 @@ document.addEventListener('click', e => {
   if (k === 'alinhar') { const a = ctAcha(id), r = a && ctValEm(a.p, HOJE_IDX); if (!r || a.p.tipo === 'socio') return;
     const i0 = mIndex((state.plan || {}).inicio || mKey(HOJE_IDX)); trocarHoje(a.p.tipo, a.p.cltModo, r.valor, a.p.das, a.p.contab, mIndex(r.mes) > i0 && mIndex(r.mes) <= HOJE_IDX ? r.mes : null); c.baseMes = mKey(HOJE_IDX); ctSync(); save(); return renderCarrTraj(); }
   if (k === 'copiar') { const op = c.opcs.find(o => o.id === opId); const cp = clone(op); cp.id = uid(); cp.nome = op.nome + ' (cópia)'; cp.escolhida = false; cp.desde = ''; cp.fimAnt = null; cp.per.forEach(p => { p.id = uid(); p.reajs.forEach(r => { r.id = uid(); }); }); c.opcs.push(cp); ctCmpSel.add(cp.id); ctSync(); save(); return renderCarrTraj(); }
-  if (k === 'apagarop') { const op = c.opcs.find(o => o.id === opId); if (!op || !confirmar(`Apagar a opção ${op.nome}?`)) return; c.opcs = c.opcs.filter(o => o !== op); (state.cenarios || []).forEach(cn => { if (cn && cn.on) delete cn.on['carr:' + op.id]; }); ctSync(); save(); return renderCarrTraj(); }
+  if (k === 'apagarop') { const op = c.opcs.find(o => o.id === opId); if (!op) return;
+    const usa = (state.cenarios || []).filter(cn => cn && cn.on && cn.on['carr:' + op.id]).map(cn => cn.nome).filter(Boolean);
+    if (!confirmar(`Excluir a opção ${op.nome}? Ela sai também das outras abas: da Simulação${usa.length ? ` (cenário${usa.length > 1 ? 's' : ''} ${usa.join(', ')})` : ''}, de Itens dos módulos no Meu plano e da comparação${op.escolhida ? '. Como ela está escolhida, os períodos dela saem do histórico e o Meu plano volta ao que era antes' : ''}. Não dá para desfazer.`)) return;
+    if (op.escolhida) ctDesfazer(op.id);
+    c.opcs = c.opcs.filter(o => o !== op); ctCmpSel.delete(op.id); if (ctUsarPend && ctUsarPend.id === op.id) ctUsarPend = null; (state.cenarios || []).forEach(cn => { if (cn && cn.on) delete cn.on['carr:' + op.id]; }); ctSync(); save(); return renderCarrTraj(); }
   if (k === 'usar') { const op = c.opcs.find(o => o.id === opId), i = ctOpIni(op); ctUsarPend = { id: opId, mes: i && mIndex(i) > HOJE_IDX ? i : mKey(HOJE_IDX + 1) }; return renderCarrTraj(); }
   if (k === 'usarno') { ctUsarPend = null; return renderCarrTraj(); }
   if (k === 'usarok') { const m = ctUsar(opId, ctUsarPend && ctUsarPend.mes); if (m) { ctUsarPend.msg = m; return renderCarrTraj(); } ctUsarPend = null; ctMsgTxt = 'Pronto: a opção entrou no Meu plano e no histórico.'; return renderCarrTraj(); }
   if (k === 'desfazer') { if (!confirmar('Desfazer a escolha? Os períodos desta opção saem do histórico e o Meu plano volta ao que era antes.')) return; ctDesfazer(opId); return renderCarrTraj(); }
 });
 document.addEventListener('change', e => {
-  const t = e.target; if (!t.closest || !t.closest('#p-carrtraj') || !state.carr) return;
+  const t = e.target; if (!t.closest || !t.closest('#p-carrtraj,#ct-pop') || !state.carr) return;
   if (t.dataset.ctr) { const [pid, rid, campo] = t.dataset.ctr.split(':'), a = ctAcha(pid), r = a && a.p.reajs.find(x => x.id === rid); if (!r) return;
     if (campo === 'mes') { if (!ctMes(t.value)) return renderCarrTraj(); r.mes = t.value < a.p.ini ? a.p.ini : t.value; ctOrdReajs(a.p); }
     else if (campo === 'motivo') r.motivo = t.value.slice(0, 80); else r[campo] = Math.max(0, +t.value || 0);
@@ -12188,6 +12235,8 @@ document.addEventListener('change', e => {
   if (t.dataset.ctu && ctUsarPend) { ctUsarPend.mes = t.value; ctUsarPend.msg = ''; return renderCarrTraj(); }
   if (t.dataset.ctf === 'cltModo') { ctLerForm(); return renderCarrTraj(); }
 });
+document.addEventListener('keydown', e => { if (e.key === 'Escape' && ctForm && $('ct-pop') && !$('ct-pop').hidden) { ctForm = null; renderCarrTraj(); } });
+document.addEventListener('change', e => { const t = e.target; if (t.dataset && t.dataset.ctb && ctForm) { ctLerForm(); if (t.dataset.ctb.endsWith(':freq')) ctPop(); } });
 
 let state = normalizar(DEFAULTS), cps = [], db = null, tab = 'inicio';
 // perfis: o dono usa os documentos da raiz; cada outra pessoa usa perfis/<id>/ (só ela e o dono leem)
