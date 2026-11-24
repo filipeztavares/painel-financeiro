@@ -2619,7 +2619,7 @@ html[data-lb="b"] .block-title .desc{font-size:14px;color:var(--muted);margin-to
     </div>
     <div class="nav-mobile-sub" id="navMobileSub"></div>
   </div>
-  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span><button type="button" id="demoBtn" aria-pressed="false">Modo demonstração</button></div><div class="src">Focus atualizado toda segunda · versão 389</div></div>
+  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span><button type="button" id="demoBtn" aria-pressed="false">Modo demonstração</button></div><div class="src">Focus atualizado toda segunda · versão 390</div></div>
 </nav>
 <div class="sino-pop" id="sino-pop" role="dialog" aria-label="Atualizações das bases" hidden></div>
 <div class="sino-pop" id="pess-pop" role="dialog" aria-label="Seus avisos" hidden></div>
@@ -5024,7 +5024,7 @@ html.onb-on,html.onb-on body{overflow:hidden!important}
     return new Promise(resolve => { const { data } = sb.auth.onAuthStateChange(async (ev) => { if (ev !== 'PASSWORD_RECOVERY') return; const s = prompt('Digite a nova senha (mínimo 8 caracteres):'); if (s && s.length >= 8) { const { error } = await sb.auth.updateUser({ password: s }); alert(error ? 'Não deu para trocar a senha: ' + error.message : 'Senha trocada.'); } }); resolve(data); });
   }
   // ---------- rodapé: compartilhar, administração e sair ----------
-  const SITE_V = 289;
+  const SITE_V = 290;
   const escH = v => String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const dataBR = v => v ? new Date(v).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' }) : '–';
   const css2 = `.side-foot .r{flex-wrap:wrap}.side-foot .lg-acoes{margin-left:auto;display:inline-flex;gap:10px}
@@ -21492,8 +21492,9 @@ html .sug-adm .btn.ghost[aria-pressed="true"], html[data-lb] .sug-adm .btn.ghost
       <div class="field"><label for="i_luc" style="font-weight:700;margin-bottom:6px">Distribuição de lucros</label><div class="money"><b>R$</b><input class="inp" id="i_luc" inputmode="numeric" placeholder="0" value="${D.lucro ? D.lucro.toLocaleString('pt-BR') : ''}"></div>
        <div class="hint">Uma média por mês. Se recebe por trimestre ou por ano, divida.</div></div>
       <div class="est" id="est" ${D.bruto || D.lucro ? '' : 'hidden'}>${estHtml(L)}</div>
-      <div class="hint" id="h_soc">${socioHint(c, ano)}</div>`; },
-      bind() { const a = q('#i_sal'), b = q('#i_luc'), at = () => { const e = q('#est'), c = socioCalc(); e.hidden = !(D.bruto || D.lucro); e.innerHTML = estHtml(liquido()); q('#h_soc').innerHTML = socioHint(c, (c.p + c.lu) * 12); upd(); };
+      <div class="hint" id="h_soc">${socioHint(c, ano)}</div>
+      <button class="link" id="porSoc" type="button">Como são os descontos do sócio? Ver mais</button>`; },
+      bind() { q('#porSoc').onclick = shSocio; const a = q('#i_sal'), b = q('#i_luc'), at = () => { const e = q('#est'), c = socioCalc(); e.hidden = !(D.bruto || D.lucro); e.innerHTML = estHtml(liquido()); q('#h_soc').innerHTML = socioHint(c, (c.p + c.lu) * 12); upd(); };
         a.oninput = () => { fmtIn(a); D.bruto = num(a.value); at(); }; b.oninput = () => { fmtIn(b); D.lucro = num(b.value); at(); }; },
       ok: () => (D.bruto || 0) + (D.lucro || 0) >= 500, falta: 'Digite o pró-labore, os lucros ou os dois' },
     { id: 'sal', sec: 3, so: () => D.regime !== 'socio', render() { const pj = D.regime === 'pj', L = liquido(); return `<div class="field"><label for="i_sal"><h1>${pj ? 'Quanto a sua empresa fatura por mês?' : 'Qual o seu salário bruto?'}</h1></label>
@@ -21604,9 +21605,18 @@ html .sug-adm .btn.ghost[aria-pressed="true"], html[data-lb] .sug-adm .btn.ghost
       L.forEach(([k]) => q('#r_' + k).oninput = e => { r[k] = Math.min(100, num(e.target.value)); val(); }); val();
       q('#r_pad').onclick = () => { Object.assign(r, { ess: 50, est: 30, inv: 20 }); L.forEach(([k]) => q('#r_' + k).value = r[k]); val(); };
       q('#r_ok').onclick = () => { D.reg = { ...r }; D.custos = Math.round(liq * (r.ess + r.est) / 100 / 10) * 10; D.mesReal = null; D.mesFech = 0; closeSh(); render(); }; }); }
+  function shSocio() { const c = socioCalc(), lk = (u, t) => `<a href="${u}" target="_blank" rel="noopener" style="color:var(--acc);font-weight:700">${t}</a>`;
+    openSh('Como são os descontos do sócio', `<p>O que o sócio recebe vem de dois jeitos, e cada um paga imposto de um jeito.</p>
+      <p><b>Pró-labore</b> é o "salário" de quem trabalha na empresa. Sai INSS de 11%, até o teto de ${brl(TETO_INSS)} (no máximo ${brl(TETO_INSS * .11)} por mês), e imposto de renda pela tabela mensal, como um salário.</p>
+      <p><b>Distribuição de lucros</b> é a sua parte no lucro que sobra depois que a empresa pagou os impostos dela. Não tem INSS. Desde janeiro de 2026, se a mesma empresa paga mais de R$ 50 mil no mês para a mesma pessoa, ficam retidos 10% sobre o total pago, não só sobre o que passou. Até R$ 50 mil, é isento.</p>
+      <p><b>Holding:</b> o lucro que as empresas mandam para a holding não tem essa retenção. A regra vale quando a holding paga para você.</p>
+      <p><b>IR mínimo anual:</b> quem recebe mais de R$ 600 mil no ano, somando tudo, paga um imposto mínimo na declaração, que sobe de 0% a 10% até R$ 1,2 milhão. O que já foi retido é descontado. Esse acerto não entra no valor do mês.</p>
+      ${c.p + c.lu ? `<div class="est">${estHtml(liquido())}</div>` : ''}
+      <p class="hint">Fontes: ${lk('https://planalto.gov.br/ccivil_03/_Ato2023-2026/2025/Lei/L15270.htm', 'Lei 15.270/2025')} (lucros e IR mínimo) e ${lk('https://agilize.com.br/artigos/?p=1846', 'guia do INSS do pró-labore')} (11% até o teto de 2026). Parte das regras ainda depende de regulamentação da Receita, por isso o cálculo é aproximado. Em caso de dúvida, confirme com o seu contador.</p>
+      <button class="cta" type="button" id="shOk">Entendi</button>`, okBtn); }
   function shInss() { const f = D.bruto || 20000, ex = !D.bruto, a = f * 12;
     if (D.tipo === 'presumido') { openSh('Por que tem INSS do pró-labore', `<p>Sócio que trabalha na empresa precisa tirar um <b>pró-labore</b>, o "salário" do sócio. A Receita costuma cobrar quem só distribui lucro.</p>
-      <p>No Lucro Presumido, sobre o pró-labore saem 11% de INSS seu e 20% da empresa. Por isso a conta usa o pró-labore mínimo, de um salário mínimo (${brl(PL_MIN)}). O resto vem como lucro, sem imposto para você.</p>
+      <p>No Lucro Presumido, sobre o pró-labore saem 11% de INSS seu e 20% da empresa. Por isso a conta usa o pró-labore mínimo, de um salário mínimo (${brl(PL_MIN)}). O resto vem como lucro, sem imposto para você até R$ 50 mil por mês.</p>
       <p class="hint">No Meu plano dá para mudar o pró-labore.</p><button class="cta" type="button" id="shOk">Entendi</button>`, okBtn); return; }
     const x3 = ANEXO3.find(r => a <= r[0]) || ANEXO3[5], x5 = ANEXO5.find(r => a <= r[0]) || ANEXO5[5], al3 = Math.max(.06, (a * x3[1] - x3[2]) / a), al5 = Math.max(.155, (a * x5[1] - x5[2]) / a),
       pl = Math.min(Math.max(f * .28, PL_MIN), 8475.55), ins = pl * .11, c3 = f * al3 + ins, c5 = f * al5;
