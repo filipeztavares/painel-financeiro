@@ -2611,7 +2611,7 @@ html[data-lb="b"] .block-title .desc{font-size:14px;color:var(--muted);margin-to
     </div>
     <div class="nav-mobile-sub" id="navMobileSub"></div>
   </div>
-  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 388</div></div>
+  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 390</div></div>
 </nav>
 <div class="sino-pop" id="sino-pop" role="dialog" aria-label="Atualizações das bases" hidden></div>
 <div class="sino-pop" id="pess-pop" role="dialog" aria-label="Seus avisos" hidden></div>
@@ -5007,7 +5007,7 @@ html.onb-on,html.onb-on body{overflow:hidden!important}
     return new Promise(resolve => { const { data } = sb.auth.onAuthStateChange(async (ev) => { if (ev !== 'PASSWORD_RECOVERY') return; const s = prompt('Digite a nova senha (mínimo 8 caracteres):'); if (s && s.length >= 8) { const { error } = await sb.auth.updateUser({ password: s }); alert(error ? 'Não deu para trocar a senha: ' + error.message : 'Senha trocada.'); } }); resolve(data); });
   }
   // ---------- rodapé: compartilhar, administração e sair ----------
-  const SITE_V = 288;
+  const SITE_V = 291;
   const escH = v => String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const dataBR = v => v ? new Date(v).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' }) : '–';
   const css2 = `.side-foot .r{flex-wrap:wrap}.side-foot .lg-acoes{margin-left:auto;display:inline-flex;gap:10px}
@@ -21355,10 +21355,10 @@ html .sug-adm .btn.ghost[aria-pressed="true"], html[data-lb] .sug-adm .btn.ghost
   const brl = n => 'R$ ' + Math.round(n || 0).toLocaleString('pt-BR');
   const sbrl = n => (n < 0 ? '− ' : '') + brl(Math.abs(n || 0));
   const num = s => +(String(s || '').replace(/\D/g, '')) || 0;
-  const fmtIn = el => { const v = num(el.value); el.value = v ? v.toLocaleString('pt-BR') : ''; };
+  const fmtIn = el => { const v = num(el.value); el.value = /\d/.test(el.value) ? v.toLocaleString('pt-BR') : ''; };   // 0 digitado fica 0 (não vira em branco)
   const E = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const T = (f, d) => { try { return f(); } catch (e) { return d; } };
-  const novoD = () => ({ nome: '', nasc: '', pl: null, soma: null, perfil: '', regime: '', tipo: '', ben: {}, semBen: false, prev: { eu: 0, emp: 'igual', empPct: 0 }, reg: { ess: 50, est: 30, inv: 20 }, bruto: 0, custos: 0, mesReal: null, mesFech: 0, depois: '' });
+  const novoD = () => ({ nome: '', nasc: '', pl: null, soma: null, perfil: '', regime: '', tipo: '', lucro: 0, ben: {}, semBen: false, prev: { eu: 0, emp: 'igual', empPct: 0 }, reg: { ess: 50, est: 30, inv: 20 }, bruto: 0, custos: 0, mesReal: null, mesFech: 0, depois: '' });
 
   /* ---- cálculos aproximados (o Meu plano refaz com as regras completas depois) ---- */
   function inss(b) { const f = [[1518, .075], [2793.88, .09], [4190.83, .12], [8157.41, .14]]; let r = 0, a = 0; for (const [t, p] of f) { if (b > a) { r += (Math.min(b, t) - a) * p; a = t; } } return r; }
@@ -21382,8 +21382,8 @@ html .sug-adm .btn.ghost[aria-pressed="true"], html[data-lb] .sug-adm .btn.ghost
     if (k === 'stock') return `<p class="hint" style="margin:0 0 12px 34px">Você cadastra os detalhes depois, no módulo <b style="color:var(--ink)">Carreira</b>.</p>`;
     return `<div class="money"><b>R$</b><input class="inp" data-v="${k}" inputmode="numeric" placeholder="Valor por ${f}" aria-label="${n}, valor por ${f}" value="${D.ben[k] ? D.ben[k].toLocaleString('pt-BR') : ''}"></div>` + (k === 'vt' && D.regime === 'clt' ? `<p class="hint" id="h_vt" style="margin:-4px 0 12px 34px">${vtTxt()}</p>` : '');
   }
-  function pacoteTxt() { const pj = D.regime === 'pj', m = benMes(), a = benAno(); if (!m && !a) return ' ';
-    return `Seu pacote: <b style="color:var(--ink)">${brl(D.bruto + m)} por mês</b>${a ? `, mais ${brl(a)} por ano de PLR ou bônus` : ''}. Em um ano, cerca de <b style="color:var(--ink)">${brl((D.bruto + m) * 12 + (pj ? 0 : D.bruto * 4 / 3) + a)}</b>${pj ? '' : ', contando 13º e terço de férias'}.`; }
+  function pacoteTxt() { const pj = D.regime !== 'clt', m = benMes(), a = benAno(), base = D.bruto + (D.regime === 'socio' ? +D.lucro || 0 : 0); if (!m && !a) return ' ';
+    return `Seu pacote: <b style="color:var(--ink)">${brl(base + m)} por mês</b>${a ? `, mais ${brl(a)} por ano de PLR ou bônus` : ''}. Em um ano, cerca de <b style="color:var(--ink)">${brl((base + m) * 12 + (pj ? 0 : D.bruto * 4 / 3) + a)}</b>${pj ? '' : ', contando 13º e terço de férias'}.`; }
   const ANEXO3 = [[180e3, .06, 0], [360e3, .112, 9360], [720e3, .135, 17640], [1.8e6, .16, 35640], [3.6e6, .21, 125640], [4.8e6, .33, 648000]];
   const ANEXO5 = [[180e3, .155, 0], [360e3, .18, 4500], [720e3, .195, 9900], [1.8e6, .205, 17100], [3.6e6, .23, 62100], [4.8e6, .305, 540000]];
   function simplesAliq(f) { const a = f * 12; if (!a) return .06; const x = ANEXO3.find(r => a <= r[0]) || ANEXO3[5]; return Math.max(.06, (a * x[1] - x[2]) / a); }
@@ -21392,7 +21392,12 @@ html .sug-adm .btn.ghost[aria-pressed="true"], html[data-lb] .sug-adm .btn.ghost
     presumido: { t: 'Lucro Presumido', s: 'Para quem fatura mais ou não pode entrar no Simples.', tag: 'Cerca de 16% do faturamento' },
     naosei: { t: 'Não sei', s: 'Usamos o Simples, o mais comum. Você confirma depois com o contador.', tag: 'Dá para trocar depois' } };
   const PL_MIN = 1621;
+  const RN = () => D.regime === 'pj' ? 'PJ' : D.regime === 'socio' ? 'Sócio' : 'CLT';
+  const TETO_INSS = 8475.55;
+  // sócio: pró-labore (INSS 11% até o teto + IR da tabela) e lucros (10% retidos se a mesma empresa paga mais de R$ 50 mil no mês, Lei 15.270/2025)
+  const socioCalc = () => { const p = +D.bruto || 0, lu = +D.lucro || 0, i = Math.min(p, TETO_INSS) * .11, ir = p > 0 ? T(() => irrf26(p, i, 0), irrf(p - i, p)) : 0, rl = lu > 50000 ? lu * .1 : 0; return { p, lu, i, ir, rl }; };
   function liquido() {
+    if (D.regime === 'socio') { const c = socioCalc(), L = []; if (c.p) L.push(['INSS do pró-labore (11%)', c.i], ['IR do pró-labore', c.ir]); if (c.rl) L.push(['IR retido nos lucros (10%)', c.rl]); const pv = prevEu(); if (pv) L.push(['Previdência (sua parte)', pv]); return { liq: Math.max(0, c.p + c.lu - c.i - c.ir - c.rl - pv), linhas: L }; }
     if (D.regime === 'clt') { const pi = typeof dedCLT === 'function', i = pi ? T(() => dedCLT('inss', D.bruto), 0) : inss(D.bruto), ir = pi ? T(() => dedCLT('irrf', D.bruto), 0) : irrf(D.bruto - i, D.bruto), vt = vtDesc(), L = [['INSS', i], ['Imposto de renda', ir]]; if (vt) L.push(['Vale-transporte', vt]); const pv = prevEu(); if (pv) L.push(['Previdência (sua parte)', pv]); return { liq: D.bruto - i - ir - vt - pv, linhas: L }; }
     const f = D.bruto, t = D.tipo || 'naosei'; let L;
     if (t === 'mei') L = [['DAS do MEI', f ? 86 : 0]];
@@ -21416,8 +21421,10 @@ html .sug-adm .btn.ghost[aria-pressed="true"], html[data-lb] .sug-adm .btn.ghost
     arr: { t: 'Arrojado', s: 'Penso no longo prazo e aguento quedas grandes.', ex: 'Boa parte em ações, ETFs e exterior', n: 3, r: .07 } };
   const mesAnt = () => { const d = new Date(); d.setDate(1); d.setMonth(d.getMonth() - 1); return d.toLocaleDateString('pt-BR', { month: 'long' }); };
   const plHint = () => D.pl == null ? 'Não sabe? Use o <b>Me ajude a somar</b>.' : `<span style="${D.pl < 0 ? 'color:var(--alt);font-weight:700' : ''}">Patrimônio líquido: ${sbrl(D.pl)}</span>`;
-  const estHtml = L => `<span>${D.regime === 'pj' ? 'Faturamento' : 'Salário bruto'}</span><b>${brl(D.bruto)}</b>${L.linhas.map(x => `<span>− ${x[0]}</span><b>${brl(x[1])}</b>`).join('')}<span class="tt">Cai na conta (aproximado)</span><b>${brl(L.liq)}</b>`;
+  const estHtml = L => `${D.regime === 'socio' ? `<span>Pró-labore</span><b>${brl(D.bruto)}</b><span>Lucros distribuídos</span><b>${brl(D.lucro || 0)}</b>` : `<span>${D.regime === 'pj' ? 'Faturamento' : 'Salário bruto'}</span><b>${brl(D.bruto)}</b>`}${L.linhas.map(x => `<span>− ${x[0]}</span><b>${brl(x[1])}</b>`).join('')}<span class="tt">Cai na conta (aproximado)</span><b>${brl(L.liq)}</b>`;
   const cusHint = liq => { if (!D.custos || !liq) return ' '; const s = liq - D.custos; return s >= 0 ? `<span style="color:var(--ok);font-weight:700">Sobram ${brl(s)} por mês (${Math.round(s / liq * 100)}%).</span>` : `<span style="color:var(--alt);font-weight:700">Passa ${brl(-s)} do que você recebe.</span>`; };
+  const socioHint = (c, ano) => [c.lu > 50000 ? 'Lucros acima de R$ 50 mil no mês, pagos pela mesma empresa, têm 10% retidos sobre o total. Abaixo disso, são isentos.' : 'Lucros até R$ 50 mil por mês, pagos pela mesma empresa, são isentos de imposto.',
+    ano > 600000 ? `Com cerca de ${brl(ano)} por ano, entra o IR mínimo anual (até 10%), acertado na declaração. O que já foi retido conta.` : '', 'Cálculo aproximado.'].filter(Boolean).join(' ');
   const D_falta = () => D.regime === 'pj' && D.tipo === 'mei' && D.bruto > 6750 ? 'Acima do limite do MEI. Volte e escolha outro tipo.' : 'Digite o valor para continuar';
 
   /* ---- telas ---- */
@@ -21453,14 +21460,27 @@ html .sug-adm .btn.ghost[aria-pressed="true"], html[data-lb] .sug-adm .btn.ghost
     { id: 'regime', sec: 3, render() { return `<div><h1>Como você recebe hoje?</h1></div>
       <div class="opts" role="radiogroup">
        <button type="button" class="opt" role="radio" aria-checked="${D.regime === 'clt'}" data-k="clt"><span class="rd"></span><span><span class="t">CLT (carteira assinada)</span><span class="s">INSS e imposto de renda saem na folha.</span></span></button>
-       <button type="button" class="opt" role="radio" aria-checked="${D.regime === 'pj'}" data-k="pj"><span class="rd"></span><span><span class="t">PJ (empresa própria)</span><span class="s">Você emite nota e paga os impostos da empresa.</span></span></button></div>
+       <button type="button" class="opt" role="radio" aria-checked="${D.regime === 'pj'}" data-k="pj"><span class="rd"></span><span><span class="t">PJ (empresa própria)</span><span class="s">Você emite nota e paga os impostos da empresa.</span></span></button>
+       <button type="button" class="opt" role="radio" aria-checked="${D.regime === 'socio'}" data-k="socio"><span class="rd"></span><span><span class="t">Sócio de empresa</span><span class="s">Recebe pró-labore e distribuição de lucros. Os impostos da empresa ficam com ela.</span></span></button></div>
       <div class="por">${ICO_I}<span>Vai mudar em breve? Depois você agenda a troca no <b>Meu plano</b>.</span></div>`; },
       bind() { qa('.opt').forEach(b => b.onclick = () => { D.regime = b.dataset.k; render(); }); }, ok: () => !!D.regime, falta: 'Escolha uma opção' },
     { id: 'tipo', sec: 3, so: () => D.regime === 'pj', render() { return `<div><h1>Qual o tipo da sua empresa?</h1></div>
       <p class="lead">Cada tipo paga imposto de um jeito.</p>
       <div class="opts" role="radiogroup">${Object.entries(TIPOS).map(([k, p]) => `<button type="button" class="opt" role="radio" aria-checked="${D.tipo === k}" data-k="${k}"><span class="rd"></span><span><span class="t">${p.t}</span><span class="s">${p.s}</span><span class="tag">${p.tag}</span></span></button>`).join('')}</div>`; },
       bind() { qa('.opt').forEach(b => b.onclick = () => { D.tipo = b.dataset.k; render(); }); }, ok: () => !!D.tipo, falta: 'Escolha uma opção' },
-    { id: 'sal', sec: 3, render() { const pj = D.regime === 'pj', L = liquido(); return `<div class="field"><label for="i_sal"><h1>${pj ? 'Quanto a sua empresa fatura por mês?' : 'Qual o seu salário bruto?'}</h1></label>
+    { id: 'socio', sec: 3, so: () => D.regime === 'socio', render() { const L = liquido(), c = socioCalc(), ano = (c.p + c.lu) * 12; return `<div><h1>Quanto você recebe da empresa por mês?</h1></div>
+      <p class="lead">O que chega para você, não o faturamento da empresa. Se for sócio de mais de uma, some.</p>
+      <div class="field"><label for="i_sal" style="font-weight:700;margin-bottom:6px">Pró-labore</label><div class="money"><b>R$</b><input class="inp" id="i_sal" inputmode="numeric" placeholder="0" value="${D.bruto ? D.bruto.toLocaleString('pt-BR') : ''}"></div>
+       <div class="hint">O valor bruto, antes do INSS e do imposto. Se não tem, deixe 0.</div></div>
+      <div class="field"><label for="i_luc" style="font-weight:700;margin-bottom:6px">Distribuição de lucros</label><div class="money"><b>R$</b><input class="inp" id="i_luc" inputmode="numeric" placeholder="0" value="${D.lucro ? D.lucro.toLocaleString('pt-BR') : ''}"></div>
+       <div class="hint">Uma média por mês. Se recebe por trimestre ou por ano, divida.</div></div>
+      <div class="est" id="est" ${D.bruto || D.lucro ? '' : 'hidden'}>${estHtml(L)}</div>
+      <div class="hint" id="h_soc">${socioHint(c, ano)}</div>
+      <button class="link" id="porSoc" type="button">Como são os descontos do sócio? Ver mais</button>`; },
+      bind() { q('#porSoc').onclick = shSocio; const a = q('#i_sal'), b = q('#i_luc'), at = () => { const e = q('#est'), c = socioCalc(); e.hidden = !(D.bruto || D.lucro); e.innerHTML = estHtml(liquido()); q('#h_soc').innerHTML = socioHint(c, (c.p + c.lu) * 12); upd(); };
+        a.oninput = () => { fmtIn(a); D.bruto = num(a.value); at(); }; b.oninput = () => { fmtIn(b); D.lucro = num(b.value); at(); }; },
+      ok: () => (D.bruto || 0) + (D.lucro || 0) >= 500, falta: 'Digite o pró-labore, os lucros ou os dois' },
+    { id: 'sal', sec: 3, so: () => D.regime !== 'socio', render() { const pj = D.regime === 'pj', L = liquido(); return `<div class="field"><label for="i_sal"><h1>${pj ? 'Quanto a sua empresa fatura por mês?' : 'Qual o seu salário bruto?'}</h1></label>
       <p class="lead">${pj ? 'O valor das notas de um mês normal.' + (D.tipo === 'mei' ? ' No MEI, o limite é R$ 6.750.' : '') : 'O valor antes dos descontos.'}</p>
       <div class="money"><b>R$</b><input class="inp" id="i_sal" inputmode="numeric" placeholder="0" value="${D.bruto ? D.bruto.toLocaleString('pt-BR') : ''}"></div></div>
       <div class="est" id="est" ${D.bruto ? '' : 'hidden'}>${estHtml(L)}</div>
@@ -21468,8 +21488,8 @@ html .sug-adm .btn.ghost[aria-pressed="true"], html[data-lb] .sug-adm .btn.ghost
       <div class="hint">Cálculo aproximado. No Meu plano dá para ajustar ${pj ? (D.tipo === 'mei' ? 'o DAS' : 'o anexo, o pró-labore e o contador') : 'dependentes, 13º e férias'}.</div>`; },
       bind() { if (q('#porInss')) q('#porInss').onclick = shInss; const i = q('#i_sal'); i.oninput = () => { fmtIn(i); D.bruto = num(i.value); const e = q('#est'); e.hidden = !D.bruto; e.innerHTML = estHtml(liquido()); upd(); }; },
       ok: () => D.bruto >= 500 && !(D.regime === 'pj' && D.tipo === 'mei' && D.bruto > 6750), falta: D_falta },
-    { id: 'benef', sec: 3, render() { const pj = D.regime === 'pj'; return `<div><h1>Quais benefícios você recebe?</h1></div>
-      <p class="lead">${pj ? 'Marque o que o contrato te dá, além do faturamento.' : 'Marque o que a empresa te dá, além do salário.'} O valor é opcional.</p>
+    { id: 'benef', sec: 3, render() { const pj = D.regime !== 'clt'; return `<div><h1>Quais benefícios você recebe?</h1></div>
+      <p class="lead">${pj ? (D.regime === 'socio' ? 'Marque o que a empresa paga para você, além do pró-labore e dos lucros.' : 'Marque o que o contrato te dá, além do faturamento.') : 'Marque o que a empresa te dá, além do salário.'} O valor é opcional.</p>
       <div class="bn">${BENS.map(([k, n, f]) => `<div><label><input type="checkbox" data-k="${k}" ${k in D.ben ? 'checked' : ''}>${n}</label>${k in D.ben ? benExtra(k, n, f) : ''}</div>`).join('')}</div>
       <button type="button" class="opt" role="checkbox" aria-checked="${D.semBen}" id="semBen" style="padding:12px 16px"><span class="rd"></span><span class="t" style="font-size:15.5px">Não recebo benefícios</span></button>
       <div class="hint" id="h_ben">${pacoteTxt()}</div>`; },
@@ -21496,7 +21516,7 @@ html .sug-adm .btn.ghost[aria-pressed="true"], html[data-lb] .sug-adm .btn.ghost
       <div class="kpis">
        <div class="kpi"><span>Patrimônio hoje</span><b>${sbrl(D.pl || 0)}</b></div>
        <div class="kpi"><span>Perfil</span><b>${p.t}</b></div>
-       <div class="kpi"><span>Entra por mês</span><b>${brl(L.liq)}</b><small>${D.regime === 'pj' ? 'PJ' : 'CLT'}, aproximado</small></div>
+       <div class="kpi"><span>Entra por mês</span><b>${brl(L.liq)}</b><small>${RN()}, aproximado</small></div>
        <div class="kpi"><span>Sai por mês</span><b>${brl(D.custos)}</b><small>${D.mesFech ? 'gastos de ' + mesAnt() : 'estimativa'}</small></div></div>
       <div class="insight">${sobra > 0 ? `<span>Sobram <b class="v">${brl(sobra)}</b> por mês, ${Math.round(pc * 100)}% do que você recebe.</span>
         <span class="hint">Investindo essa sobra no perfil ${p.t.toLowerCase()}, em 10 anos${a ? ` (aos ${a + 10})` : ''} você pode chegar a cerca de <b style="color:var(--ink)">${brl(pat)}</b> em dinheiro de hoje.</span>`
@@ -21568,9 +21588,18 @@ html .sug-adm .btn.ghost[aria-pressed="true"], html[data-lb] .sug-adm .btn.ghost
       L.forEach(([k]) => q('#r_' + k).oninput = e => { r[k] = Math.min(100, num(e.target.value)); val(); }); val();
       q('#r_pad').onclick = () => { Object.assign(r, { ess: 50, est: 30, inv: 20 }); L.forEach(([k]) => q('#r_' + k).value = r[k]); val(); };
       q('#r_ok').onclick = () => { D.reg = { ...r }; D.custos = Math.round(liq * (r.ess + r.est) / 100 / 10) * 10; D.mesReal = null; D.mesFech = 0; closeSh(); render(); }; }); }
+  function shSocio() { const c = socioCalc(), lk = (u, t) => `<a href="${u}" target="_blank" rel="noopener" style="color:var(--acc);font-weight:700">${t}</a>`;
+    openSh('Como são os descontos do sócio', `<p>O que o sócio recebe vem de dois jeitos, e cada um paga imposto de um jeito.</p>
+      <p><b>Pró-labore</b> é o "salário" de quem trabalha na empresa. Sai INSS de 11%, até o teto de ${brl(TETO_INSS)} (no máximo ${brl(TETO_INSS * .11)} por mês), e imposto de renda pela tabela mensal, como um salário.</p>
+      <p><b>Distribuição de lucros</b> é a sua parte no lucro que sobra depois que a empresa pagou os impostos dela. Não tem INSS. Desde janeiro de 2026, se a mesma empresa paga mais de R$ 50 mil no mês para a mesma pessoa, ficam retidos 10% sobre o total pago, não só sobre o que passou. Até R$ 50 mil, é isento.</p>
+      <p><b>Holding:</b> o lucro que as empresas mandam para a holding não tem essa retenção. A regra vale quando a holding paga para você.</p>
+      <p><b>IR mínimo anual:</b> quem recebe mais de R$ 600 mil no ano, somando tudo, paga um imposto mínimo na declaração, que sobe de 0% a 10% até R$ 1,2 milhão. O que já foi retido é descontado. Esse acerto não entra no valor do mês.</p>
+      ${c.p + c.lu ? `<div class="est">${estHtml(liquido())}</div>` : ''}
+      <p class="hint">Fontes: ${lk('https://planalto.gov.br/ccivil_03/_Ato2023-2026/2025/Lei/L15270.htm', 'Lei 15.270/2025')} (lucros e IR mínimo) e ${lk('https://agilize.com.br/artigos/?p=1846', 'guia do INSS do pró-labore')} (11% até o teto de 2026). Parte das regras ainda depende de regulamentação da Receita, por isso o cálculo é aproximado. Em caso de dúvida, confirme com o seu contador.</p>
+      <button class="cta" type="button" id="shOk">Entendi</button>`, okBtn); }
   function shInss() { const f = D.bruto || 20000, ex = !D.bruto, a = f * 12;
     if (D.tipo === 'presumido') { openSh('Por que tem INSS do pró-labore', `<p>Sócio que trabalha na empresa precisa tirar um <b>pró-labore</b>, o "salário" do sócio. A Receita costuma cobrar quem só distribui lucro.</p>
-      <p>No Lucro Presumido, sobre o pró-labore saem 11% de INSS seu e 20% da empresa. Por isso a conta usa o pró-labore mínimo, de um salário mínimo (${brl(PL_MIN)}). O resto vem como lucro, sem imposto para você.</p>
+      <p>No Lucro Presumido, sobre o pró-labore saem 11% de INSS seu e 20% da empresa. Por isso a conta usa o pró-labore mínimo, de um salário mínimo (${brl(PL_MIN)}). O resto vem como lucro, sem imposto para você até R$ 50 mil por mês.</p>
       <p class="hint">No Meu plano dá para mudar o pró-labore.</p><button class="cta" type="button" id="shOk">Entendi</button>`, okBtn); return; }
     const x3 = ANEXO3.find(r => a <= r[0]) || ANEXO3[5], x5 = ANEXO5.find(r => a <= r[0]) || ANEXO5[5], al3 = Math.max(.06, (a * x3[1] - x3[2]) / a), al5 = Math.max(.155, (a * x5[1] - x5[2]) / a),
       pl = Math.min(Math.max(f * .28, PL_MIN), 8475.55), ins = pl * .11, c3 = f * al3 + ins, c5 = f * al5;
@@ -21609,8 +21638,9 @@ html .sug-adm .btn.ghost[aria-pressed="true"], html[data-lb] .sug-adm .btn.ghost
     // renda e deduções
     if (!st.orc) st.orc = orcInicial(st.cfg || {});
     const o = st.orc; o.deducoes = o.deducoes.filter(d => !/^onb-/.test(d.id));
-    setModelo(D.regime === 'pj' ? 'pj' : 'clt', 'bruto', true);
-    const sal = o.receitas.find(r => r.id === 'sal'); if (sal) sal.valor = D.bruto;
+    o.receitas = o.receitas.filter(r => !/^onb-/.test(r.id));
+    setModelo(D.regime === 'clt' ? 'clt' : 'pj', 'bruto', true);
+    const sal = o.receitas.find(r => r.id === 'sal'); if (sal) { sal.valor = D.bruto; if (D.regime === 'socio') sal.nome = 'Pró-labore'; else if (sal.nome === 'Pró-labore') sal.nome = D.regime === 'pj' ? 'Faturamento bruto' : 'Salário bruto'; }
     const ded = (id, nome, valor) => { if (valor > 0) o.deducoes.push({ id, nome, modo: 'fixo', valor: Math.round(valor * 100) / 100, reaj: 'nenhum' }); };
     if (D.regime === 'pj') {
       const t = D.tipo || 'naosei', f = D.bruto, das = o.deducoes.find(d => d.id === 'das'), ct = o.deducoes.find(d => d.id === 'contab');
@@ -21618,6 +21648,10 @@ html .sug-adm .btn.ghost[aria-pressed="true"], html[data-lb] .sug-adm .btn.ghost
       if (das) { das.modo = 'pct'; das.valor = Math.round(aliq * 100) / 100; das.nome = t === 'mei' ? 'DAS do MEI' : t === 'presumido' ? 'Impostos (Lucro Presumido)' : 'DAS (Simples Nacional)'; }
       if (ct) ct.valor = t === 'mei' ? 0 : t === 'presumido' ? 600 : 350;
       if (t !== 'mei') ded('onb-inss', 'INSS do pró-labore', t === 'presumido' ? PL_MIN * .31 : Math.min(Math.max(f * .28, PL_MIN), 8475.55) * .11);
+    } else if (D.regime === 'socio') {   // sócio: sem DAS nem contador (são da empresa); INSS e IR do pró-labore e IR retido dos lucros como valores fixos
+      o.deducoes.forEach(d => { if (d.id === 'das' || d.id === 'contab') d.valor = 0; });
+      const c = socioCalc(); if (c.lu > 0) o.receitas.push({ id: 'onb-lucro', nome: 'Distribuição de lucros', valor: Math.round(c.lu) });
+      ded('onb-inss', 'INSS do pró-labore (11%)', c.i); ded('onb-irpl', 'IR do pró-labore', c.ir); ded('onb-irlucro', 'IR retido nos lucros (10%)', c.rl);
     } else ded('onb-vt', 'Vale-transporte (desconto)', vtDesc());
     ded('onb-prev', 'Previdência privada (sua parte)', prevEu());
     // benefícios: vão para a Carreira (CLT x PJ), onde dá para ajustar
@@ -21626,7 +21660,7 @@ html .sug-adm .btn.ghost[aria-pressed="true"], html[data-lb] .sug-adm .btn.ghost
       if (D.regime === 'clt') { pj.dir = 'cltpj'; pj.clt = D.bruto; pj.saude = 'saude' in D.ben ? D.ben.saude || 0 : 0; pj.vt = 'vt' in D.ben ? D.ben.vt || 0 : 0;
         add('Vale-refeição (VR)', 'vr'); add('Plano odontológico', 'odonto'); add('Previdência privada (parte da empresa)', prevEmp()); add('PLR', 'plr', 'ano'); add('Outros benefícios', 'outros');
         pj.bens = (pj.bens || []).filter(b => !/^onb-/.test(b.id)).concat(it); }
-      else { pj.dir = 'pjclt'; pj.fat = D.bruto; add('Plano de saúde', 'saude'); add('Vale-refeição (VR)', 'vr'); add('Plano odontológico', 'odonto'); add('Previdência privada (parte da empresa)', prevEmp()); add('PLR', 'plr', 'ano'); add('Outros benefícios', 'outros');
+      else { if (D.regime === 'pj') { pj.dir = 'pjclt'; pj.fat = D.bruto; } add('Plano de saúde', 'saude'); add('Vale-refeição (VR)', 'vr'); add('Plano odontológico', 'odonto'); add('Previdência privada (parte da empresa)', prevEmp()); add('PLR', 'plr', 'ano'); add('Outros benefícios', 'outros');
         pj.bensPJ = (pj.bensPJ || []).filter(b => !/^onb-/.test(b.id)).concat(it); } });
     // custos por categoria
     const cs = catsEditaveis(), est = D.mesReal || distrib(D.custos); cs.forEach(c => { c.orc = Math.max(0, Math.round(+est[c.nome] || 0)); });
@@ -21826,7 +21860,7 @@ html .sug-adm .btn.ghost[aria-pressed="true"], html[data-lb] .sug-adm .btn.ghost
       { id: 'fam:fim', fim: true, render: resFam, cta: 'Salvar e ir para Família' }] },
    { id: 'carr', nome: 'Carreira', letra: 'C', cor: '#B39DDB', tabs: ['pjpf', 'stock'], desc: 'CLT contra PJ, quanto pedir numa proposta e as ações da empresa.',
      steps: () => [
-      sOpts('carr', 'obj', 'O que você quer ver na Carreira?', () => `Hoje você é ${D.regime === 'pj' ? 'PJ' : 'CLT'}, com ${brl(D.bruto)} ${D.regime === 'pj' ? 'de faturamento' : 'de salário bruto'}. Os benefícios do primeiro acesso já estão lá.`,
+      sOpts('carr', 'obj', 'O que você quer ver na Carreira?', () => `Hoje você é ${D.regime === 'socio' ? 'sócio' : RN()}, com ${D.regime === 'socio' ? `${brl(D.bruto)} de pró-labore e ${brl(D.lucro || 0)} de lucros por mês` : `${brl(D.bruto)} ${D.regime === 'pj' ? 'de faturamento' : 'de salário bruto'}`}. Os benefícios do primeiro acesso já estão lá.`,
         [['cmp', 'Comparar CLT e PJ', 'Quanto sobra no bolso em cada um'], ['prop', 'Avaliar uma proposta', 'Uma oferta que você recebeu'], ['acoes', 'As ações da empresa', 'Stock options, RSU, vesting'], ['nada', 'Só estou olhando', '']]),
       sOpts('carr', 'propT', 'A proposta é CLT ou PJ?', '', [['clt', 'CLT'], ['pj', 'PJ']], { so: () => MV('carr', 'obj') === 'prop' }),
       sMoney('carr', 'propV', () => MV('carr', 'propT') === 'pj' ? 'Qual o faturamento mensal proposto?' : 'Qual o salário bruto proposto?', '', { so: () => MV('carr', 'obj') === 'prop', min: 500 }),
@@ -21887,10 +21921,10 @@ html .sug-adm .btn.ghost[aria-pressed="true"], html[data-lb] .sug-adm .btn.ghost
      (['par', 'parf'].includes(MV('fam', 'mora')) ? `<div class="por">${ICO_I}<span>No módulo, vocês montam o orçamento da casa e a divisão das contas.</span></div>` : ''); }
   function resCarr() { const m = modAtual, o = MV('carr', 'obj');
     let topo = '';
-    if (o === 'prop') { const bk = { regime: D.regime, bruto: D.bruto, tipo: D.tipo }, hoje = liquido().liq; D.regime = MV('carr', 'propT'); D.bruto = MV('carr', 'propV'); if (D.regime === 'pj' && !D.tipo) D.tipo = 'simples'; const prop = liquido().liq; Object.assign(D, bk); const dif = prop - hoje;
-      return resHead(m, dif >= 0 ? `A proposta põe ${brl(dif)} a mais no bolso` : `A proposta tira ${brl(-dif)} do bolso`) + `<div class="kpis"><div class="kpi"><span>Hoje (${D.regime === 'pj' ? 'PJ' : 'CLT'})</span><b>${brl(hoje)}</b><small>por mês, aproximado</small></div><div class="kpi"><span>Proposta (${MV('carr', 'propT') === 'pj' ? 'PJ' : 'CLT'})</span><b style="color:${dif >= 0 ? 'var(--ok)' : 'var(--alt)'}">${brl(prop)}</b><small>por mês, aproximado</small></div></div><p class="hint">Sem benefícios, 13º e férias. O módulo compara o pacote completo, com os benefícios que você já informou.</p>`; }
+    if (o === 'prop') { const bk = { regime: D.regime, bruto: D.bruto, tipo: D.tipo, lucro: D.lucro }, hoje = liquido().liq; D.regime = MV('carr', 'propT'); D.bruto = MV('carr', 'propV'); if (D.regime === 'pj' && !D.tipo) D.tipo = 'simples'; const prop = liquido().liq; Object.assign(D, bk); const dif = prop - hoje;
+      return resHead(m, dif >= 0 ? `A proposta põe ${brl(dif)} a mais no bolso` : `A proposta tira ${brl(-dif)} do bolso`) + `<div class="kpis"><div class="kpi"><span>Hoje (${RN()})</span><b>${brl(hoje)}</b><small>por mês, aproximado</small></div><div class="kpi"><span>Proposta (${MV('carr', 'propT') === 'pj' ? 'PJ' : 'CLT'})</span><b style="color:${dif >= 0 ? 'var(--ok)' : 'var(--alt)'}">${brl(prop)}</b><small>por mês, aproximado</small></div></div><p class="hint">Sem benefícios, 13º e férias. O módulo compara o pacote completo, com os benefícios que você já informou.</p>`; }
     if (MV('carr', 'ac')) { const a = MV('carr', 'ac'), tn = { opcao: 'stock options', rsu: 'RSU', phantom: 'phantom shares' }[a.t]; topo = resHead(m, `${a.q.toLocaleString('pt-BR')} ${tn} da ${E(a.e)}`) + `<div class="insight"><span>No módulo você coloca o vesting, o preço de exercício e simula quanto valem num evento de venda da empresa.</span></div>`; }
-    return (topo || resHead(m, 'Tudo pronto para comparar')) + `<div class="insight"><span>Com o seu ${D.regime === 'pj' ? 'faturamento' : 'salário'} de ${brl(D.bruto)} e os benefícios do primeiro acesso, o módulo mostra o equivalente do outro lado e quanto pedir numa proposta. Ajuste lá o que quiser.</span></div>`; }
+    return (topo || resHead(m, 'Tudo pronto para comparar')) + `<div class="insight"><span>Com ${D.regime === 'socio' ? `o seu pró-labore de ${brl(D.bruto)}, os lucros de ${brl(D.lucro || 0)}` : `o seu ${D.regime === 'pj' ? 'faturamento' : 'salário'} de ${brl(D.bruto)}`} e os benefícios do primeiro acesso, o módulo mostra o equivalente do outro lado e quanto pedir numa proposta. Ajuste lá o que quiser.</span></div>`; }
   function resAgen() { const m = modAtual, c = MV('agen', 'c') || {}, hoje = new Date().getDate(), tem = d => Object.entries(c).filter(([, x]) => x === d).map(([n]) => n);
     return resHead(m, MV('agen', 'nenhuma') ? 'Agenda pronta' : `${Object.keys(c).length} contas na agenda`) + `<div class="kpi"><div style="display:grid;grid-template-columns:repeat(7,1fr);gap:4px;font-size:12px;text-align:center">${Array.from({ length: 31 }, (_, i) => i + 1).map(d => `<span title="${tem(d).join(', ')}" style="padding:6px 0;border-radius:8px;${tem(d).length ? `background:${m.cor};color:#0E1A2B;font-weight:800` : d === hoje ? 'border:1px solid var(--acc)' : ''}">${d}</span>`).join('')}</div></div>
      ${Object.keys(c).length ? `<div class="est">${Object.entries(c).sort((a, b) => a[1] - b[1]).map(([n, d]) => `<span>${n}</span><b>dia ${d}</b>`).join('')}</div><div class="insight"><span>Aviso ${{ '0': 'no dia', '1': 'um dia antes', '3': 'três dias antes' }[MV('agen', 'av')] || ''} de cada vencimento, no sino do app.</span></div>` : '<div class="insight"><span>A Agenda já lembra de fechar o mês todo dia 1. Compromissos e listas de compras você coloca lá.</span></div>'}`; }
