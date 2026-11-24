@@ -2536,7 +2536,7 @@ html[data-lb="b"] .block-title .desc{font-size:14px;color:var(--muted);margin-to
 #p-carrtraj .ct-kpis .kpi .l { font-family: var(--f-head); font-size: 10px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
 #p-carrtraj .ct-kpis .kpi small { color: var(--muted); font-size: 11.5px; }
 #p-carrtraj .ct-pos { color: var(--good); font-weight: 700; }
-#p-carrtraj .ct-btns { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin: 4px 0 10px; }
+#p-carrtraj .ct-btns, #ct-pop .ct-btns { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin: 4px 0 10px; }
 #p-carrtraj .ct-vazio { color: var(--muted); font-size: 13px; margin: 6px 0; }
 /* linha do tempo */
 .ct-tl { display: grid; gap: 6px; }
@@ -2608,6 +2608,8 @@ html[data-lb="b"] .block-title .desc{font-size:14px;color:var(--muted);margin-to
 .ct-msg { color: var(--bad); font-size: 12.5px; }
 /* pop-up de edição */
 .ct-dlg { width: min(780px, 100%); }
+#ct-pop-b { container-type: inline-size; }
+.ct-dlg .ct-reaj input[type="text"] { min-width: 100px; }
 .ct-dlg .ct-form { border: 0; background: none; padding: 0; margin: 0; gap: 16px; }
 .ct-sec { display: grid; gap: 10px; }
 .ct-sec + .ct-sec { border-top: 1px solid var(--line); padding-top: 14px; }
@@ -2771,7 +2773,7 @@ body.ct-modal { overflow: hidden; }
     </div>
     <div class="nav-mobile-sub" id="navMobileSub"></div>
   </div>
-  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span><button type="button" id="demoBtn" aria-pressed="false">Modo demonstração</button></div><div class="src">Focus atualizado toda segunda · versão 394</div></div>
+  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span><button type="button" id="demoBtn" aria-pressed="false">Modo demonstração</button></div><div class="src">Focus atualizado toda segunda · versão 395</div></div>
 </nav>
 <div class="sino-pop" id="sino-pop" role="dialog" aria-label="Atualizações das bases" hidden></div>
 <div class="sino-pop" id="pess-pop" role="dialog" aria-label="Seus avisos" hidden></div>
@@ -5200,7 +5202,7 @@ html.onb-on,html.onb-on body{overflow:hidden!important}
     return new Promise(resolve => { const { data } = sb.auth.onAuthStateChange(async (ev) => { if (ev !== 'PASSWORD_RECOVERY') return; const s = prompt('Digite a nova senha (mínimo 8 caracteres):'); if (s && s.length >= 8) { const { error } = await sb.auth.updateUser({ password: s }); alert(error ? 'Não deu para trocar a senha: ' + error.message : 'Senha trocada.'); } }); resolve(data); });
   }
   // ---------- rodapé: compartilhar, administração e sair ----------
-  const SITE_V = 294;
+  const SITE_V = 295;
   const escH = v => String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const dataBR = v => v ? new Date(v).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' }) : '–';
   const css2 = `.side-foot .r{flex-wrap:wrap}.side-foot .lg-acoes{margin-left:auto;display:inline-flex;gap:10px}
@@ -12047,10 +12049,33 @@ function ctFormHtml() {
       ${t === 'pj' ? inp('das', 'Impostos e DAS (% do faturamento)', p.das, 'number', ' step="0.1" min="0"') + inp('contab', 'Contabilidade (R$/mês)', p.contab, 'number', ' step="10" min="0"') : ''}
       ${t === 'sem' ? inp('resc', 'Rescisão (R$, uma vez)', p.resc || '', 'number', ' step="500" min="0"') + inp('fgts', 'Saque do FGTS (R$, uma vez)', p.fgts || '', 'number', ' step="500" min="0"') + inp('seg', 'Seguro-desemprego (R$/mês)', p.seg || '', 'number', ' step="50" min="0"') + inp('segDe', 'Seguro de', p.segDe, 'month') + inp('segAte', 'Seguro até', p.segAte, 'month') + inp('contab', 'Custos do CNPJ parado (R$/mês)', p.contab || '', 'number', ' step="10" min="0"') : ''}
     </div>
-    ${ed && t !== 'sem' && r1 ? `<p class="hint">Valor atual: <b>${fm(ctTot(r1))}</b> ${ctLabV(p)} desde ${mLabel(mIndex(r1.mes))}. Os valores e reajustes você muda na tabela de reajustes do cartão.</p>` : ''}
     <p class="hint">${t === 'socio' ? 'Pró-labore com INSS de 11% e IR na fonte; lucros isentos (retenção de 10% só acima de R$ 50 mil por mês, Lei 15.270). ' : ''}${t === 'sem' ? 'Rescisão e FGTS entram uma vez, no primeiro mês. O seguro entra todo mês no intervalo escolhido. ' : ''}${ed ? '' : 'Os reajustes você coloca depois, dentro do período.'}</p></div>
+    ${ed && t !== 'sem' ? ctFormReajs(p, op) : ''}
     ${ben}
     <div class="ct-btns"><button class="btn tiny" type="button" data-ct="fsalvar">Salvar</button><button class="btn ghost tiny" type="button" data-ct="fcancelar">Cancelar</button><span class="ct-msg" id="ct-fmsg" role="status">${esc(f.msg || '')}</span></div></div>`;
+}
+// v395: salário e reajustes editáveis no pop-up; ao salvar valem no Meu plano, na Simulação e na comparação
+function ctFormReajs(p, op) {
+  const t = p.tipo, R = p.reajs, vLab = t === 'pj' ? 'Faturamento' : t === 'socio' ? 'Pró-labore' : p.cltModo === 'liq' ? 'Salário líquido' : 'Salário bruto';
+  const atual = !op && ctAtual(p), r1 = ctValEm(p, HOJE_IDX);
+  const linhas = R.slice().reverse().map((r, j, A) => { const ant = A[j + 1], mu = ant && ctTot(ant) > 0 ? ctTot(r) / ctTot(ant) - 1 : null;
+    return `<tr><td data-l="Desde"><input type="month" data-ctfr="${r.id}:mes" value="${esc(r.mes)}" aria-label="Desde"></td><td data-l="Motivo"><input type="text" data-ctfr="${r.id}:motivo" value="${esc(r.motivo)}" placeholder="dissídio, promoção…" aria-label="Motivo"></td><td data-l="${vLab}"><input type="number" step="100" min="0" data-ctfr="${r.id}:valor" value="${+r.valor || 0}" aria-label="${vLab}"></td>${t === 'socio' ? `<td data-l="Lucros"><input type="number" step="100" min="0" data-ctfr="${r.id}:lucro" value="${+r.lucro || 0}" aria-label="Lucros"></td>` : ''}<td data-l="No bolso">${fm(ctLiq(p, r.valor, r.lucro))}</td><td data-l="Mudança" class="${mu > 0 ? 'ct-pos' : ''}">${mu == null ? '—' : (mu > 0 ? '+' : '') + (mu * 100).toFixed(1).replace('.', ',') + '%'}</td><td>${R.length > 1 ? `<button type="button" class="ct-lnk" data-ct="frdelreaj" data-r="${r.id}" aria-label="Apagar reajuste">✕</button>` : ''}</td></tr>`; }).join('');
+  const onde = op ? 'Ao salvar, os novos valores valem na Simulação, em Itens dos módulos e na comparação.'
+    : atual ? (t === 'socio' ? 'Ao salvar, os reajustes futuros entram no Meu plano. O pró-labore e os lucros de hoje você ajusta em Meu plano › Receitas e custos.' : 'Ao salvar, o valor de hoje passa a ser o do Meu plano (Como você recebe) e os reajustes futuros entram nele no mês certo.')
+    : 'Ao salvar, os valores que caem dentro do Meu plano entram nele no mês certo.';
+  return `<div class="ct-sec"><h3>${t === 'pj' ? 'Faturamento' : t === 'socio' ? 'Pró-labore, lucros' : 'Salário'} e reajustes</h3>
+    ${r1 ? `<p class="hint" style="margin-top:0">${atual ? 'Hoje' : 'Valor mais recente'}: <b>${fm(ctTot(r1))}</b> ${ctLabV(p)}${t === 'socio' ? ' com lucros' : ''}, ${fm(ctLiq(p, r1.valor, r1.lucro))} no bolso.</p>` : ''}
+    <div class="ct-reaj"><table><thead><tr><th>Desde</th><th>Motivo</th><th>${vLab}</th>${t === 'socio' ? '<th>Lucros</th>' : ''}<th>No bolso</th><th>Mudança</th><th></th></tr></thead><tbody>${linhas}</tbody></table></div>
+    <div class="ct-btns" style="margin:8px 0 0"><button class="btn ghost tiny" type="button" data-ct="fraddreaj">+ Reajuste</button><span class="hint">${onde}</span></div></div>`;
+}
+// emprego atual mudou: o valor de hoje vai para o "Como você recebe" do Meu plano (o que o botão "Usar este valor" fazia)
+function ctAlinharAtual(p) {
+  if (!p || p.opc || !ctAtual(p) || (p.tipo !== 'clt' && p.tipo !== 'pj') || p !== ctEmpAtual()) return false;
+  const r = ctValEm(p, HOJE_IDX), h = ctPlanoHoje(state); if (!r || !(+r.valor > 0)) return false;
+  if (h.tipo === p.tipo && Math.abs(h.valor - r.valor) <= 1 && (p.tipo !== 'clt' || h.cltModo === p.cltModo) && (p.tipo !== 'pj' || (Math.abs(h.das - p.das) < .01 && Math.abs(h.contab - p.contab) < .01))) return false;
+  const i0 = mIndex((state.plan || {}).inicio || mKey(HOJE_IDX)), mi = mIndex(r.mes);
+  const ja = (state.orc.regimes || []).some(x => x.tipo === 'antes' && x.mes === r.mes);
+  trocarHoje(p.tipo, p.cltModo, r.valor, p.das, p.contab, mi > i0 && mi <= HOJE_IDX && !ja ? r.mes : null); state.carr.baseMes = mKey(HOJE_IDX); return true;
 }
 // o formulário abre num pop-up por cima da tela
 function ctPop() {
@@ -12058,11 +12083,11 @@ function ctPop() {
   if (!pop) { document.body.insertAdjacentHTML('beforeend', '<div class="conf-pop" id="ct-pop" hidden><div class="conf-dlg ct-dlg" role="dialog" aria-modal="true" aria-labelledby="ct-pop-t"><button type="button" class="conf-x" data-ct="fcancelar" aria-label="Fechar sem salvar" title="Fechar sem salvar">✕</button><section class="panel"><h2 id="ct-pop-t"></h2><div id="ct-pop-b"></div></section></div></div>'); pop = $('ct-pop'); }
   if (!ctForm || tab !== 'carrtraj') { pop.hidden = true; $('ct-pop-b').innerHTML = ''; document.body.classList.remove('ct-modal'); return; }
   const f = ctForm, op = f.dono !== 'emp' ? state.carr.opcs.find(o => o.id === f.dono) : null, ab = pop.hidden;
-  const foco = document.activeElement && document.activeElement.closest && document.activeElement.closest('#ct-pop') ? (document.activeElement.dataset.ctf || document.activeElement.dataset.ctb || '') : '';
+  const foco = document.activeElement && document.activeElement.closest && document.activeElement.closest('#ct-pop') ? (document.activeElement.dataset.ctf || document.activeElement.dataset.ctb || document.activeElement.dataset.ctfr || '') : '';
   $('ct-pop-t').textContent = f.id ? `Editar ${f.p.emp || CT_TIPOS[f.p.tipo]}` : op ? 'Novo período em ' + op.nome : f.p.tipo === 'sem' ? 'Período sem emprego' : 'Novo emprego';
   $('ct-pop-b').innerHTML = ctFormHtml(); pop.hidden = false; document.body.classList.add('ct-modal');
   if (ab) { const el = pop.querySelector('[data-ctf="emp"]'); if (el) el.focus(); }
-  else if (foco) { const el = pop.querySelector(`[data-ctf="${foco}"],[data-ctb="${foco}"]`); if (el) el.focus(); }
+  else if (foco) { const el = pop.querySelector(`[data-ctf="${foco}"],[data-ctb="${foco}"],[data-ctfr="${foco}"]`); if (el) el.focus(); }
 }
 function ctCardHtml(p, op) {
   const atual = !op && ctAtual(p), fut = p.ini && mIndex(p.ini) > HOJE_IDX, sem = p.tipo === 'sem', ab = ctAbertos.has(p.id);
@@ -12154,6 +12179,8 @@ function ctLerForm() {
     if (el.type === 'checkbox') p[k] = el.checked;
     else if (k === 'valor' || k === 'lucro') { if (!p.reajs[0]) p.reajs[0] = { id: uid(), mes: p.ini, valor: 0, lucro: 0, motivo: 'Entrada' }; p.reajs[0][k] = el.value; }
     else p[k] = el.value; });
+  document.querySelectorAll('#ct-form [data-ctfr]').forEach(el => { const [rid, campo] = el.dataset.ctfr.split(':'), r = p.reajs.find(x => x.id === rid); if (!r) return;
+    r[campo] = campo === 'mes' ? (ctMes(el.value) ? el.value : r.mes) : campo === 'motivo' ? el.value.slice(0, 80) : Math.max(0, +el.value || 0); });
   document.querySelectorAll('#ct-form [data-ctb]').forEach(el => { const [k, campo] = el.dataset.ctb.split(':'), b = (p.bens || [])[+k]; if (b) b[campo] = el.value; });
 }
 function ctSalvarForm() {
@@ -12164,7 +12191,11 @@ function ctSalvarForm() {
   if (!f.id && p.tipo !== 'sem' && !(+(p.reajs[0] || {}).valor > 0)) return msg('Digite o valor no início.');
   if (p.tipo === 'sem' && +p.seg > 0 && (!ctMes(p.segDe) || !ctMes(p.segAte) || p.segAte < p.segDe)) return msg('Seguro-desemprego: preencha o início e o fim.');
   if (!f.id && p.reajs[0]) { p.reajs[0].mes = p.ini; p.reajs[0].motivo = p.reajs[0].motivo || 'Entrada'; }
-  if (f.id && p.reajs.length && p.reajs[0].mes < p.ini) p.reajs[0].mes = p.ini;
+  if (f.id && p.tipo !== 'sem') {
+    p.reajs.forEach(r => { if (!ctMes(r.mes) || r.mes < p.ini) r.mes = p.ini; }); ctOrdReajs(p);
+    if (!p.reajs.some(r => +r.valor > 0)) return msg('Digite o valor do salário.');
+    if (p.fim && p.reajs.some(r => r.mes > p.fim)) return msg('Há reajuste depois do fim do período. Ajuste a data ou o fim.');
+  }
   const np = ctNormPer(p), lista = op ? op.per : c.emps;
   if (f.id) { const j = lista.findIndex(x => x.id === f.id); if (j >= 0) lista[j] = np; }
   else {
@@ -12172,7 +12203,7 @@ function ctSalvarForm() {
     if (!op && !np.fim) { const ant = lista.find(x => !x.fim && x.ini && x.ini < np.ini && x.tipo !== 'sem'); if (ant) ant.fim = mKey(mIndex(np.ini) - 1); }
     lista.push(np); if (np.tipo !== 'sem') ctAbertos.add(np.id);
   }
-  ctForm = null; ctSync(); save(); renderCarrTraj();
+  ctForm = null; if (!op) ctAlinharAtual(np); ctSync(); save(); renderCarrTraj();
 }
 function ctNovaOp() {
   const c = state.carr, n = c.opcs.length + 1, nomes = new Set(c.opcs.map(o => o.nome)); let k = n; while (nomes.has('Opção ' + k)) k++;
@@ -12205,12 +12236,16 @@ document.addEventListener('click', e => {
   if (k === 'bemadd') { ctLerForm(); ctForm.p.bens = ctForm.p.bens || []; ctForm.p.bens.push({ id: uid(), nome: b.dataset.n || '', valor: '', freq: b.dataset.f === 'ano' ? 'ano' : 'mes' }); ctPop(); const L = document.querySelectorAll('#ct-pop [data-ctb$=":valor"]'); if (L.length) L[L.length - 1].focus(); return; }
   if (k === 'bemdel') { ctLerForm(); ctForm.p.bens.splice(+b.dataset.i, 1); return ctPop(); }
   if (k === 'fsalvar') return ctSalvarForm();
+  if (k === 'fraddreaj') { ctLerForm(); const p = ctForm.p, u = p.reajs[p.reajs.length - 1], op = ctForm.dono !== 'emp', base = u && u.mes ? mIndex(u.mes) : mIndex(p.ini || mKey(HOJE_IDX));
+    const mes = mKey(op ? base + 12 : Math.max(HOJE_IDX + 1, base + 1)); p.reajs.push({ id: uid(), mes, valor: u ? Math.round(u.valor * 1.05) : 0, lucro: u ? u.lucro : 0, motivo: 'Reajuste' }); ctOrdReajs(p); ctPop();
+    const el = document.querySelector(`#ct-pop [data-ctfr="${p.reajs.find(r => r.mes === mes && r.motivo === 'Reajuste').id}:valor"]`); if (el) el.focus(); return; }
+  if (k === 'frdelreaj') { ctLerForm(); if (ctForm.p.reajs.length > 1) ctForm.p.reajs = ctForm.p.reajs.filter(r => r.id !== b.dataset.r); return ctPop(); }
   if (k === 'editar') { const a = ctAcha(id); if (!a) return; ctForm = { dono: a.op ? a.op.id : 'emp', id, p: ctNormPer(clone(a.p)) }; return renderCarrTraj(); }
   if (k === 'apagar') { const a = ctAcha(id); if (!a || !confirmar(`Apagar ${a.p.emp || CT_TIPOS[a.p.tipo]} (${ctPerTxt(a.p)})?`)) return; a.lista.splice(a.lista.indexOf(a.p), 1); ctSync(); save(); return renderCarrTraj(); }
   if (k === 'tog') { if (ctAbertos.has(id)) ctAbertos.delete(id); else ctAbertos.add(id); return renderCarrTraj(); }
   if (k === 'addreaj') { const a = ctAcha(id); if (!a) return; const u = a.p.reajs[a.p.reajs.length - 1], mes = a.op ? mKey(Math.max(mIndex(a.p.ini) + 12, u && u.mes ? mIndex(u.mes) + 12 : 0)) : mKey(Math.max(HOJE_IDX + 1, u && u.mes ? mIndex(u.mes) + 1 : 0));
     a.p.reajs.push({ id: uid(), mes, valor: u ? Math.round(u.valor * 1.05) : 0, lucro: u ? u.lucro : 0, motivo: 'Reajuste' }); ctOrdReajs(a.p); ctSync(); save(); return renderCarrTraj(); }
-  if (k === 'delreaj') { const a = ctAcha(id); if (!a || a.p.reajs.length < 2) return; a.p.reajs = a.p.reajs.filter(r => r.id !== b.dataset.r); ctSync(); save(); return renderCarrTraj(); }
+  if (k === 'delreaj') { const a = ctAcha(id); if (!a || a.p.reajs.length < 2) return; a.p.reajs = a.p.reajs.filter(r => r.id !== b.dataset.r); if (!a.op) ctAlinharAtual(a.p); ctSync(); save(); return renderCarrTraj(); }
   if (k === 'alinhar') { const a = ctAcha(id), r = a && ctValEm(a.p, HOJE_IDX); if (!r || a.p.tipo === 'socio') return;
     const i0 = mIndex((state.plan || {}).inicio || mKey(HOJE_IDX)); trocarHoje(a.p.tipo, a.p.cltModo, r.valor, a.p.das, a.p.contab, mIndex(r.mes) > i0 && mIndex(r.mes) <= HOJE_IDX ? r.mes : null); c.baseMes = mKey(HOJE_IDX); ctSync(); save(); return renderCarrTraj(); }
   if (k === 'copiar') { const op = c.opcs.find(o => o.id === opId); const cp = clone(op); cp.id = uid(); cp.nome = op.nome + ' (cópia)'; cp.escolhida = false; cp.desde = ''; cp.fimAnt = null; cp.per.forEach(p => { p.id = uid(); p.reajs.forEach(r => { r.id = uid(); }); }); c.opcs.push(cp); ctCmpSel.add(cp.id); ctSync(); save(); return renderCarrTraj(); }
@@ -12229,14 +12264,14 @@ document.addEventListener('change', e => {
   if (t.dataset.ctr) { const [pid, rid, campo] = t.dataset.ctr.split(':'), a = ctAcha(pid), r = a && a.p.reajs.find(x => x.id === rid); if (!r) return;
     if (campo === 'mes') { if (!ctMes(t.value)) return renderCarrTraj(); r.mes = t.value < a.p.ini ? a.p.ini : t.value; ctOrdReajs(a.p); }
     else if (campo === 'motivo') r.motivo = t.value.slice(0, 80); else r[campo] = Math.max(0, +t.value || 0);
-    ctSync(); save(); return renderCarrTraj(); }
+    if (!a.op) ctAlinharAtual(a.p); ctSync(); save(); return renderCarrTraj(); }
   if (t.dataset.cto) { const op = state.carr.opcs.find(o => o.id === t.dataset.cto); if (op) { op.nome = t.value.trim().slice(0, 60) || op.nome; ctSync(); save(); renderCarrTraj(); } return; }
   if (t.dataset.ctcmp) { if (t.checked) ctCmpSel.add(t.dataset.ctcmp); else ctCmpSel.delete(t.dataset.ctcmp); return ctComparar(); }
   if (t.dataset.ctu && ctUsarPend) { ctUsarPend.mes = t.value; ctUsarPend.msg = ''; return renderCarrTraj(); }
   if (t.dataset.ctf === 'cltModo') { ctLerForm(); return renderCarrTraj(); }
 });
 document.addEventListener('keydown', e => { if (e.key === 'Escape' && ctForm && $('ct-pop') && !$('ct-pop').hidden) { ctForm = null; renderCarrTraj(); } });
-document.addEventListener('change', e => { const t = e.target; if (t.dataset && t.dataset.ctb && ctForm) { ctLerForm(); if (t.dataset.ctb.endsWith(':freq')) ctPop(); } });
+document.addEventListener('change', e => { const t = e.target; if (t.dataset && t.dataset.ctfr && ctForm) { ctLerForm(); if (!/:motivo$/.test(t.dataset.ctfr)) ctPop(); return; } if (t.dataset && t.dataset.ctb && ctForm) { ctLerForm(); if (t.dataset.ctb.endsWith(':freq')) ctPop(); } });
 
 let state = normalizar(DEFAULTS), cps = [], db = null, tab = 'inicio';
 // perfis: o dono usa os documentos da raiz; cada outra pessoa usa perfis/<id>/ (só ela e o dono leem)
