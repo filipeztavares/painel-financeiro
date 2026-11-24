@@ -2776,7 +2776,7 @@ body.ct-modal { overflow: hidden; }
     </div>
     <div class="nav-mobile-sub" id="navMobileSub"></div>
   </div>
-  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span><button type="button" id="demoBtn" aria-pressed="false">Modo demonstração</button></div><div class="src">Focus atualizado toda segunda · versão 396</div></div>
+  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span><button type="button" id="demoBtn" aria-pressed="false">Modo demonstração</button></div><div class="src">Focus atualizado toda segunda · versão 397</div></div>
 </nav>
 <div class="sino-pop" id="sino-pop" role="dialog" aria-label="Atualizações das bases" hidden></div>
 <div class="sino-pop" id="pess-pop" role="dialog" aria-label="Seus avisos" hidden></div>
@@ -3830,7 +3830,7 @@ body.ct-modal { overflow: hidden; }
       <section data-nav="Formas de pagamento" class="panel">
         <div class="row"><h2>Comparar formas de pagamento</h2><label class="inline" style="font-size:12.5px">Compra <select id="pg-compra" style="width:auto"></select></label></div>
         <p class="sub" style="font-size:12.5px;margin:0 0 10px">À vista, SAC, Price e consórcio para a compra escolhida, no mesmo mês, com a renda e a carteira do cenário <b id="pg-cen"></b> (07. Cenários futuros). Patrimônio em reais de hoje.</p>
-        <div class="cards" id="cards-pg"></div>
+        <p class="sub" id="pg-quando" style="font-size:12.5px;margin:0 0 10px"></p><div class="cards" id="cards-pg"></div>
         <div class="chart" style="margin-top:12px"><div class="legend" id="lg-pg"></div><div id="ch-pg"></div><div class="readout" id="ro-pg"></div></div>
         <div id="pg-ent" class="pg-ent"></div>
       </section>
@@ -5205,7 +5205,7 @@ html.onb-on,html.onb-on body{overflow:hidden!important}
     return new Promise(resolve => { const { data } = sb.auth.onAuthStateChange(async (ev) => { if (ev !== 'PASSWORD_RECOVERY') return; const s = prompt('Digite a nova senha (mínimo 8 caracteres):'); if (s && s.length >= 8) { const { error } = await sb.auth.updateUser({ password: s }); alert(error ? 'Não deu para trocar a senha: ' + error.message : 'Senha trocada.'); } }); resolve(data); });
   }
   // ---------- rodapé: compartilhar, administração e sair ----------
-  const SITE_V = 296;
+  const SITE_V = 297;
   const escH = v => String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const dataBR = v => v ? new Date(v).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' }) : '–';
   const css2 = `.side-foot .r{flex-wrap:wrap}.side-foot .lg-acoes{margin-left:auto;display:inline-flex;gap:10px}
@@ -12609,7 +12609,7 @@ function cpInicial() {
 function lastCp() { const s = cps.slice().sort((a, b) => a.mes < b.mes ? -1 : 1); return s[s.length - 1] || CP_PLANILHA[CP_PLANILHA.length - 1] || { mes: mKey(HOJE_IDX), valor: 0 }; }
 function projetar(cen, opts) {
   opts = opts || {};
-  const cfg = state.cfg, cp = lastCp(), s0 = mIndex(cp.mes), H = Math.max(12, Math.round(cfg.anos * 12));
+  const cfg = state.cfg, cp = lastCp(), s0 = mIndex(cp.mes), H = Math.max(12, Math.round(cfg.anos * 12), +opts.H || 0);
   const buys = (opts.compras || comprasDe(cen)).map(b => ({ b, m0: mIndex(b.mes), sch: schedule(b, b.modo) }));
   let inv = cp.valor, fIpca = 1, fSal = 1;
   const pesos = state.cfg.rendBase === 'carteira' && !(cen.manual !== '' && +cen.manual > 0) ? pesosCarteira() : [];
@@ -12673,8 +12673,9 @@ function simulate(c, b, mode) {
   const out = { mode, pat: [], patReal: [], sobra: [], parcela: [], inv: [] };
   for (let t = 1; t <= T; t++) {
     const yr = Math.floor((t - 1) / 12);
-    const renda = c.salario * (c.ajSal ? Math.pow(1 + ipca, yr) : 1);
-    const contas = c.contas * Math.pow(1 + im, t - 1);
+    const sr = c.serie, sx = sr && t - 1 < sr.renda.length ? t - 1 : -1;
+    const renda = sx >= 0 ? sr.renda[sx] : sr ? sr.renda[sr.renda.length - 1] || 0 : c.salario * (c.ajSal ? Math.pow(1 + ipca, yr) : 1);
+    const contas = sx >= 0 ? sr.contas[sx] : sr ? sr.contas[sr.contas.length - 1] || 0 : c.contas * Math.pow(1 + im, t - 1);
     const inUse = t > useFrom;
     const neg = b.tipo === 'negocio', moradia = neg ? 0 : (inUse ? (+b.posse || 0) : (+b.economia || 0)) * Math.pow(1 + ipca, yr);
     const rendaB = inUse ? (neg ? negLucro(b, t - useFrom) : (+b.renda || 0)) * Math.pow(1 + ipca, yr) : 0;
@@ -12685,7 +12686,7 @@ function simulate(c, b, mode) {
     if (mode === 'cons' && t <= nC) { parcelaCons = base * Math.pow(1 + corr, yr) * factor; parcela = parcelaCons; }
     parcelasTot += parcela;
     const sobra = renda + rendaB - contas - moradia - parcela;
-    inv = inv * (1 + rm) + sobra;
+    inv = inv * (1 + rm) + sobra - (sx >= 0 ? sr.lump[sx] || 0 : 0);
     let debt = saldo, carta = 0;
     if (mode === 'cons') {
       carta = C0 * Math.pow(1 + corr, yr);
@@ -12705,7 +12706,7 @@ function simulate(c, b, mode) {
     const pat = mode === 'cons' && !owned ? inv + carta - debt : inv + bemV - debt;
     if (inv < minInv) minInv = inv;
     if (inv < 0 && !minInvT) minInvT = t;
-    out.pat.push(pat); out.patReal.push(pat / Math.pow(1 + ipca, t / 12));
+    out.pat.push(pat); out.patReal.push(pat / Math.pow(1 + ipca, t / 12) / (c.defl0 || 1));
     out.sobra.push(sobra); out.parcela.push(parcela); out.inv.push(inv);
   }
   out.H = H; out.lumpInicial = lumpInicial;
@@ -13462,13 +13463,23 @@ function renderCustoEntrada(b, el) {
 const SC = [{ id: 'avista', name: 'À vista', c: 'var(--s3)' }, { id: 'sac', name: 'Financ. SAC', c: 'var(--s5)' }, { id: 'price', name: 'Financ. Price', c: 'var(--s2)' }, { id: 'cons', name: 'Consórcio', c: 'var(--s4)' }];
 function renderPagamento(cen, p, r1) {
   const b = state.compras.find(x => x.id === state.pgCompra);
-  if (!b || mIndex(b.mes) <= p.s0) { $('cards-pg').innerHTML = '<p class="hint">Adicione uma compra futura para comparar as formas de pagamento.</p>'; $('ch-pg').innerHTML = ''; $('lg-pg').innerHTML = ''; $('ro-pg').innerHTML = ''; if ($('pg-ent')) $('pg-ent').innerHTML = ''; return; }
-  const cfg = state.cfg;
-  const c = { patrimonio: p.cp.valor, rend: cenNetA(cen, r1) * 100, salario: projMes(mKey(HOJE_IDX)).liq, contas: projMes(mKey(HOJE_IDX)).custos - (+b.economia || 0), ipca: r1.ipca * 100, ajSal: cfg.ajSal };
+  if (!b || mIndex(b.mes) <= p.s0) { $('cards-pg').innerHTML = '<p class="hint">Adicione uma compra futura para comparar as formas de pagamento.</p>'; $('ch-pg').innerHTML = ''; $('lg-pg').innerHTML = ''; $('ro-pg').innerHTML = ''; if ($('pg-ent')) $('pg-ent').innerHTML = ''; if ($('pg-quando')) $('pg-quando').innerHTML = ''; return; }
+  const cfg = state.cfg, m0 = mIndex(b.mes), k0 = m0 - p.s0;
   const bb = Object.assign({}, b, { horiz: Math.max(12, Math.round(cfg.anos * 12)) });
+  // v397: a compra acontece no mês dela; até lá, e depois, renda e gastos seguem a projeção do cenário mês a mês (sem esta compra)
+  const T = Math.max(bb.horiz, Math.round(+b.prazo || 1), Math.round(+b.cPrazo || 1)) + 1;
+  const q = projetar(cen, { compras: comprasDe(cen).filter(x => x.id !== b.id), H: k0 + T });
+  const r0 = rates(m0 + 1, cen.aj), pesos = cfg.rendBase === 'carteira' && !(cen.manual !== '' && +cen.manual > 0) ? pesosCarteira() : [];
+  const nc0 = pesos.length ? carteiraNetA(pesos, r0) : null, rend0 = nc0 != null && isFinite(nc0) ? nc0 : cenNetA(cen, r0);
+  const fI = t => q.defl[Math.min(q.defl.length - 1, k0 + t)] || 1, econ = +b.economia || 0;
+  const serie = { renda: [], contas: [], lump: [] };
+  for (let t = 1; t <= T; t++) { const j = k0 + t - 1; if (j >= q.renda.length) break;
+    serie.renda.push(q.renda[j]); serie.contas.push(q.gastos[j] + q.parcela[j] - econ * fI(t - 1)); serie.lump.push(q.det[j + 1] ? q.det[j + 1].lump || 0 : 0); }
+  const c = { patrimonio: q.inv[k0], rend: rend0 * 100, salario: serie.renda[0] || 0, contas: serie.contas[0] || 0, ipca: r0.ipca * 100, ajSal: cfg.ajSal, serie, defl0: fI(0) };
   const res = SC.map(s => simulate(c, bb, s.id));
   const best = res.reduce((m, r) => r.patRealH > m.patRealH ? r : m).mode;
-  const lab = t => mLabel(p.s0 + t);
+  const lab = t => mLabel(m0 + t);
+  if ($('pg-quando')) $('pg-quando').innerHTML = `Compra em <b>${mLabel(m0)}</b>, com ${fm(q.inv[k0])} investidos nesse mês pela projeção do cenário. Renda e gastos seguem a projeção mês a mês (trocas de emprego, reajustes e outras compras).`;
   $('cards-pg').innerHTML = SC.map((s, j) => { const r = res[j]; const chips = [];
     if (r.mode === best) chips.push('<span class="chip best">maior patrimônio</span>');
     if (b.modo === r.mode) chips.push('<span class="chip info">na projeção</span>');
