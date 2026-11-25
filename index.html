@@ -1660,8 +1660,8 @@ tr.rd-hit td { background: color-mix(in srgb, var(--good) 9%, transparent); }
 .ck-kp small{display:block;font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:700}
 .ck-kp b{font-size:18px;font-variant-numeric:tabular-nums}
 .ck-kp b.neg{color:var(--red)} .ck-kp b.pos{color:var(--good)}
-.ck-l{display:grid;gap:10px}
-.ck-c{display:grid;grid-template-columns:minmax(0,170px) minmax(0,1fr) auto;gap:4px 12px;align-items:center;font-size:13px}
+.ck-l{display:grid;gap:10px 12px;grid-template-columns:minmax(0,170px) minmax(0,1fr) auto}
+.ck-c{display:grid;grid-column:1/-1;grid-template-columns:minmax(0,170px) minmax(0,1fr) auto;grid-template-columns:subgrid;gap:4px 12px;align-items:center;font-size:13px}
 .ck-c .n{font-weight:600;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .ck-t{position:relative;height:12px;border-radius:6px;background:var(--line)}
 .ck-t>span{position:absolute;inset:0 auto 0 0;border-radius:6px;background:var(--good)}
@@ -2521,6 +2521,162 @@ html[data-lb="b"] .block-title .desc{font-size:14px;color:var(--muted);margin-to
 .cen-pend-tb th,.cen-pend-tb td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line)}
 .cen-pend-tb th{font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
 .cen-pend-ac{display:flex;gap:8px;justify-content:flex-end;flex-wrap:wrap}
+/* v391: Carreira › Trajetória */
+#p-carrtraj { container-type: inline-size; }
+#p-carrtraj .ct-kpis { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; margin: 0 0 14px; }
+#p-carrtraj .ct-kpis .kpi b { font-family: var(--f-head); font-size: 20px; font-variant-numeric: tabular-nums; }
+#p-carrtraj .ct-kpis .kpi .l { font-family: var(--f-head); font-size: 10px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
+#p-carrtraj .ct-kpis .kpi small { color: var(--muted); font-size: 11.5px; }
+#p-carrtraj .ct-pos { color: var(--good); font-weight: 700; }
+#p-carrtraj .ct-btns, #ct-pop .ct-btns { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin: 4px 0 10px; }
+#p-carrtraj .ct-vazio { color: var(--muted); font-size: 13px; margin: 6px 0; }
+/* linha do tempo */
+.ct-tl { display: grid; gap: 6px; }
+.ct-tl-row { display: grid; grid-template-columns: 130px 1fr; gap: 10px; align-items: center; }
+.ct-tl-row .lab { font: 600 12px var(--f-head); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.ct-tl-row .lab small { display: block; font: 400 11px var(--f-ui); color: var(--muted); overflow: hidden; text-overflow: ellipsis; }
+.ct-track { position: relative; height: 26px; background: var(--field); border: 1px solid var(--line); border-radius: 6px; }
+.ct-seg { position: absolute; top: 3px; bottom: 3px; border-radius: 5px; font: 600 10.5px/18px var(--f-head); color: #fff; padding: 0 6px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 3px; }
+.ct-seg.clt { background: var(--s1); } .ct-seg.pj { background: var(--accent); } .ct-seg.socio { background: var(--dotc); color: #0F1F3D; } .ct-seg.sem { background: repeating-linear-gradient(45deg, var(--line) 0 4px, transparent 4px 8px); color: var(--muted); }
+.ct-seg.sim { background: transparent !important; border: 2px dashed var(--ctc, var(--accent)); color: var(--ctc, var(--accent)); line-height: 14px; }
+.ct-hoje { position: absolute; top: -4px; bottom: -4px; width: 2px; background: var(--bad); }
+.ct-axis { position: relative; height: 16px; font-size: 10.5px; color: var(--muted); }
+.ct-axis span { position: absolute; transform: translateX(-50%); white-space: nowrap; }
+.ct-leg { display: flex; flex-wrap: wrap; gap: 12px; font-size: 12px; color: var(--muted); margin-top: 8px; }
+.ct-leg i { display: inline-block; width: 12px; height: 12px; border-radius: 3px; vertical-align: -2px; margin-right: 5px; }
+.ct-tlm { display: none; gap: 6px; }
+.ct-tlm .bar { display: flex; height: 14px; border-radius: 7px; overflow: hidden; background: var(--field); }
+.ct-tlm .bar i { display: block; height: 100%; }
+.ct-tlm .row { display: flex; justify-content: space-between; font-size: 11px; color: var(--muted); }
+/* histórico */
+.ct-jobs { display: grid; }
+.ct-job { display: grid; grid-template-columns: 20px minmax(0, 1fr); gap: 10px; }
+.ct-job .rail { display: flex; flex-direction: column; align-items: center; }
+.ct-job .dot { width: 14px; height: 14px; border-radius: 50%; border: 3px solid var(--accent); background: var(--panel); margin-top: 16px; flex: none; }
+.ct-job .dot.clt { border-color: var(--s1); } .ct-job .dot.socio { border-color: var(--dotc); } .ct-job .dot.sem { border-color: var(--line); border-style: dashed; }
+.ct-job .rail::after { content: ""; flex: 1; width: 2px; background: var(--line); }
+.ct-job:last-child .rail::after { display: none; }
+.ct-card { border: 1px solid var(--line); border-radius: 10px; padding: 12px 14px; margin: 6px 0; display: grid; gap: 8px; min-width: 0; background: var(--panel); }
+.ct-card.atual { border-color: var(--accent); box-shadow: inset 0 0 0 1px var(--accent); }
+.ct-card.semc { background: var(--field); border-style: dashed; }
+.ct-jh { display: flex; flex-wrap: wrap; gap: 6px 10px; align-items: baseline; }
+.ct-jh b { font: 600 15px var(--f-head); }
+.ct-jh .per { color: var(--muted); font-size: 12.5px; }
+.ct-jh .r { margin-left: auto; display: flex; gap: 10px; }
+.ct-lnk { font: 600 11.5px var(--f-head); background: none; border: 0; color: var(--muted); cursor: pointer; padding: 0; }
+.ct-lnk:hover { color: var(--accent); }
+.ct-lnk.ac { color: var(--accent); }
+.ct-chip { font: 600 10.5px var(--f-head); border-radius: 10px; padding: 2px 8px; background: var(--field); border: 1px solid var(--line); white-space: nowrap; }
+.ct-chip.pj { background: var(--accent-soft); color: var(--accent); border-color: transparent; }
+.ct-chip.clt { background: rgba(31,78,140,.12); color: var(--s1); border-color: transparent; }
+.ct-chip.socio { background: rgba(212,167,44,.18); color: #7A5B00; border-color: transparent; }
+.ct-chip.dono { background: var(--good-soft); color: var(--good); border-color: transparent; }
+.ct-seg.dono { background: var(--good); color: #fff; }
+.ct-wide { grid-column: 1 / -1; }
+:root[data-theme="dark"] .ct-chip.socio { color: var(--dotc); }
+.ct-chip.now { background: var(--accent); color: #fff; border-color: transparent; }
+.ct-chip.fut { background: var(--good-soft); color: var(--good); border-color: transparent; }
+.ct-evo { display: flex; align-items: center; gap: 6px 10px; flex-wrap: wrap; font-size: 12.5px; }
+.ct-evo .big { font: 700 18px var(--f-head); font-variant-numeric: tabular-nums; }
+.ct-steps { display: flex; align-items: flex-end; gap: 3px; height: 30px; }
+.ct-steps i { width: 12px; background: var(--accent); opacity: .75; border-radius: 2px 2px 0 0; }
+.ct-reaj { overflow-x: auto; }
+.ct-reaj table { width: 100%; border-collapse: collapse; font-variant-numeric: tabular-nums; font-size: 13px; }
+.ct-reaj th, .ct-reaj td { padding: 5px 6px; border-bottom: 1px solid var(--line); text-align: right; vertical-align: middle; }
+.ct-reaj th { font: 600 10px var(--f-head); letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
+.ct-reaj th:nth-child(-n+2), .ct-reaj td:nth-child(-n+2) { text-align: left; }
+.ct-reaj input { font: inherit; padding: 4px 6px; border: 1px solid var(--line); border-radius: 6px; background: var(--field); color: var(--ink); max-width: 100%; }
+.ct-reaj input[type="month"] { width: 140px; } .ct-reaj input[type="number"] { width: 110px; text-align: right; } .ct-reaj input[type="text"] { width: 100%; min-width: 120px; }
+.ct-aviso { background: var(--warn-soft, #fffbeb); border: 1px solid var(--line); border-radius: 8px; padding: 8px 10px; font-size: 12.5px; display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+/* formulário */
+.ct-form { border: 1px dashed var(--accent); border-radius: 10px; padding: 14px; display: grid; gap: 12px; background: var(--accent-soft); margin: 6px 0 12px; }
+.ct-form > b { font: 600 14px var(--f-head); }
+.ct-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; }
+.ct-form label { display: grid; gap: 4px; font: 600 10.5px var(--f-head); letter-spacing: .05em; text-transform: uppercase; color: var(--muted); min-width: 0; }
+.ct-form label.inline { display: flex; align-items: center; gap: 6px; text-transform: none; letter-spacing: 0; font: 400 13px var(--f-ui); color: var(--ink); }
+.ct-form input, .ct-form select { font: 400 14px var(--f-ui); padding: 7px 9px; border: 1px solid var(--line); border-radius: 8px; background: var(--panel); color: var(--ink); min-width: 0; width: 100%; }
+.ct-form input[type="checkbox"] { width: auto; }
+.ct-form .seg { display: flex; flex-wrap: wrap; gap: 6px; }
+.ct-form .seg button small { font-weight: 400; margin-left: 4px; opacity: .8; }
+.ct-form .seg button[disabled] { opacity: .5; border-style: dashed; cursor: default; }
+.ct-form .hint { margin: 0; }
+.ct-msg { color: var(--bad); font-size: 12.5px; }
+/* pop-up de edição */
+.ct-dlg { width: min(780px, 100%); }
+#ct-pop-b { container-type: inline-size; }
+.ct-dlg .ct-reaj input[type="text"] { min-width: 100px; }
+.ct-dlg .ct-form { border: 0; background: none; padding: 0; margin: 0; gap: 16px; }
+.ct-sec { display: grid; gap: 10px; }
+.ct-sec + .ct-sec { border-top: 1px solid var(--line); padding-top: 14px; }
+.ct-sec h3 { margin: 0; font: 600 13px var(--f-head); letter-spacing: .04em; text-transform: uppercase; color: var(--muted); }
+.ct-cks { display: flex; flex-wrap: wrap; gap: 6px 18px; }
+.ct-bens { display: grid; gap: 6px; }
+.ct-bem { display: grid; grid-template-columns: minmax(0, 1fr) 120px 110px 24px; gap: 8px; align-items: center; }
+.ct-benl { font-size: 12.5px; color: var(--ink); }
+body.ct-modal { overflow: hidden; }
+@media (max-width: 560px) { .ct-bem { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) 24px; padding-bottom: 8px; border-bottom: 1px solid var(--line); } .ct-bem input[type="text"] { grid-column: 1 / -1; } }
+/* opções */
+.ct-opts { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+.ct-opt { border: 1px solid var(--line); border-radius: 12px; padding: 14px; display: grid; gap: 10px; align-content: start; border-top: 4px solid var(--ctc); min-width: 0; background: var(--panel); }
+.ct-opt.esc { box-shadow: 0 0 0 2px var(--ctc); }
+.ct-opt .tag { font: 600 10px var(--f-head); color: var(--muted); text-transform: uppercase; letter-spacing: .06em; display: flex; gap: 6px; align-items: center; }
+#p-carrtraj .ct-del { margin-left: auto; font: 600 11px var(--f-head); text-transform: none; letter-spacing: 0; color: var(--bad); background: none; border: 1px solid var(--line); border-radius: 14px; padding: 3px 10px; cursor: pointer; }
+#p-carrtraj .ct-del:hover { border-color: var(--bad); }
+#p-carrtraj .ct-del.armado { background: var(--bad); color: #fff; border-color: var(--bad); }
+#p-carrtraj .ct-opt input.nome { font: 600 15px var(--f-head); border: 1px solid var(--line); border-radius: 8px; background: var(--field); color: var(--ink); padding: 7px 12px; width: 100%; box-sizing: border-box; }
+.ct-opt > *, .ct-opt ol, .ct-opt li { min-width: 0; }
+.ct-opt .ct-card { margin-top: 8px; }
+.ct-opt ol { margin: 0; padding-left: 18px; display: grid; gap: 6px; font-size: 12.5px; }
+.ct-opt ol li > div { display: flex; gap: 8px; flex-wrap: wrap; align-items: baseline; }
+.ct-opt .num { display: grid; grid-template-columns: 1fr auto; gap: 2px 10px; font-size: 12.5px; font-variant-numeric: tabular-nums; }
+.ct-opt .num span:nth-child(even) { text-align: right; font-weight: 700; }
+.ct-opt label.cmp { text-transform: none; letter-spacing: 0; font: 400 12.5px var(--f-ui); color: var(--ink); flex-direction: row; }
+.ct-card > .ct-lnk { justify-self: start; }
+.ct-opt .cmp { display: flex; align-items: center; gap: 6px; font-size: 12.5px; }
+.ct-opt .cmp input { accent-color: var(--ctc); width: 15px; height: 15px; }
+.ct-usar { border: 1px solid var(--ctc); border-radius: 10px; padding: 10px; display: grid; gap: 8px; font-size: 12.5px; }
+.ct-usar ul { margin: 0; padding-left: 18px; display: grid; gap: 4px; }
+.ct-usar input { font: 400 14px var(--f-ui); padding: 6px 8px; border: 1px solid var(--line); border-radius: 8px; background: var(--panel); color: var(--ink); }
+/* comparar */
+.ct-cmpg { display: grid; grid-template-columns: minmax(0, 1fr); gap: 16px; align-items: start; }
+.ct-cmpg > div:last-child { max-width: 480px; }
+.ct-cmpt { overflow-x: auto; }
+.ct-cmpt table { width: 100%; border-collapse: collapse; font-variant-numeric: tabular-nums; font-size: 13px; }
+.ct-cmpt th, .ct-cmpt td { padding: 8px 8px; border-bottom: 1px solid var(--line); text-align: right; }
+.ct-cmpt td:not(:first-child) { white-space: nowrap; }
+.ct-cmpt th { font: 600 10.5px var(--f-head); letter-spacing: .04em; color: var(--muted); white-space: normal; vertical-align: bottom; }
+.ct-cmpt th:not(:first-child) { min-width: 84px; max-width: 140px; }
+.ct-cmpt th:first-child, .ct-cmpt td:first-child { text-align: left; }
+.ct-cmpt td small { display: block; color: var(--muted); font-size: 11px; }
+.ct-cmpt td.best { color: var(--good); font-weight: 700; }
+.ct-cmpt th i { display: inline-block; width: 9px; height: 9px; border-radius: 50%; margin-right: 4px; }
+.ct-svg text { font: 10.5px var(--f-ui); fill: var(--muted); }
+@container (max-width: 760px) {
+  #p-carrtraj .ct-kpis { grid-template-columns: 1fr 1fr; }
+  .ct-grid { grid-template-columns: 1fr 1fr; }
+  .ct-opts { grid-template-columns: 1fr; }
+  .ct-cmpg { grid-template-columns: 1fr; }
+  .ct-tl { display: none; } .ct-tlm { display: grid; }
+  .ct-job { grid-template-columns: 12px minmax(0, 1fr); gap: 8px; }
+  .ct-job .dot { width: 12px; height: 12px; border-width: 2px; }
+  .ct-card { padding: 10px; }
+  .ct-evo .big { font-size: 16px; }
+  .ct-reaj th, .ct-reaj td { padding: 5px 3px; font-size: 12px; }
+  .ct-reaj input[type="month"] { width: 118px; } .ct-reaj input[type="number"] { width: 86px; } .ct-reaj input[type="text"] { min-width: 90px; }
+  .ct-cmpt th, .ct-cmpt td { padding: 7px 4px; font-size: 12px; }
+}
+@container (max-width: 560px) {
+  .ct-reaj thead { display: none; }
+  .ct-reaj table, .ct-reaj tbody { display: block; }
+  .ct-reaj tr { display: grid; grid-template-columns: 1fr 1fr; gap: 6px 10px; padding: 8px 0; border-bottom: 1px solid var(--line); }
+  .ct-reaj td { border: 0; padding: 0 !important; text-align: left !important; display: grid; gap: 2px; font-size: 12.5px; }
+  .ct-reaj td::before { content: attr(data-l); font: 600 9.5px var(--f-head); letter-spacing: .05em; text-transform: uppercase; color: var(--muted); }
+  .ct-reaj td input[type] { width: 100%; min-width: 0; text-align: left; }
+  .ct-reaj td:last-child { align-self: end; justify-self: end; }
+  .ct-cmpt td small { display: none; }
+  .ct-cmpt td:first-child { max-width: 130px; }
+}
+@container (max-width: 420px) { .ct-grid { grid-template-columns: 1fr; } }
 </style>
 
 
@@ -2558,8 +2714,9 @@ html[data-lb="b"] .block-title .desc{font-size:14px;color:var(--muted);margin-to
           <div class="nav-group"><button type="button" class="nav-head" data-tab="compras"><span class="ico">01</span>Compras e bens<small class="nav-det">(bens, eventos e dívidas)</small><span class="caret" data-navtog="compras" role="button" tabindex="0" aria-label="Abrir ou recolher submódulos">▾</span></button><div class="nav-sub" data-sub="compras"></div></div>
         </div></div>
         <div class="nav-sec" data-sec="carr" data-mod="carr"><button type="button" class="nav-sec-h" data-sectog="carr" aria-expanded="true"><span>Carreira</span><span class="caret" aria-hidden="true">▾</span></button><div class="nav-sec-b">
-          <div class="nav-group"><button type="button" class="nav-head" data-tab="pjpf"><span class="ico">01</span>PJ e PF<span class="caret" data-navtog="pjpf" role="button" tabindex="0" aria-label="Abrir ou recolher submódulos">▾</span></button><div class="nav-sub" data-sub="pjpf"></div></div>
-          <div class="nav-group"><button type="button" class="nav-head" data-tab="stock"><span class="ico">02</span>Stock options<span class="caret" data-navtog="stock" role="button" tabindex="0" aria-label="Abrir ou recolher submódulos">▾</span></button><div class="nav-sub" data-sub="stock"></div></div>
+          <div class="nav-group"><button type="button" class="nav-head" data-tab="carrtraj"><span class="ico">01</span>Trajetória<span class="caret" data-navtog="carrtraj" role="button" tabindex="0" aria-label="Abrir ou recolher submódulos">▾</span></button><div class="nav-sub" data-sub="carrtraj"></div></div>
+          <div class="nav-group"><button type="button" class="nav-head" data-tab="pjpf"><span class="ico">02</span>PJ e PF<span class="caret" data-navtog="pjpf" role="button" tabindex="0" aria-label="Abrir ou recolher submódulos">▾</span></button><div class="nav-sub" data-sub="pjpf"></div></div>
+          <div class="nav-group"><button type="button" class="nav-head" data-tab="stock"><span class="ico">03</span>Stock options<span class="caret" data-navtog="stock" role="button" tabindex="0" aria-label="Abrir ou recolher submódulos">▾</span></button><div class="nav-sub" data-sub="stock"></div></div>
         </div></div>
         <div class="nav-sec" data-sec="viag" data-mod="viag"><button type="button" class="nav-sec-h" data-sectog="viag" aria-expanded="true"><span>Viagens</span><span class="caret" aria-hidden="true">▾</span></button><div class="nav-sec-b">
           <div class="nav-group"><button type="button" class="nav-head" data-tab="viagvg"><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 11.5 12 4l9 7.5"/><path d="M5.5 10v9.5h13V10"/><path d="M10 19.5v-5h4v5"/></svg></span>Visão geral</button><div class="nav-sub" data-sub="viagvg"></div></div>
@@ -2611,7 +2768,7 @@ html[data-lb="b"] .block-title .desc{font-size:14px;color:var(--muted);margin-to
     </div>
     <div class="nav-mobile-sub" id="navMobileSub"></div>
   </div>
-  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 390</div></div>
+  <div class="side-foot"><div class="r"><span class="status-dot loading" id="saveDot"></span><span class="save" id="saveState">carregando…</span></div><div class="src">Focus atualizado toda segunda · versão 401</div></div>
 </nav>
 <div class="sino-pop" id="sino-pop" role="dialog" aria-label="Atualizações das bases" hidden></div>
 <div class="sino-pop" id="pess-pop" role="dialog" aria-label="Seus avisos" hidden></div>
@@ -3665,7 +3822,7 @@ html[data-lb="b"] .block-title .desc{font-size:14px;color:var(--muted);margin-to
       <section data-nav="Formas de pagamento" class="panel">
         <div class="row"><h2>Comparar formas de pagamento</h2><label class="inline" style="font-size:12.5px">Compra <select id="pg-compra" style="width:auto"></select></label></div>
         <p class="sub" style="font-size:12.5px;margin:0 0 10px">À vista, SAC, Price e consórcio para a compra escolhida, no mesmo mês, com a renda e a carteira do cenário <b id="pg-cen"></b> (07. Cenários futuros). Patrimônio em reais de hoje.</p>
-        <div class="cards" id="cards-pg"></div>
+        <p class="sub" id="pg-quando" style="font-size:12.5px;margin:0 0 10px"></p><div class="cards" id="cards-pg"></div>
         <div class="chart" style="margin-top:12px"><div class="legend" id="lg-pg"></div><div id="ch-pg"></div><div class="readout" id="ro-pg"></div></div>
         <div id="pg-ent" class="pg-ent"></div>
       </section>
@@ -4160,6 +4317,30 @@ html[data-lb="b"] .block-title .desc{font-size:14px;color:var(--muted);margin-to
       </section>
   </section>
   <!-- ============ PJ PARA PF ============ -->
+  <section role="tabpanel" id="p-carrtraj" hidden>
+    <div class="block-title"><span class="num">01</span><div><h1>Trajetória</h1><p class="desc">Seus empregos como num currículo: cada um é um período, com os reajustes dentro. O que já passou fica guardado. Para o futuro você monta opções, compara e escolhe qual vale a partir de uma data.</p></div></div>
+    <div class="ct-kpis" id="ct-kpis"></div>
+    <section data-nav="Linha do tempo" class="panel">
+      <h2>Linha do tempo</h2>
+      <p class="sub">Cheio é o que aconteceu ou está valendo; tracejado é opção em estudo.</p>
+      <div id="ct-tl"></div>
+    </section>
+    <section data-nav="Meu histórico" class="panel">
+      <h2>Meu histórico</h2>
+      <p class="sub">Do mais recente para o mais antigo. O emprego de hoje alimenta o Meu plano; um reajuste futuro já combinado entra no plano no mês dele.</p>
+      <div id="ct-hist"></div>
+    </section>
+    <section data-nav="Opções para o futuro" class="panel">
+      <h2>Opções para o futuro</h2>
+      <p class="sub">Simulações: não mexem no Meu plano até você escolher uma com "Usar a partir de…" (aqui ou na Simulação).</p>
+      <div id="ct-opcs"></div>
+    </section>
+    <section data-nav="Comparar opções" class="panel">
+      <h2>Comparar opções</h2>
+      <p class="sub">Cada opção contra seguir como hoje, pelo Meu plano: os mesmos gastos, compras e investimentos.</p>
+      <div id="ct-cmp"></div>
+    </section>
+  </section>
   <section role="tabpanel" id="p-pjpf" hidden>
     <div class="block-title"><span class="num">03</span><div><h1>PJ e PF</h1><p class="desc" id="pj-desc"></p></div></div>
       <div class="seg pj-dir" id="pj-dir" role="group" aria-label="Sentido da conta"><button type="button" data-pjdir="cltpj">Tenho CLT: vale ir para PJ?</button><button type="button" data-pjdir="pjclt">Sou PJ: vale ir para CLT?</button></div>
@@ -4231,10 +4412,10 @@ html[data-lb="b"] .block-title .desc{font-size:14px;color:var(--muted);margin-to
         <div class="tscroll"><table id="tbl-pj-lado"></table></div>
         <div class="pj-barras" id="pj-barras"></div>
       </section>
-      <section data-nav="Cenários de troca" class="panel" id="pj-trocas">
-        <h2>Cenários de troca</h2>
-        <p class="sub">Guarde cada caminho como um cenário: mudar de emprego (PJ ou CLT, com o valor) ou ficar sem emprego, de um mês até outro. Cada cenário começa como só simulação e aparece no módulo Simulação para você comparar; quando decidir, torne real lá e ele entra no plano. É a mesma lista de Meu plano › Receitas e custos.</p>
-        <div class="btns"><button class="btn tiny" type="button" data-pjtroca="calc">Usar a proposta deste cálculo</button> <button class="btn ghost tiny" type="button" data-pjtroca="novo">+ Mudar de emprego</button> <button class="btn ghost tiny" type="button" data-pjtroca="sem">+ Ficar sem emprego</button> <span class="hint" id="pj-troca-msg" role="status"></span></div>
+      <section data-nav="Levar para a Trajetória" class="panel" id="pj-trocas">
+        <h2>Levar para a Trajetória</h2>
+        <p class="sub">As trocas de emprego agora ficam em Carreira › Trajetória, como opções para o futuro: lá você compara com o que tem hoje e escolhe a partir de quando vale. Guarde a proposta deste cálculo como uma opção.</p>
+        <div class="btns"><button class="btn tiny" type="button" data-ctpj="calc">Usar a proposta deste cálculo</button> <button class="btn ghost tiny" type="button" data-ct="ir">Abrir a Trajetória</button> <span class="hint" id="pj-troca-msg" role="status"></span></div>
         <div class="orc-troca" id="pj-troca" hidden></div>
         <div id="pj-regs"></div>
       </section>
@@ -4460,8 +4641,9 @@ html.cel #cel-lemb[hidden]{display:none}
 #cel-top .tt small{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);display:flex;align-items:center;gap:6px;white-space:nowrap;overflow:hidden}
 #cel-top .tt small i{width:8px;height:8px;border-radius:50%;background:var(--celm,#F0A46B);flex:none}
 #cel-top .tt b{font-family:var(--f-head);font-weight:800;font-size:19px;line-height:1.15;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-#cel-top .logo{font-family:var(--f-head);font-weight:800;font-size:22px;letter-spacing:-.02em;padding-left:8px}
-#cel-top .logo em{font-style:normal;color:#C9772F}
+#cel-top .logo{display:block;line-height:0;padding-left:8px;color:var(--ink);font-family:var(--f-head);font-weight:800;font-size:22px}
+#cel-top .logo svg.wm{height:23px;width:auto;display:block;fill:currentColor}
+#cel-top .logo svg.wm .pg{fill:#F0A46B}
 #cel-nav button{border:0;background:none;color:var(--muted);font:600 11px var(--f-ui);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;cursor:pointer;padding:0;min-width:0}
 #cel-nav .nb{width:50px;height:30px;border-radius:999px;display:grid;place-items:center}
 #cel-nav button[aria-current]{color:var(--ink);font-weight:800}
@@ -4483,6 +4665,45 @@ html.cel #cel-lemb[hidden]{display:none}
 #cel-view .c-chip .v{font-family:var(--f-head);font-weight:800;font-size:18px;line-height:1.15;font-variant-numeric:tabular-nums}
 #cel-view .c-chip .l{font-size:11.5px;color:var(--muted);line-height:1.3}
 #cel-view .c-gt{font-size:12px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);padding:6px 2px 0}
+/* v401: caixinhas no lugar da lista "Escolha o que ver" */
+#cel-view .c-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:10px}
+#cel-view .c-cx{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:12px;display:flex;flex-direction:column;gap:8px;min-width:0;color:inherit;text-decoration:none;font:inherit;cursor:pointer;-webkit-tap-highlight-color:transparent}
+#cel-view .c-cx:active{transform:scale(.985)}
+#cel-view .c-cx.w{grid-column:1/-1}
+#cel-view .c-cxh{display:flex;align-items:center;gap:8px;min-width:0}
+#cel-view .c-cxh .c-nm{width:26px;height:26px;border-radius:8px;font-size:11.5px}
+#cel-view .c-cxh .c-nm svg{width:16px;height:16px}
+#cel-view .c-cxh b{flex:1;min-width:0;font-size:14px;line-height:1.2}
+#cel-view .c-cxh .c-chev{margin:0}
+#cel-view .c-cxv{font-family:var(--f-head);font-weight:800;font-size:23px;line-height:1.05;font-variant-numeric:tabular-nums;overflow-wrap:anywhere}
+#cel-view .c-cxv small{font-family:var(--f-ui);font-size:12px;font-weight:600;color:var(--muted);margin-left:5px}
+#cel-view .c-cxs{font-size:12.5px;color:var(--muted);line-height:1.38}
+#cel-view .c-cxs b{color:var(--ink)}
+#cel-view .c-cxs.a{color:var(--mc,var(--celm,#7FA6E0));font-weight:800}
+#cel-view .c-cx .neg{color:var(--bad)!important}
+#cel-view .c-cx .pos{color:var(--good,#5FD3A0)!important}
+#cel-view .c-cxg{display:block;max-width:100%}
+#cel-view .c-cx .c-trk i{background:var(--mc,var(--celm,#7FA6E0))}
+#cel-view .c-cx .c-trk i.acima{background:var(--bad)}
+#cel-view .c-cxhb{display:grid;grid-template-columns:minmax(0,auto) minmax(40px,1fr) auto;gap:7px 9px;align-items:center;font-size:12.5px}
+#cel-view .c-cxhb .k{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:130px}
+#cel-view .c-cxhb .v{font-weight:700;text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+#cel-view .c-cxhb .c-trk{height:7px}
+#cel-view .c-cxtb{width:100%;border-collapse:collapse;font-size:12.5px}
+#cel-view .c-cxtb td{padding:5px 0;border-top:1px solid var(--line)}
+#cel-view .c-cxtb tr:first-child td{border-top:0}
+#cel-view .c-cxtb td:last-child{text-align:right;font-weight:700;font-variant-numeric:tabular-nums;padding-left:8px}
+#cel-view .c-cxst{display:flex;align-items:center;gap:7px;font-size:12.5px;font-weight:700}
+#cel-view .c-cxst i{width:18px;height:18px;border-radius:50%;display:grid;place-items:center;font-style:normal;font-size:11px;flex:none}
+#cel-view .c-cxst i.ok{background:rgba(95,211,160,.18);color:var(--good,#5FD3A0)}
+#cel-view .c-cxst i.ab{background:rgba(240,164,107,.2);color:#D9823F}
+#cel-view .c-cxdn{display:flex;gap:12px;align-items:center;min-width:0}
+#cel-view .c-cxdn svg{flex:none}
+#cel-view .c-cxleg{display:flex;flex-direction:column;gap:5px;font-size:12.5px;min-width:0;flex:1}
+#cel-view .c-cxleg span{display:flex;align-items:center;gap:7px;min-width:0}
+#cel-view .c-cxleg i{width:9px;height:9px;border-radius:3px;flex:none}
+#cel-view .c-cxleg em{font-style:normal;flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#cel-view .c-cxleg b{font-variant-numeric:tabular-nums;white-space:nowrap}
 #cel-view .c-list{background:var(--panel);border:1px solid var(--line);border-radius:18px;overflow:hidden}
 #cel-view .c-it+.c-it{border-top:1px solid var(--line)}
 #cel-view .c-rw{display:flex;align-items:center;gap:12px;width:100%;min-height:62px;padding:10px 10px 10px 14px;border:0;background:none;color:inherit;font:inherit;text-align:left;cursor:pointer}
@@ -4523,6 +4744,7 @@ html.cel #cel-lemb[hidden]{display:none}
 #cel-view .c-tag.rev{background:#FBEFD9;color:#7A4A0C}
 #cel-view .c-vazio{font-size:13.5px;color:var(--muted);padding:14px}
 #cel-lemb .bola{width:56px;height:56px;border-radius:50%;border:0;background:#0E1A2B;color:#fff;display:grid;place-items:center;box-shadow:0 6px 18px rgba(14,26,43,.3);cursor:pointer;position:relative}
+:root[data-theme="dark"] #cel-lemb .bola{background:#F7F3EC;color:#0E1A2B;box-shadow:0 6px 18px rgba(0,0,0,.45)}
 #cel-lemb .bola .q{position:absolute;top:-2px;right:-2px;min-width:20px;height:20px;border-radius:99px;background:#34D399;color:#0E1A2B;font:800 11px/16px var(--f-ui);text-align:center;border:2px solid var(--bg);padding:0 3px}
 #cel-lemb .lc{width:min(300px,calc(100vw - 28px));background:var(--panel);color:var(--ink);border:1px solid var(--line);border-radius:16px;box-shadow:0 10px 28px rgba(14,26,43,.25);padding:10px 12px 12px 14px;display:flex;flex-direction:column;gap:8px;font-family:var(--f-ui)}
 #cel-lemb .lc .h{display:flex;align-items:center;justify-content:space-between;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
@@ -5007,7 +5229,7 @@ html.onb-on,html.onb-on body{overflow:hidden!important}
     return new Promise(resolve => { const { data } = sb.auth.onAuthStateChange(async (ev) => { if (ev !== 'PASSWORD_RECOVERY') return; const s = prompt('Digite a nova senha (mínimo 8 caracteres):'); if (s && s.length >= 8) { const { error } = await sb.auth.updateUser({ password: s }); alert(error ? 'Não deu para trocar a senha: ' + error.message : 'Senha trocada.'); } }); resolve(data); });
   }
   // ---------- rodapé: compartilhar, administração e sair ----------
-  const SITE_V = 291;
+  const SITE_V = 301;
   const escH = v => String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const dataBR = v => v ? new Date(v).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' }) : '–';
   const css2 = `.side-foot .r{flex-wrap:wrap}.side-foot .lg-acoes{margin-left:auto;display:inline-flex;gap:10px}
@@ -8176,7 +8398,7 @@ function renderSimCen(manter) {
   const pl = calcPlano(), fimI = scAnos() ? scFimIdx() : pl.i0 + Math.round((+state.plan.anos || 10) * 12);
   document.querySelectorAll('#sc-anos button').forEach(b => b.setAttribute('aria-pressed', String(+b.dataset.scanos === scAnos())));
   const grupos = MODS.filter(m => its.some(x => x.mod === m.id)), corC = c => ehCenReal(c) ? 'var(--s1)' : cenCor(c);
-  $('tbl-sc').innerHTML = !its.length ? '<tbody><tr><td class="hint">Nenhum item ainda. Cadastre <a href="#" class="lm-ir" data-lmtab="compras" data-lmsec="Compras e financiamentos">bens e compromissos</a>, <a href="#" class="lm-ir" data-lmtab="viagrot" data-lmsec="">viagens</a>, <a href="#" class="lm-ir" data-lmtab="fampes" data-lmsec="Filhos">filhos</a>, <a href="#" class="lm-ir" data-lmtab="negcad" data-lmsec="Cadastro">negócios</a>, <a href="#" class="lm-ir" data-lmtab="pjpf" data-lmsec="Cenários de troca">trocas de emprego</a> ou <a href="#" class="lm-ir" data-lmtab="orcamento" data-lmsec="Mudanças e eventos">eventos no Meu plano</a>.</td></tr></tbody>'
+  $('tbl-sc').innerHTML = !its.length ? '<tbody><tr><td class="hint">Nenhum item ainda. Cadastre <a href="#" class="lm-ir" data-lmtab="compras" data-lmsec="Compras e financiamentos">bens e compromissos</a>, <a href="#" class="lm-ir" data-lmtab="viagrot" data-lmsec="">viagens</a>, <a href="#" class="lm-ir" data-lmtab="fampes" data-lmsec="Filhos">filhos</a>, <a href="#" class="lm-ir" data-lmtab="negcad" data-lmsec="Cadastro">negócios</a>, <a href="#" class="lm-ir" data-lmtab="carrtraj" data-lmsec="Opções para o futuro">opções de carreira</a> ou <a href="#" class="lm-ir" data-lmtab="orcamento" data-lmsec="Mudanças e eventos">eventos no Meu plano</a>.</td></tr></tbody>'
     : `<thead><tr><th>Item</th><th>Quando</th><th>Valores</th>${vch ? '<th>Chance</th>' : ''}${ord.map(c => `<th class="sc-col${c.id === cen.id ? ' sc-cur' : ''}" style="--c:${corC(c)}"><i></i>${esc(c.nome)}</th>`).join('')}</tr></thead><tbody>${grupos.map(m => `<tr class="it-g"><td colspan="${(vch ? 4 : 3) + ord.length}"><i style="background:${m.cor}"></i>${esc(m.nome)}</td></tr>` +
       its.filter(x => x.mod === m.id).sort((a, b) => (a.ini || '9999') < (b.ini || '9999') ? -1 : (a.ini || '9999') > (b.ini || '9999') ? 1 : 0).map(x => `<tr data-scit="${esc(x.id)}"${simFoco === x.id ? ' class="sc-foco"' : ''}>
         <td class="name"><a href="#" data-lmtab="${x.tab}" data-lmsec="${esc(x.sec || '')}" data-lmitem="${esc(x.id || '')}">${esc(x.nome)}</a> <span class="subdet">${esc(x.sub)}</span></td>
@@ -11628,6 +11850,503 @@ window.addEventListener('resize', () => { if (tab === 'viagens' && vgModo === 'g
 window.addEventListener('resize', () => { if (tab === 'viagens' && vgModo === 'mapa' && vgVb && $('vg-mapa')) { vgVb = vgVbAjusta(vgVb); vgAplicaVb(); vgPins(); } });
 function vgVbAjusta(c) { const box = $('vg-mapa'), ar = box.clientWidth / Math.max(1, box.clientHeight), cx = c.x + c.w / 2, cy = c.y + c.h / 2, w = c.w, h = w / ar; return { x: cx - w / 2, y: cy - h / 2, w, h }; }
 
+/* ---------- v391: Carreira › Trajetória. Empregos por período (como num currículo), com os reajustes dentro; opções para o futuro; comparar; "usar a partir de".
+   state.carr = { emps: [período], opcs: [{ id, nome, per: [período], escolhida, desde, fimAnt }], migrado, baseMes }
+   período = { id, emp, cargo, tipo clt|pj|socio|sem, ini, fim, cltModo, reajs: [{ id, mes, valor, lucro, motivo }], das, contab, ben, x13, xFer, xFgts, resc, fgts, seg, segDe, segAte, opc }
+   Os períodos viram regimes do Meu plano (state.orc.regimes com src 'carr'), refeitos a cada mudança por ctSync. baseMes = até onde o "Como você recebe" de hoje já cobre. ---------- */
+const CT_TIPOS = { clt: 'CLT', pj: 'PJ', socio: 'Sócio', dono: 'Dono de empresa', sem: 'Sem emprego' };
+const CT_COR = ['var(--s1)', 'var(--accent)', 'var(--good)', 'var(--s6)', 'var(--s8)', 'var(--s9)'];
+const ctMes = s => /^\d{4}-\d{2}$/.test(String(s || ''));
+let ctForm = null, ctAbertos = null, ctUsarPend = null, ctMsgTxt = '';
+const ctCmpSel = new Set();
+function ctNormPer(p) {
+  p = Object.assign({ id: uid(), emp: '', cargo: '', tipo: 'clt', ini: '', fim: '', cltModo: 'bruto', reajs: [], das: 6, contab: 0, ben: 0, x13: true, xFer: true, xFgts: true, resc: 0, fgts: 0, seg: 0, segDe: '', segAte: '', neg: '', paralelo: false }, p || {});
+  if (!CT_TIPOS[p.tipo]) p.tipo = 'clt';
+  ['emp', 'cargo'].forEach(k => { p[k] = String(p[k] || '').slice(0, 80); });
+  ['ini', 'fim', 'segDe', 'segAte'].forEach(k => { if (!ctMes(p[k])) p[k] = ''; });
+  ['das', 'contab', 'ben', 'resc', 'fgts', 'seg'].forEach(k => { p[k] = Math.max(0, +p[k] || 0); });
+  p.cltModo = p.cltModo === 'liq' ? 'liq' : 'bruto';
+  p.reajs = (Array.isArray(p.reajs) ? p.reajs : []).filter(r => r && typeof r === 'object').map(r => ({ id: r.id || uid(), mes: ctMes(r.mes) ? r.mes : '', valor: Math.max(0, +r.valor || 0), lucro: Math.max(0, +r.lucro || 0), motivo: String(r.motivo || '').slice(0, 80) }));
+  p.bens = (Array.isArray(p.bens) ? p.bens : []).filter(b => b && typeof b === 'object').map(b => ({ id: b.id || uid(), nome: String(b.nome || '').slice(0, 60), valor: Math.max(0, +b.valor || 0), freq: b.freq === 'ano' ? 'ano' : 'mes' }));
+  if (!p.bens.length && p.ben > 0 && !p.benLista) p.bens = [{ id: uid(), nome: 'Benefícios', valor: p.ben, freq: 'mes' }];
+  p.benLista = true;
+  p.neg = String(p.neg || ''); p.paralelo = !!p.paralelo && p.tipo === 'dono';
+  if (p.tipo === 'sem' || p.tipo === 'dono') { p.reajs = []; p.bens = []; }
+  p.ben = Math.round(p.bens.reduce((x, b) => x + (+b.valor || 0) / (b.freq === 'ano' ? 12 : 1), 0) * 100) / 100;
+  ctOrdReajs(p);
+  return p;
+}
+function ctOrdReajs(p) { p.reajs.sort((a, b) => (a.mes || '9') < (b.mes || '9') ? -1 : (a.mes || '9') > (b.mes || '9') ? 1 : 0); }
+// o que o plano de hoje diz (para o emprego atual na primeira vez e para avisar quando estiver diferente)
+function ctPlanoHoje(s) {
+  const o = s.orc || {}, R = o.receitas || [], sal = R.find(r => r.id === 'sal'), luc = R.find(r => r.id === 'onb-lucro');
+  const ded = id => +(((o.deducoes || []).find(d => d.id === id)) || {}).valor || 0;
+  const mod = o.modelo || ((o.deducoes || []).some(d => (d.id === 'das' || d.id === 'contab') && +d.valor > 0) ? 'pj' : '');
+  return { tipo: luc && mod === 'pj' ? 'socio' : mod, valor: +(sal || {}).valor || 0, lucro: luc ? +luc.valor || 0 : 0, cltModo: o.cltModo === 'bruto' ? 'bruto' : 'liq', das: ded('das'), contab: ded('contab') };
+}
+// cenários de troca antigos (Meu plano ou PJ e PF) viram opções (só simulação) ou períodos reais
+function ctAdotar(s) {
+  const c = s.carr, o = s.orc; if (!o || !Array.isArray(o.regimes)) return;
+  const vel = o.regimes.filter(r => r && r.tipo === 'apartir' && r.mes && r.src !== 'carr');
+  if (!vel.length) return;
+  vel.forEach(r => {
+    const tipo = r.modelo === 'sem' ? 'sem' : r.modelo === 'socio' ? 'socio' : r.modelo === 'clt' ? 'clt' : 'pj';
+    const p = ctNormPer({ emp: r.nome || '', tipo, ini: r.mes, fim: r.ate || '', cltModo: r.cltModo, das: r.das, contab: r.contab, ben: r.ben, x13: !!r.x13, xFer: !!r.xFer, xFgts: !!r.xFgts, resc: (+r.resc || 0) + (+r.saida || 0), fgts: r.fgts, seg: r.seg, segDe: r.segDe, segAte: r.segAte,
+      reajs: tipo === 'sem' ? [] : [{ mes: r.mes, valor: +r.sal || 0, lucro: +r.lucro || 0, motivo: 'Entrada' }] });
+    if (r.uso === 'sim') {
+      c.opcs.push({ id: r.id, nome: r.nome || (tipo === 'sem' ? 'Ficar sem emprego' : 'Troca para ' + CT_TIPOS[tipo]), per: [p] });
+      (s.cenarios || []).forEach(cn => { if (cn && cn.on && cn.on['reg:' + r.id]) { cn.on['carr:' + r.id] = cn.on['reg:' + r.id]; delete cn.on['reg:' + r.id]; } });
+    } else {
+      // troca real futura: o emprego em aberto termina no mês anterior
+      const at = c.emps.find(e => !e.fim && e.ini && e.ini < r.mes && e.tipo !== 'sem'); if (at && !r.ate) at.fim = mKey(mIndex(r.mes) - 1);
+      c.emps.push(p);
+    }
+  });
+  o.regimes = o.regimes.filter(r => !vel.includes(r));
+}
+function carrNormalizar(s) {
+  if (!s.carr || typeof s.carr !== 'object' || Array.isArray(s.carr)) s.carr = {};
+  const c = s.carr;
+  c.emps = (Array.isArray(c.emps) ? c.emps : []).filter(p => p && typeof p === 'object').map(ctNormPer);
+  c.opcs = (Array.isArray(c.opcs) ? c.opcs : []).filter(x => x && typeof x === 'object').map(x => ({ id: x.id || uid(), nome: String(x.nome || 'Opção').slice(0, 60), per: (Array.isArray(x.per) ? x.per : []).map(ctNormPer), escolhida: !!x.escolhida, desde: ctMes(x.desde) ? x.desde : '', fimAnt: x.fimAnt && typeof x.fimAnt === 'object' ? { id: String(x.fimAnt.id || ''), fim: ctMes(x.fimAnt.fim) ? x.fimAnt.fim : '' } : null }));
+  if (!ctMes(c.baseMes)) c.baseMes = mKey(HOJE_IDX);
+  c.negIgn = (Array.isArray(c.negIgn) ? c.negIgn : []).map(String);
+  c.migrado = true;
+  if (!c.semeou) {
+    const h = ctPlanoHoje(s);
+    if (c.emps.length) c.semeou = true;
+    else if (h.valor > 0 && (h.tipo === 'pj' || h.tipo === 'clt' || h.tipo === 'socio')) {
+      c.semeou = true;
+      const ini = ctMes((s.plan || {}).inicio) ? s.plan.inicio : mKey(HOJE_IDX);
+      c.emps.push(ctNormPer({ emp: 'Emprego atual', tipo: h.tipo, ini, cltModo: h.cltModo, das: h.tipo === 'pj' ? h.das : 0, contab: h.contab, x13: false, xFer: false, xFgts: false, bens: clone(h.tipo === 'clt' ? ((s.pj || {}).bens || []) : h.tipo === 'pj' ? ((s.pj || {}).bensPJ || []) : []), reajs: [{ mes: ini, valor: h.valor, lucro: h.lucro, motivo: 'Valor de hoje no Meu plano' }] }));
+    }
+  }
+  ctSync(s);
+}
+// trechos de um período: cada reajuste começa um trecho; o fim do período fecha todos
+function ctSegs(p) {
+  if (!p.ini) return [];
+  if (p.tipo === 'sem') return [{ mes: p.ini, ate: p.fim, sal: 0, lucro: 0 }];
+  // dono de empresa: a renda vem do negócio (Empreendimentos); o período só para o salário, se não for em paralelo
+  if (p.tipo === 'dono') return p.paralelo ? [] : [{ mes: p.ini, ate: p.fim, sal: 0, lucro: 0 }];
+  return p.reajs.filter(r => r.mes && (!p.fim || r.mes <= p.fim)).map(r => ({ mes: r.mes < p.ini ? p.ini : r.mes, ate: p.fim, sal: r.valor, lucro: r.lucro, mot: r.motivo }));
+}
+function ctRegime(p, sg, uso, x) {
+  const t = p.tipo === 'dono' ? 'sem' : p.tipo;
+  return Object.assign({ id: 'ct' + p.id + '-' + sg.mes, src: 'carr', tipo: 'apartir', mes: sg.mes, ate: sg.ate || '', modelo: t, cltModo: t === 'clt' ? p.cltModo : 'bruto', sal: t === 'sem' ? 0 : +sg.sal || 0, lucro: t === 'socio' ? +sg.lucro || 0 : 0,
+    x13: t === 'clt' && !!p.x13, xFer: t === 'clt' && !!p.xFer, xFgts: t === 'clt' && !!p.xFgts, ben: t === 'sem' ? 0 : +p.ben || 0, das: t === 'pj' ? +p.das || 0 : 0, contab: t === 'pj' || t === 'sem' ? +p.contab || 0 : 0,
+    resc: t === 'sem' ? +p.resc || 0 : 0, fgts: t === 'sem' ? +p.fgts || 0 : 0, seg: t === 'sem' ? +p.seg || 0 : 0, segDe: t === 'sem' ? p.segDe : '', segAte: t === 'sem' ? p.segAte : '', uso, nome: p.emp || CT_TIPOS[p.tipo], opcR: p.opc || '', dono: p.tipo === 'dono' ? p.neg || true : undefined }, x || {});
+}
+function ctSync(s) {
+  let ehSt = false; try { ehSt = !s || s === state; } catch (e) { ehSt = false; }
+  if (!s) s = state; if (!s || !s.carr || !s.orc) return;
+  ctAdotar(s);
+  const c = s.carr, base = c.baseMes, i0 = mIndex((s.plan || {}).inicio || mKey(HOJE_IDX));
+  ((s.neg || {}).negocios || []).forEach(x => { if (!x || x.uso !== 'real' || !x.id || (c.negIgn || []).includes(x.id) || c.emps.some(p => p.neg === x.id)) return;
+    const sai = x.saida && x.saida.on && ctMes(x.saida.mes), ini = sai ? x.saida.mes : (ctMes(x.ini) ? x.ini : mKey(HOJE_IDX));
+    if (sai) { const at = c.emps.find(e => !e.fim && e.ini && e.ini < ini && e.tipo !== 'sem' && !(e.tipo === 'dono' && e.paralelo)); if (at) at.fim = mKey(mIndex(ini) - 1); }
+    c.emps.push(ctNormPer({ tipo: 'dono', emp: x.nome || 'Meu negócio', neg: x.id, ini, paralelo: !sai })); });
+  const R = (s.orc.regimes || []).filter(r => r.src !== 'carr');
+  c.emps.forEach(p => ctSegs(p).forEach(sg => {
+    // futuro (depois do que o plano de hoje cobre) ou um período fechado que ainda cai dentro do plano
+    if (sg.mes > base || ((p.tipo === 'sem' || p.opc) && sg.ate && mIndex(sg.ate) > i0) || (p.tipo === 'dono' && (!sg.ate || mIndex(sg.ate) >= i0))) R.push(ctRegime(p, sg, 'real'));
+  }));
+  c.opcs.filter(op => !op.escolhida).forEach(op => op.per.forEach(p => ctSegs(p).forEach(sg => { if (mIndex(sg.mes) > HOJE_IDX) R.push(ctRegime(p, sg, 'sim', { opc: op.id, nome: op.nome + (p.emp ? ': ' + p.emp : '') })); })));
+  s.orc.regimes = R;
+  if (ehSt) planCache = null;
+}
+// troca real que chegou: vira o "Como você recebe" de hoje (como efetivarTrocas faz com as trocas antigas)
+function ctEfetivar() {
+  const c = state.carr; if (!c) return false; let mudou = false;
+  const segs = []; c.emps.forEach(p => { if (p.tipo === 'pj' || p.tipo === 'clt') ctSegs(p).forEach(sg => { if (!sg.ate && sg.mes > c.baseMes && mIndex(sg.mes) <= HOJE_IDX) segs.push({ p, sg }); }); });
+  segs.sort((a, b) => a.sg.mes < b.sg.mes ? -1 : 1).forEach(({ p, sg }) => { trocarHoje(p.tipo, p.cltModo, sg.sal, p.das, p.contab, sg.mes); c.baseMes = sg.mes; mudou = true; });
+  if (mudou) { ctSync(); save(); }
+  return mudou;
+}
+// valores
+const ctLabV = p => p.tipo === 'dono' ? 'para você/mês' : p.tipo === 'pj' ? 'faturamento/mês' : p.tipo === 'socio' ? 'pró-labore/mês' : p.cltModo === 'liq' ? 'líquido/mês' : 'bruto/mês';
+function ctLiq(p, v, lucro) {
+  const dep = +(state.pj || {}).dep || 0; v = +v || 0; lucro = +lucro || 0;
+  if (p.tipo === 'clt') return p.cltModo === 'liq' ? v : netCLT(v, dep);
+  if (p.tipo === 'pj') return v * (1 - (+p.das || 0) / 100) - (+p.contab || 0);
+  if (p.tipo === 'socio') { const i = Math.min(v, PJ26.teto) * 0.11; return v - i - irrf26(v, i, dep) + (lucro > 50000 ? lucro * 0.9 : lucro); }
+  return 0;
+}
+const ctTot = r => (+r.valor || 0) + (+r.lucro || 0);
+// dono de empresa: valores do negócio ligado, no mês i (ou o primeiro mês de operação depois)
+const ctNeg = p => p && p.neg ? ngLista().find(x => x.id === p.neg) || null : null;
+function ctDonoVal(p, i) {
+  const x = ctNeg(p); if (!x) return null; let R; try { R = ngCalcC(x); } catch (e) { return null; }
+  const m = R.meses.find(y => y.i >= i && y.t >= 0) || R.mad; if (!m) return { x, R, m: null, pl: 0, plLiq: 0, luc: 0, voce: 0 };
+  const luc = m.distrib * x.part / 100;
+  return { x, R, m, pl: m.pl, plLiq: m.plLiq, luc, voce: luc + m.plLiq, poe: m.aporte * ngPartAp(x) / 100 };
+}
+function ctDur(ini, fim) {
+  const n = Math.max(1, (fim ? mIndex(fim) : HOJE_IDX) - mIndex(ini) + 1), a = Math.floor(n / 12), m = n % 12;
+  return [a ? a + (a > 1 ? ' anos' : ' ano') : '', m ? m + (m > 1 ? ' meses' : ' mês') : ''].filter(Boolean).join(' e ');
+}
+const ctPerTxt = p => !p.ini ? 'sem data' : p.fim ? `${mLabel(mIndex(p.ini))} a ${mLabel(mIndex(p.fim))}` : `${mLabel(mIndex(p.ini))} ${mIndex(p.ini) > HOJE_IDX ? 'em diante' : 'até hoje'}`;
+const ctAtual = p => p.tipo !== 'sem' && p.ini && mIndex(p.ini) <= HOJE_IDX && (!p.fim || mIndex(p.fim) >= HOJE_IDX);
+const ctEmpAtual = () => state.carr.emps.filter(p => ctAtual(p) && !(p.tipo === 'dono' && p.paralelo)).sort((a, b) => a.ini < b.ini ? 1 : -1)[0] || null;
+function ctValEm(p, i) { const r = p.reajs.filter(x => x.mes && mIndex(x.mes) <= i); return r.length ? r[r.length - 1] : p.reajs[0] || null; }
+function ctAcha(id) {
+  const c = state.carr; let p = c.emps.find(x => x.id === id); if (p) return { p, lista: c.emps, op: null };
+  for (const op of c.opcs) { p = op.per.find(x => x.id === id); if (p) return { p, lista: op.per, op }; }
+  return null;
+}
+const ctCorOp = op => CT_COR[Math.max(0, state.carr.opcs.indexOf(op)) % CT_COR.length];
+const ctOpIni = op => op.per.map(p => p.ini).filter(Boolean).sort()[0] || '';
+function ctResumoOp(op) {
+  return op.per.slice().sort((a, b) => a.ini < b.ini ? -1 : 1).map(p => { const r = p.reajs[0]; return `${p.tipo === 'sem' ? 'sem emprego' : (p.emp ? p.emp + ' · ' : '') + CT_TIPOS[p.tipo] + (r ? ' ' + fm(ctTot(r)) : '')} (${ctPerTxt(p)})`; }).join(', depois ');
+}
+function ctItensMod() {
+  const c = state.carr; if (!c) return [];
+  return c.opcs.filter(op => op.per.length).map(op => ({ id: 'carr:' + op.id, mod: 'carr', sub: 'Trajetória', tab: 'carrtraj', sec: 'Opções para o futuro', nome: op.nome, tipo: 'receita', ini: op.escolhida ? op.desde || ctOpIni(op) : ctOpIni(op), unico: 0, mensal: 0, meses: 0, resumo: ctResumoOp(op), uso: op.escolhida ? 'real' : 'sim' }));
+}
+// usar uma opção a partir de um mês: a opção é deslocada para começar nesse mês, o emprego atual termina no mês anterior e os períodos entram no histórico
+function ctUsar(id, mes) {
+  const c = state.carr, op = c.opcs.find(x => x.id === id); if (!op || op.escolhida) return 'Opção não encontrada.';
+  if (!ctMes(mes) || mIndex(mes) <= HOJE_IDX) return 'Escolha um mês depois de hoje.';
+  const i0 = ctOpIni(op); if (!i0) return 'A opção não tem períodos com data.';
+  const d = mIndex(mes) - mIndex(i0), mv = s => ctMes(s) ? mKey(mIndex(s) + d) : s;
+  op.per.forEach(p => { ['ini', 'fim', 'segDe', 'segAte'].forEach(k => { p[k] = mv(p[k]); }); p.reajs.forEach(r => { r.mes = mv(r.mes); }); });
+  const at = c.emps.filter(p => p.ini && p.ini < mes && (!p.fim || p.fim >= mes)).sort((a, b) => a.ini < b.ini ? 1 : -1)[0];
+  op.fimAnt = at ? { id: at.id, fim: at.fim } : null;
+  if (at) at.fim = mKey(mIndex(mes) - 1);
+  op.per.forEach(p => c.emps.push(ctNormPer(Object.assign(clone(p), { id: uid(), opc: op.id }))));
+  op.escolhida = true; op.desde = mes;
+  ctSync(); save(); return '';
+}
+function ctDesfazer(id) {
+  const c = state.carr, op = c.opcs.find(x => x.id === id); if (!op || !op.escolhida) return false;
+  c.emps = c.emps.filter(p => p.opc !== op.id);
+  if (op.fimAnt) { const at = c.emps.find(p => p.id === op.fimAnt.id); if (at) at.fim = op.fimAnt.fim || ''; }
+  op.escolhida = false; op.desde = ''; op.fimAnt = null;
+  ctSync(); save(); return true;
+}
+function ctSetUso(id, on) { const op = (state.carr.opcs || []).find(x => x.id === id); if (!op) return false; if (on) { if (op.escolhida) return true; return !ctUsar(id, ctOpIni(op)); } if (!op.escolhida) return true; return ctDesfazer(id); }
+
+/* ---------- tela ---------- */
+function renderCarrTraj() {
+  if (!state.carr) return;
+  if (!state.carr.semeou) { carrNormalizar(state); if (state.carr.semeou) save(); }
+  ctEfetivar();
+  if (!ctAbertos) { ctAbertos = new Set(); const a = ctEmpAtual(); if (a) ctAbertos.add(a.id); state.carr.opcs.filter(o => !o.escolhida).slice(0, 3).forEach(o => ctCmpSel.add(o.id)); }
+  ctKpis(); ctLinha(); ctHist(); ctOpcs(); ctComparar(); ctPop();
+}
+function ctKpis() {
+  const c = state.carr, a = ctEmpAtual(), dv = a && a.tipo === 'dono' ? ctDonoVal(a, HOJE_IDX) : null, r = dv ? { valor: dv.pl, lucro: dv.luc } : a ? ctValEm(a, HOJE_IDX) : null;
+  const todos = c.emps.filter(p => p.tipo !== 'sem' && p.reajs.length && p.ini && mIndex(p.ini) <= HOJE_IDX).sort((x, y) => x.ini < y.ini ? -1 : 1);
+  const r0 = todos.length ? todos[0].reajs[0] : null, ev = r0 && r && ctTot(r0) > 0 ? ctTot(r) / ctTot(r0) - 1 : null;
+  const nO = c.opcs.filter(o => !o.escolhida && o.per.length).length, escO = c.opcs.find(o => o.escolhida && o.desde && mIndex(o.desde) > HOJE_IDX);
+  $('ct-kpis').innerHTML = `<div class="kpi"><span class="l">Hoje</span><b>${r ? fm(ctTot(r)) : '—'}</b><small>${a ? esc((a.emp || 'Emprego atual') + ' · ' + CT_TIPOS[a.tipo] + ' · ' + ctLabV(a)) : 'cadastre o emprego de hoje'}</small></div>
+    <div class="kpi"><span class="l">No bolso hoje</span><b>${dv ? fm(dv.voce) : r ? fm(ctLiq(a, r.valor, r.lucro)) : '—'}</b><small>por mês, já sem impostos</small></div>
+    <div class="kpi"><span class="l">Evolução${r0 ? ' desde ' + mLabel(mIndex(todos[0].ini)) : ''}</span><b class="${ev > 0 ? 'ct-pos' : ''}">${ev == null ? '—' : (ev > 0 ? '+' : '') + Math.round(ev * 100) + '%'}</b><small>${ev == null ? 'cadastre empregos antigos para ver' : `de ${fm(ctTot(r0))} para ${fm(ctTot(r))}`}</small></div>
+    <div class="kpi"><span class="l">Em estudo</span><b>${nO} ${nO === 1 ? 'opção' : 'opções'}</b><small>${escO ? `escolhida: ${esc(escO.nome)} a partir de ${mLabel(mIndex(escO.desde))}` : nO ? 'nenhuma escolhida ainda' : 'monte opções para o futuro'}</small></div>`;
+}
+function ctLinha() {
+  const c = state.carr, E = c.emps.filter(p => p.ini), O = c.opcs.filter(o => !o.escolhida && o.per.some(p => p.ini));
+  if (!E.length && !O.length) { $('ct-tl').innerHTML = '<p class="ct-vazio">Cadastre o seu emprego de hoje em Meu histórico para ver a linha do tempo.</p>'; return; }
+  const ini = Math.min(HOJE_IDX - 12, ...E.map(p => mIndex(p.ini)), ...O.flatMap(o => o.per.filter(p => p.ini).map(p => mIndex(p.ini)))) ;
+  const fim = Math.max(HOJE_IDX + 24, ...E.concat(O.flatMap(o => o.per)).filter(p => p.ini).map(p => (p.fim ? mIndex(p.fim) : mIndex(p.ini)) + 12));
+  const N = fim - ini + 1, pc = i => ((i - ini) / N * 100).toFixed(2) + '%', w = (a, b) => ((b - a + 1) / N * 100).toFixed(2) + '%';
+  const segH = (p, sim) => { const a = mIndex(p.ini), b = p.fim ? mIndex(p.fim) : (sim || mIndex(p.ini) > HOJE_IDX ? fim : Math.max(HOJE_IDX, a)); return `<div class="ct-seg ${p.tipo}${sim ? ' sim' : ''}" style="left:${pc(a)};width:${w(a, b)}" title="${esc((p.emp ? p.emp + ' · ' : '') + CT_TIPOS[p.tipo] + ' · ' + ctPerTxt(p))}">${esc(p.tipo === 'sem' ? '' : (p.emp ? p.emp + ' · ' : '') + CT_TIPOS[p.tipo])}</div>`; };
+  const hj = `<div class="ct-hoje" style="left:${pc(HOJE_IDX)}" title="hoje"></div>`;
+  const anos = []; const y0 = Math.ceil((ini + 7) / 12), y1 = Math.floor((fim + 7) / 12), passo = Math.max(1, Math.ceil((y1 - y0 + 1) / 8));
+  for (let y = y0; y <= y1; y += passo) anos.push(`<span style="left:${pc(y * 12 - 7)}">${2025 + y}</span>`);
+  const rows = [`<div class="ct-tl-row"><span></span><div class="ct-axis">${anos.join('')}</div></div>`,
+    `<div class="ct-tl-row"><div class="lab">Real<small>o que aconteceu e o que vale</small></div><div class="ct-track">${E.map(p => segH(p, false)).join('')}${hj}</div></div>`]
+    .concat(O.map(o => `<div class="ct-tl-row"><div class="lab" style="color:${ctCorOp(o)}">${esc(o.nome)}<small>opção</small></div><div class="ct-track" style="--ctc:${ctCorOp(o)}">${o.per.filter(p => p.ini).map(p => segH(p, true)).join('')}${hj}</div></div>`));
+  const cor = { clt: 'var(--s1)', pj: 'var(--accent)', socio: 'var(--dotc)', dono: 'var(--good)', sem: 'var(--line)' }, Es = E.slice().sort((a, b) => a.ini < b.ini ? -1 : 1), i1 = Es.length ? mIndex(Es[0].ini) : HOJE_IDX;
+  const barra = Es.filter(p => mIndex(p.ini) <= HOJE_IDX).map(p => { const a = mIndex(p.ini), b = Math.min(HOJE_IDX, p.fim ? mIndex(p.fim) : HOJE_IDX); return `<i style="flex:${Math.max(1, b - a + 1)};background:${cor[p.tipo]}" title="${esc(p.emp || CT_TIPOS[p.tipo])}"></i>`; }).join('');
+  $('ct-tl').innerHTML = `<div class="ct-tl">${rows.join('')}</div>
+    <div class="ct-tlm"><div class="bar">${barra}</div><div class="row"><span>${mLabel(i1)}</span><span>hoje</span></div>${O.length ? `<p class="hint">Opções em estudo: ${O.map(o => `<b style="color:${ctCorOp(o)}">${esc(o.nome)}</b>`).join(', ')}.</p>` : ''}</div>
+    <div class="ct-leg"><span><i style="background:var(--s1)"></i>CLT</span><span><i style="background:var(--accent)"></i>PJ</span><span><i style="background:var(--dotc)"></i>Sócio</span><span><i style="background:var(--good)"></i>Dono de empresa</span><span><i style="background:repeating-linear-gradient(45deg,var(--line) 0 3px,transparent 3px 6px);border:1px solid var(--line)"></i>Sem emprego</span><span><i style="border:2px dashed var(--muted)"></i>Opção em estudo</span></div>`;
+}
+const CT_BEN_SUG = { clt: [['VR / VA', 'mes'], ['Plano de saúde', 'mes'], ['Vale-transporte', 'mes'], ['Auxílio home office', 'mes'], ['Seguro de vida', 'mes'], ['PLR / bônus', 'ano']], pj: [['Plano de saúde', 'mes'], ['Auxílio', 'mes'], ['Bônus', 'ano']], socio: [['Plano de saúde', 'mes'], ['Distribuição extra de lucros', 'ano']] };
+const ctBenMes = b => (+b.valor || 0) / (b.freq === 'ano' ? 12 : 1);
+function ctFormHtml() {
+  const f = ctForm; if (!f) return '';
+  const p = f.p, t = p.tipo, r0 = p.reajs[0] || { valor: '', lucro: '' }, ed = !!f.id, op = f.dono !== 'emp' ? state.carr.opcs.find(o => o.id === f.dono) : null;
+  const tb = (k, rot, sub) => `<button type="button" data-ctft="${k}" aria-pressed="${t === k}">${rot}${sub ? `<small>${sub}</small>` : ''}</button>`;
+  const inp = (k, lab, v, typ, extra) => `<label>${lab}<input type="${typ || 'text'}" data-ctf="${k}" value="${esc(v ?? '')}"${extra || ''}></label>`;
+  const ck = (k, rot, dica) => `<label class="inline"><input type="checkbox" data-ctf="${k}"${p[k] ? ' checked' : ''}> ${rot}${dica ? ` <span class="subdet">${dica}</span>` : ''}</label>`;
+  const vLab = t === 'pj' ? 'Faturamento' : t === 'socio' ? 'Pró-labore' : 'Salário';
+  const r1 = ed ? ctValEm(p, Math.max(HOJE_IDX, mIndex(p.ini || mKey(HOJE_IDX)))) : r0;
+  const B = p.bens || [], totB = B.reduce((x, b) => x + ctBenMes(b), 0), sug = (CT_BEN_SUG[t] || []).filter(([n]) => !B.some(b => b.nome === n));
+  const ben = t === 'sem' || t === 'dono' ? '' : `<div class="ct-sec"><h3>Benefícios</h3>
+    ${t === 'clt' ? `<div class="ct-cks">${ck('x13', '13º salário', 'em dezembro')}${ck('xFer', 'Férias: o 1/3 a mais', 'a cada 12 meses')}${ck('xFgts', 'FGTS', '8% do bruto, dinheiro seu guardado')}</div>` : ''}
+    ${B.length ? `<div class="ct-bens">${B.map((b, k) => `<div class="ct-bem"><input type="text" data-ctb="${k}:nome" value="${esc(b.nome)}" placeholder="Nome" aria-label="Nome do benefício"><input type="number" step="50" min="0" data-ctb="${k}:valor" value="${+b.valor || ''}" placeholder="R$" aria-label="Valor"><select data-ctb="${k}:freq" aria-label="Frequência"><option value="mes"${b.freq !== 'ano' ? ' selected' : ''}>por mês</option><option value="ano"${b.freq === 'ano' ? ' selected' : ''}>por ano</option></select><button type="button" class="ct-lnk" data-ct="bemdel" data-i="${k}" aria-label="Tirar ${esc(b.nome)}">✕</button></div>`).join('')}</div>` : `<p class="hint">${t === 'pj' ? 'Benefícios que o contratante paga, além do faturamento.' : 'Nenhum benefício ainda.'}</p>`}
+    <div class="ct-btns" style="margin:0">${sug.map(([n, fq]) => `<button type="button" class="btn ghost tiny" data-ct="bemadd" data-n="${esc(n)}" data-f="${fq}">+ ${esc(n)}</button>`).join('')}<button type="button" class="btn ghost tiny" data-ct="bemadd" data-n="" data-f="mes">+ Outro</button></div>
+    ${B.length ? `<p class="hint">Total: <b>${fm(totB)} por mês</b> (os anuais divididos por 12). Entra no Meu plano junto com o ${t === 'pj' ? 'faturamento' : 'salário'}.</p>` : ''}</div>`;
+  return `<div class="ct-form" id="ct-form">
+    <div class="ct-sec"><h3>Dados principais</h3>
+    <div class="seg" role="group" aria-label="Tipo">${tb('clt', 'CLT')}${tb('pj', 'PJ')}${tb('socio', 'Sócio de empresa', 'pró-labore + lucros')}${tb('sem', 'Sem emprego')}${op ? '<button type="button" disabled title="Dono de empresa vale para negócios reais: cadastre em Meu histórico">Dono de empresa<small>só no histórico</small></button>' : tb('dono', 'Dono de empresa', 'negócio real')}</div>
+    <div class="ct-grid">
+      ${t === 'dono' ? ctFormNeg(p) : t !== 'sem' ? inp('emp', 'Empresa', p.emp, 'text', ' placeholder="Ex.: Empresa X"') + inp('cargo', 'Cargo', p.cargo, 'text', ' placeholder="Opcional"') : inp('emp', 'Nome', p.emp, 'text', ' placeholder="Ex.: sabático"')}
+      ${inp('ini', 'Início', p.ini, 'month')}
+      ${inp('fim', op ? 'Fim (vazio = em diante)' : 'Fim (vazio = emprego atual)', p.fim, 'month')}
+      ${t !== 'sem' && t !== 'dono' && !ed ? inp('valor', `${vLab} ${t === 'clt' ? (p.cltModo === 'liq' ? 'líquido' : 'bruto') : ''} no início (R$/mês)`, r0.valor || '', 'number', ' step="100" min="0"') : ''}
+      ${t === 'socio' && !ed ? inp('lucro', 'Lucros por mês no início (R$)', r0.lucro || '', 'number', ' step="100" min="0"') : ''}
+      ${t === 'clt' ? `<label>O valor é<select data-ctf="cltModo"><option value="bruto"${p.cltModo !== 'liq' ? ' selected' : ''}>Bruto</option><option value="liq"${p.cltModo === 'liq' ? ' selected' : ''}>Líquido</option></select></label>` : ''}
+      ${t === 'pj' ? inp('das', 'Impostos e DAS (% do faturamento)', p.das, 'number', ' step="0.1" min="0"') + inp('contab', 'Contabilidade (R$/mês)', p.contab, 'number', ' step="10" min="0"') : ''}
+      ${t === 'sem' ? inp('resc', 'Rescisão (R$, uma vez)', p.resc || '', 'number', ' step="500" min="0"') + inp('fgts', 'Saque do FGTS (R$, uma vez)', p.fgts || '', 'number', ' step="500" min="0"') + inp('seg', 'Seguro-desemprego (R$/mês)', p.seg || '', 'number', ' step="50" min="0"') + inp('segDe', 'Seguro de', p.segDe, 'month') + inp('segAte', 'Seguro até', p.segAte, 'month') + inp('contab', 'Custos do CNPJ parado (R$/mês)', p.contab || '', 'number', ' step="10" min="0"') : ''}
+    </div>
+    <p class="hint">${t === 'socio' ? 'Pró-labore com INSS de 11% e IR na fonte; lucros isentos (retenção de 10% só acima de R$ 50 mil por mês, Lei 15.270). ' : ''}${t === 'sem' ? 'Rescisão e FGTS entram uma vez, no primeiro mês. O seguro entra todo mês no intervalo escolhido. ' : ''}${ed || t === 'dono' ? '' : 'Os reajustes você coloca depois, dentro do período.'}</p></div>
+    ${t === 'dono' ? ctFormDonoInfo(p) : ''}
+    ${ed && t !== 'sem' && t !== 'dono' ? ctFormReajs(p, op) : ''}
+    ${ben}
+    <div class="ct-btns"><button class="btn tiny" type="button" data-ct="fsalvar">Salvar</button><button class="btn ghost tiny" type="button" data-ct="fcancelar">Cancelar</button><span class="ct-msg" id="ct-fmsg" role="status">${esc(f.msg || '')}</span></div></div>`;
+}
+// v396: dono de empresa ligado a um negócio de Empreendimentos
+function ctFormNeg(p) {
+  const L = ngLista();
+  if (!L.length) return `<div class="ct-wide"><p class="hint">Você ainda não tem negócio cadastrado. <button type="button" class="btn ghost tiny" data-ct="irneg">Cadastrar em Empreendimentos</button></p></div>`;
+  return `<label>Negócio<select data-ctf="neg"><option value="">Escolha…</option>${L.map(x => `<option value="${x.id}"${x.id === p.neg ? ' selected' : ''}>${esc(x.nome)}${x.uso === 'real' ? '' : ' (simulação)'}</option>`).join('')}</select></label>
+    <label class="inline" style="align-self:end"><input type="checkbox" data-ctf="paralelo"${p.paralelo ? ' checked' : ''}> Sigo no emprego ao mesmo tempo <span class="subdet">o salário continua</span></label>`;
+}
+function ctFormDonoInfo(p) {
+  const x = ctNeg(p); if (!x) return '';
+  const d = ctDonoVal(p, Math.max(HOJE_IDX, mIndex(p.ini || mKey(HOJE_IDX))));
+  return `<div class="ct-sec"><h3>Pró-labore e lucros</h3>
+    ${d && d.m ? `<p class="hint" style="margin:0">Em ${mLabel(d.m.i)}: pró-labore <b>${fm(d.pl)}</b> (${fm(d.plLiq)} no bolso) e lucros para você <b>${fm(d.luc)}</b>. Quando maduro: <b>${fm(d.R.voceMad)}/mês</b> para você.</p>` : '<p class="hint" style="margin:0">Preencha a receita do negócio no DRE para ver os valores.</p>'}
+    <p class="hint" style="margin:0">Os valores vêm de Empreendimentos › ${esc(x.nome)} e você muda lá (DRE, pró-labore, distribuição e sua parte). ${x.uso === 'real' ? '' : 'Ao salvar, o negócio passa de simulação para real e entra no Meu plano.'} ${p.paralelo ? '' : 'Durante o período, o salário sai do plano e a renda é a do negócio.'}</p></div>`;
+}
+// v395: salário e reajustes editáveis no pop-up; ao salvar valem no Meu plano, na Simulação e na comparação
+function ctFormReajs(p, op) {
+  const t = p.tipo, R = p.reajs, vLab = t === 'pj' ? 'Faturamento' : t === 'socio' ? 'Pró-labore' : p.cltModo === 'liq' ? 'Salário líquido' : 'Salário bruto';
+  const atual = !op && ctAtual(p), r1 = ctValEm(p, HOJE_IDX);
+  const linhas = R.slice().reverse().map((r, j, A) => { const ant = A[j + 1], mu = ant && ctTot(ant) > 0 ? ctTot(r) / ctTot(ant) - 1 : null;
+    return `<tr><td data-l="Desde"><input type="month" data-ctfr="${r.id}:mes" value="${esc(r.mes)}" aria-label="Desde"></td><td data-l="Motivo"><input type="text" data-ctfr="${r.id}:motivo" value="${esc(r.motivo)}" placeholder="dissídio, promoção…" aria-label="Motivo"></td><td data-l="${vLab}"><input type="number" step="100" min="0" data-ctfr="${r.id}:valor" value="${+r.valor || 0}" aria-label="${vLab}"></td>${t === 'socio' ? `<td data-l="Lucros"><input type="number" step="100" min="0" data-ctfr="${r.id}:lucro" value="${+r.lucro || 0}" aria-label="Lucros"></td>` : ''}<td data-l="No bolso">${fm(ctLiq(p, r.valor, r.lucro))}</td><td data-l="Mudança" class="${mu > 0 ? 'ct-pos' : ''}">${mu == null ? '—' : (mu > 0 ? '+' : '') + (mu * 100).toFixed(1).replace('.', ',') + '%'}</td><td>${R.length > 1 ? `<button type="button" class="ct-lnk" data-ct="frdelreaj" data-r="${r.id}" aria-label="Apagar reajuste">✕</button>` : ''}</td></tr>`; }).join('');
+  const onde = op ? 'Ao salvar, os novos valores valem na Simulação, em Itens dos módulos e na comparação.'
+    : atual ? (t === 'socio' ? 'Ao salvar, os reajustes futuros entram no Meu plano. O pró-labore e os lucros de hoje você ajusta em Meu plano › Receitas e custos.' : 'Ao salvar, o valor de hoje passa a ser o do Meu plano (Como você recebe) e os reajustes futuros entram nele no mês certo.')
+    : 'Ao salvar, os valores que caem dentro do Meu plano entram nele no mês certo.';
+  return `<div class="ct-sec"><h3>${t === 'pj' ? 'Faturamento' : t === 'socio' ? 'Pró-labore, lucros' : 'Salário'} e reajustes</h3>
+    ${r1 ? `<p class="hint" style="margin-top:0">${atual ? 'Hoje' : 'Valor mais recente'}: <b>${fm(ctTot(r1))}</b> ${ctLabV(p)}${t === 'socio' ? ' com lucros' : ''}, ${fm(ctLiq(p, r1.valor, r1.lucro))} no bolso.</p>` : ''}
+    <div class="ct-reaj"><table><thead><tr><th>Desde</th><th>Motivo</th><th>${vLab}</th>${t === 'socio' ? '<th>Lucros</th>' : ''}<th>No bolso</th><th>Mudança</th><th></th></tr></thead><tbody>${linhas}</tbody></table></div>
+    <div class="ct-btns" style="margin:8px 0 0"><button class="btn ghost tiny" type="button" data-ct="fraddreaj">+ Reajuste</button><span class="hint">${onde}</span></div></div>`;
+}
+// emprego atual mudou: o valor de hoje vai para o "Como você recebe" do Meu plano (o que o botão "Usar este valor" fazia)
+function ctAlinharAtual(p) {
+  if (!p || p.opc || !ctAtual(p) || (p.tipo !== 'clt' && p.tipo !== 'pj') || p !== ctEmpAtual()) return false;
+  const r = ctValEm(p, HOJE_IDX), h = ctPlanoHoje(state); if (!r || !(+r.valor > 0)) return false;
+  if (h.tipo === p.tipo && Math.abs(h.valor - r.valor) <= 1 && (p.tipo !== 'clt' || h.cltModo === p.cltModo) && (p.tipo !== 'pj' || (Math.abs(h.das - p.das) < .01 && Math.abs(h.contab - p.contab) < .01))) return false;
+  const i0 = mIndex((state.plan || {}).inicio || mKey(HOJE_IDX)), mi = mIndex(r.mes);
+  const ja = (state.orc.regimes || []).some(x => x.tipo === 'antes' && x.mes === r.mes);
+  trocarHoje(p.tipo, p.cltModo, r.valor, p.das, p.contab, mi > i0 && mi <= HOJE_IDX && !ja ? r.mes : null); state.carr.baseMes = mKey(HOJE_IDX); return true;
+}
+// o formulário abre num pop-up por cima da tela
+function ctPop() {
+  let pop = $('ct-pop');
+  if (!pop) { document.body.insertAdjacentHTML('beforeend', '<div class="conf-pop" id="ct-pop" hidden><div class="conf-dlg ct-dlg" role="dialog" aria-modal="true" aria-labelledby="ct-pop-t"><button type="button" class="conf-x" data-ct="fcancelar" aria-label="Fechar sem salvar" title="Fechar sem salvar">✕</button><section class="panel"><h2 id="ct-pop-t"></h2><div id="ct-pop-b"></div></section></div></div>'); pop = $('ct-pop'); }
+  if (!ctForm || tab !== 'carrtraj') { pop.hidden = true; $('ct-pop-b').innerHTML = ''; document.body.classList.remove('ct-modal'); return; }
+  const f = ctForm, op = f.dono !== 'emp' ? state.carr.opcs.find(o => o.id === f.dono) : null, ab = pop.hidden;
+  const foco = document.activeElement && document.activeElement.closest && document.activeElement.closest('#ct-pop') ? (document.activeElement.dataset.ctf || document.activeElement.dataset.ctb || document.activeElement.dataset.ctfr || '') : '';
+  $('ct-pop-t').textContent = f.id ? `Editar ${f.p.emp || CT_TIPOS[f.p.tipo]}` : op ? 'Novo período em ' + op.nome : f.p.tipo === 'sem' ? 'Período sem emprego' : 'Novo emprego';
+  $('ct-pop-b').innerHTML = ctFormHtml(); pop.hidden = false; document.body.classList.add('ct-modal');
+  if (ab) { const el = pop.querySelector('[data-ctf="emp"]'); if (el) el.focus(); }
+  else if (foco) { const el = pop.querySelector(`[data-ctf="${foco}"],[data-ctb="${foco}"],[data-ctfr="${foco}"]`); if (el) el.focus(); }
+}
+function ctCardHtml(p, op) {
+  const atual = !op && ctAtual(p), fut = p.ini && mIndex(p.ini) > HOJE_IDX, sem = p.tipo === 'sem', ab = ctAbertos.has(p.id);
+  const R = p.reajs, rU = R.length ? R[R.length - 1] : null, rA = R.length ? R[0] : null, ev = rA && rU && ctTot(rA) > 0 && R.length > 1 ? ctTot(rU) / ctTot(rA) - 1 : null;
+  const mx = Math.max(1, ...R.map(ctTot)), cargo = p.cargo ? esc(p.cargo) : '';
+  const hd = `<div class="ct-jh"><b>${esc(p.emp || (sem ? 'Sem emprego' : 'Sem nome'))}</b>${sem ? '' : `<span class="ct-chip ${p.tipo}">${CT_TIPOS[p.tipo]}</span>`}${atual ? '<span class="ct-chip now">atual</span>' : ''}${!op && fut ? '<span class="ct-chip fut">a partir de ' + mLabel(mIndex(p.ini)) + '</span>' : ''}<span class="per">${ctPerTxt(p)}${p.ini && !fut ? ' · ' + ctDur(p.ini, p.fim) : ''}</span><span class="r"><button type="button" class="btn ghost tiny" data-ct="editar" data-id="${p.id}">✎ Editar</button><button type="button" class="ct-lnk" data-ct="apagar" data-id="${p.id}">apagar</button></span></div>`;
+  if (p.tipo === 'dono') return ctCardDono(p, hd);
+  if (sem) return `<div class="ct-card semc">${hd}<span class="hint">${[+p.resc ? 'Rescisão ' + fm(p.resc) : '', +p.fgts ? 'FGTS ' + fm(p.fgts) : '', +p.seg ? `seguro-desemprego ${fm(p.seg)}/mês${p.segDe ? ' de ' + mLabel(mIndex(p.segDe)) : ''}${p.segAte ? ' a ' + mLabel(mIndex(p.segAte)) : ''}` : '', +p.contab ? 'CNPJ parado ' + fm(p.contab) + '/mês' : ''].filter(Boolean).join(' · ') || 'Sem salário nesses meses; os custos seguem normais.'}</span></div>`;
+  let aviso = '';
+  if (atual) { const h = ctPlanoHoje(state), r = ctValEm(p, HOJE_IDX);
+    if (r && h.valor > 0 && (h.tipo !== p.tipo || Math.abs(h.valor - r.valor) > 1 || (p.tipo === 'socio' && Math.abs(h.lucro - r.lucro) > 1) || (p.tipo === 'clt' && h.cltModo !== p.cltModo)))
+      aviso = `<div class="ct-aviso"><span>No Meu plano hoje: <b>${CT_TIPOS[h.tipo] || '—'} ${fm(h.valor)}</b>${h.tipo === 'socio' ? ' + lucros ' + fm(h.lucro) : ''}. Aqui: <b>${CT_TIPOS[p.tipo]} ${fm(r.valor)}</b>${p.tipo === 'socio' ? ' + lucros ' + fm(r.lucro) : ''} desde ${mLabel(mIndex(r.mes))}.</span>${p.tipo === 'socio' ? '<span class="hint">Para sócio, ajuste em Meu plano › Receitas e custos.</span>' : `<button class="btn tiny" type="button" data-ct="alinhar" data-id="${p.id}">Usar este valor no Meu plano</button>`}</div>`; }
+  const tab = `<div class="ct-reaj"><table><thead><tr><th>Desde</th><th>Motivo</th><th>${p.tipo === 'socio' ? 'Pró-labore' : p.tipo === 'pj' ? 'Faturamento' : p.cltModo === 'liq' ? 'Líquido' : 'Bruto'}</th>${p.tipo === 'socio' ? '<th>Lucros</th>' : ''}<th>No bolso</th><th>Mudança</th><th></th></tr></thead><tbody>${R.slice().reverse().map((r, j, A) => { const ant = A[j + 1], mu = ant && ctTot(ant) > 0 ? ctTot(r) / ctTot(ant) - 1 : null;
+    return `<tr><td data-l="Desde"><input type="month" data-ctr="${p.id}:${r.id}:mes" value="${esc(r.mes)}" aria-label="Desde"></td><td data-l="Motivo"><input type="text" data-ctr="${p.id}:${r.id}:motivo" value="${esc(r.motivo)}" placeholder="dissídio, promoção…" aria-label="Motivo"></td><td data-l="Valor"><input type="number" step="100" min="0" data-ctr="${p.id}:${r.id}:valor" value="${+r.valor || 0}" aria-label="Valor"></td>${p.tipo === 'socio' ? `<td data-l="Lucros"><input type="number" step="100" min="0" data-ctr="${p.id}:${r.id}:lucro" value="${+r.lucro || 0}" aria-label="Lucros"></td>` : ''}<td data-l="No bolso">${fm(ctLiq(p, r.valor, r.lucro))}</td><td data-l="Mudança" class="${mu > 0 ? 'ct-pos' : ''}">${mu == null ? '—' : (mu > 0 ? '+' : '') + (mu * 100).toFixed(1).replace('.', ',') + '%'}</td><td>${R.length > 1 ? `<button type="button" class="ct-lnk" data-ct="delreaj" data-id="${p.id}" data-r="${r.id}" aria-label="Apagar reajuste">✕</button>` : ''}</td></tr>`; }).join('')}</tbody></table>
+    <div class="ct-btns" style="margin-top:8px"><button class="btn ghost tiny" type="button" data-ct="addreaj" data-id="${p.id}">+ Reajuste</button><span class="hint">Data, novo valor e o motivo. Pode ser um reajuste futuro já combinado${op ? '' : ': ele entra no Meu plano no mês'}.</span></div></div>`;
+  return `<div class="ct-card${atual ? ' atual' : ''}">${hd}
+    <div class="ct-evo">${cargo ? `<span>${cargo}</span>` : ''}<span class="big">${rU ? fm(ctTot(rU)) : '—'}</span><span>${ctLabV(p)}${p.tipo === 'socio' ? ' com lucros' : ''}${atual || fut ? '' : ' no fim'}</span>${ev != null ? `<span class="ct-pos">${ev > 0 ? '+' : ''}${(ev * 100).toFixed(1).replace('.', ',')}% ${op ? 'no período' : 'na empresa'}</span>` : ''}${R.length > 1 ? `<span class="ct-steps" aria-hidden="true">${R.map(r => `<i style="height:${Math.max(8, Math.round(ctTot(r) / mx * 100))}%"></i>`).join('')}</span>` : ''}</div>
+    ${p.bens.length || (p.tipo === 'clt' && (p.x13 || p.xFer || p.xFgts)) ? `<div class="ct-benl"><span class="hint">Benefícios:</span> ${[p.tipo === 'clt' && p.x13 ? '13º' : '', p.tipo === 'clt' && p.xFer ? 'férias' : '', p.tipo === 'clt' && p.xFgts ? 'FGTS' : ''].filter(Boolean).concat(p.bens.map(b => `${esc(b.nome || 'benefício')} ${fm(+b.valor || 0)}${b.freq === 'ano' ? '/ano' : ''}`)).join(' · ')}${p.bens.length ? ` <b>= ${fm(p.ben)}/mês</b>` : ''}</div>` : ''}
+    ${aviso}<button class="ct-lnk ac" type="button" data-ct="tog" data-id="${p.id}" aria-expanded="${ab}">${ab ? '▾ Esconder' : '▸ Ver'} reajustes (${R.length})</button>${ab ? tab : ''}</div>`;
+}
+function ctCardDono(p, hd) {
+  const x = ctNeg(p), d = x ? ctDonoVal(p, Math.max(HOJE_IDX, mIndex(p.ini || mKey(HOJE_IDX)))) : null;
+  if (!x) return `<div class="ct-card">${hd}<div class="ct-aviso"><span>O negócio ligado a este período não existe mais em Empreendimentos.</span><button class="btn tiny" type="button" data-ct="editar" data-id="${p.id}">Escolher outro</button></div></div>`;
+  return `<div class="ct-card${ctAtual(p) ? ' atual' : ''}">${hd}
+    <div class="ct-evo"><span class="big">${d && d.m ? fm(d.voce) : '—'}</span><span>para você por mês${d && d.m ? ' em ' + mLabel(d.m.i) : ''}</span>${d && d.R.voceMad ? `<span>${fm(d.R.voceMad)}/mês quando maduro</span>` : ''}</div>
+    ${d && d.m ? `<div class="ct-benl"><span class="hint">Pró-labore ${fm(d.pl)} (${fm(d.plLiq)} no bolso) · lucros para você ${fm(d.luc)}${x.part < 100 ? ` · sua parte ${x.part}%` : ''}${d.poe > 0.5 ? ` · neste mês você põe ${fm(d.poe)} no negócio` : ''}${p.paralelo ? ' · em paralelo com o emprego' : ''}</span></div>` : '<p class="hint">Preencha a receita no DRE do negócio para ver os valores.</p>'}
+    ${x.uso === 'real' ? '' : `<div class="ct-aviso"><span>Este negócio está como simulação em Empreendimentos, então a renda dele não entra no Meu plano.</span><button class="btn tiny" type="button" data-ct="negreal" data-neg="${x.id}">Marcar como real</button></div>`}
+    <div class="ct-btns" style="margin:6px 0 0"><button class="btn ghost tiny" type="button" data-ct="irneg" data-neg="${x.id}">Abrir em Empreendimentos</button><span class="hint">Pró-labore, lucros e sua parte vêm de lá.</span></div></div>`;
+}
+function ctHist() {
+  const c = state.carr, E = c.emps.slice().sort((a, b) => (a.ini || '9') < (b.ini || '9') ? 1 : -1);
+  $('ct-hist').innerHTML = `<div class="ct-btns"><button class="btn tiny" type="button" data-ct="novo" data-tipo="${ctEmpAtual() ? 'clt' : (ctPlanoHoje(state).tipo || 'clt')}">+ Emprego</button><button class="btn ghost tiny" type="button" data-ct="novo" data-tipo="sem">+ Período sem emprego</button><span class="hint">${E.length ? 'Os empregos antigos são opcionais: servem para ver sua evolução.' : 'Comece pelo emprego de hoje. Os antigos são opcionais, servem para ver sua evolução.'}</span></div>
+    ${E.length ? `<div class="ct-jobs">${E.map(p => `<div class="ct-job"><div class="rail"><span class="dot ${p.tipo}"></span></div>${ctCardHtml(p, null)}</div>`).join('')}</div>` : '<p class="ct-vazio">Nenhum emprego cadastrado ainda.</p>'}`;
+}
+function ctOpcs() {
+  const c = state.carr, O = c.opcs;
+  $('ct-opcs').innerHTML = `${O.length ? `<div class="ct-opts">${O.map(op => { const cor = ctCorOp(op), P = op.per.slice().sort((a, b) => (a.ini || '9') < (b.ini || '9') ? -1 : 1), m = op.escolhida ? null : ctMetr(op.id);
+    return `<div class="ct-opt${op.escolhida ? ' esc' : ''}" style="--ctc:${cor}"><span class="tag"><i style="width:9px;height:9px;border-radius:50%;background:${cor};display:inline-block"></i>${op.escolhida ? `Escolhida · no Meu plano desde ${mLabel(mIndex(op.desde))}` : 'Opção · só simulação'}<button type="button" class="ct-del" data-ct="apagarop" data-op="${op.id}" title="Excluir esta opção">Excluir</button></span>
+      <input class="nome" type="text" data-cto="${op.id}" value="${esc(op.nome)}" aria-label="Nome da opção">
+      ${P.length ? `<ol>${P.map(p => `<li><div><b>${esc(p.tipo === 'sem' ? (p.emp || 'Sem emprego') : (p.emp || 'Sem nome') + ' · ' + CT_TIPOS[p.tipo])}</b><span class="hint">${ctPerTxt(p)}</span></div><div>${p.tipo === 'sem' ? '<span class="hint">sem salário</span>' : `<span>${fm(ctTot(p.reajs[0] || {}))} ${ctLabV(p)}</span>${p.reajs.length > 1 ? `<span class="hint">+${p.reajs.length - 1} reajuste${p.reajs.length > 2 ? 's' : ''}</span>` : ''}`}${op.escolhida ? '' : `<button type="button" class="ct-lnk ac" data-ct="editar" data-id="${p.id}">✎ editar</button><button type="button" class="ct-lnk" data-ct="tog" data-id="${p.id}">reajustes</button><button type="button" class="ct-lnk" data-ct="apagar" data-id="${p.id}">apagar</button>`}</div>${!op.escolhida && ctAbertos.has(p.id) ? ctCardHtml(p, op) : ''}</li>`).join('')}</ol>` : '<p class="ct-vazio">Sem períodos ainda.</p>'}
+      ${op.escolhida ? `<p class="hint">Os períodos desta opção estão no Meu histórico. Para mudar valores, edite lá.</p><button class="btn ghost tiny" type="button" data-ct="desfazer" data-op="${op.id}">Desfazer a escolha</button>` : `
+      <div class="ct-btns" style="margin:0"><button class="btn ghost tiny" type="button" data-ct="novoper" data-op="${op.id}">+ Período</button><button class="ct-lnk" type="button" data-ct="copiar" data-op="${op.id}">copiar</button></div>
+      ${m ? `<div class="num"><span>No bolso por mês, próximos 12 meses</span><span>${fm(m.m12)}</span><span>No bolso em 5 anos</span><span>${ctMi(m.s60)}</span><span>Patrimônio em ${mKey(m.iP).slice(0, 4)}</span><span>${ctMi(m.pat)}</span></div>` : ''}
+      <label class="cmp"><input type="checkbox" data-ctcmp="${op.id}"${ctCmpSel.has(op.id) ? ' checked' : ''}> Comparar</label>
+      ${ctUsarPend && ctUsarPend.id === op.id ? ctUsarHtml(op) : `<button class="btn tiny" type="button" data-ct="usar" data-op="${op.id}"${P.some(p => p.ini) ? '' : ' disabled'}>Usar a partir de…</button>`}`}
+    </div>`; }).join('')}</div>` : '<p class="ct-vazio">Nenhuma opção ainda. Crie uma para cada caminho que você está pensando: ficar, uma proposta, abrir empresa, um sabático.</p>'}
+    <div class="ct-btns" style="margin-top:12px"><button class="btn tiny" type="button" data-ct="novaop">+ Nova opção</button><span class="hint">Cada opção é uma sequência de períodos: pode ter reajustes, um tempo sem emprego no meio ou virar sócio depois. Na Simulação cada opção aparece como um item para incluir nos cenários.</span></div>
+    <p class="ct-msg" role="status">${esc(ctMsgTxt)}</p>`;
+  ctMsgTxt = '';
+}
+const ctMi = v => Math.abs(v) >= 1e6 ? 'R$ ' + (v / 1e6).toFixed(2).replace('.', ',') + ' mi' : Math.abs(v) >= 1e4 ? 'R$ ' + Math.round(v / 1e3) + ' mil' : fm(v);
+function ctUsarHtml(op) {
+  const u = ctUsarPend, at = state.carr.emps.filter(p => p.ini && u.mes && p.ini < u.mes && (!p.fim || p.fim >= u.mes)).sort((a, b) => a.ini < b.ini ? 1 : -1)[0];
+  const P = op.per.filter(p => p.ini).sort((a, b) => a.ini < b.ini ? -1 : 1), d = ctMes(u.mes) ? mIndex(u.mes) - mIndex(P[0].ini) : 0;
+  return `<div class="ct-usar"><label>A partir de <input type="month" data-ctu="mes" value="${esc(u.mes)}"></label><ul>
+    ${at ? `<li><b>${esc(at.emp || CT_TIPOS[at.tipo])}</b> termina em ${ctMes(u.mes) ? mLabel(mIndex(u.mes) - 1) : '…'} e fica no histórico.</li>` : ''}
+    ${P.map(p => `<li><b>${esc(p.emp || CT_TIPOS[p.tipo])}</b> (${CT_TIPOS[p.tipo]}) ${p.fim ? `de ${mLabel(mIndex(p.ini) + d)} a ${mLabel(mIndex(p.fim) + d)}` : `a partir de ${mLabel(mIndex(p.ini) + d)}`}.</li>`).join('')}
+    <li>O Meu plano passa a usar estes valores dali em diante. As outras opções continuam guardadas para comparar.</li></ul>
+    <div class="ct-btns" style="margin:0"><button class="btn tiny" type="button" data-ct="usarok" data-op="${op.id}">Confirmar</button><button class="btn ghost tiny" type="button" data-ct="usarno">Cancelar</button><span class="ct-msg">${esc(u.msg || '')}</span></div></div>`;
+}
+const ctMetrC = {};
+function ctMetr(id) {
+  const k = id || '';
+  const pl = calcPlano(id ? new Set(['carr:' + id]) : undefined), a = HOJE_IDX + 1; let s12 = 0, s60 = 0, sem = 0; const serie = {};
+  for (let i = HOJE_IDX - 24; i < a + 60; i++) { const m = pl.meses[i]; if (!m) continue; serie[i] = m.liq + (m.luc || 0); if (i < a) continue; const r = m.liq + m.evRec; if (i < a + 12) s12 += r; s60 += r; if (m.reg === 'Sem emprego') sem++; }
+  const iP = Math.min(HOJE_IDX + 120, pl.fim), pat = (pl.inv[iP] || 0) + (pl.parado[iP] || 0);
+  return (ctMetrC[k] = { m12: s12 / 12, s60, sem, pat, iP, serie });
+}
+function ctComparar() {
+  const c = state.carr, O = c.opcs.filter(o => !o.escolhida && o.per.length && ctCmpSel.has(o.id)).slice(0, 4);
+  if (!c.opcs.some(o => !o.escolhida && o.per.length)) { $('ct-cmp').innerHTML = '<p class="ct-vazio">Monte uma opção para comparar com o que você tem hoje.</p>'; return; }
+  const B = ctMetr(null), cols = [{ nome: 'Seguir como hoje', cor: 'var(--ink)', m: B }].concat(O.map(o => ({ nome: o.nome, cor: ctCorOp(o), m: ctMetrC[o.id] || ctMetr(o.id) })));
+  const best = (f, menor) => { const v = cols.map(x => f(x.m)); const b = menor ? Math.min(...v) : Math.max(...v); return x => cols.length > 1 && f(x.m) === b; };
+  const row = (lab, sub, f, fmt, menor) => { const bf = best(f, menor); return `<tr><td>${lab}${sub ? `<small>${sub}</small>` : ''}</td>${cols.map(x => `<td class="${bf(x) ? 'best' : ''}">${fmt(f(x.m))}</td>`).join('')}</tr>`; };
+  const tabela = `<div class="ct-cmpt"><table><thead><tr><th></th>${cols.map(x => `<th><i style="background:${x.cor}"></i>${esc(x.nome)}</th>`).join('')}</tr></thead><tbody>
+    ${row('No bolso por mês', 'média dos próximos 12 meses, com 13º, férias, FGTS e eventos do plano', m => m.m12, fm)}
+    ${row('No bolso em 5 anos', '', m => m.s60, ctMi)}
+    ${row('Meses sem renda', 'nos próximos 5 anos', m => m.sem, v => String(v), true)}
+    ${row('Patrimônio em ' + mKey(B.iP).slice(0, 4), 'pelo Meu plano, com os seus gastos', m => m.pat, ctMi)}
+    </tbody></table></div>`;
+  // gráfico: renda do mês (salário ou faturamento líquido + lucros), 2 anos para trás e 5 para frente
+  const i0 = Math.max(HOJE_IDX - 24, mIndex((state.plan || {}).inicio || mKey(HOJE_IDX)) + 1), i1 = HOJE_IDX + 60, W = 360, H = 200, x0 = 40, x1 = 350, y0 = 16, y1 = 168;
+  const vals = cols.flatMap(x => Object.values(x.m.serie)).filter(v => isFinite(v)); let lo = Math.min(0, ...vals), hi = Math.max(1, ...vals); hi += (hi - lo) * 0.08;
+  const X = i => x0 + (i - i0) / (i1 - i0) * (x1 - x0), Y = v => y1 - (v - lo) / (hi - lo) * (y1 - y0);
+  const path = (s, a, b) => { let d = ''; for (let i = a; i <= b; i++) if (isFinite(s[i])) d += (d ? ' H' + X(i).toFixed(1) + ' V' : 'M' + X(i).toFixed(1) + ' ') + Y(s[i]).toFixed(1); return d; };
+  const tk = [0, 1, 2, 3].map(j => lo + (hi - lo) * j / 3);
+  const svg = `<svg class="ct-svg" viewBox="0 0 ${W} ${H + 22}" width="100%" role="img" aria-label="Renda por mês: o real e as opções">
+    ${tk.map(v => `<line x1="${x0}" x2="${x1}" y1="${Y(v).toFixed(1)}" y2="${Y(v).toFixed(1)}" stroke="var(--line)"/><text x="${x0 - 4}" y="${(Y(v) + 3).toFixed(1)}" text-anchor="end">${Math.round(v / 1000)} mil</text>`).join('')}
+    <line x1="${X(HOJE_IDX).toFixed(1)}" x2="${X(HOJE_IDX).toFixed(1)}" y1="${y0}" y2="${y1}" stroke="var(--bad)" stroke-dasharray="2 3"/>
+    <text x="${X(HOJE_IDX).toFixed(1)}" y="${y1 + 16}" text-anchor="middle">hoje</text>${X(HOJE_IDX) - x0 > 50 ? `<text x="${x0}" y="${y1 + 16}">${mLabel(i0)}</text>` : ''}<text x="${x1}" y="${y1 + 16}" text-anchor="end">${mLabel(i1)}</text>
+    <path d="${path(B.serie, i0, HOJE_IDX)}" fill="none" stroke="var(--ink)" stroke-width="2.4"/>
+    ${cols.map((x, j) => `<path d="${path(x.m.serie, HOJE_IDX, i1)}" fill="none" stroke="${x.cor}" stroke-width="2" ${j ? 'stroke-dasharray="6 4"' : 'opacity=".55"'}/>`).join('')}</svg>`;
+  $('ct-cmp').innerHTML = `<div class="ct-cmpg">${tabela}<div>${svg}<p class="hint">Renda do mês: salário ou faturamento sem impostos, mais os lucros de sócio. Linha cheia é o plano de hoje; tracejadas são as opções marcadas em Comparar.</p></div></div>${O.length ? '' : '<p class="hint">Marque "Comparar" nas opções para ver as colunas delas.</p>'}`;
+}
+// formulário
+function ctLerForm() {
+  const f = ctForm; if (!f) return; const p = f.p;
+  document.querySelectorAll('#ct-form [data-ctf]').forEach(el => { const k = el.dataset.ctf;
+    if (el.type === 'checkbox') p[k] = el.checked;
+    else if (k === 'valor' || k === 'lucro') { if (!p.reajs[0]) p.reajs[0] = { id: uid(), mes: p.ini, valor: 0, lucro: 0, motivo: 'Entrada' }; p.reajs[0][k] = el.value; }
+    else p[k] = el.value; });
+  document.querySelectorAll('#ct-form [data-ctfr]').forEach(el => { const [rid, campo] = el.dataset.ctfr.split(':'), r = p.reajs.find(x => x.id === rid); if (!r) return;
+    r[campo] = campo === 'mes' ? (ctMes(el.value) ? el.value : r.mes) : campo === 'motivo' ? el.value.slice(0, 80) : Math.max(0, +el.value || 0); });
+  document.querySelectorAll('#ct-form [data-ctb]').forEach(el => { const [k, campo] = el.dataset.ctb.split(':'), b = (p.bens || [])[+k]; if (b) b[campo] = el.value; });
+}
+function ctSalvarForm() {
+  ctLerForm(); const f = ctForm, p = f.p, c = state.carr, op = f.dono !== 'emp' ? c.opcs.find(o => o.id === f.dono) : null, msg = t => { f.msg = t; renderCarrTraj(); };
+  if (p.tipo === 'dono' && !ctMes(p.ini) && ctNeg(p)) p.ini = ctNeg(p).ini;
+  if (!ctMes(p.ini)) return msg('Escolha o mês de início.');
+  if (p.fim && p.fim < p.ini) return msg('O fim precisa ser depois do início.');
+  if (op && mIndex(p.ini) <= HOJE_IDX) return msg('Numa opção, o período começa depois de hoje. O que já aconteceu vai no Meu histórico.');
+  if (p.tipo === 'dono' && !ctNeg(p)) return msg('Escolha o negócio.');
+  if (!f.id && p.tipo !== 'sem' && p.tipo !== 'dono' && !(+(p.reajs[0] || {}).valor > 0)) return msg('Digite o valor no início.');
+  if (p.tipo === 'sem' && +p.seg > 0 && (!ctMes(p.segDe) || !ctMes(p.segAte) || p.segAte < p.segDe)) return msg('Seguro-desemprego: preencha o início e o fim.');
+  if (!f.id && p.reajs[0]) { p.reajs[0].mes = p.ini; p.reajs[0].motivo = p.reajs[0].motivo || 'Entrada'; }
+  if (f.id && p.tipo !== 'sem' && p.tipo !== 'dono') {
+    p.reajs.forEach(r => { if (!ctMes(r.mes) || r.mes < p.ini) r.mes = p.ini; }); ctOrdReajs(p);
+    if (!p.reajs.some(r => +r.valor > 0)) return msg('Digite o valor do salário.');
+    if (p.fim && p.reajs.some(r => r.mes > p.fim)) return msg('Há reajuste depois do fim do período. Ajuste a data ou o fim.');
+  }
+  const np = ctNormPer(p), lista = op ? op.per : c.emps;
+  if (f.id) { const j = lista.findIndex(x => x.id === f.id); if (j >= 0) lista[j] = np; }
+  else {
+    // emprego novo em aberto: o que estava em aberto antes dele termina no mês anterior
+    if (!op && !np.fim && !np.paralelo) { const ant = lista.find(x => !x.fim && x.ini && x.ini < np.ini && x.tipo !== 'sem' && !(x.tipo === 'dono' && x.paralelo)); if (ant) ant.fim = mKey(mIndex(np.ini) - 1); }
+    lista.push(np); if (np.tipo !== 'sem') ctAbertos.add(np.id);
+  }
+  if (np.tipo === 'dono') { const x = ctNeg(np); if (x) { x.uso = 'real'; if (!np.emp) np.emp = x.nome; } state.carr.negIgn = (state.carr.negIgn || []).filter(id => id !== np.neg); }
+  ctForm = null; if (!op) ctAlinharAtual(np); ctSync(); save(); renderCarrTraj();
+}
+function ctNovaOp() {
+  const c = state.carr, n = c.opcs.length + 1, nomes = new Set(c.opcs.map(o => o.nome)); let k = n; while (nomes.has('Opção ' + k)) k++;
+  const op = { id: uid(), nome: 'Opção ' + k, per: [], escolhida: false, desde: '', fimAnt: null }; c.opcs.push(op); ctCmpSel.add(op.id);
+  const h = ctEmpAtual(), r = h ? ctValEm(h, HOJE_IDX) : null;
+  ctForm = { dono: op.id, id: null, p: ctNormPer({ tipo: h ? h.tipo : 'clt', ini: mKey(HOJE_IDX + 3), das: h ? h.das : 6, contab: h ? h.contab : 0, reajs: [{ mes: mKey(HOJE_IDX + 3), valor: r ? r.valor : 0, lucro: r ? r.lucro : 0, motivo: 'Entrada' }] }) };
+  ctForm.p.reajs[0].valor = ''; save();
+}
+// a proposta calculada em PJ e PF vira uma opção
+function ctOpcaoDoCalculo() {
+  const p = state.pj || {}, o = pjOpts(), clt = p.dir === 'pjclt', mes = mKey(HOJE_IDX + 1);
+  let per;
+  if (!clt && o.fat) { const r = pjCalc(o.fat, o), contab = Math.round(o.contab + o.outros); per = ctNormPer({ emp: 'Proposta PJ', tipo: 'pj', ini: mes, das: Math.round(Math.max(0, (o.fat - r.liq - contab) / o.fat * 100) * 10) / 10, contab, bens: clone((state.pj || {}).bensPJ || []), reajs: [{ mes, valor: o.fat, motivo: 'Entrada' }] }); }
+  else if (clt && o.clt) { per = ctNormPer({ emp: 'Proposta CLT', tipo: 'clt', ini: mes, cltModo: 'bruto', bens: clone((state.pj || {}).bens || []), reajs: [{ mes, valor: o.clt, motivo: 'Entrada' }] }); }
+  else return 'Preencha a proposta acima para usar o cálculo.';
+  const op = { id: uid(), nome: per.emp, per: [per], escolhida: false, desde: '', fimAnt: null }; state.carr.opcs.push(op); ctCmpSel.add(op.id);
+  ctSync(); save(); return '';
+}
+document.addEventListener('click', e => {
+  const b = e.target.closest && e.target.closest('[data-ct],[data-ctft],[data-ctpj]'); if (!b || !state.carr) return;
+  if (b.dataset.ctpj) { const m = ctOpcaoDoCalculo(); const el = $('pj-troca-msg'); if (m) { if (el) el.textContent = m; return; } ctMsgTxt = 'Proposta guardada como opção. Ajuste o início e os reajustes aqui.'; showTab('carrtraj'); return; }
+  if (b.dataset.ctft) { ctLerForm(); ctForm.p.tipo = b.dataset.ctft; if (b.dataset.ctft === 'sem' || b.dataset.ctft === 'dono') ctForm.p.reajs = []; if (b.dataset.ctft === 'dono' && !ctForm.p.neg) { const L = ngLista(), r = L.find(x => x.uso === 'real' && !state.carr.emps.some(p => p.neg === x.id)) || (L.length === 1 ? L[0] : null); if (r) { ctForm.p.neg = r.id; if (!ctForm.p.ini) ctForm.p.ini = r.ini; } } return renderCarrTraj(); }
+  const k = b.dataset.ct, c = state.carr, id = b.dataset.id, opId = b.dataset.op;
+  if (k === 'ir') return showTab('carrtraj');
+  if (k === 'irneg') { ctForm = null; if (b.dataset.neg && state.neg) state.neg.sel = b.dataset.neg; renderCarrTraj(); return showTab(b.dataset.neg ? 'negdre' : 'negcad'); }
+  if (k === 'negreal') { const x = ngLista().find(y => y.id === b.dataset.neg); if (x) { x.uso = 'real'; ctSync(); save(); renderCarrTraj(); } return; }
+  if (k === 'novo') { const h = ctEmpAtual(), t = b.dataset.tipo === 'sem' ? 'sem' : b.dataset.tipo; ctForm = { dono: 'emp', id: null, p: ctNormPer({ tipo: t, ini: '', das: h ? h.das : 6, contab: t === 'sem' ? 0 : h ? h.contab : 0, x13: t === 'clt', xFer: t === 'clt', xFgts: t === 'clt' }) }; return renderCarrTraj(); }
+  if (k === 'novoper') { const op = c.opcs.find(o => o.id === opId), ult = op.per.filter(p => p.ini).sort((a, b2) => a.ini < b2.ini ? 1 : -1)[0], ini = ult ? (ult.fim ? mKey(mIndex(ult.fim) + 1) : mKey(mIndex(ult.ini) + 6)) : mKey(HOJE_IDX + 3);
+    ctForm = { dono: op.id, id: null, p: ctNormPer({ tipo: 'clt', ini }) }; return renderCarrTraj(); }
+  if (k === 'novaop') { ctNovaOp(); return renderCarrTraj(); }
+  if (k === 'fcancelar') { ctForm = null; return renderCarrTraj(); }
+  if (k === 'bemadd') { ctLerForm(); ctForm.p.bens = ctForm.p.bens || []; ctForm.p.bens.push({ id: uid(), nome: b.dataset.n || '', valor: '', freq: b.dataset.f === 'ano' ? 'ano' : 'mes' }); ctPop(); const L = document.querySelectorAll('#ct-pop [data-ctb$=":valor"]'); if (L.length) L[L.length - 1].focus(); return; }
+  if (k === 'bemdel') { ctLerForm(); ctForm.p.bens.splice(+b.dataset.i, 1); return ctPop(); }
+  if (k === 'fsalvar') return ctSalvarForm();
+  if (k === 'fraddreaj') { ctLerForm(); const p = ctForm.p, u = p.reajs[p.reajs.length - 1], op = ctForm.dono !== 'emp', base = u && u.mes ? mIndex(u.mes) : mIndex(p.ini || mKey(HOJE_IDX));
+    const mes = mKey(op ? base + 12 : Math.max(HOJE_IDX + 1, base + 1)); p.reajs.push({ id: uid(), mes, valor: u ? Math.round(u.valor * 1.05) : 0, lucro: u ? u.lucro : 0, motivo: 'Reajuste' }); ctOrdReajs(p); ctPop();
+    const el = document.querySelector(`#ct-pop [data-ctfr="${p.reajs.find(r => r.mes === mes && r.motivo === 'Reajuste').id}:valor"]`); if (el) el.focus(); return; }
+  if (k === 'frdelreaj') { ctLerForm(); if (ctForm.p.reajs.length > 1) ctForm.p.reajs = ctForm.p.reajs.filter(r => r.id !== b.dataset.r); return ctPop(); }
+  if (k === 'editar') { const a = ctAcha(id); if (!a) return; ctForm = { dono: a.op ? a.op.id : 'emp', id, p: ctNormPer(clone(a.p)) }; return renderCarrTraj(); }
+  if (k === 'apagar') { const a = ctAcha(id); if (!a || !confirmar(`Apagar ${a.p.emp || CT_TIPOS[a.p.tipo]} (${ctPerTxt(a.p)})?${a.p.tipo === 'dono' ? ' O negócio continua em Empreendimentos.' : ''}`)) return; a.lista.splice(a.lista.indexOf(a.p), 1); if (a.p.tipo === 'dono' && a.p.neg && !a.op) { state.carr.negIgn = state.carr.negIgn || []; if (!state.carr.negIgn.includes(a.p.neg)) state.carr.negIgn.push(a.p.neg); } ctSync(); save(); return renderCarrTraj(); }
+  if (k === 'tog') { if (ctAbertos.has(id)) ctAbertos.delete(id); else ctAbertos.add(id); return renderCarrTraj(); }
+  if (k === 'addreaj') { const a = ctAcha(id); if (!a) return; const u = a.p.reajs[a.p.reajs.length - 1], mes = a.op ? mKey(Math.max(mIndex(a.p.ini) + 12, u && u.mes ? mIndex(u.mes) + 12 : 0)) : mKey(Math.max(HOJE_IDX + 1, u && u.mes ? mIndex(u.mes) + 1 : 0));
+    a.p.reajs.push({ id: uid(), mes, valor: u ? Math.round(u.valor * 1.05) : 0, lucro: u ? u.lucro : 0, motivo: 'Reajuste' }); ctOrdReajs(a.p); ctSync(); save(); return renderCarrTraj(); }
+  if (k === 'delreaj') { const a = ctAcha(id); if (!a || a.p.reajs.length < 2) return; a.p.reajs = a.p.reajs.filter(r => r.id !== b.dataset.r); if (!a.op) ctAlinharAtual(a.p); ctSync(); save(); return renderCarrTraj(); }
+  if (k === 'alinhar') { const a = ctAcha(id), r = a && ctValEm(a.p, HOJE_IDX); if (!r || a.p.tipo === 'socio') return;
+    const i0 = mIndex((state.plan || {}).inicio || mKey(HOJE_IDX)); trocarHoje(a.p.tipo, a.p.cltModo, r.valor, a.p.das, a.p.contab, mIndex(r.mes) > i0 && mIndex(r.mes) <= HOJE_IDX ? r.mes : null); c.baseMes = mKey(HOJE_IDX); ctSync(); save(); return renderCarrTraj(); }
+  if (k === 'copiar') { const op = c.opcs.find(o => o.id === opId); const cp = clone(op); cp.id = uid(); cp.nome = op.nome + ' (cópia)'; cp.escolhida = false; cp.desde = ''; cp.fimAnt = null; cp.per.forEach(p => { p.id = uid(); p.reajs.forEach(r => { r.id = uid(); }); }); c.opcs.push(cp); ctCmpSel.add(cp.id); ctSync(); save(); return renderCarrTraj(); }
+  if (k === 'apagarop') { const op = c.opcs.find(o => o.id === opId); if (!op) return;
+    const usa = (state.cenarios || []).filter(cn => cn && cn.on && cn.on['carr:' + op.id]).map(cn => cn.nome).filter(Boolean);
+    if (!confirmar(`Excluir a opção ${op.nome}? Ela sai também das outras abas: da Simulação${usa.length ? ` (cenário${usa.length > 1 ? 's' : ''} ${usa.join(', ')})` : ''}, de Itens dos módulos no Meu plano e da comparação${op.escolhida ? '. Como ela está escolhida, os períodos dela saem do histórico e o Meu plano volta ao que era antes' : ''}. Não dá para desfazer.`)) return;
+    if (op.escolhida) ctDesfazer(op.id);
+    c.opcs = c.opcs.filter(o => o !== op); ctCmpSel.delete(op.id); if (ctUsarPend && ctUsarPend.id === op.id) ctUsarPend = null; (state.cenarios || []).forEach(cn => { if (cn && cn.on) delete cn.on['carr:' + op.id]; }); ctSync(); save(); return renderCarrTraj(); }
+  if (k === 'usar') { const op = c.opcs.find(o => o.id === opId), i = ctOpIni(op); ctUsarPend = { id: opId, mes: i && mIndex(i) > HOJE_IDX ? i : mKey(HOJE_IDX + 1) }; return renderCarrTraj(); }
+  if (k === 'usarno') { ctUsarPend = null; return renderCarrTraj(); }
+  if (k === 'usarok') { const m = ctUsar(opId, ctUsarPend && ctUsarPend.mes); if (m) { ctUsarPend.msg = m; return renderCarrTraj(); } ctUsarPend = null; ctMsgTxt = 'Pronto: a opção entrou no Meu plano e no histórico.'; return renderCarrTraj(); }
+  if (k === 'desfazer') { if (!confirmar('Desfazer a escolha? Os períodos desta opção saem do histórico e o Meu plano volta ao que era antes.')) return; ctDesfazer(opId); return renderCarrTraj(); }
+});
+document.addEventListener('change', e => {
+  const t = e.target; if (!t.closest || !t.closest('#p-carrtraj,#ct-pop') || !state.carr) return;
+  if (t.dataset.ctr) { const [pid, rid, campo] = t.dataset.ctr.split(':'), a = ctAcha(pid), r = a && a.p.reajs.find(x => x.id === rid); if (!r) return;
+    if (campo === 'mes') { if (!ctMes(t.value)) return renderCarrTraj(); r.mes = t.value < a.p.ini ? a.p.ini : t.value; ctOrdReajs(a.p); }
+    else if (campo === 'motivo') r.motivo = t.value.slice(0, 80); else r[campo] = Math.max(0, +t.value || 0);
+    if (!a.op) ctAlinharAtual(a.p); ctSync(); save(); return renderCarrTraj(); }
+  if (t.dataset.cto) { const op = state.carr.opcs.find(o => o.id === t.dataset.cto); if (op) { op.nome = t.value.trim().slice(0, 60) || op.nome; ctSync(); save(); renderCarrTraj(); } return; }
+  if (t.dataset.ctcmp) { if (t.checked) ctCmpSel.add(t.dataset.ctcmp); else ctCmpSel.delete(t.dataset.ctcmp); return ctComparar(); }
+  if (t.dataset.ctu && ctUsarPend) { ctUsarPend.mes = t.value; ctUsarPend.msg = ''; return renderCarrTraj(); }
+  if (t.dataset.ctf === 'cltModo' || t.dataset.ctf === 'paralelo') { ctLerForm(); return renderCarrTraj(); }
+  if (t.dataset.ctf === 'neg' && ctForm) { ctLerForm(); const x = ctNeg(ctForm.p); if (x && !ctForm.id) { ctForm.p.emp = x.nome; if (!ctForm.p.ini) ctForm.p.ini = x.ini; } return renderCarrTraj(); }
+});
+document.addEventListener('keydown', e => { if (e.key === 'Escape' && ctForm && $('ct-pop') && !$('ct-pop').hidden) { ctForm = null; renderCarrTraj(); } });
+document.addEventListener('change', e => { const t = e.target; if (t.dataset && t.dataset.ctfr && ctForm) { ctLerForm(); if (!/:motivo$/.test(t.dataset.ctfr)) ctPop(); return; } if (t.dataset && t.dataset.ctb && ctForm) { ctLerForm(); if (t.dataset.ctb.endsWith(':freq')) ctPop(); } });
+
 let state = normalizar(DEFAULTS), cps = [], db = null, tab = 'inicio';
 // perfis: o dono usa os documentos da raiz; cada outra pessoa usa perfis/<id>/ (só ela e o dono leem)
 let PFX = '', souDono = true, meuId = null, userCap = null;
@@ -11654,9 +12373,20 @@ function aplicarBase(b) {
   if (typeof b.sheetId === 'string' && /^[\w-]{20,80}$/.test(b.sheetId)) SHEET_ID = b.sheetId;
   if (typeof b.senhaZip === 'string' && b.senhaZip) SENHA_ZIP = b.senhaZip;
 }
+// v396: nome antigo de categoria (Filipe pediu Táxi no nome em 24/11)
+function catRen(n) { return n === 'Transporte (Uber/99)' ? 'Transporte (Uber/99/Táxi)' : n === 'cat~Transporte (Uber/99)' ? 'cat~Transporte (Uber/99/Táxi)' : n; }
+function catRenDeep(o) {
+  if (Array.isArray(o)) { o.forEach((v, i) => { o[i] = typeof v === 'string' ? catRen(v) : catRenDeep(v); }); return o; }
+  if (!o || typeof o !== 'object') return o;
+  Object.keys(o).forEach(k => { const v = o[k], k2 = catRen(k), v2 = typeof v === 'string' ? catRen(v) : catRenDeep(v); if (k2 !== k) { delete o[k]; o[k2] = v2; } else if (v2 !== v) o[k] = v2; });
+  return o;
+}
+// lançamentos: devolve os meses que mudaram (para regravar)
+function catRenGastos(g) { const M = []; if (!g || typeof g !== 'object') return M; Object.keys(g).forEach(m => { let ch = false; (Array.isArray(g[m]) ? g[m] : []).forEach(it => { if (it && typeof it.cat === 'string' && catRen(it.cat) !== it.cat) { it.cat = catRen(it.cat); ch = true; } }); if (ch) M.push(m); }); return M; }
 function normalizar(s) {
   // o que vem do banco chega congelado (somente leitura); copiar antes de usar como estado editável
   s = merge(clone(DEFAULTS), clone(s || {}));
+  catRenDeep(s);
   if (!Array.isArray(s.compras)) s.compras = [];
   if (!s.patr || typeof s.patr !== 'object') s.patr = { fgts: true, anos: 10 };
   if (!Array.isArray(s.cenarios) || !s.cenarios.length) s.cenarios = clone(DEFAULTS.cenarios);
@@ -11697,6 +12427,7 @@ function normalizar(s) {
   soNormalizar(s);
   vgNormalizar(s);
   ngNormalizar(s);
+  carrNormalizar(s);
   indNormalizar(s);
   famNormalizar(s);
   famCasaNormalizar(s);
@@ -11712,13 +12443,14 @@ function normalizar(s) {
 try { if (quemLocal === 'dono') { const b = JSON.parse(localStorage.getItem('painel-priv')); if (b) aplicarBase(b); } } catch (e) {}
 try { const l = JSON.parse(localStorage.getItem(LSK('painel-fin-v2'))); if (l) state = normalizar(l); } catch (e) {}
 tab = 'modulos';
-const TABS = ['modulos', 'simcen', 'agcal', 'aglis', 'comousar', 'inicio', 'trabvg', 'viagvg', 'viagens', 'viagcmp', 'viagrot', 'viagcus', 'viagdur', 'negvg', 'negcad', 'negdre', 'negfc', 'negabr', 'negeco', 'negpesq', 'negviab', 'negcont', 'negval', 'negprec', 'negsoc', 'negcmp', 'famvg', 'fampes', 'famcasa', 'famcomp', 'indvg', 'indnum', 'indalv', 'rdvg', 'rdprod', 'rdcomp', 'leia', 'global', 'gastos', 'carteira', 'orcamento', 'compras', 'cenarios', 'patrimonio', 'comparador', 'simulador', 'pjpf', 'stock', 'config', 'familia'];
+const TABS = ['carrtraj', 'modulos', 'simcen', 'agcal', 'aglis', 'comousar', 'inicio', 'trabvg', 'viagvg', 'viagens', 'viagcmp', 'viagrot', 'viagcus', 'viagdur', 'negvg', 'negcad', 'negdre', 'negfc', 'negabr', 'negeco', 'negpesq', 'negviab', 'negcont', 'negval', 'negprec', 'negsoc', 'negcmp', 'famvg', 'fampes', 'famcasa', 'famcomp', 'indvg', 'indnum', 'indalv', 'rdvg', 'rdprod', 'rdcomp', 'leia', 'global', 'gastos', 'carteira', 'orcamento', 'compras', 'cenarios', 'patrimonio', 'comparador', 'simulador', 'pjpf', 'stock', 'config', 'familia'];
 // v345: ao abrir (login ou recarregar) sempre começa nos módulos, a roleta; o #tela do endereço não é seguido
 if (!TABS.includes(tab)) tab = 'modulos';
 
 let saveTimer = null, writing = false, pending = false;
 function setSave(t) { $('saveState').textContent = t; $('saveDot').className = 'status-dot' + (/carregando|salvando/.test(t) ? ' loading' : /indispon|não|limite/i.test(t) ? ' err' : ''); }
 function save() {
+  try { if (state && state.carr) ctSync(); } catch (e) { console.error(e); }
   planCache = null;
   try { localStorage.setItem(LSK('painel-fin-v2'), JSON.stringify(state)); } catch (e) {}
   if (!db) return;
@@ -11901,7 +12633,7 @@ function cpInicial() {
 function lastCp() { const s = cps.slice().sort((a, b) => a.mes < b.mes ? -1 : 1); return s[s.length - 1] || CP_PLANILHA[CP_PLANILHA.length - 1] || { mes: mKey(HOJE_IDX), valor: 0 }; }
 function projetar(cen, opts) {
   opts = opts || {};
-  const cfg = state.cfg, cp = lastCp(), s0 = mIndex(cp.mes), H = Math.max(12, Math.round(cfg.anos * 12));
+  const cfg = state.cfg, cp = lastCp(), s0 = mIndex(cp.mes), H = Math.max(12, Math.round(cfg.anos * 12), +opts.H || 0);
   const buys = (opts.compras || comprasDe(cen)).map(b => ({ b, m0: mIndex(b.mes), sch: schedule(b, b.modo) }));
   let inv = cp.valor, fIpca = 1, fSal = 1;
   const pesos = state.cfg.rendBase === 'carteira' && !(cen.manual !== '' && +cen.manual > 0) ? pesosCarteira() : [];
@@ -11965,8 +12697,9 @@ function simulate(c, b, mode) {
   const out = { mode, pat: [], patReal: [], sobra: [], parcela: [], inv: [] };
   for (let t = 1; t <= T; t++) {
     const yr = Math.floor((t - 1) / 12);
-    const renda = c.salario * (c.ajSal ? Math.pow(1 + ipca, yr) : 1);
-    const contas = c.contas * Math.pow(1 + im, t - 1);
+    const sr = c.serie, sx = sr && t - 1 < sr.renda.length ? t - 1 : -1;
+    const renda = sx >= 0 ? sr.renda[sx] : sr ? sr.renda[sr.renda.length - 1] || 0 : c.salario * (c.ajSal ? Math.pow(1 + ipca, yr) : 1);
+    const contas = sx >= 0 ? sr.contas[sx] : sr ? sr.contas[sr.contas.length - 1] || 0 : c.contas * Math.pow(1 + im, t - 1);
     const inUse = t > useFrom;
     const neg = b.tipo === 'negocio', moradia = neg ? 0 : (inUse ? (+b.posse || 0) : (+b.economia || 0)) * Math.pow(1 + ipca, yr);
     const rendaB = inUse ? (neg ? negLucro(b, t - useFrom) : (+b.renda || 0)) * Math.pow(1 + ipca, yr) : 0;
@@ -11977,7 +12710,7 @@ function simulate(c, b, mode) {
     if (mode === 'cons' && t <= nC) { parcelaCons = base * Math.pow(1 + corr, yr) * factor; parcela = parcelaCons; }
     parcelasTot += parcela;
     const sobra = renda + rendaB - contas - moradia - parcela;
-    inv = inv * (1 + rm) + sobra;
+    inv = inv * (1 + rm) + sobra - (sx >= 0 ? sr.lump[sx] || 0 : 0);
     let debt = saldo, carta = 0;
     if (mode === 'cons') {
       carta = C0 * Math.pow(1 + corr, yr);
@@ -11997,7 +12730,7 @@ function simulate(c, b, mode) {
     const pat = mode === 'cons' && !owned ? inv + carta - debt : inv + bemV - debt;
     if (inv < minInv) minInv = inv;
     if (inv < 0 && !minInvT) minInvT = t;
-    out.pat.push(pat); out.patReal.push(pat / Math.pow(1 + ipca, t / 12));
+    out.pat.push(pat); out.patReal.push(pat / Math.pow(1 + ipca, t / 12) / (c.defl0 || 1));
     out.sobra.push(sobra); out.parcela.push(parcela); out.inv.push(inv);
   }
   out.H = H; out.lumpInicial = lumpInicial;
@@ -12754,13 +13487,23 @@ function renderCustoEntrada(b, el) {
 const SC = [{ id: 'avista', name: 'À vista', c: 'var(--s3)' }, { id: 'sac', name: 'Financ. SAC', c: 'var(--s5)' }, { id: 'price', name: 'Financ. Price', c: 'var(--s2)' }, { id: 'cons', name: 'Consórcio', c: 'var(--s4)' }];
 function renderPagamento(cen, p, r1) {
   const b = state.compras.find(x => x.id === state.pgCompra);
-  if (!b || mIndex(b.mes) <= p.s0) { $('cards-pg').innerHTML = '<p class="hint">Adicione uma compra futura para comparar as formas de pagamento.</p>'; $('ch-pg').innerHTML = ''; $('lg-pg').innerHTML = ''; $('ro-pg').innerHTML = ''; if ($('pg-ent')) $('pg-ent').innerHTML = ''; return; }
-  const cfg = state.cfg;
-  const c = { patrimonio: p.cp.valor, rend: cenNetA(cen, r1) * 100, salario: projMes(mKey(HOJE_IDX)).liq, contas: projMes(mKey(HOJE_IDX)).custos - (+b.economia || 0), ipca: r1.ipca * 100, ajSal: cfg.ajSal };
+  if (!b || mIndex(b.mes) <= p.s0) { $('cards-pg').innerHTML = '<p class="hint">Adicione uma compra futura para comparar as formas de pagamento.</p>'; $('ch-pg').innerHTML = ''; $('lg-pg').innerHTML = ''; $('ro-pg').innerHTML = ''; if ($('pg-ent')) $('pg-ent').innerHTML = ''; if ($('pg-quando')) $('pg-quando').innerHTML = ''; return; }
+  const cfg = state.cfg, m0 = mIndex(b.mes), k0 = m0 - p.s0;
   const bb = Object.assign({}, b, { horiz: Math.max(12, Math.round(cfg.anos * 12)) });
+  // v397: a compra acontece no mês dela; até lá, e depois, renda e gastos seguem a projeção do cenário mês a mês (sem esta compra)
+  const T = Math.max(bb.horiz, Math.round(+b.prazo || 1), Math.round(+b.cPrazo || 1)) + 1;
+  const q = projetar(cen, { compras: comprasDe(cen).filter(x => x.id !== b.id), H: k0 + T });
+  const r0 = rates(m0 + 1, cen.aj), pesos = cfg.rendBase === 'carteira' && !(cen.manual !== '' && +cen.manual > 0) ? pesosCarteira() : [];
+  const nc0 = pesos.length ? carteiraNetA(pesos, r0) : null, rend0 = nc0 != null && isFinite(nc0) ? nc0 : cenNetA(cen, r0);
+  const fI = t => q.defl[Math.min(q.defl.length - 1, k0 + t)] || 1, econ = +b.economia || 0;
+  const serie = { renda: [], contas: [], lump: [] };
+  for (let t = 1; t <= T; t++) { const j = k0 + t - 1; if (j >= q.renda.length) break;
+    serie.renda.push(q.renda[j]); serie.contas.push(q.gastos[j] + q.parcela[j] - econ * fI(t - 1)); serie.lump.push(q.det[j + 1] ? q.det[j + 1].lump || 0 : 0); }
+  const c = { patrimonio: q.inv[k0], rend: rend0 * 100, salario: serie.renda[0] || 0, contas: serie.contas[0] || 0, ipca: r0.ipca * 100, ajSal: cfg.ajSal, serie, defl0: fI(0) };
   const res = SC.map(s => simulate(c, bb, s.id));
   const best = res.reduce((m, r) => r.patRealH > m.patRealH ? r : m).mode;
-  const lab = t => mLabel(p.s0 + t);
+  const lab = t => mLabel(m0 + t);
+  if ($('pg-quando')) $('pg-quando').innerHTML = `Compra em <b>${mLabel(m0)}</b>, com ${fm(q.inv[k0])} investidos nesse mês pela projeção do cenário. Renda e gastos seguem a projeção mês a mês (trocas de emprego, reajustes e outras compras).`;
   $('cards-pg').innerHTML = SC.map((s, j) => { const r = res[j]; const chips = [];
     if (r.mode === best) chips.push('<span class="chip best">maior patrimônio</span>');
     if (b.modo === r.mode) chips.push('<span class="chip info">na projeção</span>');
@@ -14525,7 +15268,7 @@ let SHEET_ID = null;   // planilha de gastos do dono (privado/base); outros perf
 const SHEETS = 'Google Sheets';
 const CATS_PADRAO = [
   ['Moradia', 'Fixos', 0], ['Contas da Casa', 'Fixos', 0], ['Assinaturas', 'Fixos', 0], ['Saúde', 'Fixos', 0], ['Educação', 'Fixos', 0],
-  ['Mercado', 'Essenciais', 0], ['Transporte (Uber/99)', 'Essenciais', 0], ['Carro', 'Essenciais', 0], ['Serviços', 'Essenciais', 0],
+  ['Mercado', 'Essenciais', 0], ['Transporte (Uber/99/Táxi)', 'Essenciais', 0], ['Carro', 'Essenciais', 0], ['Serviços', 'Essenciais', 0],
   ['Restaurantes e Delivery', 'Estilo de vida', 0], ['Lazer (Saídas)', 'Estilo de vida', 0], ['Lazer (Videogames)', 'Estilo de vida', 0], ['Viagem', 'Estilo de vida', 0],
   ['Roupas', 'Estilo de vida', 0], ['Casa (Eletro e Decoração)', 'Estilo de vida', 0], ['Presentes', 'Estilo de vida', 0], ['Compras (fora do padrão)', 'Estilo de vida', 0], ['Outros', 'Estilo de vida', 0]
 ].map(([nome, grupo, orc]) => ({ nome, grupo, orc }));
@@ -14579,7 +15322,7 @@ const REGRAS_CAT = [
   [/playstation|steam|nintendo|xbox|\bpsn\b|epic games/, 'Lazer (Videogames)'],
   [/ingresso|sympla|cinemark|cinema|teatro|expoflora|eventim|ticket/, 'Lazer (Saídas)'],
   [/airbnb|localiza|movida|unidas|latam|gol linhas|azul linhas|booking|hotel|decolar|expedia|clickbus|buser|concessionaria|tamoios/, 'Viagem'],
-  [/uberrides|\buber\b|99app|99 ?pop|^pop \d|cabify|99\*? ?corridas/, 'Transporte (Uber/99)'],
+  [/uberrides|\buber\b|99app|99 ?pop|^pop \d|cabify|99\*? ?corridas/, 'Transporte (Uber/99/Táxi)'],
   [/99food|ifd\*|ifood|rappi|madero|outback|mcdonald|arcos dourados|burger|pizz|restaurante|lanchonete|doceria|padaria|churrascaria|cafeteria/, 'Restaurantes e Delivery'],
   [/\bzul\b|zona azul|estapar|estacionamento|auto ?posto|posto |shell|ipiranga|sem parar|conectcar|veloe|pier seguradora|seguro auto/, 'Carro'],
   [/pet ?love|petz|cobasi|petepet|\bpet\b/, ['Pet', 'Serviços']],
@@ -14601,7 +15344,7 @@ function sugereCat(desc) {
   const hit = allItens().slice().reverse().find(it => it.cat && it.cat !== 'Outros' && tokenDe(it.desc) === tk);
   return hit ? hit.cat : null;
 }
-function normCat(c, desc) { const s = String(c || '').trim(); const f = cats().find(x => x.nome.toLowerCase() === s.toLowerCase()); return f ? f.nome : (sugereCat(desc) || 'Outros'); }
+function normCat(c, desc) { const s = catRen(String(c || '').trim()); const f = cats().find(x => x.nome.toLowerCase() === s.toLowerCase()); return f ? f.nome : (sugereCat(desc) || 'Outros'); }
 
 /* armazenamento: um documento por mês em gastos/AAAA-MM */
 const gWriting = {}, gPending = {}, gSujo = new Set();   // gSujo: meses mudados aqui que o banco ainda não confirmou
@@ -14892,7 +15635,7 @@ function catImport(desc) {
 let fatPrev = null;
 // categoria do banco (CSV com coluna Categoria, como o do C6) usada quando nenhuma regra reconhece a descrição
 const CAT_BANCO = [[/restaurante|lanchonete|bar\b|fast food|delivery|alimenta/, 'Restaurantes e Delivery'], [/supermercado|mercearia|padaria|conveni/, 'Mercado'],
-  [/transporte|taxi|uber|estacion|pedagio/, 'Transporte (Uber/99)'], [/posto|combust|automo|veicul/, 'Carro'], [/farmac|drogaria|medic|odonto|hospital|saude|clinica|otica/, 'Saúde'],
+  [/transporte|taxi|uber|estacion|pedagio/, 'Transporte (Uber/99/Táxi)'], [/posto|combust|automo|veicul/, 'Carro'], [/farmac|drogaria|medic|odonto|hospital|saude|clinica|otica/, 'Saúde'],
   [/educa|escola|curso|livrar/, 'Educação'], [/hotel|hosped|turismo|viag|aereo|passage|cia aerea/, 'Viagem'], [/vestuario|roupa|calcad|moda/, 'Roupas'],
   [/entreten|lazer|cinema|show|ingresso/, 'Lazer (Saídas)'], [/telecom|telefon|internet|tv por|energia|agua|gas\b/, 'Contas da Casa'],
   [/eletro|movei|decora|construc|casa|lar\b/, 'Casa (Eletro e Decoração)'], [/servic|lavand|beleza|cabele/, 'Serviços'], [/assinatura|streaming|digital/, 'Assinaturas'],
@@ -15377,16 +16120,16 @@ function orcInicial(cfg) {
     deducoes: [{ id: 'das', nome: 'DAS (Simples Nacional)', modo: 'pct', valor: 0 }, { id: 'contab', nome: 'Contabilidade', modo: 'fixo', valor: 0 }], mes: {} };
 }
 // CLT pelo bruto: INSS e IR na fonte da tabela de 2026 (as mesmas regras de PJ e PF)
-function dedCLT(modo, x) { x = +x || 0; if (x <= 0) return 0; const i = inssCLT(x); return modo === 'inss' ? i : irrf26(x, i, 0); }
+function dedCLT(modo, x) { x = +x || 0; if (x <= 0) return 0; if (modo === 'inss11' || modo === 'irrf11') { const i = Math.min(x, PJ26.teto) * 0.11; return modo === 'inss11' ? i : irrf26(x, i, 0); } const i = inssCLT(x); return modo === 'inss' ? i : irrf26(x, i, 0); }
 function orcModelo() { const o = state.orc; return o.modelo || (o.deducoes.some(d => (d.id === 'das' || d.id === 'contab') && +d.valor > 0) ? 'pj' : ''); }
 // regimes: períodos do plano com outro jeito de receber (PJ ou CLT). 'antes' = meses anteriores a mes (o passado); 'apartir' = de mes em diante (troca futura)
 const MOD_DED = ['das', 'contab', 'inss', 'irrf'];
-const modeloNome = (m, cm) => m === 'sem' ? 'Sem emprego' : m === 'pj' ? 'PJ' : m === 'clt' ? (cm === 'bruto' ? 'CLT (bruto)' : 'CLT (líquido)') : '—';
-function regDeds(r) { return r.modelo === 'sem' ? (+r.contab > 0 ? [{ id: 'contab', nome: 'Custos do CNPJ parado', modo: 'fixo', valor: +r.contab }] : []) : r.modelo === 'pj' ? [{ id: 'das', nome: 'DAS (Simples Nacional)', modo: 'pct', valor: +r.das || 0 }, { id: 'contab', nome: 'Contabilidade', modo: 'fixo', valor: +r.contab || 0 }] : r.cltModo === 'bruto' ? [{ id: 'inss', nome: 'INSS', modo: 'inss', valor: 0 }, { id: 'irrf', nome: 'IR na fonte', modo: 'irrf', valor: 0 }] : []; }
+const modeloNome = (m, cm) => m === 'socio' ? 'Sócio' : m === 'sem' ? 'Sem emprego' : m === 'pj' ? 'PJ' : m === 'clt' ? (cm === 'bruto' ? 'CLT (bruto)' : 'CLT (líquido)') : '—';
+function regDeds(r) { return r.modelo === 'socio' ? [{ id: 'inss', nome: 'INSS do pró-labore', modo: 'inss11', valor: 0 }, { id: 'irrf', nome: 'IR do pró-labore', modo: 'irrf11', valor: 0 }] : r.modelo === 'sem' ? (+r.contab > 0 ? [{ id: 'contab', nome: 'Custos do CNPJ parado', modo: 'fixo', valor: +r.contab }] : []) : r.modelo === 'pj' ? [{ id: 'das', nome: 'DAS (Simples Nacional)', modo: 'pct', valor: +r.das || 0 }, { id: 'contab', nome: 'Contabilidade', modo: 'fixo', valor: +r.contab || 0 }] : r.cltModo === 'bruto' ? [{ id: 'inss', nome: 'INSS', modo: 'inss', valor: 0 }, { id: 'irrf', nome: 'IR na fonte', modo: 'irrf', valor: 0 }] : []; }
 function regimeEm(i, extra) {
   const R = (state.orc && state.orc.regimes) || []; let a = null, b = null;
   R.forEach(r => { if (!r.mes) return; const m = mIndex(r.mes);
-    if (r.tipo === 'apartir' && m <= i && (!r.ate || i <= mIndex(r.ate)) && (r.uso !== 'sim' ? !(extra && extra.has('-reg:' + r.id)) : !!(extra && extra.has('reg:' + r.id))) && (!a || r.mes > a.mes)) a = r;
+    if (r.tipo === 'apartir' && m <= i && (!r.ate || i <= mIndex(r.ate)) && (r.opc ? !!(extra && extra.has('carr:' + r.opc)) : r.uso !== 'sim' ? !(extra && (extra.has('-reg:' + r.id) || (r.opcR && extra.has('-carr:' + r.opcR)))) : !!(extra && extra.has('reg:' + r.id))) && (!a || r.mes > a.mes)) a = r;
     if (r.tipo === 'antes' && i < m && (!b || r.mes < b.mes)) b = r; });
   return a || b;
 }
@@ -15404,7 +16147,7 @@ function trocarHoje(mod, cm, sal, das, contab, mesAntes) {
 }
 // troca programada que já chegou: vira o regime de hoje, e o anterior fica guardado como passado
 function efetivarTrocas() {
-  const o = state.orc, R = (o.regimes || []).filter(r => r.tipo === 'apartir' && r.uso !== 'sim' && !r.ate && r.modelo !== 'sem' && r.mes && mIndex(r.mes) <= HOJE_IDX).sort((a, b) => a.mes < b.mes ? -1 : 1);
+  const o = state.orc, R = (o.regimes || []).filter(r => r.tipo === 'apartir' && r.uso !== 'sim' && r.src !== 'carr' && !r.ate && r.modelo !== 'sem' && r.mes && mIndex(r.mes) <= HOJE_IDX).sort((a, b) => a.mes < b.mes ? -1 : 1);
   if (!R.length) return false;
   R.forEach(r => { o.regimes = o.regimes.filter(x => x !== r); trocarHoje(r.modelo, r.cltModo, +r.sal || 0, r.das, r.contab, r.mes); });
   save(); return true;
@@ -15478,7 +16221,7 @@ function regLinhaHtml() {
     <p class="hint rg-leg">Só os cenários em Projeção real.${sims.length ? ` Em simulação: ${sims.map(r => `${esc(r.nome || modeloNome(r.modelo, r.cltModo))} (${per(r)})`).join(', ')}.` : ''}</p>`;
 }
 function regTabelaHtml() {
-  const R = (state.orc.regimes || []).slice().sort((a, b) => a.mes < b.mes ? -1 : 1);
+  const R = (state.orc.regimes || []).filter(r => r.src !== 'carr').slice().sort((a, b) => a.mes < b.mes ? -1 : 1);
   if (!R.length) return '';
   const inp = (r, k, step, lab) => `<input type="number" step="${step}" data-bind="orcreg:${r.id}:${k}" value="${+r[k] || 0}" aria-label="${lab}">`;
   return `<div class="tscroll"><table><thead><tr><th>Período</th><th>Nome</th><th>Como recebe</th><th>Salário, faturamento ou o que recebe na saída</th><th>DAS %</th><th>Contabilidade ou custos</th><th>Uso</th><th></th></tr></thead><tbody>${R.map(r => { const pj = r.modelo === 'pj', sem = r.modelo === 'sem';
@@ -15487,12 +16230,12 @@ function regTabelaHtml() {
 }
 function renderRegimes() {
   const el = $('orc-regs'), R = state.orc.regimes || [];
-  el.innerHTML = R.length ? `<h3 class="orc-h">Linha do tempo</h3>${regLinhaHtml()}<h3 class="orc-h">Trocas e cenários <span class="subdet">(também em Carreira › PJ e PF)</span></h3>${regTabelaHtml()}` : '';
+  el.innerHTML = R.length ? `<h3 class="orc-h">Linha do tempo</h3>${regLinhaHtml()}<p class="hint">Trocas de emprego, reajustes e opções para o futuro ficam em <a href="#" class="lm-ir" data-lmtab="carrtraj" data-lmsec="Meu histórico">Carreira › Trajetória</a>.</p>${regTabelaHtml() ? '<h3 class="orc-h">Como você recebia antes</h3>' + regTabelaHtml() : ''}` : '';
   const hs = $('orc-hist'); if (hs) hs.hidden = !R.length;
 }
 function renderTrocasPj() {
   const el = $('pj-regs'); if (!el) return;
-  el.innerHTML = `<h3 class="orc-h">Linha do tempo de como você recebe</h3>${orcModelo() ? regLinhaHtml() : '<p class="hint">Escolha como você recebe hoje em Meu plano › Receitas e custos para ver a linha do tempo.</p>'}${(state.orc.regimes || []).length ? `<h3 class="orc-h">Trocas e cenários</h3>${regTabelaHtml()}` : '<p class="hint">Nenhum cenário ainda.</p>'}`;
+  el.innerHTML = `<h3 class="orc-h">Linha do tempo de como você recebe</h3>${orcModelo() ? regLinhaHtml() : '<p class="hint">Escolha como você recebe hoje em Meu plano › Receitas e custos para ver a linha do tempo.</p>'}`;
 }
 function novoCenarioPj(tipo) {
   const p = state.pj, calc = tipo === 'calc', orcD = id => +((state.orc.pjDed || state.orc.deducoes || []).find(d => d.id === id) || {}).valor || 0;
@@ -15518,7 +16261,7 @@ function setModelo(mod, cm, semRender) {
   o.modelo = mod; o.cltModo = cm; if (semRender) return; save(); renderOrcamento();
 }
 // distribuição inicial de custos: 80% da receita líquida (50/30/20) com pesos da POF 2017-2018 (IBGE)
-const CUSTO_SUG = { 'Moradia': 25, 'Contas da Casa': 8, 'Assinaturas': 2, 'Saúde': 8, 'Educação': 5, 'Mercado': 12, 'Transporte (Uber/99)': 4, 'Carro': 12, 'Serviços': 3,
+const CUSTO_SUG = { 'Moradia': 25, 'Contas da Casa': 8, 'Assinaturas': 2, 'Saúde': 8, 'Educação': 5, 'Mercado': 12, 'Transporte (Uber/99/Táxi)': 4, 'Carro': 12, 'Serviços': 3,
   'Restaurantes e Delivery': 6, 'Lazer (Saídas)': 3, 'Lazer (Videogames)': 1, 'Viagem': 3, 'Roupas': 3, 'Casa (Eletro e Decoração)': 2, 'Presentes': 1, 'Compras (fora do padrão)': 1, 'Outros': 1 };
 function custosSugeridos(liq) {
   const cs = catsEditaveis(), tot = Math.max(0, liq) * 0.8, pesos = cs.map(c => CUSTO_SUG[c.nome] || 0), sp = pesos.reduce((a, b) => a + b, 0);
@@ -15648,7 +16391,7 @@ function calcPlano(extra, cenSim) {
   const P = state.plan, i0 = mIndex(P.inicio), fim = Math.max(i0 + Math.round((+P.anos || 10) * 12), HOJE_IDX + Math.round(state.cfg.anos * 12) + 13, mdFimIdx(), scFimIdx());
   const L = linhasPlano(), cur = {}, salL = L.find(l => l.key === 'rec~sal');
   (state.orc.regimes || []).forEach(r => regDeds(r).forEach(d => { const key = 'ded~' + d.id;
-    L.push({ key, ck: key + '@' + r.id, nome: d.nome, tipo: 'ded', pct: d.modo === 'pct', calc: d.modo === 'inss' || d.modo === 'irrf' ? d.modo : undefined, base: +d.valor || 0, reaj: d.modo === 'fixo' ? 'ipca_anual' : 'nenhum', pctA: 0, mesA: 1, reg: r.id, o: d }); }));
+    L.push({ key, ck: key + '@' + r.id, nome: d.nome, tipo: 'ded', pct: d.modo === 'pct', calc: ['inss', 'irrf', 'inss11', 'irrf11'].includes(d.modo) ? d.modo : undefined, base: +d.valor || 0, reaj: d.modo === 'fixo' ? 'ipca_anual' : 'nenhum', pctA: 0, mesA: 1, reg: r.id, o: d }); }));
   L.forEach(l => { if (!l.reg && l.tipo === 'ded' && MOD_DED.includes(l.key.slice(4))) l.modDed = true; });
   let regAnt = null, salReg = 0; const regBrutoC = {};
   const mud = (P.mud || []).filter(m => m.key && m.mes && (m.sim ? !!(extra && extra.has('mud:' + m.id)) : !(extra && extra.has('-mud:' + m.id)))).slice().sort((a, b) => a.mes < b.mes ? -1 : 1);
@@ -15673,11 +16416,11 @@ function calcPlano(extra, cenSim) {
     L.filter(l => l.tipo === 'ded').forEach(l => { if (l.reg ? !(rg && rg.id === l.reg) : rg && l.modDed) { if (!(l.key in v)) v[l.key] = 0; return; } v[l.key] = ov[l.key] ?? (l.calc ? dedCLT(l.calc, v['rec~sal'] ?? bruto) : l.pct ? bruto * cur[l.ck || l.key] / 100 : cur[l.ck || l.key]); ded += v[l.key]; });
     L.filter(l => l.tipo === 'cat').forEach(l => { v[l.key] = ov[l.key] ?? cur[l.key] * (cusP[l.grupo] && i >= cusI ? 1 + cusP[l.grupo] / 100 : 1); custos += v[l.key]; porGrupo[l.grupo] = (porGrupo[l.grupo] || 0) + v[l.key]; });
     // eventos: férias, bônus... (os anuais repetem corrigidos pelo IPCA)
-    let evRec = 0, evGas = 0; const evs = {};
+    let evRec = 0, evGas = 0, lucM = 0; const evs = {};
     planEvs(P, extra).forEach(e => { const m0 = mIndex(e.mes); if (!e.mes || i < m0 || (i !== m0 && !(e.anual && (i - m0) % 12 === 0))) return;
       const anos = Math.round((i - m0) / 12), val = e.pausa ? Math.max(0, bruto - ded) : ov['ev~' + e.id] ?? (+e.valor || 0) * Math.pow(1 + ip, anos);
       evs[e.id] = val; if (e.tipo === 'receita') evRec += val; else evGas += val; });
-    if (rg && rg.tipo === 'apartir' && rg.modelo !== 'sem') { let x = +rg.ben || 0; const m0 = mIndex(rg.mes), dep = +(state.pj || {}).dep || 0;
+    if (rg && rg.tipo === 'apartir' && rg.modelo !== 'sem') { let x = +rg.ben || 0; if (rg.modelo === 'socio' && +rg.lucro > 0) { lucM = +rg.lucro > 50000 ? +rg.lucro * 0.9 : +rg.lucro; x += lucM; } const m0 = mIndex(rg.mes), dep = +(state.pj || {}).dep || 0;
       if (rg.modelo === 'clt' && (rg.x13 || rg.xFer || rg.xFgts)) { const br = rg.cltModo === 'bruto', S = salReg, liq = br ? netCLT(S, dep) : S, Sb = br ? S : (regBrutoC[S] ??= busca(y => netCLT(y, dep), S, S * 2));
         if (rg.x13 && cm === 12) x += liq * (i - Math.max(m0, i - 11) + 1) / 12;
         if (rg.xFer && i > m0 && (i - m0) % 12 === 0) x += br ? netCLT(S * 4 / 3, dep) - liq : S / 3;
@@ -15711,7 +16454,7 @@ function calcPlano(extra, cenSim) {
     }
     const sobra = bruto - ded + rendaB + evRec - custos - evGas - parc - lump - posse;
     const rend = inv * (frz && fz.taxaPlano != null ? fz.taxaPlano : taxaPlanoMes(i, cs)), liquido = sobra + rend, re = liquido * reinv;
-    out.meses[i] = { i, mk, v, evs, bruto, ded, liq: bruto - ded, custos, porGrupo, evRec, evGas, parc, lump, posse, rendaB, porCompra, sobra, rend, reinv: re, paradoMes: liquido - re, ini: inv, venda, fechado: frz, reg: rg ? modeloNome(rg.modelo, rg.cltModo) : modeloNome(orcModelo(), state.orc.cltModo) };
+    out.meses[i] = { i, mk, v, evs, bruto, ded, liq: bruto - ded, custos, porGrupo, evRec, evGas, parc, lump, posse, rendaB, porCompra, sobra, rend, reinv: re, luc: lucM, paradoMes: liquido - re, ini: inv, venda, fechado: frz, reg: rg ? (rg.dono ? 'Dono de empresa' : modeloNome(rg.modelo, rg.cltModo)) : modeloNome(orcModelo(), state.orc.cltModo) };
     // o dinheiro da venda de um bem vai direto para os investimentos
     inv += re + venda; parado += liquido - re;
     out.inv[i] = inv; out.parado[i] = parado;
@@ -15885,7 +16628,8 @@ function itensModulos() {
   { const LP = linhasPlano(); (P.mud || []).filter(m => m.key && m.mes).forEach(m => { const l = LP.find(y => y.key === m.key), nm = l ? l.nome : m.key.slice(4);
     out.push({ id: 'mud:' + m.id, mod: 'fin', sub: 'Meu plano', tab: 'orcamento', sec: 'Mudanças e eventos', nome: 'Mudança: ' + nm, tipo: m.key.startsWith('rec~') ? 'receita' : 'gasto', ini: m.mes,
       unico: 0, mensal: 0, meses: 0, resumo: `${nm} passa a ${fm(+m.valor || 0)}${l && l.pct ? '%' : ' por mês'}`, uso: m.sim ? 'sim' : 'real' }); }); }
-  ((state.orc || {}).regimes || []).filter(r => r.tipo === 'apartir' && r.mes).forEach(r => out.push({ id: 'reg:' + r.id, mod: 'carr', sub: 'PJ e PF', tab: 'pjpf', sec: 'Cenários de troca', nome: (r.nome ? r.nome + ': ' : '') + (r.modelo === 'sem' ? 'sem emprego' : 'troca para ' + modeloNome(r.modelo, r.cltModo)), tipo: 'receita', ini: r.mes, unico: 0, mensal: 0, meses: 0, resumo: (r.modelo === 'sem' ? `sem salário${[+r.resc > 0 ? `rescisão ${fm(+r.resc)}` : '', +r.fgts > 0 ? `FGTS ${fm(+r.fgts)}` : '', +r.saida > 0 ? `${fm(+r.saida)} na saída` : '', +r.seg > 0 ? `seguro ${fm(+r.seg)}/mês` : ''].filter(Boolean).map(x => ', ' + x).join('')}` : `${r.modelo === 'pj' ? 'faturamento' : 'salário'} de ${fm(+r.sal || 0)} por mês${[r.x13 ? '13º' : '', r.xFer ? 'férias' : '', r.xFgts ? 'FGTS' : '', +r.ben > 0 ? `benefícios ${fm(+r.ben)}/mês` : ''].filter(Boolean).map((x, j, a) => (j ? (j === a.length - 1 ? ' e ' : ', ') : ' + ') + x).join('')}`) + (r.ate ? ` até ${mLabel(mIndex(r.ate))}` : ''), uso: r.uso === 'sim' ? 'sim' : 'real' }));
+  try { out.push(...ctItensMod()); } catch (er) { console.error(er); }
+  ((state.orc || {}).regimes || []).filter(r => r.tipo === 'apartir' && r.mes && r.src !== 'carr').forEach(r => out.push({ id: 'reg:' + r.id, mod: 'carr', sub: 'PJ e PF', tab: 'pjpf', sec: 'Cenários de troca', nome: (r.nome ? r.nome + ': ' : '') + (r.modelo === 'sem' ? 'sem emprego' : 'troca para ' + modeloNome(r.modelo, r.cltModo)), tipo: 'receita', ini: r.mes, unico: 0, mensal: 0, meses: 0, resumo: (r.modelo === 'sem' ? `sem salário${[+r.resc > 0 ? `rescisão ${fm(+r.resc)}` : '', +r.fgts > 0 ? `FGTS ${fm(+r.fgts)}` : '', +r.saida > 0 ? `${fm(+r.saida)} na saída` : '', +r.seg > 0 ? `seguro ${fm(+r.seg)}/mês` : ''].filter(Boolean).map(x => ', ' + x).join('')}` : `${r.modelo === 'pj' ? 'faturamento' : 'salário'} de ${fm(+r.sal || 0)} por mês${[r.x13 ? '13º' : '', r.xFer ? 'férias' : '', r.xFgts ? 'FGTS' : '', +r.ben > 0 ? `benefícios ${fm(+r.ben)}/mês` : ''].filter(Boolean).map((x, j, a) => (j ? (j === a.length - 1 ? ' e ' : ', ') : ' + ') + x).join('')}`) + (r.ate ? ` até ${mLabel(mIndex(r.ate))}` : ''), uso: r.uso === 'sim' ? 'sim' : 'real' }));
   try { out.push(...vgItensMod()); } catch (er) {}
   try { out.push(...ngItensMod()); } catch (er) { console.error(er); }
   try { out.push(...famItensMod()); } catch (er) { console.error(er); }
@@ -15899,6 +16643,7 @@ function setUsoItem(id, uso) {
   else if (k === 'neg') { const n = ngLista().find(y => y.id === x); if (!n) return false; n.uso = on ? 'real' : 'sim'; ngCache.v = {}; }
   else if (k === 'fam') { const p = famAcha(x); if (!p) return false; p.uso = on ? 'real' : 'sim'; famPeC.k = null; }
   else if (k === 'reg') { const r = ((state.orc || {}).regimes || []).find(y => y.id === x); if (!r) return false; r.uso = on ? 'real' : 'sim'; }
+  else if (k === 'carr') { if (!ctSetUso(x, on)) return false; }
   else if (k === 'ev') { const e = (P.ev || []).find(y => y.id === x); if (!e) return false; if (on) delete e.sim; else e.sim = true; }
   else if (k === 'mud') { const m = (P.mud || []).find(y => y.id === x); if (!m) return false; if (on) delete m.sim; else m.sim = true; }
   else if (k === 'so') { const e = ((state.so || {}).empresas || []).find(y => y.id === x); if (!e || !e.ev || !e.ev.definido) return false; e.ev.plano = on; }
@@ -16136,6 +16881,7 @@ document.addEventListener('click', e => {
 $('guia-reset').addEventListener('click', () => { const g = guiaSt(); g.vistos = []; delete state.tourPlano; save(); $('guia-msg').textContent = 'Pronto: os guias vão abrir de novo na primeira visita de cada tela. Os pontos que você já ganhou continuam.'; });
 function renderOrcamento() {
   if (efetivarTrocas()) planCache = null;
+  try { if (ctEfetivar()) planCache = null; } catch (er) { console.error(er); }
   const foco = guardarFoco();
   const pm = projMes(mKey(HOJE_IDX)), sobraT = pm.liq - pm.custos;
   // KPIs
@@ -16523,13 +17269,17 @@ $('cpform').addEventListener('submit', async e => {
 });
 
 /* ---------- abas ---------- */
-const BUILD = { modulos: () => {}, simcen: () => {}, agcal: () => {}, aglis: () => {}, comousar: () => {}, inicio: () => {}, trabvg: () => {}, viagvg: () => {}, viagens: () => {}, viagcmp: () => {}, viagrot: () => {}, viagcus: () => {}, viagdur: () => {}, negvg: () => {}, negcad: () => {}, negdre: () => {}, negfc: () => {}, negabr: () => {}, negeco: () => {}, negpesq: () => {}, negviab: () => {}, negcont: () => {}, negprec: () => {}, negval: () => {}, negsoc: () => {}, negcmp: () => {}, famvg: () => {}, fampes: () => {}, famcasa: () => {}, famcomp: () => {}, indvg: () => {}, indnum: () => {}, indalv: () => {}, rdvg: () => {}, rdprod: () => {}, rdcomp: () => {}, leia: buildLeia, global: () => {}, cenarios: buildCenarios, compras: buildCenarios, carteira: buildCarteira, comparador: buildComparador, simulador: buildSimulador, gastos: buildGastos, orcamento: buildOrcamento, config: buildConfig, pjpf: buildPj, stock: buildStock, familia: () => carregarPerfis(), patrimonio: () => {} };
+const BUILD = { carrtraj: () => {}, modulos: () => {}, simcen: () => {}, agcal: () => {}, aglis: () => {}, comousar: () => {}, inicio: () => {}, trabvg: () => {}, viagvg: () => {}, viagens: () => {}, viagcmp: () => {}, viagrot: () => {}, viagcus: () => {}, viagdur: () => {}, negvg: () => {}, negcad: () => {}, negdre: () => {}, negfc: () => {}, negabr: () => {}, negeco: () => {}, negpesq: () => {}, negviab: () => {}, negcont: () => {}, negprec: () => {}, negval: () => {}, negsoc: () => {}, negcmp: () => {}, famvg: () => {}, fampes: () => {}, famcasa: () => {}, famcomp: () => {}, indvg: () => {}, indnum: () => {}, indalv: () => {}, rdvg: () => {}, rdprod: () => {}, rdcomp: () => {}, leia: buildLeia, global: () => {}, cenarios: buildCenarios, compras: buildCenarios, carteira: buildCarteira, comparador: buildComparador, simulador: buildSimulador, gastos: buildGastos, orcamento: buildOrcamento, config: buildConfig, pjpf: buildPj, stock: buildStock, familia: () => carregarPerfis(), patrimonio: () => {} };
 // (i) de cada seção: o que mostra e de onde vêm os números (chave: aba:data-nav)
 const INFO_SEC = {
   'comousar:Resumo': 'Para cada módulo: se já tem o mínimo para funcionar (os obrigatórios), quantos opcionais você resolveu e um botão para o próximo passo. Um opcional conta como resolvido quando você preenche ou marca que não tem.',
   'comousar:Simulação': 'Os passos da Simulação. Nada é obrigatório: serve para comparar caminhos antes de decidir o que vale em Finanças.',
   'comousar:Finanças': 'Os passos das Finanças. Os três obrigatórios são a base de tudo: sem renda, aplicações e checkpoint, o plano não tem de onde partir.',
   'comousar:Carreira': 'Os passos de Carreira. Todos são opcionais.',
+  'carrtraj:Linha do tempo': 'Cada emprego é uma barra, do início ao fim. A linha vermelha é hoje. As opções em estudo aparecem tracejadas, cada uma na sua linha.',
+  'carrtraj:Meu histórico': 'Cada emprego tem os reajustes dentro: a partir de que mês, o motivo e o novo valor. No bolso: CLT pelo INSS e IR de 2026; PJ pelo % de impostos e a contabilidade; sócio pelo INSS de 11% e IR do pró-labore, mais os lucros. O emprego atual é comparado com o Meu plano; se estiver diferente, você escolhe usar o valor daqui.',
+  'carrtraj:Opções para o futuro': 'Uma opção é uma sequência de períodos depois de hoje. Ela entra na Simulação como um item. "Usar a partir de…" encerra o emprego atual no mês anterior, leva os períodos para o histórico e passa a valer no Meu plano.',
+  'carrtraj:Comparar opções': 'Calculado pelo Meu plano com cada opção no lugar do que você tem hoje. No bolso inclui 13º, férias e FGTS da CLT, lucros de sócio e os eventos do plano. Patrimônio é o total em 10 anos (ou no fim do plano).',
   'comousar:Bens e compromissos': 'Os passos de Bens e compromissos. Todos são opcionais: o módulo só mostra o que você cadastrar.',
   'comousar:Viagens': 'Os passos de Viagens. Todos são opcionais.',
   'comousar:Empreendimentos': 'Os passos de Empreendimentos. Todos são opcionais.',
@@ -16732,7 +17482,7 @@ function infoSecoes() {
       if (h && !h.id) h.append(btn); else if (h) h.after(btn); else if (lg) lg.append(btn); }); });
 }
 infoSecoes();
-const RENDER = { modulos: renderModulos, simcen: renderSimCen, agcal: renderAgCal, aglis: renderAgLis, comousar: renderComoUsar, inicio: renderHome, trabvg: renderTrabVg, viagvg: renderViagVg, viagens: renderViagens, viagcmp: renderViagCmp, viagrot: renderViagRot, viagcus: renderViagCus, viagdur: renderViagDur, negvg: renderNegVg, negcad: renderNegCad, negdre: renderNegDre, negfc: renderNegFc, negabr: renderNegAbr, negeco: renderNegEco, negpesq: renderNegPesq, negviab: renderNegViab, negcont: renderNegCont, negprec: renderNegPrec, negval: renderNegVal, negsoc: renderNegSoc, negcmp: renderNegCmp, famvg: renderFamVg, fampes: renderFamPes, famcasa: renderFamCasa, famcomp: renderFamComp, indvg: renderIndVg, indnum: renderIndNum, indalv: renderIndAlv, rdvg: renderRdVg, rdprod: renderRdProd, rdcomp: renderRdComp, leia: () => {}, global: renderGlobal, cenarios: renderCenarios, compras: renderCenarios, carteira: renderCarteira, comparador: renderComparador, simulador: renderSimulador, gastos: () => { renderGastos(); renderFechamento(); renderHistorico(); }, orcamento: renderOrcamento, config: renderConfig, pjpf: renderPj, stock: renderStock, familia: renderFamilia, patrimonio: renderPatr };
+const RENDER = { carrtraj: renderCarrTraj, modulos: renderModulos, simcen: renderSimCen, agcal: renderAgCal, aglis: renderAgLis, comousar: renderComoUsar, inicio: renderHome, trabvg: renderTrabVg, viagvg: renderViagVg, viagens: renderViagens, viagcmp: renderViagCmp, viagrot: renderViagRot, viagcus: renderViagCus, viagdur: renderViagDur, negvg: renderNegVg, negcad: renderNegCad, negdre: renderNegDre, negfc: renderNegFc, negabr: renderNegAbr, negeco: renderNegEco, negpesq: renderNegPesq, negviab: renderNegViab, negcont: renderNegCont, negprec: renderNegPrec, negval: renderNegVal, negsoc: renderNegSoc, negcmp: renderNegCmp, famvg: renderFamVg, fampes: renderFamPes, famcasa: renderFamCasa, famcomp: renderFamComp, indvg: renderIndVg, indnum: renderIndNum, indalv: renderIndAlv, rdvg: renderRdVg, rdprod: renderRdProd, rdcomp: renderRdComp, leia: () => {}, global: renderGlobal, cenarios: renderCenarios, compras: renderCenarios, carteira: renderCarteira, comparador: renderComparador, simulador: renderSimulador, gastos: () => { renderGastos(); renderFechamento(); renderHistorico(); }, orcamento: renderOrcamento, config: renderConfig, pjpf: renderPj, stock: renderStock, familia: renderFamilia, patrimonio: renderPatr };
 function renderTab() { planCache = null; try { RENDER[tab](); } catch (err) { console.error(err); setSave('erro ao recalcular: ' + (err && err.message || err)); } sidePts(); }
 // pontos acumulados embaixo do nome, no topo do menu
 function sidePts() { const el = $('side-pts'); if (!el || !state) return; try { const d = jgPontos();
@@ -16809,7 +17559,7 @@ const MODS = [
   { id: 'fin', corNav: '#7FA6E0', nome: 'Finanças', cor: 'var(--s1)', fixo: true, vg: 'inicio', desc: 'Gastos, patrimônio, carteira e o Meu plano, só com o que é real. Recebe o que você decidiu na Simulação.', tabs: ['inicio', 'global', 'gastos', 'patrimonio', 'carteira', 'comparador', 'orcamento', 'familia'] },
   { id: 'simu', corNav: '#F0A46B', nome: 'Simulação', cor: 'var(--s9)', fixo: true, vg: 'simcen', desc: 'Todos os itens dos módulos num lugar só. Monte cenários marcando sim ou não em cada um, compare o patrimônio e torne real o que decidir. Também as premissas de cada cenário e o simulador de aportes.', tabs: ['simcen', 'cenarios', 'simulador'] },
   { id: 'trab', corNav: '#3FB8AF', nome: 'Bens e compromissos', cor: 'var(--s2)', vg: 'trabvg', desc: 'Imóveis, carros e outros bens, eventos como casamento e reforma, e dívidas a receber e a pagar. O que entra no plano vai para o Meu plano.', tabs: ['trabvg', 'compras'] },
-  { id: 'carr', corNav: '#B39DDB', nome: 'Carreira', cor: 'var(--s5)', vg: 'pjpf', desc: 'PJ e PF: CLT contra PJ nos dois sentidos, quanto pedir e o melhor pró-labore. Stock options: vesting, valor hoje e num evento de liquidez.', tabs: ['pjpf', 'stock'] },
+  { id: 'carr', corNav: '#B39DDB', nome: 'Carreira', cor: 'var(--s5)', vg: 'carrtraj', desc: 'Trajetória: seus empregos por período, com os reajustes, e opções para o futuro lado a lado. PJ e PF: CLT contra PJ e quanto pedir. Stock options: vesting e liquidez.', tabs: ['carrtraj', 'pjpf', 'stock'] },
   { id: 'viag', corNav: '#5fc2f5', nome: 'Viagens', cor: 'var(--s8)', vg: 'viagens', desc: 'Mapa de onde já foi e de onde quer ir, sorteio, comparação de destinos nas suas datas o roteiro com a rota mais barata, os custos ligados ao Meu plano e os gastos durante a viagem.', tabs: ['viagvg', 'viagens', 'viagcmp', 'viagrot', 'viagcus', 'viagdur'] },
   { id: 'neg', corNav: '#a3e05a', nome: 'Empreendimentos', cor: 'var(--s7)', vg: 'negvg', desc: 'Suas ideias e empresas: DRE com as suas linhas, fluxo de caixa, quanto pôr e quanto chega para você no Meu plano. Abrir empresa com a comparação de regimes, oportunidades de custo, pesquisa de mercado com IA, viabilidade, contabilidade fácil, preço, valuation, sócios e comparação.', tabs: ['negvg', 'negcad', 'negdre', 'negfc', 'negabr', 'negeco', 'negpesq', 'negviab', 'negcont', 'negval', 'negprec', 'negsoc', 'negcmp'] },
   { id: 'fam', corNav: '#fb7185', nome: 'Família', cor: 'var(--s6)', vg: 'famvg', desc: 'Quem mora com você e os filhos, já nascidos ou previstos (gêmeos também): quanto cada um custa em cada fase, a chegada, a licença e o efeito no Meu plano. E o orçamento da casa: meu, seu e nosso, divisão das contas, quem deve a quem e a reserva da família. No site, a família compartilha o orçamento e as metas, e cada um escolhe o que mostra.', tabs: ['famvg', 'fampes', 'famcasa', 'famcomp'] },
@@ -16875,9 +17625,10 @@ function cuPassos() {
       ]
     },
     carr: {
-      sobre: 'O que vem do trabalho: CLT contra PJ nos dois sentidos, quanto pedir, o melhor pró-labore e as stock options.',
+      sobre: 'O que vem do trabalho: sua trajetória de empregos e salários, opções para o futuro, CLT contra PJ, quanto pedir e as stock options.',
       precisa: 'Nada aqui é obrigatório: preencha só o que fizer parte da sua vida. Eventos de stock options podem ficar como <b>Só simulação</b> ou entrar na <b>Projeção real</b> do Meu plano.',
       passos: [
+        { id: 'traj', t: 'Sua trajetória', d: 'O emprego de hoje com os reajustes e, se quiser, os anteriores. Depois monte opções para o futuro e compare.', ok: ((state.carr || {}).emps || []).some(p => p.reajs.length > 1) || ((state.carr || {}).opcs || []).length > 0 || pul.includes('traj'), tab: 'carrtraj', sec: 'Meu histórico', pular: 'Depois' },
         { id: 'so', t: 'Stock options', d: 'Se você tem opções, phantom shares ou RSUs: concessões, vesting e o evento de liquidez.', ok: ((state.so || {}).empresas || []).length > 0 || pul.includes('so'), tab: 'stock', sec: 'Empresa', pular: 'Não tenho' },
         { id: 'pj', t: 'PJ e PF', d: 'Se você é PJ ou recebeu uma proposta PJ ou CLT: compare os dois lados no bolso e veja quanto pedir. Já vem preenchido a partir da sua renda.', ok: vis.includes('pjpf') || pul.includes('pj'), tab: 'pjpf', sec: 'CLT', pular: 'Não preciso' }
       ]
@@ -18189,6 +18940,7 @@ const LM_MODS = [
   ['trabvg', 'O resumo do módulo: valor dos bens, dívidas, valores a receber, parcelas do mês e o que vem pela frente na linha do tempo.', 'para ver tudo do trabalho e dos bens de uma vez.'],
   ['compras', 'O cadastro de bens: imóveis, carros e outros, já comprados ou planejados, com preço, entrada, financiamento, custos de ter e valorização. Compara à vista, SAC, Price e consórcio.', 'quando comprar, planejar ou financiar um bem.'],
   'Carreira',
+  ['carrtraj', 'Seus empregos como num currículo: cada um com início, fim e os reajustes dentro, para ver a evolução. Para o futuro, opções lado a lado (ficar, uma proposta, virar sócio, um sabático) e o botão para usar a escolhida a partir de uma data.', 'para registrar um reajuste ou pensar numa mudança de emprego.'],
   ['pjpf', 'Compara CLT e PJ no bolso, nos dois sentidos: seu CLT contra uma proposta PJ, ou sua PJ contra uma proposta CLT, com quanto pedir para valer a troca. Também mostra DAS, pró-labore e o melhor regime, nas regras de 2026.', 'ao negociar um contrato PJ ou comparar com uma proposta CLT.'],
   ['stock', 'Simula stock options, phantom shares e RSUs de uma ou mais empresas: vesting com cliff, quanto vale hoje e num evento de liquidez, preferências dos investidores, diluição das próximas rodadas, imposto e o que você perde se sair.', 'quando receber uma concessão, negociar uma proposta ou pensar em sair.'],
   'Viagens',
@@ -18442,7 +19194,7 @@ async function entrarPerfil() {
     if (!souDono) { PLANO = []; CP_PLANILHA = []; SHEET_ID = null; SENHA_ZIP = null; }
     let l = null, c = null, g = null;
     try { l = JSON.parse(localStorage.getItem(LSK('painel-fin-v2'))); c = JSON.parse(localStorage.getItem(LSK('painel-fin-cps'))); g = JSON.parse(localStorage.getItem(LSK('painel-gastos'))); } catch (e) {}
-    state = normalizar(l || DEFAULTS); cps = Array.isArray(c) && c.length ? c : CP_PLANILHA.slice(); gastos = g && typeof g === 'object' ? g : {};
+    state = normalizar(l || DEFAULTS); cps = Array.isArray(c) && c.length ? c : CP_PLANILHA.slice(); gastos = g && typeof g === 'object' ? g : {}; catRenGastos(gastos);
   } else if (souDono && !cps.length) cps = CP_PLANILHA.slice();
   if (!souDono) { $('sh-status').textContent = 'Este perfil não tem planilha ligada; os gastos ficam salvos no painel.'; acaoNowVis(); }
   document.querySelectorAll('[data-sodono]').forEach(el => { el.hidden = !souDono; });
@@ -18770,7 +19522,7 @@ $('fam-atualizar').addEventListener('click', () => carregarPerfis(true).then(() 
 
 /* ---------- início ---------- */
 try { const l = JSON.parse(localStorage.getItem(LSK('painel-fin-cps'))); if (Array.isArray(l) && l.length) cps = l; } catch (e) {}
-try { const g = JSON.parse(localStorage.getItem(LSK('painel-gastos'))); if (g && typeof g === 'object') gastos = g; } catch (e) {}
+try { const g = JSON.parse(localStorage.getItem(LSK('painel-gastos'))); if (g && typeof g === 'object') { gastos = g; catRenGastos(gastos); } } catch (e) {}
 if (!cps.length) cps = CP_PLANILHA.slice();
 showTab(tab); setSave('salvo só neste navegador');
 // tela de carregando: some quando o estado, os checkpoints e os gastos chegam (ou depois de 15 s)
@@ -18827,7 +19579,7 @@ setTimeout(carregFim, 15000);
   vgSemear();
   pcol('checkpoints').onSnapshot(s => { setTimeout(() => carregou('cps'), 0); const l = s.docs.map(d => d.data()).filter(d => d && d.mes && isFinite(d.valor)).map(d => ({ mes: String(d.mes).slice(0, 7), valor: +d.valor, origem: d.origem || '', imp: d.imp || '' })); cps = l.length ? l : CP_PLANILHA.slice(); if (tab === 'global' || tab === 'cenarios' || tab === 'inicio' || tab === 'modulos' || tab === 'comousar') renderTab(); },
     () => { carregou('cps'); setSave('checkpoints indisponíveis agora'); });
-  pcol('gastos').onSnapshot(s => { setTimeout(() => carregou('gastos'), 0); const g = {}; s.docs.forEach(d => { const x = clone(d.data() || null); if (x && /^\d{4}-\d{2}$/.test(x.mes) && Array.isArray(x.itens)) g[x.mes] = x.itens.filter(it => it && it.data && it.comp && isFinite(+it.valor)); }); gSujo.forEach(m => { if (gastos[m]) g[m] = gastos[m]; else delete g[m]; }); gastos = g; if (tab === 'gastos') renderGastos(); if (tab === 'inicio') renderHome(); if (tab === 'modulos' || tab === 'comousar') renderTab(); },
+  pcol('gastos').onSnapshot(s => { setTimeout(() => carregou('gastos'), 0); const g = {}; s.docs.forEach(d => { const x = clone(d.data() || null); if (x && /^\d{4}-\d{2}$/.test(x.mes) && Array.isArray(x.itens)) g[x.mes] = x.itens.filter(it => it && it.data && it.comp && isFinite(+it.valor)); }); gSujo.forEach(m => { if (gastos[m]) g[m] = gastos[m]; else delete g[m]; }); const gRen = catRenGastos(g); gastos = g; if (gRen.length) setTimeout(() => salvarMeses(gRen), 0); if (tab === 'gastos') renderGastos(); if (tab === 'inicio') renderHome(); if (tab === 'modulos' || tab === 'comousar') renderTab(); },
     () => { carregou('gastos'); setSave('gastos indisponíveis agora'); });
   db.collection('acoes').onSnapshot(s => { const m = {}; s.docs.forEach(d => { const x = clone(d.data() || null); if (x && /^[A-Z][A-Z0-9]{3}\d{1,2}B?$/.test(x.tk)) m[x.tk] = x; }); acoesDb = m; if (tab === 'carteira') renderAcoes(); }, () => {});
   showTab(tab);
@@ -21100,7 +21852,8 @@ html .sug-adm .btn.ghost[aria-pressed="true"], html[data-lb] .sug-adm .btn.ghost
   function dInd() { return T(() => { if (!visivel(mod('indep'))) return null; const r = indCalc(); if (r.C <= 0) return null; const P0 = r.P[r.st] || 0;
     return { quando: r.cruz == null ? 'fora do horizonte' : r.cruz <= r.st ? 'já' : mLabel(r.cruz), tem: r.Nref > 0 ? P0 / r.Nref : null, nref: r.Nref }; }); }
   function dJogo() { return T(() => { const d = jgPontos(), L = jgMisLista(); return { d, L }; }); }
-  function lembretes() { const fech = T(() => JSON.parse(lsG(KLEMB)) || [], []); return T(() => pessTodos(), []).filter(a => !fech.includes(a.id)); }
+  function lembFech() { const o = T(() => JSON.parse(lsG(KLEMB)), null); return o && !Array.isArray(o) && o.dia === hojeISO() && Array.isArray(o.ids) ? o.ids : []; } // X esconde só até amanhã
+  function lembretes() { const fech = lembFech(); return T(() => pessTodos(), []).filter(a => !fech.includes(a.id)); }
 
   // ---------- pedaços de html ----------
   const chev = (up) => `<span class="c-chev${up ? ' up' : ''}">${ico(I.baixo)}</span>`, seta = `<span class="c-chev">${ico(I.dir)}</span>`;
@@ -21131,6 +21884,118 @@ html .sug-adm .btn.ghost[aria-pressed="true"], html[data-lb] .sug-adm .btn.ghost
     return null;
   }
 
+  // ---------- v401: caixinhas no lugar da lista "Escolha o que ver" (opção A · Grade mista, Filipe 25/11/2026) ----------
+  // Cada item vira uma caixinha com número, resumo e, quando há dado, gráfico ou tabelinha. Pequenas em pares; gráficos e tabelas na largura toda.
+  const PALC = ['var(--mc,#7FA6E0)', '#F0A46B', '#5FD3A0', '#C59BE8', '#7A8AA3'];
+  const sty = (p, v) => `style="${p}:${v}"`;
+  function cxBarras(vs, opt) { opt = opt || {}; const n = vs.length; if (n < 2 || !vs.some(v => v > 0)) return ''; const w = 300, h = opt.h || 64, g = w / n, bw = g * .62, mx = Math.max(...vs) || 1;
+    const im = opt.hl ? vs.indexOf(Math.max(...vs)) : -1, pos = vs.filter(v => v > 0), avg = pos.reduce((a, b) => a + b, 0) / (pos.length || 1);
+    let s = vs.map((v, i) => { const bh = Math.max(2, v / mx * (h - 18)); return `<rect x="${(i * g + (g - bw) / 2).toFixed(1)}" y="${(h - 12 - bh).toFixed(1)}" width="${bw.toFixed(1)}" height="${bh.toFixed(1)}" rx="3" ${sty('fill', i === im ? 'var(--bad,#F27C7C)' : 'var(--mc,#7FA6E0)')}${opt.ult && i === n - 1 ? ' opacity=".5"' : ''}/>`; }).join('');
+    if (opt.media) { const y = (h - 12 - avg / mx * (h - 18)).toFixed(1); s += `<line x1="0" x2="${w}" y1="${y}" y2="${y}" stroke="#F0A46B" stroke-width="1.5" stroke-dasharray="4 4"/>`; }
+    if (opt.rot) s += opt.rot.map((l, i) => l ? `<text x="${(i * g + g / 2).toFixed(1)}" y="${h - 1}" text-anchor="middle" font-size="9.5" ${sty('fill', 'var(--muted)')}>${E(l)}</text>` : '').join('');
+    return `<svg class="c-cxg" viewBox="0 0 ${w} ${h}" width="100%" aria-hidden="true">${s}</svg>`; }
+  function cxLinha(vs) { const v = vs.filter(x => x != null); if (v.length < 2) return ''; const w = 300, h = 58, mn = Math.min(...v), mx = Math.max(...v), r = mx - mn || 1;
+    const pts = vs.map((x, i) => x == null ? null : `${(i / (vs.length - 1) * (w - 6) + 3).toFixed(1)},${(h - 4 - (x - mn) / r * (h - 10)).toFixed(1)}`).filter(Boolean);
+    return `<svg class="c-cxg" viewBox="0 0 ${w} ${h}" width="100%" preserveAspectRatio="none" aria-hidden="true"><polygon points="${pts.join(' ')} ${pts[pts.length - 1].split(',')[0]},${h} ${pts[0].split(',')[0]},${h}" ${sty('fill', 'var(--mc,#7FA6E0)')} opacity=".15"/><polyline points="${pts.join(' ')}" fill="none" ${sty('stroke', 'var(--mc,#7FA6E0)')} stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" vector-effect="non-scaling-stroke"/></svg>`; }
+  // partes: [[nome, valor, cor?]]
+  function cxRosca(partes, centro) { partes = partes.filter(p => p[1] > 0); const tot = partes.reduce((a, p) => a + p[1], 0); if (!tot) return '';
+    let off = 25; const arcos = partes.map((p, i) => { const d = p[1] / tot * 100, c = p[2] || PALC[i % PALC.length]; const a = `<circle cx="21" cy="21" r="15.9" fill="none" ${sty('stroke', c)} stroke-width="6" stroke-dasharray="${Math.max(.1, d - (partes.length > 1 ? .8 : 0)).toFixed(2)} ${(100 - d + (partes.length > 1 ? .8 : 0)).toFixed(2)}" stroke-dashoffset="${off.toFixed(2)}"/>`; off -= d; return a; }).join('');
+    const leg = partes.map((p, i) => `<span><i ${sty('background', p[2] || PALC[i % PALC.length])}></i><em>${E(p[0])}</em><b>${p[3] || px(p[1] / tot, 0)}</b></span>`).join('');
+    return `<div class="c-cxdn"><svg viewBox="0 0 42 42" width="84" height="84" aria-hidden="true"><circle cx="21" cy="21" r="15.9" fill="none" ${sty('stroke', 'var(--field)')} stroke-width="6"/>${arcos}${centro ? `<text x="21" y="23" text-anchor="middle" font-size="${centro.length > 6 ? 4.4 : 5.4}" font-weight="800" ${sty('fill', 'var(--ink)')}>${E(centro)}</text>` : ''}</svg><div class="c-cxleg">${leg}</div></div>`; }
+  // linhas: [[nome, valor (número), texto, classe?]]
+  function cxHb(linhas) { const mx = Math.max(1e-9, ...linhas.map(l => Math.abs(l[1]))); return `<div class="c-cxhb">${linhas.map((l, i) => `<span class="k">${E(l[0])}</span><span class="c-trk"><i class="${l[3] || ''}" style="width:${Math.max(3, Math.abs(l[1]) / mx * 100).toFixed(1)}%${i && !l[3] ? ';opacity:' + Math.max(.45, 1 - i * .18) : ''}"></i></span><span class="v">${l[2]}</span>`).join('')}</div>`; }
+  const cxTb = linhas => `<table class="c-cxtb">${linhas.map(l => `<tr><td>${l[0]}</td><td class="${l[2] || ''}">${l[1]}</td></tr>`).join('')}</table>`;
+  const cxSit = linhas => linhas.map(l => `<span class="c-cxst"><i class="${l[0]}">${l[0] === 'ok' ? '✓' : '•'}</i>${l[1]}</span>`).join('');
+  const cxPct = (f, cls) => `<span class="c-trk"><i class="${cls || ''}" style="width:${Math.max(2, Math.min(100, f * 100)).toFixed(1)}%"></i></span>`;
+  const mesCurto = i => T(() => mLabel(i).split('/')[0], '');
+  // Trajetória: empregos (até hoje) e opções para o futuro abrindo depois de "hoje"
+  function cxTraj() { const c = T(() => state.carr); if (!c) return null; const emps = (c.emps || []).filter(p => p.ini).sort((a, b) => a.ini < b.ini ? -1 : 1).slice(-4), ops = (c.opcs || []).filter(o => !o.escolhida).slice(0, 3);
+    if (!emps.length && !ops.length) return null;
+    const w = 300, h = 66, y = 22, x0 = 40, xh = ops.length ? 176 : 280, xs = emps.map((p, i) => emps.length === 1 ? x0 : x0 + i * (xh - 30 - x0) / (emps.length - 1));
+    let s = `<line x1="${x0}" x2="${xh}" y1="${y}" y2="${y}" ${sty('stroke', 'var(--mc,#B39DDB)')} stroke-width="3"/>`;
+    ops.forEach((o, i) => { const yy = y + (ops.length === 1 ? 0 : (i - (ops.length - 1) / 2) * 16), xe = 226;
+      s += `<path d="M${xh} ${y} Q ${xh + 26} ${y} ${xe} ${yy}" fill="none" ${sty('stroke', 'var(--mc,#B39DDB)')} stroke-width="1.6" stroke-dasharray="3 3" opacity=".75"/><circle cx="${xe}" cy="${yy}" r="3.2" ${sty('fill', 'var(--mc,#B39DDB)')}/><text x="${xe + 7}" y="${yy + 3.5}" font-size="9.5" ${sty('fill', 'var(--muted)')}>${E(String(o.nome || 'Opção').slice(0, 12))}</text>`; });
+    emps.forEach((p, i) => { s += `<circle cx="${xs[i].toFixed(1)}" cy="${y}" r="4.6" ${sty('fill', 'var(--mc,#B39DDB)')} ${sty('stroke', 'var(--panel)')} stroke-width="2"/><text x="${xs[i].toFixed(1)}" y="${y + 20}" text-anchor="middle" font-size="9.5" font-weight="700" ${sty('fill', 'var(--ink)')}>${E(String(p.ini).slice(0, 4))}</text><text x="${xs[i].toFixed(1)}" y="${y + 32}" text-anchor="middle" font-size="9" ${sty('fill', 'var(--muted)')}>${E((String(p.emp || '').length > 13 ? String(p.emp).slice(0, 12) + '…' : String(p.emp || '')))}</text>`; });
+    s += `<circle cx="${xh}" cy="${y}" r="6" ${sty('fill', 'var(--ink)')} ${sty('stroke', 'var(--panel)')} stroke-width="2"/><text x="${xh}" y="${y + 20}" text-anchor="middle" font-size="9.5" font-weight="700" ${sty('fill', 'var(--ink)')}>hoje</text>`;
+    const at = T(ctEmpAtual, null);
+    return { h: `<svg class="c-cxg" viewBox="0 0 ${w} ${h}" width="100%" aria-hidden="true">${s}</svg>`, s: `${at ? 'hoje: <b>' + E(at.emp || CT_TIPOS[at.tipo] || '') + '</b>' : ''}${at && ops.length ? ' · ' : ''}${ops.length ? ops.length + (ops.length === 1 ? ' opção' : ' opções') + ' para o futuro' : ''}`, w: true }; }
+  // Comparador: resultado no prazo, do maior ganho para o menor
+  function dComp() { return T(() => { const C = state.comp; if (!C || !(C.rows || []).length) return null; const V = Math.max(1, +C.valor || 0), M = Math.max(1, Math.min(480, Math.round(+C.meses || 1)));
+    const rs = C.rows.map(r => ({ nome: r.nome, g: rodar(r, V, null, M, HOJE_IDX, false).liqF - V })).sort((a, b) => b.g - a.g); return { V, M, rs }; }); }
+  function cxComp() { const D = dComp(); if (!D) return { s: 'Monte a primeira comparação', a: 1 };
+    return { h: cxHb(D.rs.slice(0, 3).map(r => [r.nome, r.g, (r.g >= 0 ? '+' : '−') + kx(Math.abs(r.g))])), s: `${kx(D.V)} em ${D.M} meses · <b>${E(D.rs[0].nome)}</b> rende mais`, w: true }; }
+  function dClasses(C) { return T(() => { const m = {}; ativos().forEach(a => { const k = classeDe(a); m[k] = (m[k] || 0) + avaliar(a).atual; });
+    const L = Object.entries(m).sort((a, b) => b[1] - a[1]).map(([id, v]) => [T(() => CLASSES.find(c => c.id === id).nome, id), v]);
+    return L.length > 5 ? L.slice(0, 4).concat([['Outras', L.slice(4).reduce((s, x) => s + x[1], 0)]]) : L; }, []); }
+  function dMeses12(G) { const vs = [], rot = []; for (let i = G.idx - 11; i <= G.idx; i++) { vs.push(T(() => totaisMes(mKey(i)).tot, 0)); rot.push(i % 3 === G.idx % 3 ? mesCurto(i) : ''); } return { vs, rot }; }
+
+  // caixinha de uma seção: { v (número grande), s (resumo), h (gráfico/tabela), w (largura toda), a (só atalho) }
+  function cxSec(t, s) {
+    if (t === 'gastos') { const G = dGastos(); if (!G || G.vazio) return null; const ml = E(mLabel(G.idx));
+      if (s === 'Lançar e importar') return { s: 'Fatura do cartão, extrato ou à mão', a: 1 };
+      if (s === 'Por categoria') { const top = G.top.slice(0, 4), resto = G.top.slice(4).reduce((a, x) => a + x[1], 0), acima = G.top.find(([c, v]) => G.orcs[c] && v > G.orcs[c]);
+        const partes = top.map(([c, v], i) => [c, v, T(() => corCat(c)) || PALC[i], kx(v)]); if (resto > 0) partes.push([`Outras ${G.top.length - 4}`, resto, '#7A8AA3', kx(resto)]);
+        return { h: cxRosca(partes, kx(G.tot).replace('R$ ', '')), s: acima ? `<b class="neg">${E(acima[0])}</b> passou ${px(acima[1] / G.orcs[acima[0]] - 1, 0)} do planejado` : G.orcTot ? 'Todas as categorias dentro do planejado' : '', w: true }; }
+      if (s === 'Lançamentos') { const it = (gastos[G.mes] || []).filter(x => !x.linha), sem = it.filter(x => !x.cat).length, mx = it.reduce((a, x) => Math.max(a, +x.valor || 0), 0);
+        return { v: `${G.n}<small>em ${ml}</small>`, s: `${sem ? `<b>${sem}</b> sem categoria · ` : ''}maior: <b>${fmx(mx)}</b>` }; }
+      if (s === 'Fechamento do mês') { const fo = T(() => !!(state.fech[mKey(HOJE_IDX - 1)] || {}).fechado, false);
+        return { h: cxSit([[fo ? 'ok' : 'ab', `${E(mLabel(HOJE_IDX - 1))} ${fo ? 'fechado' : 'falta fechar'}`], ['ab', `${E(mLabel(HOJE_IDX))} em aberto`]]) }; }
+      if (s === 'Últimos 12 meses') { const M = dMeses12(G), cm = M.vs.map((v, i) => [v, G.idx - 11 + i]).filter(x => x[0] > 0), mx = cm.reduce((a, x) => x[0] > a[0] ? x : a, [0, 0]), mn = cm.reduce((a, x) => x[0] < a[0] ? x : a, [Infinity, 0]);
+        return { h: cxBarras(M.vs, { hl: true, media: true, ult: true, rot: M.rot }) + (cm.length > 1 ? cxTb([['Maior mês', `${E(mLabel(mx[1]))} · ${fmx(mx[0])}`, 'neg'], ['Menor mês', `${E(mLabel(mn[1]))} · ${fmx(mn[0])}`]]) : ''), s: G.media3 != null ? `média dos 3 meses antes: <b>${fmx(G.media3)}</b>` : '', w: true }; }
+      if (s === 'Real vs. projetado') { if (!G.orcTot) return null; return { h: cxHb([['Real', G.tot, kx(G.tot), G.tot > G.orcTot ? 'acima' : ''], ['Planejado', G.orcTot, kx(G.orcTot)]]), s: `${ml}: ${px(G.tot / G.orcTot, 0)} do planejado`, w: true }; }
+    }
+    if (t === 'carteira') { const C = dCart(); if (!C) return null;
+      if (s === 'Saúde da carteira' && C.S) return { v: E(C.S.nota) + '<small>de 1000</small>', h: cxPct((+C.S.nota || 0) / 1000), s: E(C.S.faixa) };
+      if (s === 'Rentabilidade x CDI' && C.R && C.R.pctLiq != null) return { v: px(C.R.pctLiq, 0) + '<small>do CDI</small>', s: C.r12 ? `${C.r12.n} meses: ${px(C.r12.c)} contra ${px(C.r12.cdi)} do CDI` : 'líquido, desde cada aplicação' };
+      if (s === 'Aplicações') return { h: cxTb(C.maiores.map(x => [E(x.a.nome), kx(x.v.atual)])), s: `${C.n} aplicações · ${kx(C.tot)}`, w: true };
+      if (s === 'Por classe') { const L = dClasses(C); if (!L.length) return null; return { h: cxRosca(L.map(x => [x[0], x[1]]), String(L.length)), w: true }; }
+      if (s === 'Por instituição') { const m = {}; T(() => ativos().forEach(a => { const k = a.inst || 'Sem instituição'; m[k] = (m[k] || 0) + avaliar(a).atual; })); const L = Object.entries(m).sort((a, b) => b[1] - a[1]).slice(0, 4); if (!L.length) return null;
+        return { h: cxHb(L.map(([k, v]) => [k, v, kx(v)])), w: true }; }
+      if (s === 'Vencimentos') return C.prox ? { v: E(C.prox.venc.split('-').reverse().slice(0, 2).join('/')), s: E(C.prox.nome) } : { s: 'Nenhum vencimento à frente' };
+      if (s === 'Oportunidades') return { v: String(C.ops.length), s: C.ops.length ? (C.ops.length === 1 ? 'ponto para olhar' : 'pontos para olhar') : 'nada urgente' };
+      if (s === 'Cadastrar aplicação') return { s: 'Cadastrar ou importar da corretora', a: 1 };
+    }
+    if (t === 'global') { const p = dPlano(), c = dCp();
+      if (s === 'Checkpoint do mês') return c ? { h: cxSit([['ok', `${E(mLabel(c.s0))}: ${kx(c.cp.valor)}`]].concat(c.pend ? [['ab', 'falta o deste mês']] : [])), s: c.diff != null ? `contra o plano: <b class="${c.diff < 0 ? 'neg' : 'pos'}">${c.diff >= 0 ? '+' : '−'}${kx(Math.abs(c.diff))}</b>` : '' } : { s: 'Ainda não há checkpoint' };
+      if (s === 'Projeção' && p) return { v: kx(p.patFim), h: cxLinha(p.v), s: `em ${E(mLabel(p.fimI))} · ${kx(p.hoje)} em reais de hoje`, w: true };
+      if (s === 'Mês a mês' && p) return { h: cxTb([['Sobra média', fmx(p.sobra) + '/mês', p.sobra < 0 ? 'neg' : ''], ['Rendimento médio', fmx(p.rend) + '/mês']]), w: true };
+      if (s === 'Checkpoints') { const n = T(() => cps.length, 0); return n ? { v: String(n), s: n === 1 ? 'checkpoint registrado' : 'checkpoints registrados' } : null; }
+    }
+    if (t === 'patrimonio') { const P = dPatr(); if (!P || !P.tem) return null;
+      if (s === 'Composição') return { h: cxRosca([['Investimentos', P.inv, null, kx(P.inv)], ['FGTS e prev.', P.prev, '#F0A46B', kx(P.prev)], ['Bens', P.bens, '#5FD3A0', kx(P.bens)]]), s: P.div ? `dívidas: <b class="neg">−${kx(P.div)}</b>` : '', w: true };
+      if (s === 'Bens') { const B = T(() => bensHoje().filter(x => x.tenho).sort((a, b) => b.valor - a.valor), []); if (!B.length) return { s: 'Nenhum bem cadastrado' };
+        return { h: cxTb(B.slice(0, 3).map(x => [E(x.b.nome), kx(x.valor)]).concat(P.div ? [['Dívidas', '−' + kx(P.div), 'neg']] : [])), w: true }; }
+    }
+    if (t === 'orcamento') { const p = dPlano(); if (!p) return null;
+      if (s === 'Plano mês a mês') return { v: fmx(p.sobra), h: cxLinha(p.v), s: 'sobra média por mês, próximos 12', w: true };
+    }
+    if (t === 'comparador' && s === 'Resultado no prazo') return cxComp();
+    if (t === 'carrtraj' && s === 'Linha do tempo') return cxTraj();
+    const pv = previa(t, s); return pv ? { s: pv.s, h: pv.h, w: !!pv.h } : null;
+  }
+  // caixinha de uma parte do módulo (tela do módulo)
+  function cxTab(t) {
+    if (t === 'gastos') { const G = dGastos(); if (G && !G.vazio) { const M = dMeses12(G); return { v: fmx(G.tot), h: cxBarras(M.vs.slice(-6), { media: true, ult: true, rot: M.vs.slice(-6).map((_, i) => mesCurto(G.idx - 5 + i)) }), s: `${E(mLabel(G.idx))}${G.orcTot ? ` · ${px(G.tot / G.orcTot, 0)} do planejado` : ''}`, w: true }; } }
+    if (t === 'orcamento') { const p = dPlano(); if (p) return { v: fmx(p.sobra), s: 'sobra média por mês' }; }
+    if (t === 'carteira') { const C = dCart(); if (C) { const L = dClasses(C); return { v: kx(C.tot), h: L.length ? cxRosca(L.map(x => [x[0], x[1]])) : '', s: `${C.R && C.R.pctLiq != null ? px(C.R.pctLiq, 0) + ' do CDI' : ''}${C.S ? ` · saúde ${E(C.S.faixa)}` : ''}`, w: !!L.length }; } }
+    if (t === 'patrimonio') { const P = dPatr(); if (P && P.tem) return { v: fmx(P.pl), h: cxHb([['Investimentos', P.inv + P.prev, kx(P.inv + P.prev)], ['Bens', P.bens, kx(P.bens)]].concat(P.div ? [['Dívidas', P.div, '−' + kx(P.div), 'acima']] : [])), s: 'líquido hoje', w: true }; }
+    if (t === 'global') { const p = dPlano(); if (p) return { v: kx(p.patFim), h: cxLinha(p.v), s: `em ${E(mLabel(p.fimI))}`, w: true }; }
+    if (t === 'comparador') return cxComp();
+    if (t === 'carrtraj') { const r = cxTraj(); if (r) return r; }
+    if (['gastos', 'carteira', 'patrimonio', 'orcamento', 'global'].includes(t)) { const r = resumoTab(t); return r ? { s: r } : null; }
+    const st = subTab(t); return st ? { s: E(cxCurto(st)) } : null;
+  }
+  // descrição da parte: só a primeira frase, cortada numa palavra
+  function cxCurto(x) { let f = String(x).split(/(?<=[.:!?])\s/)[0].replace(/[.:]$/, ''); if (f.length > 74) f = f.slice(0, 72).replace(/\s+\S*$/, '') + '…'; return f; }
+  // grade: pequenas em pares, largas na linha toda; uma pequena sozinha vira larga (mantém a ordem dos números)
+  function grade(itens) {
+    const w = itens.map(x => !!(x.c && x.c.w)); let solta = -1;
+    for (let i = 0; i < itens.length; i++) { if (w[i]) { if (solta >= 0) { w[solta] = true; solta = -1; } } else solta = solta >= 0 ? -1 : i; }
+    if (solta >= 0) w[solta] = true;
+    return `<div class="c-grid">${itens.map((x, i) => { const c = x.c || {}, vazio = !c.v && !c.h && !c.s;
+      return `<a href="#" class="c-cx${w[i] ? ' w' : ''}" ${x.attr}${x.mc ? ` style="--mc:${x.mc}"` : ''}><span class="c-cxh"><span class="c-nm">${x.n}</span><b>${x.t}</b>${w[i] ? seta : ''}</span>${c.v ? `<span class="c-cxv">${c.v}</span>` : ''}${c.h || ''}${c.s ? `<span class="c-cxs${c.a ? ' a' : ''}">${c.s}${c.a ? ' ›' : ''}</span>` : ''}${vazio ? '<span class="c-cxs a">Abrir ›</span>' : ''}</a>`; }).join('')}</div>`;
+  }
+
   // ---------- telas ----------
   function heroFin() {
     const P = dPatr(), G = dGastos(), p = dPlano();
@@ -21139,10 +22004,14 @@ html .sug-adm .btn.ghost[aria-pressed="true"], html[data-lb] .sug-adm .btn.ghost
       <div class="c-chips c2">${chip(G && !G.vazio ? `Gasto em ${E(mLabel(G.idx))}` : 'Gastos', G && !G.vazio ? fmx(G.tot) : '–', G && !G.vazio && G.orcTot ? `${px(G.tot / G.orcTot, 0)} do planejado` : 'sem lançamentos', 'data-cel="tab:gastos"')}
       ${chip(p ? `Plano em ${E(mLabel(p.fimI))}` : 'Meu plano', p ? kx(p.patFim) : '–', p ? `sobra média ${fmx(p.sobra)}/mês` : 'monte o plano', 'data-cel="tab:orcamento"')}</div>`;
   }
+  // v398: o ritmo (ckDados) é do mês atual; se o cartão mostra um mês encerrado, vale o total contra o planejado
+  function gAcima(G) { if (!G || G.vazio) return { acima: false, fech: false, tem: false };
+    const u = G.orcTot ? G.tot / G.orcTot : null, atual = G.D && G.D.mk === G.mes, ritmo = atual && G.D.tp && G.D.tprev > G.D.tp * 1.02;
+    return { acima: !!(ritmo || (u != null && u > 1)), fech: !atual, tem: u != null || !!(atual && G.D.tp), u }; }
   function heroTab(t) {
     if (t === 'gastos') { const G = dGastos(); if (!G || G.vazio) return `<div class="c-card c-hero"><span class="c-lab">Gastos</span><span class="c-h2">Nenhum gasto lançado ainda</span><span class="c-sub">Importe a fatura do cartão ou o extrato da conta.</span><button type="button" class="c-btn p" data-cel="foco:gastos|Lançar e importar">${ico(I.sobe)}Importar fatura ou extrato</button></div>`;
-      const u = G.orcTot ? G.tot / G.orcTot : null, acima = G.D && G.D.tprev > G.D.tp * 1.02;
-      return `<div class="c-card c-hero"><div style="display:flex;justify-content:space-between;align-items:center;gap:8px"><span class="c-lab">${E(mLabel(G.idx))}</span>${G.D && G.D.tp ? `<span class="c-tag ${acima ? 'al' : 'ok'}">${acima ? 'acima do ritmo' : 'dentro do plano'}</span>` : ''}</div>
+      const u = G.orcTot ? G.tot / G.orcTot : null, GA = gAcima(G), acima = GA.acima;
+      return `<div class="c-card c-hero"><div style="display:flex;justify-content:space-between;align-items:center;gap:8px"><span class="c-lab">${E(mLabel(G.idx))}</span>${GA.tem ? `<span class="c-tag ${acima ? 'al' : 'ok'}">${acima ? (GA.fech || u > 1 ? 'acima do plano' : 'acima do ritmo') : GA.fech ? 'ficou no plano' : 'dentro do plano'}</span>` : ''}</div>
         <span class="c-big">${fmx(G.tot)}</span>${u != null ? `<div class="c-barl"><span class="c-trk"><i class="${u > 1 ? 'acima' : ''}" style="width:${Math.min(100, u * 100).toFixed(1)}%"></i></span><span class="c-sub" style="font-weight:700">${px(u, 0)}</span></div>` : ''}
         <span class="c-sub">${G.orcTot ? `de ${kx(G.orcTot)} planejados` : 'sem orçamento por categoria'}${G.media3 != null ? ` · média dos 3 meses antes: ${fmx(G.media3)}` : ''}</span>
         <button type="button" class="c-btn p" data-cel="foco:gastos|Lançar e importar">${ico(I.sobe)}Importar fatura ou extrato</button></div>`; }
@@ -21178,8 +22047,8 @@ html .sug-adm .btn.ghost[aria-pressed="true"], html[data-lb] .sug-adm .btn.ghost
   function telaResumo() {
     const P = dPatr(), G = dGastos(), C = dCart(), Ii = dInd(), L = lembretes().slice(0, 4), hoje = new Date();
     const dia = hoje.toLocaleDateString('pt-BR', { weekday: 'long', day: 'numeric', month: 'long' });
-    const acima = G && G.D && G.D.tp && G.D.tprev > G.D.tp * 1.02, u = G && !G.vazio && G.orcTot ? G.tot / G.orcTot : null;
-    const frase = !G || G.vazio ? 'Lance os gastos do mês para acompanhar' : acima ? 'Os gastos estão acima do ritmo' : 'O mês está dentro do plano';
+    const GA = gAcima(G), acima = GA.acima, u = G && !G.vazio && G.orcTot ? G.tot / G.orcTot : null;
+    const frase = !G || G.vazio ? 'Lance os gastos do mês para acompanhar' : GA.fech ? (acima ? `Os gastos de ${E(mLabel(G.idx))} passaram do plano` : `${E(mLabel(G.idx))} ficou dentro do plano`) : acima ? (u > 1 ? 'Os gastos já passaram do plano' : 'Os gastos estão acima do ritmo') : 'O mês está dentro do plano';
     const al = []; if (C) C.ops.filter(o => o.nivel === 'warn' || o.nivel === 'amber').slice(0, 2).forEach(o => al.push(linha('data-cel="foco:carteira|Oportunidades"', 'R', E(o.titulo), 'Carteira', '', '#E8C66A')));
     T(() => { const ps = passosConta().filter(x => !x.ok).slice(0, 2); ps.forEach(x => al.push(linha(`data-cel="${E(alvo(x.tab, x.sec))}"`, '!', E(x.t), E(x.d), '', '#F0A46B'))); });
     return `<div class="c-card c-hero" style="--celm:#F0A46B"><span class="c-lab">${E(dia)}</span><span class="c-h2">${frase}</span>${u != null ? `<span class="c-sub">Você gastou ${px(u, 0)} do planejado para ${E(mLabel(G.idx))}.</span>` : ''}</div>
@@ -21201,22 +22070,20 @@ html .sug-adm .btn.ghost[aria-pressed="true"], html[data-lb] .sug-adm .btn.ghost
   function telaMod(id) {
     const m = mod(id); if (!m) return telaInicio();
     const tabs = (m.tabs || []).filter(tabOk);
-    const row = t => linha(`data-cel="tab:${t}"`, E(numTab(t) || '•'), E(tituloTab(t)), resumoTab(t), '', m.corNav);
+    const it = t => ({ attr: `data-cel="tab:${t}"`, n: E(numTab(t) || '•'), t: E(tituloTab(t)), c: T(() => cxTab(t), null), mc: m.corNav });
     let corpo = '';
-    if (id === 'fin') { const usados = []; corpo = heroFin() + GRUPOS_FIN.map(([g, ts]) => { const v = ts.filter(t => tabs.includes(t)); v.forEach(t => usados.push(t)); return v.length ? `<div class="c-gt">${g}</div><div class="c-list">${v.map(row).join('')}</div>` : ''; }).join('');
-      const resto = tabs.filter(t => !usados.includes(t) && t !== 'inicio'); if (resto.length) corpo += `<div class="c-gt">Mais</div><div class="c-list">${resto.map(row).join('')}</div>`;
+    if (id === 'fin') { const usados = []; corpo = heroFin() + GRUPOS_FIN.map(([g, ts]) => { const v = ts.filter(t => tabs.includes(t)); v.forEach(t => usados.push(t)); return v.length ? `<div class="c-gt">${g}</div>${grade(v.map(it))}` : ''; }).join('');
+      const resto = tabs.filter(t => !usados.includes(t) && t !== 'inicio'); if (resto.length) corpo += `<div class="c-gt">Mais</div>${grade(resto.map(it))}`;
       corpo += `<button type="button" class="c-btn s" data-cel="full:inicio">Ver o resumo completo das Finanças</button>`; }
-    else corpo = `<div class="c-card c-hero" style="--celm:${m.corNav}"><span class="c-lab">${E(m.nome)}</span><span class="c-sub" style="font-size:14px;color:var(--ink)">${E(m.desc || '')}</span>${T(() => `<span class="c-sub">${modResumo(m)}</span>`, '')}</div><div class="c-gt">Escolha o que ver</div><div class="c-list">${tabs.map(row).join('')}</div>`;
+    else corpo = `<div class="c-card c-hero" style="--celm:${m.corNav}"><span class="c-lab">${E(m.nome)}</span><span class="c-sub" style="font-size:14px;color:var(--ink)">${E(m.desc || '')}</span>${T(() => `<span class="c-sub">${modResumo(m)}</span>`, '')}</div><div class="c-gt">Escolha o que ver</div>${grade(tabs.map(it))}`;
     return corpo;
   }
   function telaTab(t) {
     const ss = secoes(t), m = modDeTab(t);
-    const itens = ss.map((s, i) => { const pv = previa(t, s), id = t + '|' + s, op = !!abertos[id];
-      if (!pv) return linha(`data-cel="foco:${E(id)}"`, String(i + 1), E(s), '', '', m && m.corNav);
-      return `<div class="c-it"><button type="button" class="c-rw" data-celtog="${E(id)}" aria-expanded="${op}"${m ? ` style="--mc:${m.corNav}"` : ''}><span class="c-nm">${i + 1}</span><span class="c-rt"><b>${E(s)}</b>${pv.s ? `<span>${pv.s}</span>` : ''}</span>${chev(op)}</button>
-        ${op ? `<div class="c-body">${pv.h || ''}<button type="button" class="c-btn s" data-cel="foco:${E(id)}">Abrir ${E(s.toLowerCase())} ›</button></div>` : ''}</div>`; });
-    return heroTab(t) + (itens.length ? `<div class="c-gt">Escolha o que ver</div><div class="c-list">${itens.join('')}</div>` : '') + `<button type="button" class="c-btn s" data-cel="full:${t}">Ver a tela inteira</button>`;
+    const itens = ss.map((sec, i) => ({ attr: `data-cel="foco:${E(t + '|' + sec)}"`, n: String(i + 1), t: E(sec), c: T(() => cxSec(t, sec), null), mc: m && m.corNav }));
+    return heroTab(t) + (itens.length ? `<div class="c-gt">Escolha o que ver</div>${grade(itens)}` : '') + `<button type="button" class="c-btn s" data-cel="full:${t}">Ver a tela inteira</button>`;
   }
+
   function telaMissoes() {
     const J = dJogo(); if (!J) return '<p class="c-vazio">Carregando…</p>';
     const d = J.d, base = T(() => JG_NIVEIS[d.nivel - 1][0], 0), alvoP = d.prox ? d.prox[0] : base, fr = d.prox ? (d.total - base) / (alvoP - base) : 1;
@@ -21267,7 +22134,7 @@ html .sug-adm .btn.ghost[aria-pressed="true"], html[data-lb] .sug-adm .btn.ghost
     const [k] = parte(V), [crumb, tit, cor] = titulo(), n = T(() => { const e = document.getElementById('pess-n'); return e && !e.hidden ? e.textContent : ''; }, ''), raiz = ['inicio', 'resumo', 'missoes', 'mais'].includes(k);
     top.style.setProperty('--celm', cor || '#F0A46B');
     top.innerHTML = (raiz ? '' : `<button type="button" class="cb" data-celvoltar aria-label="Voltar">${ico(I.voltar)}</button>`) +
-      (k === 'inicio' ? '<div class="tt"><span class="logo">Life<em>Board</em></span></div>' : `<div class="tt"><small><i></i>${E(crumb)}</small><b>${E(tit)}</b></div>`) +
+      (k === 'inicio' ? `<div class="tt"><span class="logo" role="img" aria-label="LifeBoard">${window.__LB_WM || 'LifeBoard'}</span></div>` : `<div class="tt"><small><i></i>${E(crumb)}</small><b>${E(tit)}</b></div>`) +
       (guiaChave() ? `<button type="button" class="cb" data-celguia aria-label="Guia desta tela">${ico(I.guia)}</button>` : '') +
       `<button type="button" class="cb" data-celsino aria-label="${n ? 'Seus avisos: ' + E(n) + ' novos' : 'Seus avisos'}">${ico(I.sino)}${n ? `<span class="dot">${E(n)}</span>` : ''}</button>`;
   }
@@ -21318,7 +22185,7 @@ html .sug-adm .btn.ghost[aria-pressed="true"], html[data-lb] .sug-adm .btn.ghost
     if (b.dataset.celtog) { abertos[b.dataset.celtog] = !abertos[b.dataset.celtog]; const y = window.scrollY; aplicar(); window.scrollTo(0, y); return; }
     if (b.hasAttribute('data-celguia')) { const k = guiaChave(); if (k) { if (parte(V)[0] === 'tab') { const s = k.split('|')[1]; ir('foco:' + parte(V)[1] + '|' + s); } setTimeout(() => T(() => guiaAbre(k)), 60); } return; }
     if (b.hasAttribute('data-celsino')) { const s = document.getElementById('pess-sino'); if (s) s.click(); return; }
-    if (b.dataset.cellemb) { const c = b.dataset.cellemb; if (c === 'abre') lembAberto = !lembAberto; else if (c === 'depois') lembAberto = false; else if (c === 'fecha') { lsS(KLEMB, JSON.stringify(T(() => JSON.parse(lsG(KLEMB)) || [], []).concat(lembretes().map(a => a.id)).slice(-300))); lembAberto = false; } pintaLemb(); return; }
+    if (b.dataset.cellemb) { const c = b.dataset.cellemb; if (c === 'abre') lembAberto = !lembAberto; else if (c === 'depois') lembAberto = false; else if (c === 'fecha') { lsS(KLEMB, JSON.stringify({ dia: hojeISO(), ids: lembFech().concat(lembretes().map(a => a.id)).slice(-300) })); lembAberto = false; } pintaLemb(); return; }
     if (b.dataset.celconta != null) { const cs = [...document.querySelectorAll('.side-foot .lg-acoes .lg-link, .side-foot .lg-link')].filter((a, i, arr) => arr.indexOf(a) === i); const a = cs[+b.dataset.celconta]; if (a) a.click(); return; }
     if (b.hasAttribute('data-celoff')) { lsS(KOFF, 'off'); aplicar(); window.scrollTo(0, 0); return; }
     if (b.dataset.cel) ir(b.dataset.cel);
@@ -21858,7 +22725,7 @@ html .sug-adm .btn.ghost[aria-pressed="true"], html[data-lb] .sug-adm .btn.ghost
       sOpts('fam', 'plano', () => ['parf', 'filhos'].includes(MV('fam', 'mora')) || MV('fam', 'tem') === 'sim' ? 'Pensa em ter mais filhos?' : 'Pensa em ter filhos?', 'Entra como simulação, para você ver o efeito antes de decidir.',
         [['nao', 'Não'], ['2', 'Sim, nos próximos 2 anos'], ['depois', 'Sim, mais para frente'], ['talvez', 'Talvez']]),
       { id: 'fam:fim', fim: true, render: resFam, cta: 'Salvar e ir para Família' }] },
-   { id: 'carr', nome: 'Carreira', letra: 'C', cor: '#B39DDB', tabs: ['pjpf', 'stock'], desc: 'CLT contra PJ, quanto pedir numa proposta e as ações da empresa.',
+   { id: 'carr', nome: 'Carreira', letra: 'C', cor: '#B39DDB', tabs: ['carrtraj', 'pjpf', 'stock'], desc: 'CLT contra PJ, quanto pedir numa proposta e as ações da empresa.',
      steps: () => [
       sOpts('carr', 'obj', 'O que você quer ver na Carreira?', () => `Hoje você é ${D.regime === 'socio' ? 'sócio' : RN()}, com ${D.regime === 'socio' ? `${brl(D.bruto)} de pró-labore e ${brl(D.lucro || 0)} de lucros por mês` : `${brl(D.bruto)} ${D.regime === 'pj' ? 'de faturamento' : 'de salário bruto'}`}. Os benefícios do primeiro acesso já estão lá.`,
         [['cmp', 'Comparar CLT e PJ', 'Quanto sobra no bolso em cada um'], ['prop', 'Avaliar uma proposta', 'Uma oferta que você recebeu'], ['acoes', 'As ações da empresa', 'Stock options, RSU, vesting'], ['nada', 'Só estou olhando', '']]),
